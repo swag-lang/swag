@@ -61,59 +61,59 @@ impl Theme
 {
     internal mtd freeDefault()
     {
-        Memory.delete(res.icons24)
-        Memory.delete(res.icons64)
-        Memory.delete(res.spin)
+        Memory.delete(me.res.icons24)
+        Memory.delete(me.res.icons64)
+        Memory.delete(me.res.spin)
     }
 
     internal mtd setupDefault(renderer: *RenderOgl)
     {
-        intialized = true
+        me.intialized = true
 
         var img = assume Image.decode(DefaultImageName, DefaultImage)
-        res.imgWidgets = renderer.addImage(img)
+        me.res.imgWidgets = renderer.addImage(img)
 
-        img         = assume Image.decode(DefaultIcons24Name, DefaultIcons24)
-        res.icons24 = Memory.new'ImageList()
-        res.icons24.set(renderer.addImage(img), 24, 24)
+        img            = assume Image.decode(DefaultIcons24Name, DefaultIcons24)
+        me.res.icons24 = Memory.new'ImageList()
+        me.res.icons24.set(renderer.addImage(img), 24, 24)
 
-        img         = assume Image.decode(DefaultIcons64Name, DefaultIcons64)
-        res.icons64 = Memory.new'ImageList()
-        res.icons64.set(renderer.addImage(img), 64, 64)
+        img            = assume Image.decode(DefaultIcons64Name, DefaultIcons64)
+        me.res.icons64 = Memory.new'ImageList()
+        me.res.icons64.set(renderer.addImage(img), 64, 64)
 
-        img      = assume Image.decode(DefaultSpinName, DefaultSpin)
-        res.spin = Memory.new'ImageList()
-        res.spin.set(renderer.addImage(img), 48, 48)
+        img         = assume Image.decode(DefaultSpinName, DefaultSpin)
+        me.res.spin = Memory.new'ImageList()
+        me.res.spin.set(renderer.addImage(img), 48, 48)
 
-        res.defaultTypeFaceR  = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
-        res.defaultTypeFaceB  = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)
-        res.defaultTypeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
-        res.defaultTypeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
+        me.res.defaultTypeFaceR  = assume TypeFace.create(DefaultFontRegularName, DefaultFontRegular)
+        me.res.defaultTypeFaceB  = assume TypeFace.create(DefaultFontBoldName, DefaultFontBold)
+        me.res.defaultTypeFaceI  = assume TypeFace.create(DefaultFontItalicName, DefaultFontItalic)
+        me.res.defaultTypeFaceBI = assume TypeFace.create(DefaultFontBoldItalicName, DefaultFontBoldItalic)
 
-        res.defaultFsTypeFaceR  = assume TypeFace.create(DefaultFontFsRegularName, DefaultFontFsRegular)
-        res.defaultFsTypeFaceB  = assume TypeFace.create(DefaultFontFsBoldName, DefaultFontFsBold)
-        res.defaultFsTypeFaceI  = assume TypeFace.create(DefaultFontFsItalicName, DefaultFontFsItalic)
-        res.defaultFsTypeFaceBI = assume TypeFace.create(DefaultFontFsBoldItalicName, DefaultFontFsBoldItalic)
+        me.res.defaultFsTypeFaceR  = assume TypeFace.create(DefaultFontFsRegularName, DefaultFontFsRegular)
+        me.res.defaultFsTypeFaceB  = assume TypeFace.create(DefaultFontFsBoldName, DefaultFontFsBold)
+        me.res.defaultFsTypeFaceI  = assume TypeFace.create(DefaultFontFsItalicName, DefaultFontFsItalic)
+        me.res.defaultFsTypeFaceBI = assume TypeFace.create(DefaultFontFsBoldItalicName, DefaultFontFsBoldItalic)
 
-        res.fontDefault.regular    = Font.create(res.defaultTypeFaceR, metrics.defaultFontSize)
-        res.fontDefault.bold       = Font.create(res.defaultTypeFaceB, metrics.defaultFontSize)
-        res.fontDefault.italic     = Font.create(res.defaultTypeFaceI, metrics.defaultFontSize)
-        res.fontDefault.boldItalic = Font.create(res.defaultTypeFaceBI, metrics.defaultFontSize)
+        me.res.fontDefault.regular    = Font.create(me.res.defaultTypeFaceR, me.metrics.defaultFontSize)
+        me.res.fontDefault.bold       = Font.create(me.res.defaultTypeFaceB, me.metrics.defaultFontSize)
+        me.res.fontDefault.italic     = Font.create(me.res.defaultTypeFaceI, me.metrics.defaultFontSize)
+        me.res.fontDefault.boldItalic = Font.create(me.res.defaultTypeFaceBI, me.metrics.defaultFontSize)
 
-        res.fontDefaultFs.regular    = Font.create(res.defaultFsTypeFaceR, metrics.defaultFixedFontSize)
-        res.fontDefaultFs.bold       = Font.create(res.defaultFsTypeFaceB, metrics.defaultFixedFontSize)
-        res.fontDefaultFs.italic     = Font.create(res.defaultFsTypeFaceI, metrics.defaultFixedFontSize)
-        res.fontDefaultFs.boldItalic = Font.create(res.defaultFsTypeFaceBI, metrics.defaultFixedFontSize)
+        me.res.fontDefaultFs.regular    = Font.create(me.res.defaultFsTypeFaceR, me.metrics.defaultFixedFontSize)
+        me.res.fontDefaultFs.bold       = Font.create(me.res.defaultFsTypeFaceB, me.metrics.defaultFixedFontSize)
+        me.res.fontDefaultFs.italic     = Font.create(me.res.defaultFsTypeFaceI, me.metrics.defaultFixedFontSize)
+        me.res.fontDefaultFs.boldItalic = Font.create(me.res.defaultFsTypeFaceBI, me.metrics.defaultFixedFontSize)
     }
 
     // Create a default font family with the given size
     mtd createDefaultFontfamily(size: u32)->FontFamily
     {
         var result: retval
-        result.regular    = Font.create(res.defaultTypeFaceR, size)
-        result.bold       = Font.create(res.defaultTypeFaceB, size)
-        result.italic     = Font.create(res.defaultTypeFaceI, size)
-        result.boldItalic = Font.create(res.defaultTypeFaceBI, size)
+        result.regular    = Font.create(me.res.defaultTypeFaceR, size)
+        result.bold       = Font.create(me.res.defaultTypeFaceB, size)
+        result.italic     = Font.create(me.res.defaultTypeFaceI, size)
+        result.boldItalic = Font.create(me.res.defaultTypeFaceBI, size)
         return result
     }
 
@@ -124,13 +124,13 @@ impl Theme
         switch style
         {
         case Regular:
-            return Font.create(res.defaultTypeFaceR, size)
+            return Font.create(me.res.defaultTypeFaceR, size)
         case Bold:
-            return Font.create(res.defaultTypeFaceB, size)
+            return Font.create(me.res.defaultTypeFaceB, size)
         case Italic:
-            return Font.create(res.defaultTypeFaceI, size)
+            return Font.create(me.res.defaultTypeFaceI, size)
         case BoldItalic:
-            return Font.create(res.defaultTypeFaceBI, size)
+            return Font.create(me.res.defaultTypeFaceBI, size)
         }
 
         unreachable
@@ -143,13 +143,13 @@ impl Theme
         switch style
         {
         case Regular:
-            return Font.create(res.defaultFsTypeFaceR, size)
+            return Font.create(me.res.defaultFsTypeFaceR, size)
         case Bold:
-            return Font.create(res.defaultFsTypeFaceB, size)
+            return Font.create(me.res.defaultFsTypeFaceB, size)
         case Italic:
-            return Font.create(res.defaultFsTypeFaceI, size)
+            return Font.create(me.res.defaultFsTypeFaceI, size)
         case BoldItalic:
-            return Font.create(res.defaultFsTypeFaceBI, size)
+            return Font.create(me.res.defaultFsTypeFaceBI, size)
         }
 
         unreachable

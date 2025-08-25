@@ -79,48 +79,48 @@ internal impl RichEditCtrl
 {
     mtd getMarginLeft()->f32
     {
-        return marginLeft
+        return me.marginLeft
     }
 
     mtd getMarginRight()->f32
     {
-        return marginRight
+        return me.marginRight
     }
 
     mtd setDefaultStyles()
     {
-        let colors = getThemeColors()
-        for i in @countof(styles):
-            styles[i].colFg = colors.richEdit_Text
-        setForm(.RichEditCtrl)
+        let colors = me.getThemeColors()
+        for i in @countof(me.styles):
+            me.styles[i].colFg = colors.richEdit_Text
+        me.setForm(.RichEditCtrl)
     }
 
     mtd computeScrollY()
     {
-        var size = getXExtent()
-        if !recomputeScroll:
+        var size = me.getXExtent()
+        if !me.recomputeScroll:
             return
 
         var y           = 0'f32
         var firstHidden = true
-        countVisibleLines = 0
-        for i in lines
+        me.countVisibleLines = 0
+        for i in me.lines
         {
-            lines[i].drawingRect.clear()
+            me.lines[i].drawingRect.clear()
 
-            if lines[i].isVisible()
+            if me.lines[i].isVisible()
             {
-                countVisibleLines += 1
-                lines[i].drawingRect.y      = y
-                lines[i].drawingRect.height = size.y
+                me.countVisibleLines += 1
+                me.lines[i].drawingRect.y      = y
+                me.lines[i].drawingRect.height = size.y
                 y += size.y
                 firstHidden = true
             }
             elif firstHidden
             {
-                countVisibleLines += 1
-                lines[i].drawingRect.y      = y
-                lines[i].drawingRect.height = size.y
+                me.countVisibleLines += 1
+                me.lines[i].drawingRect.y      = y
+                me.lines[i].drawingRect.height = size.y
                 y += size.y
                 firstHidden = false
             }
@@ -130,17 +130,17 @@ internal impl RichEditCtrl
     mtd setModified(mdf: bool)
     {
         if mdf:
-            sigChanged.call(me)
-        if modified == mdf:
+            me.sigChanged.call(me)
+        if me.modified == mdf:
             return
-        modified = mdf
-        sigModified.call(me)
+        me.modified = mdf
+        me.sigModified.call(me)
     }
 
     mtd resetModified()
     {
-        setModified(false)
-        modifiedUndoMarker = currentUndo
+        me.setModified(false)
+        me.modifiedUndoMarker = me.currentUndo
     }
 
     #[Swag.Discardable]
@@ -148,22 +148,22 @@ internal impl RichEditCtrl
     {
         var p: *RichEditLine
 
-        if freeLines.count:
-            p = freeLines.popBack()
+        if me.freeLines.count:
+            p = me.freeLines.popBack()
         else:
             p = Memory.new'RichEditLine()
 
         p.resetInternal()
 
-        if lines.count
+        if me.lines.count
         {
-            let insLine = index == lines.count ? lines.back() : lines[index]
+            let insLine = index == me.lines.count ? me.lines.back() : me.lines[index]
             p.drawingRect = insLine.drawingRect
             p.drawingRect.y += p.drawingRect.height
         }
 
-        lines.insertAt(index, p)
-        recomputeScroll = true
+        me.lines.insertAt(index, p)
+        me.recomputeScroll = true
 
         return p
     }
@@ -171,25 +171,25 @@ internal impl RichEditCtrl
     #[Swag.Overload]
     mtd deleteLine(lineIndex: u64)
     {
-        freeLines.add(lines[lineIndex])
-        lines.removeAtOrdered(lineIndex)
-        recomputeScroll = true
+        me.freeLines.add(me.lines[lineIndex])
+        me.lines.removeAtOrdered(lineIndex)
+        me.recomputeScroll = true
     }
 
     mtd getFirstVisibleLine()->u64
     {
-        for i in lines.count where lines[i].isVisible():
+        for i in me.lines.count where me.lines[i].isVisible():
             return i
         return 0
     }
 
     mtd getLastVisibleLine()->u64
     {
-        if !lines.count:
+        if !me.lines.count:
             return 0
-        for var i = lines.count - 1; i >= 0; i -= 0
+        for var i = me.lines.count - 1; i >= 0; i -= 0
         {
-            if lines[i].isVisible():
+            if me.lines[i].isVisible():
                 return i
         }
 
@@ -203,7 +203,7 @@ internal impl RichEditCtrl
         var i = lineIndex - 1
         for
         {
-            if lines[i].isVisible():
+            if me.lines[i].isVisible():
                 return i
             if !i:
                 break
@@ -215,14 +215,14 @@ internal impl RichEditCtrl
 
     mtd getNextVisibleLine(lineIndex: u64)->u64
     {
-        let count = lines.count
+        let count = me.lines.count
         if lineIndex == count - 1:
             return lineIndex
 
         var i = lineIndex + 1
         for
         {
-            if lines[i].isVisible():
+            if me.lines[i].isVisible():
                 return i
             if i == count - 1:
                 break
@@ -271,73 +271,73 @@ impl RichEditCtrl
 
     mtd setFocus()
     {
-        edView.setFocus()
+        me.edView.setFocus()
     }
 
     // Set richedit flags
     mtd setRichEdFlags(flags: RichEditFlags)
     {
-        richEdFlags.set(flags)
-        recomputeScroll = true
-        invalidate()
+        me.richEdFlags.set(flags)
+        me.recomputeScroll = true
+        me.invalidate()
     }
 
     // Set form
     mtd setForm(form: RichEditForm)
     {
         me.form = #me.form
-        let colors = getThemeColors()
+        let colors = me.getThemeColors()
 
         switch me.form
         {
         case RichEditCtrl:
-            style.setFont(parent.getTheme().res.fontDefaultFs)
+            me.style.setFont(me.parent.getTheme().res.fontDefaultFs)
 
-            var mdlBk = bkColorModel
-            if bkColorModel.length == 0:
+            var mdlBk = me.bkColorModel
+            if me.bkColorModel.length == 0:
                 mdlBk = String.from("$richEdit_Bk")
 
-            frameWnd.style.clearStyleSheetColors()
-            scrollWnd.style.clearStyleSheetColors()
+            me.frameWnd.style.clearStyleSheetColors()
+            me.scrollWnd.style.clearStyleSheetColors()
 
-            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_FocusBk %", mdlBk))
-            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
-            scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
+            me.frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_FocusBk %", mdlBk))
+            me.frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
+            me.scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
 
-            stylesSelect[0].colFg = colors.richEdit_SelText
-            stylesSelect[0].colBk = colors.richEdit_SelBk
-            stylesSelect[1].colFg = colors.richEdit_SelTextNoFocus
-            stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
+            me.stylesSelect[0].colFg = colors.richEdit_SelText
+            me.stylesSelect[0].colBk = colors.richEdit_SelBk
+            me.stylesSelect[1].colFg = colors.richEdit_SelTextNoFocus
+            me.stylesSelect[1].colBk = colors.richEdit_SelBkNoFocus
 
         case Edit:
-            style.clearFont()
+            me.style.clearFont()
 
-            var mdlBk = bkColorModel
-            if bkColorModel.length == 0:
+            var mdlBk = me.bkColorModel
+            if me.bkColorModel.length == 0:
                 mdlBk = String.from("$edit_Bk")
 
-            frameWnd.style.clearStyleSheetColors()
-            scrollWnd.style.clearStyleSheetColors()
+            me.frameWnd.style.clearStyleSheetColors()
+            me.scrollWnd.style.clearStyleSheetColors()
 
-            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_FocusBk %", mdlBk))
-            frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
-            scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
+            me.frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_FocusBk %", mdlBk))
+            me.frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
+            me.scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
 
-            stylesSelect[0].colFg = colors.edit_SelectedText
-            stylesSelect[0].colBk = colors.edit_SelectedBk
-            stylesSelect[1].colFg = 0
-            stylesSelect[1].colBk = 0
+            me.stylesSelect[0].colFg = colors.edit_SelectedText
+            me.stylesSelect[0].colBk = colors.edit_SelectedBk
+            me.stylesSelect[1].colFg = 0
+            me.stylesSelect[1].colBk = 0
         }
 
-        invalidate()
+        me.invalidate()
     }
 
     // Returns true if the rich edit is read only
     mtd isReadOnly()->bool
     {
         var ro = false
-        sigIsReadOnly.call(&ro)
-        return ro or richEdFlags.has(.ReadOnly)
+        me.sigIsReadOnly.call(&ro)
+        return ro or me.richEdFlags.has(.ReadOnly)
     }
 
     // Simulate a keyboard character pressed
@@ -350,58 +350,58 @@ impl RichEditCtrl
         // If there is a corresponding command,: nothing
         if !isChar
         {
-            let cmd = getMappingCommand(key, mdf)
+            let cmd = me.getMappingCommand(key, mdf)
             if cmd != .None:
                 return
         }
 
-        if isReadOnly():
+        if me.isReadOnly():
             return
 
         var c = ch
         if c == '\r':
             c = '\n'
 
-        if c == '\n' and mdf.equals(.Zero) and richEdFlags.has(.AutoLoseFocus):
+        if c == '\n' and mdf.equals(.Zero) and me.richEdFlags.has(.AutoLoseFocus):
             return
 
-        if lexer and lexer.insertRune(me, c):
+        if me.lexer and me.lexer.insertRune(me, c):
             return
 
-        insertRune(c)
-        forceCaretVisible = true
+        me.insertRune(c)
+        me.forceCaretVisible = true
     }
 
     // Simulate a keyboard pressed
     mtd keyPressed(key: Input.Key, mdf: Input.KeyModifiers)
     {
-        let cmd = getMappingCommand(key, mdf)
+        let cmd = me.getMappingCommand(key, mdf)
         if cmd == .None:
             return
-        executeCommand(cmd)
-        forceCaretVisible = true
-        invalidate()
+        me.executeCommand(cmd)
+        me.forceCaretVisible = true
+        me.invalidate()
     }
 
     // Associate a lexer
     mtd setLexer(lex: IRichEditLexer)
     {
-        lexer = lex
-        lexer.setup(me)
+        me.lexer = lex
+        me.lexer.setup(me)
     }
 
     // Lex the full text
     mtd lexAll()
     {
-        if !lexer:
+        if !me.lexer:
             return
 
         var prev, cur, next: *RichEditLine
-        for i in lines
+        for i in me.lines
         {
-            cur  = lines[i]
-            next = i == lines.count - 1 ? null : lines[i + 1]
-            lexer.compute(prev, cur, next)
+            cur  = me.lines[i]
+            next = i == me.lines.count - 1 ? null : me.lines[i + 1]
+            me.lexer.compute(prev, cur, next)
             prev = cur
         }
     }

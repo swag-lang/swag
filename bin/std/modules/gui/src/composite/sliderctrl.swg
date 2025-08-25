@@ -18,17 +18,17 @@ impl IWnd for SliderCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !label:
+        if !me.label:
             return
-        var rect    = getClientRect()
-        let metrics = getThemeMetrics()
+        var rect    = me.getClientRect()
+        let metrics = me.getThemeMetrics()
 
-        label.setPosition(0, 0, labelSize, rect.height)
+        me.label.setPosition(0, 0, me.labelSize, rect.height)
 
-        let w = rect.width - labelSize - editSize
-        slider.setPosition(label.position.right(), rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
+        let w = rect.width - me.labelSize - me.editSize
+        me.slider.setPosition(me.label.position.right(), rect.vertCenter() - metrics.slider_Height / 2, w, metrics.slider_Height)
 
-        edit.setPosition(slider.position.right(), rect.vertCenter() - metrics.editBox_Height / 2, editSize, metrics.editBox_Height)
+        me.edit.setPosition(me.slider.position.right(), rect.vertCenter() - metrics.editBox_Height / 2, me.editSize, metrics.editBox_Height)
     }
 }
 
@@ -96,41 +96,41 @@ impl SliderCtrl
     // Set a f32 range
     mtd setMinMaxF32(min, max: f32)
     {
-        slider.setMinMax(cast(f32) min, cast(f32) max)
-        edit.setInputF64(cast(f64) min, cast(f64) max)
+        me.slider.setMinMax(cast(f32) min, cast(f32) max)
+        me.edit.setInputF64(cast(f64) min, cast(f64) max)
     }
 
     // Set a u64 range
     mtd setMinMaxU64(min, max: u64)
     {
-        slider.setMinMax(cast(f32) min, cast(f32) max)
-        slider.sliderFlags |= .Integer
-        edit.setInputU64(min, max)
+        me.slider.setMinMax(cast(f32) min, cast(f32) max)
+        me.slider.sliderFlags |= .Integer
+        me.edit.setInputU64(min, max)
     }
 
     // Set a f64 range
     mtd setMinMaxS64(min, max: s64)
     {
-        slider.setMinMax(cast(f32) min, cast(f32) max)
-        slider.sliderFlags |= .Integer
-        edit.setInputS64(min, max)
+        me.slider.setMinMax(cast(f32) min, cast(f32) max)
+        me.slider.sliderFlags |= .Integer
+        me.edit.setInputS64(min, max)
     }
 
     // Set the slider current value
     mtd setValue(value: f32)
     {
-        slider.setValue(value)
+        me.slider.setValue(value)
     }
 
     // Set the slider current value
     mtd setValueNoChange(value: f32)
     {
-        slider.setValueNoChange(value)
+        me.slider.setValueNoChange(value)
     }
 
     // Get the slider current value
     mtd getValue()->f32
     {
-        return slider.getValue()
+        return me.slider.getValue()
     }
 }

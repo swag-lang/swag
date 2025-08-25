@@ -14,6 +14,6 @@ impl Timer
     #[Swag.Inline]
     mtd restart()
     {
-        stopwatch.reset()
+        me.stopwatch.reset()
     }
 }

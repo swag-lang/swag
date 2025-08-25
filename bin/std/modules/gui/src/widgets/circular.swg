@@ -88,7 +88,7 @@ impl IWnd for Circular
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc     = evt.bc
-        let colors = getThemeColors()
+        let colors = me.getThemeColors()
 
         var colorBk:     Color = undefined
         var colorCircle: Color = undefined
@@ -110,52 +110,52 @@ impl IWnd for Circular
             colorCircle = colors.circular_Circle
             colorStep   = colors.circular_Step
 
-            if isPressed1:
+            if me.isPressed1:
                 colorMark1 = colors.circular_PressedMark
-            elif isHot1:
+            elif me.isHot1:
                 colorMark1 = colors.circular_HotMark
             else:
                 colorMark1 = colors.circular_Mark
 
-            if isPressed2:
+            if me.isPressed2:
                 colorMark2 = colors.circular_PressedMark
-            elif isHot2:
+            elif me.isHot2:
                 colorMark2 = colors.circular_HotMark
             else:
                 colorMark2 = colors.circular_Mark
         }
 
-        updateGeometry()
+        me.updateGeometry()
 
         bc.painter.setAntialiased(true)
 
         // Draw range arc if enabled
-        if circularFlags.has(.Range):
-            drawRangeArc(bc.painter)
+        if me.circularFlags.has(.Range):
+            me.drawRangeArc(bc.painter)
 
         // Draw circular track
-        drawCircularTrack(bc.painter, colorCircle)
+        me.drawCircularTrack(bc.painter, colorCircle)
 
         // Draw steps if enabled
-        if stepForm != .None and tickCount > 0:
-            drawSteps(bc.painter, colorStep)
+        if me.stepForm != .None and me.tickCount > 0:
+            me.drawSteps(bc.painter, colorStep)
 
         // Draw value1 marker
-        aniMark1.apply(me, colorMark1)
-        drawValueMarker(bc.painter, aniMark1.cur(), value1)
+        me.aniMark1.apply(me, colorMark1)
+        me.drawValueMarker(bc.painter, me.aniMark1.cur(), me.value1)
 
         // Draw value2 marker if range mode
-        if circularFlags.has(.Range)
+        if me.circularFlags.has(.Range)
         {
-            aniMark2.apply(me, colorMark2)
-            drawValueMarker(bc.painter, aniMark2.cur(), value2)
+            me.aniMark2.apply(me, colorMark2)
+            me.drawValueMarker(bc.painter, me.aniMark2.cur(), me.value2)
         }
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = surfaceToLocal(evt.surfacePos)
-        updateGeometry()
+        var pos = me.surfaceToLocal(evt.surfacePos)
+        me.updateGeometry()
 
         switch evt.kind
         {
@@ -164,79 +164,79 @@ impl IWnd for Circular
             return
 
         case MouseLeave:
-            isHot1, isHot2 = false
-            invalidate()
+            me.isHot1, me.isHot2 = false
+            me.invalidate()
 
         case MouseMove:
-            if !isMoving
+            if !me.isMoving
             {
-                hitTest(evt.surfacePos)
+                me.hitTest(evt.surfacePos)
                 break
             }
 
-            let angle           = getAngleFromPosition(pos)
-            let normalizedValue = angleToValue(angle)
+            let angle           = me.getAngleFromPosition(pos)
+            let normalizedValue = me.angleToValue(angle)
 
-            if isPressed1:
-                setValue1(normalizedValue)
-            elif isPressed2:
-                setValue2(normalizedValue)
-            invalidate()
+            if me.isPressed1:
+                me.setValue1(normalizedValue)
+            elif me.isPressed2:
+                me.setValue2(normalizedValue)
+            me.invalidate()
 
         case MousePressed:
             if evt.button == .Left
             {
-                isMoving = true
-                startChange()
+                me.isMoving = true
+                me.startChange()
 
-                let angle           = getAngleFromPosition(pos)
-                let normalizedValue = angleToValue(angle)
+                let angle           = me.getAngleFromPosition(pos)
+                let normalizedValue = me.angleToValue(angle)
 
-                if isHot1
+                if me.isHot1
                 {
-                    isPressed1   = true
-                    correcMoving = 0
+                    me.isPressed1   = true
+                    me.correcMoving = 0
                 }
-                elif isHot2
+                elif me.isHot2
                 {
-                    isPressed2   = true
-                    correcMoving = 0
+                    me.isPressed2   = true
+                    me.correcMoving = 0
                 }
-                elif !circularFlags.has(.Range)
+                elif !me.circularFlags.has(.Range)
                 {
-                    correcMoving = 0
-                    isPressed1   = true
-                    setValue1(normalizedValue)
+                    me.correcMoving = 0
+                    me.isPressed1   = true
+                    me.setValue1(normalizedValue)
                 }
                 else
                 {
-                    correcMoving = 0
+                    me.correcMoving = 0
                     // Determine which marker is closest
-                    let m = (value1 + value2) * 0.5
+                    let m = (me.value1 + me.value2) * 0.5
                     if normalizedValue <= m
                     {
-                        isPressed1 = true
-                        setValue1(normalizedValue)
+                        me.isPressed1 = true
+                        me.setValue1(normalizedValue)
                     }
                     else
                     {
-                        isPressed2 = true
-                        setValue2(normalizedValue)
+                        me.isPressed2 = true
+                        me.setValue2(normalizedValue)
                     }
                 }
 
-                captureMouse()
-                invalidate()
+                me.captureMouse()
+                me.invalidate()
             }
 
         case MouseReleased:
-            if isMoving and evt.button == .Left
+            if me.isMoving and evt.button == .Left
             {
-                releaseMouse()
-                isPressed1, isPressed2, isMoving = false
-                hitTest(evt.surfacePos)
-                invalidate()
-                endChange()
+                me.releaseMouse()
+                me.isPressed1, me.isPressed2, me.isMoving = false
+                me.hitTest(evt.surfacePos)
+                me.invalidate()
+                me.endChange()
             }
         }
     }
@@ -246,18 +246,18 @@ internal impl Circular
 {
     mtd updateGeometry()
     {
-        var clientRect = getClientRect()
-        centerX = clientRect.x + clientRect.width * 0.5
-        centerY = clientRect.y + clientRect.height * 0.5
-        radius  = Math.min(clientRect.width, clientRect.height) * 0.5
-        radius -= 2
-        if tickOuterRadiusFactor > 0:
-            radius -= tickOuterRadiusFactor
+        var clientRect = me.getClientRect()
+        me.centerX = clientRect.x + clientRect.width * 0.5
+        me.centerY = clientRect.y + clientRect.height * 0.5
+        me.radius  = Math.min(clientRect.width, clientRect.height) * 0.5
+        me.radius -= 2
+        if me.tickOuterRadiusFactor > 0:
+            me.radius -= me.tickOuterRadiusFactor
     }
 
     mtd angleToValue(angle: f32)->f32
     {
-        let totalAngle      = endAngle - startAngle
+        let totalAngle      = me.endAngle - me.startAngle
         var normalizedAngle = angle
 
         // For partial arcs, we need to find the closest valid angle
@@ -283,21 +283,21 @@ internal impl Circular
 
     mtd const valueToAngle(val: f32)->f32
     {
-        let totalAngle = endAngle - startAngle
-        return startAngle + (val * totalAngle)
+        let totalAngle = me.endAngle - me.startAngle
+        return me.startAngle + (val * totalAngle)
     }
 
     mtd getAngleFromPosition(pos: Math.Point)->f32
     {
-        let dx = pos.x - centerX
-        let dy = pos.y - centerY
+        let dx = pos.x - me.centerX
+        let dy = pos.y - me.centerY
 
         // Use atan2(dx, -dy) to have 0° pointing up and 90° pointing right
         // -dy because Y axis is inverted (down = positive)
         var angle = Math.atan2(dx, -dy)
 
         // Normalize the angle according to our coordinate system
-        angle = angle - startAngle
+        angle = angle - me.startAngle
 
         // Normalize to range [0, 2π]
         while angle < 0:
@@ -311,47 +311,47 @@ internal impl Circular
     mtd getPositionFromAngle(angle: f32)->Math.Vector2
     {
         // Add startAngle to return to global coordinate system
-        let adjustedAngle = angle + startAngle
+        let adjustedAngle = angle + me.startAngle
 
         var result: retval
         // For 0° pointing up: x = sin(angle), y = -cos(angle)
-        result.x = centerX + Math.sin(adjustedAngle) * radius
-        result.y = centerY - Math.cos(adjustedAngle) * radius
+        result.x = me.centerX + Math.sin(adjustedAngle) * me.radius
+        result.y = me.centerY - Math.cos(adjustedAngle) * me.radius
         return result
     }
 
     // Range arc drawing
     mtd drawRangeArc(painter: *Painter)
     {
-        let color    = rangeColor.a ? rangeColor : getThemeColors().circular_RangeArc
-        let penSize  = circleGap ? circleGap : 4.0
+        let color    = me.rangeColor.a ? me.rangeColor : me.getThemeColors().circular_RangeArc
+        let penSize  = me.circleGap ? me.circleGap : 4.0
         let pen      = Pen.createSolid(color, penSize)
-        let startArc = valueToAngle(value1)
-        let endArc   = valueToAngle(value2)
-        painter.drawArc(centerX, centerY, radius, startArc, endArc, pen)
+        let startArc = me.valueToAngle(me.value1)
+        let endArc   = me.valueToAngle(me.value2)
+        painter.drawArc(me.centerX, me.centerY, me.radius, startArc, endArc, pen)
     }
 
     // Main marker drawing dispatcher
     mtd drawValueMarker(painter: *Painter, color: Color, value: f32)
     {
         #[Swag.Complete]
-        switch markerForm
+        switch me.markerForm
         {
         case .None:
             return
         case .Circle:
-            drawCircleMarker(painter, color, value)
+            me.drawCircleMarker(painter, color, value)
         case .Needle:
-            drawNeedleMarker(painter, color, value)
+            me.drawNeedleMarker(painter, color, value)
         }
     }
 
     // Circle marker
     mtd drawCircleMarker(painter: *Painter, color: Color, value: f32)
     {
-        let angle        = valueToAngle(value)
-        let pos          = getPositionFromAngle(angle)
-        let markerRadius = getThemeMetrics().circular_MarkerSize
+        let angle        = me.valueToAngle(value)
+        let pos          = me.getPositionFromAngle(angle)
+        let markerRadius = me.getThemeMetrics().circular_MarkerSize
 
         let brush = Brush.createSolid(color)
         let pen   = Pen.createSolid(color, 1.5)
@@ -364,9 +364,9 @@ internal impl Circular
     // Needle marker (line from center to current position)
     mtd drawNeedleMarker(painter: *Painter, color: Color, value: f32)
     {
-        let angle     = valueToAngle(value)
-        let trackPos  = getPositionFromAngle(angle)
-        let centerPos = Math.Vector2{centerX, centerY}
+        let angle     = me.valueToAngle(value)
+        let trackPos  = me.getPositionFromAngle(angle)
+        let centerPos = Math.Vector2{me.centerX, me.centerY}
 
         // Create gradient pen for nice visual effect
         let pen = Pen.createSolid(color, 2.5)
@@ -377,7 +377,7 @@ internal impl Circular
         // Draw small circle at center as pivot point
         let pivotRadius = 3.0
         let brush       = Brush.createSolid(color)
-        painter.fillCircle(centerX, centerY, pivotRadius, brush)
+        painter.fillCircle(me.centerX, me.centerY, pivotRadius, brush)
 
         // Draw small circle at track position as tip
         let tipRadius = 2.0
@@ -388,34 +388,34 @@ internal impl Circular
     mtd drawSteps(painter: *Painter, color: Color)
     {
         #[Swag.Complete]
-        switch stepForm
+        switch me.stepForm
         {
         case .None:
             return
         case .Dot:
-            drawStepDots(painter, color)
+            me.drawStepDots(painter, color)
         case .Tick:
-            drawStepTicks(painter, color)
+            me.drawStepTicks(painter, color)
         }
     }
 
     // Dots implementation
     mtd drawStepDots(painter: *Painter, color: Color)
     {
-        if tickCount <= 1:
+        if me.tickCount <= 1:
             return
 
-        let totalAngle  = endAngle - startAngle
-        let stepAngle   = totalAngle / cast(f32) (tickCount - 1)
+        let totalAngle  = me.endAngle - me.startAngle
+        let stepAngle   = totalAngle / cast(f32) (me.tickCount - 1)
         let brush       = Brush.createSolid(color)
-        let dotRadius   = (tickOuterRadiusFactor - tickInnerRadiusFactor) * 0.5
-        let dotDistance = radius + (tickOuterRadiusFactor + tickInnerRadiusFactor) * 0.5
+        let dotRadius   = (me.tickOuterRadiusFactor - me.tickInnerRadiusFactor) * 0.5
+        let dotDistance = me.radius + (me.tickOuterRadiusFactor + me.tickInnerRadiusFactor) * 0.5
 
-        for var i: u32 = 0; i < tickCount; i += 1
+        for var i: u32 = 0; i < me.tickCount; i += 1
         {
-            let angle = startAngle + stepAngle * cast(f32) i
+            let angle = me.startAngle + stepAngle * cast(f32) i
 
-            let pos = Math.Vector2{centerX + Math.sin(angle) * dotDistance, centerY - Math.cos(angle) * dotDistance}
+            let pos = Math.Vector2{me.centerX + Math.sin(angle) * dotDistance, me.centerY - Math.cos(angle) * dotDistance}
             painter.fillCircle(pos.x, pos.y, dotRadius, brush)
         }
     }
@@ -423,22 +423,22 @@ internal impl Circular
     // Tick marks implementation
     mtd drawStepTicks(painter: *Painter, color: Color)
     {
-        if tickCount <= 1:
+        if me.tickCount <= 1:
             return
 
-        let totalAngle = endAngle - startAngle
-        let stepAngle  = totalAngle / cast(f32) (tickCount - 1)
+        let totalAngle = me.endAngle - me.startAngle
+        let stepAngle  = totalAngle / cast(f32) (me.tickCount - 1)
         let pen        = Pen.createSolid(color, 3.0)
 
-        let innerRadius = radius + tickInnerRadiusFactor
-        let outerRadius = radius + tickOuterRadiusFactor
+        let innerRadius = me.radius + me.tickInnerRadiusFactor
+        let outerRadius = me.radius + me.tickOuterRadiusFactor
 
-        for var i: u32 = 0; i < tickCount; i += 1
+        for var i: u32 = 0; i < me.tickCount; i += 1
         {
-            let angle = startAngle + stepAngle * cast(f32) i
+            let angle = me.startAngle + stepAngle * cast(f32) i
 
-            let innerPos = Math.Vector2{centerX + Math.sin(angle) * innerRadius, centerY - Math.cos(angle) * innerRadius}
-            let outerPos = Math.Vector2{centerX + Math.sin(angle) * outerRadius, centerY - Math.cos(angle) * outerRadius}
+            let innerPos = Math.Vector2{me.centerX + Math.sin(angle) * innerRadius, me.centerY - Math.cos(angle) * innerRadius}
+            let outerPos = Math.Vector2{me.centerX + Math.sin(angle) * outerRadius, me.centerY - Math.cos(angle) * outerRadius}
             painter.drawLine(innerPos, outerPos, pen)
         }
     }
@@ -446,23 +446,23 @@ internal impl Circular
     mtd drawCircularTrack(painter: *Painter, color: Color)
     {
         let pen = Pen.createSolid(color, 2.0)
-        painter.drawCircle(centerX, centerY, radius - circleGap * 0.5, pen)
-        if circleGap != 0:
-            painter.drawCircle(centerX, centerY, radius + circleGap * 0.5, pen)
+        painter.drawCircle(me.centerX, me.centerY, me.radius - me.circleGap * 0.5, pen)
+        if me.circleGap != 0:
+            painter.drawCircle(me.centerX, me.centerY, me.radius + me.circleGap * 0.5, pen)
     }
 
     mtd clamp(f: f32)->f32
     {
-        if steps > 0
+        if me.steps > 0
         {
-            let r = cast(s32) ((f / steps) + 0.5)
-            return r * steps
+            let r = cast(s32) ((f / me.steps) + 0.5)
+            return r * me.steps
         }
 
-        if circularFlags.has(.Integer)
+        if me.circularFlags.has(.Integer)
         {
-            let val = Math.round((min + (max - min) * f))
-            return (val - min) / (max - min)
+            let val = Math.round((me.min + (me.max - me.min) * f))
+            return (val - me.min) / (me.max - me.min)
         }
 
         return f
@@ -471,68 +471,68 @@ internal impl Circular
     // Modified setValue methods that use the new clamp method:
     mtd setValue1(f: f32)
     {
-        var fc = clamp(f)
-        if circularFlags.has(.Range):
-            fc = Math.min(fc, value2)
-        if fc == value1 and hasValue1:
+        var fc = me.clamp(f)
+        if me.circularFlags.has(.Range):
+            fc = Math.min(fc, me.value2)
+        if fc == me.value1 and me.hasValue1:
             return
-        hasValue1 = true
-        value1    = fc
-        sigChanged.call(me)
-        invalidate()
+        me.hasValue1 = true
+        me.value1    = fc
+        me.sigChanged.call(me)
+        me.invalidate()
     }
 
     mtd setValue2(f: f32)
     {
-        var fc = clamp(f)
-        if circularFlags.has(.Range):
-            fc = Math.max(fc, value1)
-        if fc == value2 and hasValue2:
+        var fc = me.clamp(f)
+        if me.circularFlags.has(.Range):
+            fc = Math.max(fc, me.value1)
+        if fc == me.value2 and me.hasValue2:
             return
-        hasValue2 = true
-        value2    = fc
-        sigChanged.call(me)
-        invalidate()
+        me.hasValue2 = true
+        me.value2    = fc
+        me.sigChanged.call(me)
+        me.invalidate()
     }
 
     mtd hitTest(surfacePos: Math.Point)
     {
-        var pos = surfaceToLocal(surfacePos)
-        updateGeometry()
+        var pos = me.surfaceToLocal(surfacePos)
+        me.updateGeometry()
 
-        if isHot1 or isHot2
+        if me.isHot1 or me.isHot2
         {
-            invalidate()
-            isHot1, isHot2 = false
+            me.invalidate()
+            me.isHot1, me.isHot2 = false
         }
 
         // Check value2 first if range mode (like in horizontal slider)
-        if circularFlags.has(.Range)
+        if me.circularFlags.has(.Range)
         {
-            var rect = getPosBox2()
+            var rect = me.getPosBox2()
             if rect.contains(pos)
             {
-                isHot2 = true
-                invalidate()
+                me.isHot2 = true
+                me.invalidate()
                 return
             }
         }
 
         // Check value1
-        var rect = getPosBox1()
+        var rect = me.getPosBox1()
         if rect.contains(pos)
         {
-            isHot1 = true
-            invalidate()
+            me.isHot1 = true
+            me.invalidate()
         }
     }
 
     mtd getPosBoxAt(val, size: f32)->Math.Rectangle
     {
-        updateGeometry()
+        me.updateGeometry()
 
-        let angle   = valueToAngle(val)
-        var pos     = getPositionFromAngle(angle)
+        let angle   = me.valueToAngle(val)
+        var pos     = me.getPositionFromAngle(angle)
         var result: retval
         result.x      = pos.x - size
         result.y      = pos.y - size
@@ -543,67 +543,67 @@ internal impl Circular
 
     mtd getPosBox1()->Math.Rectangle
     {
-        return getPosBoxAt(value1, getThemeMetrics().circular_MarkerSize)
+        return me.getPosBoxAt(me.value1, me.getThemeMetrics().circular_MarkerSize)
     }
 
     mtd getPosBox2()->Math.Rectangle
     {
-        return getPosBoxAt(value2, getThemeMetrics().circular_MarkerSize)
+        return me.getPosBoxAt(me.value2, me.getThemeMetrics().circular_MarkerSize)
     }
 
     mtd startChange()
     {
-        sigStartChange.call(me)
+        me.sigStartChange.call(me)
     }
 
     mtd endChange()
     {
-        sigEndChange.call(me)
+        me.sigEndChange.call(me)
     }
 }
 
 impl Circular
 {
-    mtd const getValue()->f32      => getValueLeft()
-    mtd const getValueLeft()->f32  => min + (max - min) * value1
-    mtd const getValueRight()->f32 => min + (max - min) * value2
+    mtd const getValue()->f32      => me.getValueLeft()
+    mtd const getValueLeft()->f32  => me.min + (me.max - me.min) * me.value1
+    mtd const getValueRight()->f32 => me.min + (me.max - me.min) * me.value2
 
     mtd setValue(f: f32)
     {
-        setValueLeft(f)
+        me.setValueLeft(f)
     }
 
     mtd setValueNoChange(f: f32)
     {
-        setValue1((f - min) / (max - min))
+        me.setValue1((f - me.min) / (me.max - me.min))
     }
 
     // Set the left value (in case of a range).
     mtd setValueLeft(f: f32)
     {
-        startChange()
-        setValueNoChange(f)
-        endChange()
+        me.startChange()
+        me.setValueNoChange(f)
+        me.endChange()
     }
 
     // Set the right value (in case of a range)
     mtd setValueRight(f: f32)
     {
-        startChange()
-        setValue2((f - min) / (max - min))
-        endChange()
+        me.startChange()
+        me.setValue2((f - me.min) / (me.max - me.min))
+        me.endChange()
     }
 
     // Set left and right values, for a range
     mtd setRangeValues(left, right: f32)
     {
         Debug.assert(left < right)
-        Debug.assert(circularFlags.has(.Range))
-        let diff = max - min
-        value1 = (left - min) / diff
-        value2 = (right - min) / diff
-        setValue1(value1)
-        setValue2(value2)
+        Debug.assert(me.circularFlags.has(.Range))
+        let diff = me.max - me.min
+        me.value1 = (left - me.min) / diff
+        me.value2 = (right - me.min) / diff
+        me.setValue1(me.value1)
+        me.setValue2(me.value2)
     }
 
     // Set the min and max values, and optional steps
@@ -631,20 +631,20 @@ impl Circular
     // Set the display stepForm (None, Dot, or Tick)
     mtd setStepForm(form: CircularStepForm)
     {
-        if stepForm != form
+        if me.stepForm != form
         {
-            stepForm = form
-            invalidate()
+            me.stepForm = form
+            me.invalidate()
         }
     }
 
     // Set the number of step indicators to display (only applies when stepForm is Dot or Tick)
     mtd setStepCount(count: u32)
     {
-        if tickCount != count
+        if me.tickCount != count
         {
-            tickCount = count
-            invalidate()
+            me.tickCount = count
+            me.invalidate()
         }
     }
 

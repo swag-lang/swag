@@ -33,13 +33,13 @@ impl Application
 
     mtd captureMouse(wnd: *Wnd)
     {
-        mouseCaptureWnd = wnd
+        me.mouseCaptureWnd = wnd
         SetCapture(wnd.surface.native.hWnd)
     }
 
     mtd releaseMouse()
     {
-        mouseCaptureWnd = null
+        me.mouseCaptureWnd = null
         ReleaseCapture()
     }
 
@@ -67,7 +67,7 @@ impl Application
 
     mtd sendHotKey(msg: MSG)
     {
-        if hotKeysDisabled:
+        if me.hotKeysDisabled:
             return
         using Input
         var mdf: KeyModifiers
@@ -79,7 +79,7 @@ impl Application
             mdf |= .Shift
         let key = Keyboard.virtualKeyToKey(cast() (msg.lParam >> 16))
 
-        let (id, target) = getHotKeyShortcut(mdf, key)
+        let (id, target) = me.getHotKeyShortcut(mdf, key)
         if id and target:
             target.sendCommandEvent(id)
     }
@@ -90,7 +90,7 @@ impl Application
         while PeekMessageW(&msg, null, 0, 0, PM_REMOVE) != 0
         {
             if msg.message == WM_HOTKEY:
-                sendHotKey(msg)
+                me.sendHotKey(msg)
             else
             {
                 TranslateMessage(&msg)
@@ -106,7 +106,7 @@ impl Application
         if hWnd == null:
             return null
 
-        foreach s in surfaces
+        foreach s in me.surfaces
         {
             if s.native.hWnd == hWnd
             {
@@ -129,17 +129,17 @@ impl Application
 
         if small
         {
-            index = cast(s32) mapFileSmallIcons.count
-            mapFileSmallIcons.add(name, index)
-            curImg     = &fileSmallIconsImage
-            curImgList = &fileSmallIconsImageList
+            index = cast(s32) me.mapFileSmallIcons.count
+            me.mapFileSmallIcons.add(name, index)
+            curImg     = &me.fileSmallIconsImage
+            curImgList = &me.fileSmallIconsImageList
         }
         else
         {
-            index = cast(s32) mapFileBigIcons.count
-            mapFileBigIcons.add(name, index)
-            curImg     = &fileBigIconsImage
-            curImgList = &fileBigIconsImageList
+            index = cast(s32) me.mapFileBigIcons.count
+            me.mapFileBigIcons.add(name, index)
+            curImg     = &me.fileBigIconsImage
+            curImgList = &me.fileBigIconsImageList
         }
 
         let sizeIcon = small ? 16 : 32
@@ -159,8 +159,8 @@ impl Application
         dref curImg = nimage
 
         if curImgList.texture.isValid():
-            renderer.removeTexture(&curImgList.texture)
-        curImgList.set(renderer.addImage(curImg), sizeIcon, sizeIcon)
+            me.renderer.removeTexture(&curImgList.texture)
+        curImgList.set(me.renderer.addImage(curImg), sizeIcon, sizeIcon)
 
         return Icon.from(curImgList, index)
     }
@@ -172,15 +172,15 @@ impl Application
 
         if small
         {
-            let here = mapFileSmallIcons.tryFind(name)
+            let here = me.mapFileSmallIcons.tryFind(name)
             if here:
-                return Icon.from(&fileSmallIconsImageList, here.value)
+                return Icon.from(&me.fileSmallIconsImageList, here.value)
         }
         else
         {
-            let here = mapFileBigIcons.tryFind(name)
+            let here = me.mapFileBigIcons.tryFind(name)
             if here:
-                return Icon.from(&fileBigIconsImageList, here.value)
+                return Icon.from(&me.fileBigIconsImageList, here.value)
         }
 
         var sgi: SHSTOCKICONINFO
@@ -208,7 +208,7 @@ impl Application
         catch SHGetStockIconInfo(whatWin, SHGSI_ICON | (small ? SHGSI_SMALLICON : SHGSI_LARGEICON), &sgi)
         if !sgi.hIcon:
             return {}
-        return addIconToImageList(name, sgi.hIcon, small)
+        return me.addIconToImageList(name, sgi.hIcon, small)
     }
 
     mtd getFileDirectoryIcon(name: string, isDirectory: bool, small = true)->Icon
@@ -234,15 +234,15 @@ impl Application
 
         if small
         {
-            let here = mapFileSmallIcons.tryFind(ext)
+            let here = me.mapFileSmallIcons.tryFind(ext)
             if here:
-                return Icon.from(&fileSmallIconsImageList, here.value)
+                return Icon.from(&me.fileSmallIconsImageList, here.value)
         }
         else
         {
-            let here = mapFileBigIcons.tryFind(ext)
+            let here = me.mapFileBigIcons.tryFind(ext)
             if here:
-                return Icon.from(&fileBigIconsImageList, here.value)
+                return Icon.from(&me.fileBigIconsImageList, here.value)
         }
 
         var sfi: SHFILEINFOA
@@ -256,15 +256,15 @@ impl Application
                     ext = ".txt"
                 if small
                 {
-                    let here = mapFileSmallIcons.tryFind(ext)
+                    let here = me.mapFileSmallIcons.tryFind(ext)
                     if here:
-                        return Icon.from(&fileSmallIconsImageList, here.value)
+                        return Icon.from(&me.fileSmallIconsImageList, here.value)
                 }
                 else
                 {
-                    let here = mapFileBigIcons.tryFind(ext)
+                    let here = me.mapFileBigIcons.tryFind(ext)
                     if here:
-                        return Icon.from(&fileBigIconsImageList, here.value)
+                        return Icon.from(&me.fileBigIconsImageList, here.value)
                 }
             }
         }
@@ -274,6 +274,6 @@ impl Application
         if !sfi.hIcon:
             return result
 
-        return addIconToImageList(ext, sfi.hIcon, small)
+        return me.addIconToImageList(ext, sfi.hIcon, small)
     }
 }

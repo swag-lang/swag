@@ -54,13 +54,13 @@ internal impl Application
     mtd sendEventPrivate(evt: IEvent, stopAt: #null *Wnd)
     {
         // Global hook events
-        foreach hook in hookOnEvent:
+        foreach hook in me.hookOnEvent:
             hook.itf.onHookEvent(evt)
 
         if let ptr = evt as QuitEvent
         {
-            mustQuit = true
-            quitCode = ptr.quitCode
+            me.mustQuit = true
+            me.quitCode = ptr.quitCode
             return
         }
 
@@ -107,23 +107,23 @@ internal impl Application
 
     mtd sendMouseEvents()
     {
-        mouse.update()
+        me.mouse.update()
 
-        var mousePos = mouse.getPosition()
+        var mousePos = me.mouse.getPosition()
 
         // Wnd that will receive the message
         var targetWnd: *Wnd
-        if mouseCaptureWnd:
-            targetWnd = mouseCaptureWnd
+        if me.mouseCaptureWnd:
+            targetWnd = me.mouseCaptureWnd
         else:
-            targetWnd = getWndAtMouse()
+            targetWnd = me.getWndAtMouse()
         targetWnd = skipDisabled(targetWnd)
 
         // If no target window, but one target surface, then we will send
         // to the surfaceWnd (we probably are in the shadow area)
         if !targetWnd
         {
-            let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
+            let targetSurface = me.getSurfaceAt(mousePos.x, mousePos.y)
             if targetSurface
             {
                 targetWnd = targetSurface.wnd
@@ -139,12 +139,12 @@ internal impl Application
             evt.kind       = .MouseAccept
             evt.surfacePos = targetWnd.screenToSurface(mousePos)
             evt.target     = targetWnd
-            sendEventPrivate(&evt, mouseEnterWnd)
+            me.sendEventPrivate(&evt, me.mouseEnterWnd)
             targetWnd = evt.target
         }
 
         // Mouse enter/leave
-        if !targetWnd or targetWnd != mouseEnterWnd
+        if !targetWnd or targetWnd != me.mouseEnterWnd
         {
             // Enter
             if targetWnd
@@ -152,32 +152,32 @@ internal impl Application
                 evt.kind       = .MouseEnter
                 evt.surfacePos = targetWnd.screenToSurface(mousePos)
                 evt.target     = targetWnd
-                sendEventPrivate(&evt, mouseEnterWnd)
+                me.sendEventPrivate(&evt, me.mouseEnterWnd)
 
                 if targetWnd.toolTip.length:
                     ToolTip.show(targetWnd, evt.surfacePos, targetWnd.toolTip)
             }
 
             // Leave
-            if mouseEnterWnd and targetWnd != mouseEnterWnd
+            if me.mouseEnterWnd and targetWnd != me.mouseEnterWnd
             {
                 evt.kind       = .MouseLeave
-                evt.surfacePos = mouseEnterWnd.screenToSurface(mousePos)
-                evt.target     = mouseEnterWnd
-                sendEventPrivate(&evt, mouseCaptureWnd)
+                evt.surfacePos = me.mouseEnterWnd.screenToSurface(mousePos)
+                evt.target     = me.mouseEnterWnd
+                me.sendEventPrivate(&evt, me.mouseCaptureWnd)
 
-                ToolTip.hide(mouseEnterWnd)
+                ToolTip.hide(me.mouseEnterWnd)
             }
 
-            mouseEnterWnd = targetWnd
+            me.mouseEnterWnd = targetWnd
         }
 
-        evt.modifiers = keyb.getPressedModifiers()
+        evt.modifiers = me.keyb.getPressedModifiers()
 
         // Move
         if targetWnd
         {
-            var move = mouse.getMove()
+            var move = me.mouse.getMove()
             evt.surfacePos = targetWnd.screenToSurface(mousePos)
             evt.kind       = .MouseMove
             evt.move       = move
@@ -186,24 +186,24 @@ internal impl Application
                 ToolTip.resetTimer(evt.surfacePos)
         }
 
-        if frameCursor.isValid():
-            Cursor.apply(frameCursor)
+        if me.frameCursor.isValid():
+            Cursor.apply(me.frameCursor)
         elif targetWnd and targetWnd.cursor.isValid():
             Cursor.apply(targetWnd.cursor)
         else:
             Cursor.apply(Cursor.from(CursorShape.Arrow))
-        frameCursor.destroy()
+        me.frameCursor.destroy()
         if !targetWnd:
             return
 
         // Detect changes
-        for i in mouse.previousState.pressed
+        for i in me.mouse.previousState.pressed
         {
-            let lastP = mouse.previousState.pressed[i]
-            let curP  = mouse.currentState.pressed[i]
+            let lastP = me.mouse.previousState.pressed[i]
+            let curP  = me.mouse.currentState.pressed[i]
             if !lastP and curP
             {
-                if mouse.isButtonDoubleClick(cast(Input.MouseButton) i):
+                if me.mouse.isButtonDoubleClick(cast(Input.MouseButton) i):
                     evt.kind = .MouseDoubleClick
                 else
                 {
@@ -227,36 +227,36 @@ internal impl Application
 
     mtd sendMouseWheelEvent(z: s32)
     {
-        var targetWnd = mouseEnterWnd
+        var targetWnd = me.mouseEnterWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd:
             return
 
         var evt      = MouseEvent{kind: .MouseWheel}
-        var mousePos = mouse.getPosition()
+        var mousePos = me.mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
-        evt.modifiers  = keyb.getPressedModifiers()
+        evt.modifiers  = me.keyb.getPressedModifiers()
         targetWnd.sendEvent(&evt)
     }
 
     mtd sendKeyboardEvents()
     {
-        keyb.update()
+        me.keyb.update()
 
-        var targetWnd = keybFocusWnd
+        var targetWnd = me.keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd:
             return
 
         // Modifiers
-        let modifiers = keyb.getPressedModifiers()
+        let modifiers = me.keyb.getPressedModifiers()
 
         // Detect changes
-        for i in keyb.previousState.pressed
+        for i in me.keyb.previousState.pressed
         {
-            let lastP = keyb.previousState.pressed[i]
-            let curP  = keyb.currentState.pressed[i]
+            let lastP = me.keyb.previousState.pressed[i]
+            let curP  = me.keyb.currentState.pressed[i]
             if !lastP and curP
             {
                 var evt = KeyEvent{kind: .KeyPressed}
@@ -284,7 +284,7 @@ internal impl Application
 
     mtd sendRuneEvent(key: Input.Key, r: rune)
     {
-        var targetWnd = keybFocusWnd
+        var targetWnd = me.keybFocusWnd
         targetWnd = skipDisabled(targetWnd)
         if !targetWnd:
             return
@@ -292,17 +292,17 @@ internal impl Application
         var evt = KeyEvent{kind: .Rune}
         evt.char      = r
         evt.key       = key
-        evt.modifiers = keyb.getPressedModifiers()
+        evt.modifiers = me.keyb.getPressedModifiers()
         targetWnd.sendEvent(&evt)
     }
 
     mtd sendPostedEvents()
     {
         // Need to make a copy, in case the posted event triggers a modal for
-        mutexPostedEvents.lock()
-        var copy = postedEvents
-        postedEvents.clear()
-        mutexPostedEvents.unlock()
+        me.mutexPostedEvents.lock()
+        var copy = me.postedEvents
+        me.postedEvents.clear()
+        me.mutexPostedEvents.unlock()
 
         var needUpdateState = false
         foreach it in copy
@@ -322,22 +322,22 @@ internal impl Application
         }
 
         if needUpdateState:
-            updateCommandState()
+            me.updateCommandState()
     }
 
     mtd sendDestroyEvents()
     {
-        if inModalLoop:
+        if me.inModalLoop:
             return
-        foreach w in postDestroy:
+        foreach w in me.postDestroy:
             destroyWnd(w)
-        postDestroy.clear()
+        me.postDestroy.clear()
     }
 
     // Update UI state of all surfaces
     mtd updateCommandState()
     {
-        foreach s in surfaces:
+        foreach s in me.surfaces:
             s.wnd.updateCommandState()
     }
 
@@ -345,12 +345,12 @@ internal impl Application
     // To cleanly close a surface, you should call surface.destroy()
     mtd destroySurface(surface: *Surface)
     {
-        surfaces.remove(surface)
-        if surface == mainSurface:
-            postQuitEvent()
+        me.surfaces.remove(surface)
+        if surface == me.mainSurface:
+            me.postQuitEvent()
 
-        if modalSurfaces.count and surface == modalSurfaces.back():
-            endModal = true
+        if me.modalSurfaces.count and surface == me.modalSurfaces.back():
+            me.endModal = true
 
         surface.destroyNative()
         Memory.delete(surface)
@@ -358,15 +358,15 @@ internal impl Application
 
     mtd unregisterWnd(wnd: *Wnd)
     {
-        if wnd == mouseEnterWnd or wnd.isOwnerOf(mouseEnterWnd):
-            mouseEnterWnd = null
-        if wnd == mouseCaptureWnd or wnd.isOwnerOf(mouseCaptureWnd):
-            mouseCaptureWnd = null
-        if wnd == keybFocusWnd or wnd.isOwnerOf(keybFocusWnd):
-            keybFocusWnd = null
+        if wnd == me.mouseEnterWnd or wnd.isOwnerOf(me.mouseEnterWnd):
+            me.mouseEnterWnd = null
+        if wnd == me.mouseCaptureWnd or wnd.isOwnerOf(me.mouseCaptureWnd):
+            me.mouseCaptureWnd = null
+        if wnd == me.keybFocusWnd or wnd.isOwnerOf(me.keybFocusWnd):
+            me.keybFocusWnd = null
 
         // Be sure there's no timer for that window
-        foreach t in timers
+        foreach t in me.timers
         {
             if t.target == wnd and !t.toDelete
             {
@@ -376,11 +376,11 @@ internal impl Application
         }
 
         // Remove from various lists
-        frameEvents.remove(wnd)
-        hookOnEvent.remove(wnd)
+        me.frameEvents.remove(wnd)
+        me.hookOnEvent.remove(wnd)
 
         // Be sure there's no posted event for that window
-        foreach e in postedEvents
+        foreach e in me.postedEvents
         {
             let ptr = e as Event
             if ptr.target == wnd:
@@ -390,8 +390,8 @@ internal impl Application
 
     mtd sendTimerEvents()
     {
-        duringTimerEvents = true
-        foreach t in timers
+        me.duringTimerEvents = true
+        foreach t in me.timers
         {
             if t.toDelete:
                 continue
@@ -408,26 +408,26 @@ internal impl Application
             }
         }
 
-        duringTimerEvents = false
+        me.duringTimerEvents = false
 
         // Add new registered timers
-        foreach t in timersToAdd:
+        foreach t in me.timersToAdd:
             timers.add(t)
-        timersToAdd.clear()
+        me.timersToAdd.clear()
 
         // Remove some timers
-        foreach t in timersToDelete
+        foreach t in me.timersToDelete
         {
             t.toDelete = false
             deleteTimer(t)
         }
 
-        timersToDelete.clear()
+        me.timersToDelete.clear()
     }
 
     mtd sendFrameEvents()
     {
-        foreach t in frameEvents
+        foreach t in me.frameEvents
         {
             var evt = FrameEvent{}
             t.sendEvent(&evt)
@@ -436,45 +436,45 @@ internal impl Application
 
     mtd deletePointers()
     {
-        if inModalLoop:
+        if me.inModalLoop:
             return
-        foreach p in toDelete:
+        foreach p in me.toDelete:
             Memory.delete(p.item0, p.item1)
-        toDelete.clear()
+        me.toDelete.clear()
     }
 
     public mtd runFrame()
     {
         // Auto exit
-        if maxRunFrame and timing.frameCount > maxRunFrame:
+        if me.maxRunFrame and me.timing.frameCount > me.maxRunFrame:
             Env.exit(0)
 
-        timing.update()
+        me.timing.update()
         Memory.freeTemp()
 
-        ToolTip.update(getDt())
-        sendFrameEvents()
-        sendTimerEvents()
-        sendSystemEvents()
-        sendKeyboardEvents()
-        sendMouseEvents()
-        sendPostedEvents()
-        sendDestroyEvents()
+        ToolTip.update(me.getDt())
+        me.sendFrameEvents()
+        me.sendTimerEvents()
+        me.sendSystemEvents()
+        me.sendKeyboardEvents()
+        me.sendMouseEvents()
+        me.sendPostedEvents()
+        me.sendDestroyEvents()
 
-        foreach s in surfaces:
+        foreach s in me.surfaces:
             s.paint()
 
-        deletePointers()
+        me.deletePointers()
 
-        sigFrame.call(me)
+        me.sigFrame.call(me)
     }
 
     public mtd doModalLoop(surface: #null *Surface, cb: func||(*Application) = null)->WndId
     {
-        inModalLoop += 1
-        defer inModalLoop -= 1
+        me.inModalLoop += 1
+        defer me.inModalLoop -= 1
 
-        foreach s in surfaces
+        foreach s in me.surfaces
         {
             if s != surface:
                 s.disable()
@@ -483,28 +483,28 @@ internal impl Application
         if surface
         {
             surface.enable()
-            modalSurfaces.add(surface)
+            me.modalSurfaces.add(surface)
         }
 
-        while !mustQuit and !endModal
+        while !me.mustQuit and !me.endModal
         {
-            runFrame()
+            me.runFrame()
             if cb:
                 cb(me)
         }
 
         if surface:
-            modalSurfaces.removeBack()
+            me.modalSurfaces.removeBack()
 
-        if modalSurfaces.count
+        if me.modalSurfaces.count
         {
-            let back = modalSurfaces.back()
+            let back = me.modalSurfaces.back()
             back.enable()
             back.wnd.view.setFocus()
         }
         else
         {
-            foreach s, idx in surfaces
+            foreach s, idx in me.surfaces
             {
                 if s != surface
                 {
@@ -517,8 +517,8 @@ internal impl Application
         if surface:
             surface.destroy()
 
-        endModal = false
-        return endModalExit
+        me.endModal = false
+        return me.endModalExit
     }
 }
 
@@ -526,27 +526,27 @@ impl Application
 {
     mtd opDrop()
     {
-        foreach it in surfaces:
+        foreach it in me.surfaces:
             it.destroy()
-        sendDestroyEvents()
+        me.sendDestroyEvents()
 
-        foreach it in postedEvents
+        foreach it in me.postedEvents
         {
             let ptr = it as Event
             toDelete.add({ptr, ptr.type})
         }
 
-        deletePointers()
-        theme.freeDefault()
+        me.deletePointers()
+        me.theme.freeDefault()
     }
 
     // Get application variables
     #[Swag.Inline]
     {
-        mtd getRenderer() => &renderer
-        mtd getKeyboard() => &keyb
-        mtd getMouse()    => &mouse
-        mtd const getDt() => timing.dt
+        mtd getRenderer() => &me.renderer
+        mtd getKeyboard() => &me.keyb
+        mtd getMouse()    => &me.mouse
+        mtd const getDt() => me.timing.dt
     }
 
     // Create a main surface, and run
@@ -575,23 +575,23 @@ impl Application
         surface.position  = {x, y, width, height}
         surface.surfaceID = surfaceID
 
-        if !mainSurface
+        if !me.mainSurface
         {
-            theme = Memory.new'Theme()
-            style.set(theme)
+            me.theme = Memory.new'Theme()
+            me.style.set(me.theme)
         }
 
-        try Surface.create(surface, x, y, width, height, flags, mainSurface)
+        try Surface.create(surface, x, y, width, height, flags, me.mainSurface)
 
-        if !mainSurface
+        if !me.mainSurface
         {
-            renderer.setCurrentContext(surface.rc)
-            renderer.init()
-            theme.setupDefault(&renderer)
-            mainSurface = surface
+            me.renderer.setCurrentContext(surface.rc)
+            me.renderer.init()
+            me.theme.setupDefault(&me.renderer)
+            me.mainSurface = surface
         }
 
-        surfaces.add(surface)
+        me.surfaces.add(surface)
 
         with surface
         {
@@ -609,19 +609,19 @@ impl Application
     // Associate a configuration file
     mtd setConfigPath(path: string)
     {
-        configPath = path
+        me.configPath = path
     }
 
     // Associate a configuration file
     mtd setAppIcon(img: Pixel.Image)
     {
-        appIcon = img
+        me.appIcon = img
     }
 
     internal mtd serializeState(ser: *Serializer) throw
     {
         ser.beginSection(.Unordered)
-        foreach s in surfaces:
+        foreach s in me.surfaces:
             s.serializeState(ser)
         ser.endSection()
     }
@@ -629,38 +629,38 @@ impl Application
     // Save the application state
     mtd saveState() throw
     {
-        if configPath.isEmpty():
+        if me.configPath.isEmpty():
             return
 
         var buf:  ConcatBuffer
         var save: Encoder'Write.TagBin
         var ser:  Serializer
         ser.startWrite(save, &buf)
-        serializeState(&ser)
+        me.serializeState(&ser)
         ser.end()
 
-        File.writeAllBytes(configPath, buf)
+        File.writeAllBytes(me.configPath, buf)
     }
 
     // Load the application state
     mtd loadState() throw
     {
-        if configPath.isEmpty():
+        if me.configPath.isEmpty():
             return
 
-        var buf = File.readAllBytes(configPath)
+        var buf = File.readAllBytes(me.configPath)
 
         var load: Decoder'Read.TagBin
         var ser:  Serializer
         ser.startRead(load, buf.toSlice())
-        serializeState(&ser)
+        me.serializeState(&ser)
         ser.end()
     }
 
     // Return the captured wnd for mouse
     mtd getMouseCapture()->*Wnd
     {
-        return mouseCaptureWnd
+        return me.mouseCaptureWnd
     }
 
     // Destroy a window
@@ -670,7 +670,7 @@ impl Application
         var evt = DestroyEvent{}
         wnd.sendEvent(&evt)
 
-        unregisterWnd(wnd)
+        me.unregisterWnd(wnd)
 
         // Remove from parent
         if wnd.parent and !wnd.parent.isPendingDestroy
@@ -683,15 +683,15 @@ impl Application
 
         if wnd.isAllocated
         {
-            toDelete.add({wnd, wnd.type})
+            me.toDelete.add({wnd, wnd.type})
         }
     }
 
     // Returns the window under the given point
     mtd getWndAtMouse()->#null *Wnd
     {
-        var mousePos      = mouse.getPosition()
-        let targetSurface = getSurfaceAt(mousePos.x, mousePos.y)
+        var mousePos      = me.mouse.getPosition()
+        let targetSurface = me.getSurfaceAt(mousePos.x, mousePos.y)
         if !targetSurface:
             return null
         targetSurface.screenToSurface(&mousePos)
@@ -702,18 +702,18 @@ impl Application
     // Set activated state
     mtd setActivated(activated: bool)
     {
-        if isActivated == activated:
+        if me.isActivated == activated:
             return
-        isActivated = activated
-        foreach s in modalSurfaces:
+        me.isActivated = activated
+        foreach s in me.modalSurfaces:
             s.bringToTop()
-        invalidate()
+        me.invalidate()
     }
 
     // Force all surfaces to be painted
     mtd invalidate()
     {
-        foreach s in surfaces:
+        foreach s in me.surfaces:
             s.invalidate()
     }
 
@@ -722,19 +722,19 @@ impl Application
     {
         let evt = Event.create'QuitEvent()
         evt.quitCode = #me.quitCode
-        postEvent(evt)
+        me.postEvent(evt)
     }
 
     // Post a new event (thread safe)
     mtd postEvent(event: IEvent)
     {
-        Sync.scopedLock(&mutexPostedEvents)
-        postedEvents.add(event)
+        Sync.scopedLock(&me.mutexPostedEvents)
+        me.postedEvents.add(event)
     }
 
     mtd sendEvent(event: IEvent)
     {
-        sendEventPrivate(event, null)
+        me.sendEventPrivate(event, null)
     }
 
     // Register a new timer for the given 'target'
@@ -743,106 +743,106 @@ impl Application
         let timer = Memory.new'Timer()
         timer.timeMs = time.toMs()
         timer.target = target
-        if duringTimerEvents:
-            timersToAdd.add(timer)
+        if me.duringTimerEvents:
+            me.timersToAdd.add(timer)
         else:
-            timers.add(timer)
+            me.timers.add(timer)
         return timer
     }
 
     // Delete and unregister timer
     mtd deleteTimer(timer: *Timer)
     {
-        if duringTimerEvents
+        if me.duringTimerEvents
         {
             Debug.assert(!timer.toDelete)
             timer.toDelete = true
-            timersToDelete.add(timer)
+            me.timersToDelete.add(timer)
         }
         else
         {
             Debug.assert(!timer.toDelete)
             Memory.delete(timer)
-            timers.remove(timer)
+            me.timers.remove(timer)
         }
     }
 
     // Register a window to receive a FrameEvent each running for
     mtd registerFrameEvent(target: *Wnd)
     {
-        Debug.assert(!frameEvents.contains(target))
-        frameEvents.add(target)
+        Debug.assert(!me.frameEvents.contains(target))
+        me.frameEvents.add(target)
     }
 
     // Unregister a window that receives a FrameEvent each running for
     mtd unregisterFrameEvent(target: *Wnd)
     {
-        frameEvents.remove(target)
+        me.frameEvents.remove(target)
     }
 
     // Register a window to receive hook events
     mtd registerHookEvents(target: *Wnd)
     {
-        Debug.assert(!hookOnEvent.contains(target))
-        hookOnEvent.add(target)
+        Debug.assert(!me.hookOnEvent.contains(target))
+        me.hookOnEvent.add(target)
     }
 
     // Unregister a window to receive hook events
     mtd unregisterHookEvents(target: *Wnd)
     {
-        hookOnEvent.remove(target)
+        me.hookOnEvent.remove(target)
     }
 
     // Push a new mouse cursor
     mtd setFrameCursor(cursor: Cursor)
     {
-        frameCursor = cursor
+        me.frameCursor = cursor
     }
 
     // Run until exit
     #[Swag.Discardable]
     mtd run()->s32
     {
-        foreach s in surfaces
+        foreach s in me.surfaces
         {
             var evt = FrameEvent{}
             evt.firstFrame = true
             s.wnd.view.sendEvent(&evt)
         }
 
-        while !mustQuit:
-            runFrame()
+        while !me.mustQuit:
+            me.runFrame()
 
-        return quitCode
+        return me.quitCode
     }
 
     // End current modal for
     mtd exitModal(exitId: string = "")
     {
-        endModal     = true
-        endModalExit = exitId
+        me.endModal     = true
+        me.endModalExit = exitId
     }
 
-    mtd getFileIcon(name: string, small = true)->Icon      => getFileDirectoryIcon(name, false, small)
-    mtd getDirectoryIcon(name: string, small = true)->Icon => getFileDirectoryIcon(name, true, small)
+    mtd getFileIcon(name: string, small = true)->Icon      => me.getFileDirectoryIcon(name, false, small)
+    mtd getDirectoryIcon(name: string, small = true)->Icon => me.getFileDirectoryIcon(name, true, small)
 
     // Enable or disable the processing of hot keys
     mtd enableHotKeys(state = true)
     {
-        hotKeysDisabled = !state
+        me.hotKeysDisabled = !state
     }
 
     // Disable the processing of hot keys
     mtd disableHotKeys()
     {
-        hotKeysDisabled = true
+        me.hotKeysDisabled = true
     }
 
     // Register a global os key action
     #[Swag.Overload]
     mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId, target: *Wnd) throw
     {
-        foreach &c in hotKeys
+        foreach &c in me.hotKeys
         {
             if c.mdf == mdf and c.key == key
             {
@@ -852,14 +852,14 @@ impl Application
             }
         }
 
-        hotKeys.add({mdf, key, wndId, target})
+        me.hotKeys.add({mdf, key, wndId, target})
         registerHotKey(mdf, key)
     }
 
     // Get the id associated with a shortcut. null if none
     mtd getHotKeyShortcut(mdf: Input.KeyModifiers, key: Input.Key)->{ id: WndId, wnd: *Wnd }
     {
-        foreach c in hotKeys
+        foreach c in me.hotKeys
         {
             if c.mdf == mdf and c.key == key:
                 return {c.id, c.target}
@@ -872,7 +872,7 @@ impl Application
     mtd getHotKeyShortcutNameFor(wndId: WndId)->String
     {
         var result: retval
-        foreach c in hotKeys
+        foreach c in me.hotKeys
         {
             if c.id == wndId
             {

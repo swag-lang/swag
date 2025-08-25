@@ -79,17 +79,17 @@ impl IWnd for Tab
 {
     mtd paintItem(painter: *Painter, v: *TabItem, idx: u32)
     {
-        var clientRect = getClientRect()
-        clientRect.height = barHeight
+        var clientRect = me.getClientRect()
+        clientRect.height = me.barHeight
 
         var labelPos = clientRect
         labelPos.width = v.width
         labelPos.x     = v.pos
 
-        let theme   = getTheme()
-        let metrics = getThemeMetrics()
-        let colors  = getThemeColors()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let metrics = me.getThemeMetrics()
+        let colors  = me.getThemeColors()
+        let rects   = me.getThemeRects()
 
         // Item image
         var subRect:       *ThemeImageRect
@@ -99,16 +99,16 @@ impl IWnd for Tab
         var colorBorder:   Color
 
         #[Swag.Complete]
-        switch itemForm
+        switch me.itemForm
         {
         case Flat:
-            if idx == selectedIdx
+            if idx == me.selectedIdx
             {
                 subRect   = &rects.tabItem_FlatSelected
                 colorImg  = colors.tabItem_FlatSelected
                 colorText = colors.tabItem_SelectedText
             }
-            elif idx == hotIdx
+            elif idx == me.hotIdx
             {
                 subRect   = &rects.tabItem_FlatSelected
                 colorImg  = colors.tabItem_FlatHot
@@ -120,13 +120,13 @@ impl IWnd for Tab
             }
 
         case Round:
-            if idx == selectedIdx
+            if idx == me.selectedIdx
             {
                 subRect   = &rects.tabItem_RoundSelected
                 colorImg  = colors.tabItem_RoundSelected
                 colorText = colors.tabItem_SelectedText
             }
-            elif idx == hotIdx
+            elif idx == me.hotIdx
             {
                 subRect   = &rects.tabItem_RoundHot
                 colorImg  = colors.tabItem_RoundHot
@@ -138,13 +138,13 @@ impl IWnd for Tab
             }
 
         case Button:
-            if idx == selectedIdx
+            if idx == me.selectedIdx
             {
                 subRect   = &rects.tabItem_ButtonSelected
                 colorImg  = colors.tabItem_ButtonSelected
                 colorText = colors.tabItem_SelectedText
             }
-            elif idx == hotIdx
+            elif idx == me.hotIdx
             {
                 subRect   = &rects.tabItem_ButtonHot
                 colorImg  = colors.tabItem_ButtonHot
@@ -156,7 +156,7 @@ impl IWnd for Tab
             }
 
         case PushButton:
-            if idx == selectedIdx
+            if idx == me.selectedIdx
             {
                 subRect       = &rects.tabItem_PushButtonSelected
                 subRectBorder = &rects.tabItem_PushButtonBorder
@@ -164,7 +164,7 @@ impl IWnd for Tab
                 colorText     = colors.tabItem_SelectedText
                 colorBorder   = colors.tabItem_PushButtonSelectedBorder
             }
-            elif idx == hotIdx
+            elif idx == me.hotIdx
             {
                 subRect       = &rects.tabItem_PushButtonHot
                 subRectBorder = &rects.tabItem_PushButtonBorder
@@ -199,23 +199,23 @@ impl IWnd for Tab
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags         = .Clip
-        format.font          = getFont()
+        format.font          = me.getFont()
         Theme.drawIconText(painter, labelPos, v.icon, &v.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
-        let theme   = getTheme()
-        let colors  = getThemeColors()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let colors  = me.getThemeColors()
+        let rects   = me.getThemeRects()
 
         // Background bar
-        if barForm != .Transparent
+        if me.barForm != .Transparent
         {
-            var clientRect = getClientRect()
-            clientRect.height = barHeight
-            switch barForm
+            var clientRect = me.getClientRect()
+            clientRect.height = me.barHeight
+            switch me.barForm
             {
             case Flat:
                 painter.fillRect(clientRect, colors.tabBar_FlatBk)
@@ -230,9 +230,9 @@ impl IWnd for Tab
         var subRect: *ThemeImageRect
         var colorBk: Color
 
-        var clientRect = getClientRect()
-        clientRect.moveTop(barHeight)
-        switch viewForm
+        var clientRect = me.getClientRect()
+        clientRect.moveTop(me.barHeight)
+        switch me.viewForm
         {
         case Flat:
             subRect = &rects.tabView_FlatBk
@@ -245,49 +245,49 @@ impl IWnd for Tab
         theme.drawSubRect(painter, clientRect, subRect, colorBk)
 
         // Paint all except selected one, which will be painted last
-        if !views.isEmpty()
+        if !me.views.isEmpty()
         {
-            clientRect = getBarRectItems()
-            for idx in firstVisibleIdx until cast(u32) views.count
+            clientRect = me.getBarRectItems()
+            for idx in me.firstVisibleIdx until cast(u32) me.views.count
             {
-                if idx == selectedIdx:
+                if idx == me.selectedIdx:
                     continue
-                let v = views[idx]
+                let v = me.views[idx]
                 if v.pos + v.width > clientRect.right():
                     break
-                paintItem(painter, v, cast(u32) idx)
+                me.paintItem(painter, v, cast(u32) idx)
             }
 
             // Paint selected item
-            paintItem(painter, views[selectedIdx], selectedIdx)
+            me.paintItem(painter, me.views[me.selectedIdx], me.selectedIdx)
         }
     }
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if views.isEmpty():
+        if me.views.isEmpty():
             return
 
-        computeTabLayout()
-        ensureVisible(selectedIdx)
+        me.computeTabLayout()
+        me.ensureVisible(me.selectedIdx)
 
-        let curView = views[selectedIdx].view
+        let curView = me.views[me.selectedIdx].view
         if curView
         {
-            var clientRect = getClientRect()
-            clientRect.moveTop(barHeight)
-            clientRect.applyPadding(padding)
+            var clientRect = me.getClientRect()
+            clientRect.moveTop(me.barHeight)
+            clientRect.applyPadding(me.padding)
             curView.setPosition(clientRect)
         }
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        let hit = hitTest(evt.surfacePos)
-        if hit != hotIdx
+        let hit = me.hitTest(evt.surfacePos)
+        if hit != me.hotIdx
         {
-            hotIdx = hit
-            invalidate()
+            me.hotIdx = hit
+            me.invalidate()
         }
 
         if hit == Swag.U32.Max
@@ -299,10 +299,10 @@ impl IWnd for Tab
         switch evt.kind
         {
         case .MouseLeave:
-            if hotIdx != Swag.U32.Max
+            if me.hotIdx != Swag.U32.Max
             {
-                hotIdx = Swag.U32.Max
-                invalidate()
+                me.hotIdx = Swag.U32.Max
+                me.invalidate()
             }
 
         case .MousePressed:
@@ -310,7 +310,7 @@ impl IWnd for Tab
             {
                 if hit != Swag.U32.Max
                 {
-                    select(hit)
+                    me.select(hit)
                 }
             }
         }
@@ -321,44 +321,44 @@ internal impl Tab
 {
     mtd showPopup(x, y: f32)
     {
-        popup = PopupListCtrl.create(me)
-        foreach item in views:
+        me.popup = PopupListCtrl.create(me)
+        foreach item in me.views:
             popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
-        popup.sigSelected = mtd||(list, idx)
+        me.popup.sigSelected = mtd||(list, idx)
         {
             if idx != Swag.U32.Max:
-                select(idx)
-            hidePopup()
+                me.select(idx)
+            me.hidePopup()
         }
 
-        popup.show(x, y)
+        me.popup.show(x, y)
     }
 
     mtd hidePopup()
     {
-        popup.destroy()
-        popup = null
+        me.popup.destroy()
+        me.popup = null
     }
 
     mtd getBarRectItems()->Math.Rectangle
     {
-        var rect = getClientRectPadding()
-        if buttonPopup:
-            rect.setRight(buttonPopup.position.x - 4)
+        var rect = me.getClientRectPadding()
+        if me.buttonPopup:
+            rect.setRight(me.buttonPopup.position.x - 4)
         return rect
     }
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        var pos = surfaceToLocal(surfacePos)
-        if pos.y >= barHeight:
+        var pos = me.surfaceToLocal(surfacePos)
+        if pos.y >= me.barHeight:
             return Swag.U32.Max
 
-        var rect = getBarRectItems()
-        for idx in firstVisibleIdx until cast(u32) views.count
+        var rect = me.getBarRectItems()
+        for idx in me.firstVisibleIdx until cast(u32) me.views.count
         {
-            let v = views[idx]
+            let v = me.views[idx]
             if v.pos + v.width > rect.right():
                 break
             if pos.x >= v.pos and pos.x < v.pos + v.width:
@@ -370,30 +370,30 @@ internal impl Tab
 
     mtd computeTabLayout()
     {
-        var rect = getBarRectItems()
+        var rect = me.getBarRectItems()
 
-        mostRightPos = rect.x
-        switch barLayout
+        me.mostRightPos = rect.x
+        switch me.barLayout
         {
         case Divide:
-            var w = cast(f32) (rect.width / views.count)
-            w = Math.max(w, itemMinWidth)
-            foreach v in views
+            var w = cast(f32) (rect.width / me.views.count)
+            w = Math.max(w, me.itemMinWidth)
+            foreach v in me.views
             {
                 v.width = w
                 mostRightPos += w
             }
 
         case Fixed:
-            let w = Math.max(itemFixedLayoutWidth, itemMinWidth)
-            foreach v in views
+            let w = Math.max(me.itemFixedLayoutWidth, me.itemMinWidth)
+            foreach v in me.views
             {
                 v.width = w
                 mostRightPos += w
             }
 
         case Auto:
-            foreach v in views
+            foreach v in me.views
             {
                 var mes = Painter.measureString(v.item.name.raw, getFont().regular)
 
@@ -412,61 +412,61 @@ internal impl Tab
         }
 
         var x = rect.x
-        for idx in firstVisibleIdx until cast(u32) views.count
+        for idx in me.firstVisibleIdx until cast(u32) me.views.count
         {
-            let v = views[idx]
+            let v = me.views[idx]
             v.pos = x
             x += v.width
         }
 
-        createDestroyButtonPopup()
+        me.createDestroyButtonPopup()
     }
 
     mtd createDestroyButtonPopup()
     {
-        var barRect = getClientRectPadding()
-        if mostRightPos > barRect.right()
+        var barRect = me.getClientRectPadding()
+        if me.mostRightPos > barRect.right()
         {
             // Create a button if there are too many items for the given size
-            if !buttonPopup
+            if !me.buttonPopup
             {
-                buttonPopup      = IconButton.create(me, getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
-                buttonPopup.form = .Round
-                buttonPopup.sigPressed += mtd||(btn)
+                me.buttonPopup      = IconButton.create(me, me.getTheme().getIcon24(ThemeIcons24.SortArrowDown), {})
+                me.buttonPopup.form = .Round
+                me.buttonPopup.sigPressed += mtd||(btn)
                 {
                     var rect = btn.getSurfaceRect()
-                    showPopup(rect.x, rect.y + btn.position.height)
+                    me.showPopup(rect.x, rect.y + btn.position.height)
                 }
             }
 
             let x = barRect.right() - 32
-            buttonPopup.setPosition({x, (barHeight * 0.5) - 12, 24, 24})
+            me.buttonPopup.setPosition({x, (me.barHeight * 0.5) - 12, 24, 24})
         }
-        elif buttonPopup
+        elif me.buttonPopup
         {
-            firstVisibleIdx = 0
-            buttonPopup.destroy()
-            buttonPopup = null
-            computeTabLayout()
+            me.firstVisibleIdx = 0
+            me.buttonPopup.destroy()
+            me.buttonPopup = null
+            me.computeTabLayout()
         }
     }
 
     mtd ensureVisible(idx: u32)
     {
-        var rect = getBarRectItems()
-        if idx < firstVisibleIdx or views[idx].pos + views[idx].width >= rect.right()
+        var rect = me.getBarRectItems()
+        if idx < me.firstVisibleIdx or me.views[idx].pos + me.views[idx].width >= rect.right()
         {
-            firstVisibleIdx = idx
-            var x = rect.right() - views[firstVisibleIdx].width
-            while firstVisibleIdx
+            me.firstVisibleIdx = idx
+            var x = rect.right() - me.views[me.firstVisibleIdx].width
+            while me.firstVisibleIdx
             {
-                x -= views[firstVisibleIdx - 1].width
+                x -= me.views[me.firstVisibleIdx - 1].width
                 if x < rect.x:
                     break
-                firstVisibleIdx -= 1
+                me.firstVisibleIdx -= 1
             }
 
-            computeTabLayout()
+            me.computeTabLayout()
         }
     }
 }
@@ -490,32 +490,32 @@ impl Tab
         switch tabForm
         {
         case Flat:
-            barForm   = .Flat
-            itemForm  = .Flat
-            viewForm  = .Flat
-            barLayout = .Divide
-            barHeight = getThemeMetrics().tabBar_FlatHeight
+            me.barForm   = .Flat
+            me.itemForm  = .Flat
+            me.viewForm  = .Flat
+            me.barLayout = .Divide
+            me.barHeight = me.getThemeMetrics().tabBar_FlatHeight
 
         case Round:
-            barForm   = .Transparent
-            itemForm  = .Round
-            viewForm  = .Round
-            barLayout = .Fixed
-            barHeight = getThemeMetrics().tabBar_RoundHeight
+            me.barForm   = .Transparent
+            me.itemForm  = .Round
+            me.viewForm  = .Round
+            me.barLayout = .Fixed
+            me.barHeight = me.getThemeMetrics().tabBar_RoundHeight
 
         case Button:
-            viewForm  = .None
-            barForm   = .Round
-            itemForm  = .Button
-            barLayout = .Auto
-            barHeight = getThemeMetrics().tabBar_ButtonHeight
+            me.viewForm  = .None
+            me.barForm   = .Round
+            me.itemForm  = .Button
+            me.barLayout = .Auto
+            me.barHeight = me.getThemeMetrics().tabBar_ButtonHeight
 
         case PushButton:
-            viewForm  = .None
-            barForm   = .Transparent
-            itemForm  = .PushButton
-            barLayout = .Auto
-            barHeight = getThemeMetrics().tabBar_ButtonHeight
+            me.viewForm  = .None
+            me.barForm   = .Transparent
+            me.itemForm  = .PushButton
+            me.barLayout = .Auto
+            me.barHeight = me.getThemeMetrics().tabBar_ButtonHeight
         }
     }
 
@@ -525,51 +525,51 @@ impl Tab
     {
         if view
         {
-            if views.isEmpty():
+            if me.views.isEmpty():
                 view.wndFlags &= ~.Hidden
             else:
                 view.wndFlags |= .Hidden
             view.setParent(me)
         }
 
-        let item = views.newPtr()
+        let item = me.views.newPtr()
         item.view = view
         item.name = tabName
         item.icon = icon
-        views.add(item)
+        me.views.add(item)
 
-        sendResizeEvent()
+        me.sendResizeEvent()
         return item
     }
 
     // Remove all items
     mtd clear()
     {
-        views.clear()
+        me.views.clear()
     }
 
     // Select one tab at the given index
     mtd select(idx: u32)
     {
-        if selectedIdx == idx or selectedIdx >= views.count:
+        if me.selectedIdx == idx or me.selectedIdx >= me.views.count:
             return
 
-        if views[selectedIdx].view:
-            views[selectedIdx].view.wndFlags |= .Hidden
-        selectedIdx = idx
-        if views[selectedIdx].view:
-            views[selectedIdx].view.wndFlags &= ~.Hidden
+        if me.views[me.selectedIdx].view:
+            me.views[me.selectedIdx].view.wndFlags |= .Hidden
+        me.selectedIdx = idx
+        if me.views[me.selectedIdx].view:
+            me.views[me.selectedIdx].view.wndFlags &= ~.Hidden
 
-        sigSelChanged.call(me)
+        me.sigSelChanged.call(me)
 
-        sendResizeEvent()
-        invalidate()
+        me.sendResizeEvent()
+        me.invalidate()
     }
 
     // Returns the current selected item, or 'null'
     mtd getSelectedItem()->*TabItem
     {
-        Debug.assert(selectedIdx < views.count)
-        return views[selectedIdx]
+        Debug.assert(me.selectedIdx < me.views.count)
+        return me.views[me.selectedIdx]
     }
 }

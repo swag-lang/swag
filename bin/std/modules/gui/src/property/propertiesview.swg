@@ -11,14 +11,14 @@ impl IWnd for PropertiesView
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        stackWnd.IWnd.onResizeEvent(evt)
-        if !ed or !ed.items.count:
+        me.stackWnd.IWnd.onResizeEvent(evt)
+        if !me.ed or !me.ed.items.count:
             return
 
-        applyLayout()
+        me.applyLayout()
 
         var lastItem: *PropertiesItem
-        foreach item in ed.items
+        foreach item in me.ed.items
         {
             if item.label:
                 item.label.autoHeight()
@@ -31,12 +31,12 @@ impl IWnd for PropertiesView
                 lastItem = item
         }
 
-        applyLayout()
+        me.applyLayout()
 
         // Vertical size is the bottom position of the last line
         if lastItem:
-            ed.scrollWnd.setScrollSize(0, lastItem.line.position.bottom() + 10)
+            me.ed.scrollWnd.setScrollSize(0, lastItem.line.position.bottom() + 10)
         else:
-            ed.scrollWnd.setScrollSize(0, 0)
+            me.ed.scrollWnd.setScrollSize(0, 0)
     }
 }

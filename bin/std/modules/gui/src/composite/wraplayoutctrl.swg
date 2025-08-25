@@ -15,17 +15,17 @@ impl IWnd for WrapLayoutCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !childs.count
+        if !me.childs.count
         {
-            wnd.IWnd.onResizeEvent(evt)
+            me.wnd.IWnd.onResizeEvent(evt)
             return
         }
 
-        var client = getClientRectPadding()
+        var client = me.getClientRectPadding()
 
-        var x = padding.x
-        var y = padding.y
-        foreach c in childs
+        var x = me.padding.x
+        var y = me.padding.y
+        foreach c in me.childs
         {
             if c.wndFlags & .Hidden:
                 continue
@@ -40,7 +40,7 @@ impl IWnd for WrapLayoutCtrl
             }
         }
 
-        wnd.IWnd.onResizeEvent(evt)
+        me.wnd.IWnd.onResizeEvent(evt)
     }
 }
 
@@ -56,6 +56,6 @@ impl WrapLayoutCtrl
     // Recompute layout of all childs
     mtd computeLayout()
     {
-        sendResizeEvent()
+        me.sendResizeEvent()
     }
 }

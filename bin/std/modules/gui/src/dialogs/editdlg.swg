@@ -66,48 +66,48 @@ public impl EditDlg
     // Set the text
     mtd setText(text: string)
     {
-        if edit:
-            edit.setText(text)
+        if me.edit:
+            me.edit.setText(text)
         else:
-            richEdit.setText(text)
+            me.richEdit.setText(text)
     }
 
     // Get the text
     mtd getText()->String
     {
-        if edit:
-            return edit.text
-        return richEdit.getText()
+        if me.edit:
+            return me.edit.text
+        return me.richEdit.getText()
     }
 
     // Associate a message above the editbox
     mtd setMessage(message: string, height: s32 = 40)
     {
-        if !label
+        if !me.label
         {
-            label = Label.create(surface.getView(), message, {0, 0, 0, height})
-            with label
+            me.label = Label.create(me.surface.getView(), message, {0, 0, 0, height})
+            with me.label
             {
                 .dockStyle         = .Center
                 .vertAlignmentText = .Center
                 .horzAlignmentText = .Center
             }
 
-            if edit:
-                edit.margin.y = 0
+            if me.edit:
+                me.edit.margin.y = 0
             else:
-                richEdit.margin.y = 0
-            var pos = surface.position
+                me.richEdit.margin.y = 0
+            var pos = me.surface.position
             pos.height += height
-            surface.minSize.y += height
+            me.surface.minSize.y += height
 
-            richEdit.anchorStyle = .None
-            surface.setPosition(pos)
-            richEdit.anchorStyle = .Height
+            me.richEdit.anchorStyle = .None
+            me.surface.setPosition(pos)
+            me.richEdit.anchorStyle = .Height
         }
         else
         {
-            label.setText(message)
+            me.label.setText(message)
         }
     }
 }

@@ -14,22 +14,22 @@ impl Properties
         var data = cast(*bool) item.data
         if item.checkBox:
             dref data = item.checkBox.checked == .Checked ? true : false
-        hasChanged(item)
+        me.hasChanged(item)
     }
 
     mtd constructBool(value: Swag.TypedValue, data: *u8, parentItem: *PropertiesItem)
     {
         let dispDesc = Reflection.getAttributeValue(value, Properties.Description, "desc")
-        let item     = addItem(value, data, parentItem, flags: AddItemFlags.Name)
+        let item     = me.addItem(value, data, parentItem, flags: AddItemFlags.Name)
 
-        let lineHeight = getThemeMetrics().btnPush_Height
-        let line       = Wnd.create'Wnd(item.line, {0, 0, position.width, lineHeight})
+        let lineHeight = me.getThemeMetrics().btnPush_Height
+        let line       = Wnd.create'Wnd(item.line, {0, 0, me.position.width, lineHeight})
         line.dockStyle = .CenterKeepSizeVert
 
         if !item.label
         {
-            line.margin.y = listNameMarginBefore
-            line.margin.w = listNameMarginAfter
+            line.margin.y = me.listNameMarginBefore
+            line.margin.w = me.listNameMarginAfter
         }
 
         with let ed = CheckButton.create(line, "", {0, 0, lineHeight, 0})
@@ -37,9 +37,9 @@ impl Properties
             .dockStyle = .Left
         }
 
-        if kind == .List
+        if me.kind == .List
         {
-            with let label = Label.create(line, "", {lineHeight, 0, position.width - lineHeight})
+            with let label = Label.create(line, "", {lineHeight, 0, me.position.width - lineHeight})
             {
                 .dockStyle = .Center
                 .labelFlags |= .WordWrap | .AutoHeight
@@ -57,7 +57,7 @@ impl Properties
         item.checkBox = ed
         ed.sigChanged += mtd|item|(ed)
         {
-            validateBool(item)
+            me.validateBool(item)
         }
 
         refreshBool(item)

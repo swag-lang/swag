@@ -42,15 +42,15 @@ impl IWnd for FrameWnd
 {
     mtd impl onPrePaintEvent(evt: *PaintEvent)
     {
-        if frameFlags.has(.SmallShadow)
+        if me.frameFlags.has(.SmallShadow)
         {
             let bc      = evt.bc
             let painter = bc.painter
-            let theme   = getTheme()
-            let colors  = getThemeColors()
-            let metrics = getThemeMetrics()
+            let theme   = me.getTheme()
+            let colors  = me.getThemeColors()
+            let metrics = me.getThemeMetrics()
 
-            var clientRect = getClientRect()
+            var clientRect = me.getClientRect()
             clientRect.applyPadding(-metrics.frameWnd_SmallShadowSize)
             let subRect = &theme.rects.frameWnd_SmallShadow
             theme.drawSubRect(painter, clientRect, subRect, colors.frameWnd_SmallShadow)
@@ -59,19 +59,19 @@ impl IWnd for FrameWnd
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if frameForm == .Transparent:
+        if me.frameForm == .Transparent:
             return
 
         let bc      = evt.bc
         let painter = bc.painter
-        let theme   = getTheme()
-        let colors  = getThemeColors()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let colors  = me.getThemeColors()
+        let rects   = me.getThemeRects()
 
         var subRectBk: *ThemeImageRect
         var colorBk:   Color
 
-        switch frameForm
+        switch me.frameForm
         {
         case Square:
             subRectBk = &rects.frameWnd_SquareBk
@@ -80,11 +80,11 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        var showFocus = frameFlags.has(.FocusBorder)
+        var showFocus = me.frameFlags.has(.FocusBorder)
         if showFocus
         {
-            let focus = getFocus()
-            if !focus or !isParentOf(focus):
+            let focus = me.getFocus()
+            if !focus or !me.isParentOf(focus):
                 showFocus = false
         }
 
@@ -98,29 +98,29 @@ impl IWnd for FrameWnd
             colorBk = colors.frameWnd_Bk
         }
 
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
-        usedColorBk = colorBk
+        me.usedColorBk = colorBk
     }
 
     mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
-        if frameForm == .Transparent:
+        if me.frameForm == .Transparent:
             return
-        if !(frameFlags & .Borders):
+        if !(me.frameFlags & .Borders):
             return
 
         let bc      = evt.bc
         let painter = bc.painter
-        let theme   = getTheme()
-        let colors  = getThemeColors()
-        let rects   = getThemeRects()
-        let metrics = getThemeMetrics()
+        let theme   = me.getTheme()
+        let colors  = me.getThemeColors()
+        let rects   = me.getThemeRects()
+        let metrics = me.getThemeMetrics()
 
         var subRectBorder: *ThemeImageRect
         var colorBorder:   Color = undefined
 
-        switch frameForm
+        switch me.frameForm
         {
         case Square:
             subRectBorder = &rects.frameWnd_SquareBorder
@@ -129,11 +129,11 @@ impl IWnd for FrameWnd
         }
 
         // Display focus borders when the focus wnd is a child of me
-        var showFocus = frameFlags.has(.FocusBorder)
+        var showFocus = me.frameFlags.has(.FocusBorder)
         if showFocus
         {
-            let focus = getFocus()
-            if !focus or !isParentOf(focus):
+            let focus = me.getFocus()
+            if !focus or !me.isParentOf(focus):
                 showFocus = false
         }
 
@@ -147,15 +147,15 @@ impl IWnd for FrameWnd
             colorBorder = colors.frameWnd_Border
         }
 
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBorder, colorBorder, false)
 
         // Anchor
-        if anchor != .None
+        if me.anchor != .None
         {
-            var posA     = anchorPos
+            var posA     = me.anchorPos
             var marginA: f32
-            switch frameForm
+            switch me.frameForm
             {
             case Square:
                 marginA = metrics.frameWnd_AnchorSquareBorderMargin
@@ -163,7 +163,7 @@ impl IWnd for FrameWnd
                 marginA = metrics.frameWnd_AnchorRoundBorderMargin
             }
 
-            switch anchor
+            switch me.anchor
             {
             case Top:
                 posA         = Math.clamp(posA, marginA, clientRect.width - marginA)
@@ -171,7 +171,7 @@ impl IWnd for FrameWnd
                 clientRect.y -= metrics.frameWnd_AnchorHeight
                 clientRect.width  = metrics.frameWnd_AnchorWidth
                 clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
-                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTopBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTopBk, me.usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorTop, colorBorder, false)
 
             case Bottom:
@@ -180,7 +180,7 @@ impl IWnd for FrameWnd
                 clientRect.y      = clientRect.bottom() - metrics.frameWnd_AnchorOverlap
                 clientRect.width  = metrics.frameWnd_AnchorWidth
                 clientRect.height = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
-                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottomBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottomBk, me.usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorBottom, colorBorder, false)
 
             case Left:
@@ -189,7 +189,7 @@ impl IWnd for FrameWnd
                 clientRect.y      = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
                 clientRect.width  = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
                 clientRect.height = metrics.frameWnd_AnchorWidth
-                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeftBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeftBk, me.usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorLeft, colorBorder, false)
 
             case Right:
@@ -198,7 +198,7 @@ impl IWnd for FrameWnd
                 clientRect.y      = clientRect.y + posA - metrics.frameWnd_AnchorHeight * 0.5
                 clientRect.width  = metrics.frameWnd_AnchorHeight + metrics.frameWnd_AnchorOverlap
                 clientRect.height = metrics.frameWnd_AnchorWidth
-                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRightBk, usedColorBk)
+                theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRightBk, me.usedColorBk)
                 theme.drawSubRect(painter, clientRect, &rects.frameWnd_AnchorRight, colorBorder, false)
             }
         }
@@ -206,11 +206,11 @@ impl IWnd for FrameWnd
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !view:
+        if !me.view:
             return
-        var rect = getClientRectPadding()
-        rect.applyPadding(view.margin)
-        view.setPosition(rect)
+        var rect = me.getClientRectPadding()
+        rect.applyPadding(me.view.margin)
+        me.view.setPosition(rect)
     }
 }
 
@@ -227,51 +227,51 @@ impl FrameWnd
 
     mtd setView(what: *Wnd)
     {
-        if view:
-            view.destroy()
+        if me.view:
+            me.view.destroy()
         what.setParent(me)
-        view = what
-        sendResizeEvent()
+        me.view = what
+        me.sendResizeEvent()
     }
 
     // Set the frame wnd flags
     mtd setFrameFlags(add, remove = FrameWndFlags.Zero)
     {
-        frameFlags.add(add)
-        frameFlags.remove(remove)
+        me.frameFlags.add(add)
+        me.frameFlags.remove(remove)
 
-        if frameFlags.has(.SmallShadow):
-            wndFlags.add(.PreChildsPaint)
+        if me.frameFlags.has(.SmallShadow):
+            me.wndFlags.add(.PreChildsPaint)
         else:
-            wndFlags.remove(.PreChildsPaint)
+            me.wndFlags.remove(.PreChildsPaint)
 
-        if frameFlags.has(.SmallShadow):
-            invalidatePadding = -getThemeMetrics().frameWnd_SmallShadowSize
+        if me.frameFlags.has(.SmallShadow):
+            me.invalidatePadding = -me.getThemeMetrics().frameWnd_SmallShadowSize
         else:
-            invalidatePadding.setZero()
+            me.invalidatePadding.setZero()
     }
 
     // Set the frame wnd form
     mtd setFrameForm(form: FrameWndForm)
     {
-        if frameForm == #me.form:
+        if me.frameForm == #me.form:
             return
-        frameForm = #me.form
+        me.frameForm = #me.form
 
         #[Swag.Complete]
         switch me.frameForm
         {
         case Square:
-            wndFlags.add(.PostChildsPaint)
-            setAllPaddings(getThemeMetrics().frameWnd_SquarePadding)
+            me.wndFlags.add(.PostChildsPaint)
+            me.setAllPaddings(me.getThemeMetrics().frameWnd_SquarePadding)
         case Round:
-            wndFlags.add(.PostChildsPaint)
-            setAllPaddings(getThemeMetrics().frameWnd_RoundPadding)
+            me.wndFlags.add(.PostChildsPaint)
+            me.setAllPaddings(me.getThemeMetrics().frameWnd_RoundPadding)
         case Transparent:
-            wndFlags.remove(.PostChildsPaint)
-            setAllPaddings(0)
+            me.wndFlags.remove(.PostChildsPaint)
+            me.setAllPaddings(0)
         }
 
-        sendResizeEvent()
+        me.sendResizeEvent()
     }
 }

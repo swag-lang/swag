@@ -42,12 +42,12 @@ impl IWnd for PopupListView
         switch evt.kind
         {
         case KillFocus:
-            if evt.other != parent
+            if evt.other != me.parent
             {
-                if list.sigSelected:
-                    list.sigSelected(list, Swag.U32.Max)
+                if me.list.sigSelected:
+                    me.list.sigSelected(me.list, Swag.U32.Max)
                 else:
-                    list.destroy()
+                    me.list.destroy()
             }
         }
     }
@@ -56,16 +56,16 @@ impl IWnd for PopupListView
     {
         var hit: u32
 
-        var surfaceRect = getSurfaceRect()
+        var surfaceRect = me.getSurfaceRect()
         var mouseInRect = surfaceRect.contains(evt.surfacePos)
 
-        var pos = surfaceToLocal(evt.surfacePos)
+        var pos = me.surfaceToLocal(evt.surfacePos)
         if evt.kind == .MouseLeave or !mouseInRect:
             hit = Swag.U32.Max
         else
         {
-            var y = pos.y + scrollPos.y
-            foreach v, i in list.items
+            var y = pos.y + me.scrollPos.y
+            foreach v, i in me.list.items
             {
                 if v.isSeparator
                 {
@@ -87,33 +87,33 @@ impl IWnd for PopupListView
                 }
             }
 
-            if hit >= list.items.count or list.items[hit].isSeparator:
+            if hit >= me.list.items.count or me.list.items[hit].isSeparator:
                 hit = Swag.U32.Max
         }
 
-        if hit != hotIdx
+        if hit != me.hotIdx
         {
-            hotIdx = hit
-            invalidate()
+            me.hotIdx = hit
+            me.invalidate()
         }
 
         if evt.kind == .MousePressed and evt.button == .Left and mouseInRect
         {
-            if list.sigSelected:
-                list.sigSelected(list, hotIdx)
-            releaseMouse()
-            list.destroy()
+            if me.list.sigSelected:
+                me.list.sigSelected(me.list, me.hotIdx)
+            me.releaseMouse()
+            me.list.destroy()
             return
         }
 
-        surfaceRect = parent.getSurfaceRect()
+        surfaceRect = me.parent.getSurfaceRect()
         mouseInRect = surfaceRect.contains(evt.surfacePos)
         if evt.kind == .MousePressed and evt.button == .Left and !mouseInRect
         {
-            if list.sigSelected:
-                list.sigSelected(list, Swag.U32.Max)
-            releaseMouse()
-            list.destroy()
+            if me.list.sigSelected:
+                me.list.sigSelected(me.list, Swag.U32.Max)
+            me.releaseMouse()
+            me.list.destroy()
             return
         }
 
@@ -127,19 +127,19 @@ impl IWnd for PopupListView
     {
         let painter = evt.bc.painter
 
-        let theme   = getTheme()
-        let colors  = getThemeColors()
-        let metrics = getThemeMetrics()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let colors  = me.getThemeColors()
+        let metrics = me.getThemeMetrics()
+        let rects   = me.getThemeRects()
 
-        var clientRect = getClientRect()
-        clientRect.offset(scrollPos)
+        var clientRect = me.getClientRect()
+        clientRect.offset(me.scrollPos)
 
         var labelPos:  Math.Rectangle = undefined
         var colorText: Color
 
         var y = 0'f32
-        foreach i, idx in list.items
+        foreach i, idx in me.list.items
         {
             labelPos.x      = clientRect.x
             labelPos.y      = y
@@ -233,23 +233,23 @@ impl PopupListCtrl
     // Show popup
     mtd show(x, y: f32, width: f32 = 10)
     {
-        scrollWnd.setScrollSize(0, cast(f32) items.count * heightItem)
+        me.scrollWnd.setScrollSize(0, cast(f32) me.items.count * me.heightItem)
 
-        var pt  = parent.surfaceToLocal({x, y})
+        var pt  = me.parent.surfaceToLocal({x, y})
         var pos = Math.Rectangle{pt.x, pt.y, 0, 0}
-        pos.width  = Math.max(width, minWidthPopup)
-        pos.height = Math.min(scrollWnd.scrollSize.y, maxHeightPopup)
-        pos.height += padding.y + padding.w
-        setPosition(pos)
-        var sdw = getThemeMetrics().frameWnd_SmallShadowSize
-        fitPosInParent(sdw.z, sdw.w, simFitX, simFitY)
-        scrollWnd.view.captureMouse()
+        pos.width  = Math.max(width, me.minWidthPopup)
+        pos.height = Math.min(me.scrollWnd.scrollSize.y, me.maxHeightPopup)
+        pos.height += me.padding.y + me.padding.w
+        me.setPosition(pos)
+        var sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
+        me.fitPosInParent(sdw.z, sdw.w, me.simFitX, me.simFitY)
+        me.scrollWnd.view.captureMouse()
     }
 
     // Add a new item in the list
     mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
     {
-        let item = items.newPtr()
+        let item = me.items.newPtr()
         with item
         {
             .name      = #me.name
@@ -260,15 +260,15 @@ impl PopupListCtrl
         }
 
         if item.icon.isValid():
-            maxIconSize = Math.max(maxIconSize, cast(s32) item.icon.sizeX)
-        items.add(item)
+            me.maxIconSize = Math.max(me.maxIconSize, cast(s32) item.icon.sizeX)
+        me.items.add(item)
     }
 
     // Add a separator
     mtd addSeparator()
     {
-        let item = items.newPtr()
+        let item = me.items.newPtr()
         item.isSeparator = true
-        items.add(item)
+        me.items.add(item)
     }
 }

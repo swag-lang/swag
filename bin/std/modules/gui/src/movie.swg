@@ -33,18 +33,18 @@ internal impl Movie
 {
     mtd nextFrame()
     {
-        if frameIndex == numFrames - 1
+        if me.frameIndex == me.numFrames - 1
         {
-            if mustLoop:
-                frameIndex = 0
+            if me.mustLoop:
+                me.frameIndex = 0
             else:
                 return
         }
         else:
-            frameIndex += 1
+            me.frameIndex += 1
 
         #[Swag.Complete]
-        switch source
+        switch me.source
         {
         case None:
             break
@@ -52,26 +52,26 @@ internal impl Movie
             break
 
         case Gif:
-            if frameIndex < cacheFrames.count
+            if me.frameIndex < me.cacheFrames.count
             {
-                frame = cacheFrames[frameIndex]
+                me.frame = me.cacheFrames[me.frameIndex]
             }
-            elif assume gif.nextFrame(&frame) == false
+            elif assume me.gif.nextFrame(&me.frame) == false
             {
-                if mustLoop
+                if me.mustLoop
                 {
-                    gif.rewind()
-                    frameIndex = 0
-                    discard assume gif.nextFrame(&frame)
+                    me.gif.rewind()
+                    me.frameIndex = 0
+                    discard assume me.gif.nextFrame(&me.frame)
                 }
             }
-            elif enableCache
+            elif me.enableCache
             {
-                cacheFrames.add(frame)
+                me.cacheFrames.add(me.frame)
             }
         }
 
-        sigFrameChanged.call(me)
+        me.sigFrameChanged.call(me)
     }
 }
 
@@ -79,40 +79,40 @@ impl Movie
 {
     mtd clear()
     {
-        cacheFrames.clear()
-        bytes.clear()
-        source = .None
-        frame.release()
-        numFrames   = 0
-        frameIndex  = 0
-        currentTime = 0
+        me.cacheFrames.clear()
+        me.bytes.clear()
+        me.source = .None
+        me.frame.release()
+        me.numFrames   = 0
+        me.frameIndex  = 0
+        me.currentTime = 0
     }
 
     // Associate an image list
     #[Swag.Overload]
     mtd set(imageList: ImageList)
     {
-        clear()
-        source    = .SpriteSheet
-        imgList   = imageList
-        numFrames = imgList.totalFrames
+        me.clear()
+        me.source    = .SpriteSheet
+        me.imgList   = imageList
+        me.numFrames = me.imgList.totalFrames
     }
 
     // Associate a filename
     #[Swag.Overload]
     mtd set(fileName: string) throw
     {
-        clear()
-        if gif.IImageDecoder.canDecode(fileName)
+        me.clear()
+        if me.gif.IImageDecoder.canDecode(fileName)
         {
-            source = .Gif
-            bytes  = File.readAllBytes(fileName)
-            gif.init(bytes.toSlice(), true)
-            numFrames = gif.getNumFrames()
-            gif.getFrame(&frame)
-            discard gif.nextFrame(&frame)
-            if enableCache:
-                cacheFrames.add(frame)
+            me.source = .Gif
+            me.bytes  = File.readAllBytes(fileName)
+            me.gif.init(me.bytes.toSlice(), true)
+            me.numFrames = me.gif.getNumFrames()
+            me.gif.getFrame(&me.frame)
+            discard me.gif.nextFrame(&me.frame)
+            if me.enableCache:
+                me.cacheFrames.add(me.frame)
         }
         else
         {
@@ -124,14 +124,14 @@ impl Movie
     mtd isValid()->bool
     {
         #[Swag.Complete]
-        switch source
+        switch me.source
         {
         case None:
             return false
         case SpriteSheet:
-            return imgList.texture.valid
+            return me.imgList.texture.valid
         case Gif:
-            return frame.pixels.buffer != null
+            return me.frame.pixels.buffer != null
         }
 
         return false
@@ -140,52 +140,52 @@ impl Movie
     // Set the current video frame
     mtd setFrameIndex(idx: s32)
     {
-        if idx == frameIndex:
+        if idx == me.frameIndex:
             return
-        frameIndex = Math.min(idx, numFrames)
+        me.frameIndex = Math.min(idx, me.numFrames)
 
         #[Swag.Complete]
-        switch source
+        switch me.source
         {
         case None:
             break
         case Gif:
-            frameIndex = Math.min(idx, numFrames)
-            if frameIndex < cacheFrames.count
+            me.frameIndex = Math.min(idx, me.numFrames)
+            if me.frameIndex < me.cacheFrames.count
             {
-                frame      = cacheFrames[frameIndex]
-                dirtyFrame = true
+                me.frame      = me.cacheFrames[me.frameIndex]
+                me.dirtyFrame = true
             }
 
         case SpriteSheet:
             break
         }
 
-        sigFrameChanged.call(me)
+        me.sigFrameChanged.call(me)
     }
 
     // Set/Reset pause state
     mtd pause(state: bool)
     {
-        inPause = state
+        me.inPause = state
     }
 
     // Update timing and change frames
     mtd update(dt: f32)->bool
     {
-        let wasDirty = dirtyFrame
-        dirtyFrame = false
+        let wasDirty = me.dirtyFrame
+        me.dirtyFrame = false
 
-        if inPause:
+        if me.inPause:
             return wasDirty
 
         var hasChanged = false
-        currentTime += dt
-        while currentTime > playFreq
+        me.currentTime += dt
+        while me.currentTime > me.playFreq
         {
             hasChanged = true
-            currentTime -= playFreq
-            nextFrame()
+            me.currentTime -= me.playFreq
+            me.nextFrame()
         }
 
         return hasChanged or wasDirty

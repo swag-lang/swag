@@ -30,14 +30,14 @@ impl IWnd for EmbInfoCtrl
 {
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
-        timer = null
-        destroy()
+        me.timer = null
+        me.destroy()
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if timer:
-            getApp().deleteTimer(timer)
+        if me.timer:
+            me.getApp().deleteTimer(me.timer)
     }
 }
 

@@ -46,10 +46,10 @@ impl IWnd for Slider
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
-        let theme   = getTheme()
-        let metrics = getThemeMetrics()
-        let colors  = getThemeColors()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let metrics = me.getThemeMetrics()
+        let colors  = me.getThemeColors()
+        let rects   = me.getThemeRects()
 
         var colorBkLeft:   Color = undefined
         var colorBkMiddle: Color = undefined
@@ -68,37 +68,37 @@ impl IWnd for Slider
         else
         {
             colorBkRight = colors.slider_BkRight
-            if !sliderFlags.has(.Range) and sliderFlags.has(.HilightBar):
+            if !me.sliderFlags.has(.Range) and me.sliderFlags.has(.HilightBar):
                 colorBkLeft = colors.slider_HilightBk
             else:
                 colorBkLeft = colors.slider_BkLeft
-            if sliderFlags.has(.Range) and sliderFlags.has(.HilightBar):
+            if me.sliderFlags.has(.Range) and me.sliderFlags.has(.HilightBar):
                 colorBkMiddle = colors.slider_HilightBk
             else:
                 colorBkMiddle = colors.slider_BkMiddle
 
-            if isPressed1:
+            if me.isPressed1:
                 colorMark1 = colors.slider_PressedMark
-            elif isHot1:
+            elif me.isHot1:
                 colorMark1 = colors.slider_HotMark
             else:
                 colorMark1 = colors.slider_Mark
 
-            if isPressed2:
+            if me.isPressed2:
                 colorMark2 = colors.slider_PressedMark
-            elif isHot2:
+            elif me.isHot2:
                 colorMark2 = colors.slider_HotMark
             else:
                 colorMark2 = colors.slider_Mark
         }
 
         // Pos box
-        var posBox1 = getPosBox1()
-        var posBox2 = getPosBox2()
+        var posBox1 = me.getPosBox1()
+        var posBox2 = me.getPosBox2()
 
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
 
-        let isVertical = sliderFlags.has(.Vertical)
+        let isVertical = me.sliderFlags.has(.Vertical)
         if isVertical
         {
             clientRect.y += (posBox1.height * 0.5)
@@ -114,17 +114,17 @@ impl IWnd for Slider
         var left = clientRect
         if isVertical
         {
-            left.height = (clientRect.height * value1)
+            left.height = (clientRect.height * me.value1)
             theme.drawSubRect(bc.painter, left, &rects.slider_BkLeftVert, colorBkLeft)
         }
         else
         {
-            left.width = (clientRect.width * value1)
+            left.width = (clientRect.width * me.value1)
             theme.drawSubRect(bc.painter, left, &rects.slider_BkLeft, colorBkLeft)
         }
 
         // Bar right
-        let valueRight = sliderFlags.has(.Range) ? value2 : value1
+        let valueRight = me.sliderFlags.has(.Range) ? me.value2 : me.value1
         var right      = clientRect
         if isVertical
         {
@@ -140,7 +140,7 @@ impl IWnd for Slider
         }
 
         // Bar middle
-        if sliderFlags.has(.Range)
+        if me.sliderFlags.has(.Range)
         {
             var middle = clientRect
             if isVertical
@@ -158,50 +158,50 @@ impl IWnd for Slider
         }
 
         // Display steps
-        if steps > 0 and sliderFlags.has(.ShowSteps)
+        if me.steps > 0 and me.sliderFlags.has(.ShowSteps)
         {
-            if isHot1 or isHot2 or isMoving
+            if me.isHot1 or me.isHot2 or me.isMoving
             {
-                aniStep1.apply(me, colors.slider_HotStepBk)
-                aniStep2.apply(me, colors.slider_HotStepBk)
+                me.aniStep1.apply(me, colors.slider_HotStepBk)
+                me.aniStep2.apply(me, colors.slider_HotStepBk)
             }
             else
             {
-                aniStep1.apply(me, colors.slider_StepBk)
-                aniStep2.apply(me, colors.slider_HilightStepBk)
+                me.aniStep1.apply(me, colors.slider_StepBk)
+                me.aniStep2.apply(me, colors.slider_HilightStepBk)
             }
 
-            for var x = 0'f32; x < 1 + steps; x += steps
+            for var x = 0'f32; x < 1 + me.steps; x += me.steps
             {
-                var posStep = getPosBoxAt(x, metrics.slider_StepSize)
+                var posStep = me.getPosBoxAt(x, metrics.slider_StepSize)
 
                 var colorStep: Color = undefined
-                if x <= value1 and sliderFlags.has(.HilightBar):
-                    colorStep = aniStep2.cur()
-                elif x >= value1 and x <= value2 and sliderFlags.has(.HilightBar) and sliderFlags.has(.Range):
-                    colorStep = aniStep2.cur()
+                if x <= me.value1 and me.sliderFlags.has(.HilightBar):
+                    colorStep = me.aniStep2.cur()
+                elif x >= me.value1 and x <= me.value2 and me.sliderFlags.has(.HilightBar) and me.sliderFlags.has(.Range):
+                    colorStep = me.aniStep2.cur()
                 else:
-                    colorStep = aniStep1.cur()
+                    colorStep = me.aniStep1.cur()
                 theme.drawSubRect(bc.painter, posStep, &rects.slider_Step, colorStep)
             }
         }
 
         // Box value1
-        aniMark1.apply(me, colorMark1)
-        theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, aniMark1.cur())
+        me.aniMark1.apply(me, colorMark1)
+        theme.drawSubRect(bc.painter, posBox1, &rects.slider_Mark, me.aniMark1.cur())
 
         // Box value2
-        if sliderFlags.has(.Range)
+        if me.sliderFlags.has(.Range)
         {
-            aniMark2.apply(me, colorMark2)
-            theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, aniMark2.cur())
+            me.aniMark2.apply(me, colorMark2)
+            theme.drawSubRect(bc.painter, posBox2, &rects.slider_Mark, me.aniMark2.cur())
         }
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos        = surfaceToLocal(evt.surfacePos)
-        let isVertical = sliderFlags.has(.Vertical)
+        var pos        = me.surfaceToLocal(evt.surfacePos)
+        let isVertical = me.sliderFlags.has(.Vertical)
 
         switch evt.kind
         {
@@ -210,78 +210,78 @@ impl IWnd for Slider
             return
 
         case MouseLeave:
-            isHot1, isHot2 = false
-            invalidate()
+            me.isHot1, me.isHot2 = false
+            me.invalidate()
 
         case MouseMove:
-            if !isMoving
+            if !me.isMoving
             {
-                hitTest(evt.surfacePos)
+                me.hitTest(evt.surfacePos)
                 break
             }
 
-            var clientRect = getOffsetedClientRect()
+            var clientRect = me.getOffsetedClientRect()
             var f:         f32
             if isVertical
             {
-                let diff = (pos.y - correcMoving) - clientRect.y
+                let diff = (pos.y - me.correcMoving) - clientRect.y
                 f = diff / clientRect.height
             }
             else
             {
-                let diff = (pos.x - correcMoving) - clientRect.x
+                let diff = (pos.x - me.correcMoving) - clientRect.x
                 f = diff / clientRect.width
             }
 
-            if isPressed1:
-                setValue1(f)
-            elif isPressed2:
-                setValue2(f)
-            invalidate()
+            if me.isPressed1:
+                me.setValue1(f)
+            elif me.isPressed2:
+                me.setValue2(f)
+            me.invalidate()
 
         case MousePressed:
             if evt.button == .Left
             {
-                isMoving = true
-                startChange()
-                if isHot1
+                me.isMoving = true
+                me.startChange()
+                if me.isHot1
                 {
-                    isPressed1 = true
-                    var posBox = getPosBox1()
+                    me.isPressed1 = true
+                    var posBox = me.getPosBox1()
                     if isVertical:
-                        correcMoving = pos.y - posBox.vertCenter()
+                        me.correcMoving = pos.y - posBox.vertCenter()
                     else:
-                        correcMoving = pos.x - posBox.horzCenter()
+                        me.correcMoving = pos.x - posBox.horzCenter()
                 }
-                elif isHot2
+                elif me.isHot2
                 {
-                    isPressed2 = true
-                    var posBox = getPosBox2()
+                    me.isPressed2 = true
+                    var posBox = me.getPosBox2()
                     if isVertical:
-                        correcMoving = pos.y - posBox.vertCenter()
+                        me.correcMoving = pos.y - posBox.vertCenter()
                     else:
-                        correcMoving = pos.x - posBox.horzCenter()
+                        me.correcMoving = pos.x - posBox.horzCenter()
                 }
-                elif !sliderFlags.has(.Range)
+                elif !me.sliderFlags.has(.Range)
                 {
-                    correcMoving = 0
-                    isPressed1   = true
-                    var clientRect = getOffsetedClientRect()
+                    me.correcMoving = 0
+                    me.isPressed1   = true
+                    var clientRect = me.getOffsetedClientRect()
                     if isVertical
                     {
                         let diff = pos.y - clientRect.y
-                        setValue1(diff / clientRect.height)
+                        me.setValue1(diff / clientRect.height)
                     }
                     else
                     {
                         let diff = pos.x - clientRect.x
-                        setValue1(diff / clientRect.width)
+                        me.setValue1(diff / clientRect.width)
                     }
                 }
                 else
                 {
-                    correcMoving = 0
-                    var clientRect = getOffsetedClientRect()
+                    me.correcMoving = 0
+                    var clientRect = me.getOffsetedClientRect()
                     var f:         f32
                     if isVertical
                     {
@@ -294,31 +294,31 @@ impl IWnd for Slider
                         f = diff / clientRect.width
                     }
 
-                    let m = (value1 + value2) * 0.5
+                    let m = (me.value1 + me.value2) * 0.5
                     if f <= m
                     {
-                        isPressed1 = true
-                        setValue1(f)
+                        me.isPressed1 = true
+                        me.setValue1(f)
                     }
                     else
                     {
-                        isPressed2 = true
-                        setValue2(f)
+                        me.isPressed2 = true
+                        me.setValue2(f)
                     }
                 }
 
-                captureMouse()
-                invalidate()
+                me.captureMouse()
+                me.invalidate()
             }
 
         case MouseReleased:
-            if isMoving and evt.button == .Left
+            if me.isMoving and evt.button == .Left
             {
-                releaseMouse()
-                isPressed1, isPressed2, isMoving = false
-                hitTest(evt.surfacePos)
-                invalidate()
-                endChange()
+                me.releaseMouse()
+                me.isPressed1, me.isPressed2, me.isMoving = false
+                me.hitTest(evt.surfacePos)
+                me.invalidate()
+                me.endChange()
             }
         }
     }
@@ -328,16 +328,16 @@ internal impl Slider
 {
     mtd clamp(f: f32)->f32
     {
-        if steps > 0
+        if me.steps > 0
         {
-            let r = cast(s32) ((f / steps) + 0.5)
-            return r * steps
+            let r = cast(s32) ((f / me.steps) + 0.5)
+            return r * me.steps
         }
 
-        if sliderFlags.has(.Integer)
+        if me.sliderFlags.has(.Integer)
         {
-            let val = Math.round((min + (max - min) * f))
-            return (val - min) / (max - min)
+            let val = Math.round((me.min + (me.max - me.min) * f))
+            return (val - me.min) / (me.max - me.min)
         }
 
         return f
@@ -345,63 +345,63 @@ internal impl Slider
 
     mtd setValue1(f: f32)
     {
-        var fc = clamp(Math.clamp(f, 0, 1))
-        if sliderFlags.has(.Range):
-            fc = Math.min(fc, value2)
-        if fc == value1 and hasValue1:
+        var fc = me.clamp(Math.clamp(f, 0, 1))
+        if me.sliderFlags.has(.Range):
+            fc = Math.min(fc, me.value2)
+        if fc == me.value1 and me.hasValue1:
             return
-        hasValue1 = true
-        value1    = fc
-        sigChanged.call(me)
-        invalidate()
+        me.hasValue1 = true
+        me.value1    = fc
+        me.sigChanged.call(me)
+        me.invalidate()
     }
 
     mtd setValue2(f: f32)
     {
-        var fc = clamp(Math.clamp(f, 0, 1))
-        if sliderFlags.has(.Range):
-            fc = Math.max(fc, value1)
-        if fc == value2 and hasValue2:
+        var fc = me.clamp(Math.clamp(f, 0, 1))
+        if me.sliderFlags.has(.Range):
+            fc = Math.max(fc, me.value1)
+        if fc == me.value2 and me.hasValue2:
             return
-        hasValue2 = true
-        value2    = fc
-        sigChanged.call(me)
-        invalidate()
+        me.hasValue2 = true
+        me.value2    = fc
+        me.sigChanged.call(me)
+        me.invalidate()
     }
 
     mtd hitTest(surfacePos: Math.Point)
     {
-        var pos = surfaceToLocal(surfacePos)
-        if isHot1 or isHot2
+        var pos = me.surfaceToLocal(surfacePos)
+        if me.isHot1 or me.isHot2
         {
-            invalidate()
-            isHot1, isHot2 = false
+            me.invalidate()
+            me.isHot1, me.isHot2 = false
         }
 
-        if sliderFlags.has(.Range)
+        if me.sliderFlags.has(.Range)
         {
-            var rect = getPosBox2()
+            var rect = me.getPosBox2()
             if rect.contains(pos)
             {
-                isHot2 = true
-                invalidate()
+                me.isHot2 = true
+                me.invalidate()
                 return
             }
         }
 
-        var rect = getPosBox1()
+        var rect = me.getPosBox1()
         if rect.contains(pos)
         {
-            isHot1 = true
-            invalidate()
+            me.isHot1 = true
+            me.invalidate()
         }
     }
 
     mtd getOffsetedClientRect()->Math.Rectangle
     {
-        var result: retval = getClientRect()
+        var result: retval = me.getClientRect()
 
-        if sliderFlags.has(.Vertical)
+        if me.sliderFlags.has(.Vertical)
         {
             result.y += (result.width * 0.5)
             result.height -= result.width
@@ -417,9 +417,9 @@ internal impl Slider
 
     mtd getPosBoxAt(val, size: f32)->Math.Rectangle
     {
-        var result: retval = getOffsetedClientRect()
+        var result: retval = me.getOffsetedClientRect()
 
-        if sliderFlags.has(.Vertical)
+        if me.sliderFlags.has(.Vertical)
         {
             result.y += result.height * val
             result.y -= (size * 0.5)
@@ -438,55 +438,55 @@ internal impl Slider
 
     mtd getPosBox1()->Math.Rectangle
     {
-        return getPosBoxAt(value1, getThemeMetrics().slider_BoxSize)
+        return me.getPosBoxAt(me.value1, me.getThemeMetrics().slider_BoxSize)
     }
 
     mtd getPosBox2()->Math.Rectangle
     {
-        return getPosBoxAt(value2, getThemeMetrics().slider_BoxSize)
+        return me.getPosBoxAt(me.value2, me.getThemeMetrics().slider_BoxSize)
     }
 
     mtd startChange()
     {
-        sigStartChange.call(me)
+        me.sigStartChange.call(me)
     }
 
     mtd endChange()
     {
-        sigEndChange.call(me)
+        me.sigEndChange.call(me)
     }
 }
 
 impl Slider
 {
-    mtd const getValue()->f32      => getValueLeft()
-    mtd const getValueLeft()->f32  => min + (max - min) * value1
-    mtd const getValueRight()->f32 => min + (max - min) * value2
+    mtd const getValue()->f32      => me.getValueLeft()
+    mtd const getValueLeft()->f32  => me.min + (me.max - me.min) * me.value1
+    mtd const getValueRight()->f32 => me.min + (me.max - me.min) * me.value2
 
     mtd setValue(f: f32)
     {
-        setValueLeft(f)
+        me.setValueLeft(f)
     }
 
     mtd setValueNoChange(f: f32)
     {
-        setValue1((f - min) / (max - min))
+        me.setValue1((f - me.min) / (me.max - me.min))
     }
 
     // Set the left value (in case of a range).
     mtd setValueLeft(f: f32)
     {
-        startChange()
-        setValueNoChange(f)
-        endChange()
+        me.startChange()
+        me.setValueNoChange(f)
+        me.endChange()
     }
 
     // Set the right value (in case of a range)
     mtd setValueRight(f: f32)
     {
-        startChange()
-        setValue2((f - min) / (max - min))
-        endChange()
+        me.startChange()
+        me.setValue2((f - me.min) / (me.max - me.min))
+        me.endChange()
     }
 
     // Set the 'min', 'max' and 'steps' values
@@ -506,12 +506,12 @@ impl Slider
     mtd setRangeValues(left, right: f32)
     {
         Debug.assert(left < right)
-        Debug.assert(sliderFlags.has(.Range))
-        let diff = max - min
-        value1 = (left - min) / diff
-        value2 = (right - min) / diff
-        setValue1(value1)
-        setValue2(value2)
+        Debug.assert(me.sliderFlags.has(.Range))
+        let diff = me.max - me.min
+        me.value1 = (left - me.min) / diff
+        me.value2 = (right - me.min) / diff
+        me.setValue1(me.value1)
+        me.setValue2(me.value2)
     }
 
     #[Swag.Discardable]

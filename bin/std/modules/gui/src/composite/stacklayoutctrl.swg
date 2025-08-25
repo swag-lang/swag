@@ -27,44 +27,44 @@ impl IWnd for StackLayoutCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !childs.count
+        if !me.childs.count
         {
-            wnd.IWnd.onResizeEvent(evt)
+            me.wnd.IWnd.onResizeEvent(evt)
             return
         }
 
-        if layoutKind == .HorzFit
+        if me.layoutKind == .HorzFit
         {
-            var w = position.width
-            w -= spacing * cast(s32) childs.count - 1
-            w /= cast(s32) childs.count
-            foreach c in childs
+            var w = me.position.width
+            w -= me.spacing * cast(s32) me.childs.count - 1
+            w /= cast(s32) me.childs.count
+            foreach c in me.childs
             {
                 c.position.width = w
             }
         }
-        elif layoutKind == .VertFit
+        elif me.layoutKind == .VertFit
         {
-            var h = position.height
-            h -= spacing * cast(s32) childs.count - 1
-            h /= cast(s32) childs.count
-            foreach c in childs
+            var h = me.position.height
+            h -= me.spacing * cast(s32) me.childs.count - 1
+            h /= cast(s32) me.childs.count
+            foreach c in me.childs
             {
                 c.position.height = h
             }
         }
 
-        if layoutKind == .HorzCenter or layoutKind == .HorzCenterVertCenter
+        if me.layoutKind == .HorzCenter or me.layoutKind == .HorzCenterVertCenter
         {
             var totalW = 0'f32
-            foreach c, i in childs:
+            foreach c, i in me.childs:
                 totalW += c.position.width + c.margin.x + c.margin.z
-            totalW += cast(f32) ((childs.count - 1) * spacing)
+            totalW += cast(f32) ((me.childs.count - 1) * me.spacing)
 
-            var x = position.width * 0.5 - totalW * 0.5
-            x = Math.max(x, padding.x)
-            let y = getClientRectPadding().vertCenter()
-            foreach c in childs
+            var x = me.position.width * 0.5 - totalW * 0.5
+            x = Math.max(x, me.padding.x)
+            let y = me.getClientRectPadding().vertCenter()
+            foreach c in me.childs
             {
                 var pos = c.position
                 if layoutKind == .HorzCenterVertCenter:
@@ -74,16 +74,16 @@ impl IWnd for StackLayoutCtrl
                 x += c.position.width + spacing + c.margin.z
             }
         }
-        elif layoutKind == .VertCenter
+        elif me.layoutKind == .VertCenter
         {
             var totalH = 0'f32
-            foreach c, i in childs:
+            foreach c, i in me.childs:
                 totalH += c.position.height + c.margin.y + c.margin.w
-            totalH += cast(f32) ((childs.count - 1) * spacing)
+            totalH += cast(f32) ((me.childs.count - 1) * me.spacing)
 
-            var y = position.height * 0.5 - totalH * 0.5
-            y = Math.max(y, padding.y)
-            foreach c in childs
+            var y = me.position.height * 0.5 - totalH * 0.5
+            y = Math.max(y, me.padding.y)
+            foreach c in me.childs
             {
                 var pos = c.position
                 pos.y = Math.round(y + c.margin.y)
@@ -93,7 +93,7 @@ impl IWnd for StackLayoutCtrl
         }
         else
         {
-            foreach c, i in childs
+            foreach c, i in me.childs
             {
                 switch layoutKind
                 {
@@ -116,24 +116,24 @@ impl IWnd for StackLayoutCtrl
                 }
             }
 
-            applyLayout(evt.oldSize)
+            me.applyLayout(evt.oldSize)
         }
 
-        wnd.IWnd.onResizeEvent(evt)
+        me.wnd.IWnd.onResizeEvent(evt)
 
-        if fitToContent
+        if me.fitToContent
         {
-            switch layoutKind
+            switch me.layoutKind
             {
             case Top, VertFit:
-                let b = childs.back()
-                let y = b.position.bottom() + padding.w
-                position.height = y
+                let b = me.childs.back()
+                let y = b.position.bottom() + me.padding.w
+                me.position.height = y
 
             case Left, HorzFit:
-                let b = childs.back()
-                let x = b.position.right() + padding.z
-                position.width = x
+                let b = me.childs.back()
+                let x = b.position.right() + me.padding.z
+                me.position.width = x
             }
         }
     }
@@ -152,6 +152,6 @@ impl StackLayoutCtrl
     // Recompute layout of all childs
     mtd computeLayout()
     {
-        sendResizeEvent()
+        me.sendResizeEvent()
     }
 }

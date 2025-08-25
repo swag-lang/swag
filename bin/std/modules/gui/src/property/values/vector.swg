@@ -4,8 +4,8 @@ impl Properties
 {
     mtd constructVector(value: Swag.TypedValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
-        let item = addItem(value, data, parentItem)
-        let line = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
+        let item = me.addItem(value, data, parentItem)
+        let line = Wnd.create'Wnd(item.line, {0, 0, me.position.width, me.getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
         foreach v in typeStruct.fields
@@ -25,7 +25,7 @@ impl Properties
                 .sigLoseFocus += mtd|dataField, item|(ed)
                 {
                     dref dataField = catch StrConv.toF32(ed.text)
-                    hasChanged(item)
+                    me.hasChanged(item)
                 }
             }
 

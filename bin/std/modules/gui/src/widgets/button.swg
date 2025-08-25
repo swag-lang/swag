@@ -17,27 +17,27 @@ impl IWnd for Button
 {
     mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
-        if evt.id != id:
+        if evt.id != me.id:
             return
 
-        if evt.setFlags & .Icon and (icon.imageList != evt.icon.imageList or icon.index != evt.icon.index)
+        if evt.setFlags & .Icon and (me.icon.imageList != evt.icon.imageList or me.icon.index != evt.icon.index)
         {
             evt.accepted = true
-            icon         = evt.icon
-            invalidate()
+            me.icon      = evt.icon
+            me.invalidate()
         }
 
-        if evt.setFlags & .Name and name != evt.name
+        if evt.setFlags & .Name and me.name != evt.name
         {
             evt.accepted = true
-            name         = evt.name
-            invalidate()
+            me.name      = evt.name
+            me.invalidate()
         }
 
         if evt.setFlags & .Disabled
         {
             evt.accepted = true
-            enable(!evt.disabled)
+            me.enable(!evt.disabled)
         }
     }
 }
@@ -46,70 +46,70 @@ impl Button
 {
     mtd processMouseEvent(evt: *MouseEvent)->bool
     {
-        var pos = surfaceToLocal(evt.surfacePos)
+        var pos = me.surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseWheel:
             evt.accepted = false
 
         case MouseEnter:
-            isHot, isIn = true
-            invalidate()
+            me.isHot, me.isIn = true
+            me.invalidate()
 
         case MouseLeave:
-            isHot, isIn = false
-            invalidate()
+            me.isHot, me.isIn = false
+            me.invalidate()
 
         case MouseMove:
-            if !isPressing:
+            if !me.isPressing:
                 break
-            var rect = getClientRect()
+            var rect = me.getClientRect()
             if !rect.contains(pos)
             {
-                isPressed, isIn = false
-                invalidate()
+                me.isPressed, me.isIn = false
+                me.invalidate()
             }
             else
             {
-                isIn = true
-                if !isPressed
+                me.isIn = true
+                if !me.isPressed
                 {
-                    isPressed = true
-                    invalidate()
+                    me.isPressed = true
+                    me.invalidate()
                 }
             }
 
         case MousePressed:
             if evt.button == .Left
             {
-                isPressed, isPressing = true
-                captureMouse()
-                invalidate()
+                me.isPressed, me.isPressing = true
+                me.captureMouse()
+                me.invalidate()
             }
             elif evt.button == .Right
             {
-                if isIn:
-                    sigRightPressed.call(me)
+                if me.isIn:
+                    me.sigRightPressed.call(me)
             }
 
         case MouseReleased:
             if evt.button == .Left
             {
-                if isPressing or isPressed
+                if me.isPressing or me.isPressed
                 {
-                    isPressing = false
-                    releaseMouse()
+                    me.isPressing = false
+                    me.releaseMouse()
                 }
 
-                if isPressed
+                if me.isPressed
                 {
-                    isPressed, isPressing = false
-                    if isIn:
-                        sigPressed.call(me)
-                    invalidate()
+                    me.isPressed, me.isPressing = false
+                    if me.isIn:
+                        me.sigPressed.call(me)
+                    me.invalidate()
                 }
 
-                return isIn
+                return me.isIn
             }
         }
 

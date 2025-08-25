@@ -148,20 +148,20 @@ impl Properties
             }
         }
 
-        hasChanged(item)
+        me.hasChanged(item)
     }
 
     mtd constructNative(value: Swag.TypedValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parentItem)
+        let item = me.addItem(value, data, parentItem)
 
-        if Reflection.hasAttribute(value, SliderMinMax)
+        if Reflection.hasAttribute(value, me.SliderMinMax)
         {
             with let slider = SliderCtrl.create(item.line, null)
             {
                 .labelSize = 0
-                .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
-                if kind == .Grid:
+                .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
+                if me.kind == .Grid:
                     .dockStyle = .CenterKeepSizeVert
                 else:
                     .anchorStyle = .X
@@ -169,8 +169,8 @@ impl Properties
 
             item.sliderBox = slider
 
-            let minV = cast(f32) assume Reflection.getAttributeValue(value, SliderMinMax, "min")
-            let maxV = cast(f32) assume Reflection.getAttributeValue(value, SliderMinMax, "max")
+            let minV = cast(f32) assume Reflection.getAttributeValue(value, me.SliderMinMax, "min")
+            let maxV = cast(f32) assume Reflection.getAttributeValue(value, me.SliderMinMax, "max")
 
             switch typeNative.nativeKind
             {
@@ -184,14 +184,14 @@ impl Properties
         }
         else
         {
-            let unit = Reflection.getAttributeValue(value, Unit, "value")
+            let unit = Reflection.getAttributeValue(value, me.Unit, "value")
 
             with let ed = EditBox.create(item.line, value.name)
             {
                 if unit != null:
                     .unit = cast(string) unit
-                .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
-                if kind == .Grid:
+                .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
+                if me.kind == .Grid:
                     .dockStyle = .CenterKeepSizeVert
                 else:
                     .anchorStyle = .X
@@ -199,11 +199,11 @@ impl Properties
 
             var minV, maxV: s64
             var hasMinMax = false
-            if Reflection.hasAttribute(value, MinMax)
+            if Reflection.hasAttribute(value, me.MinMax)
             {
                 hasMinMax = true
-                minV      = cast(s64) assume Reflection.getAttributeValue(value, MinMax, "min")
-                maxV      = cast(s64) assume Reflection.getAttributeValue(value, MinMax, "max")
+                minV      = cast(s64) assume Reflection.getAttributeValue(value, me.MinMax, "min")
+                maxV      = cast(s64) assume Reflection.getAttributeValue(value, me.MinMax, "max")
             }
 
             item.editBox = ed
@@ -265,7 +265,7 @@ impl Properties
         {
             item.sliderBox.sigChanged += mtd|item|(ed)
             {
-                validateNative(item)
+                me.validateNative(item)
             }
         }
         elif item.editBox
@@ -273,7 +273,7 @@ impl Properties
             item.editBox.sigLoseFocus += mtd|item|(ed)
             {
                 if ed.isValid():
-                    validateNative(item)
+                    me.validateNative(item)
                 else:
                     ed.restoreText()
             }

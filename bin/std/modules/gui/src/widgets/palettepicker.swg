@@ -19,16 +19,16 @@ impl IWnd for PalettePicker
     {
         let bc      = evt.bc
         let painter = bc.painter
-        let colors  = getThemeColors()
+        let colors  = me.getThemeColors()
 
         var colorBorder: Color = undefined
 
-        var clientRect = getClientRectPadding()
-        palPos.resize(pal.count)
+        var clientRect = me.getClientRectPadding()
+        me.palPos.resize(me.pal.count)
 
         var x = clientRect.x
         var y = clientRect.y
-        foreach c, i in pal
+        foreach c, i in me.pal
         {
             if hotIdx == i:
                 colorBorder = colors.palPicker_HotBorder
@@ -57,41 +57,41 @@ impl IWnd for PalettePicker
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = surfaceToLocal(evt.surfacePos)
+        var pos = me.surfaceToLocal(evt.surfacePos)
         evt.accepted = false
 
         // Hit test
         var newHotIdx = Swag.S32.Max
-        for i in palPos
+        for i in me.palPos
         {
-            if palPos[i].contains(pos)
+            if me.palPos[i].contains(pos)
             {
                 newHotIdx = cast() i
                 break
             }
         }
 
-        if newHotIdx != hotIdx
+        if newHotIdx != me.hotIdx
         {
-            hotIdx = newHotIdx
-            invalidate()
+            me.hotIdx = newHotIdx
+            me.invalidate()
         }
 
         switch evt.kind
         {
         case MousePressed:
-            if evt.button == .Left and hotIdx != Swag.S32.Max
+            if evt.button == .Left and me.hotIdx != Swag.S32.Max
             {
-                selectedColor = pal[hotIdx]
-                sigChanged.call(me)
+                me.selectedColor = me.pal[me.hotIdx]
+                me.sigChanged.call(me)
                 evt.accepted = true
             }
 
         case MouseLeave:
-            if hotIdx != Swag.S32.Max
+            if me.hotIdx != Swag.S32.Max
             {
-                hotIdx = Swag.S32.Max
-                invalidate()
+                me.hotIdx = Swag.S32.Max
+                me.invalidate()
             }
         }
     }
@@ -115,10 +115,10 @@ impl PalettePicker
             var c: Color
             c.setHsl(i / cast(f32) numColors, sat, lum)
             c.a = 255
-            pal.add(c)
+            me.pal.add(c)
         }
 
-        invalidate()
+        me.invalidate()
     }
 
     // Add a range of changing 'luminance'
@@ -131,10 +131,10 @@ impl PalettePicker
             var c: Color
             c.setHsl(h, s, i / cast(f32) numColors)
             c.a = 255
-            pal.add(c)
+            me.pal.add(c)
         }
 
-        invalidate()
+        me.invalidate()
     }
 
     // Add a range of changing 'saturation'
@@ -147,16 +147,16 @@ impl PalettePicker
             var c: Color
             c.setHsl(h, i / cast(f32) numColors, lum)
             c.a = 255
-            pal.add(c)
+            me.pal.add(c)
         }
 
-        invalidate()
+        me.invalidate()
     }
 
     // Add a color
     mtd addColor(c: Color)
     {
-        pal.add(c)
-        invalidate()
+        me.pal.add(c)
+        me.invalidate()
     }
 }

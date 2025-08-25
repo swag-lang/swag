@@ -49,12 +49,12 @@ impl IWnd for FileDlg
 {
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if dlgOptions.state
+        if me.dlgOptions.state
         {
-            with dlgOptions.state
+            with me.dlgOptions.state
             {
-                .position  = surface.position
-                .curFolder = curFolder
+                .position  = me.surface.position
+                .curFolder = me.curFolder
             }
         }
     }
@@ -64,8 +64,8 @@ internal impl FileDlg
 {
     mtd folderUp()
     {
-        if comboPathStr.count > 1:
-            setCurFolder(comboPathStr[1].toString())
+        if me.comboPathStr.count > 1:
+            me.setCurFolder(me.comboPathStr[1].toString())
     }
 
     mtd setCurFolder(folder: string)
@@ -73,22 +73,22 @@ internal impl FileDlg
         if !@countof(folder) or !Directory.exists(folder):
             return
 
-        curFolder = folder
-        Path.normalize(&curFolder)
+        me.curFolder = folder
+        Path.normalize(&me.curFolder)
 
-        if curFolder.back() == '/':
-            curFolder.removeBack()
+        if me.curFolder.back() == '/':
+            me.curFolder.removeBack()
 
-        fillList()
-        fillComboPath()
+        me.fillList()
+        me.fillComboPath()
     }
 
     mtd fillComboPath()
     {
-        comboPath.clear()
-        comboPathStr.clear()
+        me.comboPath.clear()
+        me.comboPathStr.clear()
 
-        var all = Tokenize.split(curFolder.toString(), '/''rune)
+        var all = Tokenize.split(me.curFolder.toString(), '/''rune)
         for #reverse i in all
         {
             var str: String
@@ -98,22 +98,22 @@ internal impl FileDlg
                 str += '/''u8
             }
 
-            comboPathStr.add(str)
+            me.comboPathStr.add(str)
 
             let one = all[i]
-            var ic  = getApp().getDirectoryIcon(one)
-            comboPath.addItem(one, icon: ic)
+            var ic  = me.getApp().getDirectoryIcon(one)
+            me.comboPath.addItem(one, icon: ic)
         }
 
-        comboPath.selectItem(0)
+        me.comboPath.selectItem(0)
     }
 
     mtd fillListFolders()
     {
-        var l = treeCtrl.createLine("Shortcuts")
+        var l = me.treeCtrl.createLine("Shortcuts")
         l.separator = true
 
-        foreach v in dlgOptions.shortcuts
+        foreach v in me.dlgOptions.shortcuts
         {
             var c  = Env.getSpecialDirectory(v.item0)
             var ic = getApp().getSpecialDirectoryIcon(v.item0, true)
@@ -123,7 +123,7 @@ internal impl FileDlg
             treePathStr.add(c)
         }
 
-        l           = treeCtrl.createLine("Drives")
+        l           = me.treeCtrl.createLine("Drives")
         l.separator = true
 
         var volumes = catch Directory.getDrives()
@@ -137,35 +137,35 @@ internal impl FileDlg
             treePathStr.add(v)
         }
 
-        treeCtrl.sigSelChanged += mtd||(list)
+        me.treeCtrl.sigSelChanged += mtd||(list)
         {
             var line = list.getSelectedLine()
             if !line:
                 return
             var idx = cast(u64) line.userData0
-            setCurFolder(treePathStr[idx].toString())
+            me.setCurFolder(me.treePathStr[idx].toString())
         }
     }
 
     mtd fillList()
     {
-        listCtrl.clear()
+        me.listCtrl.clear()
 
         with var options: EnumerationOptions
         {
             .skipAttributes  = .Hidden
-            .wantFiles       = dlgOptions.mode != .SelectFolder
+            .wantFiles       = me.dlgOptions.mode != .SelectFolder
             .wantDirectories = true
             .recurse         = false
         }
 
-        curList = catch Directory.enumerate(curFolder, options)
+        me.curList = catch Directory.enumerate(me.curFolder, options)
 
-        let item   = comboType.getSelectedItem()
-        var filter = dlgOptions.filters[cast(u64) item.userData0]
+        let item   = me.comboType.getSelectedItem()
+        var filter = me.dlgOptions.filters[cast(u64) item.userData0]
         var tokens = Tokenize.split(filter.item1, ';''rune)
 
-        foreach &fi in curList
+        foreach &fi in me.curList
         {
             let fname = assume Path.getFileName(fi.fullname)
 
@@ -194,8 +194,8 @@ internal impl FileDlg
             line.setItem(1, fi.lastWriteTime.toString(.DateTimeIso))
         }
 
-        listCtrl.computeLayout()
-        listCtrl.sort()
+        me.listCtrl.computeLayout()
+        me.listCtrl.sort()
     }
 }
 
@@ -496,7 +496,7 @@ impl FileDlg
     // Get the first selection
     mtd getSelectedName()->String
     {
-        var sel = getSelectedNames()
+        var sel = me.getSelectedNames()
         if sel.count == 0:
             return String.from("")
         return sel.front()
@@ -507,10 +507,10 @@ impl FileDlg
     {
         var result: retval
 
-        let item = comboType.getSelectedItem()
-        var fi   = dlgOptions.filters[cast(u64) item.userData0]
+        let item = me.comboType.getSelectedItem()
+        var fi   = me.dlgOptions.filters[cast(u64) item.userData0]
 
-        var tokens = Tokenize.split(editFile.text, ';''rune)
+        var tokens = Tokenize.split(me.editFile.text, ';''rune)
         foreach t in tokens
         {
             // Be sure this is a valid file/folder name
@@ -543,13 +543,13 @@ impl FileDlg
     {
         var folderName: String = "New Folder"
 
-        with let dlg = EditDlg.createSingleLine(surface)
+        with let dlg = EditDlg.createSingleLine(me.surface)
         {
             .edit.setText(folderName)
             .edit.selectAll()
             .edit.setNote("Folder name")
             .surface.setTitle("Folder Name")
-            .surface.center(surface)
+            .surface.center(me.surface)
         }
 
         dlg.sigPressedButton = mtd|dlg|(fdlg, btnid)
@@ -574,7 +574,7 @@ impl FileDlg
                 return false
             }
 
-            var path = Path.combine(curFolder, folderName.toString())
+            var path = Path.combine(me.curFolder, folderName.toString())
             if Directory.exists(path)
             {
                 MessageDlg.error(dlg.surface, "Folder already exists")
@@ -589,14 +589,14 @@ impl FileDlg
         if dlg.doModal() != Dialog.BtnOk:
             return
 
-        var path = Path.combine(curFolder, dlg.edit.text.toString())
+        var path = Path.combine(me.curFolder, dlg.edit.text.toString())
         catch Directory.create(path)
         if @err != null
         {
-            MessageDlg.error(surface, "Cannot create folder")
+            MessageDlg.error(me.surface, "Cannot create folder")
             return
         }
 
-        fillList()
+        me.fillList()
     }
 }

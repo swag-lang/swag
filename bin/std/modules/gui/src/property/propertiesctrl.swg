@@ -90,18 +90,18 @@ impl PropertiesCtrl
 
     internal mtd fillSections()
     {
-        list.clear()
+        me.list.clear()
 
         // In the filter bar
-        if tab
+        if me.tab
         {
-            tab.clear()
-            let tabItem = tab.addItem("All")
-            tabItem.userData0 = cast(*void) prop.sections.count
+            me.tab.clear()
+            let tabItem = me.tab.addItem("All")
+            tabItem.userData0 = cast(*void) me.prop.sections.count
         }
 
         var parentLine: *ListLine
-        foreach &it, idx in prop.sections
+        foreach &it, idx in me.prop.sections
         {
             let str   = it.item0.label.getText()
             let naked = RichString.getNaked(str)
@@ -128,7 +128,7 @@ impl PropertiesCtrl
     // Add a new struct to display
     mtd addStruct(val: any, category: string = null)
     {
-        prop.addStruct(val, category)
-        fillSections()
+        me.prop.addStruct(val, category)
+        me.fillSections()
     }
 }

@@ -29,45 +29,45 @@ impl IWnd for GridLayoutCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !childs.count
+        if !me.childs.count
         {
-            wnd.IWnd.onResizeEvent(evt)
+            me.wnd.IWnd.onResizeEvent(evt)
             return
         }
 
         // Auto compute width of each cell
         var forcedW = 0'f32
-        if gridLayoutFlags.has(.AdaptColWidth)
+        if me.gridLayoutFlags.has(.AdaptColWidth)
         {
-            forcedW = position.width
-            forcedW -= (padding.x + padding.z)
-            forcedW -= (numColumns - 1) * spacingHorz
-            forcedW /= numColumns
+            forcedW = me.position.width
+            forcedW -= (me.padding.x + me.padding.z)
+            forcedW -= (me.numColumns - 1) * me.spacingHorz
+            forcedW /= me.numColumns
         }
 
         // Auto compute height of each cell
         var forcedH = 0'f32
-        if gridLayoutFlags.has(.AdaptRowHeight)
+        if me.gridLayoutFlags.has(.AdaptRowHeight)
         {
-            forcedH = position.height
-            forcedH -= (padding.y + padding.w)
-            forcedH -= (numRows - 1) * spacingVert
-            forcedH /= numRows
+            forcedH = me.position.height
+            forcedH -= (me.padding.y + me.padding.w)
+            forcedH -= (me.numRows - 1) * me.spacingVert
+            forcedH /= me.numRows
         }
 
         var done: Array'(*Wnd)
         var maxW, maxH = 0'f32
-        var y = padding.y
-        for j in numRows
+        var y = me.padding.y
+        for j in me.numRows
         {
-            var x = padding.x
-            for i in numColumns
+            var x = me.padding.x
+            for i in me.numColumns
             {
-                let colW = forcedW orelse colSizes[i]
-                defer x += colW + spacingHorz
+                let colW = forcedW orelse me.colSizes[i]
+                defer x += colW + me.spacingHorz
 
-                let idx    = i + (j * numColumns)
-                let curWnd = layout[idx]
+                let idx    = i + (j * me.numColumns)
+                let curWnd = me.layout[idx]
                 if !curWnd or done.contains(curWnd):
                     continue
 
@@ -79,38 +79,38 @@ impl IWnd for GridLayoutCtrl
                 var idxC = i
                 var idxW = idx
                 var idxN = 0
-                while idxC < numColumns and layout[idxW] == curWnd
+                while idxC < me.numColumns and me.layout[idxW] == curWnd
                 {
-                    w += forcedW orelse colSizes[idxC]
+                    w += forcedW orelse me.colSizes[idxC]
                     idxW, idxC, idxN += 1
                 }
 
-                w += (idxN - 1) * spacingHorz
+                w += (idxN - 1) * me.spacingHorz
 
                 idxC = j
                 idxW = idx
                 idxN = 0
-                while idxC < numRows and layout[idxW] == curWnd
+                while idxC < me.numRows and me.layout[idxW] == curWnd
                 {
-                    h += forcedH orelse rowSizes[idxC]
-                    idxW += numColumns
+                    h += forcedH orelse me.rowSizes[idxC]
+                    idxW += me.numColumns
                     idxC, idxN += 1
                 }
 
-                h += (idxN - 1) * spacingVert
+                h += (idxN - 1) * me.spacingVert
 
                 curWnd.setPosition(Math.Rectangle{x, y, w, h})
-                maxW = Math.max(maxW, x + w + padding.z)
-                maxH = Math.max(maxH, y + h + padding.w)
+                maxW = Math.max(maxW, x + w + me.padding.z)
+                maxH = Math.max(maxH, y + h + me.padding.w)
             }
 
-            y += forcedH orelse rowSizes[j]
-            y += spacingVert
+            y += forcedH orelse me.rowSizes[j]
+            y += me.spacingVert
         }
 
-        if gridLayoutFlags.has(.AdaptSizeToContent):
-            resize(maxW, maxH)
-        wnd.IWnd.onResizeEvent(evt)
+        if me.gridLayoutFlags.has(.AdaptSizeToContent):
+            me.resize(maxW, maxH)
+        me.wnd.IWnd.onResizeEvent(evt)
     }
 }
 
@@ -137,19 +137,19 @@ impl GridLayoutCtrl
     // Recompute layout of all childs
     mtd computeLayout()
     {
-        sendResizeEvent()
+        me.sendResizeEvent()
     }
 
     // Set size, in pixel, of a given column
     mtd setColSize(col: s32, size: f32)
     {
-        colSizes[col] = size
+        me.colSizes[col] = size
     }
 
     // Set size, in pixel, of a given row
     mtd setRowSize(row: s32, size: f32)
     {
-        rowSizes[row] = size
+        me.rowSizes[row] = size
     }
 
     // Set the wnd associated with the given 'col' and 'row'.
@@ -157,17 +157,17 @@ impl GridLayoutCtrl
     mtd setColRowChild(child: *Wnd, col, row: s32, spanH, spanV: s32 = 1)
     {
         Debug.assert(child.parent == me)
-        Debug.assert(col + spanH <= numColumns and row + spanV <= numRows)
+        Debug.assert(col + spanH <= me.numColumns and row + spanV <= me.numRows)
         Debug.assert(spanH and spanV)
 
         for i in spanH
         {
-            var x = col + (row * numColumns)
+            var x = col + (row * me.numColumns)
             x += i
             for j in spanV
             {
-                let x1 = x + (j * numColumns)
-                layout[x1] = child
+                let x1 = x + (j * me.numColumns)
+                me.layout[x1] = child
             }
         }
     }

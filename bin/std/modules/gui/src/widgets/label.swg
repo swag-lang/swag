@@ -35,7 +35,7 @@ impl IWnd for Label
 {
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = surfaceToLocal(evt.surfacePos)
+        var pos = me.surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseWheel:
@@ -43,35 +43,35 @@ impl IWnd for Label
             return
 
         case MousePressed:
-            if evt.button == .Left and hotChunk:
-                sigUrlClicked.call(me, hotChunk.slice)
+            if evt.button == .Left and me.hotChunk:
+                me.sigUrlClicked.call(me, me.hotChunk.slice)
             else:
                 evt.accepted = false
 
         case MouseMove:
-            let chunk = name.getUrlChunkAt(pos)
-            if chunk != hotChunk
+            let chunk = me.name.getUrlChunkAt(pos)
+            if chunk != me.hotChunk
             {
-                invalidate()
+                me.invalidate()
                 if chunk
                 {
                     chunk.isHotUrl = true
-                    getApp().setFrameCursor(Cursor.from(.Hand))
+                    me.getApp().setFrameCursor(Cursor.from(.Hand))
                 }
-                elif hotChunk
+                elif me.hotChunk
                 {
-                    hotChunk.isHotUrl = false
+                    me.hotChunk.isHotUrl = false
                 }
 
-                hotChunk = chunk
+                me.hotChunk = chunk
             }
 
         case MouseLeave:
-            if hotChunk
+            if me.hotChunk
             {
-                hotChunk.isHotUrl = false
-                hotChunk          = null
-                invalidate()
+                me.hotChunk.isHotUrl = false
+                me.hotChunk          = null
+                me.invalidate()
             }
         }
     }
@@ -79,50 +79,50 @@ impl IWnd for Label
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
-        let theme   = getTheme()
+        let theme   = me.getTheme()
         let painter = evt.bc.painter
 
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
         var pos        = clientRect
-        pos.applyPadding(padding)
+        pos.applyPadding(me.padding)
 
         // Icon
-        if icon.isValid()
+        if me.icon.isValid()
         {
             var posIcon = pos
-            posIcon.applyPadding(paddingIcon)
+            posIcon.applyPadding(me.paddingIcon)
 
-            switch horzAlignmentIcon
+            switch me.horzAlignmentIcon
             {
             case Right:
-                posIcon.x = posIcon.right() - icon.sizeX
+                posIcon.x = posIcon.right() - me.icon.sizeX
             case Center:
-                posIcon.x = posIcon.horzCenter() - (icon.sizeX * 0.5)
+                posIcon.x = posIcon.horzCenter() - (me.icon.sizeX * 0.5)
             }
 
-            switch vertAlignmentIcon
+            switch me.vertAlignmentIcon
             {
             case Bottom:
-                posIcon.y = posIcon.bottom() - icon.sizeY
+                posIcon.y = posIcon.bottom() - me.icon.sizeY
             case Center:
-                posIcon.y = posIcon.vertCenter() - (icon.sizeY * 0.5)
+                posIcon.y = posIcon.vertCenter() - (me.icon.sizeY * 0.5)
             }
 
             // Icon
-            var color = iconColor
+            var color = me.iconColor
             if !color.a:
-                color = (wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
-            icon.paint(painter, posIcon.x, posIcon.y, color)
+                color = (me.wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
+            me.icon.paint(painter, posIcon.x, posIcon.y, color)
         }
 
         // Text
-        if !name.isEmpty()
+        if !me.name.isEmpty()
         {
             var posText = pos
-            posText.applyPadding(paddingText)
+            posText.applyPadding(me.paddingText)
 
-            var sf = getStringFormat(bc.isDisabled)
-            painter.drawRichString(posText, &name, sf)
+            var sf = me.getStringFormat(bc.isDisabled)
+            painter.drawRichString(posText, &me.name, sf)
         }
     }
 }
@@ -131,26 +131,26 @@ impl Label
 {
     internal mtd getStringFormat(isDisabled: bool)->RichStringFormat
     {
-        let theme = getTheme()
+        let theme = me.getTheme()
 
         var sf: retval
         sf.flags |= .Clip
-        if labelFlags.has(.WordWrap):
+        if me.labelFlags.has(.WordWrap):
             sf.flags.add(.WordWrap)
-        if labelFlags.has(.DontAdaptSingleLineHeight):
+        if me.labelFlags.has(.DontAdaptSingleLineHeight):
             sf.flags.add(.DontAdaptSingleLineHeight)
-        sf.font          = getFont()
-        sf.horzAlignment = horzAlignmentText
-        sf.vertAlignment = vertAlignmentText
+        sf.font          = me.getFont()
+        sf.horzAlignment = me.horzAlignmentText
+        sf.vertAlignment = me.vertAlignmentText
 
-        if textColor.a
+        if me.textColor.a
         {
-            sf.palette[0]  = textColor
-            sf.palette[1]  = textColor
-            sf.palette[2]  = textColor
-            sf.palette[3]  = textColor
-            sf.colorUrl    = textColor
-            sf.colorHotUrl = textColor
+            sf.palette[0]  = me.textColor
+            sf.palette[1]  = me.textColor
+            sf.palette[2]  = me.textColor
+            sf.palette[3]  = me.textColor
+            sf.colorUrl    = me.textColor
+            sf.colorHotUrl = me.textColor
         }
         elif isDisabled
         {
@@ -163,7 +163,7 @@ impl Label
         }
         else
         {
-            if labelFlags.has(.LightText):
+            if me.labelFlags.has(.LightText):
                 sf.palette[0] = theme.colors.label_TextLight
             else:
                 sf.palette[0] = theme.colors.label_Text
@@ -193,27 +193,27 @@ impl Label
     // Change the text
     mtd setText(text: #null string)
     {
-        name = text
-        invalidate()
-        autoHeight()
+        me.name = text
+        me.invalidate()
+        me.autoHeight()
     }
 
     // Get the text
     mtd getText()->string
     {
-        return name.raw
+        return me.name.raw
     }
 
     // Recompute widget height.
     // The widget must have the flag 'AutoHeight'.
     mtd autoHeight()
     {
-        if labelFlags.has(.AutoHeight)
+        if me.labelFlags.has(.AutoHeight)
         {
-            var sf = getStringFormat(false)
-            name.compute()
-            Painter.computeLayout(position, &name, sf)
-            position.height = name.boundRect.height
+            var sf = me.getStringFormat(false)
+            me.name.compute()
+            Painter.computeLayout(me.position, &me.name, sf)
+            me.position.height = me.name.boundRect.height
         }
     }
 }

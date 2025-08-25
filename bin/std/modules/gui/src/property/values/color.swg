@@ -4,16 +4,16 @@ impl Properties
 {
     mtd constructColor(value: Swag.TypedValue, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
-        let item  = addItem(value, data, parentItem)
+        let item  = me.addItem(value, data, parentItem)
         let color = cast(*Color) data
-        let line  = Wnd.create'Wnd(item.line, {0, 0, position.width, getThemeMetrics().editBox_Height})
+        let line  = Wnd.create'Wnd(item.line, {0, 0, me.position.width, me.getThemeMetrics().editBox_Height})
         line.dockStyle = .CenterKeepSizeVert
 
-        let opaque    = Reflection.hasAttribute(value, Opaque)
-        let keepAlpha = Reflection.hasAttribute(value, KeepAlpha)
+        let opaque    = Reflection.hasAttribute(value, me.Opaque)
+        let keepAlpha = Reflection.hasAttribute(value, me.KeepAlpha)
         let editAlpha = !opaque and !keepAlpha
 
-        let width       = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
+        let width       = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
         const MarginBtn = 4
         const WidthBtn  = 60
 
@@ -39,7 +39,7 @@ impl Properties
                 elif keepAlpha:
                     result |= color.a << 24
                 color.argb = result
-                hasChanged(item)
+                me.hasChanged(item)
             }
         }
 
@@ -56,7 +56,7 @@ impl Properties
             if !btn:
                 return
             let frame = btn.createAnchorPopup(356, 382)
-            editPopup = frame
+            me.editPopup = frame
 
             var pal: Array'Color
             for i in 9:
@@ -76,13 +76,13 @@ impl Properties
                 elif keepAlpha:
                     result |= color.a << 24
                 color.argb = result
-                hasChanged(item)
+                me.hasChanged(item)
             }
         }
 
         btn.sigHidePopup += mtd||(btn)
         {
-            editPopup = null
+            me.editPopup = null
         }
 
         item.sigRefresh += func|ed, btn, color, editAlpha|(item)

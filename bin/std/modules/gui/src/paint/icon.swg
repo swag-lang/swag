@@ -12,12 +12,12 @@ struct Icon
 impl Icon
 {
     #[Swag.Inline]
-    mtd const isValid() => imageList != null
+    mtd const isValid() => me.imageList != null
 
     // Set icon to invalid
     mtd clear()
     {
-        imageList = null
+        me.imageList = null
     }
 
     // Initialize the icon from an image list
@@ -44,20 +44,20 @@ impl Icon
     // Paint icon at the given position
     mtd const paint(painter: *Painter, x, y: f32, color: Color = Argb.White)
     {
-        if !imageList or !imageList.totalFrames:
+        if !me.imageList or !me.imageList.totalFrames:
             return
 
-        let idx  = index % imageList.totalFrames
-        var srcX = idx % imageList.countX()
-        var srcY = idx / imageList.countX()
+        let idx  = me.index % me.imageList.totalFrames
+        var srcX = idx % me.imageList.countX()
+        var srcY = idx / me.imageList.countX()
 
-        srcX *= imageList.frameSizeX
-        srcY *= imageList.frameSizeY
+        srcX *= me.imageList.frameSizeX
+        srcY *= me.imageList.frameSizeY
 
-        if sizeX == imageList.frameSizeX and sizeY == imageList.frameSizeY:
+        if me.sizeX == me.imageList.frameSizeX and me.sizeY == me.imageList.frameSizeY:
             painter.setInterpolationMode(InterpolationMode.Pixel)
         else:
             painter.setInterpolationMode(InterpolationMode.Linear)
-        painter.drawTexture({x, y, sizeX, sizeY}, {srcX, srcY, imageList.frameSizeX, imageList.frameSizeY}, imageList.texture, color)
+        painter.drawTexture({x, y, me.sizeX, me.sizeY}, {srcX, srcY, me.imageList.frameSizeX, me.imageList.frameSizeY}, me.imageList.texture, color)
     }
 }

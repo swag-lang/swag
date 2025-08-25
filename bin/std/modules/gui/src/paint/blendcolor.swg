@@ -17,56 +17,56 @@ impl BlendColor
     // Apply the color lerp to reach 'target'
     mtd apply(wnd: *Wnd, target: Color)
     {
-        if start
+        if me.start
         {
-            start = false
-            curVec4, startVec4, destVec4 = target.toVector4()
+            me.start = false
+            me.curVec4, me.startVec4, me.destVec4 = target.toVector4()
             return
         }
 
         var vec4 = target.toVector4()
-        if destVec4 != vec4
+        if me.destVec4 != vec4
         {
-            startVec4 = curVec4
-            destVec4  = vec4
-            factor    = 0
+            me.startVec4 = me.curVec4
+            me.destVec4  = vec4
+            me.factor    = 0
         }
-        elif factor >= 1.0
+        elif me.factor >= 1.0
         {
-            curVec4, startVec4, destVec4 = target.toVector4()
+            me.curVec4, me.startVec4, me.destVec4 = target.toVector4()
             return
         }
 
-        var startV = startVec4
-        var destV  = destVec4
+        var startV = me.startVec4
+        var destV  = me.destVec4
         if startV.w == 0
         {
-            startV.x = destVec4.x
-            startV.y = destVec4.y
-            startV.z = destVec4.z
+            startV.x = me.destVec4.x
+            startV.y = me.destVec4.y
+            startV.z = me.destVec4.z
         }
 
         if destV.w == 0
         {
-            destV.x = startVec4.x
-            destV.y = startVec4.y
-            destV.z = startVec4.z
+            destV.x = me.startVec4.x
+            destV.y = me.startVec4.y
+            destV.z = me.startVec4.z
         }
 
-        curVec4 = startV.lerpTo(destV, factor)
-        factor += wnd.getApp().getDt() * speed
+        me.curVec4 = startV.lerpTo(destV, me.factor)
+        me.factor += wnd.getApp().getDt() * me.speed
         wnd.invalidate()
     }
 
     // Reset the blend
     mtd reset()
     {
-        start = true
+        me.start = true
     }
 
     // Get the current color
     mtd cur()->Color
     {
-        return Color.fromVector4(curVec4)
+        return Color.fromVector4(me.curVec4)
     }
 }

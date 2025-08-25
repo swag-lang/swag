@@ -33,12 +33,12 @@ impl Cursor
     // Returns true if the cursor is defined
     mtd isValid()->bool
     {
-        return native.cursor != null
+        return me.native.cursor != null
     }
 
     // Destroy the cursor
     mtd destroy()
     {
-        native.cursor = null
+        me.native.cursor = null
     }
 }

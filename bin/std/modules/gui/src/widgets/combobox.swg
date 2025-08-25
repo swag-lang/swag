@@ -39,13 +39,13 @@ impl IWnd for ComboBox
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if editBox
+        if me.editBox
         {
-            let metrics    = getThemeMetrics()
-            var clientRect = getClientRect()
+            let metrics    = me.getThemeMetrics()
+            var clientRect = me.getClientRect()
             clientRect.width -= metrics.comboBox_RightMargin
             clientRect.moveLeft(metrics.comboBox_Padding)
-            editBox.setPosition(clientRect)
+            me.editBox.setPosition(clientRect)
         }
     }
 
@@ -54,10 +54,10 @@ impl IWnd for ComboBox
         let bc      = evt.bc
         let painter = evt.bc.painter
 
-        let theme   = getTheme()
-        let colors  = getThemeColors()
-        let metrics = getThemeMetrics()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let colors  = me.getThemeColors()
+        let metrics = me.getThemeMetrics()
+        let rects   = me.getThemeRects()
 
         var subRectBk:     *ThemeImageRect
         var subRectBorder: *ThemeImageRect
@@ -74,11 +74,11 @@ impl IWnd for ComboBox
             colorBorder = colors.comboBox_DisabledBorder
             colorBk     = colors.comboBox_DisabledBk
             colorText   = colors.comboBox_DisabledText
-        case popup != null:
+        case me.popup != null:
             colorBorder = colors.comboBox_SelectedBorder
             colorBk     = colors.comboBox_SelectedBk
             colorText   = colors.comboBox_SelectedText
-        case isHot:
+        case me.isHot:
             colorBorder = colors.comboBox_HotBorder
             colorBk     = colors.comboBox_HotBk
             colorText   = colors.comboBox_HotText
@@ -88,33 +88,33 @@ impl IWnd for ComboBox
             colorText   = colors.comboBox_Text
         }
 
-        aniBk.apply(me, colorBk)
-        aniBorder.apply(me, colorBorder)
-        aniText.apply(me, colorText)
+        me.aniBk.apply(me, colorBk)
+        me.aniBorder.apply(me, colorBorder)
+        me.aniText.apply(me, colorText)
 
-        var clientRect = getClientRect()
-        theme.drawSubRect(painter, clientRect, subRectBk, aniBk.cur())
-        theme.drawSubRect(painter, clientRect, subRectBorder, aniBorder.cur())
+        var clientRect = me.getClientRect()
+        theme.drawSubRect(painter, clientRect, subRectBk, me.aniBk.cur())
+        theme.drawSubRect(painter, clientRect, subRectBorder, me.aniBorder.cur())
 
         // Item
-        if !editBox and selectedIdx < items.count
+        if !me.editBox and me.selectedIdx < me.items.count
         {
             var format:  RichStringFormat
-            let item     = items[selectedIdx]
+            let item     = me.items[me.selectedIdx]
             var itemRect = clientRect
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_Padding)
 
             if item.icon.isValid():
-                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, aniText.cur())
-            if maxIconSize:
-                itemRect.moveLeft(maxIconSize + metrics.comboBox_IconTextMargin)
+                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, me.aniText.cur())
+            if me.maxIconSize:
+                itemRect.moveLeft(me.maxIconSize + metrics.comboBox_IconTextMargin)
 
-            theme.setTextColors(&format, aniText.cur())
+            theme.setTextColors(&format, me.aniText.cur())
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = getFont()
+            format.font          = me.getFont()
             painter.drawRichString(itemRect, &item.name, format)
         }
 
@@ -133,18 +133,18 @@ impl IWnd for ComboBox
         case MousePressed:
             if evt.button != .Left:
                 break
-            if popup:
-                hidePopup()
+            if me.popup:
+                me.hidePopup()
             else:
-                showPopup()
+                me.showPopup()
 
         case MouseEnter:
-            isHot = true
-            invalidate()
+            me.isHot = true
+            me.invalidate()
 
         case MouseLeave:
-            isHot = false
-            invalidate()
+            me.isHot = false
+            me.invalidate()
         }
     }
 }
@@ -153,13 +153,13 @@ internal impl ComboBox
 {
     mtd showPopup()
     {
-        popup                = PopupListCtrl.create(me)
-        popup.minWidthPopup  = minWidthPopup
-        popup.maxHeightPopup = maxHeightPopup
-        popup.simFitY        = true
-        popup.selectedIdx    = selectedIdx
+        me.popup                = PopupListCtrl.create(me)
+        me.popup.minWidthPopup  = me.minWidthPopup
+        me.popup.maxHeightPopup = me.maxHeightPopup
+        me.popup.simFitY        = true
+        me.popup.selectedIdx    = me.selectedIdx
 
-        foreach item in items
+        foreach item in me.items
         {
             if item.isSeparator:
                 popup.addSeparator()
@@ -167,23 +167,23 @@ internal impl ComboBox
                 popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
-        popup.sigSelected = mtd||(list, idx)
+        me.popup.sigSelected = mtd||(list, idx)
         {
             if idx != Swag.U32.Max:
-                selectItem(idx)
-            hidePopup()
+                me.selectItem(idx)
+            me.hidePopup()
         }
 
-        var rect = getSurfaceRect()
-        popup.show(rect.x, rect.bottom(), rect.width)
+        var rect = me.getSurfaceRect()
+        me.popup.show(rect.x, rect.bottom(), rect.width)
     }
 
     mtd hidePopup()
     {
-        if !popup:
+        if !me.popup:
             return
-        popup.destroy()
-        popup = null
+        me.popup.destroy()
+        me.popup = null
     }
 }
 
@@ -214,16 +214,16 @@ impl ComboBox
     // Remove all items
     mtd clear()
     {
-        maxIconSize = 0
-        items.clear()
-        invalidate()
+        me.maxIconSize = 0
+        me.items.clear()
+        me.invalidate()
     }
 
     // Add a new item
     #[Swag.Discardable]
     mtd addItem(name: #null string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)->*ComboBoxItem
     {
-        let item = items.newPtr()
+        let item = me.items.newPtr()
         with item
         {
             .name      = #me.name
@@ -234,58 +234,58 @@ impl ComboBox
         }
 
         if item.icon.isValid():
-            maxIconSize = Math.max(maxIconSize, cast(s32) item.icon.sizeX)
-        items.add(item)
+            me.maxIconSize = Math.max(me.maxIconSize, cast(s32) item.icon.sizeX)
+        me.items.add(item)
         return item
     }
 
     // Add a separator
     mtd addSeparator()
     {
-        let item = items.newPtr()
+        let item = me.items.newPtr()
         item.isSeparator = true
-        items.add(item)
+        me.items.add(item)
     }
 
     // Returns the selected item
     mtd getSelectedItem()->*ComboBoxItem
     {
-        Debug.assert(selectedIdx < items.count)
-        return items[selectedIdx]
+        Debug.assert(me.selectedIdx < me.items.count)
+        return me.items[me.selectedIdx]
     }
 
     // Set the selected item index
     mtd selectItem(idx: u32)
     {
-        var newIdx = selectedIdx
-        if idx >= items.count:
+        var newIdx = me.selectedIdx
+        if idx >= me.items.count:
             newIdx = Swag.U32.Max
         else:
             newIdx = idx
-        if newIdx == selectedIdx:
+        if newIdx == me.selectedIdx:
             return
 
-        selectedIdx = newIdx
+        me.selectedIdx = newIdx
 
         // Notify
-        if selectedIdx < items.count
+        if me.selectedIdx < me.items.count
         {
-            sigChanged.call(me, selectedIdx)
-            postCommandEvent(items[selectedIdx].id)
+            me.sigChanged.call(me, me.selectedIdx)
+            me.postCommandEvent(me.items[me.selectedIdx].id)
         }
         else
         {
-            sigChanged.call(me, Swag.U32.Max)
+            me.sigChanged.call(me, Swag.U32.Max)
         }
 
-        if editBox
+        if me.editBox
         {
-            if selectedIdx < items.count:
-                editBox.setText(items[selectedIdx].name.raw)
+            if me.selectedIdx < me.items.count:
+                me.editBox.setText(me.items[me.selectedIdx].name.raw)
             else:
-                editBox.setText("")
+                me.editBox.setText("")
         }
 
-        invalidate()
+        me.invalidate()
     }
 }

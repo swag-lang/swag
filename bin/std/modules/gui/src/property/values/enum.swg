@@ -101,7 +101,7 @@ impl Properties
             }
         }
 
-        hasChanged(item)
+        me.hasChanged(item)
     }
 
     mtd validateEnum(item: *PropertiesItem)
@@ -133,27 +133,27 @@ impl Properties
             }
         }
 
-        hasChanged(item)
+        me.hasChanged(item)
     }
 
     mtd constructEnumFlags(value: Swag.TypedValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = addItem(value, data, parentItem)
+        let item = me.addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
 
         foreach v in typeEnum.values
         {
-            with let line = Wnd.create'Wnd(edView)
+            with let line = Wnd.create'Wnd(me.edView)
             {
                 .wndFlags.set(.PreChildsPaint)
-                if kind == .List:
-                    .margin.x = leftMargin
-                .margin.z = rightMargin
-                .margin.y = listNameMarginAfter
-                .margin.w = listNameMarginAfter
+                if me.kind == .List:
+                    .margin.x = me.leftMargin
+                .margin.z = me.rightMargin
+                .margin.y = me.listNameMarginAfter
+                .margin.w = me.listNameMarginAfter
             }
 
-            with let itemB = items.addNewPtr()
+            with let itemB = me.items.addNewPtr()
             {
                 .type        = typeEnum
                 .typeValue   = v
@@ -167,12 +167,12 @@ impl Properties
                 .flags.add(.NoSeparator)
             }
 
-            line.hookOnEvent = mtd|itemB|(hwnd, evt) { return onItemEvent(itemB, hwnd, evt); }
+            line.hookOnEvent = mtd|itemB|(hwnd, evt) { return me.onItemEvent(itemB, hwnd, evt); }
 
-            with let ed = CheckButton.create(line, "", {0, 0, gridLineHeight, 0})
+            with let ed = CheckButton.create(line, "", {0, 0, me.gridLineHeight, 0})
             {
-                if kind == .Grid:
-                    .margin.x = leftMargin
+                if me.kind == .Grid:
+                    .margin.x = me.leftMargin
                 .dockStyle = .Left
                 .userData  = cast #unconst (*void) v.value
             }
@@ -182,7 +182,7 @@ impl Properties
             let dispDesc = Reflection.getAttributeValue(v, Properties.Description, "desc")
             itemB.filter += cast(string) dispDesc
 
-            with let label1 = Label.create(line, "", {item.line.position.height, 0, position.width - item.line.position.height})
+            with let label1 = Label.create(line, "", {item.line.position.height, 0, me.position.width - item.line.position.height})
             {
                 .dockStyle = .Center
                 .labelFlags |= .WordWrap | .AutoHeight
@@ -201,7 +201,7 @@ impl Properties
             refreshEnumFlags(itemB)
             itemB.checkBox.sigChanged += mtd|itemB|(ed)
             {
-                validateEnumFlags(itemB)
+                me.validateEnumFlags(itemB)
             }
         }
     }
@@ -210,15 +210,15 @@ impl Properties
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            constructEnumFlags(value, typeEnum, data, parentItem)
+            me.constructEnumFlags(value, typeEnum, data, parentItem)
             return
         }
 
-        let item = addItem(value, data, parentItem)
+        let item = me.addItem(value, data, parentItem)
         with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
-            .maxSize.x = cast() Reflection.getAttributeValue(value, EditSize, "size", sizeEditValue)
-            if kind == .Grid:
+            .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
+            if me.kind == .Grid:
                 .dockStyle = .CenterKeepSizeVert
             else:
                 .anchorStyle = .X
@@ -232,7 +232,7 @@ impl Properties
         refreshEnum(item)
         item.comboBox.sigChanged += mtd|item|(ed, n)
         {
-            validateEnum(item)
+            me.validateEnum(item)
         }
     }
 }

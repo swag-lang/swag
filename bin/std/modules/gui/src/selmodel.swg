@@ -10,7 +10,7 @@ impl SelModel
 {
     mtd getSelectedRangeIndex(idx: u32)->u32
     {
-        foreach &r, i in selection
+        foreach &r, i in me.selection
         {
             if idx >= r.start and idx <= r.end:
                 return cast(u32) i
@@ -21,14 +21,14 @@ impl SelModel
 
     #[Swag.Inline]
     {
-        mtd isEmpty()            => selection.isEmpty()
-        mtd isSelected(idx: u32) => getSelectedRangeIndex(idx) != Swag.U32.Max
+        mtd isEmpty()            => me.selection.isEmpty()
+        mtd isSelected(idx: u32) => me.getSelectedRangeIndex(idx) != Swag.U32.Max
     }
 
     // Unselect all
     mtd unselectAll()
     {
-        selection.clear()
+        me.selection.clear()
     }
 
     // Select a given range
@@ -38,12 +38,12 @@ impl SelModel
         if start <= end
         {
             for i in start to end:
-                select(i, select)
+                me.select(i, select)
         }
         else
         {
             for i in end to start:
-                select(i, select)
+                me.select(i, select)
         }
     }
 
@@ -51,7 +51,7 @@ impl SelModel
     #[Swag.Overload]
     mtd select(idx: u32, select: bool)
     {
-        let isSelectedRange = getSelectedRangeIndex(idx)
+        let isSelectedRange = me.getSelectedRangeIndex(idx)
         let isSelected      = isSelectedRange != Swag.U32.Max
         if select == isSelected:
             return
@@ -59,7 +59,7 @@ impl SelModel
         if select
         {
             // Prepend/Append to an existing range
-            foreach &r, i in selection
+            foreach &r, i in me.selection
             {
                 if r.start and idx == r.start - 1
                 {
@@ -75,13 +75,13 @@ impl SelModel
             }
 
             // Need to make a new range
-            selection.add({idx, idx})
+            me.selection.add({idx, idx})
         }
         else
         {
-            let range = #ref selection[isSelectedRange]
+            let range = #ref me.selection[isSelectedRange]
             if range.start == range.end:
-                selection.removeAt(cast(u64) isSelectedRange)
+                me.selection.removeAt(cast(u64) isSelectedRange)
             elif range.start == idx:
                 range.start += 1
             elif range.end == idx:
@@ -90,7 +90,7 @@ impl SelModel
             {
                 let end = range.end
                 range.end = idx - 1
-                selection.add({idx + 1, end})
+                me.selection.add({idx + 1, end})
             }
         }
     }

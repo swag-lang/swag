@@ -58,7 +58,7 @@ impl RichEditCtrl
 {
     mtd clearMapping()
     {
-        mapping.clear()
+        me.mapping.clear()
     }
 
     mtd addMapping(key: Input.Key, mdf: Input.KeyModifiers, cmd: RichEditCommand)
@@ -67,12 +67,12 @@ impl RichEditCtrl
         m.key       = key
         m.modifiers = mdf
         m.command   = cmd
-        mapping.add(m)
+        me.mapping.add(m)
     }
 
     mtd getMappingCommand(key: Input.Key, mdf: Input.KeyModifiers)->RichEditCommand
     {
-        foreach &p in mapping
+        foreach &p in me.mapping
         {
             if p.key == key and p.modifiers == mdf:
                 return p.command
@@ -83,53 +83,53 @@ impl RichEditCtrl
 
     mtd setDefaultMapping()
     {
-        addMapping(.Left, .Zero, .CursorLeft)
-        addMapping(.Left, .Shift, .SelectRuneLeft)
-        addMapping(.Left, .Control, .CursorWordLeft)
-        addMapping(.Left, .CtrlShift, .SelectWordLeft)
-        addMapping(.Left, .Alt, .SelectRectLeft)
-        addMapping(.Right, .Zero, .CursorRight)
-        addMapping(.Right, .Shift, .SelectRuneRight)
-        addMapping(.Right, .Control, .CursorWordRight)
-        addMapping(.Right, .CtrlShift, .SelectWordRight)
-        addMapping(.Right, .Alt, .SelectRectRight)
-        addMapping(.Up, .Zero, .CursorUp)
-        addMapping(.Up, .Shift, .SelectRuneUp)
-        addMapping(.Up, .Control, .ScrollLineUp)
-        addMapping(.Up, .Alt, .SelectRectUp)
-        addMapping(.Down, .Zero, .CursorDown)
-        addMapping(.Down, .Shift, .SelectRuneDown)
-        addMapping(.Down, .Shift, .SelectRuneDown)
-        addMapping(.Down, .Control, .ScrollLineDown)
-        addMapping(.Down, .Alt, .SelectRectDown)
-        addMapping(.PageUp, .Zero, .CursorPageUp)
-        addMapping(.PageUp, .Shift, .SelectPageUp)
-        addMapping(.PageDown, .Zero, .CursorPageDown)
-        addMapping(.PageDown, .Shift, .SelectPageDown)
-        addMapping(.Home, .Zero, .CursorStartLine)
-        addMapping(.Home, .Control, .CursorStartFile)
-        addMapping(.Home, .Shift, .SelectStartLine)
-        addMapping(.Home, .CtrlShift, .SelectStartFile)
-        addMapping(.End, .Zero, .CursorEndLine)
-        addMapping(.End, .Control, .CursorEndFile)
-        addMapping(.End, .Shift, .SelectEndLine)
-        addMapping(.End, .CtrlShift, .SelectEndFile)
-        addMapping(.Back, .Zero, .DeleteLeft)
-        addMapping(.Back, .Control, .DeleteWordLeft)
-        addMapping(.Delete, .Zero, .DeleteRight)
-        addMapping(.Delete, .Control, .DeleteWordRight)
-        addMapping(.Tab, .Zero, .EditTabulation)
-        addMapping(.Tab, .Shift, .EditBackTabulation)
-        addMapping(.Insert, .Zero, .ToggleOverwrite)
-        addMapping(.Insert, .Control, .ClipboardCopy)
-        addMapping(.Insert, .Shift, .ClipboardPaste)
-        addMapping(.A, .Control, .SelectAllFile)
-        addMapping(.C, .Control, .ClipboardCopy)
-        addMapping(.L, .Control, .DeleteLine)
-        addMapping(.V, .Control, .ClipboardPaste)
-        addMapping(.X, .Control, .ClipboardCut)
-        addMapping(.Y, .Control, .Redo)
-        addMapping(.Z, .Control, .Undo)
+        me.addMapping(.Left, .Zero, .CursorLeft)
+        me.addMapping(.Left, .Shift, .SelectRuneLeft)
+        me.addMapping(.Left, .Control, .CursorWordLeft)
+        me.addMapping(.Left, .CtrlShift, .SelectWordLeft)
+        me.addMapping(.Left, .Alt, .SelectRectLeft)
+        me.addMapping(.Right, .Zero, .CursorRight)
+        me.addMapping(.Right, .Shift, .SelectRuneRight)
+        me.addMapping(.Right, .Control, .CursorWordRight)
+        me.addMapping(.Right, .CtrlShift, .SelectWordRight)
+        me.addMapping(.Right, .Alt, .SelectRectRight)
+        me.addMapping(.Up, .Zero, .CursorUp)
+        me.addMapping(.Up, .Shift, .SelectRuneUp)
+        me.addMapping(.Up, .Control, .ScrollLineUp)
+        me.addMapping(.Up, .Alt, .SelectRectUp)
+        me.addMapping(.Down, .Zero, .CursorDown)
+        me.addMapping(.Down, .Shift, .SelectRuneDown)
+        me.addMapping(.Down, .Shift, .SelectRuneDown)
+        me.addMapping(.Down, .Control, .ScrollLineDown)
+        me.addMapping(.Down, .Alt, .SelectRectDown)
+        me.addMapping(.PageUp, .Zero, .CursorPageUp)
+        me.addMapping(.PageUp, .Shift, .SelectPageUp)
+        me.addMapping(.PageDown, .Zero, .CursorPageDown)
+        me.addMapping(.PageDown, .Shift, .SelectPageDown)
+        me.addMapping(.Home, .Zero, .CursorStartLine)
+        me.addMapping(.Home, .Control, .CursorStartFile)
+        me.addMapping(.Home, .Shift, .SelectStartLine)
+        me.addMapping(.Home, .CtrlShift, .SelectStartFile)
+        me.addMapping(.End, .Zero, .CursorEndLine)
+        me.addMapping(.End, .Control, .CursorEndFile)
+        me.addMapping(.End, .Shift, .SelectEndLine)
+        me.addMapping(.End, .CtrlShift, .SelectEndFile)
+        me.addMapping(.Back, .Zero, .DeleteLeft)
+        me.addMapping(.Back, .Control, .DeleteWordLeft)
+        me.addMapping(.Delete, .Zero, .DeleteRight)
+        me.addMapping(.Delete, .Control, .DeleteWordRight)
+        me.addMapping(.Tab, .Zero, .EditTabulation)
+        me.addMapping(.Tab, .Shift, .EditBackTabulation)
+        me.addMapping(.Insert, .Zero, .ToggleOverwrite)
+        me.addMapping(.Insert, .Control, .ClipboardCopy)
+        me.addMapping(.Insert, .Shift, .ClipboardPaste)
+        me.addMapping(.A, .Control, .SelectAllFile)
+        me.addMapping(.C, .Control, .ClipboardCopy)
+        me.addMapping(.L, .Control, .DeleteLine)
+        me.addMapping(.V, .Control, .ClipboardPaste)
+        me.addMapping(.X, .Control, .ClipboardCut)
+        me.addMapping(.Y, .Control, .Redo)
+        me.addMapping(.Z, .Control, .Undo)
     }
 
     // Execute a command
@@ -138,238 +138,238 @@ impl RichEditCtrl
         switch cmd
         {
         case CursorLeft:
-            if isSelectionEmpty():
-                moveCursorLeft(&cursorPos)
+            if me.isSelectionEmpty():
+                me.moveCursorLeft(&me.cursorPos)
             else:
-                setCursorPos(getBegSelection())
-            clearSelection()
+                me.setCursorPos(me.getBegSelection())
+            me.clearSelection()
 
         case CursorRight:
-            if isSelectionEmpty():
-                moveCursorRight(&cursorPos)
+            if me.isSelectionEmpty():
+                me.moveCursorRight(&me.cursorPos)
             else:
-                setCursorPos(getEndSelection())
-            clearSelection()
+                me.setCursorPos(me.getEndSelection())
+            me.clearSelection()
 
         case CursorUp:
-            if !isSelectionEmpty()
+            if !me.isSelectionEmpty()
             {
-                var pt = getCursorDisplayPos(cursorPos)
-                setCursorPos(getBegSelection())
-                moveCursorUp(&cursorPos, pt)
+                var pt = me.getCursorDisplayPos(me.cursorPos)
+                me.setCursorPos(me.getBegSelection())
+                me.moveCursorUp(&me.cursorPos, pt)
             }
             else:
-                moveCursorUp(&cursorPos)
-            clearSelection()
+                me.moveCursorUp(&me.cursorPos)
+            me.clearSelection()
 
         case CursorDown:
-            if !isSelectionEmpty()
+            if !me.isSelectionEmpty()
             {
-                var pt = getCursorDisplayPos(cursorPos)
-                setCursorPos(getEndSelection())
-                moveCursorDown(&cursorPos, pt)
+                var pt = me.getCursorDisplayPos(me.cursorPos)
+                me.setCursorPos(me.getEndSelection())
+                me.moveCursorDown(&me.cursorPos, pt)
             }
             else:
-                moveCursorDown(&cursorPos)
-            clearSelection()
+                me.moveCursorDown(&me.cursorPos)
+            me.clearSelection()
 
         case CursorStartLine:
-            moveCursorStartLine(&cursorPos)
-            clearSelection()
+            me.moveCursorStartLine(&me.cursorPos)
+            me.clearSelection()
 
         case CursorEndLine:
-            moveCursorEndLine(&cursorPos)
-            clearSelection()
+            me.moveCursorEndLine(&me.cursorPos)
+            me.clearSelection()
 
         case CursorStartFile:
-            moveCursorStartFile(&cursorPos)
-            clearSelection()
+            me.moveCursorStartFile(&me.cursorPos)
+            me.clearSelection()
 
         case CursorEndFile:
-            moveCursorEndFile(&cursorPos)
-            clearSelection()
+            me.moveCursorEndFile(&me.cursorPos)
+            me.clearSelection()
 
         case CursorWordLeft:
-            moveCursorWordLeft(&cursorPos)
-            clearSelection()
+            me.moveCursorWordLeft(&me.cursorPos)
+            me.clearSelection()
 
         case CursorWordRight:
-            moveCursorWordRight(&cursorPos, true)
-            clearSelection()
+            me.moveCursorWordRight(&me.cursorPos, true)
+            me.clearSelection()
 
         case CursorPageUp:
-            moveCursorPageUp(&cursorPos)
-            clearSelection()
+            me.moveCursorPageUp(&me.cursorPos)
+            me.clearSelection()
 
         case CursorPageDown:
-            moveCursorPageDown(&cursorPos)
-            clearSelection()
+            me.moveCursorPageDown(&me.cursorPos)
+            me.clearSelection()
 
         case ScrollLineUp:
-            scrollLineUp()
+            me.scrollLineUp()
 
         case ScrollLineDown:
-            scrollLineDown()
+            me.scrollLineDown()
 
         case SelectRuneLeft:
-            moveCursorLeft(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorLeft(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectRuneRight:
-            moveCursorRight(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorRight(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectRuneUp:
-            moveCursorUp(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorUp(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectRuneDown:
-            moveCursorDown(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorDown(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectStartLine:
-            moveCursorStartLine(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorStartLine(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectEndLine:
-            moveCursorEndLine(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorEndLine(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectStartFile:
-            moveCursorStartFile(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorStartFile(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectEndFile:
-            moveCursorEndFile(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorEndFile(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectAllFile:
-            moveCursorStartFile(&selBeg)
-            moveCursorEndFile(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorStartFile(&me.selBeg)
+            me.moveCursorEndFile(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectWordLeft:
-            moveCursorWordLeft(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorWordLeft(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectWordRight:
-            moveCursorWordRight(&cursorPos, false)
-            setRectangularSelection(false)
+            me.moveCursorWordRight(&me.cursorPos, false)
+            me.setRectangularSelection(false)
 
         case SelectPageUp:
-            moveCursorPageUp(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorPageUp(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectPageDown:
-            moveCursorPageDown(&cursorPos)
-            setRectangularSelection(false)
+            me.moveCursorPageDown(&me.cursorPos)
+            me.setRectangularSelection(false)
 
         case SelectRectLeft:
-            var cp = cursorPos
-            moveCursorLeft(&cp)
-            if cp.lineIndex == cursorPos.lineIndex
+            var cp = me.cursorPos
+            me.moveCursorLeft(&cp)
+            if cp.lineIndex == me.cursorPos.lineIndex
             {
-                cursorPos = cp
-                setRectangularSelection(true)
+                me.cursorPos = cp
+                me.setRectangularSelection(true)
             }
 
         case SelectRectRight:
-            var cp = cursorPos
-            moveCursorRight(&cp)
-            if cp.lineIndex == cursorPos.lineIndex
+            var cp = me.cursorPos
+            me.moveCursorRight(&cp)
+            if cp.lineIndex == me.cursorPos.lineIndex
             {
-                cursorPos = cp
-                setRectangularSelection(true)
+                me.cursorPos = cp
+                me.setRectangularSelection(true)
             }
 
         case SelectRectUp:
-            var cp = cursorPos
-            moveCursorUp(&cp)
-            if cp.charPosInLine == cursorPos.charPosInLine
+            var cp = me.cursorPos
+            me.moveCursorUp(&cp)
+            if cp.charPosInLine == me.cursorPos.charPosInLine
             {
-                cursorPos = cp
-                setRectangularSelection(true)
+                me.cursorPos = cp
+                me.setRectangularSelection(true)
             }
 
         case SelectRectDown:
-            var cp = cursorPos
-            moveCursorDown(&cp)
-            if cp.charPosInLine == cursorPos.charPosInLine
+            var cp = me.cursorPos
+            me.moveCursorDown(&cp)
+            if cp.charPosInLine == me.cursorPos.charPosInLine
             {
-                cursorPos = cp
-                setRectangularSelection(true)
+                me.cursorPos = cp
+                me.setRectangularSelection(true)
             }
 
         case DeleteLeft:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            deleteLeft()
+            me.deleteLeft()
 
         case DeleteRight:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            deleteRight()
+            me.deleteRight()
 
         case DeleteWordLeft:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            deleteWordLeft()
+            me.deleteWordLeft()
 
         case DeleteWordRight:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            deleteWordRight()
+            me.deleteWordRight()
 
         case DeleteLine:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            deleteLine()
+            me.deleteLine()
 
         case EditTabulation:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            if getBegSelection().lineIndex == getEndSelection().lineIndex
+            if me.getBegSelection().lineIndex == me.getEndSelection().lineIndex
             {
-                pushUndo()
-                deleteSelection()
-                insertText("\t")
-                popUndo()
+                me.pushUndo()
+                me.deleteSelection()
+                me.insertText("\t")
+                me.popUndo()
             }
             else:
-                insertBegLine("\t")
+                me.insertBegLine("\t")
 
         case EditBackTabulation:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            deleteBegLine("\t", false)
+            me.deleteBegLine("\t", false)
 
         case Undo:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            undo()
+            me.undo()
 
         case Redo:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            redo()
+            me.redo()
 
         case ToggleOverwrite:
-            overwriteMode = !overwriteMode
-            invalidate()
+            me.overwriteMode = !me.overwriteMode
+            me.invalidate()
 
         case ClipboardCopy:
-            copyToClipboard()
+            me.copyToClipboard()
 
         case ClipboardPaste:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            pasteFromClipboard()
+            me.pasteFromClipboard()
 
         case ClipboardCut:
-            if isReadOnly():
+            if me.isReadOnly():
                 return
-            copyToClipboard()
-            deleteSelection()
+            me.copyToClipboard()
+            me.deleteSelection()
         }
     }
 }

@@ -31,10 +31,10 @@ impl IWnd for CheckButton
     {
         let bc      = evt.bc
         let painter = bc.painter
-        let theme   = getTheme()
-        let metrics = getThemeMetrics()
-        let colors  = getThemeColors()
-        let rects   = getThemeRects()
+        let theme   = me.getTheme()
+        let metrics = me.getThemeMetrics()
+        let colors  = me.getThemeColors()
+        let rects   = me.getThemeRects()
 
         var subRectBk:     *ThemeImageRect
         var subRectBorder: *ThemeImageRect
@@ -51,17 +51,17 @@ impl IWnd for CheckButton
             colorBorder = colors.btnCheck_DisabledBorder
             colorMark   = colors.btnCheck_DisabledMark
             colorText   = colors.btnCheck_DisabledText
-        case isPressed:
+        case me.isPressed:
             colorBk     = colors.btnCheck_PressedBk
             colorBorder = colors.btnCheck_PressedBorder
             colorMark   = colors.btnCheck_PressedMark
             colorText   = colors.btnCheck_PressedText
-        case isHot:
+        case me.isHot:
             colorBk     = colors.btnCheck_HotBk
             colorBorder = colors.btnCheck_HotBorder
             colorMark   = colors.btnCheck_HotMark
             colorText   = colors.btnCheck_HotText
-        case checked == .Checked or checked == .Undefined:
+        case me.checked == .Checked or me.checked == .Undefined:
             colorBk     = colors.btnCheck_CheckedBk
             colorText   = colors.btnCheck_CheckedText
             colorBorder = colors.btnCheck_CheckedBorder
@@ -73,7 +73,7 @@ impl IWnd for CheckButton
             colorText   = colors.btnCheck_Text
         }
 
-        switch checked
+        switch me.checked
         {
         case UnChecked:
             subRectBk     = &rects.btnCheck_Normal
@@ -89,12 +89,12 @@ impl IWnd for CheckButton
         }
 
         // Box
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
         var posBox     = clientRect
         posBox.height = metrics.btnCheck_Size
         posBox.y      = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width  = posBox.height
-        if checkButtonFlags.has(.RightAlign):
+        if me.checkButtonFlags.has(.RightAlign):
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(painter, posBox, subRectBorder, colorBorder)
@@ -103,24 +103,24 @@ impl IWnd for CheckButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        if checkButtonFlags.has(.RightAlign):
+        if me.checkButtonFlags.has(.RightAlign):
             format.horzAlignment = .Right
         else:
             format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags         = .Clip
-        format.font          = getFont()
+        format.font          = me.getFont()
         var labelPos = clientRect
-        if !checkButtonFlags.has(.RightAlign):
+        if !me.checkButtonFlags.has(.RightAlign):
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
-        Theme.drawIconText(painter, labelPos, icon, &name, format, metrics.iconText_Margin)
+        Theme.drawIconText(painter, labelPos, me.icon, &me.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if processMouseEvent(evt):
-            toggle()
+        if me.processMouseEvent(evt):
+            me.toggle()
     }
 }
 
@@ -141,18 +141,18 @@ impl CheckButton
     // Toggle the button state
     public mtd toggle()
     {
-        if checked == .UnChecked and checkButtonFlags.has(.ThreeState):
-            checked = .Undefined
-        elif checked == .Checked:
-            checked = .UnChecked
+        if me.checked == .UnChecked and me.checkButtonFlags.has(.ThreeState):
+            me.checked = .Undefined
+        elif me.checked == .Checked:
+            me.checked = .UnChecked
         else:
-            checked = .Checked
-        sigChanged.call(me)
-        postCommandEvent(id)
+            me.checked = .Checked
+        me.sigChanged.call(me)
+        me.postCommandEvent(me.id)
     }
 
     // Returns 'true' if the button is checked
-    public mtd const isChecked()->bool => checked == .Checked
+    public mtd const isChecked()->bool => me.checked == .Checked
     // Returns 'true' if the button is undefined
-    public mtd const isUndefined()->bool => checked == .Undefined
+    public mtd const isUndefined()->bool => me.checked == .Undefined
 }

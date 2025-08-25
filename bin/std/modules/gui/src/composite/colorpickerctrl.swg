@@ -51,21 +51,21 @@ impl IWnd for ColorPickerCtrl
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        frameWnd.IWnd.onPaintEvent(evt)
+        me.frameWnd.IWnd.onPaintEvent(evt)
 
-        var rect    = staticRes.position
+        var rect    = me.staticRes.position
         let painter = evt.bc.painter
 
-        var brush = Brush.createHatch(.CheckBoardLarge, getThemeColors().colorPicker_BackAlpha)
+        var brush = Brush.createHatch(.CheckBoardLarge, me.getThemeColors().colorPicker_BackAlpha)
 
-        if oldColor.a != 255:
+        if me.oldColor.a != 255:
             painter.fillRect(rect, brush)
-        painter.fillRect(rect, oldColor)
+        painter.fillRect(rect, me.oldColor)
 
         rect.x += rect.width
-        if color.a != 255:
+        if me.color.a != 255:
             painter.fillRect(rect, brush)
-        painter.fillRect(rect, color)
+        painter.fillRect(rect, me.color)
     }
 }
 
@@ -73,55 +73,55 @@ internal impl ColorPickerCtrl
 {
     mtd updateMode()
     {
-        radioH.setChecked(mode == .SaturationLightness)
-        radioL.setChecked(mode == .HueSaturation)
-        radioS.setChecked(mode == .HueLightness)
-        radioR.setChecked(mode == .GreenBlue)
-        radioG.setChecked(mode == .RedBlue)
-        radioB.setChecked(mode == .RedGreen)
+        me.radioH.setChecked(me.mode == .SaturationLightness)
+        me.radioL.setChecked(me.mode == .HueSaturation)
+        me.radioS.setChecked(me.mode == .HueLightness)
+        me.radioR.setChecked(me.mode == .GreenBlue)
+        me.radioG.setChecked(me.mode == .RedBlue)
+        me.radioB.setChecked(me.mode == .RedGreen)
     }
 
     mtd updatePickers()
     {
-        pickBox.sigChanged.disable()
-        pickBox.setColor(color)
-        pickBox.sigChanged.enable()
+        me.pickBox.sigChanged.disable()
+        me.pickBox.setColor(me.color)
+        me.pickBox.sigChanged.enable()
 
-        pickBar.sigChanged.disable()
-        pickBar.setColor(color)
-        pickBar.sigChanged.enable()
+        me.pickBar.sigChanged.disable()
+        me.pickBar.setColor(me.color)
+        me.pickBar.sigChanged.enable()
 
-        pickAlpha.sigChanged.disable()
-        pickAlpha.setColor(color)
-        pickAlpha.sigChanged.enable()
+        me.pickAlpha.sigChanged.disable()
+        me.pickAlpha.setColor(me.color)
+        me.pickAlpha.sigChanged.enable()
     }
 
     mtd updateEdits()
     {
-        var t = Format.toString("%", color.r)
-        editR.setText(t)
-        t = Format.toString("%", color.g)
-        editG.setText(t)
-        t = Format.toString("%", color.b)
-        editB.setText(t)
-        t = Format.toString("%", color.a)
-        editA.setText(t)
+        var t = Format.toString("%", me.color.r)
+        me.editR.setText(t)
+        t = Format.toString("%", me.color.g)
+        me.editG.setText(t)
+        t = Format.toString("%", me.color.b)
+        me.editB.setText(t)
+        t = Format.toString("%", me.color.a)
+        me.editA.setText(t)
 
-        if pickerFlags.has(.Alpha):
-            t = Format.toString("%{X08}", color.argb)
+        if me.pickerFlags.has(.Alpha):
+            t = Format.toString("%{X08}", me.color.argb)
         else:
-            t = Format.toString("%{X02}%{X02}%{X02}", color.r, color.g, color.b)
-        editH.setText(t)
+            t = Format.toString("%{X02}%{X02}%{X02}", me.color.r, me.color.g, me.color.b)
+        me.editH.setText(t)
 
-        staticRes.invalidate()
-        sigChanged.call(me)
+        me.staticRes.invalidate()
+        me.sigChanged.call(me)
     }
 
     mtd updateAll()
     {
-        updatePickers()
-        updateEdits()
-        updateMode()
+        me.updatePickers()
+        me.updateEdits()
+        me.updateMode()
     }
 }
 
@@ -406,23 +406,23 @@ impl ColorPickerCtrl
         switch me.mode
         {
         case SaturationLightness:
-            pickBox.setMode(.SaturationLightness)
-            pickBar.setMode(.HueHorz)
+            me.pickBox.setMode(.SaturationLightness)
+            me.pickBar.setMode(.HueHorz)
         case HueSaturation:
-            pickBox.setMode(.HueSaturation)
-            pickBar.setMode(.LightnessHorz)
+            me.pickBox.setMode(.HueSaturation)
+            me.pickBar.setMode(.LightnessHorz)
         case HueLightness:
-            pickBox.setMode(.HueLightness)
-            pickBar.setMode(.SaturationHorz)
+            me.pickBox.setMode(.HueLightness)
+            me.pickBar.setMode(.SaturationHorz)
         case GreenBlue:
-            pickBox.setMode(.GreenBlue)
-            pickBar.setMode(.RedHorz)
+            me.pickBox.setMode(.GreenBlue)
+            me.pickBar.setMode(.RedHorz)
         case RedBlue:
-            pickBox.setMode(.RedBlue)
-            pickBar.setMode(.GreenHorz)
+            me.pickBox.setMode(.RedBlue)
+            me.pickBar.setMode(.GreenHorz)
         case RedGreen:
-            pickBox.setMode(.RedGreen)
-            pickBar.setMode(.BlueHorz)
+            me.pickBox.setMode(.RedGreen)
+            me.pickBar.setMode(.BlueHorz)
         }
     }
 
@@ -430,7 +430,7 @@ impl ColorPickerCtrl
     #[Swag.Inline]
     mtd getColor()->Color
     {
-        return color
+        return me.color
     }
 
     // Set the selected color but does not change alpha
@@ -438,20 +438,20 @@ impl ColorPickerCtrl
     {
         var col = #me.color
         col.a = me.color.a
-        setColor(col)
+        me.setColor(col)
     }
 
     // Set the selected color
     mtd setColor(color: Color)
     {
         var col = #me.color
-        if !pickerFlags.has(.Alpha):
+        if !me.pickerFlags.has(.Alpha):
             col.a = 255
 
-        if !oldColorDone
+        if !me.oldColorDone
         {
-            oldColor     = col
-            oldColorDone = true
+            me.oldColor     = col
+            me.oldColorDone = true
         }
         elif me.color == col
         {
@@ -459,8 +459,8 @@ impl ColorPickerCtrl
         }
 
         me.color = col
-        sigChanged.call(me)
+        me.sigChanged.call(me)
 
-        updateAll()
+        me.updateAll()
     }
 }

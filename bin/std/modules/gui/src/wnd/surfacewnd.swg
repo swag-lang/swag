@@ -25,16 +25,16 @@ impl IWnd for SurfaceWnd
 {
     mtd hitTestBorders(surfacePos: Math.Point)->SizingBorder
     {
-        let sdw = getThemeMetrics().surfaceWnd_ShadowSize
+        let sdw = me.getThemeMetrics().surfaceWnd_ShadowSize
 
         var newSizingBorder = SizingBorder.Zero
-        if surface.flags.has(.Sizeable)
+        if me.surface.flags.has(.Sizeable)
         {
             const SizeBorder = 10
             if surfacePos.x > sdw - SizeBorder and
                surfacePos.x < sdw + SizeBorder and
                surfacePos.y > sdw - SizeBorder and
-               surfacePos.y < surface.position.height - sdw + SizeBorder
+               surfacePos.y < me.surface.position.height - sdw + SizeBorder
             {
                 newSizingBorder |= .Left
             }
@@ -42,23 +42,23 @@ impl IWnd for SurfaceWnd
             if surfacePos.y > sdw - SizeBorder and
                surfacePos.y < sdw + SizeBorder and
                surfacePos.x > sdw - SizeBorder and
-               surfacePos.x < surface.position.width - sdw + SizeBorder
+               surfacePos.x < me.surface.position.width - sdw + SizeBorder
             {
                 newSizingBorder |= .Top
             }
 
-            if surfacePos.x > surface.position.width - sdw - SizeBorder and
-               surfacePos.x < surface.position.width - sdw + SizeBorder and
+            if surfacePos.x > me.surface.position.width - sdw - SizeBorder and
+               surfacePos.x < me.surface.position.width - sdw + SizeBorder and
                surfacePos.y > sdw - SizeBorder and
-               surfacePos.y < surface.position.height - sdw + SizeBorder
+               surfacePos.y < me.surface.position.height - sdw + SizeBorder
             {
                 newSizingBorder |= .Right
             }
 
-            if surfacePos.y > surface.position.height - sdw - SizeBorder and
-               surfacePos.y < surface.position.height - sdw + SizeBorder and
+            if surfacePos.y > me.surface.position.height - sdw - SizeBorder and
+               surfacePos.y < me.surface.position.height - sdw + SizeBorder and
                surfacePos.x > sdw - SizeBorder and
-               surfacePos.x < surface.position.width - sdw + SizeBorder
+               surfacePos.x < me.surface.position.width - sdw + SizeBorder
             {
                 newSizingBorder |= .Bottom
             }
@@ -74,81 +74,81 @@ impl IWnd for SurfaceWnd
         case MousePressed:
             if evt.button != .Left:
                 break
-            surface.bringToTop()
-            if surface.isMaximized:
+            me.surface.bringToTop()
+            if me.surface.isMaximized:
                 break
-            captureMouse()
-            movingSurface = true
+            me.captureMouse()
+            me.movingSurface = true
 
         case MouseLeave:
-            sizingBorder = .Zero
+            me.sizingBorder = .Zero
 
         case MouseReleased:
             if evt.button != .Left:
                 break
 
-            releaseMouse()
-            movingSurface = false
+            me.releaseMouse()
+            me.movingSurface = false
             fallthrough
 
         case MouseMove:
-            if surface.isMaximized:
+            if me.surface.isMaximized:
                 break
-            if getApp().mouseEnterWnd != me:
+            if me.getApp().mouseEnterWnd != me:
                 break
 
-            if !movingSurface and surface.flags.has(.Sizeable)
+            if !me.movingSurface and me.surface.flags.has(.Sizeable)
             {
-                let newSizingBorder = hitTestBorders(evt.surfacePos)
-                if newSizingBorder != sizingBorder:
-                    sizingBorder = newSizingBorder
+                let newSizingBorder = me.hitTestBorders(evt.surfacePos)
+                if newSizingBorder != me.sizingBorder:
+                    me.sizingBorder = newSizingBorder
             }
 
-            switch sizingBorder
+            switch me.sizingBorder
             {
             case Left, Right:
-                surface.app.setFrameCursor(Cursor.from(.SizeWE))
+                me.surface.app.setFrameCursor(Cursor.from(.SizeWE))
             case Top, Bottom:
-                surface.app.setFrameCursor(Cursor.from(.SizeNS))
+                me.surface.app.setFrameCursor(Cursor.from(.SizeNS))
             case Right | Bottom, Left | Top:
-                surface.app.setFrameCursor(Cursor.from(.SizeNWSE))
+                me.surface.app.setFrameCursor(Cursor.from(.SizeNWSE))
             case Right | Top, Left | Bottom:
-                surface.app.setFrameCursor(Cursor.from(.SizeNESW))
+                me.surface.app.setFrameCursor(Cursor.from(.SizeNESW))
             }
 
-            if !movingSurface:
+            if !me.movingSurface:
                 break
 
             var hasChanged = false
-            var pos        = surface.position
+            var pos        = me.surface.position
 
-            if sizingBorder & .Left
+            if me.sizingBorder & .Left
             {
                 pos.x += evt.move.x
                 pos.width -= evt.move.x
                 hasChanged = true
             }
 
-            if sizingBorder & .Top
+            if me.sizingBorder & .Top
             {
                 pos.y += evt.move.y
                 pos.height -= evt.move.y
                 hasChanged = true
             }
 
-            if sizingBorder & .Right
+            if me.sizingBorder & .Right
             {
                 pos.width += evt.move.x
                 hasChanged = true
             }
 
-            if sizingBorder & .Bottom
+            if me.sizingBorder & .Bottom
             {
                 pos.height += evt.move.y
                 hasChanged = true
             }
 
-            if sizingBorder == .Zero
+            if me.sizingBorder == .Zero
             {
                 pos.offset(evt.move.x, evt.move.y)
                 hasChanged = true
@@ -156,15 +156,15 @@ impl IWnd for SurfaceWnd
 
             if hasChanged
             {
-                surface.setPosition(pos)
-                surface.invalidate()
+                me.surface.setPosition(pos)
+                me.surface.invalidate()
             }
         }
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        surface.app.destroySurface(surface)
+        me.surface.app.destroySurface(me.surface)
     }
 
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
@@ -172,106 +172,106 @@ impl IWnd for SurfaceWnd
         switch evt.kind
         {
         case Maximize:
-            surface.showMaximized()
+            me.surface.showMaximized()
         case Minimize:
-            surface.showMinimized()
+            me.surface.showMinimized()
         case Restore:
-            surface.showNormal()
+            me.surface.showNormal()
         case Close:
-            surface.destroy()
+            me.surface.destroy()
         }
     }
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
 
         var pos = clientRect
-        pos.width  = surface.wnd.padding.y * 1.5
+        pos.width  = me.surface.wnd.padding.y * 1.5
         pos.x      = clientRect.right() - pos.width
-        pos.height = surface.wnd.padding.y
+        pos.height = me.surface.wnd.padding.y
         pos.y      = 0
 
-        if closeBtn
+        if me.closeBtn
         {
-            closeBtn.setPosition(pos)
+            me.closeBtn.setPosition(pos)
             pos.x -= pos.width
         }
 
-        if maximizeBtn
+        if me.maximizeBtn
         {
-            maximizeBtn.setPosition(pos)
+            me.maximizeBtn.setPosition(pos)
             pos.x -= pos.width
         }
 
-        if minimizeBtn
+        if me.minimizeBtn
         {
-            minimizeBtn.setPosition(pos)
+            me.minimizeBtn.setPosition(pos)
             pos.x -= pos.width
         }
 
-        base.IWnd.onResizeEvent(evt)
+        me.base.IWnd.onResizeEvent(evt)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if isPendingDestroy:
+        if me.isPendingDestroy:
             return
         let bc     = evt.bc
-        let theme  = getTheme()
-        let colors = getThemeColors()
-        let rects  = getThemeRects()
+        let theme  = me.getTheme()
+        let colors = me.getThemeColors()
+        let rects  = me.getThemeRects()
 
-        var clientRect = getClientRect()
+        var clientRect = me.getClientRect()
 
-        if surface.flags.has(.Border)
+        if me.surface.flags.has(.Border)
         {
             let subRect = &rects.wnd_Border
             theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
         }
 
         var posCaption = clientRect
-        if surface.flags.has(.BigCaption)
+        if me.surface.flags.has(.BigCaption)
         {
-            posCaption.height = surface.wnd.padding.y
+            posCaption.height = me.surface.wnd.padding.y
             let subRect = &rects.wnd_Caption
-            let colorBk = surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
+            let colorBk = me.surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
-        if surface.flags.has(.SmallCaption)
+        if me.surface.flags.has(.SmallCaption)
         {
-            posCaption.height = surface.wnd.padding.y
+            posCaption.height = me.surface.wnd.padding.y
             let subRect = &rects.wnd_CaptionSmall
-            let colorBk = surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
+            let colorBk = me.surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
-        if surface.flags.has(.BigCaption | .SmallCaption)
+        if me.surface.flags.has(.BigCaption | .SmallCaption)
         {
             posCaption.x += theme.metrics.wnd_CaptionMarginTitle
 
             var posClip = posCaption
-            if surface.flags.has(.MinimizeBtn):
-                posClip.setRight(minimizeBtn.position.x)
-            elif surface.flags.has(.MaximizeBtn):
-                posClip.setRight(maximizeBtn.position.x)
-            elif surface.flags.has(.CloseBtn):
-                posClip.setRight(closeBtn.position.x)
+            if me.surface.flags.has(.MinimizeBtn):
+                posClip.setRight(me.minimizeBtn.position.x)
+            elif me.surface.flags.has(.MaximizeBtn):
+                posClip.setRight(me.maximizeBtn.position.x)
+            elif me.surface.flags.has(.CloseBtn):
+                posClip.setRight(me.closeBtn.position.x)
             bc.painter.pushClippingRect(posClip)
             defer bc.painter.popClippingRect()
 
-            if icon.isValid()
+            if me.icon.isValid()
             {
-                icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - icon.sizeY * 0.5)
-                posCaption.x += icon.sizeX + theme.metrics.iconText_Margin
+                me.icon.paint(bc.painter, posCaption.x, posCaption.vertCenter() - me.icon.sizeY * 0.5)
+                posCaption.x += me.icon.sizeX + theme.metrics.iconText_Margin
             }
 
             var sf: Pixel.RichStringFormat
             sf.vertAlignment = .Center
-            sf.font          = getFont()
-            sf.palette[0]    = surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
-            bc.painter.drawRichString(posCaption, &name, sf)
+            sf.font          = me.getFont()
+            sf.palette[0]    = me.surface.app.isActivated ? colors.wnd_CaptionText : colors.wnd_CaptionNotActivatedText
+            bc.painter.drawRichString(posCaption, &me.name, sf)
         }
     }
 }
@@ -301,47 +301,47 @@ impl SurfaceWnd
 
     internal mtd applySurfaceFlags()
     {
-        let theme = surface.app.theme
+        let theme = me.surface.app.theme
         if !theme.intialized:
             return
 
-        if surface.flags.has(.MinimizeBtn)
+        if me.surface.flags.has(.MinimizeBtn)
         {
-            if !minimizeBtn
+            if !me.minimizeBtn
             {
-                with minimizeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndMinimize), {0, 0, 0, 0})
+                with me.minimizeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndMinimize), {0, 0, 0, 0})
                 {
                     .sigPressed += &onMinimize
                 }
             }
         }
-        elif minimizeBtn
+        elif me.minimizeBtn
         {
-            minimizeBtn.destroy()
-            minimizeBtn = null
+            me.minimizeBtn.destroy()
+            me.minimizeBtn = null
         }
 
-        if surface.flags.has(.MaximizeBtn)
+        if me.surface.flags.has(.MaximizeBtn)
         {
-            if !maximizeBtn
+            if !me.maximizeBtn
             {
-                with maximizeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndMaximize), {0, 0, 0, 0})
+                with me.maximizeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndMaximize), {0, 0, 0, 0})
                 {
                     .sigPressed += &onMaximize
                 }
             }
         }
-        elif maximizeBtn
+        elif me.maximizeBtn
         {
-            maximizeBtn.destroy()
-            maximizeBtn = null
+            me.maximizeBtn.destroy()
+            me.maximizeBtn = null
         }
 
-        if surface.flags.has(.CloseBtn)
+        if me.surface.flags.has(.CloseBtn)
         {
-            if !closeBtn
+            if !me.closeBtn
             {
-                with closeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndClose), {0, 0, 0, 0})
+                with me.closeBtn = IconButton.create(me, theme.getIcon24(ThemeIcons24.WndClose), {0, 0, 0, 0})
                 {
                     .sigPressed += &onClose
                     .style.addStyleSheetColors(#nameof(ThemeColors.btnIcon_HotBk) ++ " $" ++ #nameof(ThemeColors.wnd_BtnCloseBk))
@@ -349,28 +349,28 @@ impl SurfaceWnd
                 }
             }
         }
-        elif closeBtn
+        elif me.closeBtn
         {
-            closeBtn.destroy()
-            closeBtn = null
+            me.closeBtn.destroy()
+            me.closeBtn = null
         }
     }
 
     mtd create(userView: #null *Wnd, hook: HookEvent)
     {
-        computeStyle()
+        me.computeStyle()
 
         if userView
         {
-            view             = userView
-            view.hookOnEvent = hook
-            view.setParent(me)
+            me.view             = userView
+            me.view.hookOnEvent = hook
+            me.view.setParent(me)
         }
         else
         {
-            createView'Wnd(hook)
+            me.createView'Wnd(hook)
         }
 
-        applySurfaceFlags()
+        me.applySurfaceFlags()
     }
 }

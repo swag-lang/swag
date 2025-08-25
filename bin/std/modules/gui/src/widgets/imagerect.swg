@@ -12,37 +12,37 @@ impl IWnd for ImageRect
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if !movie.isValid():
+        if !me.movie.isValid():
             return
 
         // Update movie, and update resulting texture frame if necessary
-        if movie.update(getApp().timing.dt)
+        if me.movie.update(me.getApp().timing.dt)
         {
-            if movie.source != .SpriteSheet
+            if me.movie.source != .SpriteSheet
             {
-                getApp().renderer.updateTexture(textureFrame, movie.frame.pixels.buffer)
+                me.getApp().renderer.updateTexture(me.textureFrame, me.movie.frame.pixels.buffer)
             }
         }
 
         let painter = evt.bc.painter
-        var rect    = getClientRectPadding()
+        var rect    = me.getClientRectPadding()
 
-        var color = getThemeColors().imageRect_Fg
+        var color = me.getThemeColors().imageRect_Fg
 
         #[Swag.Complete]
-        switch movie.source
+        switch me.movie.source
         {
         case None:
             break
         case SpriteSheet:
-            var icon = Icon.from(&movie.imgList, movie.frameIndex, rect.width, rect.height)
+            var icon = Icon.from(&me.movie.imgList, me.movie.frameIndex, rect.width, rect.height)
             icon.paint(painter, rect.x, rect.y, color)
         case Gif:
-            painter.drawTexture(rect, textureFrame, color)
+            painter.drawTexture(rect, me.textureFrame, color)
         }
 
-        if !movie.numFrames or movie.numFrames > 1:
-            invalidate()
+        if !me.movie.numFrames or me.movie.numFrames > 1:
+            me.invalidate()
     }
 }
 
@@ -58,61 +58,61 @@ impl ImageRect
 
     mtd clear()
     {
-        getApp().renderer.removeTexture(&textureFrame)
+        me.getApp().renderer.removeTexture(&me.textureFrame)
     }
 
     // Set movie as an image list
     mtd setMovie(image: ImageList)
     {
-        clear()
-        movie.set(image)
-        invalidate()
+        me.clear()
+        me.movie.set(image)
+        me.invalidate()
     }
 
     // Associate image
     #[Swag.Overload]
     mtd setImage(image: ImageList)
     {
-        clear()
+        me.clear()
         var tmp = image
         tmp.totalFrames = 1
         tmp.frameSizeX  = tmp.texture.width
         tmp.frameSizeY  = tmp.texture.height
-        movie.set(tmp)
+        me.movie.set(tmp)
     }
 
     // Associate image
     #[Swag.Overload]
     mtd setImage(image: Texture)
     {
-        clear()
+        me.clear()
         var tmp: ImageList
         tmp.texture     = image
         tmp.totalFrames = 1
         tmp.frameSizeX  = tmp.texture.width
         tmp.frameSizeY  = tmp.texture.height
-        movie.set(tmp)
+        me.movie.set(tmp)
     }
 
     // Associate image
     #[Swag.Overload]
     mtd setImage(image: Image)
     {
-        clear()
+        me.clear()
         var tmp: ImageList
-        tmp.texture     = getApp().renderer.addImage(image)
+        tmp.texture     = me.getApp().renderer.addImage(image)
         tmp.totalFrames = 1
         tmp.frameSizeX  = tmp.texture.width
         tmp.frameSizeY  = tmp.texture.height
-        movie.set(tmp)
+        me.movie.set(tmp)
     }
 
     // Load and set movie
     mtd setFile(fileName: string) throw
     {
-        clear()
-        try movie.set(fileName)
-        textureFrame = getApp().renderer.addImage(movie.frame)
-        invalidate()
+        me.clear()
+        try me.movie.set(fileName)
+        me.textureFrame = me.getApp().renderer.addImage(me.movie.frame)
+        me.invalidate()
     }
 }

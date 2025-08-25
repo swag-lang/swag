@@ -14,7 +14,7 @@ impl IWnd for Dialog
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         if evt.kind == .Close:
-            validateId(BtnCancel)
+            me.validateId(BtnCancel)
         evt.accepted = true
     }
 
@@ -26,7 +26,7 @@ impl IWnd for Dialog
             switch evt.key
             {
             case Tab, Right:
-                foreach btn, idx in buttons
+                foreach btn, idx in me.buttons
                 {
                     if btn.form == .Default
                     {
@@ -40,7 +40,7 @@ impl IWnd for Dialog
                 }
 
             case Left:
-                foreach btn, idx in buttons
+                foreach btn, idx in me.buttons
                 {
                     if btn.form == .Default
                     {
@@ -54,7 +54,7 @@ impl IWnd for Dialog
                 }
 
             case Enter:
-                foreach btn in buttons
+                foreach btn in me.buttons
                 {
                     if btn.form == .Default
                     {
@@ -64,13 +64,13 @@ impl IWnd for Dialog
                 }
 
             case Escape:
-                if surface.flags.has(.CloseBtn)
+                if me.surface.flags.has(.CloseBtn)
                 {
-                    validateId(BtnCancel)
+                    me.validateId(BtnCancel)
                     break
                 }
 
-                foreach btn in buttons
+                foreach btn in me.buttons
                 {
                     if btn.id == BtnNo or btn.id == BtnCancel
                     {
@@ -110,10 +110,10 @@ impl Dialog
         let srf          = assume from.app.createSurface(x, y, width, height, surfaceFlags, me)
         srf.wnd.view.backgroundStyle = .Dialog
 
-        let metrics = getThemeMetrics()
+        let metrics = me.getThemeMetrics()
         var h       = metrics.btnPush_Height
         h += 2 * metrics.dialog_Padding
-        with wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", {0, 0, 0, h})
+        with me.wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", {0, 0, 0, h})
         {
             .spacing         = 10
             .layoutKind      = .HorzCenterVertCenter
@@ -122,52 +122,52 @@ impl Dialog
             .setAllPaddings(metrics.dialog_Padding)
         }
 
-        setFocus()
+        me.setFocus()
         return srf
     }
 
     // Returns the view where stuff can be put.
     mtd getView()->*Wnd
     {
-        return surface.wnd.view
+        return me.surface.wnd.view
     }
 
     // Display dialog as modal, and returns the user selected window id
     mtd doModal()->string
     {
-        surface.bringToTop()
-        surface.show()
-        if fromSurface and fromSurface.isTopMost():
-            surface.setTopMost()
-        return surface.app.doModalLoop(surface)
+        me.surface.bringToTop()
+        me.surface.show()
+        if me.fromSurface and me.fromSurface.isTopMost():
+            me.surface.setTopMost()
+        return me.surface.app.doModalLoop(me.surface)
     }
 
     // Add a button
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        with let btn = PushButton.create(wndBottom, str, {}, #me.id)
+        with let btn = PushButton.create(me.wndBottom, str, {}, #me.id)
         {
             .form = isDefault ? .Default : .Strong
 
             .sigPressed += mtd||(btn)
             {
-                if !sigPressedButton or sigPressedButton(me, btn.id):
+                if !me.sigPressedButton or me.sigPressedButton(me, btn.id):
                     btn.getApp().exitModal(btn.id)
             }
 
-            buttons.add(btn)
+            me.buttons.add(btn)
         }
 
         if #me.id == BtnCancel or #me.id == BtnNo:
-            surface.setSurfaceFlags(add: .CloseBtn)
+            me.surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
     }
 
     mtd validateId(btnId: WndId)
     {
-        if !sigPressedButton or sigPressedButton(me, btnId):
-            getApp().exitModal(btnId)
+        if !me.sigPressedButton or me.sigPressedButton(me, btnId):
+            me.getApp().exitModal(btnId)
     }
 }
