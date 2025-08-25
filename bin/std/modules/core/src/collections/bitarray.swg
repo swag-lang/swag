@@ -1,3 +1,4 @@
+#global marked
 using Swag
 
 // Manages a compact array of bit values.
@@ -109,13 +110,13 @@ public impl BitArray
         #if back:
             #error("visiting in reverse order is not supported for BitArray")
 
-        if !count:
+        if !me.count:
             return
-        let remainingBits = count
+        let remainingBits = me.count
         var countBits     = 0'u64
 
         #scope(Up)
-        for idx in Math.max(count >> 5, 1)
+        for idx in Math.max(me.count >> 5, 1)
         {
             var shift: u32 = 1
             for Math.min(remainingBits, 32)
@@ -123,7 +124,7 @@ public impl BitArray
                 #scope(Down)
                 #macro
                 {
-                    let #alias0 = cast(bool) (#up buffer[#up idx] & #up shift)
+                    let #alias0 = cast(bool) (#up me.buffer[#up idx] & #up shift)
                     let #alias1 = #up countBits
                     #inject(#up stmt, break = break to Up, continue = break to Down)
                 }

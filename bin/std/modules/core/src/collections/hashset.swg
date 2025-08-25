@@ -1,3 +1,4 @@
+#global marked
 #global export
 using Swag
 
@@ -136,7 +137,7 @@ impl HashSet
             for i in me.capacity
             {
                 if me.table[i].hash >= HashSet.HASH_DELETED:
-                    @drop(&table[i].key)
+                    @drop(&me.table[i].key)
             }
         }
 
