@@ -5,6 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
+#global marked
 #global namespace Clipper
 using Core
 
@@ -628,7 +629,7 @@ impl Transform
         me.scanBeamList.clear()
         foreach lm in me.minimaList
         {
-            insertScanbeam(lm.y)
+            me.insertScanbeam(lm.y)
             var e = lm.leftBound
             if e
             {
@@ -1051,7 +1052,7 @@ impl Transform
         {
             if !outRec.pts or outRec.isOpen:
                 continue
-            if (outRec.isHole ^ reverseOutput) == (area(outRec.pts) > 0):
+            if (outRec.isHole ^ me.reverseOutput) == (area(outRec.pts) > 0):
                 reversePolyPtLinks(outRec.pts)
         }
 
@@ -1065,7 +1066,7 @@ impl Transform
             if outRec.isOpen:
                 fixupOutPolyline(outRec)
             else:
-                fixupOutPolygon(outRec)
+                me.fixupOutPolygon(outRec)
         }
 
         if me.strictSimple:
@@ -1098,15 +1099,15 @@ impl Transform
                         op3.next = op2
 
                         outrec.pts = op
-                        let outrec2 = createOutRec()
+                        let outrec2 = me.createOutRec()
                         outrec2.pts = op2
                         updateOutPtIdxs(outrec2)
                         if poly2ContainsPoly1(outrec2.pts, outrec.pts)
                         {
                             outrec2.isHole    = !outrec.isHole
                             outrec2.firstLeft = outrec
-                            if usingPolyTree:
-                                fixupFirstLefts2(outrec2, outrec)
+                            if me.usingPolyTree:
+                                me.fixupFirstLefts2(outrec2, outrec)
                         }
                         elif poly2ContainsPoly1(outrec.pts, outrec2.pts)
                         {
@@ -1114,15 +1115,15 @@ impl Transform
                             outrec.isHole     = !outrec2.isHole
                             outrec2.firstLeft = outrec.firstLeft
                             outrec.firstLeft  = outrec2
-                            if usingPolyTree:
-                                fixupFirstLefts2(outrec, outrec2)
+                            if me.usingPolyTree:
+                                me.fixupFirstLefts2(outrec, outrec2)
                         }
                         else
                         {
                             outrec2.isHole    = outrec.isHole
                             outrec2.firstLeft = outrec.firstLeft
-                            if usingPolyTree:
-                                fixupFirstLefts1(outrec, outrec2)
+                            if me.usingPolyTree:
+                                me.fixupFirstLefts1(outrec, outrec2)
                         }
 
                         op2 = op
@@ -1635,8 +1636,8 @@ impl Transform
     {
         foreach join in me.joinList
         {
-            let outRec1 = getOutRec(join.outPt1.idx)
-            var outRec2 = getOutRec(join.outPt2.idx)
+            let outRec1 = me.getOutRec(join.outPt1.idx)
+            var outRec2 = me.getOutRec(join.outPt2.idx)
 
             if !outRec1.pts or !outRec2.pts:
                 continue
@@ -1653,14 +1654,14 @@ impl Transform
             else:
                 holeStateRec = getLowermostRec(outRec1, outRec2)
 
-            if !joinPoints(join, outRec1, outRec2):
+            if !me.joinPoints(join, outRec1, outRec2):
                 continue
 
             if (outRec1 == outRec2)
             {
                 outRec1.pts      = join.outPt1
                 outRec1.bottomPt = null
-                outRec2          = createOutRec()
+                outRec2          = me.createOutRec()
                 outRec2.pts      = join.outPt2
                 updateOutPtIdxs(outRec2)
 
@@ -1668,9 +1669,9 @@ impl Transform
                 {
                     outRec2.isHole    = !outRec1.isHole
                     outRec2.firstLeft = outRec1
-                    if usingPolyTree:
-                        fixupFirstLefts2(outRec2, outRec1)
-                    if (outRec2.isHole ^ reverseOutput) == (area(outRec2.pts) > 0):
+                    if me.usingPolyTree:
+                        me.fixupFirstLefts2(outRec2, outRec1)
+                    if (outRec2.isHole ^ me.reverseOutput) == (area(outRec2.pts) > 0):
                         reversePolyPtLinks(outRec2.pts)
                 }
                 elif poly2ContainsPoly1(outRec1.pts, outRec2.pts)
@@ -1679,17 +1680,17 @@ impl Transform
                     outRec1.isHole    = !outRec2.isHole
                     outRec2.firstLeft = outRec1.firstLeft
                     outRec1.firstLeft = outRec2
-                    if usingPolyTree:
-                        fixupFirstLefts2(outRec1, outRec2)
-                    if (outRec1.isHole ^ reverseOutput) == (area(outRec1.pts) > 0):
+                    if me.usingPolyTree:
+                        me.fixupFirstLefts2(outRec1, outRec2)
+                    if (outRec1.isHole ^ me.reverseOutput) == (area(outRec1.pts) > 0):
                         reversePolyPtLinks(outRec1.pts)
                 }
                 else
                 {
                     outRec2.isHole    = outRec1.isHole
                     outRec2.firstLeft = outRec1.firstLeft
-                    if usingPolyTree:
-                        fixupFirstLefts1(outRec1, outRec2)
+                    if me.usingPolyTree:
+                        me.fixupFirstLefts1(outRec1, outRec2)
                 }
             }
             else
@@ -1703,8 +1704,8 @@ impl Transform
                     outRec1.firstLeft = outRec2.firstLeft
                 outRec2.firstLeft = outRec1
 
-                if usingPolyTree:
-                    fixupFirstLefts3(outRec2, outRec1)
+                if me.usingPolyTree:
+                    me.fixupFirstLefts3(outRec2, outRec1)
             }
         }
     }
@@ -1909,7 +1910,7 @@ impl Transform
                 if e.curr.x > eNext.curr.x
                 {
                     var pt: IntPoint
-                    me.intersectPoint(e, eNext, &pt)
+                    intersectPoint(e, eNext, &pt)
                     if pt.y < topY:
                         pt = IntPoint{topX(e, topY), topY}
                     let newNode = Memory.new'IntersectNode()
@@ -1975,8 +1976,8 @@ impl Transform
     {
         foreach iNode in me.intersectList
         {
-            intersectEdges(iNode.edge1, iNode.edge2, iNode.pt)
-            swapPositionsInAEL(iNode.edge1, iNode.edge2)
+            me.intersectEdges(iNode.edge1, iNode.edge2, iNode.pt)
+            me.swapPositionsInAEL(iNode.edge1, iNode.edge2)
             Memory.delete(iNode)
         }
 
@@ -2040,7 +2041,7 @@ impl Transform
             me.sortedEdges = edge2
     }
 
-    mtd intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
+    func intersectPoint(edge1, edge2: *Edge, ip: *IntPoint)
     {
         var b1, b2: f64
         if edge1.dx == edge2.dx

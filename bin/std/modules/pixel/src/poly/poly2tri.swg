@@ -5,6 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
+#global marked
 #global namespace Poly2Tri
 using Core
 
@@ -623,7 +624,7 @@ impl Tessellate
         foreach p in me.triangles:
             deleteTriangle(p)
         foreach p in me.nodes:
-            deleteNode(p)
+            me.deleteNode(p)
 
         me.points.clear()
         me.edges.clear()
@@ -728,7 +729,7 @@ impl Tessellate
             let point = me.points[i]
             let node  = me.pointEvent(point)
             foreach e in point.edges:
-                addEdgeEvent2(e, node)
+                me.addEdgeEvent2(e, node)
         }
     }
 
@@ -1426,7 +1427,7 @@ impl Tessellate
         // Remove neighbors which are not part of the mesh
         foreach i in me.triIndices
         {
-            let tri = triangles[i]
+            let tri = me.triangles[i]
             for e in 3
             {
                 let neighbor = tri.neighbors[e]

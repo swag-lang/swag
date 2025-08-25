@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core.Math
 
@@ -136,7 +137,7 @@ impl Polygon
         foreach pt in res
         {
             var vec = Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
-            add(vec)
+            me.add(vec)
         }
 
         // Closed path needs last point to be the same as the first one
@@ -260,7 +261,7 @@ impl Polygon
             np.polygon.storeClipperResult(p)
             np.bvMin = np.polygon.bvMin
             np.bvMax = np.polygon.bvMax
-            if !isClockwise:
+            if !me.isClockwise:
                 break
         }
 

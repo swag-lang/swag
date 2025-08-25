@@ -5,6 +5,7 @@
     See LICENCE.md for the corresponding licence.
 */
 
+#global marked
 #global namespace Clipper
 using Core
 
@@ -208,7 +209,7 @@ impl Offset
         {
             me.destPolys.reserve(me.polyNodes.childs.count)
             foreach node in me.polyNodes.childs:
-                destPolys.add(node.contour)
+                me.destPolys.add(node.contour)
             return
         }
 
@@ -239,13 +240,13 @@ impl Offset
         me.destPolys.reserve(me.polyNodes.childs.count * 2)
         foreach node, i in me.polyNodes.childs
         {
-            srcPoly = node.contour
+            me.srcPoly = node.contour
 
-            let len = cast(s32) srcPoly.count
+            let len = cast(s32) me.srcPoly.count
             if len == 0 or (delta <= 0 and len < 3):
                 continue
 
-            destPoly.clear()
+            me.destPoly.clear()
             if len == 1
             {
                 if node.jointype == .Round
@@ -254,12 +255,12 @@ impl Offset
                     var y = 0.0'f64
                     for var j = 1; j <= steps; j += 1
                     {
-                        let r1 = cround(srcPoly[0].x + x * delta)
-                        let r2 = cround(srcPoly[0].y + y * delta)
-                        destPoly.add(IntPoint{r1, r2})
+                        let r1 = cround(me.srcPoly[0].x + x * delta)
+                        let r2 = cround(me.srcPoly[0].y + y * delta)
+                        me.destPoly.add(IntPoint{r1, r2})
                         let x2 = x
-                        x = x * cosVal - sinVal * y
-                        y = x2 * sinVal + y * cosVal
+                        x = x * me.cosVal - me.sinVal * y
+                        y = x2 * me.sinVal + y * me.cosVal
                     }
                 }
                 else
@@ -268,9 +269,9 @@ impl Offset
                     var y = -1.0'f64
                     for j in 4
                     {
-                        let r1 = cround(srcPoly[0].x + x * delta)
-                        let r2 = cround(srcPoly[0].y + y * delta)
-                        destPoly.add(IntPoint{r1, r2})
+                        let r1 = cround(me.srcPoly[0].x + x * delta)
+                        let r2 = cround(me.srcPoly[0].y + y * delta)
+                        me.destPoly.add(IntPoint{r1, r2})
                         if x < 0:
                             x = 1
                         elif y < 0:
@@ -280,21 +281,21 @@ impl Offset
                     }
                 }
 
-                destPolys.add(destPoly)
+                me.destPolys.add(me.destPoly)
                 continue
             }
 
             // Build normals
-            normals.clear()
-            normals.reserve(cast(u64) len)
+            me.normals.clear()
+            me.normals.reserve(cast(u64) len)
             for j in len - 1:
-                normals.add(getUnitNormal(srcPoly[j], srcPoly[j + 1]))
-            normals.add(getUnitNormal(srcPoly[len - 1], srcPoly[0]))
+                me.normals.add(getUnitNormal(me.srcPoly[j], me.srcPoly[j + 1]))
+            me.normals.add(getUnitNormal(me.srcPoly[len - 1], me.srcPoly[0]))
 
             var k = len - 1
             for j in len:
-                offsetPoint(j, &k, node.jointype)
-            destPolys.add(destPoly)
+                me.offsetPoint(j, &k, node.jointype)
+            me.destPolys.add(me.destPoly)
         }
     }
 
