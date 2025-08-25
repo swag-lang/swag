@@ -23,20 +23,20 @@ impl Transform2
     // Set transform to identity
     mtd setIdentity()
     {
-        m11 = 1
-        m12 = 0
-        m21 = 0
-        m22 = 1
-        m31 = 0
-        m32 = 0
+        me.m11 = 1
+        me.m12 = 0
+        me.m21 = 0
+        me.m22 = 1
+        me.m31 = 0
+        me.m32 = 0
     }
 
     // Checks if the transform is the identity matrix
     mtd const isIdentity()->bool
     {
-        return m11 == 1 and m12 == 0 and
-               m21 == 0 and m22 == 1 and
-               tx == 0 and ty == 0
+        return me.m11 == 1 and me.m12 == 0 and
+               me.m21 == 0 and me.m22 == 1 and
+               me.tx == 0 and me.ty == 0
     }
 
     // Creates a rotation matrix, with a given center of rotation
@@ -95,37 +95,37 @@ impl Transform2
     // Sets the translation components directly
     mtd setTranslation(translation: Vector2)
     {
-        tx = translation.x
-        ty = translation.y
+        me.tx = translation.x
+        me.ty = translation.y
     }
 
     // Gets the translation components
     mtd getTranslation()->Vector2
     {
-        return Vector2{tx, ty}
+        return Vector2{me.tx, me.ty}
     }
 
     // Applies the transform to a 2D point
     mtd transformPoint(point: Vector2)->Vector2
     {
-        let rx = point.x * m11 + point.y * m21 + tx
-        let ry = point.x * m12 + point.y * m22 + ty
+        let rx = point.x * me.m11 + point.y * me.m21 + me.tx
+        let ry = point.x * me.m12 + point.y * me.m22 + me.ty
         return Vector2{rx, ry}
     }
 
     // Multiplies the current transform by another transformation matrix
     mtd multiply(matrix2: Transform2)
     {
-        let sm11 = m11
-        m11 = sm11 * matrix2.m11 + m12 * matrix2.m21
-        m12 = sm11 * matrix2.m12 + m12 * matrix2.m22
+        let sm11 = me.m11
+        me.m11 = sm11 * matrix2.m11 + me.m12 * matrix2.m21
+        me.m12 = sm11 * matrix2.m12 + me.m12 * matrix2.m22
 
-        let sm21 = m21
-        m21 = sm21 * matrix2.m11 + m22 * matrix2.m21
-        m22 = sm21 * matrix2.m12 + m22 * matrix2.m22
+        let sm21 = me.m21
+        me.m21 = sm21 * matrix2.m11 + me.m22 * matrix2.m21
+        me.m22 = sm21 * matrix2.m12 + me.m22 * matrix2.m22
 
-        let stx = tx
-        tx = stx * matrix2.m11 + ty * matrix2.m21 + matrix2.tx
-        ty = stx * matrix2.m12 + ty * matrix2.m22 + matrix2.ty
+        let stx = me.tx
+        me.tx = stx * matrix2.m11 + me.ty * matrix2.m21 + matrix2.tx
+        me.ty = stx * matrix2.m12 + me.ty * matrix2.m22 + matrix2.ty
     }
 }

@@ -30,19 +30,19 @@ impl Thread
 {
     mtd opDrop()
     {
-        Debug.assert(!isValid(), "thread is not terminated")
+        Debug.assert(!me.isValid(), "thread is not terminated")
     }
 
     // Returns true if the thread is valid
     mtd const isValid()->bool
     {
-        return handle != null
+        return me.handle != null
     }
 
     // Force the thread to safely exist
     // User code needs to check for 'requestEnd'
     mtd safeForceEnd()
     {
-        requestEnd = true
+        me.requestEnd = true
     }
 }

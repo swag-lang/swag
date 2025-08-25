@@ -31,55 +31,55 @@ public impl JSon
     {
         var err: retval
         err.message = val
-        err.line    = line
-        err.col     = col
-        err.seek    = stream.seek
+        err.line    = me.line
+        err.col     = me.col
+        err.seek    = me.stream.seek
         return err
     }
 
     mtd zapBlanks()
     {
-        var c = stream.peekU8()
+        var c = me.stream.peekU8()
         while c and Latin1.isSpace(c)
         {
-            stream.moveSeek()
+            me.stream.moveSeek()
             if c == '\n'
             {
-                line += 1
-                col = 1
+                me.line += 1
+                me.col = 1
             }
             else:
-                col += 1
-            c = stream.peekU8()
+                me.col += 1
+            c = me.stream.peekU8()
         }
     }
 
     mtd startRead(input: const [..] u8)
     {
-        stream = ByteStream.openRead(input)
+        me.stream = ByteStream.openRead(input)
     }
 
     mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
-        zapBlanks()
-        let c = stream.readU8()
+        me.zapBlanks()
+        let c = me.stream.readU8()
         if c != '[':
-            throw getError("malformed array, missing opening [[[]]")
+            throw me.getError("malformed array, missing opening [[[]]")
         return false
     }
 
     mtd endSequence() throw
     {
-        zapBlanks()
-        let c = stream.readU8()
+        me.zapBlanks()
+        let c = me.stream.readU8()
         if c != ']':
-            throw getError("malformed array; missing closing [[]]]")
+            throw me.getError("malformed array; missing closing [[]]]")
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
-        zapBlanks()
-        let c = stream.peekU8()
+        me.zapBlanks()
+        let c = me.stream.peekU8()
         return c != ']'
     }
 
@@ -95,56 +95,56 @@ public impl JSon
 
     mtd beginSection(_kind: SectionKind) throw
     {
-        zapBlanks()
-        let c = stream.readU8()
+        me.zapBlanks()
+        let c = me.stream.readU8()
         if c != '{':
-            throw getError("malformed struct, missing opening [[{]]")
+            throw me.getError("malformed struct, missing opening [[{]]")
     }
 
     mtd endSection() throw
     {
-        zapBlanks()
-        let c = stream.readU8()
+        me.zapBlanks()
+        let c = me.stream.readU8()
         if c != '}':
-            throw getError("malformed struct, missing closing [[}]]")
+            throw me.getError("malformed struct, missing closing [[}]]")
     }
 
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
     {
-        beginSection(.Ordered)
+        me.beginSection(.Ordered)
         return false
     }
 
     mtd endStruct() throw
     {
-        endSection()
+        me.endSection()
     }
 
     mtd beginElement(val: TypedValue)->bool throw
     {
-        zapBlanks()
-        var c = stream.readU8()
+        me.zapBlanks()
+        var c = me.stream.readU8()
         if c != '"':
-            throw getError("malformed property name, missing opening [[\"]]")
+            throw me.getError("malformed property name, missing opening [[\"]]")
 
-        propName.clear()
-        c = stream.readU8()
+        me.propName.clear()
+        c = me.stream.readU8()
         while c and c != '"'
         {
-            propName += c
-            c = stream.readU8()
+            me.propName += c
+            c = me.stream.readU8()
         }
 
-        if propName != val.name:
-            throw getError("invalid property name")
+        if me.propName != val.name:
+            throw me.getError("invalid property name")
 
         if c != '"':
-            throw getError("malformed property name, missing closing [[\"]]")
+            throw me.getError("malformed property name, missing closing [[\"]]")
 
-        zapBlanks()
-        c = stream.readU8()
+        me.zapBlanks()
+        c = me.stream.readU8()
         if c != ':':
-            throw getError("malformed property, missing [[:]] after name")
+            throw me.getError("malformed property, missing [[:]] after name")
 
         return true
     }
@@ -161,10 +161,10 @@ public impl JSon
 
     mtd endValue() throw
     {
-        zapBlanks()
-        let c = stream.peekU8()
+        me.zapBlanks()
+        let c = me.stream.peekU8()
         if c == ',':
-            stream.moveSeek()
+            me.stream.moveSeek()
     }
 
     /////////////////////////////////

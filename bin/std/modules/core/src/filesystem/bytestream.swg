@@ -30,31 +30,31 @@ public impl ByteStream
     // Returns a slice of unread bytes from the current seek to the end
     mtd remainReadToSlice()->const [..] u8
     {
-        return @mkslice(readData() + seek, length() - seek)
+        return @mkslice(me.readData() + me.seek, me.length() - me.seek)
     }
 
     // Returns a string of unread bytes from the current seek to the end
     mtd remainReadToString()->string
     {
-        return @mkstring(readData() + seek, length() - seek)
+        return @mkstring(me.readData() + me.seek, me.length() - me.seek)
     }
 
     // Returns the total length of the buffer (read or write)
     mtd const length()->u64
     {
-        return writeBuffer ? writeBuffer.count : @countof(readBuffer)
+        return me.writeBuffer ? me.writeBuffer.count : @countof(me.readBuffer)
     }
 
     // Returns a pointer to the underlying read or write buffer
     mtd readData()->const ^u8
     {
-        return writeBuffer ? writeBuffer.buffer : @dataof(readBuffer)
+        return me.writeBuffer ? me.writeBuffer.buffer : @dataof(me.readBuffer)
     }
 
     // Returns true if the end of the buffer was reached during reading
     mtd const isEof()->bool
     {
-        return eof
+        return me.eof
     }
 
     // Writes a native value of type 'T' to the stream
@@ -73,18 +73,18 @@ public impl ByteStream
     // Writes a slice of bytes to the stream
     mtd writeBytes(slice: const [..] u8)
     {
-        Debug.assert(writeBuffer != null)
+        Debug.assert(me.writeBuffer != null)
 
         let count = @countof(slice)
         if !count:
             return
 
-        if seek + count > writeBuffer.count:
-            writeBuffer.reserve(seek + count)
-        let ptr = writeBuffer.buffer + seek
+        if me.seek + count > me.writeBuffer.count:
+            me.writeBuffer.reserve(me.seek + count)
+        let ptr = me.writeBuffer.buffer + me.seek
         Memory.copy(ptr, @dataof(slice), count)
-        seek += count
-        writeBuffer.count = Math.max(writeBuffer.count, seek)
+        me.seek += count
+        me.writeBuffer.count = Math.max(me.writeBuffer.count, me.seek)
     }
 
     // Reads a native value of type 'T' from the stream
@@ -100,37 +100,37 @@ public impl ByteStream
     // Reads 'count' bytes from the stream into 'dest'
     mtd readBytes(dest: *u8, count: u64) throw
     {
-        if seek + count > length():
+        if me.seek + count > me.length():
             throw OverflowError{"byte stream overflow"}
-        Memory.copy(dest, readData() + seek, count)
-        seek += count
+        Memory.copy(dest, me.readData() + me.seek, count)
+        me.seek += count
     }
 
     // Reads and consumes a single byte
     mtd readU8()->u8
     {
-        let c = peekU8()
-        moveSeek()
+        let c = me.peekU8()
+        me.moveSeek()
         return c
     }
 
     // Peeks at a single byte without consuming it
     mtd peekU8()->u8
     {
-        if seek >= length():
+        if me.seek >= me.length():
             return 0
-        return readBuffer[seek]
+        return me.readBuffer[me.seek]
     }
 
     // Advances the seek by a specified offset (default is 1)
     mtd moveSeek(offset: u64 = 1)
     {
-        seek += offset
-        let len = length()
-        if seek >= len
+        me.seek += offset
+        let len = me.length()
+        if me.seek >= len
         {
-            seek = len
-            eof  = true
+            me.seek = len
+            me.eof  = true
             return
         }
     }
@@ -138,12 +138,12 @@ public impl ByteStream
     // Sets the seek to a specific offset
     mtd setSeek(offset: u64)
     {
-        let len = length()
-        Debug.assert(seek <= len)
-        seek = offset
-        eof  = seek >= len
+        let len = me.length()
+        Debug.assert(me.seek <= len)
+        me.seek = offset
+        me.eof  = me.seek >= len
     }
 
     // Returns the current seek position
-    mtd const getSeek()->u64 => seek
+    mtd const getSeek()->u64 => me.seek
 }

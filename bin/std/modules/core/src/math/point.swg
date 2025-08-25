@@ -20,7 +20,7 @@ impl Point
     #[Swag.Complete]
     mtd opAffect(value: f32)
     {
-        x, y = value
+        me.x, me.y = value
     }
 
     // Compound assignment operators for point-point operations (+=, -=, *=, /=).
@@ -136,28 +136,28 @@ impl Point
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     mtd clear()
     {
-        x, y = 0
+        me.x, me.y = 0
     }
 
     // Returns true if this point is exactly at the origin.
     // Performs exact floating-point comparison, which may not work well with computed values.
     mtd const isZero()->bool
     {
-        return x == 0 and y == 0
+        return me.x == 0 and me.y == 0
     }
 
     // Returns true if this point is at the origin within an epsilon tolerance.
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps)
+        return isZeroEpsilon(me.x, eps) and isZeroEpsilon(me.y, eps)
     }
 
     // Returns true if this point is equal to 'other' within an epsilon tolerance.
     // Compares each coordinate separately using the specified 'eps' tolerance.
     mtd const isEqualEpsilon(other: Point, eps = ConstF32.Epsilon)->bool
     {
-        return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps)
+        return Math.isEqualEpsilon(me.x, other.x, eps) and Math.isEqualEpsilon(me.y, other.y, eps)
     }
 
     // Offset both coordinates by the same scalar value.
@@ -165,7 +165,7 @@ impl Point
     #[Swag.Overload]
     mtd offset(value: f32)
     {
-        x, y += value
+        me.x, me.y += value
     }
 
     // Offset this point by separate x and y values.
@@ -181,23 +181,23 @@ impl Point
     // Applies 'Math.round' function to both x and y coordinates in-place.
     mtd round()
     {
-        x = Math.round(x)
-        y = Math.round(y)
+        me.x = Math.round(me.x)
+        me.y = Math.round(me.y)
     }
 
     // Truncate both coordinates to integer values.
     // Applies 'Math.trunc' function to both x and y coordinates, removing fractional parts.
     mtd trunc()
     {
-        x = Math.trunc(x)
-        y = Math.trunc(y)
+        me.x = Math.trunc(me.x)
+        me.y = Math.trunc(me.y)
     }
 
     // Round both coordinates up to the next integer values.
     // Applies 'Math.ceil' function to both x and y coordinates in-place.
     mtd ceil()
     {
-        x = Math.ceil(x)
-        y = Math.ceil(y)
+        me.x = Math.ceil(me.x)
+        me.y = Math.ceil(me.y)
     }
 }

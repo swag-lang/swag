@@ -38,29 +38,29 @@ impl FastNoise
     // Calculates the fractal bounding factor to normalize amplitude across octaves.
     mtd calculateFractalBounding()
     {
-        if octaves == 1
+        if me.octaves == 1
         {
-            fractalBounding = 1.0
+            me.fractalBounding = 1.0
             return
         }
 
-        var amp        = gain
+        var amp        = me.gain
         var ampFractal = 1.0
 
-        for i in octaves - 1
+        for i in me.octaves - 1
         {
             ampFractal += amp
-            amp *= gain
+            amp *= me.gain
         }
 
-        fractalBounding = 1.0 / ampFractal
+        me.fractalBounding = 1.0 / ampFractal
     }
 
     // Update internal values.
     // Should be called each time an internal parameter has been changed.
     public mtd update()
     {
-        calculateFractalBounding()
+        me.calculateFractalBounding()
     }
 
     // Computes fractal Brownian Motion using Perlin noise.
@@ -68,17 +68,17 @@ impl FastNoise
     {
         var xi  = x
         var yi  = y
-        var sum = perlin(xi, yi, seed)
+        var sum = perlin(xi, yi, me.seed)
         var amp = 1.0
 
-        for i in octaves
+        for i in me.octaves
         {
-            xi, yi *= lacunarity
-            amp *= gain
-            sum += perlin(xi, yi, seed) * amp
+            xi, yi *= me.lacunarity
+            amp *= me.gain
+            sum += perlin(xi, yi, me.seed) * amp
         }
 
-        return sum * fractalBounding
+        return sum * me.fractalBounding
     }
 
     // Computes billow-style fractal using Perlin noise.
@@ -86,17 +86,17 @@ impl FastNoise
     {
         var xi  = x
         var yi  = y
-        var sum = Math.abs(perlin(xi, yi, seed)) * 2 - 1
+        var sum = Math.abs(perlin(xi, yi, me.seed)) * 2 - 1
         var amp = 1.0
 
-        for i in octaves
+        for i in me.octaves
         {
-            xi, yi *= lacunarity
-            amp *= gain
-            sum += (Math.abs(perlin(xi, yi, seed)) * 2 - 1) * amp
+            xi, yi *= me.lacunarity
+            amp *= me.gain
+            sum += (Math.abs(perlin(xi, yi, me.seed)) * 2 - 1) * amp
         }
 
-        return sum * fractalBounding
+        return sum * me.fractalBounding
     }
 
     // Computes rigid multi-fractal using Perlin noise.
@@ -104,17 +104,17 @@ impl FastNoise
     {
         var xi  = x
         var yi  = y
-        var sum = 1 - Math.abs(perlin(xi, yi, seed))
+        var sum = 1 - Math.abs(perlin(xi, yi, me.seed))
         var amp = 1.0
 
-        for i in octaves
+        for i in me.octaves
         {
-            xi, yi *= lacunarity
-            amp *= gain
-            sum += (1 - Math.abs(perlin(xi, yi, seed))) * amp
+            xi, yi *= me.lacunarity
+            amp *= me.gain
+            sum += (1 - Math.abs(perlin(xi, yi, me.seed))) * amp
         }
 
-        return sum * fractalBounding
+        return sum * me.fractalBounding
     }
 
     // Computes fractal Brownian Motion using value noise.
@@ -122,17 +122,17 @@ impl FastNoise
     {
         var xi  = x
         var yi  = y
-        var sum = Noise.value(xi, yi, seed)
+        var sum = Noise.value(xi, yi, me.seed)
         var amp = 1.0
 
-        for i in octaves
+        for i in me.octaves
         {
-            xi, yi *= lacunarity
-            amp *= gain
-            sum += Noise.value(xi, yi, seed) * amp
+            xi, yi *= me.lacunarity
+            amp *= me.gain
+            sum += Noise.value(xi, yi, me.seed) * amp
         }
 
-        return sum * fractalBounding
+        return sum * me.fractalBounding
     }
 
     // Computes billow-style fractal using value noise.
@@ -140,17 +140,17 @@ impl FastNoise
     {
         var xi  = x
         var yi  = y
-        var sum = Math.abs(Noise.value(xi, yi, seed)) * 2 - 1
+        var sum = Math.abs(Noise.value(xi, yi, me.seed)) * 2 - 1
         var amp = 1.0
 
-        for i in octaves
+        for i in me.octaves
         {
-            xi, yi *= lacunarity
-            amp *= gain
-            sum += (Math.abs(Noise.value(xi, yi, seed)) * 2 - 1) * amp
+            xi, yi *= me.lacunarity
+            amp *= me.gain
+            sum += (Math.abs(Noise.value(xi, yi, me.seed)) * 2 - 1) * amp
         }
 
-        return sum * fractalBounding
+        return sum * me.fractalBounding
     }
 
     // Computes rigid multi-fractal using value noise.
@@ -158,17 +158,17 @@ impl FastNoise
     {
         var xi  = x
         var yi  = y
-        var sum = 1 - Math.abs(Noise.value(xi, yi, seed))
+        var sum = 1 - Math.abs(Noise.value(xi, yi, me.seed))
         var amp = 1.0
 
-        for i in octaves
+        for i in me.octaves
         {
-            xi, yi *= lacunarity
-            amp *= gain
-            sum += (1 - Math.abs(Noise.value(xi, yi, seed))) * amp
+            xi, yi *= me.lacunarity
+            amp *= me.gain
+            sum += (1 - Math.abs(Noise.value(xi, yi, me.seed))) * amp
         }
 
-        return sum * fractalBounding
+        return sum * me.fractalBounding
     }
 
     // Get a noise result.
@@ -176,28 +176,28 @@ impl FastNoise
     {
         var result: f32 = undefined
 
-        let xi = x * frequency
-        let yi = y * frequency
+        let xi = x * me.frequency
+        let yi = y * me.frequency
 
         #[Swag.Complete]
-        switch kind
+        switch me.kind
         {
         case Perlin:
-            result = Noise.perlin(xi, yi, seed)
+            result = Noise.perlin(xi, yi, me.seed)
         case PerlinFractalFBM:
-            result = perlinFractalFBM(xi, yi)
+            result = me.perlinFractalFBM(xi, yi)
         case PerlinFractalBillow:
-            result = perlinFractalBillow(xi, yi)
+            result = me.perlinFractalBillow(xi, yi)
         case PerlinFractalRigidMulti:
-            result = perlinFractalRigidMulti(xi, yi)
+            result = me.perlinFractalRigidMulti(xi, yi)
         case Value:
-            result = Noise.value(xi, yi, seed)
+            result = Noise.value(xi, yi, me.seed)
         case ValueFractalFBM:
-            result = valueFractalFBM(xi, yi)
+            result = me.valueFractalFBM(xi, yi)
         case ValueFractalBillow:
-            result = valueFractalBillow(xi, yi)
+            result = me.valueFractalBillow(xi, yi)
         case ValueFractalRigidMulti:
-            result = valueFractalRigidMulti(xi, yi)
+            result = me.valueFractalRigidMulti(xi, yi)
         }
 
         return Math.clamp(result, -1.0, 1.0)

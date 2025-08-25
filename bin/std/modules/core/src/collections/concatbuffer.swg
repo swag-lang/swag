@@ -39,13 +39,13 @@ impl ConcatBuffer
     // Returns the total number of bytes in the buffer.
     mtd opCount()->u64
     {
-        return count()
+        return me.count()
     }
 
     // Ensures all allocated memory is freed when the buffer goes out of scope.
     mtd opDrop()
     {
-        release()
+        me.release()
     }
 
     // Provides a way to iterate over each bucket in the buffer.
@@ -72,108 +72,108 @@ impl ConcatBuffer
     // Returns the total number of bytes currently stored in the buffer.
     mtd count()->u64
     {
-        return lastBucket ? lastBucket.countBefore + lastBucket.count : 0
+        return me.lastBucket ? me.lastBucket.countBefore + me.lastBucket.count : 0
     }
 
     // Ensures that there is enough room to store at least 'numBytes' more bytes.
     // If the current bucket is full, a new one is allocated.
     mtd grow(numBytes: u64)
     {
-        Debug.assert(isAtEnd)
+        Debug.assert(me.isAtEnd)
 
-        if lastBucket
+        if me.lastBucket
         {
             // Enough room in the last bucket
-            let seek = cast(u64) (currentSP - lastBucket.datas)
-            if seek + numBytes <= lastBucket.size:
+            let seek = cast(u64) (me.currentSP - me.lastBucket.datas)
+            if seek + numBytes <= me.lastBucket.size:
                 return
 
             // Not enough room in the last bucket, but with have a bucket after that
             // can old the bytes (because of a previous clear())
-            if lastBucket.next and numBytes <= lastBucket.next.size
+            if me.lastBucket.next and numBytes <= me.lastBucket.next.size
             {
-                lastBucket.next.countBefore = lastBucket.countBefore + lastBucket.count
-                lastBucket.next.count       = 0
+                me.lastBucket.next.countBefore = me.lastBucket.countBefore + me.lastBucket.count
+                me.lastBucket.next.count       = 0
 
-                curBucket, lastBucket = lastBucket.next
-                currentSP = curBucket.datas
+                me.curBucket, me.lastBucket = me.lastBucket.next
+                me.currentSP = me.curBucket.datas
                 return
             }
         }
 
         // Need to allocate a new bucket
-        if allocator == null:
-            allocator = @getcontext().allocator
-        let newBucket = Memory.new'ConcatBufferBucket(allocator)
+        if me.allocator == null:
+            me.allocator = @getcontext().allocator
+        let newBucket = Memory.new'ConcatBufferBucket(me.allocator)
 
-        if lastBucket
+        if me.lastBucket
         {
-            newBucket.next  = lastBucket.next
-            lastBucket.next = newBucket
+            newBucket.next     = me.lastBucket.next
+            me.lastBucket.next = newBucket
         }
         else:
-            firstBucket = newBucket
+            me.firstBucket = newBucket
 
         // Each bucket knows the total count before it
-        if firstBucket and lastBucket == firstBucket:
-            newBucket.countBefore = firstBucket.count
-        elif lastBucket:
-            newBucket.countBefore = lastBucket.countBefore + lastBucket.count
+        if me.firstBucket and me.lastBucket == me.firstBucket:
+            newBucket.countBefore = me.firstBucket.count
+        elif me.lastBucket:
+            newBucket.countBefore = me.lastBucket.countBefore + me.lastBucket.count
 
-        curBucket, lastBucket = newBucket
+        me.curBucket, me.lastBucket = newBucket
 
-        let bsize = Math.max(granularity, numBytes)
-        lastBucket.datas = Memory.alloc(bsize, allocator)
-        lastBucket.size  = bsize
-        currentSP        = lastBucket.datas
+        let bsize = Math.max(me.granularity, numBytes)
+        me.lastBucket.datas = Memory.alloc(bsize, me.allocator)
+        me.lastBucket.size  = bsize
+        me.currentSP        = me.lastBucket.datas
     }
 
     // Associates a specific allocator with the buffer.
     // This can only be called when the buffer is empty.
     mtd setAllocator(alloc: Swag.IAllocator)
     {
-        Debug.assert(firstBucket == null, "buffer is not empty")
-        allocator = alloc
+        Debug.assert(me.firstBucket == null, "buffer is not empty")
+        me.allocator = alloc
     }
 
     // Sets the minimum size for new buckets allocated by the buffer.
     mtd setBucketSize(size: u64)
     {
         Debug.assert(size >= 4)
-        granularity = size
+        me.granularity = size
     }
 
     // Frees all memory associated with the buffer, including all buckets.
     mtd release()
     {
-        if !firstBucket:
+        if !me.firstBucket:
             return
 
-        var ptr = firstBucket
+        var ptr = me.firstBucket
         while ptr
         {
             let nextPtr = ptr.next
-            Memory.free(ptr.datas, ptr.size, allocator)
-            if ptr != &viewFirstBucket:
-                Memory.free(ptr, #sizeof(ConcatBufferBucket), allocator)
+            Memory.free(ptr.datas, ptr.size, me.allocator)
+            if ptr != &me.viewFirstBucket:
+                Memory.free(ptr, #sizeof(ConcatBufferBucket), me.allocator)
             ptr = nextPtr
         }
 
-        firstBucket = null
-        clear()
+        me.firstBucket = null
+        me.clear()
     }
 
     // Clears the buffer's content without deallocating memory.
     // This resets the buffer to be empty, allowing its allocated buckets to be reused.
     mtd clear()
     {
-        if !firstBucket:
+        if !me.firstBucket:
             return
 
-        curBucket, lastBucket = firstBucket
-        currentSP = curBucket.datas
-        curBucket.countBefore, curBucket.count = 0
-        isAtEnd = true
+        me.curBucket, me.lastBucket = me.firstBucket
+        me.currentSP = me.curBucket.datas
+        me.curBucket.countBefore, me.curBucket.count = 0
+        me.isAtEnd = true
     }
 
     // Appends a native type (like u8, s32, f64) to the buffer.
@@ -221,76 +221,76 @@ impl ConcatBuffer
         var slicePtr = @dataof(bytes)
 
         // Be sure we have a buffer
-        if !lastBucket:
-            grow(1)
+        if !me.lastBucket:
+            me.grow(1)
 
         // Divide the slice in the given amount of buckets if necessary
         if !contiguous
         {
             // Overwrite
-            if !isAtEnd
+            if !me.isAtEnd
             {
-                let curCount = cast(u64) (currentSP - curBucket.datas)
-                var remain   = curBucket.count - curCount
+                let curCount = cast(u64) (me.currentSP - me.curBucket.datas)
+                var remain   = me.curBucket.count - curCount
                 while num > remain
                 {
-                    Memory.copy(currentSP, slicePtr, remain)
+                    Memory.copy(me.currentSP, slicePtr, remain)
                     num -= remain
-                    slicePtr, currentSP += remain
+                    slicePtr, me.currentSP += remain
                     if !num:
                         return
 
                     // We have reached the end
                     // So we must grow
-                    if !curBucket.next
+                    if !me.curBucket.next
                     {
-                        isAtEnd = true
-                        grow(num)
+                        me.isAtEnd = true
+                        me.grow(num)
                         break
                     }
 
-                    curBucket = curBucket.next
-                    currentSP = curBucket.datas
-                    remain    = curBucket.count
+                    me.curBucket = me.curBucket.next
+                    me.currentSP = me.curBucket.datas
+                    remain       = me.curBucket.count
                 }
 
-                Memory.copy(currentSP, slicePtr, num)
-                currentSP += num
-                if isAtEnd:
-                    curBucket.count += num
+                Memory.copy(me.currentSP, slicePtr, num)
+                me.currentSP += num
+                if me.isAtEnd:
+                    me.curBucket.count += num
                 else:
-                    setIsAtEnd()
+                    me.setIsAtEnd()
                 return
             }
 
             // Append
             else
             {
-                let curCount = cast(u64) (currentSP - lastBucket.datas)
-                var remain   = lastBucket.size - curCount
+                let curCount = cast(u64) (me.currentSP - me.lastBucket.datas)
+                var remain   = me.lastBucket.size - curCount
                 while num > remain
                 {
-                    Memory.copy(currentSP, slicePtr, remain)
+                    Memory.copy(me.currentSP, slicePtr, remain)
                     num -= remain
-                    slicePtr, currentSP += remain
-                    lastBucket.count += remain
+                    slicePtr, me.currentSP += remain
+                    me.lastBucket.count += remain
                     if !num:
                         return
-                    grow(granularity) // Will alloc a new bucket as the current one is full
-                    remain = lastBucket.size
+                    me.grow(me.granularity) // Will alloc a new bucket as the current one is full
+                    remain = me.lastBucket.size
                 }
             }
         }
         else
         {
-            grow(num)
+            me.grow(num)
         }
 
         // We should have enough size in the last bucket to store the
         // rest of the slice
-        Memory.copy(currentSP, slicePtr, num)
-        currentSP += num
-        lastBucket.count += num
+        Memory.copy(me.currentSP, slicePtr, num)
+        me.currentSP += num
+        me.lastBucket.count += num
     }
 
     // Calculates the absolute byte offset of a given seek position.
@@ -303,8 +303,8 @@ impl ConcatBuffer
     mtd getSeek()->ConcatBufferSeek
     {
         var result: retval
-        result.bucket = lastBucket
-        result.sp     = currentSP
+        result.bucket = me.lastBucket
+        result.sp     = me.currentSP
         return result
     }
 
@@ -313,38 +313,38 @@ impl ConcatBuffer
     {
         var total = num
 
-        if !isAtEnd
+        if !me.isAtEnd
         {
-            var seek = cast(u64) (currentSP - curBucket.datas)
-            while curBucket.next and seek + total > curBucket.count
+            var seek = cast(u64) (me.currentSP - me.curBucket.datas)
+            while me.curBucket.next and seek + total > me.curBucket.count
             {
-                total -= (curBucket.count - seek)
-                if !curBucket.next:
+                total -= (me.curBucket.count - seek)
+                if !me.curBucket.next:
                     break
-                curBucket = curBucket.next
-                currentSP = curBucket.datas
-                seek      = 0
+                me.curBucket = me.curBucket.next
+                me.currentSP = me.curBucket.datas
+                seek         = 0
             }
 
-            if seek + total <= curBucket.count
+            if seek + total <= me.curBucket.count
             {
-                currentSP += total
+                me.currentSP += total
                 return
             }
 
-            total -= (curBucket.count - seek)
-            isAtEnd = true
+            total -= (me.curBucket.count - seek)
+            me.isAtEnd = true
         }
 
-        grow(total)
-        currentSP += total
-        curBucket.count += total
+        me.grow(total)
+        me.currentSP += total
+        me.curBucket.count += total
     }
 
     #[Swag.Inline]
     internal mtd setIsAtEnd()
     {
-        isAtEnd = currentSP == lastBucket.datas + lastBucket.count
+        me.isAtEnd = me.currentSP == me.lastBucket.datas + me.lastBucket.count
     }
 
     // Sets the current read/write position to a given 'seek'.
@@ -352,16 +352,16 @@ impl ConcatBuffer
     {
         if !seek.bucket
         {
-            curBucket = firstBucket
-            currentSP = curBucket.datas
+            me.curBucket = me.firstBucket
+            me.currentSP = me.curBucket.datas
         }
         else
         {
-            curBucket = seek.bucket
-            currentSP = seek.sp
+            me.curBucket = seek.bucket
+            me.currentSP = seek.sp
         }
 
-        setIsAtEnd()
+        me.setIsAtEnd()
     }
 
     // Sets the end of the buffer to a given 'seek' position, effectively truncating it.
@@ -369,17 +369,17 @@ impl ConcatBuffer
     {
         if !seek.bucket
         {
-            curBucket, lastBucket = firstBucket
-            currentSP        = curBucket.datas
-            lastBucket.count = 0
-            isAtEnd          = true
+            me.curBucket, me.lastBucket = me.firstBucket
+            me.currentSP        = me.curBucket.datas
+            me.lastBucket.count = 0
+            me.isAtEnd          = true
         }
         else
         {
-            curBucket, lastBucket = seek.bucket
-            currentSP        = seek.sp
-            lastBucket.count = cast(u64) (seek.sp - seek.bucket.datas)
-            isAtEnd          = true
+            me.curBucket, me.lastBucket = seek.bucket
+            me.currentSP        = seek.sp
+            me.lastBucket.count = cast(u64) (seek.sp - seek.bucket.datas)
+            me.isAtEnd          = true
         }
     }
 
@@ -388,8 +388,8 @@ impl ConcatBuffer
     // See [[makeLinear]].
     mtd toSlice()->#null [..] u8
     {
-        if lastBucket == firstBucket:
-            return @mkslice(firstBucket.datas, firstBucket.count)
+        if me.lastBucket == me.firstBucket:
+            return @mkslice(me.firstBucket.datas, me.firstBucket.count)
         return null
     }
 
@@ -397,12 +397,12 @@ impl ConcatBuffer
     // This is a "view" mode; the buffer does not own or free this data.
     mtd setFirstBucket(data: [..] u8)
     {
-        Debug.assert(firstBucket == null)
-        @init(&viewFirstBucket, 1)
-        viewFirstBucket.datas = @dataof(data)
-        viewFirstBucket.size  = @countof(data)
-        firstBucket, lastBucket, curBucket = &viewFirstBucket
-        currentSP = firstBucket.datas
+        Debug.assert(me.firstBucket == null)
+        @init(&me.viewFirstBucket, 1)
+        me.viewFirstBucket.datas = @dataof(data)
+        me.viewFirstBucket.size  = @countof(data)
+        me.firstBucket, me.lastBucket, me.curBucket = &me.viewFirstBucket
+        me.currentSP = me.firstBucket.datas
     }
 
     // Converts the buffer to a 'String' by copying all its content.
@@ -411,14 +411,14 @@ impl ConcatBuffer
     mtd toString(alloc: Swag.IAllocator = null)->String
     {
         var result: retval
-        if !firstBucket:
+        if !me.firstBucket:
             return result
 
         result.allocator = alloc
-        result.reserve(count() + 1)
+        result.reserve(me.count() + 1)
 
-        var ptr = firstBucket
-        while ptr != lastBucket.next
+        var ptr = me.firstBucket
+        while ptr != me.lastBucket.next
         {
             result.append(@mkstring(ptr.datas, ptr.count))
             ptr = ptr.next
@@ -430,15 +430,15 @@ impl ConcatBuffer
     internal mtd eatBuffer()->{ data: ^u8, size: u64, capacity: u64 }
     {
         // Must be linear ?
-        Debug.assert(lastBucket == firstBucket)
+        Debug.assert(me.lastBucket == me.firstBucket)
 
-        let rdata     = firstBucket.datas
-        let rcount    = firstBucket.count
-        let rcapacity = firstBucket.size
+        let rdata     = me.firstBucket.datas
+        let rcount    = me.firstBucket.count
+        let rcapacity = me.firstBucket.size
 
-        if firstBucket != &viewFirstBucket:
-            Memory.free(firstBucket, #sizeof(ConcatBufferBucket), allocator)
-        firstBucket = null
+        if me.firstBucket != &me.viewFirstBucket:
+            Memory.free(me.firstBucket, #sizeof(ConcatBufferBucket), me.allocator)
+        me.firstBucket = null
 
         return {rdata, rcount, rcapacity}
     }
@@ -449,14 +449,14 @@ impl ConcatBuffer
     mtd moveToString()->String
     {
         // Make a copy, as we have more than one bucket
-        if lastBucket != firstBucket:
-            return toString(allocator)
+        if me.lastBucket != me.firstBucket:
+            return me.toString(me.allocator)
 
         // Otherwise we can just eat the buffer
-        var eat = eatBuffer()
+        var eat = me.eatBuffer()
         with var result: retval
         {
-            .allocator = allocator
+            .allocator = me.allocator
             .buffer    = eat.data
             .capacity  = eat.capacity
             .length    = eat.size
@@ -470,11 +470,11 @@ impl ConcatBuffer
     mtd makeLinear()
     {
         // Already linear (and only one single bucket)
-        if lastBucket == firstBucket:
+        if me.lastBucket == me.firstBucket:
             return
 
-        let total    = count()
-        let newDatas = cast(^u8) Memory.alloc(total, allocator)
+        let total    = me.count()
+        let newDatas = cast(^u8) Memory.alloc(total, me.allocator)
 
         var curPtr = newDatas
         foreach b in dref me
@@ -484,15 +484,15 @@ impl ConcatBuffer
         }
 
         Debug.assert(curPtr == newDatas + total)
-        release()
+        me.release()
 
         // Make one single bucket
-        firstBucket       = Memory.new'ConcatBufferBucket(allocator)
-        firstBucket.datas = newDatas
-        firstBucket.size  = total
-        firstBucket.count = total
-        curBucket, lastBucket = firstBucket
-        currentSP = firstBucket.datas + firstBucket.count
-        isAtEnd   = true
+        me.firstBucket       = Memory.new'ConcatBufferBucket(me.allocator)
+        me.firstBucket.datas = newDatas
+        me.firstBucket.size  = total
+        me.firstBucket.count = total
+        me.curBucket, me.lastBucket = me.firstBucket
+        me.currentSP = me.firstBucket.datas + me.firstBucket.count
+        me.isAtEnd   = true
     }
 }

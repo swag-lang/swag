@@ -59,33 +59,33 @@ impl DateTime
     // Compares two DateTime values. Returns -1, 0, or 1.
     mtd const opCmp(other: DateTime)->s32
     {
-        if year < other.year:
+        if me.year < other.year:
             return -1
-        if year > other.year:
+        if me.year > other.year:
             return 1
-        if month < other.month:
+        if me.month < other.month:
             return -1
-        if month > other.month:
+        if me.month > other.month:
             return 1
-        if day < other.day:
+        if me.day < other.day:
             return -1
-        if day > other.day:
+        if me.day > other.day:
             return 1
-        if hour < other.hour:
+        if me.hour < other.hour:
             return -1
-        if hour > other.hour:
+        if me.hour > other.hour:
             return 1
-        if minute < other.minute:
+        if me.minute < other.minute:
             return -1
-        if minute > other.minute:
+        if me.minute > other.minute:
             return 1
-        if second < other.second:
+        if me.second < other.second:
             return -1
-        if second > other.second:
+        if me.second > other.second:
             return 1
-        if millisecond < other.millisecond:
+        if me.millisecond < other.millisecond:
             return -1
-        if millisecond > other.millisecond:
+        if me.millisecond > other.millisecond:
             return 1
         return 0
     }
@@ -93,19 +93,19 @@ impl DateTime
     // Returns true if this is a valid DateTime
     mtd const isValid()->bool
     {
-        if year == 0 or year > 9999:
+        if me.year == 0 or me.year > 9999:
             return false
-        if month == 0 or month > 12:
+        if me.month == 0 or me.month > 12:
             return false
-        if day == 0 or day > daysInMonth(year, month):
+        if me.day == 0 or me.day > daysInMonth(me.year, me.month):
             return false
-        if hour >= 24:
+        if me.hour >= 24:
             return false
-        if minute >= 60:
+        if me.minute >= 60:
             return false
-        if second >= 60:
+        if me.second >= 60:
             return false
-        if millisecond >= 1000:
+        if me.millisecond >= 1000:
             return false
         return true
     }
@@ -113,9 +113,9 @@ impl DateTime
     // Returns the day of the week for the current date
     mtd const dayOfWeek()->DayOfWeek
     {
-        let m: u32 = (month + 9) % 12
-        let y: u32 = year - m / 10
-        var dn = 365 * y + #wrap y / 4 + #wrap y / 400 + #wrap (m * 306 + 5) / 10 + #wrap day - 1 - #wrap y / 100
+        let m: u32 = (me.month + 9) % 12
+        let y: u32 = me.year - m / 10
+        var dn = 365 * y + #wrap y / 4 + #wrap y / 400 + #wrap (m * 306 + 5) / 10 + #wrap me.day - 1 - #wrap y / 100
         dn += 3
         return cast(DayOfWeek) (dn % 7)
     }
@@ -298,25 +298,25 @@ impl DateTime
         switch fmt
         {
         case DateIso:
-            return Format.toString("%-%{02}-%{02}", year, month, day)
+            return Format.toString("%-%{02}-%{02}", me.year, me.month, me.day)
         case TimeIso:
-            return Format.toString("%{02}:%{02}:%{02}", hour, minute, second)
+            return Format.toString("%{02}:%{02}:%{02}", me.hour, me.minute, me.second)
         case TimeIsoMs:
-            return Format.toString("%{02}:%{02}:%{02}.%", hour, minute, second, millisecond)
+            return Format.toString("%{02}:%{02}:%{02}.%", me.hour, me.minute, me.second, me.millisecond)
         case TimeIsoHM:
-            return Format.toString("%{02}:%{02}", hour, minute)
+            return Format.toString("%{02}:%{02}", me.hour, me.minute)
         case Date:
-            return Format.toString("% % % %", dayOfWeekName(dayOfWeek()), monthName(month), day, year)
+            return Format.toString("% % % %", dayOfWeekName(me.dayOfWeek()), monthName(me.month), me.day, me.year)
         case DateTime:
-            return Format.toString("% % % % %{02}:%{02}:%{02}", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second)
+            return Format.toString("% % % % %{02}:%{02}:%{02}", dayOfWeekName(me.dayOfWeek()), monthName(me.month), me.day, me.year, me.hour, me.minute, me.second)
         case DateTimeMs:
-            return Format.toString("% % % % %{02}:%{02}:%{02}.%", dayOfWeekName(dayOfWeek()), monthName(month), day, year, hour, minute, second, millisecond)
+            return Format.toString("% % % % %{02}:%{02}:%{02}.%", dayOfWeekName(me.dayOfWeek()), monthName(me.month), me.day, me.year, me.hour, me.minute, me.second, me.millisecond)
         case DateTimeIso:
-            return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}", year, month, day, hour, minute, second)
+            return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}", me.year, me.month, me.day, me.hour, me.minute, me.second)
         case DateTimeIsoMs:
-            return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}.%", year, month, day, hour, minute, second, millisecond)
+            return Format.toString("%-%{02}-%{02} %{02}:%{02}:%{02}.%", me.year, me.month, me.day, me.hour, me.minute, me.second, me.millisecond)
         case DateTimeIsoHM:
-            return Format.toString("%-%{02}-%{02} %{02}:%{02}", year, month, day, hour, minute)
+            return Format.toString("%-%{02}-%{02} %{02}:%{02}", me.year, me.month, me.day, me.hour, me.minute)
         }
 
         var result: retval
@@ -344,7 +344,7 @@ impl Serialization.ISerialize for DateTime
     {
         if encoder.isTextual()
         {
-            let val = toString(.DateTimeIsoMs)
+            let val = me.toString(.DateTimeIsoMs)
             encoder.writeString(val)
             return true
         }
@@ -374,33 +374,33 @@ impl StrConv.IConvert for DateTime
     {
         var str: String
         if @countof(strFormat) == 0 or @countof(strFormat) > 1:
-            str = toString(.DateTime)
+            str = me.toString(.DateTime)
         else
         {
             switch strFormat[0]
             {
             case 'a':
-                str = toString(.DateTime)
+                str = me.toString(.DateTime)
             case 'b':
-                str = toString(.DateTimeMs)
+                str = me.toString(.DateTimeMs)
             case 'c':
-                str = toString(.DateTimeIso)
+                str = me.toString(.DateTimeIso)
             case 'd':
-                str = toString(.DateTimeIsoMs)
+                str = me.toString(.DateTimeIsoMs)
             case 'e':
-                str = toString(.DateTimeIsoHM)
+                str = me.toString(.DateTimeIsoHM)
             case 'f':
-                str = toString(.DateIso)
+                str = me.toString(.DateIso)
             case 'g':
-                str = toString(.TimeIso)
+                str = me.toString(.TimeIso)
             case 'h':
-                str = toString(.TimeIsoMs)
+                str = me.toString(.TimeIsoMs)
             case 'i':
-                str = toString(.TimeIsoHM)
+                str = me.toString(.TimeIsoHM)
             case 'j':
-                str = toString(.Date)
+                str = me.toString(.Date)
             default:
-                str = toString(.DateTime)
+                str = me.toString(.DateTime)
             }
         }
 

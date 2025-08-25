@@ -20,7 +20,7 @@ impl Rectangle
     // Performs exact floating-point comparison of all four components.
     mtd const opEquals(other: Rectangle)->bool
     {
-        return x == other.x and y == other.y and width == other.width and height == other.height
+        return me.x == other.x and me.y == other.y and me.width == other.width and me.height == other.height
     }
 
     // Scale the rectangle by a scalar value.
@@ -37,10 +37,10 @@ impl Rectangle
     // Automatically handles the case where points are not in top-left/bottom-right order.
     mtd set(topLeft, bottomRight: Math.Point)
     {
-        x      = Math.min(topLeft.x, bottomRight.x)
-        y      = Math.min(topLeft.y, bottomRight.y)
-        width  = Math.abs(bottomRight.x - topLeft.x)
-        height = Math.abs(bottomRight.y - topLeft.y)
+        me.x      = Math.min(topLeft.x, bottomRight.x)
+        me.y      = Math.min(topLeft.y, bottomRight.y)
+        me.width  = Math.abs(bottomRight.x - topLeft.x)
+        me.height = Math.abs(bottomRight.y - topLeft.y)
     }
 
     // Get the horizontal center coordinate.
@@ -48,7 +48,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const horzCenter()->f32
     {
-        return x + (width * 0.5)
+        return me.x + (me.width * 0.5)
     }
 
     // Get the vertical center coordinate.
@@ -56,14 +56,14 @@ impl Rectangle
     #[Swag.Inline]
     mtd const vertCenter()->f32
     {
-        return y + (height * 0.5)
+        return me.y + (me.height * 0.5)
     }
 
     // Get the center point of the rectangle.
     // Returns a Point containing the horizontal and vertical center coordinates.
     mtd const center()->Point
     {
-        return Point{horzCenter(), vertCenter()}
+        return Point{me.horzCenter(), me.vertCenter()}
     }
 
     // Get the right edge coordinate.
@@ -71,7 +71,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const right()->f32
     {
-        return x + width
+        return me.x + me.width
     }
 
     // Set the right edge coordinate by adjusting the width.
@@ -79,7 +79,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd setRight(value: f32)
     {
-        width = value - x
+        me.width = value - me.x
     }
 
     // Get the bottom edge coordinate.
@@ -87,7 +87,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const bottom()->f32
     {
-        return y + height
+        return me.y + me.height
     }
 
     // Set the bottom edge coordinate by adjusting the height.
@@ -95,65 +95,65 @@ impl Rectangle
     #[Swag.Inline]
     mtd setBottom(value: f32)
     {
-        height = value - y
+        me.height = value - me.y
     }
 
     // Move the left edge inward by the specified amount.
     // Increases 'x' and decreases 'width' by 'value', effectively shrinking from the left.
     mtd moveLeft(value: f32)
     {
-        x += value
-        width -= value
+        me.x += value
+        me.width -= value
     }
 
     // Extend the right edge outward by the specified amount.
     // Increases 'width' by 'value', extending the rectangle to the right.
     mtd moveRight(value: f32)
     {
-        width += value
+        me.width += value
     }
 
     // Move the top edge downward by the specified amount.
     // Increases 'y' and decreases 'height' by 'value', effectively shrinking from the top.
     mtd moveTop(value: f32)
     {
-        y += value
-        height -= value
+        me.y += value
+        me.height -= value
     }
 
     // Extend the bottom edge downward by the specified amount.
     // Increases 'height' by 'value', extending the rectangle downward.
     mtd moveBottom(value: f32)
     {
-        height += value
+        me.height += value
     }
 
     // Set all rectangle components to zero.
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     mtd clear()
     {
-        x, y, width, height = 0
+        me.x, me.y, me.width, me.height = 0
     }
 
     // Returns true if all rectangle components are exactly zero.
     // Performs exact floating-point comparison, which may not work well with computed values.
     mtd const isZero()->bool
     {
-        return x == 0 and y == 0 and width == 0 and height == 0
+        return me.x == 0 and me.y == 0 and me.width == 0 and me.height == 0
     }
 
     // Returns true if the rectangle has zero area.
     // A rectangle is empty if either width or height is zero.
     mtd const isEmpty()->bool
     {
-        return width == 0 or height == 0
+        return me.width == 0 or me.height == 0
     }
 
     // Returns true if the rectangle has non-negative dimensions.
     // A normalized rectangle has width and height greater than or equal to zero.
     mtd isNormalized()->bool
     {
-        return width >= 0 and height >= 0
+        return me.width >= 0 and me.height >= 0
     }
 
     // Offset the rectangle position by the same amount in both directions.
@@ -161,7 +161,7 @@ impl Rectangle
     #[Swag.Overload]
     mtd offset(offsetXY: f32)
     {
-        x, y += offsetXY
+        me.x, me.y += offsetXY
     }
 
     // Offset the rectangle position by separate x and y amounts.
@@ -169,8 +169,8 @@ impl Rectangle
     #[Swag.Overload]
     mtd offset(offsetX, offsetY: f32)
     {
-        x += offsetX
-        y += offsetY
+        me.x += offsetX
+        me.y += offsetY
     }
 
     // Offset the rectangle position by a point vector.
@@ -178,18 +178,18 @@ impl Rectangle
     #[Swag.Overload]
     mtd offset(offset: Math.Point)
     {
-        x += offset.x
-        y += offset.y
+        me.x += offset.x
+        me.y += offset.y
     }
 
     // Apply padding to all sides of the rectangle.
     // Uses Vector4 components as left, top, right, bottom padding values respectively.
     mtd applyPadding(padding: Math.Vector4)
     {
-        x += padding.x
-        y += padding.y
-        width -= (padding.x + padding.z)
-        height -= (padding.y + padding.w)
+        me.x += padding.x
+        me.y += padding.y
+        me.width -= (padding.x + padding.z)
+        me.height -= (padding.y + padding.w)
     }
 
     // Scale the rectangle dimensions uniformly.
@@ -197,7 +197,7 @@ impl Rectangle
     #[Swag.Overload]
     mtd scale(value: f32)
     {
-        width, height *= value
+        me.width, me.height *= value
     }
 
     // Scale the rectangle dimensions independently.
@@ -214,10 +214,10 @@ impl Rectangle
     #[Swag.Overload]
     mtd inflate(value: f32)
     {
-        x -= value
-        y -= value
-        width += value * 2
-        height += value * 2
+        me.x -= value
+        me.y -= value
+        me.width += value * 2
+        me.height += value * 2
     }
 
     // Inflate the rectangle by different amounts horizontally and vertically.
@@ -235,54 +235,54 @@ impl Rectangle
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(x, eps) and isZeroEpsilon(y, eps) and isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
+        return isZeroEpsilon(me.x, eps) and isZeroEpsilon(me.y, eps) and isZeroEpsilon(me.width, eps) and isZeroEpsilon(me.height, eps)
     }
 
     // Returns true if the rectangle has zero area within epsilon tolerance.
     // Checks if both width and height are zero within the specified tolerance.
     mtd const isEmptyEpsilon(eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(width, eps) and isZeroEpsilon(height, eps)
+        return isZeroEpsilon(me.width, eps) and isZeroEpsilon(me.height, eps)
     }
 
     // Returns true if this rectangle equals 'other' within epsilon tolerance.
     // Compares all four components separately using the specified 'eps' tolerance.
     mtd const isEqualEpsilon(other: Rectangle, eps = ConstF32.Epsilon)->bool
     {
-        return isEqualEpsilon(x, other.x, eps) and
-               isEqualEpsilon(y, other.y, eps) and
-               isEqualEpsilon(width, other.width, eps) and
-               isEqualEpsilon(height, other.height, eps)
+        return isEqualEpsilon(me.x, other.x, eps) and
+               isEqualEpsilon(me.y, other.y, eps) and
+               isEqualEpsilon(me.width, other.width, eps) and
+               isEqualEpsilon(me.height, other.height, eps)
     }
 
     // Round all rectangle components to the nearest integer values.
     // Applies 'Math.round' function to position and dimension components in-place.
     mtd round()
     {
-        x      = Math.round(x)
-        y      = Math.round(y)
-        width  = Math.round(width)
-        height = Math.round(height)
+        me.x      = Math.round(me.x)
+        me.y      = Math.round(me.y)
+        me.width  = Math.round(me.width)
+        me.height = Math.round(me.height)
     }
 
     // Truncate all rectangle components to integer values.
     // Applies 'Math.trunc' function to all components, removing fractional parts.
     mtd trunc()
     {
-        x      = Math.trunc(x)
-        y      = Math.trunc(y)
-        width  = Math.trunc(width)
-        height = Math.trunc(height)
+        me.x      = Math.trunc(me.x)
+        me.y      = Math.trunc(me.y)
+        me.width  = Math.trunc(me.width)
+        me.height = Math.trunc(me.height)
     }
 
     // Round all rectangle components up to the next integer values.
     // Applies 'Math.ceil' function to all components in-place.
     mtd ceil()
     {
-        x      = Math.ceil(x)
-        y      = Math.ceil(y)
-        width  = Math.ceil(width)
-        height = Math.ceil(height)
+        me.x      = Math.ceil(me.x)
+        me.y      = Math.ceil(me.y)
+        me.width  = Math.ceil(me.width)
+        me.height = Math.ceil(me.height)
     }
 
     // Test if the specified coordinates are contained within the rectangle.
@@ -298,7 +298,7 @@ impl Rectangle
     #[Swag.Overload]
     mtd const contains(pt: Point)->bool
     {
-        return contains(pt.x, pt.y)
+        return me.contains(pt.x, pt.y)
     }
 
     // Test if the specified rectangle is entirely contained within this rectangle.
@@ -306,7 +306,7 @@ impl Rectangle
     #[Swag.Overload]
     mtd const contains(rect: Rectangle)->bool
     {
-        return (rect.x >= x and rect.right() <= right()) and (rect.y >= y and rect.bottom() <= bottom())
+        return (rect.x >= me.x and rect.right() <= me.right()) and (rect.y >= me.y and rect.bottom() <= me.bottom())
     }
 
     // Intersect this rectangle with another rectangle in-place.
@@ -335,7 +335,7 @@ impl Rectangle
     // Returns true if there is any overlap between the two rectangles.
     mtd const intersectWith(rect: Rectangle)->bool
     {
-        return (rect.x < right()) and (x < rect.right()) and (rect.y < bottom()) and (y < rect.bottom())
+        return (rect.x < me.right()) and (me.x < rect.right()) and (rect.y < me.bottom()) and (me.y < rect.bottom())
     }
 
     // Set this rectangle to the union with another rectangle.
@@ -361,7 +361,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const area()->f32
     {
-        return width * height
+        return me.width * me.height
     }
 
     // Get the perimeter of the rectangle.
@@ -369,31 +369,31 @@ impl Rectangle
     #[Swag.Inline]
     mtd const perimeter()->f32
     {
-        return 2.0 * (width + height)
+        return 2.0 * (me.width + me.height)
     }
 
     // Get the aspect ratio of the rectangle.
     // Returns width / height, or 0 if height is zero.
     mtd const aspectRatio()->f32
     {
-        if height == 0:
+        if me.height == 0:
             return 0
-        return width / height
+        return me.width / me.height
     }
 
     // Normalize the rectangle to ensure positive width and height.
     // Adjusts position and dimensions if width or height are negative.
     mtd normalize()
     {
-        if width < 0
+        if me.width < 0
         {
-            x += width
-            width = -width
+            me.x += me.width
+            me.width = -me.width
         }
-        if height < 0
+        if me.height < 0
         {
-            y += height
-            height = -height
+            me.y += me.height
+            me.height = -me.height
         }
     }
 
@@ -411,7 +411,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const topLeft()->Point
     {
-        return Point{x, y}
+        return Point{me.x, me.y}
     }
 
     // Get the top-right corner point.
@@ -419,7 +419,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const topRight()->Point
     {
-        return Point{x + width, y}
+        return Point{me.x + me.width, me.y}
     }
 
     // Get the bottom-left corner point.
@@ -427,7 +427,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const bottomLeft()->Point
     {
-        return Point{x, y + height}
+        return Point{me.x, me.y + me.height}
     }
 
     // Get the bottom-right corner point.
@@ -435,7 +435,7 @@ impl Rectangle
     #[Swag.Inline]
     mtd const bottomRight()->Point
     {
-        return Point{x + width, y + height}
+        return Point{me.x + me.width, me.y + me.height}
     }
 
     // Get the size of the rectangle as a point.
@@ -443,29 +443,29 @@ impl Rectangle
     #[Swag.Inline]
     mtd const size()->Point
     {
-        return Point{width, height}
+        return Point{me.width, me.height}
     }
 
     // Set the size of the rectangle.
     // Modifies width and height without changing position.
     mtd setSize(newSize: Point)
     {
-        width  = newSize.x
-        height = newSize.y
+        me.width  = newSize.x
+        me.height = newSize.y
     }
 
     // Clamp a point to be within the rectangle bounds.
     // Returns the closest point inside or on the rectangle boundary.
     mtd const clampPoint(pt: Point)->Point
     {
-        return Point{Math.clamp(pt.x, x, x + width), Math.clamp(pt.y, y, y + height)}
+        return Point{Math.clamp(pt.x, me.x, me.x + me.width), Math.clamp(pt.y, me.y, me.y + me.height)}
     }
 
     // Get the distance from a point to the rectangle.
     // Returns 0 if the point is inside the rectangle, otherwise returns the shortest distance to the boundary.
     mtd const distanceToPoint(pt: Point)->f32
     {
-        let clamped = clampPoint(pt)
+        let clamped = me.clampPoint(pt)
         let dx      = pt.x - clamped.x
         let dy      = pt.y - clamped.y
         return Math.sqrt(dx * dx + dy * dy)
@@ -475,17 +475,17 @@ impl Rectangle
     // Scales the rectangle to fit inside 'bounds' without distortion.
     mtd fitWithin(bounds: Rectangle)
     {
-        if width == 0 or height == 0:
+        if me.width == 0 or me.height == 0:
             return
 
-        let scaleX = bounds.width / width
-        let scaleY = bounds.height / height
+        let scaleX = bounds.width / me.width
+        let scaleY = bounds.height / me.height
         let scale  = Math.min(scaleX, scaleY)
 
-        width *= scale
-        height *= scale
-        x = bounds.x + (bounds.width - width) * 0.5
-        y = bounds.y + (bounds.height - height) * 0.5
+        me.width *= scale
+        me.height *= scale
+        me.x = bounds.x + (bounds.width - me.width) * 0.5
+        me.y = bounds.y + (bounds.height - me.height) * 0.5
     }
 
     // Create a rectangle that fits within bounds while maintaining aspect ratio.
@@ -502,17 +502,17 @@ impl Rectangle
     #[Swag.Overload]
     mtd expandToInclude(pt: Point)
     {
-        let right     = x + width
-        let bottom    = y + height
-        let newLeft   = Math.min(x, pt.x)
-        let newTop    = Math.min(y, pt.y)
+        let right     = me.x + me.width
+        let bottom    = me.y + me.height
+        let newLeft   = Math.min(me.x, pt.x)
+        let newTop    = Math.min(me.y, pt.y)
         let newRight  = Math.max(right, pt.x)
         let newBottom = Math.max(bottom, pt.y)
 
-        x      = newLeft
-        y      = newTop
-        width  = newRight - newLeft
-        height = newBottom - newTop
+        me.x      = newLeft
+        me.y      = newTop
+        me.width  = newRight - newLeft
+        me.height = newBottom - newTop
     }
 
     // Expand the rectangle to include another rectangle.
@@ -520,7 +520,7 @@ impl Rectangle
     #[Swag.Overload]
     mtd expandToInclude(other: Rectangle)
     {
-        expandToInclude(other.topLeft())
-        expandToInclude(other.bottomRight())
+        me.expandToInclude(other.topLeft())
+        me.expandToInclude(other.bottomRight())
     }
 }

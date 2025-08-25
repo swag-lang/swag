@@ -13,13 +13,13 @@ impl Event
 {
     mtd opDrop()
     {
-        release()
+        me.release()
     }
 
     // Returns true if the event is valid
     mtd isValid()->bool
     {
-        return handle != null
+        return me.handle != null
     }
 
     // Creates a new event
@@ -33,37 +33,37 @@ impl Event
     // Initialize event
     mtd init(manual, initState = false)
     {
-        Debug.assert(handle == null)
-        handle = assume CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
+        Debug.assert(me.handle == null)
+        me.handle = assume CreateEventA(null, manual ? TRUE : FALSE, initState ? TRUE : FALSE, null)
     }
 
     // Destroy an existing event
     mtd release()
     {
-        if !handle:
+        if !me.handle:
             return
-        CloseHandle(handle)
-        handle = null
+        CloseHandle(me.handle)
+        me.handle = null
     }
 
     // Signal the event
     mtd signal()
     {
-        Debug.assert(isValid())
-        assume SetEvent(handle)
+        Debug.assert(me.isValid())
+        assume SetEvent(me.handle)
     }
 
     // Reset the event state
     mtd reset()
     {
-        Debug.assert(isValid())
-        assume ResetEvent(handle)
+        Debug.assert(me.isValid())
+        assume ResetEvent(me.handle)
     }
 
     // Wait for the event to be signaled
     mtd wait()
     {
-        Debug.assert(isValid())
-        assume WaitForSingleObject(handle, INFINITE)
+        Debug.assert(me.isValid())
+        assume WaitForSingleObject(me.handle, INFINITE)
     }
 }

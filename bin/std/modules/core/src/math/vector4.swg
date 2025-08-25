@@ -32,7 +32,7 @@ impl Vector4
     #[Swag.Complete, Swag.Inline]
     mtd opAffect(value: f32)
     {
-        x, y, z, w = value
+        me.x, me.y, me.z, me.w = value
     }
 
     // Compound assignment operators for vector-vector operations (+=, -=, *=, /=).
@@ -168,24 +168,24 @@ impl Vector4
     // Returns the length (magnitude) of the vector.
     // Calculated using the Euclidean distance formula: sqrt(x² + y² + z² + w²).
     #[Swag.Inline]
-    mtd const length()->f32 => sqrt((x * x) + (y * y) + (z * z) + (w * w))
+    mtd const length()->f32 => sqrt((me.x * me.x) + (me.y * me.y) + (me.z * me.z) + (me.w * me.w))
 
     // Returns the squared length of the vector.
     // Faster than 'length()' when only comparing magnitudes since it avoids the square root operation.
     #[Swag.Inline]
-    mtd const lengthSquared()->f32 => (x * x) + (y * y) + (z * z) + (w * w)
+    mtd const lengthSquared()->f32 => (me.x * me.x) + (me.y * me.y) + (me.z * me.z) + (me.w * me.w)
 
     // Returns the dot product between this vector and 'other'.
     // The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂) + (w₁ × w₂).
     #[Swag.Inline]
-    mtd const dot(other: Vector4)->f32 => (x * other.x) + (y * other.y) + (z * other.z) + (w * other.w)
+    mtd const dot(other: Vector4)->f32 => (me.x * other.x) + (me.y * other.y) + (me.z * other.z) + (me.w * other.w)
 
     // Set all vector components to zero.
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     #[Swag.Inline]
     mtd setZero()
     {
-        x, y, z, w = 0
+        me.x, me.y, me.z, me.w = 0
     }
 
     // Negate the vector in-place.
@@ -193,10 +193,10 @@ impl Vector4
     #[Swag.Inline]
     mtd negate()
     {
-        x = -x
-        y = -y
-        z = -z
-        w = -w
+        me.x = -me.x
+        me.y = -me.y
+        me.z = -me.z
+        me.w = -me.w
     }
 
     // Returns true if this vector is exactly zero.
@@ -204,31 +204,31 @@ impl Vector4
     #[Swag.Inline]
     mtd const isZero()->bool
     {
-        return x == 0 and y == 0 and z == 0 and w == 0
+        return me.x == 0 and me.y == 0 and me.z == 0 and me.w == 0
     }
 
     // Returns true if this vector is zero within an epsilon tolerance.
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
-        return Math.isZeroEpsilon(x, eps) and Math.isZeroEpsilon(y, eps) and Math.isZeroEpsilon(z, eps) and Math.isZeroEpsilon(w, eps)
+        return Math.isZeroEpsilon(me.x, eps) and Math.isZeroEpsilon(me.y, eps) and Math.isZeroEpsilon(me.z, eps) and Math.isZeroEpsilon(me.w, eps)
     }
 
     // Returns true if this vector is equal to 'other' within an epsilon tolerance.
     // Compares each component separately using the specified 'eps' tolerance.
     mtd const isEqualEpsilon(other: Vector4, eps = cast(f32) ConstF64.Epsilon)->bool
     {
-        return Math.isEqualEpsilon(x, other.x, eps) and Math.isEqualEpsilon(y, other.y, eps) and Math.isEqualEpsilon(z, other.z, eps) and Math.isEqualEpsilon(w, other.w, eps)
+        return Math.isEqualEpsilon(me.x, other.x, eps) and Math.isEqualEpsilon(me.y, other.y, eps) and Math.isEqualEpsilon(me.z, other.z, eps) and Math.isEqualEpsilon(me.w, other.w, eps)
     }
 
     // Returns the Euclidean distance between this vector and 'dest'.
     // Calculated as the length of the difference vector between the two positions.
     mtd const distanceTo(dest: Vector4)->f32
     {
-        let xn = (x - dest.x)
-        let yn = (y - dest.y)
-        let zn = (z - dest.z)
-        let wn = (w - dest.w)
+        let xn = (me.x - dest.x)
+        let yn = (me.y - dest.y)
+        let zn = (me.z - dest.z)
+        let wn = (me.w - dest.w)
         return sqrt((xn * xn) + (yn * yn) + (zn * zn) + (wn * wn))
     }
 
@@ -236,10 +236,10 @@ impl Vector4
     // Faster than 'distance()' when only comparing distances since it avoids the square root operation.
     mtd const distanceToSquared(dest: Vector4)->f32
     {
-        let xn = (x - dest.x)
-        let yn = (y - dest.y)
-        let zn = (z - dest.z)
-        let wn = (w - dest.w)
+        let xn = (me.x - dest.x)
+        let yn = (me.y - dest.y)
+        let zn = (me.z - dest.z)
+        let wn = (me.w - dest.w)
         return (xn * xn) + (yn * yn) + (zn * zn) + (wn * wn)
     }
 
@@ -247,74 +247,74 @@ impl Vector4
     // Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero.
     mtd normalize()
     {
-        var norm = sqrt((x * x) + (y * y) + (z * z) + (w * w))
+        var norm = sqrt((me.x * me.x) + (me.y * me.y) + (me.z * me.z) + (me.w * me.w))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
-        x *= norm
-        y *= norm
-        z *= norm
-        w *= norm
+        me.x *= norm
+        me.y *= norm
+        me.z *= norm
+        me.w *= norm
     }
 
     // Returns this vector normalized to unit length without modifying the original.
     // Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero.
     mtd const toNormalized()->Vector4
     {
-        var norm = sqrt((x * x) + (y * y) + (z * z) + (w * w))
+        var norm = sqrt((me.x * me.x) + (me.y * me.y) + (me.z * me.z) + (me.w * me.w))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
-        return Vector4{x * norm, y * norm, z * norm, w * norm}
+        return Vector4{me.x * norm, me.y * norm, me.z * norm, me.w * norm}
     }
 
     // Set the vector to the specified length safely.
     // First normalizes the vector safely, then scales it to 'newLength'. Handles zero-length vectors.
     mtd setLengthSafe(newLength: f32)
     {
-        normalizeSafe()
-        x *= newLength
-        y *= newLength
-        z *= newLength
-        w *= newLength
+        me.normalizeSafe()
+        me.x *= newLength
+        me.y *= newLength
+        me.z *= newLength
+        me.w *= newLength
     }
 
     // Set the vector to the specified length.
     // First normalizes the vector, then scales it to 'newLength'. Assumes the vector is not zero.
     mtd setLength(newLength: f32)
     {
-        normalize()
-        x *= newLength
-        y *= newLength
-        z *= newLength
-        w *= newLength
+        me.normalize()
+        me.x *= newLength
+        me.y *= newLength
+        me.z *= newLength
+        me.w *= newLength
     }
 
     // Normalize this vector in-place safely.
     // Sets the vector to unit length, or to zero if the original length is near zero.
     mtd normalizeSafe()
     {
-        var norm = sqrt((x * x) + (y * y) + (z * z) + (w * w))
+        var norm = sqrt((me.x * me.x) + (me.y * me.y) + (me.z * me.z) + (me.w * me.w))
         if Math.isZeroEpsilon(norm)
         {
-            x, y, z, w = 0
+            me.x, me.y, me.z, me.w = 0
             return
         }
 
         norm = 1 / norm
-        x *= norm
-        y *= norm
-        z *= norm
-        w *= norm
+        me.x *= norm
+        me.y *= norm
+        me.z *= norm
+        me.w *= norm
     }
 
     // Returns this vector normalized safely without modifying the original.
     // Returns a unit vector in the same direction, or the zero vector if length is near zero.
     mtd const toNormalizedSafe()->Vector4
     {
-        var norm = sqrt((x * x) + (y * y) + (z * z) + (w * w))
+        var norm = sqrt((me.x * me.x) + (me.y * me.y) + (me.z * me.z) + (me.w * me.w))
         if Math.isZeroEpsilon(norm):
             return Zero
         norm = 1 / norm
-        return Vector4{x * norm, y * norm, z * norm, w * norm}
+        return Vector4{me.x * norm, me.y * norm, me.z * norm, me.w * norm}
     }
 
     // Returns a vector containing the minimum components of two vectors.
@@ -345,44 +345,44 @@ impl Vector4
     // Rounds each component down to the nearest integer value.
     mtd floor()
     {
-        x = Math.floor(x)
-        y = Math.floor(y)
-        z = Math.floor(z)
-        w = Math.floor(w)
+        me.x = Math.floor(me.x)
+        me.y = Math.floor(me.y)
+        me.z = Math.floor(me.z)
+        me.w = Math.floor(me.w)
     }
 
     // Apply ceiling function to all components in-place.
     // Rounds each component up to the nearest integer value.
     mtd ceil()
     {
-        x = Math.ceil(x)
-        y = Math.ceil(y)
-        z = Math.ceil(z)
-        w = Math.ceil(w)
+        me.x = Math.ceil(me.x)
+        me.y = Math.ceil(me.y)
+        me.z = Math.ceil(me.z)
+        me.w = Math.ceil(me.w)
     }
 
     // Apply rounding function to all components in-place.
     // Rounds each component to the nearest integer value.
     mtd round()
     {
-        x = Math.round(x)
-        y = Math.round(y)
-        z = Math.round(z)
-        w = Math.round(w)
+        me.x = Math.round(me.x)
+        me.y = Math.round(me.y)
+        me.z = Math.round(me.z)
+        me.w = Math.round(me.w)
     }
 
     // Returns the cosine of the angle between this vector and 'other'.
     // Calculated using the dot product formula: dot(a,b) / (|a| * |b|).
     mtd const cosAngleTo(other: Vector4)->f32
     {
-        return dot(other) / (length() * other.length())
+        return me.dot(other) / (me.length() * other.length())
     }
 
     // Returns the angle between this vector and 'other' in radians.
     // The result is in the range [0, π] using the arc cosine of the normalized dot product.
     mtd const angleTo(other: Vector4)->f32
     {
-        return Math.acos(cosAngleTo(other))
+        return Math.acos(me.cosAngleTo(other))
     }
 
     // Perform linear interpolation between two vectors.
@@ -402,39 +402,39 @@ impl Vector4
     // Each component is independently clamped to stay within the specified range.
     mtd clamp(min, max: Vector4)
     {
-        x = Math.clamp(x, min.x, max.x)
-        y = Math.clamp(y, min.y, max.y)
-        z = Math.clamp(z, min.z, max.z)
-        w = Math.clamp(w, min.w, max.w)
+        me.x = Math.clamp(me.x, min.x, max.x)
+        me.y = Math.clamp(me.y, min.y, max.y)
+        me.z = Math.clamp(me.z, min.z, max.z)
+        me.w = Math.clamp(me.w, min.w, max.w)
     }
 
     // Returns a new vector with components clamped between 'min' and 'max' values.
     // Each component is independently clamped to stay within the specified range.
     mtd const toClamped(min, max: Vector4)->Vector4
     {
-        return Vector4{Math.clamp(x, min.x, max.x), Math.clamp(y, min.y, max.y), Math.clamp(z, min.z, max.z), Math.clamp(w, min.w, max.w)}
+        return Vector4{Math.clamp(me.x, min.x, max.x), Math.clamp(me.y, min.y, max.y), Math.clamp(me.z, min.z, max.z), Math.clamp(me.w, min.w, max.w)}
     }
 
     // Clamp this vector's length to be within 'minLength' and 'maxLength'.
     // Preserves the vector's direction while constraining its magnitude.
     mtd clampLength(minLength, maxLength: f32)
     {
-        let len = length()
+        let len = me.length()
         if len < minLength:
-            setLength(minLength)
+            me.setLength(minLength)
         elif len > maxLength:
-            setLength(maxLength)
+            me.setLength(maxLength)
     }
 
     // Returns a new vector with length clamped between 'minLength' and 'maxLength'.
     // Preserves the vector's direction while constraining its magnitude.
     mtd const clampedLength(minLength, maxLength: f32)->Vector4
     {
-        let len = length()
+        let len = me.length()
         if len < minLength:
-            return toNormalized() * minLength
+            return me.toNormalized() * minLength
         elif len > maxLength:
-            return toNormalized() * maxLength
+            return me.toNormalized() * maxLength
         return dref me
     }
 
@@ -442,24 +442,24 @@ impl Vector4
     // Creates a new vector where each component is its absolute value.
     mtd const toAbs()->Vector4
     {
-        return Vector4{Math.abs(x), Math.abs(y), Math.abs(z), Math.abs(w)}
+        return Vector4{Math.abs(me.x), Math.abs(me.y), Math.abs(me.z), Math.abs(me.w)}
     }
 
     // Apply absolute value to all components in-place.
     // Makes all components positive by removing their sign.
     mtd makeAbs()
     {
-        x = Math.abs(x)
-        y = Math.abs(y)
-        z = Math.abs(z)
-        w = Math.abs(w)
+        me.x = Math.abs(me.x)
+        me.y = Math.abs(me.y)
+        me.z = Math.abs(me.z)
+        me.w = Math.abs(me.w)
     }
 
     // Project this vector onto 'other' vector.
     // Returns the component of this vector in the direction of 'other'.
     mtd const toProject(other: Vector4)->Vector4
     {
-        let dotProduct    = dot(other)
+        let dotProduct    = me.dot(other)
         let otherLengthSq = other.lengthSquared()
         if Math.isZeroEpsilon(otherLengthSq):
             return Zero
@@ -470,28 +470,28 @@ impl Vector4
     // The 'normal' should be a unit vector pointing away from the surface.
     mtd const toReflect(normal: Vector4)->Vector4
     {
-        return dref me - (normal * (2 * dot(normal)))
+        return dref me - (normal * (2 * me.dot(normal)))
     }
 
     // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
     // Each component becomes -1 if negative, 0 if zero, or 1 if positive.
     mtd const toSign()->Vector4
     {
-        return Vector4{Math.sign(x), Math.sign(y), Math.sign(z), Math.sign(w)}
+        return Vector4{Math.sign(me.x), Math.sign(me.y), Math.sign(me.z), Math.sign(me.w)}
     }
 
     // Returns true if all components are finite (not infinite or NaN).
     // Useful for validating vector values after calculations.
     mtd const isFinite()->bool
     {
-        return Math.isFinite(x) and Math.isFinite(y) and Math.isFinite(z) and Math.isFinite(w)
+        return Math.isFinite(me.x) and Math.isFinite(me.y) and Math.isFinite(me.z) and Math.isFinite(me.w)
     }
 
     // Returns true if any component is NaN (Not a Number).
     // Useful for detecting invalid vector values after calculations.
     mtd const isNaN()->bool
     {
-        return Math.isNaN(x) or Math.isNaN(y) or Math.isNaN(z) or Math.isNaN(w)
+        return Math.isNaN(me.x) or Math.isNaN(me.y) or Math.isNaN(me.z) or Math.isNaN(me.w)
     }
 
     // Move this vector towards 'target' by a maximum distance of 'maxDistance'.
@@ -534,23 +534,23 @@ impl Vector4
     // Returns a Vector3 representing the 3D position when w != 0. Handles w = 0 case safely.
     mtd const toVector3()->Vector3
     {
-        if Math.isZeroEpsilon(w):
-            return Vector3{x, y, z}
-        return Vector3{x / w, y / w, z / w}
+        if Math.isZeroEpsilon(me.w):
+            return Vector3{me.x, me.y, me.z}
+        return Vector3{me.x / me.w, me.y / me.w, me.z / me.w}
     }
 
     // Extract the XYZ components as a Vector3, ignoring the W component.
     // Useful when Vector4 is used for color (RGBA) and you need just RGB.
     mtd const xyz()->Vector3
     {
-        return Vector3{x, y, z}
+        return Vector3{me.x, me.y, me.z}
     }
 
     // Extract the XY components as a Vector2, ignoring Z and W components.
     // Useful for 2D projections or when using Vector4 for padding.
     mtd const xy()->Vector2
     {
-        return Vector2{x, y}
+        return Vector2{me.x, me.y}
     }
 
     // Create a Vector4 from Vector3 with specified W component.

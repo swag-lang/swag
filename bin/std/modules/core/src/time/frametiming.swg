@@ -20,39 +20,39 @@ impl FrameTiming
     mtd update()
     {
         let newTick = nowPrecise()
-        if paused:
+        if me.paused:
             return
 
-        frameCount += 1
+        me.frameCount += 1
 
         // First frame
-        if !prevTick
+        if !me.prevTick
         {
-            prevTick = newTick
+            me.prevTick = newTick
             return
         }
 
         // Delta time
-        let diff = newTick - prevTick
-        dt = cast(f32) (cast(f64) diff / preciseFrequency())
-        dt = Math.clamp(dt, dtMin, dtMax)
+        let diff = newTick - me.prevTick
+        me.dt = cast(f32) (cast(f64) diff / preciseFrequency())
+        me.dt = Math.clamp(me.dt, me.dtMin, me.dtMax)
 
         // Setup for next frame
-        prevTick = newTick
+        me.prevTick = newTick
     }
 
     // Pauses frame timing and frame count
     mtd pause()
     {
-        paused = true
+        me.paused = true
     }
 
     // Resumes frame timing and resets the tick reference
     mtd unpause()
     {
-        if !paused:
+        if !me.paused:
             return
-        paused   = false
-        prevTick = nowPrecise()
+        me.paused   = false
+        me.prevTick = nowPrecise()
     }
 }

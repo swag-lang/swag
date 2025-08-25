@@ -17,25 +17,25 @@ public impl Md5
     mtd final(digest: Digest)
     {
         var bits: [8] u8
-        encode(&bits[0], count, 8)
+        encode(&bits[0], me.count, 8)
 
-        let index  = (count[0] >> 3) & 0x3f
+        let index  = (me.count[0] >> 3) & 0x3f
         let padLen = (index < 56) ? (56 - index) : (120 - index)
 
-        update(@mkslice(&padding[0], padLen))
-        update(@mkslice(&bits[0], 8))
-        encode(&digest[0], state, 16)
+        me.update(@mkslice(&me.padding[0], padLen))
+        me.update(@mkslice(&bits[0], 8))
+        encode(&digest[0], me.state, 16)
     }
 
     // Initialize the hashing sequence
     mtd init()
     {
         @init(me, 1)
-        padding[0] = 0x80
-        state[0]   = 0x67452301
-        state[1]   = 0xefcdab89
-        state[2]   = 0x98badcfe
-        state[3]   = 0x10325476
+        me.padding[0] = 0x80
+        me.state[0]   = 0x67452301
+        me.state[1]   = 0xefcdab89
+        me.state[2]   = 0x98badcfe
+        me.state[3]   = 0x10325476
     }
 
     // Update the hash value with 'buffer' content
@@ -47,29 +47,29 @@ public impl Md5
         let input    = @dataof(data)
         let inputLen = cast(u32) @countof(data)
 
-        var index = (count[0] >> 3) & 0x3F
-        count[0] += inputLen << 3
-        if count[0] < inputLen << 3:
-            count[1] += 1
-        count[1] += inputLen >> 29
+        var index = (me.count[0] >> 3) & 0x3F
+        me.count[0] += inputLen << 3
+        if me.count[0] < inputLen << 3:
+            me.count[1] += 1
+        me.count[1] += inputLen >> 29
 
         var i       = 0'u32
         let partLen = 64 - index
         if inputLen >= partLen
         {
-            Memory.copy(&buffer[index], input, cast(u64) partLen)
-            transform(state, &buffer[0])
+            Memory.copy(&me.buffer[index], input, cast(u64) partLen)
+            transform(me.state, &me.buffer[0])
             i = partLen
             while i + 63 < inputLen
             {
-                transform(state, input + i)
+                transform(me.state, input + i)
                 i += 64
             }
 
             index = 0
         }
 
-        Memory.copy(&buffer[index], input + i, cast(u64) inputLen - i)
+        Memory.copy(&me.buffer[index], input + i, cast(u64) inputLen - i)
     }
 
     // Returns the md5 value for the given buffer

@@ -18,18 +18,18 @@ impl BitArray
     // Does nothing if the buffer is not allocated.
     mtd free()
     {
-        if !buffer:
+        if !me.buffer:
             return
-        Memory.free(buffer, capacity, allocator)
+        Memory.free(me.buffer, me.capacity, me.allocator)
     }
 
     // Reallocates the internal buffer to a new capacity.
     // This is a low-level memory operation.
     mtd realloc(newCapacity: u64)
     {
-        if allocator == null:
-            allocator = @getcontext().allocator
-        buffer = cast() Memory.realloc(buffer, newCapacity, capacity, allocator)
+        if me.allocator == null:
+            me.allocator = @getcontext().allocator
+        me.buffer = cast() Memory.realloc(me.buffer, newCapacity, me.capacity, me.allocator)
     }
 }
 
@@ -38,60 +38,60 @@ public impl BitArray
     // Returns the number of bits in the array.
     mtd const opCount()->u64
     {
-        return count
+        return me.count
     }
 
     // Ensures the allocated memory is freed when the array goes out of scope.
     mtd opDrop()
     {
-        free()
+        me.free()
     }
 
     // Handles the deep copy of the array when it is copied.
     // A new buffer is allocated and the content is copied over.
     mtd opPostCopy()
     {
-        if buffer
+        if me.buffer
         {
-            let otherBuffer = buffer
-            buffer = null
-            reserve(count)
-            Memory.copy(buffer, otherBuffer, capacity)
+            let otherBuffer = me.buffer
+            me.buffer = null
+            me.reserve(me.count)
+            Memory.copy(me.buffer, otherBuffer, me.capacity)
         }
     }
 
     // Returns the boolean value of the bit at a specific position.
     mtd opIndex(index: u64)->bool
     {
-        return get(index)
+        return me.get(index)
     }
 
     // Sets the value of the bit at a specific position.
     mtd opIndexAffect(index: u64, value: bool)
     {
-        set(index, value)
+        me.set(index, value)
     }
 
     // Replaces the content of the bit array with values from a slice of booleans.
     mtd opAffect(what: const [..] bool)
     {
         let len = @countof(what)
-        reserve(len)
-        buffer[len >> 5] = 0
+        me.reserve(len)
+        me.buffer[len >> 5] = 0
         foreach value, index in what:
-            set(index, value)
+            me.set(index, value)
     }
 
     // Compares this bit array with another one for equality.
     // Returns 'true' if both arrays have the same bit count and all bits are identical.
     mtd opEquals(other: BitArray)->bool
     {
-        if count != other.count:
+        if me.count != other.count:
             return false
 
-        for Math.max(count >> 5, 1)
+        for Math.max(me.count >> 5, 1)
         {
-            if buffer[@index] != other.buffer[@index]:
+            if me.buffer[@index] != other.buffer[@index]:
                 return false
         }
 
@@ -141,56 +141,56 @@ public impl BitArray
     {
         if !maxBits
         {
-            free()
-            buffer = null
-            count, capacity = 0
+            me.free()
+            me.buffer = null
+            me.count, me.capacity = 0
             return
         }
 
-        count    = maxBits
-        capacity = maxBits >> 5
-        if capacity << 5 < maxBits:
-            capacity += 1
+        me.count    = maxBits
+        me.capacity = maxBits >> 5
+        if me.capacity << 5 < maxBits:
+            me.capacity += 1
 
-        capacity *= 4
-        realloc(capacity)
+        me.capacity *= 4
+        me.realloc(me.capacity)
     }
 
     // Reserves capacity for a given number of bits and initializes them to a specific value.
     #[Swag.Overload]
     mtd reserve(maxBits: u64, initialValue: bool)
     {
-        reserve(maxBits)
-        Memory.set(buffer, initialValue ? 0xFF : 0x00, capacity)
+        me.reserve(maxBits)
+        Memory.set(me.buffer, initialValue ? 0xFF : 0x00, me.capacity)
     }
 
     // Sets all bits in the array to the specified boolean value.
     mtd setAll(value: bool)
     {
-        Memory.set(buffer, value ? 0xFF : 0x00, capacity)
+        Memory.set(me.buffer, value ? 0xFF : 0x00, me.capacity)
     }
 
     // Sets the bit at a specific position to the specified value.
     mtd set(index: u64, value: bool)
     {
-        Debug.assert(index < count)
+        Debug.assert(index < me.count)
         let val   = index >> 5
         let bit   = index - (val << 5)
         let shift = 1'u32 << cast(u32) bit
         if value:
-            buffer[val] |= shift
+            me.buffer[val] |= shift
         else:
-            buffer[val] &= ~shift
+            me.buffer[val] &= ~shift
     }
 
     // Returns the boolean value of the bit at a specific position.
     mtd const get(index: u64)->bool
     {
-        Debug.assert(index < count)
+        Debug.assert(index < me.count)
         let val   = index >> 5
         let bit   = index - (val << 5)
         let shift = 1'u32 << cast(u32) bit
-        return cast(bool) (buffer[val] & shift)
+        return cast(bool) (me.buffer[val] & shift)
     }
 
     // Inverts the value of the bit at a specific position.
@@ -198,14 +198,14 @@ public impl BitArray
     #[Swag.Overload]
     mtd invert(index: u64)
     {
-        Debug.assert(index < count)
+        Debug.assert(index < me.count)
         let val   = index >> 5
         let bit   = index - (val << 5)
         let shift = 1'u32 << cast(u32) bit
-        if buffer[val] & shift:
-            buffer[val] ^= shift
+        if me.buffer[val] & shift:
+            me.buffer[val] ^= shift
         else:
-            buffer[val] |= shift
+            me.buffer[val] |= shift
     }
 
     // Inverts all bit values in the array.
@@ -213,42 +213,42 @@ public impl BitArray
     #[Swag.Overload]
     mtd invert()
     {
-        if !count:
+        if !me.count:
             return
-        for Math.max(count >> 5, 1):
-            buffer[@index] = ~buffer[@index]
+        for Math.max(me.count >> 5, 1):
+            me.buffer[@index] = ~me.buffer[@index]
     }
 
     // Performs a bitwise AND operation between this array and another.
     // The current array is modified to store the result. Asserts that arrays are of the same size.
     mtd andWith(other: BitArray)
     {
-        Debug.assert(count == other.count)
-        if !count:
+        Debug.assert(me.count == other.count)
+        if !me.count:
             return
-        for Math.max(count >> 5, 1):
-            buffer[@index] &= other.buffer[@index]
+        for Math.max(me.count >> 5, 1):
+            me.buffer[@index] &= other.buffer[@index]
     }
 
     // Performs a bitwise OR operation between this array and another.
     // The current array is modified to store the result. Asserts that arrays are of the same size.
     mtd orWith(other: BitArray)
     {
-        Debug.assert(count == other.count)
-        if !count:
+        Debug.assert(me.count == other.count)
+        if !me.count:
             return
-        for Math.max(count >> 5, 1):
-            buffer[@index] |= other.buffer[@index]
+        for Math.max(me.count >> 5, 1):
+            me.buffer[@index] |= other.buffer[@index]
     }
 
     // Performs a bitwise XOR operation between this array and another.
     // The current array is modified to store the result. Asserts that arrays are of the same size.
     mtd xorWith(other: BitArray)
     {
-        Debug.assert(count == other.count)
-        if !count:
+        Debug.assert(me.count == other.count)
+        if !me.count:
             return
-        for Math.max(count >> 5, 1):
-            buffer[@index] ^= other.buffer[@index]
+        for Math.max(me.count >> 5, 1):
+            me.buffer[@index] ^= other.buffer[@index]
     }
 }

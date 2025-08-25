@@ -39,23 +39,23 @@ impl Int128
 {
     mtd const opCmp(other: Int128)->s32
     {
-        if hi != other.hi:
-            return hi <=> other.hi
-        return lo <=> other.lo
+        if me.hi != other.hi:
+            return me.hi <=> other.hi
+        return me.lo <=> other.lo
     }
 
     mtd const opCast()->f64
     {
         const Shift64: f64 = cast #bit (f64) 0x43f0000000000000 // 18446744073709551616.0'f64 //2^64
-        if hi < 0
+        if me.hi < 0
         {
-            if lo == 0:
-                return cast(f64) (hi * Shift64)
+            if me.lo == 0:
+                return cast(f64) (me.hi * Shift64)
             else:
-                return -cast(f64) (~lo + ~hi * Shift64)
+                return -cast(f64) (~me.lo + ~me.hi * Shift64)
         }
 
-        return cast(f64) (lo + hi * Shift64)
+        return cast(f64) (me.lo + me.hi * Shift64)
     }
 
     func mul(x, y: s64)->Int128

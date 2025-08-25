@@ -16,14 +16,14 @@ public impl Adler32
     // Initialize the hashing sequence
     mtd init()
     {
-        adler = 1
+        me.adler = 1
     }
 
     // Update the hash value with 'buffer' content
     mtd update(buffer: const [..] u8)
     {
-        var s1 = adler & 0xffff
-        var s2 = (adler >> 16) & 0xffff
+        var s1 = me.adler & 0xffff
+        var s2 = (me.adler >> 16) & 0xffff
 
         let countof = @countof(buffer)
         if !countof:
@@ -98,7 +98,7 @@ public impl Adler32
             }
         }
 
-        adler = s1 | (s2 << 16)
+        me.adler = s1 | (s2 << 16)
     }
 
     // Returns the adler32 hash value for the given buffer

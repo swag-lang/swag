@@ -29,110 +29,110 @@ public impl Xml
 
     mtd readTag()->string throw
     {
-        zapBlanks()
+        me.zapBlanks()
 
-        var c = stream.readU8()
+        var c = me.stream.readU8()
         if c != '<':
-            throw getError("malformed tag, missing opening [[<]]")
+            throw me.getError("malformed tag, missing opening [[<]]")
 
-        let start = stream.getSeek()
-        c = stream.readU8()
+        let start = me.stream.getSeek()
+        c = me.stream.readU8()
         while c and c != '>':
-            c = stream.readU8()
+            c = me.stream.readU8()
         if c != '>':
-            throw getError("malformed tag, missing closing [[>]]")
+            throw me.getError("malformed tag, missing closing [[>]]")
 
-        let end = stream.getSeek() - 1
-        return Latin1.trim(cast(string) stream.readBuffer[start..<end])
+        let end = me.stream.getSeek() - 1
+        return Latin1.trim(cast(string) me.stream.readBuffer[start..<end])
     }
 
     mtd readStartTag()->string throw
     {
-        let tag = readTag()
-        stackTags.add(tag)
+        let tag = me.readTag()
+        me.stackTags.add(tag)
         return tag
     }
 
     mtd readEndTag() throw
     {
-        let tag   = readTag()
-        let start = stackTags.popBack()
+        let tag   = me.readTag()
+        let start = me.stackTags.popBack()
         if tag[1..] != start:
-            throw getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
+            throw me.getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
     }
 
     mtd getError(val: string)->SyntaxError
     {
         var err: retval
         err.message = Errors.mkString(val)
-        err.line    = line
-        err.col     = col
-        err.seek    = stream.seek
+        err.line    = me.line
+        err.col     = me.col
+        err.seek    = me.stream.seek
         return err
     }
 
     mtd zapBlanks()
     {
-        var c = stream.peekU8()
+        var c = me.stream.peekU8()
         while c and Latin1.isSpace(c)
         {
-            stream.moveSeek()
+            me.stream.moveSeek()
             if c == '\n'
             {
-                line += 1
-                col = 1
+                me.line += 1
+                me.col = 1
             }
             else
             {
-                col += 1
+                me.col += 1
             }
 
-            c = stream.peekU8()
+            c = me.stream.peekU8()
         }
     }
 
     mtd startRead(input: const [..] u8)
     {
-        stream = ByteStream.openRead(input)
+        me.stream = ByteStream.openRead(input)
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
-        let c = stream.peekU8()
+        let c = me.stream.peekU8()
         return c != '<'
     }
 
     mtd beginSection(_kind: SectionKind) throw
     {
-        discard readTag()
+        discard me.readTag()
     }
 
     mtd endSection() throw
     {
-        discard readTag()
+        discard me.readTag()
     }
 
     mtd beginRoot() throw
     {
-        discard readStartTag()
+        discard me.readStartTag()
     }
 
     mtd endRoot() throw
     {
-        readEndTag()
+        me.readEndTag()
     }
 
     mtd beginElement(val: TypedValue)->bool throw
     {
-        let tag = readStartTag()
+        let tag = me.readStartTag()
         if tag != val.name:
-            throw getError("invalid property name")
+            throw me.getError("invalid property name")
         return true
     }
 
     mtd endElement(_val: TypedValue) throw
     {
-        readEndTag()
+        me.readEndTag()
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]

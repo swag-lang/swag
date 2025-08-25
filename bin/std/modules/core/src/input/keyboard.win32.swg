@@ -236,7 +236,7 @@ public impl Keyboard
     {
         let virt = keyToVirtualKey(key)
         var uc:  [5] WCHAR
-        let res  = ToUnicode(virt, MapVirtualKeyW(virt, MAPVK_VK_TO_VSC), currentState.nativeState, uc, 4, 0)
+        let res  = ToUnicode(virt, MapVirtualKeyW(virt, MAPVK_VK_TO_VSC), me.currentState.nativeState, uc, 4, 0)
         if res == 1:
             return cast(rune) uc[0]
         return 0'rune

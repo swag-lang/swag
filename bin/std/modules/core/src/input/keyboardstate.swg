@@ -13,14 +13,14 @@ impl KeyboardState
     // Compute current keyboard state
     mtd update()
     {
-        updateNative()
+        me.updateNative()
         for i in @countof(Key):
-            pressed[i] = native.isKeyPressed(cast(Key) i)
+            me.pressed[i] = me.native.isKeyPressed(cast(Key) i)
     }
 
     // Reset keyboard state
     mtd clear()
     {
-        Memory.clear(&pressed, #sizeof(pressed))
+        Memory.clear(&me.pressed, #sizeof(me.pressed))
     }
 }

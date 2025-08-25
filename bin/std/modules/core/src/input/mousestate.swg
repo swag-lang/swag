@@ -17,16 +17,16 @@ impl MouseState
     // Compute the actual state of the mouse
     mtd update()
     {
-        position = getMousePos()
+        me.position = getMousePos()
 
         foreach v in MouseButton
         {
-            let b = pressed[v]
-            pressed[v] = Mouse.isButtonPressed(v)
-            if !b and pressed[v]
+            let b = me.pressed[v]
+            me.pressed[v] = Mouse.isButtonPressed(v)
+            if !b and me.pressed[v]
             {
-                pressedTime[v] = Time.nowMilliseconds()
-                pressedPos[v]  = position
+                me.pressedTime[v] = Time.nowMilliseconds()
+                me.pressedPos[v]  = me.position
             }
         }
     }
@@ -34,7 +34,7 @@ impl MouseState
     // Reset the state to its default value
     mtd clear()
     {
-        Memory.clear(&pressed, #sizeof(pressed))
-        position = getMousePos()
+        Memory.clear(&me.pressed, #sizeof(me.pressed))
+        me.position = getMousePos()
     }
 }

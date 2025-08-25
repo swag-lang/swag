@@ -13,18 +13,18 @@ impl Mutex
     // Try to lock the mutex, and return 'true' if it's the case
     mtd tryLock()->bool
     {
-        return TryAcquireSRWLockExclusive(&v) ? true : false
+        return TryAcquireSRWLockExclusive(&me.v) ? true : false
     }
 
     // Lock mutex
     mtd lock()
     {
-        AcquireSRWLockExclusive(&v)
+        AcquireSRWLockExclusive(&me.v)
     }
 
     // Unlock mutex
     mtd unlock()
     {
-        ReleaseSRWLockExclusive(&v)
+        ReleaseSRWLockExclusive(&me.v)
     }
 }

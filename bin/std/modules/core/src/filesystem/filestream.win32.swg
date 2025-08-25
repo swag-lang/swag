@@ -7,29 +7,29 @@ impl FileStream
 {
     mtd opDrop()
     {
-        close()
+        me.close()
     }
 
     // Read from the given file stream, and returns the number of bytes
     mtd read(buffer: *void, length: u64)->u64
     {
-        Debug.assert(isOpen())
-        Debug.assert(canRead)
+        Debug.assert(me.isOpen())
+        Debug.assert(me.canRead)
 
         var dwRead: DWORD = 0
         Debug.assert(length <= Swag.U32.Max)
-        discard ReadFile(handle, buffer, cast(u32) length, &dwRead, null)
+        discard ReadFile(me.handle, buffer, cast(u32) length, &dwRead, null)
         return cast(u64) dwRead
     }
 
     // Write to the given file stream, and returns the number of written bytes
     mtd write(buffer: const *void, length: u64)->u64 throw
     {
-        Debug.assert(isOpen())
-        Debug.assert(canWrite)
+        Debug.assert(me.isOpen())
+        Debug.assert(me.canWrite)
 
         var dwWrite: DWORD = 0
-        WriteFile(handle, buffer, cast(u32) length, &dwWrite, null)
+        WriteFile(me.handle, buffer, cast(u32) length, &dwWrite, null)
         Errors.transformWinErrors()
         return cast(u64) dwWrite
     }
@@ -37,20 +37,20 @@ impl FileStream
     // Close the given file stream
     mtd close()
     {
-        if handle
+        if me.handle
         {
-            CloseHandle(handle)
-            handle = null
+            CloseHandle(me.handle)
+            me.handle = null
         }
     }
 
     // Returns the given file stream length on disk
     mtd getSize()->u64 throw
     {
-        Debug.assert(isOpen())
-        Debug.assert(canSeek)
+        Debug.assert(me.isOpen())
+        Debug.assert(me.canSeek)
 
-        let hFile = cast(HANDLE) handle
+        let hFile = cast(HANDLE) me.handle
         var high  = 0'u32
         let low   = GetFileSize(hFile, &high)
         Errors.transformWinErrors()
@@ -60,10 +60,10 @@ impl FileStream
     // Returns the current seek position of the given file stream
     mtd getPosition()->u64 throw
     {
-        Debug.assert(isOpen())
-        Debug.assert(canSeek)
+        Debug.assert(me.isOpen())
+        Debug.assert(me.canSeek)
 
-        let hFile = cast(HANDLE) handle
+        let hFile = cast(HANDLE) me.handle
         var high  = 0
         let low   = SetFilePointer(hFile, 0, &high, FILE_CURRENT)
         Errors.transformWinErrors()
@@ -73,10 +73,10 @@ impl FileStream
     // Set the current seek position of the given file stream
     mtd setPosition(origin: SeekOrigin, seek: u64) throw
     {
-        Debug.assert(isOpen())
-        Debug.assert(canSeek)
+        Debug.assert(me.isOpen())
+        Debug.assert(me.canSeek)
 
-        let hFile = cast(HANDLE) handle
+        let hFile = cast(HANDLE) me.handle
         let low   = cast(LONG) (seek & 0xFFFFFFFF)
         var high  = cast(LONG) (seek >> 32)
 
@@ -98,6 +98,6 @@ impl FileStream
     // Skip 'bytes' from current position
     mtd skipPosition(bytes: u64) throw
     {
-        setPosition(.Current, bytes)
+        me.setPosition(.Current, bytes)
     }
 }

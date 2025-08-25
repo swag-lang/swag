@@ -29,12 +29,12 @@ public impl Mt64
     #[Swag.CanOverflow(true), Swag.Overload]
     mtd seedU64(seed: u64)
     {
-        mt[0] = seed
-        mti   = 1
-        while mti < NN
+        me.mt[0] = seed
+        me.mti   = 1
+        while me.mti < NN
         {
-            mt[mti] = (6364136223846793005'u64 * (mt[mti - 1] ^ (mt[mti - 1] >> 62)) + mti)
-            mti += 1
+            me.mt[me.mti] = (6364136223846793005'u64 * (me.mt[me.mti - 1] ^ (me.mt[me.mti - 1] >> 62)) + me.mti)
+            me.mti += 1
         }
     }
 
@@ -43,19 +43,19 @@ public impl Mt64
     {
         let keyLength = @countof(seed)
 
-        seedU64(19650218)
+        me.seedU64(19650218)
         var i = 1
         var j = 0
         var k = NN > keyLength ? NN : keyLength
 
         while k
         {
-            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 62)) * 3935559000370003845)) + seed[j] + j
+            me.mt[i] = (me.mt[i] ^ ((me.mt[i - 1] ^ (me.mt[i - 1] >> 62)) * 3935559000370003845)) + seed[j] + j
             i, j += 1
             if i >= NN
             {
-                mt[0] = mt[NN - 1]
-                i     = 1
+                me.mt[0] = me.mt[NN - 1]
+                i        = 1
             }
             if j >= keyLength:
                 j = 0
@@ -65,44 +65,44 @@ public impl Mt64
         k = NN - 1
         while k != 0
         {
-            mt[i] = (mt[i] ^ ((mt[i - 1] ^ (mt[i - 1] >> 62)) * 2862933555777941757)) - i
+            me.mt[i] = (me.mt[i] ^ ((me.mt[i - 1] ^ (me.mt[i - 1] >> 62)) * 2862933555777941757)) - i
             i += 1
             if i >= NN
             {
-                mt[0] = mt[NN - 1]
-                i     = 1
+                me.mt[0] = me.mt[NN - 1]
+                i        = 1
             }
             k -= 1
         }
 
-        mt[0] = 1'u64 << 63
+        me.mt[0] = 1'u64 << 63
     }
 
     #[Swag.CanOverflow(true)]
     mtd nextU64()->u64
     {
-        if mti >= NN
+        if me.mti >= NN
         {
-            let stateMid = mt[MID]
+            let stateMid = me.mt[MID]
 
             for var i = 0, j = MID; i != MID - 1; i, j += 1
             {
-                let x = (mt[i] & UM) | (mt[i + 1] & LM)
-                mt[i] = mt[i + MID] ^ (x >> 1) ^ ((mt[i + 1] & 1) * MATRIX_A)
-                let y = (mt[j] & UM) | (mt[j + 1] & LM)
-                mt[j] = mt[j - MID] ^ (y >> 1) ^ ((mt[j + 1] & 1) * MATRIX_A)
+                let x = (me.mt[i] & UM) | (me.mt[i + 1] & LM)
+                me.mt[i] = me.mt[i + MID] ^ (x >> 1) ^ ((me.mt[i + 1] & 1) * MATRIX_A)
+                let y = (me.mt[j] & UM) | (me.mt[j + 1] & LM)
+                me.mt[j] = me.mt[j - MID] ^ (y >> 1) ^ ((me.mt[j + 1] & 1) * MATRIX_A)
             }
 
-            let x = (mt[MID - 1] & UM) | (stateMid & LM)
-            mt[MID - 1] = mt[NN - 1] ^ (x >> 1) ^ ((stateMid & 1) * MATRIX_A)
-            let y = (mt[NN - 1] & UM) | (mt[0] & LM)
-            mt[NN - 1] = mt[MID - 1] ^ (y >> 1) ^ ((mt[0] & 1) * MATRIX_A)
+            let x = (me.mt[MID - 1] & UM) | (stateMid & LM)
+            me.mt[MID - 1] = me.mt[NN - 1] ^ (x >> 1) ^ ((stateMid & 1) * MATRIX_A)
+            let y = (me.mt[NN - 1] & UM) | (me.mt[0] & LM)
+            me.mt[NN - 1] = me.mt[MID - 1] ^ (y >> 1) ^ ((me.mt[0] & 1) * MATRIX_A)
 
-            mti = 0
+            me.mti = 0
         }
 
-        var result = mt[mti]
-        mti += 1
+        var result = me.mt[me.mti]
+        me.mti += 1
 
         result ^= (result >> 29) & 0x5555555555555555'u64
         result ^= (result << 17) & 0x71D67FFFEDA60000'u64

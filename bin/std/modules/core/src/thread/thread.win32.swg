@@ -56,35 +56,35 @@ impl Thread
     // Initialize a thread in pause state
     mtd init(lambda: func||(Thread), userParam: *void = null, priority = ThreadPriority.Normal, tempAllocSize: s32 = -1) throw
     {
-        Debug.assert(!isValid(), "thread already created")
+        Debug.assert(!me.isValid(), "thread already created")
 
         // Get a copy of current context, and initialize a temporary allocator for that thread
-        context = dref @getcontext()
-        @init(&context.tempAllocator, 1)
+        me.context = dref @getcontext()
+        @init(&me.context.tempAllocator, 1)
         if tempAllocSize < 0:
-            context.tempAllocator.setCapacity(context.tempAllocator.capacity, context.allocator)
+            me.context.tempAllocator.setCapacity(me.context.tempAllocator.capacity, me.context.allocator)
         elif tempAllocSize != 0:
-            context.tempAllocator.setCapacity(cast(u64) tempAllocSize, context.allocator)
+            me.context.tempAllocator.setCapacity(cast(u64) tempAllocSize, me.context.allocator)
 
-        handle     = try CreateThread(null, 0, @mkcallback(&threadEntry), me, CREATE_SUSPENDED, &id)
-        userLambda = lambda
-        requestEnd = false
+        me.handle     = try CreateThread(null, 0, @mkcallback(&threadEntry), me, CREATE_SUSPENDED, &me.id)
+        me.userLambda = lambda
+        me.requestEnd = false
 
         me.userParam = #me.userParam
-        try setPriority(#me.priority)
+        try me.setPriority(#me.priority)
     }
 
     // Resume the given thread, if it was paused
     mtd start() throw
     {
-        Debug.assert(isValid())
-        try ResumeThread(handle)
+        Debug.assert(me.isValid())
+        try ResumeThread(me.handle)
     }
 
     // Set the thread priority
     mtd setPriority(priority: ThreadPriority) throw
     {
-        Debug.assert(isValid())
+        Debug.assert(me.isValid())
 
         let newPrio = #me.priority
         if me.priority == newPrio:
@@ -107,24 +107,24 @@ impl Thread
             wprio = THREAD_PRIORITY_HIGHEST
         }
 
-        try SetThreadPriority(handle, THREAD_PRIORITY_LOWEST)
+        try SetThreadPriority(me.handle, THREAD_PRIORITY_LOWEST)
     }
 
     // Wait for the given thread to be done, and close it
     // After that call, isValid() will return false
     mtd wait()
     {
-        Debug.assert(isValid())
-        assume WaitForSingleObject(handle, INFINITE)
-        CloseHandle(handle)
-        handle = null
+        Debug.assert(me.isValid())
+        assume WaitForSingleObject(me.handle, INFINITE)
+        CloseHandle(me.handle)
+        me.handle = null
     }
 
     // Returns true if the thread has finished
     mtd isDone()->bool
     {
-        Debug.assert(isValid())
-        let res = assume WaitForSingleObject(handle, 0)
+        Debug.assert(me.isValid())
+        let res = assume WaitForSingleObject(me.handle, 0)
         return res != WAIT_TIMEOUT
     }
 }

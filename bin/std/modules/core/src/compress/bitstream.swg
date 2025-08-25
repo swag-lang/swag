@@ -17,49 +17,49 @@ impl BitStream
     mtd init(buf: const [..] u8)
     {
         @init(me, 1)
-        stream = buf
+        me.stream = buf
     }
 
     // Returns a pointer to the beginning of the stream
     #[Swag.Inline]
-    mtd startPtr() => @dataof(stream)
+    mtd startPtr() => @dataof(me.stream)
 
     // Returns a pointer to the current byte in the stream
     #[Swag.Inline]
-    mtd curPtr() => @dataof(stream) + curByte
+    mtd curPtr() => @dataof(me.stream) + me.curByte
 
     // Returns the total size of the stream
     #[Swag.Inline]
-    mtd size() => @countof(stream)
+    mtd size() => @countof(me.stream)
 
     // Refills the bit buffer until at least 'width' bits are available
     mtd refill(width = 24'u8)
     {
-        while numBits <= width
+        while me.numBits <= width
         {
             // Detect and reset broken state (if buffer was empty and numBits was max)
-            if codeBuffer == 0 and numBits == cast #bit (u8) -1:
-                numBits = 0
+            if me.codeBuffer == 0 and me.numBits == cast #bit (u8) -1:
+                me.numBits = 0
 
             // If buffer is already full, prevent overflow
-            if codeBuffer >= 1'u32 << numBits
+            if me.codeBuffer >= 1'u32 << me.numBits
             {
-                numBits = 255
+                me.numBits = 255
                 return
             }
 
             // Stop if we reached end of stream
-            if curByte >= @countof(stream)
+            if me.curByte >= @countof(me.stream)
             {
-                eof = true
+                me.eof = true
                 return
             }
 
             // Read next byte and shift it into the buffer
-            let c = stream[curByte]
-            curByte += 1
-            codeBuffer |= cast(u32) c << numBits
-            numBits += 8
+            let c = me.stream[me.curByte]
+            me.curByte += 1
+            me.codeBuffer |= cast(u32) c << me.numBits
+            me.numBits += 8
         }
     }
 
@@ -67,32 +67,32 @@ impl BitStream
     #[Swag.Inline]
     mtd peekBits(width: u8)->u32
     {
-        if numBits < width:
-            refill()
-        return codeBuffer & ~(0xffffffff << width)
+        if me.numBits < width:
+            me.refill()
+        return me.codeBuffer & ~(0xffffffff << width)
     }
 
     // Like peekBits, but assumes enough bits are already available
     mtd peekBitsNoRefill(width: u8)->u32
     {
-        Debug.assert(numBits >= width)
-        return codeBuffer & ~(0xffffffff << width)
+        Debug.assert(me.numBits >= width)
+        return me.codeBuffer & ~(0xffffffff << width)
     }
 
     // Reads and consumes 'width' bits from the buffer
     #[Swag.Inline]
     mtd readBits(width: u8)->u32
     {
-        let k = peekBits(width)
-        consumeBits(width)
+        let k = me.peekBits(width)
+        me.consumeBits(width)
         return k
     }
 
     // Reads and consumes 'width' bits without checking buffer availability
     mtd readBitsNoRefill(width: u8)->u32
     {
-        let k = peekBitsNoRefill(width)
-        consumeBits(width)
+        let k = me.peekBitsNoRefill(width)
+        me.consumeBits(width)
         return k
     }
 
@@ -100,24 +100,24 @@ impl BitStream
     #[Swag.Inline]
     mtd consumeBits(width: u8)
     {
-        codeBuffer >>= width
-        numBits -= #wrap width
+        me.codeBuffer >>= width
+        me.numBits -= #wrap width
     }
 
     // Discards bits to align to the next byte boundary
     #[Swag.Inline]
     mtd discardToNextByte()
     {
-        consumeBits(cast(u8) numBits & 7)
+        me.consumeBits(cast(u8) me.numBits & 7)
     }
 
     // Reverts stream to last byte-aligned state (undo partial read)
     mtd revert()
     {
-        Debug.assert(!(numBits & 7)) // Must be aligned
-        curByte -= numBits / 8
-        numBits    = 0
-        codeBuffer = 0
+        Debug.assert(!(me.numBits & 7)) // Must be aligned
+        me.curByte -= me.numBits / 8
+        me.numBits    = 0
+        me.codeBuffer = 0
     }
 
     // Peeks 'width' bytes into 'dest', consuming bits after each byte
@@ -126,22 +126,22 @@ impl BitStream
         // Could be optimized further
         for i in width
         {
-            dest[i] = cast(u8) peekBits(8)
-            consumeBits(8)
+            dest[i] = cast(u8) me.peekBits(8)
+            me.consumeBits(8)
         }
     }
 
     // Peeks 4 bytes (little-endian) into 'dest'
     mtd peek32(dest: ^u8)
     {
-        dest[0] = cast(u8) peekBits(8)
-        consumeBits(8)
-        dest[1] = cast(u8) peekBits(8)
-        consumeBits(8)
-        dest[2] = cast(u8) peekBits(8)
-        consumeBits(8)
-        dest[3] = cast(u8) peekBits(8)
-        consumeBits(8)
+        dest[0] = cast(u8) me.peekBits(8)
+        me.consumeBits(8)
+        dest[1] = cast(u8) me.peekBits(8)
+        me.consumeBits(8)
+        dest[2] = cast(u8) me.peekBits(8)
+        me.consumeBits(8)
+        dest[3] = cast(u8) me.peekBits(8)
+        me.consumeBits(8)
     }
 
     // Peeks 4 bytes (big-endian) into 'dest', auto-switches based on platform
@@ -151,14 +151,14 @@ impl BitStream
             peek32(dest) // Already big-endian
         #else
         {
-            dest[3] = cast(u8) peekBits(8)
-            consumeBits(8)
-            dest[2] = cast(u8) peekBits(8)
-            consumeBits(8)
-            dest[1] = cast(u8) peekBits(8)
-            consumeBits(8)
-            dest[0] = cast(u8) peekBits(8)
-            consumeBits(8)
+            dest[3] = cast(u8) me.peekBits(8)
+            me.consumeBits(8)
+            dest[2] = cast(u8) me.peekBits(8)
+            me.consumeBits(8)
+            dest[1] = cast(u8) me.peekBits(8)
+            me.consumeBits(8)
+            dest[0] = cast(u8) me.peekBits(8)
+            me.consumeBits(8)
         }
     }
 }

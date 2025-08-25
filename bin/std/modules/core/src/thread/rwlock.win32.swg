@@ -10,42 +10,42 @@ struct RWLock
 
 impl RWLock
 {
-    mtd lock()   = lockExclusive()
-    mtd unlock() = unlockExclusive()
+    mtd lock()   = me.lockExclusive()
+    mtd unlock() = me.unlockExclusive()
 
     // Try to lock the mutex, and return 'true' if it's the case
     mtd tryLockExclusive()->bool
     {
-        return TryAcquireSRWLockExclusive(&v) ? true : false
+        return TryAcquireSRWLockExclusive(&me.v) ? true : false
     }
 
     // Lock mutex
     mtd lockExclusive()
     {
-        AcquireSRWLockExclusive(&v)
+        AcquireSRWLockExclusive(&me.v)
     }
 
     // Unlock mutex
     mtd unlockExclusive()
     {
-        ReleaseSRWLockExclusive(&v)
+        ReleaseSRWLockExclusive(&me.v)
     }
 
     // Try to lock the mutex, and return 'true' if it's the case
     mtd tryLockShared()->bool
     {
-        return TryAcquireSRWLockShared(&v) ? true : false
+        return TryAcquireSRWLockShared(&me.v) ? true : false
     }
 
     // Lock mutex
     mtd lockShared()
     {
-        AcquireSRWLockShared(&v)
+        AcquireSRWLockShared(&me.v)
     }
 
     // Unlock mutex
     mtd unlockShared()
     {
-        ReleaseSRWLockShared(&v)
+        ReleaseSRWLockShared(&me.v)
     }
 }

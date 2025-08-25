@@ -41,8 +41,8 @@ impl Process
     // Wait for the process to be done
     mtd waitForExit()
     {
-        Debug.assert(handle != null, "invalid process handle")
-        catch WaitForSingleObject(handle, Win32.INFINITE)
+        Debug.assert(me.handle != null, "invalid process handle")
+        catch WaitForSingleObject(me.handle, Win32.INFINITE)
     }
 
     // Get current process ID

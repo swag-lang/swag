@@ -30,7 +30,7 @@ impl TweakFile
     {
         var buf   = try File.readAllBytes(fileName)
         var lines = Tokenize.splitLines(cast(string) buf.toSlice())
-        try parse(lines)
+        try me.parse(lines)
     }
 
     // Parses tweak content from a string
@@ -38,14 +38,14 @@ impl TweakFile
     mtd parse(content: string) throw
     {
         var lines = Tokenize.splitLines(content)
-        try parse(lines)
+        try me.parse(lines)
     }
 
     // Parses tweak content from an array of lines
     #[Overload]
     mtd parse(lines: Array'string) throw
     {
-        Debug.assert(!folders.isEmpty())
+        Debug.assert(!me.folders.isEmpty())
 
         struct Ref
         {

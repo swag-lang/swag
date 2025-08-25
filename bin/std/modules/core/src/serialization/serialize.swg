@@ -41,51 +41,51 @@ struct Serializer
 impl Serializer
 {
     #[Swag.Inline]
-    mtd isWriting() => isWrite
+    mtd isWriting() => me.isWrite
     #[Swag.Inline]
-    mtd isReading() => !isWrite
+    mtd isReading() => !me.isWrite
 
     // Start encoding
     mtd startWrite(encoder: IEncoder, output: *ConcatBuffer) throw
     {
-        encode  = encoder
-        isWrite = true
-        encode.start(output)
+        me.encode  = encoder
+        me.isWrite = true
+        me.encode.start(output)
     }
 
     // Start decoding
     mtd startRead(decoder: IDecoder, input: const [..] u8) throw
     {
-        decode  = decoder
-        isWrite = false
-        decode.start(input)
+        me.decode  = decoder
+        me.isWrite = false
+        me.decode.start(input)
     }
 
     // End encoding/decoding
     mtd end() throw
     {
-        if isWrite:
-            encode.end()
+        if me.isWrite:
+            me.encode.end()
         else:
-            decode.end()
+            me.decode.end()
     }
 
     // Start a new section
     mtd beginSection(kind = SectionKind.Unordered) throw
     {
-        if isWrite:
-            encode.beginSection(kind)
+        if me.isWrite:
+            me.encode.beginSection(kind)
         else:
-            decode.beginSection(kind)
+            me.decode.beginSection(kind)
     }
 
     // End the previous section
     mtd endSection() throw
     {
-        if isWrite:
-            encode.endSection()
+        if me.isWrite:
+            me.encode.endSection()
         else:
-            decode.endSection()
+            me.decode.endSection()
     }
 
     // Serialize one value

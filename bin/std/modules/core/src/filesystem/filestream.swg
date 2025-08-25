@@ -20,7 +20,7 @@ impl FileStream
     // Returns true if the stream is currently open and valid
     func isOpen(using const me)->bool
     {
-        return handle != null
+        return me.handle != null
     }
 
     // Reads a value of type 'T' from the stream into 'buffer'; returns true if read was successful

@@ -11,67 +11,67 @@ impl StringBuilder
     // Clear the content of the builder
     mtd clear()
     {
-        buffer.clear()
+        me.buffer.clear()
     }
 
     // Returns the number of characters
     mtd const count()->u64
     {
-        return buffer.count()
+        return me.buffer.count()
     }
 
     // Set sizes of buckets of the string builder
     mtd setBucketSize(size: u64)
     {
-        buffer.setBucketSize(size)
+        me.buffer.setBucketSize(size)
     }
 
     // Append a string
     mtd appendString(value: #null string)
     {
-        buffer.addBytes(value)
+        me.buffer.addBytes(value)
     }
 
     // Append a end of line
     mtd appendEOL()
     {
-        buffer.addBytes(Env.EndLine)
+        me.buffer.addBytes(Env.EndLine)
     }
 
     // Append a rune
     mtd appendRune(value: rune)
     {
-        convertRune(&buffer, value)
+        convertRune(&me.buffer, value)
     }
 
     // Append a value
     mtd appendAny(value: any, strFormat: string = null)
     {
         var convFmt: StrConv.ConvertFormat
-        convertAny(&buffer, value, convFmt, strFormat)
+        convertAny(&me.buffer, value, convFmt, strFormat)
     }
 
     // Append a formatted string
     mtd appendFormat(fmt: string, values: ...)
     {
-        Format.append(&buffer, fmt, values)
+        Format.append(&me.buffer, fmt, values)
     }
 
     // Force a ending 0
     mtd zeroTerminate()
     {
-        buffer.addNative(0'u8)
+        me.buffer.addNative(0'u8)
     }
 
     // Return the content as a string
     mtd const toString()->String
     {
-        return buffer.toString()
+        return me.buffer.toString()
     }
 
     // Return the content as a string by eating the content of the string builder (if possible)
     mtd const moveToString()->String
     {
-        return buffer.moveToString()
+        return me.buffer.moveToString()
     }
 }

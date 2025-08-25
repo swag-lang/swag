@@ -43,16 +43,16 @@ impl GamePadState
 
         // GamePadButton pressed state
         for i in 16'u16:
-            pressed[mapButtons[i]] = state.Gamepad.wButtons & cast(u16) (1 << i)
+            me.pressed[mapButtons[i]] = state.Gamepad.wButtons & cast(u16) (1 << i)
 
         // Move
         using GamePadButton, state.Gamepad
-        position[LeftStick].x    = sThumbLX / 32767.0'f32
-        position[LeftStick].y    = sThumbLY / 32767.0'f32
-        position[RightStick].x   = sThumbRX / 32767.0'f32
-        position[RightStick].y   = sThumbRY / 32767.0'f32
-        position[LeftTrigger].y  = bLeftTrigger / 255.0'f32
-        position[RightTrigger].y = bRightTrigger / 255.0'f32
+        me.position[LeftStick].x    = sThumbLX / 32767.0'f32
+        me.position[LeftStick].y    = sThumbLY / 32767.0'f32
+        me.position[RightStick].x   = sThumbRX / 32767.0'f32
+        me.position[RightStick].y   = sThumbRY / 32767.0'f32
+        me.position[LeftTrigger].y  = bLeftTrigger / 255.0'f32
+        me.position[RightTrigger].y = bRightTrigger / 255.0'f32
 
         // Simulate pressed with #move
         #[Swag.Inline]
@@ -60,20 +60,20 @@ impl GamePadState
         {
             const SmallToler = 0.7'f32
             const BigToler   = 0.9'f32
-            return pressed[btn] ? SmallToler : BigToler
+            return me.pressed[btn] ? SmallToler : BigToler
         }
 
-        pressed[LeftThumbstickDown]  = position[LeftStick].y < -getToler(me, LeftThumbstickDown)
-        pressed[LeftThumbstickUp]    = position[LeftStick].y > getToler(me, LeftThumbstickUp)
-        pressed[LeftThumbstickLeft]  = position[LeftStick].x < -getToler(me, LeftThumbstickLeft)
-        pressed[LeftThumbstickRight] = position[LeftStick].x > getToler(me, LeftThumbstickRight)
+        me.pressed[LeftThumbstickDown]  = me.position[LeftStick].y < -getToler(me, LeftThumbstickDown)
+        me.pressed[LeftThumbstickUp]    = me.position[LeftStick].y > getToler(me, LeftThumbstickUp)
+        me.pressed[LeftThumbstickLeft]  = me.position[LeftStick].x < -getToler(me, LeftThumbstickLeft)
+        me.pressed[LeftThumbstickRight] = me.position[LeftStick].x > getToler(me, LeftThumbstickRight)
 
-        pressed[RightThumbstickDown]  = position[RightStick].y < -getToler(me, RightThumbstickDown)
-        pressed[RightThumbstickUp]    = position[RightStick].y > getToler(me, RightThumbstickUp)
-        pressed[RightThumbstickLeft]  = position[RightStick].x < -getToler(me, RightThumbstickLeft)
-        pressed[RightThumbstickRight] = position[RightStick].x > getToler(me, RightThumbstickRight)
+        me.pressed[RightThumbstickDown]  = me.position[RightStick].y < -getToler(me, RightThumbstickDown)
+        me.pressed[RightThumbstickUp]    = me.position[RightStick].y > getToler(me, RightThumbstickUp)
+        me.pressed[RightThumbstickLeft]  = me.position[RightStick].x < -getToler(me, RightThumbstickLeft)
+        me.pressed[RightThumbstickRight] = me.position[RightStick].x > getToler(me, RightThumbstickRight)
 
-        pressed[LeftTrigger]  = position[LeftTrigger].y > getToler(me, LeftTrigger)
-        pressed[RightTrigger] = position[RightTrigger].y > getToler(me, RightTrigger)
+        me.pressed[LeftTrigger]  = me.position[LeftTrigger].y > getToler(me, LeftTrigger)
+        me.pressed[RightTrigger] = me.position[RightTrigger].y > getToler(me, RightTrigger)
     }
 }

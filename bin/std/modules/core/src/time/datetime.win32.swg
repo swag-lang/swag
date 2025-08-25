@@ -7,13 +7,13 @@ impl DateTime
     mtd setSYSTEMTIME(systemTime: SYSTEMTIME)
     {
         using systemTime
-        day         = wDay
-        month       = wMonth
-        year        = wYear
-        hour        = wHour
-        minute      = wMinute
-        second      = wSecond
-        millisecond = wMilliseconds
+        me.day         = wDay
+        me.month       = wMonth
+        me.year        = wYear
+        me.hour        = wHour
+        me.minute      = wMinute
+        me.second      = wSecond
+        me.millisecond = wMilliseconds
     }
 }
 
@@ -35,6 +35,6 @@ public impl DateTime
     {
         var systemTime: SYSTEMTIME = undefined
         GetLocalTime(&systemTime)
-        setSYSTEMTIME(systemTime)
+        me.setSYSTEMTIME(systemTime)
     }
 }
