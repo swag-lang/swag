@@ -22,11 +22,11 @@ impl ArrayPtr
     // content is copied over, ensuring the new array owns its own set of objects.
     mtd opPostCopy()
     {
-        for i in count
+        for i in me.count
         {
-            let newPtr = Memory.new'T(allocator)
-            dref newPtr = dref buffer[i]
-            buffer[i]   = newPtr
+            let newPtr = Memory.new'T(me.allocator)
+            dref newPtr = dref me.buffer[i]
+            me.buffer[i]   = newPtr
         }
     }
 
@@ -35,29 +35,29 @@ impl ArrayPtr
     mtd clear()
     {
         foreach item in dref me:
-            Memory.delete(item, allocator)
-        base.count = 0
+            Memory.delete(item, me.allocator)
+        me.count = 0
     }
 
     // Deallocates the memory for a single given pointer.
     // The pointer is expected to have been allocated using this array's allocator.
     mtd deletePtr(item: *T)
     {
-        Memory.delete(item, allocator)
+        Memory.delete(item, me.allocator)
     }
 
     // Allocates memory for a new object of type T using the array's allocator.
     // Returns a pointer to the newly allocated memory.
     mtd newPtr()->*T
     {
-        return Memory.new'T(allocator)
+        return Memory.new'T(me.allocator)
     }
 
     // Allocates a new object, adds its pointer to the end of the array, and returns the pointer.
     mtd addNewPtr()->*T
     {
-        let ptr = newPtr()
-        add(ptr)
+        let ptr = me.newPtr()
+        me.add(ptr)
         return ptr
     }
 }

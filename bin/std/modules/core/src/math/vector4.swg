@@ -42,31 +42,31 @@ impl Vector4
     {
         #if op == "+="
         {
-            x += other.x
-            y += other.y
-            z += other.z
-            w += other.w
+            me.x += other.x
+            me.y += other.y
+            me.z += other.z
+            me.w += other.w
         }
         #elif op == "-="
         {
-            x -= other.x
-            y -= other.y
-            z -= other.z
-            w -= other.w
+            me.x -= other.x
+            me.y -= other.y
+            me.z -= other.z
+            me.w -= other.w
         }
         #elif op == "*="
         {
-            x *= other.x
-            y *= other.y
-            z *= other.z
-            w *= other.w
+            me.x *= other.x
+            me.y *= other.y
+            me.z *= other.z
+            me.w *= other.w
         }
         #elif op == "/="
         {
-            x /= other.x
-            y /= other.y
-            z /= other.z
-            w /= other.w
+            me.x /= other.x
+            me.y /= other.y
+            me.z /= other.z
+            me.w /= other.w
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -79,31 +79,31 @@ impl Vector4
     {
         #if op == "+="
         {
-            x += value
-            y += value
-            z += value
+            me.x += value
+            me.y += value
+            me.z += value
             w += value
         }
         #elif op == "-="
         {
-            x -= value
-            y -= value
-            z -= value
-            w -= value
+            me.x -= value
+            me.y -= value
+            me.z -= value
+            me.w -= value
         }
         #elif op == "*="
         {
-            x *= value
-            y *= value
-            z *= value
-            w *= value
+            me.x *= value
+            me.y *= value
+            me.z *= value
+            me.w *= value
         }
         #elif op == "/="
         {
-            x /= value
-            y /= value
-            z /= value
-            w /= value
+            me.x /= value
+            me.y /= value
+            me.z /= value
+            me.w /= value
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -115,13 +115,13 @@ impl Vector4
     mtd(op: string) const opBinary(other: Vector4)->Vector4
     {
         #if op == "+":
-            return Vector4{x + other.x, y + other.y, z + other.z, w + other.w}
+            return Vector4{me.x + other.x, me.y + other.y, me.z + other.z, me.w + other.w}
         #elif op == "-":
-            return Vector4{x - other.x, y - other.y, z - other.z, w - other.w}
+            return Vector4{me.x - other.x, me.y - other.y, me.z - other.z, me.w - other.w}
         #elif op == "*":
-            return Vector4{x * other.x, y * other.y, z * other.z, w * other.w}
+            return Vector4{me.x * other.x, me.y * other.y, me.z * other.z, me.w * other.w}
         #elif op == "/":
-            return Vector4{x / other.x, y / other.y, z / other.z, w / other.w}
+            return Vector4{me.x / other.x, me.y / other.y, me.z / other.z, me.w / other.w}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -132,13 +132,13 @@ impl Vector4
     mtd(op: string) const opBinary(value: f32)->Vector4
     {
         #if op == "+":
-            return Vector4{x + value, y + value, z + value, w + value}
+            return Vector4{me.x + value, me.y + value, me.z + value, me.w + value}
         #elif op == "-":
-            return Vector4{x - value, y - value, z - value, w - value}
+            return Vector4{me.x - value, me.y - value, me.z - value, me.w - value}
         #elif op == "*":
-            return Vector4{x * value, y * value, z * value, w * value}
+            return Vector4{me.x * value, me.y * value, me.z * value, me.w * value}
         #elif op == "/":
-            return Vector4{x / value, y / value, z / value, w / value}
+            return Vector4{me.x / value, me.y / value, me.z / value, me.w / value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -149,7 +149,7 @@ impl Vector4
     mtd(op: string) const opUnary()->Vector4
     {
         #if op == "-":
-            return Vector4{-x, -y, -z, -w}
+            return Vector4{-me.x, -me.y, -me.z, -me.w}
         #else:
             #error("unsupported unary operation [[" ++ op ++ "]]")
     }

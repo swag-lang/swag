@@ -87,13 +87,13 @@ impl Point
     mtd(op: string) const opBinary(other: Point)->Point
     {
         #if op == "+":
-            return Point{x + other.x, y + other.y}
+            return Point{me.x + other.x, me.y + other.y}
         #elif op == "-":
-            return Point{x - other.x, y - other.y}
+            return Point{me.x - other.x, me.y - other.y}
         #elif op == "*":
-            return Point{x * other.x, y * other.y}
+            return Point{me.x * other.x, me.y * other.y}
         #elif op == "/":
-            return Point{x / other.x, y / other.y}
+            return Point{me.x / other.x, me.y / other.y}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }

@@ -373,12 +373,12 @@ impl RegExp
             var cptReachedEnd = 0
             foreach &v in dref pstack1
             {
-                if v.parseIdx >= bufLength:
+                if v.parseIdx >= me.bufLength:
                     cptReachedEnd += 1
 
                 if v.node.terminal and forGrep:
                     grepTerm = dref v
-                elif v.node.terminal and v.parseIdx >= bufLength:
+                elif v.node.terminal and v.parseIdx >= me.bufLength:
                     mustEnd = true
             }
 
@@ -470,7 +470,7 @@ impl RegExp
                 var st = dref curState
                 st.node = #uniq1.value
                 if st.node.group != st.lastGroup:
-                    closeGroup(&st)
+                    me.closeGroup(&st)
                 st.parseIdx += length
                 out.add(st)
                 ok = true
@@ -703,7 +703,7 @@ impl RegExp
                 foreach n in table1.nodes
                 {
                     if n.group == 0:
-                        n.group = group
+                        n.group = me.group
                 }
             }
 
@@ -851,7 +851,7 @@ impl RegExp
         foreach n in node.table
         {
             if node.group == 0:
-                node.group = groupTransform[n.group]
+                node.group = me.groupTransform[n.group]
 
             if n.terminal:
                 node.terminal = true
@@ -908,7 +908,7 @@ impl RegExp
             if n != curGroup:
                 curGroupSwap += 1
             curGroup          = n
-            groupTransform[n] = curGroupSwap
+            me.groupTransform[n] = curGroupSwap
         }
 
         // Build the first state of the DFA table
@@ -934,7 +934,7 @@ impl RegExp
                 dfaEClosure(&moveRes, &epsilonRes)
 
                 var found: *DfaNode
-                foreach tstate in dfaNodes
+                foreach tstate in me.dfaNodes
                 {
                     if equals(&tstate.table, &epsilonRes)
                     {
@@ -946,9 +946,9 @@ impl RegExp
                 if !found
                 {
                     found = Memory.new'DfaNode()
-                    setTable(found, &epsilonRes)
+                    me.setTable(found, &epsilonRes)
                     stack.add(found)
-                    dfaNodes.add(found)
+                    me.dfaNodes.add(found)
                 }
 
                 state.transitions.add(c, found)

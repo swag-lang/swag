@@ -9,71 +9,71 @@ struct(K, V) HashTableEntry
     value:     V       // The value associated with the key.
 }
 
-// A hash table implemented with open-addressing that maps keys to values.
+// A hash me.table implemented with open-addressing that maps keys to values.
 // It provides fast lookups, additions, and removals of key-value pairs.
 struct(K, V) HashTable
 {
-    // Special hash values to indicate the state of a slot in the table.
+    // Special hash values to indicate the state of a slot in the me.table.
     const HASH_FREE        = 0'u32             // The slot is empty and has never been used.
-    const HASH_DELETED     = 1'u32             // The slot was previously occupied but has been deleted.
+    const HASH_DELETED     = 1'u32             // The slot was previously occupied but has been me.deleted.
     const HASH_FIRST       = 2'u32             // The first possible valid hash value.
     const HASH_MASK        = 2'u32             // A mask to ensure that valid hashes are >= HASH_FIRST.
 
-    allocator:             IAllocator          // The allocator used for memory operations.
-    table:                 ^HashTableEntry     // Pointer to the contiguous memory block for the hash table.
-    count:                 u64                 // The number of valid key-value pairs currently in the table.
-    capacity:              u64                 // The total number of slots in the hash table.
-    deleted:               u64                 // The number of slots marked as deleted.
+    allocator:             IAllocator          // The me.allocator used for memory operations.
+    table:                 ^HashTableEntry     // Pointer to the contiguous memory block for the hash me.table.
+    count:                 u64                 // The number of valid key-value pairs currently in the me.table.
+    capacity:              u64                 // The total number of slots in the hash me.table.
+    deleted:               u64                 // The number of slots marked as me.deleted.
 }
 
 impl HashTable
 {
-    // Returns the number of key-value pairs in the table.
+    // Returns the number of key-value pairs in the me.table.
     #[Inline]
     mtd opCount()->u64
     {
-        return count
+        return me.count
     }
 
-    // Ensures the allocated memory is freed when the table goes out of scope.
+    // Ensures the allocated memory is freed when the me.table goes out of scope.
     mtd opDrop()
     {
-        free()
+        me.free()
     }
 
-    // Replaces the content of the table with key-value pairs from a slice.
+    // Replaces the content of the me.table with key-value pairs from a slice.
     mtd opAffect(slice: const [..] { k: K, v: V })
     {
         foreach v in slice:
-            add(v.k, v.v)
+            me.add(v.k, v.v)
     }
 
-    // Handles the deep copy of the table when it is copied.
-    // A new table is allocated and all entries are copied over.
+    // Handles the deep copy of the me.table when it is copied.
+    // A new me.table is allocated and all entries are copied over.
     mtd opPostCopy()
     {
-        if !table:
+        if !me.table:
             return
 
-        if allocator == null:
-            allocator = @getcontext().allocator
+        if me.allocator == null:
+            me.allocator = @getcontext().allocator
 
-        let newTable = cast(^HashTableEntry) Memory.alloc(capacity * #sizeof(HashTableEntry), allocator)
+        let newTable = cast(^HashTableEntry) Memory.alloc(me.capacity * #sizeof(HashTableEntry), me.allocator)
         #if Reflection.hasPostCopy(K) or Reflection.hasPostCopy(V)
         {
-            for i in capacity
+            for i in me.capacity
             {
-                newTable[i].hash  = table[i].hash
-                newTable[i].key   = #nodrop table[i].key
-                newTable[i].value = #nodrop table[i].value
+                newTable[i].hash  = me.table[i].hash
+                newTable[i].key   = #nodrop me.table[i].key
+                newTable[i].value = #nodrop me.table[i].value
             }
         }
         #else
         {
-            Memory.copy(newTable, table, capacity * #sizeof(HashTableEntry))
+            Memory.copy(newTable, me.table, me.capacity * #sizeof(HashTableEntry))
         }
 
-        table = newTable
+        me.table = newTable
     }
 
     // Provides read-only access to the value associated with a key.
@@ -84,7 +84,7 @@ impl HashTable
         #[Global]
         var d: V
 
-        let it = find(key)
+        let it = me.find(key)
         if it:
             return &it.value
         return &d
@@ -99,7 +99,7 @@ impl HashTable
         #[Global]
         var d: V
 
-        let it = tryFind(key)
+        let it = me.tryFind(key)
         if it:
             return &it.value
         return &d
@@ -108,27 +108,27 @@ impl HashTable
     // Assigns a value to a key, updating it if it exists or adding it if it doesn't.
     mtd opIndexAffect(key: K, val: V)
     {
-        let it = tryFind(key)
+        let it = me.tryFind(key)
         if it:
             it.value = val
         else:
-            add(key, val)
+            me.add(key, val)
     }
 
-    // Provides a way to iterate over each key-value pair in the table.
+    // Provides a way to iterate over each key-value pair in the me.table.
     // This is a macro that accepts a code block to execute for each pair.
     // Aliases: #alias0 for the key, #alias1 for the value.
     #[Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
-        if !count:
+        if !me.count:
             return
 
-        var remain = count
+        var remain = me.count
         #scope(Up)
-        for capacity
+        for me.capacity
         {
-            if table[@index].hash < HASH_FIRST:
+            if me.table[@index].hash < HashTable.HASH_FIRST:
                 continue
 
             #scope(Down)
@@ -136,19 +136,19 @@ impl HashTable
             {
                 #if #up ptr
                 {
-                    let #alias0 = &#up table[@index].key
-                    let #alias1 = &#up table[@index].value
+                    let #alias0 = &#up me.table[@index].key
+                    let #alias1 = &#up me.table[@index].value
                 }
                 #else
                 {
                     #if Reflection.isStruct(K):
-                        let #alias0 = cast(const &K) &#up table[@index].key
+                        let #alias0 = cast(const &K) &#up me.table[@index].key
                     #else:
-                        let #alias0 = #up table[@index].key
+                        let #alias0 = #up me.table[@index].key
                     #if Reflection.isStruct(V):
-                        let #alias1 = cast(const &V) &#up table[@index].value
+                        let #alias1 = cast(const &V) &#up me.table[@index].value
                     #else:
-                        let #alias1 = #up table[@index].value
+                        let #alias1 = #up me.table[@index].value
                 }
 
                 #inject(#up stmt, break = break to Up, continue = break to Down)
@@ -161,86 +161,86 @@ impl HashTable
     }
 
     // Computes the hash for a given key.
-    // Ensures the resulting hash is not one of the reserved values (FREE, DELETED).
+    // Ensures the resulting hash is not one of the reserved values (FREE, me.deleted).
     #[Inline]
     func hashKey(key: K)->u32
     {
-        return Hash.hash32(key) | HASH_MASK
+        return Hash.hash32(key) | HashTable.HASH_MASK
     }
 
-    // Frees the hash table's memory and resets its state.
+    // Frees the hash me.table's memory and resets its state.
     // If keys or values have destructors, they are called.
     mtd free()
     {
-        if !table:
+        if !me.table:
             return
 
         // Need to drop every structs
         #if Reflection.hasDrop(#typeof(K)) or Reflection.hasDrop(#typeof(V))
         {
-            for i in capacity where table[i].hash >= HASH_DELETED
+            for i in me.capacity where me.table[i].hash >= HashTable.HASH_DELETED
             {
-                @drop(&table[i].key)
-                @drop(&table[i].value)
+                @drop(&me.table[i].key)
+                @drop(&me.table[i].value)
             }
         }
 
-        Memory.free(table, capacity * #sizeof(HashTableEntry), allocator)
-        table = null
-        count, capacity, deleted = 0
+        Memory.free(me.table, me.capacity * #sizeof(HashTableEntry), me.allocator)
+        me.table = null
+        me.count, me.capacity, me.deleted = 0
     }
 
-    // Checks if the table needs to be resized and triggers it if necessary.
-    // Growth happens when the load factor (including deleted slots) exceeds 75%.
+    // Checks if the me.table needs to be resized and triggers it if necessary.
+    // Growth happens when the load factor (including me.deleted slots) exceeds 75%.
     mtd grow()
     {
-        // We need to trigger the growing of the table is there's not enough room
-        if capacity != 0 and capacity - (count + deleted) > capacity / 4:
+        // We need to trigger the growing of the me.table is there's not enough room
+        if me.capacity != 0 and me.capacity - (me.count + me.deleted) > me.capacity / 4:
             return
 
-        let newCapacity = capacity * 2
-        reserve(newCapacity)
+        let newCapacity = me.capacity * 2
+        me.reserve(newCapacity)
     }
 
-    // Resizes the hash table to a new capacity, rehashing all existing elements.
+    // Resizes the hash me.table to a new me.capacity, rehashing all existing elements.
     mtd reserve(newCapacity: u64)
     {
         let reqCapacity = Math.max(newCapacity, 32)
-        if reqCapacity <= capacity:
+        if reqCapacity <= me.capacity:
             return
 
-        let oldTable = table
-        count, deleted = 0
+        let oldTable = me.table
+        me.count, me.deleted = 0
         let newCapacityBytes = reqCapacity * #sizeof(HashTableEntry)
 
-        if allocator == null:
-            allocator = @getcontext().allocator
-        table = cast() Memory.alloc(newCapacityBytes, allocator)
+        if me.allocator == null:
+            me.allocator = @getcontext().allocator
+        me.table = cast() Memory.alloc(newCapacityBytes, me.allocator)
 
         // Be sure hash entry is 0
-        Memory.clear(table, newCapacityBytes)
+        Memory.clear(me.table, newCapacityBytes)
 
-        // Copy the last table to the new table, removing deleted entries
-        let oldCapacity = capacity
-        capacity = reqCapacity
+        // Copy the last me.table to the new me.table, removing me.deleted entries
+        let oldCapacity = me.capacity
+        me.capacity = reqCapacity
         for i in oldCapacity
         {
             let h = oldTable[i].hash
-            if h >= HASH_FIRST
+            if h >= HashTable.HASH_FIRST
             {
-                emplaceInternal(h, &oldTable[i].key, &oldTable[i].value)
+                me.emplaceInternal(h, &oldTable[i].key, &oldTable[i].value)
             }
-            elif h == HASH_DELETED
+            elif h == HashTable.HASH_DELETED
             {
                 @drop(&oldTable[i].key)
                 @drop(&oldTable[i].value)
             }
         }
 
-        Memory.free(oldTable, oldCapacity * #sizeof(HashTableEntry), allocator)
+        Memory.free(oldTable, oldCapacity * #sizeof(HashTableEntry), me.allocator)
     }
 
-    // Finds the correct index for a new key, handling collisions and deleted slots.
+    // Finds the correct index for a new key, handling collisions and me.deleted slots.
     // Uses linear probing to find the next available slot.
     mtd getNewIndex(key: K, idx: u64, hashVal: u64)->u64
     {
@@ -248,17 +248,17 @@ impl HashTable
         var firstDeleted = Swag.U64.Max
         var index        = idx
 
-        while table[index].hash
+        while me.table[index].hash
         {
-            if table[index].hash == HASH_DELETED and firstDeleted == Swag.U64.Max:
+            if me.table[index].hash == HashTable.HASH_DELETED and firstDeleted == Swag.U64.Max:
                 firstDeleted = index
-            elif table[index].hash == HASH_FREE and firstFree == Swag.U64.Max:
+            elif me.table[index].hash == HashTable.HASH_FREE and firstFree == Swag.U64.Max:
                 firstFree = index
 
-            if table[index].hash == hashVal and table[index].key == key:
+            if me.table[index].hash == hashVal and me.table[index].key == key:
                 return index
 
-            index = (index + 1) % capacity
+            index = (index + 1) % me.capacity
         }
 
         if firstDeleted != Swag.U64.Max:
@@ -269,78 +269,78 @@ impl HashTable
         return index
     }
 
-    // Adds a new key-value pair to the table by copying them.
+    // Adds a new key-value pair to the me.table by copying them.
     // If the key already exists, the value is updated if 'updateValue' is true.
     #[Discardable, Overload]
     mtd add(key: K, value: V, updateValue = true)->*HashTableEntry
         where Reflection.canCopy(#typeof(K)) and Reflection.canCopy(#typeof(V))
     {
-        grow()
+        me.grow()
 
         let hashVal = hashKey(key)
-        var index   = hashVal % capacity
+        var index   = hashVal % me.capacity
 
-        index = getNewIndex(key, index, hashVal)
-        if table[index].hash >= HASH_FIRST
+        index = me.getNewIndex(key, index, hashVal)
+        if me.table[index].hash >= HashTable.HASH_FIRST
         {
             if updateValue:
-                table[index].value = value
-            return table + index
+                me.table[index].value = value
+            return me.table + index
         }
 
-        if table[index].hash == HASH_FREE
+        if me.table[index].hash == HashTable.HASH_FREE
         {
-            table[index].key   = #nodrop key
-            table[index].value = #nodrop value
+            me.table[index].key   = #nodrop key
+            me.table[index].value = #nodrop value
         }
         else
         {
-            if table[index].hash == HASH_DELETED:
-                deleted -= 1
-            table[index].key   = key
-            table[index].value = value
+            if me.table[index].hash == HashTable.HASH_DELETED:
+                me.deleted -= 1
+            me.table[index].key   = key
+            me.table[index].value = value
         }
 
-        table[index].hash = hashVal
-        count += 1
-        return table + index
+        me.table[index].hash = hashVal
+        me.count += 1
+        return me.table + index
     }
 
-    // Adds a new key-value pair to the table, moving the value.
+    // Adds a new key-value pair to the me.table, moving the value.
     // If the key already exists, the value is updated if 'updateValue' is true.
     #[Discardable, Overload]
     mtd add(key: K, value: &&V, updateValue = true)->*HashTableEntry
         where Reflection.canCopy(#typeof(K))
     {
-        grow()
+        me.grow()
 
         let hashVal = hashKey(key)
-        var index   = hashVal % capacity
+        var index   = hashVal % me.capacity
 
-        index = getNewIndex(key, index, hashVal)
-        if table[index].hash >= HASH_FIRST
+        index = me.getNewIndex(key, index, hashVal)
+        if me.table[index].hash >= HashTable.HASH_FIRST
         {
             if updateValue:
-                table[index].value = #move value
-            return table + index
+                me.table[index].value = #move value
+            return me.table + index
         }
 
-        if table[index].hash == HASH_FREE
+        if me.table[index].hash == HashTable.HASH_FREE
         {
-            table[index].key   = #nodrop key
-            table[index].value = #nodrop #move value
+            me.table[index].key   = #nodrop key
+            me.table[index].value = #nodrop #move value
         }
         else
         {
-            if table[index].hash == HASH_DELETED:
-                deleted -= 1
-            table[index].key   = key
-            table[index].value = #move value
+            if me.table[index].hash == HashTable.HASH_DELETED:
+                me.deleted -= 1
+            me.table[index].key   = key
+            me.table[index].value = #move value
         }
 
-        table[index].hash = hashVal
-        count += 1
-        return table + index
+        me.table[index].hash = hashVal
+        me.count += 1
+        return me.table + index
     }
 
     // Internal helper to add a new element with a pre-computed hash. Use with care.
@@ -348,73 +348,73 @@ impl HashTable
     mtd emplaceInternal(hashVal: u32, key: &K, value: &V)->*HashTableEntry
         where Reflection.canCopy(#typeof(K)) and Reflection.canCopy(#typeof(V))
     {
-        grow()
+        me.grow()
 
-        var index = hashVal % capacity
+        var index = hashVal % me.capacity
 
-        index = getNewIndex(key, index, hashVal)
-        if table[index].hash >= HASH_FIRST
+        index = me.getNewIndex(key, index, hashVal)
+        if me.table[index].hash >= HashTable.HASH_FIRST
         {
-            table[index].value = #moveraw value
-            return table + index
+            me.table[index].value = #moveraw value
+            return me.table + index
         }
 
-        if table[index].hash == HASH_FREE
+        if me.table[index].hash == HashTable.HASH_FREE
         {
-            table[index].key   = #nodrop #moveraw key
-            table[index].value = #nodrop #moveraw value
+            me.table[index].key   = #nodrop #moveraw key
+            me.table[index].value = #nodrop #moveraw value
         }
         else
         {
-            if table[index].hash == HASH_DELETED:
-                deleted -= 1
-            table[index].key   = #moveraw key
-            table[index].value = #moveraw value
+            if me.table[index].hash == HashTable.HASH_DELETED:
+                me.deleted -= 1
+            me.table[index].key   = #moveraw key
+            me.table[index].value = #moveraw value
         }
 
-        table[index].hash = hashVal
-        count += 1
-        return table + index
+        me.table[index].hash = hashVal
+        me.count += 1
+        return me.table + index
     }
 
-    // Removes a key-value pair from the table by key.
+    // Removes a key-value pair from the me.table by key.
     // If the key exists, its slot is marked as 'DELETED'. Does nothing if the key is not found.
     mtd remove(key: K)
     {
-        if !table:
+        if !me.table:
             return
 
         let hashVal = hashKey(key)
-        var index   = hashVal % capacity
+        var index   = hashVal % me.capacity
 
-        while table[index].hash
+        while me.table[index].hash
         {
-            if table[index].hash == hashVal and table[index].key == key
+            if me.table[index].hash == hashVal and me.table[index].key == key
             {
-                table[index].hash = HASH_DELETED
-                count -= 1
-                deleted += 1
+                me.table[index].hash = HashTable.HASH_DELETED
+                me.count -= 1
+                me.deleted += 1
                 return
             }
 
-            index = (index + 1) % capacity
+            index = (index + 1) % me.capacity
         }
     }
 
-    // Returns 'true' if the table contains the given key.
+    // Returns 'true' if the me.table contains the given key.
     mtd const contains(key: K)->bool
     {
-        if !table:
+        if !me.table:
             return false
 
         let hashVal = hashKey(key)
-        var index   = hashVal % capacity
+        var index   = hashVal % me.capacity
 
-        while table[index].hash
+        while me.table[index].hash
         {
-            if table[index].hash == hashVal and table[index].key == key:
+            if me.table[index].hash == hashVal and me.table[index].key == key:
                 return true
-            index = (index + 1) % capacity
+            index = (index + 1) % me.capacity
         }
 
         return false
@@ -424,17 +424,17 @@ impl HashTable
     // Returns a pointer to the 'HashTableEntry' if found, otherwise returns 'null'.
     mtd const tryFind(key: K)->#null *HashTableEntry
     {
-        if !table:
+        if !me.table:
             return null
 
         let hashVal = hashKey(key)
-        var index   = hashVal % capacity
+        var index   = hashVal % me.capacity
 
-        while table[index].hash
+        while me.table[index].hash
         {
-            if table[index].hash == hashVal and table[index].key == key:
-                return table + index
-            index = (index + 1) % capacity
+            if me.table[index].hash == hashVal and me.table[index].key == key:
+                return me.table + index
+            index = (index + 1) % me.capacity
         }
 
         return null
@@ -444,16 +444,16 @@ impl HashTable
     // Asserts and will likely crash if the key is not found. Use [[tryFind]] for safe searching.
     mtd const find(key: K)->*HashTableEntry
     {
-        Debug.assert(table != null)
+        Debug.assert(me.table != null)
 
         let hashVal = hashKey(key)
-        var index   = hashVal % capacity
+        var index   = hashVal % me.capacity
 
-        while table[index].hash
+        while me.table[index].hash
         {
-            if table[index].hash == hashVal and table[index].key == key:
-                return table + index
-            index = (index + 1) % capacity
+            if me.table[index].hash == hashVal and me.table[index].key == key:
+                return me.table + index
+            index = (index + 1) % me.capacity
         }
 
         unreachable
@@ -463,7 +463,7 @@ impl HashTable
     // If the key does not exist, returns the provided default value 'val' instead.
     mtd const get(key: K, val: V)->V
     {
-        let it = tryFind(key)
+        let it = me.tryFind(key)
         if !it:
             return val
         return it.value
@@ -473,39 +473,39 @@ impl HashTable
     // Returns a pointer to the existing or new entry.
     mtd findOrAdd(key: K)->*HashTableEntry
     {
-        let it = tryFind(key)
+        let it = me.tryFind(key)
         if it:
             return it
         var val: V
-        return add(key, val)
+        return me.add(key, val)
     }
 
-    // Removes all elements from the table without deallocating the table memory.
+    // Removes all elements from the me.table without deallocating the me.table memory.
     // All slots are marked as 'FREE'.
     mtd clear()
     {
         // Need to put the 'hash' value of each entry to HASH_FREE
         // Drop the key and the value if necessary
-        if count or deleted
+        if me.count or me.deleted
         {
-            for i in capacity
+            for i in me.capacity
             {
-                let hashval = table[i].hash
+                let hashval = me.table[i].hash
 
-                if hashval >= HASH_DELETED
+                if hashval >= HashTable.HASH_DELETED
                 {
-                    @drop(&table[i].key)
-                    @drop(&table[i].value)
+                    @drop(&me.table[i].key)
+                    @drop(&me.table[i].value)
                 }
 
-                if hashval == HASH_DELETED:
-                    deleted -= 1
-                elif hashval >= HASH_FIRST:
-                    count -= 1
-                table[i].hash = HASH_FREE
+                if hashval == HashTable.HASH_DELETED:
+                    me.deleted -= 1
+                elif hashval >= HashTable.HASH_FIRST:
+                    me.count -= 1
+                me.table[i].hash = HashTable.HASH_FREE
 
-                // We are done if there's no more valid value, and no more deleted value
-                if !count and !deleted:
+                // We are done if there's no more valid value, and no more me.deleted value
+                if !me.count and !me.deleted:
                     break
             }
         }

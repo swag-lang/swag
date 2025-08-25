@@ -73,7 +73,7 @@ impl TweakFile
                 if @err != null:
                     throw SyntaxError{"invalid folder name", line: idx + 1}
 
-                foreach &folder in folders
+                foreach &folder in me.folders
                 {
                     if folder.type.name == folderName
                     {
@@ -88,7 +88,7 @@ impl TweakFile
             }
 
             if !currentFolder:
-                currentFolder = folders.backPtr()
+                currentFolder = me.folders.backPtr()
 
             // Value declaration
             one = Tokenize.eatSpaces(one)

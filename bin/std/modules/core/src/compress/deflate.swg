@@ -605,7 +605,7 @@ impl Deflate
     {
         if rleRepeatCount
         {
-            let d = state
+            let d = me.state
             if rleRepeatCount < 3
             {
                 d.huffCount[2, prevCodeSize] = cast(u16) (d.huffCount[2, prevCodeSize] + rleRepeatCount)

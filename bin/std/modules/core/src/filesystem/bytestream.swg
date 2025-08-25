@@ -90,10 +90,10 @@ public impl ByteStream
     // Reads a native value of type 'T' from the stream
     mtd(T) readNative()->T throw
     {
-        if seek + #sizeof(T) > length():
+        if me.seek + #sizeof(T) > me.length():
             throw OverflowError{"byte stream overflow"}
-        let val = dref cast(const *T) (readData() + seek)
-        seek += #sizeof(T)
+        let val = dref cast(const *T) (me.readData() + me.seek)
+        me.seek += #sizeof(T)
         return val
     }
 

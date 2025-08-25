@@ -109,7 +109,7 @@ impl String
     {
         #if op == "+=":
             foreach v in value:
-                append(v)
+                me.append(v)
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }
@@ -119,7 +119,7 @@ impl String
     {
         #if op == "+=":
             foreach v in value:
-                append(v)
+                me.append(v)
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }
@@ -129,7 +129,7 @@ impl String
     {
         #if op == "+=":
             foreach v in value:
-                append(v)
+                me.append(v)
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }
@@ -138,7 +138,7 @@ impl String
     mtd(op: string) opAssign(value: string)
     {
         #if op == "+=":
-            append(value)
+            me.append(value)
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }
@@ -147,7 +147,7 @@ impl String
     mtd(op: string) opAssign(value: rune)
     {
         #if op == "+=":
-            append(value)
+            me.append(value)
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }
@@ -156,7 +156,7 @@ impl String
     mtd(op: string) opAssign(value: u8)
     {
         #if op == "+=":
-            append(value)
+            me.append(value)
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }

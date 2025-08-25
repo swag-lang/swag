@@ -158,8 +158,8 @@ impl TagBin
             me.output.addNative(TagBinSignatures.Fat)
             foreach k, v in sec.mapSeek
             {
-                output.addNative(k) // Crc
-                output.addNative(ConcatBuffer.getOffset(v)) // Linear seek inside the buffer
+                me.output.addNative(k) // Crc
+                me.output.addNative(ConcatBuffer.getOffset(v)) // Linear seek inside the buffer
             }
         }
 

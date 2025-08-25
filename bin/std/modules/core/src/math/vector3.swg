@@ -39,27 +39,27 @@ impl Vector3
     {
         #if op == "+="
         {
-            x += other.x
-            y += other.y
-            z += other.z
+            me.x += other.x
+            me.y += other.y
+            me.z += other.z
         }
         #elif op == "-="
         {
-            x -= other.x
-            y -= other.y
-            z -= other.z
+            me.x -= other.x
+            me.y -= other.y
+            me.z -= other.z
         }
         #elif op == "*="
         {
-            x *= other.x
-            y *= other.y
-            z *= other.z
+            me.x *= other.x
+            me.y *= other.y
+            me.z *= other.z
         }
         #elif op == "/="
         {
-            x /= other.x
-            y /= other.y
-            z /= other.z
+            me.x /= other.x
+            me.y /= other.y
+            me.z /= other.z
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -72,27 +72,27 @@ impl Vector3
     {
         #if op == "+="
         {
-            x += value
-            y += value
-            z += value
+            me.x += value
+            me.y += value
+            me.z += value
         }
         #elif op == "-="
         {
-            x -= value
-            y -= value
-            z -= value
+            me.x -= value
+            me.y -= value
+            me.z -= value
         }
         #elif op == "*="
         {
-            x *= value
-            y *= value
-            z *= value
+            me.x *= value
+            me.y *= value
+            me.z *= value
         }
         #elif op == "/="
         {
-            x /= value
-            y /= value
-            z /= value
+            me.x /= value
+            me.y /= value
+            me.z /= value
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -104,13 +104,13 @@ impl Vector3
     mtd(op: string) const opBinary(other: Vector3)->Vector3
     {
         #if op == "+":
-            return Vector3{x + other.x, y + other.y, z + other.z}
+            return Vector3{me.x + other.x, me.y + other.y, me.z + other.z}
         #elif op == "-":
-            return Vector3{x - other.x, y - other.y, z - other.z}
+            return Vector3{me.x - other.x, me.y - other.y, me.z - other.z}
         #elif op == "*":
-            return Vector3{x * other.x, y * other.y, z * other.z}
+            return Vector3{me.x * other.x, me.y * other.y, me.z * other.z}
         #elif op == "/":
-            return Vector3{x / other.x, y / other.y, z / other.z}
+            return Vector3{me.x / other.x, me.y / other.y, me.z / other.z}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -121,13 +121,13 @@ impl Vector3
     mtd(op: string) const opBinary(value: f32)->Vector3
     {
         #if op == "+":
-            return Vector3{x + value, y + value, z + value}
+            return Vector3{me.x + value, me.y + value, me.z + value}
         #elif op == "-":
-            return Vector3{x - value, y - value, z - value}
+            return Vector3{me.x - value, me.y - value, me.z - value}
         #elif op == "*":
-            return Vector3{x * value, y * value, z * value}
+            return Vector3{me.x * value, me.y * value, me.z * value}
         #elif op == "/":
-            return Vector3{x / value, y / value, z / value}
+            return Vector3{me.x / value, me.y / value, me.z / value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -138,7 +138,7 @@ impl Vector3
     mtd(op: string) const opUnary()->Vector3
     {
         #if op == "-":
-            return Vector3{-x, -y, -z}
+            return Vector3{-me.x, -me.y, -me.z}
         #else:
             #error("unsupported unary operation [[" ++ op ++ "]]")
     }

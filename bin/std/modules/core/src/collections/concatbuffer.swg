@@ -54,10 +54,10 @@ impl ConcatBuffer
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
-        if !firstBucket:
+        if !me.firstBucket:
             return
-        var b = firstBucket
-        while b != lastBucket.next
+        var b = me.firstBucket
+        while b != me.lastBucket.next
         {
             #macro
             {
@@ -179,27 +179,27 @@ impl ConcatBuffer
     // Appends a native type (like u8, s32, f64) to the buffer.
     mtd(T) addNative(val: T)
     {
-        if !isAtEnd
+        if !me.isAtEnd
         {
             // If not enough room in the current bucket, then we
             // have to split the content with the next bucket
-            if #sizeof(T) > curBucket.count or
-               currentSP > curBucket.datas + curBucket.count - #sizeof(T)
+            if #sizeof(T) > me.curBucket.count or
+               me.currentSP > me.curBucket.datas + me.curBucket.count - #sizeof(T)
             {
                 var v = val
-                addBytes(@mkslice(cast(^u8) &v, #sizeof(T)), false)
+                me.addBytes(@mkslice(cast(^u8) &v, #sizeof(T)), false)
                 return
             }
 
-            dref cast(*T) currentSP = val
-            currentSP += #sizeof(T)
+            dref cast(*T) me.currentSP = val
+            me.currentSP += #sizeof(T)
         }
         else
         {
-            grow(#sizeof(T))
-            dref cast(*T) currentSP = val
-            currentSP += #sizeof(T)
-            curBucket.count += #sizeof(T)
+            me.grow(#sizeof(T))
+            dref cast(*T) me.currentSP = val
+            me.currentSP += #sizeof(T)
+            me.curBucket.count += #sizeof(T)
         }
     }
 
@@ -207,7 +207,7 @@ impl ConcatBuffer
     #[Swag.Inline]
     mtd(T) addStruct(val: T)
     {
-        addBytes(@mkslice(cast(const ^u8) &val, #sizeof(T)))
+        me.addBytes(@mkslice(cast(const ^u8) &val, #sizeof(T)))
     }
 
     // Appends a slice of bytes to the buffer.
