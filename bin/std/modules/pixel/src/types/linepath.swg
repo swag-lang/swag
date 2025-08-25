@@ -1,3 +1,4 @@
+#global marked
 using Core, Core.Math
 
 public enum ElementType
@@ -342,15 +343,15 @@ public impl LinePath
             switch elem.type
             {
             case Line:
-                flattenLine(pos)
+                me.flattenLine(pos)
             case Bezier1:
-                flattenBezier(pos, elem.p1, quality)
+                me.flattenBezier(pos, elem.p1, quality)
             case Bezier2:
-                flattenBezier(pos, elem.p1, elem.p2, quality)
+                me.flattenBezier(pos, elem.p1, elem.p2, quality)
             case Curve:
-                flattenCurve(pos, i, quality)
+                me.flattenCurve(pos, i, quality)
             case Arc:
-                flattenArc(pos, elem.p1, elem.p2, quality)
+                me.flattenArc(pos, elem.p1, elem.p2, quality)
             }
         }
 
@@ -615,7 +616,7 @@ impl LinePath
         let radius    = Math.max(p2.x, p2.y) // Use the larger radius component
 
         // Calculate required number of segments analytically
-        let numSegments = me.calculateFlattenArcSegments(angleSpan, radius, quality)
+        let numSegments = calculateFlattenArcSegments(angleSpan, radius, quality)
 
         if numSegments <= 1
         {
@@ -637,7 +638,7 @@ impl LinePath
     }
 
     // Calculate optimal number of segments based on arc properties
-    mtd calculateFlattenArcSegments(angleSpan: f32, radius: f32, quality: PaintQuality)->u32
+    func calculateFlattenArcSegments(angleSpan: f32, radius: f32, quality: PaintQuality)->u32
     {
         if radius < 0.1:
             return 1

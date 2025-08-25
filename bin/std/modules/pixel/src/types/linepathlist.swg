@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Core.Math
 
@@ -21,7 +22,7 @@ impl LinePathList
         {
             var ptr = Memory.new'LinePath()
             dref ptr = dref p
-            paths[i] = ptr
+            me.paths[i] = ptr
         }
     }
 
@@ -53,8 +54,8 @@ impl LinePathList
         foreach p in me.paths
         {
             p.flatten(quality)
-            bvMin = Vector2.min(bvMin, p.bvMin)
-            bvMax = Vector2.max(bvMax, p.bvMax)
+            me.bvMin = Vector2.min(me.bvMin, p.bvMin)
+            me.bvMax = Vector2.max(me.bvMax, p.bvMax)
         }
     }
 

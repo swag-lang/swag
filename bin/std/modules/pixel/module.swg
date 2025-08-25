@@ -1,3 +1,4 @@
+#global marked
 #dependencies
 {
     #import("core")

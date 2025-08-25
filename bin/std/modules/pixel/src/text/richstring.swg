@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core
 
@@ -68,7 +69,7 @@ impl RichString
         chunk.hasFontStyle = false
 
         if url:
-            hasUrl = true
+            me.hasUrl = true
 
         if isBold.back() and isItalic.back()
         {
@@ -86,8 +87,8 @@ impl RichString
             chunk.fontStyle    = .Italic
         }
 
-        chunk.slice = @mkstring(raw.buffer + startChunk, idx - startChunk)
-        chunks.add(chunk)
+        chunk.slice = @mkstring(me.raw.buffer + startChunk, idx - startChunk)
+        me.chunks.add(chunk)
         startChunk = idx
     }
 

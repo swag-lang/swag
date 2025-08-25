@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Swag, Core, Ogl, Core.Math
 
@@ -76,14 +77,14 @@ internal impl RenderOgl
     mtd createShaders()
     {
         {
-            assume me.createShader(&me.shaderSimple, VertexShaderSimple, PixelShaderSimple)
+            assume createShader(&me.shaderSimple, VertexShaderSimple, PixelShaderSimple)
             let text0 = glGetUniformLocation(cast(GLuint) me.shaderSimple.handle, @dataof("inTexture0"))
             glUseProgram(cast(GLuint) me.shaderSimple.handle)
             glUniform1i(text0, 0)
         }
 
         {
-            assume me.createShader(&me.shaderAA, VertexShaderAA, PixelShaderAA)
+            assume createShader(&me.shaderAA, VertexShaderAA, PixelShaderAA)
             let text0 = glGetUniformLocation(cast(GLuint) me.shaderAA.handle, @dataof("inTexture0"))
             let text1 = glGetUniformLocation(cast(GLuint) me.shaderAA.handle, @dataof("inTexture1"))
             glUseProgram(cast(GLuint) me.shaderAA.handle)
@@ -92,7 +93,7 @@ internal impl RenderOgl
         }
 
         {
-            assume me.createShader(&me.shaderFont, VertexShaderFont, PixelShaderFont)
+            assume createShader(&me.shaderFont, VertexShaderFont, PixelShaderFont)
             let text0 = glGetUniformLocation(cast(GLuint) me.shaderFont.handle, @dataof("inTexture0"))
             let text1 = glGetUniformLocation(cast(GLuint) me.shaderFont.handle, @dataof("inTexture1"))
             glUseProgram(cast(GLuint) me.shaderFont.handle)
@@ -101,7 +102,7 @@ internal impl RenderOgl
         }
 
         {
-            assume me.createShader(&me.shaderBlur, VertexShaderSimple, PixelShaderBlur)
+            assume createShader(&me.shaderBlur, VertexShaderSimple, PixelShaderBlur)
             let text0 = glGetUniformLocation(cast(GLuint) me.shaderBlur.handle, @dataof("inTexture0"))
             glUseProgram(cast(GLuint) me.shaderBlur.handle)
             glUniform1i(text0, 0)
@@ -537,6 +538,7 @@ impl RenderOgl
     }
 
     // Update content of texture
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd updateTexture(texture: Texture, pixels: const *u8)
     {
         let fmt       = pixelFormatToNative(texture.pf)
@@ -546,6 +548,7 @@ impl RenderOgl
     }
 
     // Returns the pixels associated to a texture
+    #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd getTexturePixels(texture: Texture, pf: PixelFormat)->Array'u8
     {
         var result: retval
@@ -880,7 +883,7 @@ impl RenderOgl
         for i in 16:
             glEnableVertexAttribArray(cast(GLuint) i)
         foreach cmd, cmdIdx in dc.commandBuffer:
-            executeCommand(dc, cmd, cmdIdx, width, height)
+            me.executeCommand(dc, cmd, cmdIdx, width, height)
         for i in 16:
             glDisableVertexAttribArray(cast(GLuint) i)
     }
@@ -905,7 +908,7 @@ impl RenderOgl
         {
             if rt.colorBuffer.width == w2 and rt.colorBuffer.height == h2
             {
-                stackReleasedRT.removeAt(i)
+                me.stackReleasedRT.removeAt(i)
                 return rt
             }
         }
@@ -914,7 +917,7 @@ impl RenderOgl
         {
             if rt.colorBuffer.width >= w2 and rt.colorBuffer.height >= h2
             {
-                stackReleasedRT.removeAt(i)
+                me.stackReleasedRT.removeAt(i)
                 return rt
             }
         }
@@ -931,7 +934,7 @@ impl RenderOgl
     }
 
     // Create the given shader
-    mtd createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
+    func createShader(base: *ShaderBase, vertex, pixel: const [..] u8) throw
     {
         var buf: String = @mkstring(@dataof(vertex), @countof(vertex))
         buf.replace("#include base", @mkstring(@dataof(BaseVertexShader), @countof(BaseVertexShader)))

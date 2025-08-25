@@ -1,3 +1,4 @@
+#global marked
 using Core, FreeType
 
 var g_FT: FT_Library
@@ -202,13 +203,13 @@ public impl TypeFace
 
         Utf8.visitRunes(|c| text)
         {
-            FT_Load_Char(face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-            transform(size, embolden)
+            FT_Load_Char(me.face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+            me.transform(size, embolden)
 
-            FT_Outline_Translate(face.glyph.outline, x, 0)
+            FT_Outline_Translate(me.face.glyph.outline, x, 0)
 
             let prevIdx = pathList.paths.count
-            FT_Outline_Decompose(&face.glyph.outline, &itf, pathList)
+            FT_Outline_Decompose(&me.face.glyph.outline, &itf, pathList)
 
             if prevIdx != pathList.paths.count
             {
@@ -221,7 +222,7 @@ public impl TypeFace
                 serial += 1
             }
 
-            x += face.glyph.advance.x
+            x += me.face.glyph.advance.x
         }
     }
 }
