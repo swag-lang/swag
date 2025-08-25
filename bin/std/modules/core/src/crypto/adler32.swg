@@ -1,6 +1,7 @@
 // https://tools.ietf.org/html/rfc1950#section-9
 // https://github.com/madler/zlib/blob/master/adler32.c
 
+#global marked
 #global namespace Hash
 
 public struct Adler32

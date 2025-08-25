@@ -1,3 +1,4 @@
+#global marked
 #global namespace Hash
 
 public struct Crc32

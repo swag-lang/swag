@@ -5,6 +5,7 @@
     CityHash, by Geoff Pike and Jyrki Alakuijala
 */
 
+#global marked
 #global namespace Hash
 
 public struct City32

@@ -1,3 +1,4 @@
+#global marked
 #global export
 using Swag
 
