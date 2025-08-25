@@ -97,66 +97,66 @@ impl Serializer
         value.crc         = crc
         value.pointedType = #typeof(MT)
 
-        if isWrite
+        if me.isWrite
         {
-            encode.beginField(value)
-            defer #noerr encode.endField(value)
+            me.encode.beginField(value)
+            defer #noerr me.encode.endField(value)
 
             #if MT == s8:
-                encode.writeS8(dref res)
+                me.encode.writeS8(dref res)
             #elif MT == s16:
-                encode.writeS16(dref res)
+                me.encode.writeS16(dref res)
             #elif MT == s32:
-                encode.writeS32(dref res)
+                me.encode.writeS32(dref res)
             #elif MT == s64:
-                encode.writeS64(dref res)
+                me.encode.writeS64(dref res)
             #elif MT == u8:
-                encode.writeU8(dref res)
+                me.encode.writeU8(dref res)
             #elif MT == u16:
-                encode.writeU16(dref res)
+                me.encode.writeU16(dref res)
             #elif MT == u32 or MT == rune:
-                encode.writeU32(dref res)
+                me.encode.writeU32(dref res)
             #elif MT == u64:
-                encode.writeU64(dref res)
+                me.encode.writeU64(dref res)
             #elif MT == bool:
-                encode.writeBool(dref res)
+                me.encode.writeBool(dref res)
             #elif MT == f32:
-                encode.writeF32(dref res)
+                me.encode.writeF32(dref res)
             #elif MT == f64:
-                encode.writeF64(dref res)
+                me.encode.writeF64(dref res)
             #else:
-                encode.write(res, #typeof(MT))
+                me.encode.write(res, #typeof(MT))
         }
         else
         {
-            if !decode.beginField(value):
+            if !me.decode.beginField(value):
                 return
-            defer #noerr decode.endField(value)
+            defer #noerr me.decode.endField(value)
 
             #if MT == s8:
-                dref res = decode.readS8()
+                dref res = me.decode.readS8()
             #elif MT == s16:
-                dref res = decode.readS16()
+                dref res = me.decode.readS16()
             #elif MT == s32:
-                dref res = decode.readS32()
+                dref res = me.decode.readS32()
             #elif MT == s64:
-                dref res = decode.readS64()
+                dref res = me.decode.readS64()
             #elif MT == u8:
-                dref res = decode.readU8()
+                dref res = me.decode.readU8()
             #elif MT == u16:
-                dref res = decode.readU16()
+                dref res = me.decode.readU16()
             #elif MT == u32 or MT == rune:
-                dref res = decode.readU32()
+                dref res = me.decode.readU32()
             #elif MT == u64:
-                dref res = decode.readU64()
+                dref res = me.decode.readU64()
             #elif MT == bool:
-                dref res = decode.readBool()
+                dref res = me.decode.readBool()
             #elif MT == f32:
-                dref res = decode.readF32()
+                dref res = me.decode.readF32()
             #elif MT == f64:
-                dref res = decode.readF64()
+                dref res = me.decode.readF64()
             #else:
-                decode.read(res, #typeof(MT))
+                me.decode.read(res, #typeof(MT))
         }
     }
 

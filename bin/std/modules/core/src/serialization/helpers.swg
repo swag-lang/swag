@@ -1,3 +1,4 @@
+#global marked
 #global namespace Serialization
 
 // Determin if a type can be serialized by a simple copy

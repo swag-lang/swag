@@ -1,3 +1,4 @@
+#global marked
 #global export
 #global namespace Slice
 

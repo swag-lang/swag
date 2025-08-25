@@ -1,3 +1,4 @@
+#global marked
 #global public
 
 // Thread-local storage for random number generation and GUID counter.

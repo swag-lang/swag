@@ -1,4 +1,5 @@
 #global marked
+#global marked
 #global export
 #global namespace Serialization
 using Swag

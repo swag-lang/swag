@@ -1,3 +1,4 @@
+#global marked
 #global #if WINDOWS
 #global namespace Hardware
 using Win32

@@ -90,11 +90,11 @@ impl String
 
     mtd(op: string) opIndexAssign(index: u64, value: u8)
     {
-        Debug.safetyBoundCheck(index < length, "index out of range")
+        Debug.safetyBoundCheck(index < me.length, "index out of range")
         #if op == "+=":
-            buffer[index] += #wrap value
+            me.buffer[index] += #wrap value
         #elif op == "-=":
-            buffer[index] -= #wrap value
+            me.buffer[index] -= #wrap value
         #else:
             #error("invalid operator '" ++ op ++ "'")
     }
@@ -217,16 +217,16 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisitBytes(stmt: #code void)
     {
-        if !length:
+        if !me.length:
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
         #if back:
-            var scan = buffer + length
+            var scan = me.buffer + me.length
         #else:
-            var scan = buffer - 1
+            var scan = me.buffer - 1
 
-        for length
+        for me.length
         {
             #if back:
                 scan -= 1
@@ -249,7 +249,7 @@ impl String
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
-        opVisitBytes'(ptr, back)(|#alias0, #alias1| stmt)
+        me.opVisitBytes'(ptr, back)(|#alias0, #alias1| stmt)
     }
 
     // Set the length of the String to 0
