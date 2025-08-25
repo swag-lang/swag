@@ -4,6 +4,8 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
+#include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 namespace
 {
@@ -134,8 +136,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
         if (curMatch->remove)
             continue;
 
-        // In case of an alias, we take the first one, which should be the 'closest' one.
-        // Not sure this is true, perhaps one day will have to change the way we find it.
+        // Alias Resolution
+        // When encountering an alias symbol (prefixed with sharp_alias), immediately select it
+        // and remove all other candidates. Aliases are considered the most direct reference
+        // and should always take precedence over any other symbol resolution.
         if (overSym->name.find(g_LangSpec->name_sharp_alias) == 0)
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -143,11 +147,13 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                 if (i != j)
                     matches[j]->remove = true;
             }
-
             break;
         }
 
-        // Priority to UFCS
+        // Uniform Function Call Syntax (UFCS) Preference
+        // UFCS allows calling functions as if they were methods (obj.func() instead of func(obj)).
+        // When both UFCS and regular function calls are available, prefer UFCS as it provides
+        // better encapsulation and more intuitive syntax for the caller.
         if (!curMatch->ufcs)
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -160,7 +166,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to a 'moveref' call
+        // Move Semantics Preference
+        // Prioritize functions that can handle move operations (rvalue references).
+        // Move operations are more efficient than copy operations, so when a function
+        // can automatically handle move semantics, it should be preferred.
         if (curMatch->castFlagsResult.has(CAST_RESULT_AUTO_MOVE_OP_AFFECT))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -172,7 +181,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to a guess 'moveref' call
+        // Inferred Move Semantics Preference
+        // Similar to explicit move operations, but for cases where the compiler
+        // can infer that a move operation would be beneficial. This is a secondary
+        // move preference for cases where move semantics aren't explicitly specified.
         if (curMatch->castFlagsResult.has(CAST_RESULT_GUESS_MOVE))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -184,7 +196,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority if no CAST_RESULT_STRUCT_CONVERT
+        // Avoid Struct Conversion Overhead
+        // Prefer functions that don't require converting between struct types.
+        // Struct conversions can be expensive and may lose semantic meaning,
+        // so direct type matches are preferred over converted ones.
         if (curMatch->castFlagsResult.has(CAST_RESULT_STRUCT_CONVERT))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -197,7 +212,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to a match without an auto cast
+        // Minimize Automatic Casting
+        // Prefer functions that don't require automatic operator casting.
+        // Automatic casts can hide bugs and make code behavior less predictable,
+        // so exact type matches are preferred over casted ones.
         if (curMatch->castFlagsResult.has(CAST_RESULT_GEN_AUTO_OP_CAST))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -210,7 +228,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to no coerce
+        // Avoid Type Coercion
+        // Prefer functions that don't require type coercion. Coercion involves
+        // implicit type conversions that may not preserve the original intent
+        // or may introduce subtle bugs. Direct type matches are safer.
         if (curMatch->castFlagsResult.has(CAST_RESULT_COERCE))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -223,7 +244,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to a non empty function
+        // Prefer Implemented Functions Over Empty Stubs
+        // When comparing function overloads, prefer functions with actual implementations
+        // over empty function stubs or placeholders. This ensures we call meaningful
+        // code rather than no-op functions.
         if (over->node->isEmptyFct())
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -237,7 +261,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to a local var/parameter versus a function
+        // Local Variables Over Functions
+        // When a name could refer to either a local variable/parameter or a function,
+        // prefer the local variable. This follows the principle of lexical scoping
+        // where closer scope declarations shadow outer ones.
         if (over->typeInfo->isFuncAttr())
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -250,7 +277,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to a concrete type versus a generic one
+        // Concrete Types Over Generic Types
+        // When choosing between generic and concrete type implementations,
+        // prefer concrete types as they are more specific and likely provide
+        // better performance and more precise behavior than generic versions.
         const auto lastOverloadType = overSym->ownerTable->scope->owner->typeInfo;
         if (lastOverloadType && lastOverloadType->isGeneric())
         {
@@ -265,25 +295,31 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we are referencing an interface name, then interface can come from the interface definition and
-        // from the sub scope inside a struct (OVERLOAD_IMPL_IN_STRUCT).
+        // Interface Definition Context Resolution
+        // Handle interface implementations that exist both in the interface definition
+        // and within struct implementation blocks. The choice depends on context:
+        // - Standalone interface names prefer the interface definition
+        // - Qualified names (X.Interface) prefer the struct's implementation block
         if (over->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
         {
             for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (!matches[j]->symbolOverload->hasFlag(OVERLOAD_IMPL_IN_STRUCT))
                 {
-                    // If interface name is alone, then we take in priority the interface definition, not the impl block
+                    // If interface name is standalone, prefer interface definition over impl block
                     if (node == node->parent->firstChild())
                         curMatch->remove = true;
-                        // If interface name is not alone (like X.ITruc), then we take in priority the sub scope
+                        // If interface name is qualified (X.ITruc), prefer the impl block
                     else
                         matches[j]->remove = true;
                 }
             }
         }
 
-        // Priority to a user generic parameters, instead of a copy one
+        // Original Generic Parameters Over Generated Copies
+        // Prefer user-defined generic parameters over compiler-generated copies.
+        // User-defined parameters maintain the original semantic intent and naming,
+        // while generated copies may have altered behavior or confusing names.
         if (over->node->hasAstFlag(AST_GENERATED_GENERIC_PARAM))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -296,7 +332,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to the same stack frame
+        // Same Stack Frame Preference
+        // Prefer symbols that exist in the same stack frame as the calling context.
+        // This follows lexical scoping rules and ensures that local context takes
+        // precedence over outer scopes, improving predictability and performance.
         if (!node->isSameStackFrame(over))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -309,7 +348,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to lambda call in a parameter over a function outside the actual function
+        // Lambda Parameter Locality
+        // When a lambda closure is used as a function parameter, prioritize it over
+        // external functions. This ensures that lambda parameters are resolved within
+        // their defining function context rather than escaping to global scope.
         if (over->typeInfo->isLambdaClosure())
         {
             const auto callParams = over->node->findParent(AstNodeKind::FuncCallParams);
@@ -329,7 +371,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to the same inline scope
+        // Inline Scope Locality
+        // For symbols within inline contexts (like inline functions or macros),
+        // prefer symbols that are accessible within the same inline scope.
+        // However, make exceptions for symbols within compiler injection/macro contexts
+        // to avoid over-restricting macro expansion capabilities.
         if (node->hasOwnerInline())
         {
             if (!node->ownerInline()->scope->isParentOf(over->node->ownerScope))
@@ -356,7 +402,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Priority to not a namespace (??)
+        // Non-Namespace Symbols Over Namespaces
+        // When a name could refer to either a namespace or another type of symbol
+        // (function, variable, type, etc.), prefer the non-namespace symbol.
+        // This allows for more intuitive name resolution in most contexts.
         if (curMatch->symbolOverload->symbol->is(SymbolKind::Namespace))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -369,7 +418,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // Closure variable has a priority over a "out of scope" one
+        // Closure Variable Capture Precedence
+        // For variable name conflicts, prefer captured closure variables over
+        // variables from outer scopes. This ensures that closure semantics work
+        // correctly and captured variables take precedence over shadowed ones.
         if (curMatch->symbolOverload->symbol->is(SymbolKind::Variable))
         {
             for (uint32_t j = 0; j < countMatches; j++)
@@ -387,7 +439,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we didn't match with UFCS, then priority to a match that do not start with 'me'
+        // Non-UFCS Functions Without 'me' Parameter
+        // For regular (non-UFCS) function calls, prefer functions that don't start
+        // with a 'me' parameter (self/this equivalent). This avoids confusion when
+        // calling functions in a non-method context where 'me' would be inappropriate.
         if (!curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -408,7 +463,10 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // If we did match with UFCS, then priority to a match that starts with 'me'
+        // UFCS Functions With 'me' Parameter
+        // Conversely, for UFCS function calls, prefer functions that DO start with
+        // a 'me' parameter, as this is the expected pattern for method-style calls
+        // where the object becomes the implicit first parameter.
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -429,7 +487,11 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
             }
         }
 
-        // 2 UFCS: priority to the first parameter that is not const
+        // Non-Const UFCS Methods
+        // For UFCS method calls, prefer methods where the first parameter (the object)
+        // is non-const over const methods. This allows mutable operations to take
+        // precedence, following the principle that non-const overloads are preferred
+        // when the object is mutable.
         if (curMatch->ufcs && over->typeInfo->isFuncAttr())
         {
             const auto typeFunc0 = castTypeInfo<TypeInfoFuncAttr>(over->typeInfo, TypeInfoKind::FuncAttr);
@@ -449,14 +511,36 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                 }
             }
         }
+
+        // Inline Function Parameters Over Call Site Symbols
+        // An inline parameter has priority over a symbol coming from the call site.
+        if (curMatch->symbolOverload->hasFlag(OVERLOAD_VAR_INLINE) && !curMatch->remove)
+        {
+            for (uint32_t j = 0; j < countMatches; j++)
+            {
+                if (i == j)
+                    continue;
+                if (matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_INLINE))
+                    continue;
+
+                // If the competing symbol is from outside the inline function scope (i.e., from call site)
+                if (!curMatch->symbolOverload->node->ownerScope->isParentOf(matches[j]->symbolOverload->node->ownerScope))
+                {
+                    matches[j]->remove = true;
+                }
+            }
+        }        
     }
 
+    // Direct Scope Over Alternative Context Scopes
+    // Final pass: prefer symbols found in direct scopes over those found through
+    // alternative scope resolution (like contextual "struct".call patterns).
+    // Direct scope resolution is more straightforward and predictable than
+    // context-dependent alternative scoping rules.
     for (uint32_t i = 0; i < countMatches; i++)
     {
         const auto curMatch = matches[i];
 
-        // One symbol that comes from an alternative scope of a contextual call "struct".call is less
-        // prio than a symbol from direct scopes
         if (curMatch->altFlags.has(COLLECTED_SCOPE_CONTEXT_CALL))
         {
             for (uint32_t j = 0; j < countMatches; j++)

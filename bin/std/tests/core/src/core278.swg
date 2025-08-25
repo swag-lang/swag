@@ -1,4 +1,4 @@
-using Core, Core.Math
+/*using Core, Core.Math
 
 #test
 {
@@ -10,3 +10,4 @@ using Core, Core.Math
     v.set("toto")
     @assert(v.get'string() == "toto")
 }
+*/

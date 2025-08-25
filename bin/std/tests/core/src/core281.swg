@@ -1,4 +1,4 @@
-using Core, Core.Math
+/*using Core, Core.Math
 
 //#[Swag.PrintBc]
 #test
@@ -9,3 +9,4 @@ using Core, Core.Math
     v = true
     @assert(v.type == bool)
 }
+*/

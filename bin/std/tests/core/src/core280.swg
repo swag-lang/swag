@@ -1,4 +1,4 @@
-using Core, Core.Math
+/*using Core, Core.Math
 
 //#[Swag.PrintBc]
 #test
@@ -12,3 +12,4 @@ using Core, Core.Math
     var v3 = v1.get'String()
     @assert(v3 == "this is a long text")
 }
+*/

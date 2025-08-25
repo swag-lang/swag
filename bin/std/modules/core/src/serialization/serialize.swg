@@ -1,3 +1,4 @@
+#global marked
 #global export
 #global namespace Serialization
 using Swag
@@ -164,6 +165,6 @@ impl Serializer
     #[Swag.Mixin, Swag.Overload]
     mtd(MT) serialize(name: string, res: *MT) throw
     {
-        serialize(name, Hash.Crc32.compute(name), res)
+        me.serialize(name, Hash.Crc32.compute(name), res)
     }
 }
