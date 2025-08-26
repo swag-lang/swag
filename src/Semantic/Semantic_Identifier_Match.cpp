@@ -767,6 +767,8 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     // Lambda call
     if (typeInfo->isLambdaClosure() && identifier->callParameters)
     {
+        SWAG_CHECK(checkIsConcrete(context, identifier));
+        
         auto typeInfoRet = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
         typeInfoRet      = typeInfoRet->getConcreteAlias();
 

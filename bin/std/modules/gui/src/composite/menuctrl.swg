@@ -1,3 +1,4 @@
+#global marked
 using Core, Pixel
 
 public enum PopupPos
@@ -98,7 +99,7 @@ public impl IWnd for MenuCtrl
 
             // Back selection
             var colorSel: Color
-            if !i.disabled and (hotIdx == idx or selectedIdx == idx)
+            if !i.disabled and (me.hotIdx == idx or me.selectedIdx == idx)
             {
                 colorSel       = colors.menuBar_SelectedBk
                 colorText      = colors.popupItem_HotText
@@ -125,7 +126,7 @@ public impl IWnd for MenuCtrl
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = getFont()
+            format.font          = me.getFont()
             painter.drawRichString(labelPos, &i.name, format)
         }
     }
@@ -184,7 +185,7 @@ public impl IWnd for MenuCtrl
 
             // Back selection
             var colorSel: Color
-            if hotIdx == idx and !i.disabled
+            if me.hotIdx == idx and !i.disabled
             {
                 colorSel       = colors.popupItem_HotBk
                 colorText      = colors.popupItem_HotText
@@ -198,7 +199,7 @@ public impl IWnd for MenuCtrl
             var backPos = labelPos
             backPos.y -= metrics.menuPopup_SpaceLines * 0.5
             backPos.height += metrics.menuPopup_SpaceLines
-            backPos.inflate(paddingSel, 0)
+            backPos.inflate(me.paddingSel, 0)
             theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, i.aniSel.cur())
 
             // Icon
@@ -234,17 +235,17 @@ public impl IWnd for MenuCtrl
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = getFont()
+            format.font          = me.getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Text right
-            if !menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
+            if !me.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 format.palette[0]    = i.aniRightText.cur()
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags         = .Clip
-                format.font          = getFont()
+                format.font          = me.getFont()
                 painter.drawRichString(labelPos, &i.rightName, format)
             }
 
@@ -416,7 +417,7 @@ impl MenuCtrl
     {
         foreach i in me.items
         {
-            var evt = sendComputeCommandStateEvent(i.id)
+            var evt = me.sendComputeCommandStateEvent(i.id)
             if evt.setFlags & .Disabled:
                 i.disabled = evt.disabled
             if evt.setFlags & .Hidden:
@@ -577,8 +578,8 @@ impl MenuCtrl
         {
             if i.hidden:
                 continue
-            if onComputeItem:
-                onComputeItem(me, i)
+            if me.onComputeItem:
+                me.onComputeItem(i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
@@ -610,17 +611,17 @@ impl MenuCtrl
             if i.separator and lastIsSeparator:
                 continue
 
-            if onComputeItem:
-                onComputeItem(me, i)
+            if me.onComputeItem:
+                me.onComputeItem(i)
             if idx:
-                position.height += metrics.menuPopup_SpaceLines
-            i.pos = position.height
+                me.position.height += metrics.menuPopup_SpaceLines
+            i.pos = me.position.height
 
             lastIsSeparator = i.separator
             if i.separator
             {
                 i.size = metrics.menuPopup_SeparatorHeight
-                position.height += i.size
+                me.position.height += i.size
                 continue
             }
 
@@ -629,14 +630,14 @@ impl MenuCtrl
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             var w = i.name.boundRect.width
 
-            if !menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
+            if !me.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 fake.drawRichString({0, 0, 512, 0}, &i.rightName, rsf)
                 w += i.rightName.boundRect.width + rsf.font.regular.height
             }
 
-            position.width = Math.max(position.width, w)
-            position.height += i.size
+            me.position.width = Math.max(me.position.width, w)
+            me.position.height += i.size
         }
 
         // Add shadow size

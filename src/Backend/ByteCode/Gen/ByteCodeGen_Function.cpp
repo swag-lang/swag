@@ -1128,6 +1128,9 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     const auto overload = node->resolvedSymbolOverload();
 
     SWAG_CHECK(emitIdentifier(context));
+    if (node->resultRegisterRc.empty())
+        Report::internalError(node, "emitLambdaCall, no result register");
+    
     node->allocateExtension(ExtensionKind::Misc);
     node->extMisc()->additionalRegisterRC = node->resultRegisterRc;
     const auto allParams                  = node->children.empty() ? nullptr : node->lastChild();

@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -192,11 +193,11 @@ impl IWnd for ListView
             {
                 foreach l in me.list.selModel
                 {
-                    let idx = list.idxLineToIdxList.find(l).value
-                    if !list.lines[idx].canCheck:
+                    let idx = me.list.idxLineToIdxList.find(l).value
+                    if !me.list.lines[idx].canCheck:
                         continue
-                    let checked = !list.checkModel.isSelected(l)
-                    list.checkModel.select(l, checked)
+                    let checked = !me.list.checkModel.isSelected(l)
+                    me.list.checkModel.select(l, checked)
                 }
 
                 me.list.sigCheckChanged.call(me.list)
@@ -212,10 +213,10 @@ impl IWnd for ListView
             {
                 foreach l in me.list.selModel
                 {
-                    let idx = list.idxLineToIdxList.find(l).value
-                    if !list.lines[idx].canCheck:
+                    let idx = me.list.idxLineToIdxList.find(l).value
+                    if !me.list.lines[idx].canCheck:
                         continue
-                    list.checkModel.select(l, true)
+                    me.list.checkModel.select(l, true)
                 }
 
                 me.list.sigCheckChanged.call(me.list)
@@ -409,7 +410,7 @@ impl IWnd for ListView
                         if me.list.selModel.isSelected(idxLine)
                         {
                             foreach l in me.list.selModel:
-                                list.checkModel.select(l, checked)
+                                me.list.checkModel.select(l, checked)
                         }
                         else:
                             me.list.checkModel.select(idxLine, checked)
@@ -638,28 +639,28 @@ internal impl ListView
             format.horzAlignment = item.horzAlign
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = list.getFont()
+            format.font          = me.list.getFont()
 
             var labelPos = rect
 
             // Right
-            if list.header
+            if me.list.header
             {
-                labelPos.x     = getXPos(item.column)
-                labelPos.width = list.header.getItemWidthByCol(item.column)
+                labelPos.x     = me.getXPos(item.column)
+                labelPos.width = me.list.header.getItemWidthByCol(item.column)
             }
 
-            labelPos.x -= scrollPos.x
-            labelPos.x += list.leftTextMargin + line.leftTextMargin
+            labelPos.x -= me.scrollPos.x
+            labelPos.x += me.list.leftTextMargin + line.leftTextMargin
 
             if idxItem == 0
             {
                 // Ident level
-                labelPos.moveLeft(line.level * list.indentWidth)
+                labelPos.moveLeft(line.level * me.list.indentWidth)
 
                 // Expand/collapse mark
                 let canExpand = line.canExpand()
-                if canExpand or list.listFlags.has(.ForceMarginExpandMark)
+                if canExpand or me.list.listFlags.has(.ForceMarginExpandMark)
                 {
                     if canExpand
                     {
@@ -688,8 +689,8 @@ internal impl ListView
                 var subRectBorder: *ThemeImageRect
                 var subRectMark:   *ThemeImageRect
 
-                let idxLine = list.isVirtual ? idx : line.index
-                let checked = list.checkModel.isSelected(idxLine)
+                let idxLine = me.list.isVirtual ? idx : line.index
+                let checked = me.list.checkModel.isSelected(idxLine)
 
                 var colorBorder = colorFg
                 var colorMark   = colorFg
@@ -704,7 +705,7 @@ internal impl ListView
                     subRectBorder = &rects.btnCheck_NormalBorder
                 }
 
-                let widthCheck = Math.min(metrics.btnCheck_Size, list.getLineHeight())
+                let widthCheck = Math.min(metrics.btnCheck_Size, me.list.getLineHeight())
                 var posBox     = labelPos
                 posBox.height = widthCheck
                 posBox.y      = labelPos.vertCenter() - (posBox.height * 0.5)
@@ -716,24 +717,24 @@ internal impl ListView
             }
 
             // Take care of header item margin
-            if list.header:
-                labelPos.moveLeft(list.header.marginItems)
+            if me.list.header:
+                labelPos.moveLeft(me.list.header.marginItems)
 
             // Left margin, or icon
             var icon = item.icon
-            if list.iconSize > 0
+            if me.list.iconSize > 0
             {
                 if icon.isValid():
-                    icon.sizeX, icon.sizeY = list.iconSize
+                    icon.sizeX, icon.sizeY = me.list.iconSize
                 else
                 {
-                    var iconMargin = list.iconMarginFirstCol
+                    var iconMargin = me.list.iconMarginFirstCol
                     if !idxItem and line.parent:
                         iconMargin = line.parent.iconMargin
                     elif idxItem:
-                        iconMargin = list.header.getItem(cast(u32) idxItem).iconMargin
+                        iconMargin = me.list.header.getItem(cast(u32) idxItem).iconMargin
                     if iconMargin:
-                        labelPos.moveLeft(list.iconSize + metrics.iconText_Margin)
+                        labelPos.moveLeft(me.list.iconSize + metrics.iconText_Margin)
                 }
             }
 
@@ -1087,10 +1088,10 @@ impl ListCtrl
 
         foreach i in me.selModel
         {
-            let res = idxLineToIdxList.tryFind(i)
+            let res = me.idxLineToIdxList.tryFind(i)
             if !res:
                 continue
-            result.add(lines[res.value])
+            result.add(me.lines[res.value])
         }
 
         return result
@@ -1105,10 +1106,10 @@ impl ListCtrl
 
         foreach i in me.checkModel
         {
-            let res = idxLineToIdxList.tryFind(i)
+            let res = me.idxLineToIdxList.tryFind(i)
             if !res:
                 continue
-            result.add(lines[res.value])
+            result.add(me.lines[res.value])
         }
 
         return result
@@ -1132,7 +1133,7 @@ impl ListCtrl
     {
         me.idxLineToIdxList.clear()
         foreach l, idx in me.lines:
-            idxLineToIdxList.add(l.index, cast(u32) idx)
+            me.idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
     #[Swag.Overload]
@@ -1243,7 +1244,7 @@ impl ListCtrl
             {
                 l.index = cptIdxLine
                 cptIdxLine += 1
-                idxLineToIdxList.add(l.index, idxInsert + cptIdx + 1)
+                me.idxLineToIdxList.add(l.index, idxInsert + cptIdx + 1)
                 cptIdx += 1
                 if l.expanded:
                     tmp.add(l)
@@ -1320,7 +1321,7 @@ impl ListCtrl
         foreach l in me.lines
         {
             if l.expanded:
-                collapse(l)
+                me.collapse(l)
         }
 
         collapseRec(me.lines.toSlice())

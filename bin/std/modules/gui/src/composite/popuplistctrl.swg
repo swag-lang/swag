@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -69,21 +70,21 @@ impl IWnd for PopupListView
             {
                 if v.isSeparator
                 {
-                    if y <= list.heightSeparator
+                    if y <= me.list.heightSeparator
                     {
                         hit = cast(u32) i
                         break
                     }
-                    y -= list.heightSeparator
+                    y -= me.list.heightSeparator
                 }
                 else
                 {
-                    if y <= list.heightItem
+                    if y <= me.list.heightItem
                     {
                         hit = cast(u32) i
                         break
                     }
-                    y -= list.heightItem
+                    y -= me.list.heightItem
                 }
             }
 
@@ -144,7 +145,7 @@ impl IWnd for PopupListView
             labelPos.x      = clientRect.x
             labelPos.y      = y
             labelPos.width  = clientRect.width
-            labelPos.height = list.heightItem
+            labelPos.height = me.list.heightItem
 
             var format: RichStringFormat
             colorText = colors.popupList_Text
@@ -152,16 +153,16 @@ impl IWnd for PopupListView
             // Separator
             if i.isSeparator
             {
-                labelPos.height = list.heightSeparator
+                labelPos.height = me.list.heightSeparator
                 painter.drawLine(labelPos.x + metrics.popupList_SeparatorPadding, labelPos.vertCenter(), labelPos.right() - metrics.popupList_SeparatorPadding, labelPos.vertCenter(), colors.popupList_Separator)
-                y += list.heightSeparator
+                y += me.list.heightSeparator
                 continue
             }
 
             // Back selection
             var colorSel:  Color
             var colorCheck = colors.popupList_CheckMark
-            if hotIdx == idx
+            if me.hotIdx == idx
             {
                 colorSel   = colors.popupList_HotBk
                 colorText  = colors.popupList_HotText
@@ -178,11 +179,11 @@ impl IWnd for PopupListView
             // Icon
             if i.icon.isValid():
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
-            if list.maxIconSize:
-                labelPos.moveLeft(list.maxIconSize + metrics.popupList_IconTextMargin)
+            if me.list.maxIconSize:
+                labelPos.moveLeft(me.list.maxIconSize + metrics.popupList_IconTextMargin)
 
-            let fntHeight = getFont().regular.height
-            if idx == list.selectedIdx:
+            let fntHeight = me.getFont().regular.height
+            if idx == me.list.selectedIdx:
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
             // Text
@@ -190,11 +191,11 @@ impl IWnd for PopupListView
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = getFont()
+            format.font          = me.getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Check mark
-            if idx == list.selectedIdx
+            if idx == me.list.selectedIdx
             {
                 labelPos.x      = labelPos.right()
                 labelPos.y      = labelPos.vertCenter() - (fntHeight * 0.5)
@@ -203,7 +204,7 @@ impl IWnd for PopupListView
                 theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, i.aniCheck.cur())
             }
 
-            y += list.heightItem
+            y += me.list.heightItem
         }
     }
 }

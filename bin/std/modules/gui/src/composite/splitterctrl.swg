@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -115,7 +116,7 @@ impl IWnd for SplitterCtrl
             if !item.visible:
                 continue
 
-            if isVertical()
+            if me.isVertical()
             {
                 var paneRect = Math.Rectangle{client.x, y, client.width, item.size}
                 paneRect.applyPadding(item.view.margin)
@@ -123,11 +124,11 @@ impl IWnd for SplitterCtrl
                 if item.label
                 {
                     var labelRect = paneRect
-                    labelRect.height = titleSize
+                    labelRect.height = me.titleSize
                     item.label.setPosition(labelRect)
 
-                    paneRect.y += titleSize
-                    paneRect.height -= titleSize
+                    paneRect.y += me.titleSize
+                    paneRect.height -= me.titleSize
                 }
 
                 item.view.setPosition(paneRect)
@@ -141,11 +142,11 @@ impl IWnd for SplitterCtrl
                 if item.label
                 {
                     var labelRect = paneRect
-                    labelRect.width = titleSize
+                    labelRect.width = me.titleSize
                     item.label.setPosition(labelRect)
 
-                    paneRect.x += titleSize
-                    paneRect.width -= titleSize
+                    paneRect.x += me.titleSize
+                    paneRect.width -= me.titleSize
                 }
 
                 item.view.setPosition(paneRect)
@@ -280,7 +281,7 @@ internal impl SplitterCtrl
             if !item.visible:
                 continue
 
-            setPaneSizePrivate(cast(u32) idx, item.size)
+            me.setPaneSizePrivate(cast(u32) idx, item.size)
         }
     }
 
@@ -298,7 +299,7 @@ internal impl SplitterCtrl
             if !item.visible:
                 continue
             var rect = client
-            if isVertical()
+            if me.isVertical()
             {
                 rect.y      = y + item.size
                 rect.height = barSize

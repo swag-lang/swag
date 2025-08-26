@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core
 
@@ -29,14 +30,14 @@ impl IWnd for WrapLayoutCtrl
         {
             if c.wndFlags & .Hidden:
                 continue
-            resultHeight = y + wrapHeight
-            var rect = Math.Rectangle{x, y, wrapWidth, wrapHeight}
+            me.resultHeight = y + me.wrapHeight
+            var rect = Math.Rectangle{x, y, me.wrapWidth, me.wrapHeight}
             c.setPosition(rect)
-            x += wrapWidth + spacing
-            if x + wrapWidth > client.right()
+            x += me.wrapWidth + me.spacing
+            if x + me.wrapWidth > client.right()
             {
-                x = padding.x
-                y += wrapHeight + spacing
+                x = me.padding.x
+                y += me.wrapHeight + me.spacing
             }
         }
 

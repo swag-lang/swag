@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core
 
@@ -67,11 +68,11 @@ impl IWnd for StackLayoutCtrl
             foreach c in me.childs
             {
                 var pos = c.position
-                if layoutKind == .HorzCenterVertCenter:
+                if me.layoutKind == .HorzCenterVertCenter:
                     pos.y = y - (pos.height * 0.5)
                 pos.x = Math.round(x + c.margin.x)
                 c.setPosition(pos)
-                x += c.position.width + spacing + c.margin.z
+                x += c.position.width + me.spacing + c.margin.z
             }
         }
         elif me.layoutKind == .VertCenter
@@ -88,31 +89,31 @@ impl IWnd for StackLayoutCtrl
                 var pos = c.position
                 pos.y = Math.round(y + c.margin.y)
                 c.setPosition(pos)
-                y += c.position.height + spacing + c.margin.w
+                y += c.position.height + me.spacing + c.margin.w
             }
         }
         else
         {
             foreach c, i in me.childs
             {
-                switch layoutKind
+                switch me.layoutKind
                 {
                 case Top, VertFit:
                     c.dockStyle = .Top
                     if i > 0:
-                        c.margin.y = Math.max(c.margin.y, spacing)
+                        c.margin.y = Math.max(c.margin.y, me.spacing)
                 case Bottom:
                     c.dockStyle = .Bottom
                     if i > 0:
-                        c.margin.w = Math.max(c.margin.w, spacing)
+                        c.margin.w = Math.max(c.margin.w, me.spacing)
                 case Left, HorzFit:
                     c.dockStyle = .Left
                     if i > 0:
-                        c.margin.x = Math.max(c.margin.x, spacing)
+                        c.margin.x = Math.max(c.margin.x, me.spacing)
                 case Right:
                     c.dockStyle = .Right
                     if i > 0:
-                        c.margin.z = Math.max(c.margin.z, spacing)
+                        c.margin.z = Math.max(c.margin.z, me.spacing)
                 }
             }
 
