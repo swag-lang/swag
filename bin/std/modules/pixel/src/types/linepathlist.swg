@@ -21,7 +21,7 @@ impl LinePathList
         foreach p, i in me.paths
         {
             var ptr = Memory.new'LinePath()
-            dref ptr = dref p
+            dref ptr    = dref p
             me.paths[i] = ptr
         }
     }

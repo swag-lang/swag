@@ -908,7 +908,7 @@ impl RegExp
         {
             if n != curGroup:
                 curGroupSwap += 1
-            curGroup          = n
+            curGroup             = n
             me.groupTransform[n] = curGroupSwap
         }
 

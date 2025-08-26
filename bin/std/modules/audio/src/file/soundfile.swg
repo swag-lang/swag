@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Core.Errors
 

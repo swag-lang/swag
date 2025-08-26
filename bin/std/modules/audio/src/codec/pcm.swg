@@ -1,3 +1,4 @@
+#global marked
 using Core, Core.Errors
 
 struct CodecPcmToPcm16
@@ -36,7 +37,7 @@ impl ICodec for CodecPcmToPcm16
 
     mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{ write, read: u64 } throw
     {
-        if srcEncoding == dstEncoding
+        if me.srcEncoding == me.dstEncoding
         {
             Memory.copy(destBuffer, srcBuffer, srcLength)
             return {srcLength, srcLength}
@@ -90,7 +91,7 @@ impl ICodec for CodecPcmToPcm16
             return {write, read}
         }
 
-        switch srcEncoding
+        switch me.srcEncoding
         {
         case Pcm8:
             return doIt'(1, Pcm8)(destBuffer, destLength, srcBuffer, srcLength)

@@ -1,3 +1,4 @@
+#global marked
 using Core, Win32
 
 // Represents a bus.
@@ -26,7 +27,7 @@ public impl Bus
     // Destroy the bus (immediatly).
     mtd destroy() throw
     {
-        destroyNative()
+        me.destroyNative()
 
         Sync.scopedLock(&g_Driver.mutexBuses)
         g_Driver.buses.remove(me)
@@ -36,12 +37,12 @@ public impl Bus
     // Set the playing bus volume in DB.
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
-        setVolume(convertDBToPercent(volumeDB), batchID)
+        me.setVolume(convertDBToPercent(volumeDB), batchID)
     }
 
     // Returns the actual volume, in DB.
     mtd getVolumeDB()->f32 throw
     {
-        return convertPercentToDB(getVolume())
+        return convertPercentToDB(me.getVolume())
     }
 }

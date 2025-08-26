@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 // Convert a DB value to a percent

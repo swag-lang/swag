@@ -1,3 +1,4 @@
+#global marked
 using Core
 
 var g_Driver: Driver

@@ -26,8 +26,8 @@ impl ArrayPtr
         for i in me.count
         {
             let newPtr = Memory.new'T(me.allocator)
-            dref newPtr = dref me.buffer[i]
-            me.buffer[i]   = newPtr
+            dref newPtr  = dref me.buffer[i]
+            me.buffer[i] = newPtr
         }
     }
 

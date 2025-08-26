@@ -12,7 +12,7 @@ impl V2
         var f: func||()
         f = mtd||()
         {
-            titi()
+            me.titi()
         }
 
         f()
