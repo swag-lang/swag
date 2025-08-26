@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -30,13 +31,13 @@ impl IWnd for PalettePicker
         var y = clientRect.y
         foreach c, i in me.pal
         {
-            if hotIdx == i:
+            if me.hotIdx == i:
                 colorBorder = colors.palPicker_HotBorder
             else:
                 colorBorder = colors.palPicker_Border
 
-            var posBox = Math.Rectangle{x, y, boxSize, boxSize}
-            palPos[i] = posBox
+            var posBox = Math.Rectangle{x, y, me.boxSize, me.boxSize}
+            me.palPos[i] = posBox
 
             painter.setParams(.Antialiased)
             posBox.inflate(-2)
@@ -46,11 +47,11 @@ impl IWnd for PalettePicker
             posBox.inflate(1)
             painter.drawRoundRect(posBox, 5, 5, colorBorder, 2)
 
-            x += boxSize + boxMargin
-            if x + boxSize > clientRect.right()
+            x += me.boxSize + me.boxMargin
+            if x + me.boxSize > clientRect.right()
             {
                 x = clientRect.x
-                y += boxSize + boxMargin
+                y += me.boxSize + me.boxMargin
             }
         }
     }

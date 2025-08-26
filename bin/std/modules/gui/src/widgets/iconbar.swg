@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -36,7 +37,7 @@ impl IconBar
     {
         foreach c in me.childs
         {
-            if iconBarFlags.has(.Vertical):
+            if me.iconBarFlags.has(.Vertical):
                 c.dockStyle = .Top
             else:
                 c.dockStyle = .Left

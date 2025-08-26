@@ -1,3 +1,4 @@
+#global marked
 #global #if #os == Swag.TargetOs.Windows
 using Win32, Core, Pixel, Gdi32
 
@@ -110,7 +111,7 @@ impl Application
         {
             if s.native.hWnd == hWnd
             {
-                if modalSurfaces.count and s != modalSurfaces.back():
+                if me.modalSurfaces.count and s != me.modalSurfaces.back():
                     return null
                 return s
             }

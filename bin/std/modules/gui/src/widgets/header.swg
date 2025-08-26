@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -144,7 +145,7 @@ impl IWnd for Header
         var x = me.padding.x
         foreach item, idx in me.items
         {
-            paintItem(evt.bc, item, cast(u32) idx, x)
+            me.paintItem(evt.bc, item, cast(u32) idx, x)
             x += item.width
 
             var rect = clientRect

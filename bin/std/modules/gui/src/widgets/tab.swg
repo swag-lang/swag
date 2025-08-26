@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -323,7 +324,7 @@ internal impl Tab
     {
         me.popup = PopupListCtrl.create(me)
         foreach item in me.views:
-            popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
+            me.popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
         me.popup.sigSelected = mtd||(list, idx)
         {
@@ -381,7 +382,7 @@ internal impl Tab
             foreach v in me.views
             {
                 v.width = w
-                mostRightPos += w
+                me.mostRightPos += w
             }
 
         case Fixed:
@@ -389,25 +390,25 @@ internal impl Tab
             foreach v in me.views
             {
                 v.width = w
-                mostRightPos += w
+                me.mostRightPos += w
             }
 
         case Auto:
             foreach v in me.views
             {
-                var mes = Painter.measureString(v.item.name.raw, getFont().regular)
+                var mes = Painter.measureString(v.item.name.raw, me.getFont().regular)
 
                 // Text
                 v.width = mes.width
 
                 // Icon
                 if v.item.icon.isValid():
-                    v.width += v.item.icon.sizeX + getThemeMetrics().iconText_Margin
+                    v.width += v.item.icon.sizeX + me.getThemeMetrics().iconText_Margin
 
                 // Margin
-                v.width += itemAutoLayoutMargin
+                v.width += me.itemAutoLayoutMargin
 
-                mostRightPos += v.width
+                me.mostRightPos += v.width
             }
         }
 

@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -493,7 +494,7 @@ internal impl EditBox
     {
         Utf8.visitRunes(|r| str)
         {
-            insertRune(r)
+            me.insertRune(r)
         }
     }
 

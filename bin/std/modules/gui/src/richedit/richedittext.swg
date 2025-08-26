@@ -1,3 +1,4 @@
+#global marked
 using Core, Pixel
 
 impl RichEditCtrl
@@ -395,7 +396,7 @@ public impl RichEditCtrl
     {
         me.clearUndo()
         foreach l in me.lines:
-            freeLines.add(l)
+            me.freeLines.add(l)
         me.lines.clear()
         me.countVisibleLines    = 0
         me.cursorPos            = {}

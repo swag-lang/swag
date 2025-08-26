@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -462,7 +463,7 @@ impl IRichEditLexer for RichEditLexerSwag
         {
             if seek >= line.chars.count:
                 return
-            line.styles[seek] = mapStyles[currentState]
+            line.styles[seek] = me.mapStyles[currentState]
             seek += 1
         }
 

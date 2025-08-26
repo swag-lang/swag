@@ -1,3 +1,4 @@
+#global marked
 using Core, Pixel
 
 #[Swag.EnumFlags]

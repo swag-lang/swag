@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -162,9 +163,9 @@ internal impl ComboBox
         foreach item in me.items
         {
             if item.isSeparator:
-                popup.addSeparator()
+                me.popup.addSeparator()
             else:
-                popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
+                me.popup.addItem(item.name.raw, item.id, item.icon, item.userData0, item.userData1)
         }
 
         me.popup.sigSelected = mtd||(list, idx)

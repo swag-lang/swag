@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core
 
@@ -12,35 +13,35 @@ impl SigArray
     mtd(op: string) opAssign(fn: T)
     {
         #assert(op == "+=")
-        arr.add(fn)
+        me.arr.add(fn)
     }
 
     // Disable the calls.
     mtd disable()
     {
-        disabled += 1
+        me.disabled += 1
     }
 
     // Enable the calls.
     mtd enable()
     {
-        Debug.assert(disabled > 0)
-        disabled -= 1
+        Debug.assert(me.disabled > 0)
+        me.disabled -= 1
     }
 
     // Returns 'true' if the array is empty.
-    mtd const isEmpty()->bool => arr.isEmpty()
+    mtd const isEmpty()->bool => me.arr.isEmpty()
 
     // Call all registered lambdas.
     mtd call(params: ...)
     {
-        if disabled:
+        if me.disabled:
             return
 
         // Be sure the call has the right number of arguments
         Debug.assert(@countof(params) == @countof(#typeof(T).parameters))
 
-        foreach fn in arr
+        foreach fn in me.arr
         {
             #ast
             {

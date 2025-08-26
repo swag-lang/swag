@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel, Serialization
 
@@ -191,7 +192,7 @@ impl Surface
         let monitors = Env.getMonitors()
         foreach m in monitors
         {
-            var r1 = position
+            var r1 = me.position
             r1.intersect(m.rect)
             let surf = r1.width * r1.height
             if surf > bestSurf

@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -520,7 +521,7 @@ impl Wnd
 
                 painter.pushState()
                 if !c.wndFlags.has(.NoScroll):
-                    painter.translateTransform(-scrollPos.x, -scrollPos.y)
+                    painter.translateTransform(-me.scrollPos.x, -me.scrollPos.y)
                 c.paint(bc)
                 painter.popState()
             }
@@ -831,24 +832,24 @@ impl Wnd
             if c.anchorStyle & .X and oldSize.x > 0
             {
                 let oldM = oldSize.x - c.position.x
-                pos.x = position.width - oldM
+                pos.x = me.position.width - oldM
             }
 
             if c.anchorStyle & .Y and oldSize.y > 0
             {
                 let oldM = oldSize.y - c.position.y
-                pos.y = position.height - oldM
+                pos.y = me.position.height - oldM
             }
 
             if c.anchorStyle & .Width and oldSize.x > 0
             {
-                if position.width - oldSize.x:
-                    pos.width += position.width - oldSize.x
+                if me.position.width - oldSize.x:
+                    pos.width += me.position.width - oldSize.x
             }
 
             if c.anchorStyle & .Height and oldSize.y > 0
             {
-                pos.height += position.height - oldSize.y
+                pos.height += me.position.height - oldSize.y
             }
 
             c.setPosition(pos, false)

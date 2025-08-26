@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Serialization
 
@@ -312,13 +313,13 @@ internal impl Application
             if it is InvalidateEvent:
                 evt.target.invalidate()
             else:
-                sendEvent(it)
+                me.sendEvent(it)
 
             // Special event post process
             if it is CommandEvent:
                 needUpdateState = true
 
-            toDelete.add({evt, evt.type})
+            me.toDelete.add({evt, evt.type})
         }
 
         if needUpdateState:
@@ -330,7 +331,7 @@ internal impl Application
         if me.inModalLoop:
             return
         foreach w in me.postDestroy:
-            destroyWnd(w)
+            me.destroyWnd(w)
         me.postDestroy.clear()
     }
 
@@ -370,7 +371,7 @@ internal impl Application
         {
             if t.target == wnd and !t.toDelete
             {
-                timersToDelete.add(t)
+                me.timersToDelete.add(t)
                 t.toDelete = true
             }
         }
@@ -412,14 +413,14 @@ internal impl Application
 
         // Add new registered timers
         foreach t in me.timersToAdd:
-            timers.add(t)
+            me.timers.add(t)
         me.timersToAdd.clear()
 
         // Remove some timers
         foreach t in me.timersToDelete
         {
             t.toDelete = false
-            deleteTimer(t)
+            me.deleteTimer(t)
         }
 
         me.timersToDelete.clear()
@@ -533,7 +534,7 @@ impl Application
         foreach it in me.postedEvents
         {
             let ptr = it as Event
-            toDelete.add({ptr, ptr.type})
+            me.toDelete.add({ptr, ptr.type})
         }
 
         me.deletePointers()

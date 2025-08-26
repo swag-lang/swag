@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -219,10 +220,10 @@ impl FrameWnd
     #[Swag.Discardable]
     mtd(T) createView(hook: HookEvent = null)->*T
     {
-        view                 = Wnd.create'T(me, "", position, hook: hook)
-        view.backgroundStyle = .Transparent
-        sendResizeEvent()
-        return cast(*T) view
+        me.view                 = Wnd.create'T(me, "", me.position, hook: hook)
+        me.view.backgroundStyle = .Transparent
+        me.sendResizeEvent()
+        return cast(*T) me.view
     }
 
     mtd setView(what: *Wnd)
