@@ -1,3 +1,4 @@
+#global marked
 #global namespace Swag
 
 impl ScratchAllocator

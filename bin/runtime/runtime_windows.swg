@@ -1,3 +1,4 @@
+#global marked
 #global #if #os == Swag.TargetOs.Windows
 #foreignlib("kernel32")
 #foreignlib("user32")

@@ -1,3 +1,4 @@
+#global marked
 #global namespace Swag
 
 // Will be put just before the returned address
