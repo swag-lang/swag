@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, File, Directory
 
@@ -116,11 +117,11 @@ internal impl FileDlg
         foreach v in me.dlgOptions.shortcuts
         {
             var c  = Env.getSpecialDirectory(v.item0)
-            var ic = getApp().getSpecialDirectoryIcon(v.item0, true)
-            l                = treeCtrl.createLine(v.item1, icon: ic)
-            l.userData0      = cast(*void) treePathStr.count
+            var ic = me.getApp().getSpecialDirectoryIcon(v.item0, true)
+            l                = me.treeCtrl.createLine(v.item1, icon: ic)
+            l.userData0      = cast(*void) me.treePathStr.count
             l.leftTextMargin = 10
-            treePathStr.add(c)
+            me.treePathStr.add(c)
         }
 
         l           = me.treeCtrl.createLine("Drives")
@@ -130,11 +131,11 @@ internal impl FileDlg
         foreach v in volumes
         {
             v.removeBack()
-            var ic = getApp().getDirectoryIcon(v, true)
-            l                = treeCtrl.createLine(v.toString(), icon: ic)
-            l.userData0      = cast(*void) treePathStr.count
+            var ic = me.getApp().getDirectoryIcon(v, true)
+            l                = me.treeCtrl.createLine(v.toString(), icon: ic)
+            l.userData0      = cast(*void) me.treePathStr.count
             l.leftTextMargin = 10
-            treePathStr.add(v)
+            me.treePathStr.add(v)
         }
 
         me.treeCtrl.sigSelChanged += mtd||(list)
@@ -188,8 +189,8 @@ internal impl FileDlg
                 continue
 
             // Content
-            var icon = getApp().getFileDirectoryIcon(fname, fi.isDirectory())
-            let line = listCtrl.createLine(fname, icon)
+            var icon = me.getApp().getFileDirectoryIcon(fname, fi.isDirectory())
+            let line = me.listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.DateTimeIso))
         }
@@ -518,16 +519,16 @@ impl FileDlg
             t1.trim()
             if t1.isEmpty():
                 continue
-            if dlgOptions.mode == .SelectFolder and !Path.isValidPathName(t1.toString()):
+            if me.dlgOptions.mode == .SelectFolder and !Path.isValidPathName(t1.toString()):
                 continue
-            if dlgOptions.mode != .SelectFolder and !Path.isValidFileName(t1.toString()):
+            if me.dlgOptions.mode != .SelectFolder and !Path.isValidFileName(t1.toString()):
                 continue
 
             // Get the full name
-            var val = Path.combine(curFolder, t1.toString())
+            var val = Path.combine(me.curFolder, t1.toString())
 
             // Append extension if not done by the user
-            if dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
+            if me.dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
             {
                 var exts = Tokenize.split(fi.item1, ';''rune)
                 val += exts[0]

@@ -1,3 +1,4 @@
+#global marked
 impl Properties
 {
     mtd validateDynamicString(item: *PropertiesItem)

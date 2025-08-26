@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -107,9 +108,9 @@ impl PropertiesCtrl
             let naked = RichString.getNaked(str)
 
             // In the filter bar
-            if tab and it.item1 == 0
+            if me.tab and it.item1 == 0
             {
-                let tabItem = tab.addItem(naked)
+                let tabItem = me.tab.addItem(naked)
                 tabItem.userData0 = cast(*void) idx
             }
 
@@ -117,7 +118,7 @@ impl PropertiesCtrl
             if it.item1 == 0:
                 parentLine = null
 
-            let line = list.createLine(naked, parentLine: parentLine)
+            let line = me.list.createLine(naked, parentLine: parentLine)
             line.userData0 = it.item0
 
             if it.item1 == 0:

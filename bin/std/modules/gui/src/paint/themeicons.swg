@@ -1,3 +1,4 @@
+#global marked
 #global public
 
 enum ThemeIcons24

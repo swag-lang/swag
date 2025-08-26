@@ -1,3 +1,4 @@
+#global marked
 impl Properties
 {
     func refreshEnumFlags(item: *PropertiesItem)

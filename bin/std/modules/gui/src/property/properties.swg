@@ -1,3 +1,4 @@
+#global marked
 #global public
 using Core, Pixel
 
@@ -806,7 +807,7 @@ impl Properties
     mtd refresh()
     {
         foreach it in me.items:
-            refreshItem(it)
+            me.refreshItem(it)
     }
 
     // To be called when a value has changed.
@@ -906,7 +907,7 @@ impl Properties
     mtd updateStates()
     {
         foreach it in me.items:
-            updateItemState(it)
+            me.updateItemState(it)
         me.applyLayout()
         me.scrollWnd.view.sendResizeEvent()
     }
@@ -922,7 +923,7 @@ impl Properties
         {
             if !item.label:
                 continue
-            item.label.position.width = gridColumnSize
+            item.label.position.width = me.gridColumnSize
         }
 
         me.applyLayout()

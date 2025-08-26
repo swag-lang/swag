@@ -1,3 +1,4 @@
+#global marked
 #global public
 
 struct Dialog
@@ -32,7 +33,7 @@ impl IWnd for Dialog
                     {
                         btn.form = .Normal
                         btn.invalidate()
-                        let nextBtn = buttons[(idx + 1) % buttons.count]
+                        let nextBtn = me.buttons[(idx + 1) % me.buttons.count]
                         nextBtn.form = .Default
                         nextBtn.invalidate()
                         break
@@ -46,7 +47,7 @@ impl IWnd for Dialog
                     {
                         btn.form = .Normal
                         btn.invalidate()
-                        let prevBtn = idx ? buttons[idx - 1] : buttons.back()
+                        let prevBtn = idx ? me.buttons[idx - 1] : me.buttons.back()
                         prevBtn.form = .Default
                         prevBtn.invalidate()
                         break
@@ -58,7 +59,7 @@ impl IWnd for Dialog
                 {
                     if btn.form == .Default
                     {
-                        validateId(btn.id)
+                        me.validateId(btn.id)
                         break
                     }
                 }
@@ -74,7 +75,7 @@ impl IWnd for Dialog
                 {
                     if btn.id == BtnNo or btn.id == BtnCancel
                     {
-                        validateId(btn.id)
+                        me.validateId(btn.id)
                         break
                     }
                 }

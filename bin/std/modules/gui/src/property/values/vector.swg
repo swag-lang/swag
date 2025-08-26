@@ -1,3 +1,4 @@
+#global marked
 using Core, Core.Math, Pixel
 
 impl Properties
