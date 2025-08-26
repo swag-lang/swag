@@ -31,12 +31,12 @@ impl Library
 
     mtd fill()
     {
-        files = catch Directory.enumerateFiles(getFolder(), ".captme")
+        me.files = catch Directory.enumerateFiles(getFolder(), ".captme")
     }
 
     mtd removeFile(name: string)
     {
-        foreach fi, idx in files
+        foreach fi, idx in me.files
         {
             if fi.fullname == name
             {
@@ -57,6 +57,6 @@ impl Library
         var file = catch File.getFileInfo(name)
         if @err != null:
             return
-        files.add(file)
+        me.files.add(file)
     }
 }

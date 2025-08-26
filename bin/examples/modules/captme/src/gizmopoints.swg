@@ -22,22 +22,22 @@ impl GizmoPoints
         switch evt.kind
         {
         case MousePressed:
-            if moving:
+            if me.moving:
                 return true
-            if evt.button != .Left or hotAnchor == Swag.U32.Max:
+            if evt.button != .Left or me.hotAnchor == Swag.U32.Max:
                 break
-            moving, firstMoving = true
-            movingStart = pos
+            me.moving, me.firstMoving = true
+            me.movingStart = pos
             view.captureMouse()
             return true
 
         case MouseReleased:
-            if moving
+            if me.moving
             {
                 if evt.button == .Left
                 {
-                    moving, firstMoving = false
-                    hotAnchor = Swag.U32.Max
+                    me.moving, me.firstMoving = false
+                    me.hotAnchor = Swag.U32.Max
                     view.releaseMouse()
                 }
 
@@ -45,21 +45,21 @@ impl GizmoPoints
             }
 
         case MouseMove:
-            if moving
+            if me.moving
             {
-                var diff = pos - movingStart
-                if firstMoving and sigChanged:
-                    sigChanged(diff, hotAnchor, true)
-                firstMoving = false
-                if sigChanged:
-                    sigChanged(diff, hotAnchor, false)
+                var diff = pos - me.movingStart
+                if me.firstMoving and me.sigChanged:
+                    me.sigChanged(diff, me.hotAnchor, true)
+                me.firstMoving = false
+                if me.sigChanged:
+                    me.sigChanged(diff, me.hotAnchor, false)
             }
             else
             {
-                hotAnchor = Swag.U32.Max
+                me.hotAnchor = Swag.U32.Max
 
                 var rect: Math.Rectangle = undefined
-                foreach c, i in anchors
+                foreach c, i in me.anchors
                 {
                     rect.x = c.x - anchorSize * 0.5
                     rect.y = c.y - anchorSize * 0.5
@@ -72,7 +72,7 @@ impl GizmoPoints
                 }
             }
 
-            if hotAnchor != Swag.U32.Max
+            if me.hotAnchor != Swag.U32.Max
             {
                 view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
                 return true
@@ -84,9 +84,9 @@ impl GizmoPoints
 
     mtd paint(_app: #null *Application, painter: *Painter, hot: bool, col: Color = Argb.White)
     {
-        let anchorSize2 = anchorSize * 0.5
+        let anchorSize2 = me.anchorSize * 0.5
         let color       = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
-        foreach c in anchors
+        foreach c in me.anchors
         {
             painter.fillCircle(c.x, c.y, anchorSize2, color)
             painter.drawCircle(c.x, c.y, anchorSize2, Argb.Black, anchorSize2 * 0.3)

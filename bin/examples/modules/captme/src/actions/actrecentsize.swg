@@ -106,13 +106,13 @@ impl MainWnd
         switch me.bottomSize
         {
         case Small:
-            recentBar.resize(0, 80)
+            me.recentBar.resize(0, 80)
         case Medium:
-            recentBar.resize(0, 128)
+            me.recentBar.resize(0, 128)
         case Big:
-            recentBar.resize(0, 224)
+            me.recentBar.resize(0, 224)
         }
 
-        applyLayout({position.width, position.height})
+        me.applyLayout({me.position.width, me.position.height})
     }
 }

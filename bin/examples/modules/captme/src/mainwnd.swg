@@ -84,7 +84,7 @@ impl IWnd for MainWnd
 {
     mtd popupBar()
     {
-        let sf = catch surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
+        let sf = catch me.surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
         with let menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
             .addItem(CmdIdShowEditor)
@@ -105,8 +105,8 @@ impl IWnd for MainWnd
         }
 
         var pt = Input.getMousePos()
-        menu.position.width += 2 * getThemeMetrics().surfaceWnd_ShadowSize
-        menu.position.height += 2 * getThemeMetrics().surfaceWnd_ShadowSize
+        menu.position.width += 2 * me.getThemeMetrics().surfaceWnd_ShadowSize
+        menu.position.height += 2 * me.getThemeMetrics().surfaceWnd_ShadowSize
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
         sf.constaintPositionToScreen()
         sf.wnd.view.backgroundStyle = .Window
@@ -114,10 +114,10 @@ impl IWnd for MainWnd
         sf.show()
         sf.bringToTop()
         while !menu.endModal:
-            surface.app.runFrame()
+            me.surface.app.runFrame()
         sf.hide()
         if menu.endModalResult:
-            postCommandEvent(menu.endModalResult)
+            me.postCommandEvent(menu.endModalResult)
         sf.destroy()
     }
 
@@ -130,18 +130,18 @@ impl IWnd for MainWnd
             case Win32.WM_USER:
                 if evt.param1 == Win32.WM_LBUTTONDBLCLK
                 {
-                    surface.show()
-                    surface.bringToTop()
+                    me.surface.show()
+                    me.surface.bringToTop()
                 }
                 elif evt.param1 == Win32.WM_RBUTTONDOWN
                 {
-                    popupBar()
+                    me.popupBar()
                 }
 
             case Win32.WM_USER + 1:
                 if !Clipboard.hasString():
                     break
-                loadExternalImage(Clipboard.getString())
+                me.loadExternalImage(Clipboard.getString())
             }
         }
     }
@@ -153,16 +153,16 @@ impl IWnd for MainWnd
         {
         case Close:
             evt.accepted = true
-            if editorOptions.hideOnClose:
-                surface.hide()
+            if me.editorOptions.hideOnClose:
+                me.surface.hide()
             else:
-                postCommandEvent(CmdIdExit)
+                me.postCommandEvent(CmdIdExit)
         }
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if !firstShow:
+        if !me.firstShow:
             catch g_App.saveState()
     }
 
@@ -170,12 +170,12 @@ impl IWnd for MainWnd
     {
         if evt.kind == .Show
         {
-            if firstShow
+            if me.firstShow
             {
-                firstShow = false
+                me.firstShow = false
                 catch g_App.loadState()
-                surface.constaintPositionToScreen(topLeft: true, margin: 10)
-                recentWnd.loadRecent()
+                me.surface.constaintPositionToScreen(topLeft: true, margin: 10)
+                me.recentWnd.loadRecent()
             }
 
             evt.accepted = true
@@ -184,30 +184,30 @@ impl IWnd for MainWnd
 
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
-        if inPlaceEdit:
+        if me.inPlaceEdit:
             return
         catch
         {
             with evt.ser
             {
-                .serialize("MainWnd.editMode", &editMode)
-                .serialize("MainWnd.snap", &snap)
-                .serialize("MainWnd.bottomSize", &bottomSize)
-                .serialize("MainWnd.fileDlgState", &fileDlgState)
-                .serialize("MainWnd.fileDlgStateInPlace", &fileDlgStateInPlace)
-                .serialize("MainWnd.RightBar.Pane0", &quickStyleBar.items[0].size)
-                .serialize("MainWnd.RightBar.Pane1", &quickStyleBar.items[1].size)
-                .serialize("MainWnd.captureOptions", &captureOptions)
-                .serialize("MainWnd.editorOptions", &editorOptions)
+                .serialize("MainWnd.editMode", &me.editMode)
+                .serialize("MainWnd.snap", &me.snap)
+                .serialize("MainWnd.bottomSize", &me.bottomSize)
+                .serialize("MainWnd.fileDlgState", &me.fileDlgState)
+                .serialize("MainWnd.fileDlgStateInPlace", &me.fileDlgStateInPlace)
+                .serialize("MainWnd.RightBar.Pane0", &me.quickStyleBar.items[0].size)
+                .serialize("MainWnd.RightBar.Pane1", &me.quickStyleBar.items[1].size)
+                .serialize("MainWnd.captureOptions", &me.captureOptions)
+                .serialize("MainWnd.editorOptions", &me.editorOptions)
             }
         }
 
         if evt.ser.isReading()
         {
-            quickStyleBar.sendResizeEvent()
-            setBottomSize(bottomSize)
-            setTopBarHeight()
-            updateState()
+            me.quickStyleBar.sendResizeEvent()
+            me.setBottomSize(me.bottomSize)
+            me.setTopBarHeight()
+            me.updateState()
         }
     }
 
@@ -215,7 +215,7 @@ impl IWnd for MainWnd
     {
         if evt.firstFrame
         {
-            quickWnd.setDefault()
+            me.quickWnd.setDefault()
         }
     }
 }
@@ -228,7 +228,7 @@ impl MainWnd
         if @err != null
         {
             let str = Format.toString("Failed to load file: %", arg)
-            MessageDlg.error(surface, str)
+            MessageDlg.error(me.surface, str)
             return
         }
 
@@ -246,63 +246,63 @@ impl MainWnd
 
         if !done
         {
-            newCapture(imgToLoad, arg)
+            me.newCapture(imgToLoad, arg)
         }
 
-        if libraryMode
+        if me.libraryMode
         {
-            swapLibraryMode()
-            updateState()
+            me.swapLibraryMode()
+            me.updateState()
         }
 
-        surface.bringToTop()
+        me.surface.bringToTop()
     }
 
     mtd getEditMode()->EditMode
     {
-        switch editMode
+        switch me.editMode
         {
         case Selection:
-            editMode = .Shape
-            let capture = getCapture()
+            me.editMode = .Shape
+            let capture = me.getCapture()
             if capture:
                 capture.updateEditModeFromSelection()
-            let edMode = editMode
-            editMode = .Selection
+            let edMode = me.editMode
+            me.editMode = .Selection
             return edMode
 
         case Favorites:
-            return formToEditMode(mdlFavorite)
+            return formToEditMode(me.mdlFavorite)
         case Highlight:
-            return formToEditMode(mdlHighlight)
+            return formToEditMode(me.mdlHighlight)
         case PixSel:
-            return formToEditMode(mdlPixSel)
+            return formToEditMode(me.mdlPixSel)
         }
 
-        return editMode
+        return me.editMode
     }
 
     mtd freezeSelection(freeze: bool)
     {
-        if !freeze and embInfoFreeze
+        if !freeze and me.embInfoFreeze
         {
-            embInfoFreeze.destroy()
-            embInfoFreeze = null
-            freezeSel     = false
+            me.embInfoFreeze.destroy()
+            me.embInfoFreeze = null
+            me.freezeSel     = false
         }
-        elif freeze and !embInfoFreeze
+        elif freeze and !me.embInfoFreeze
         {
-            embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
-            embInfoFreeze.sigOnClose += mtd||(ctrl)
+            me.embInfoFreeze = EmbInfoCtrl.create(me.editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
+            me.embInfoFreeze.sigOnClose += mtd||(ctrl)
             {
                 me.freezeSel     = false
                 me.embInfoFreeze = null
             }
 
-            let capture = assume getCapture()
+            let capture = assume me.getCapture()
             capture.selection.clear()
             capture.selectionHasChanged()
-            freezeSel = true
+            me.freezeSel = true
 
             foreach it in capture.forms
             {
@@ -314,117 +314,117 @@ impl MainWnd
 
     mtd updateState()
     {
-        updateCommandState()
-        if propWnd:
-            propWnd.selectionHasChanged()
-        if quickWnd:
-            quickWnd.updateQuickStyles()
+        me.updateCommandState()
+        if me.propWnd:
+            me.propWnd.selectionHasChanged()
+        if me.quickWnd:
+            me.quickWnd.updateQuickStyles()
     }
 
     mtd captureHasChanged()
     {
-        updateSizeDisplay()
-        if recentWnd
+        me.updateSizeDisplay()
+        if me.recentWnd
         {
-            editToolBar.updateCommandState()
-            updateRecent()
+            me.editToolBar.updateCommandState()
+            me.updateRecent()
         }
     }
 
     mtd updateRecent()
     {
-        if !recentWnd:
+        if !me.recentWnd:
             return
-        recentWnd.updateRecent()
+        me.recentWnd.updateRecent()
     }
 
     mtd getCapture()->#null *Capture
     {
-        if libraryMode:
-            return libWnd.getCapture()
-        return editWnd.getCapture()
+        if me.libraryMode:
+            return me.libWnd.getCapture()
+        return me.editWnd.getCapture()
     }
 
     mtd updateZoomDisplay()
     {
-        let z = cast(s32) (editWnd.editView.zoom * 100)
-        zoomBtn.name = Format.toString("% %%", z)
-        zoomBtn.invalidate()
+        let z = cast(s32) (me.editWnd.editView.zoom * 100)
+        me.zoomBtn.name = Format.toString("% %%", z)
+        me.zoomBtn.invalidate()
     }
 
     mtd updateSizeDisplay()
     {
-        let capture = getCapture()
-        if !capture or !sizeBtn:
+        let capture = me.getCapture()
+        if !capture or !me.sizeBtn:
             return
-        sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
-        sizeBtn.invalidate()
+        me.sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
+        me.sizeBtn.invalidate()
     }
 
     mtd registerActions()
     {
-        registerAction'ActionAlign()
-        registerAction'ActionUndo()
-        registerAction'ActionDelay()
-        registerAction'ActionPixSel()
-        registerAction'ActionCapture()
-        registerAction'ActionMoveSel()
-        registerAction'ActionToolMode()
-        registerAction'ActionCopyPaste()
-        registerAction'ActionFile()
-        registerAction'ActionZoom()
-        registerAction'ActionImage()
-        registerAction'ActionSelection()
-        registerAction'ActionFlatten()
-        registerAction'ActionRecentSize()
-        registerAction'ActionQuickStyle()
-        registerAction'ActionEdit()
-        registerAction'ActionGlobal()
-        registerAction'ActionAbout()
-        registerAction'ActionOptions()
-        registerAction'ActionView()
+        me.registerAction'ActionAlign()
+        me.registerAction'ActionUndo()
+        me.registerAction'ActionDelay()
+        me.registerAction'ActionPixSel()
+        me.registerAction'ActionCapture()
+        me.registerAction'ActionMoveSel()
+        me.registerAction'ActionToolMode()
+        me.registerAction'ActionCopyPaste()
+        me.registerAction'ActionFile()
+        me.registerAction'ActionZoom()
+        me.registerAction'ActionImage()
+        me.registerAction'ActionSelection()
+        me.registerAction'ActionFlatten()
+        me.registerAction'ActionRecentSize()
+        me.registerAction'ActionQuickStyle()
+        me.registerAction'ActionEdit()
+        me.registerAction'ActionGlobal()
+        me.registerAction'ActionAbout()
+        me.registerAction'ActionOptions()
+        me.registerAction'ActionView()
     }
 
     mtd registerShortcuts()
     {
-        registerKeyShortcut(.Control, .C, CmdIdCopy)
-        registerKeyShortcut(.Control, .X, CmdIdCut)
-        registerKeyShortcut(.Control, .V, CmdIdPaste)
-        registerKeyShortcut(.Control, .Insert, CmdIdCopy)
-        registerKeyShortcut(.Shift, .Insert, CmdIdPaste)
-        registerKeyShortcut(.Control, .Z, CmdIdUndo)
-        registerKeyShortcut(.Control, .Y, CmdIdRedo)
-        registerKeyShortcut(.Zero, .Home, CmdIdSendToFront)
-        registerKeyShortcut(.Zero, .End, CmdIdSendToBack)
-        registerKeyShortcut(.Zero, .PageUp, CmdIdMoveForward)
-        registerKeyShortcut(.Zero, .PageDown, CmdIdMoveBackward)
-        registerKeyShortcut(.Zero, .Delete, CmdIdDeleteSelection)
-        registerKeyShortcut(.CtrlShift, .A, CmdIdCopyAsImage)
-        registerKeyShortcut(.Control, .Space, CmdIdFreeze)
-        registerKeyShortcut(.Control, .A, CmdIdSelectAll)
-        registerKeyShortcut(.Control, .D, CmdIdDeSelectAll)
-        registerKeyShortcut(.Control, .Add, CmdIdZoomIn)
-        registerKeyShortcut(.Control, .Subtract, CmdIdZoomOut)
-        registerKeyShortcut(.Control, .NumPad0, CmdIdZoom1)
-        registerKeyShortcut(.CtrlShift, .D, CmdIdDupCapture)
-        registerKeyShortcut(.CtrlShift, .I, CmdIdInvertSelection)
-        registerKeyShortcut(.CtrlShift, .T, CmdIdFlattenAll)
-        registerKeyShortcut(.Alt, .F4, CmdIdExit)
-        registerKeyShortcut(.Control, .N, CmdIdNewImage)
-        registerKeyShortcut(.CtrlShift, .N, CmdIdNewFromClipboard)
-        registerKeyShortcut(.CtrlShift, .S, CmdIdSaveAsImage)
-        registerKeyShortcut(.Control, .S, CmdIdUpdateLinkedImage)
-        registerKeyShortcut(.Control, .O, CmdIdOpenImage)
-        registerKeyShortcut(.Shift, .Left, CmdIdMoveSelLeft1)
-        registerKeyShortcut(.Shift, .Up, CmdIdMoveSelTop1)
-        registerKeyShortcut(.Shift, .Right, CmdIdMoveSelRight1)
-        registerKeyShortcut(.Shift, .Down, CmdIdMoveSelBottom1)
-        registerKeyShortcut(.Zero, .Left, CmdIdMoveSelLeft)
-        registerKeyShortcut(.Zero, .Up, CmdIdMoveSelTop)
-        registerKeyShortcut(.Zero, .Right, CmdIdMoveSelRight)
-        registerKeyShortcut(.Zero, .Down, CmdIdMoveSelBottom)
-        registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
-        registerKeyShortcut(.Zero, .F2, CmdIdEditText)
+        me.registerKeyShortcut(.Control, .C, CmdIdCopy)
+        me.registerKeyShortcut(.Control, .X, CmdIdCut)
+        me.registerKeyShortcut(.Control, .V, CmdIdPaste)
+        me.registerKeyShortcut(.Control, .Insert, CmdIdCopy)
+        me.registerKeyShortcut(.Shift, .Insert, CmdIdPaste)
+        me.registerKeyShortcut(.Control, .Z, CmdIdUndo)
+        me.registerKeyShortcut(.Control, .Y, CmdIdRedo)
+        me.registerKeyShortcut(.Zero, .Home, CmdIdSendToFront)
+        me.registerKeyShortcut(.Zero, .End, CmdIdSendToBack)
+        me.registerKeyShortcut(.Zero, .PageUp, CmdIdMoveForward)
+        me.registerKeyShortcut(.Zero, .PageDown, CmdIdMoveBackward)
+        me.registerKeyShortcut(.Zero, .Delete, CmdIdDeleteSelection)
+        me.registerKeyShortcut(.CtrlShift, .A, CmdIdCopyAsImage)
+        me.registerKeyShortcut(.Control, .Space, CmdIdFreeze)
+        me.registerKeyShortcut(.Control, .A, CmdIdSelectAll)
+        me.registerKeyShortcut(.Control, .D, CmdIdDeSelectAll)
+        me.registerKeyShortcut(.Control, .Add, CmdIdZoomIn)
+        me.registerKeyShortcut(.Control, .Subtract, CmdIdZoomOut)
+        me.registerKeyShortcut(.Control, .NumPad0, CmdIdZoom1)
+        me.registerKeyShortcut(.CtrlShift, .D, CmdIdDupCapture)
+        me.registerKeyShortcut(.CtrlShift, .I, CmdIdInvertSelection)
+        me.registerKeyShortcut(.CtrlShift, .T, CmdIdFlattenAll)
+        me.registerKeyShortcut(.Alt, .F4, CmdIdExit)
+        me.registerKeyShortcut(.Control, .N, CmdIdNewImage)
+        me.registerKeyShortcut(.CtrlShift, .N, CmdIdNewFromClipboard)
+        me.registerKeyShortcut(.CtrlShift, .S, CmdIdSaveAsImage)
+        me.registerKeyShortcut(.Control, .S, CmdIdUpdateLinkedImage)
+        me.registerKeyShortcut(.Control, .O, CmdIdOpenImage)
+        me.registerKeyShortcut(.Shift, .Left, CmdIdMoveSelLeft1)
+        me.registerKeyShortcut(.Shift, .Up, CmdIdMoveSelTop1)
+        me.registerKeyShortcut(.Shift, .Right, CmdIdMoveSelRight1)
+        me.registerKeyShortcut(.Shift, .Down, CmdIdMoveSelBottom1)
+        me.registerKeyShortcut(.Zero, .Left, CmdIdMoveSelLeft)
+        me.registerKeyShortcut(.Zero, .Up, CmdIdMoveSelTop)
+        me.registerKeyShortcut(.Zero, .Right, CmdIdMoveSelRight)
+        me.registerKeyShortcut(.Zero, .Down, CmdIdMoveSelBottom)
+        me.registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
+        me.registerKeyShortcut(.Zero, .F2, CmdIdEditText)
 
         var errorReg = false
 
@@ -453,15 +453,15 @@ impl MainWnd
 
     mtd createTopMenu()
     {
-        with let topMenu = MenuCtrl.createBar(parent, owner: me)
+        with let topMenu = MenuCtrl.createBar(me.parent, owner: me)
         {
             .bringToFront()
             .dockStyle       = .Top
-            .margin.y        = -parent.padding.y
+            .margin.y        = -me.parent.padding.y
             .backgroundStyle = .Transparent
         }
 
-        with let fileMenu = MenuCtrl.createPopup(parent, owner: me)
+        with let fileMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(CmdIdNewImage)
             .addItem(CmdIdNewFromClipboard)
@@ -479,14 +479,14 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
-        with let captureMenu = MenuCtrl.createPopup(parent, owner: me)
+        with let captureMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(CmdIdCaptureArea)
             .addItem(CmdIdCaptureLastArea)
             .addItem(CmdIdCaptureFullScreen)
             .addItem(CmdIdCaptureActiveWnd)
 
-            foreach m, idx in monitors
+            foreach m, idx in me.monitors
             {
                 switch idx
                 {
@@ -523,7 +523,7 @@ impl MainWnd
             .addItem(CmdIdCaptureToClipboard)
         }
 
-        with let editMenu = MenuCtrl.createPopup(parent, owner: me)
+        with let editMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(CmdIdUndo)
             .addItem(CmdIdRedo)
@@ -542,7 +542,7 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
-        with let imageMenu = MenuCtrl.createPopup(parent, owner: me)
+        with let imageMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(CmdIdCopyAsImage)
             .addSeparator()
@@ -562,7 +562,7 @@ impl MainWnd
             topMenu.addPopup("Image", imageMenu)
         }
 
-        with let viewMenu = MenuCtrl.createPopup(parent, owner: me)
+        with let viewMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(CmdIdZoomIn)
             .addItem(CmdIdZoomOut)
@@ -574,7 +574,7 @@ impl MainWnd
             topMenu.addPopup("View", viewMenu)
         }
 
-        with let helpMenu = MenuCtrl.createPopup(parent, owner: me)
+        with let helpMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(CmdIdOptions)
             .addItem(CmdIdAbout)
@@ -586,7 +586,7 @@ impl MainWnd
     {
         mtd createBtn(id: WndId, canCheck = true)
         {
-            with let b = IconButton.create(editToolBar, {}, position: {0, 0, 60, 64})
+            with let b = IconButton.create(me.editToolBar, {}, position: {0, 0, 60, 64})
             {
                 .id = #me.id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
@@ -598,41 +598,41 @@ impl MainWnd
             }
         }
 
-        with editToolBar = StackLayoutCtrl.create(topBar, .HorzCenter, {0, 0, 64, 64})
+        with me.editToolBar = StackLayoutCtrl.create(me.topBar, .HorzCenter, {0, 0, 64, 64})
         {
             .dockStyle       = .Top
             .backgroundStyle = .Window
             .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         }
 
-        createBtn(CmdIdModeFavorites)
-        createBtn(CmdIdModeSelection)
-        createBtn(CmdIdModeShape)
-        createBtn(CmdIdModeArrow)
-        createBtn(CmdIdModeLine)
-        createBtn(CmdIdModePolygon)
-        createBtn(CmdIdModeText)
-        createBtn(CmdIdModeDraw)
-        createBtn(CmdIdModeHighlight)
-        createBtn(CmdIdModeStep)
-        createBtn(CmdIdModeImage)
-        createBtn(CmdIdModePixSel)
+        me.createBtn(CmdIdModeFavorites)
+        me.createBtn(CmdIdModeSelection)
+        me.createBtn(CmdIdModeShape)
+        me.createBtn(CmdIdModeArrow)
+        me.createBtn(CmdIdModeLine)
+        me.createBtn(CmdIdModePolygon)
+        me.createBtn(CmdIdModeText)
+        me.createBtn(CmdIdModeDraw)
+        me.createBtn(CmdIdModeHighlight)
+        me.createBtn(CmdIdModeStep)
+        me.createBtn(CmdIdModeImage)
+        me.createBtn(CmdIdModePixSel)
 
-        captureBtn = IconButton.create(topBar, Icon.from(&icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
-        libraryBtn = IconButton.create(topBar, Icon.from(&icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
+        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
+        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
     }
 
     mtd setTopBarHeight()
     {
         var icons: Array'(*IconButton)
 
-        foreach c in topBar.childs
+        foreach c in me.topBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
 
-        foreach c in editToolBar.childs
+        foreach c in me.editToolBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
@@ -656,11 +656,11 @@ impl MainWnd
             }
         }
 
-        topBar.position.height = editorOptions.showToolBarLabels ? 68 : 50
-        editWnd.sendResizeEvent()
-        topBar.sendResizeEvent()
-        editToolBar.sendResizeEvent()
-        applyLayout()
+        me.topBar.position.height = me.editorOptions.showToolBarLabels ? 68 : 50
+        me.editWnd.sendResizeEvent()
+        me.topBar.sendResizeEvent()
+        me.editToolBar.sendResizeEvent()
+        me.applyLayout()
     }
 
     func create(parent: *Wnd)->*MainWnd

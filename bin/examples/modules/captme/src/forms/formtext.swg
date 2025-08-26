@@ -51,16 +51,16 @@ impl IForm for FormText
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormText) ptr
-        return borderColor == other.borderColor and
-               borderSize == other.borderSize and
-               backColor == other.backColor and
-               alpha == other.alpha and
-               fontSize == other.fontSize and
-               boldSize == other.boldSize and
-               paintShadow == other.paintShadow and
-               fontName == other.fontName and
-               fontStyle == other.fontStyle and
-               joinStyle == other.joinStyle
+        return me.borderColor == other.borderColor and
+               me.borderSize == other.borderSize and
+               me.backColor == other.backColor and
+               me.alpha == other.alpha and
+               me.fontSize == other.fontSize and
+               me.boldSize == other.boldSize and
+               me.paintShadow == other.paintShadow and
+               me.fontName == other.fontName and
+               me.fontStyle == other.fontStyle and
+               me.joinStyle == other.joinStyle
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -91,7 +91,7 @@ impl IForm for FormText
         let ya = cast(s32) (movingStart.y / zoom)
         let xb = cast(s32) (localPos.x / zoom)
         let yb = cast(s32) (localPos.y / zoom)
-        setBaseForm(xa, ya, xb - xa, yb - ya)
+        me.setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left:
             return false
         return true
@@ -99,69 +99,69 @@ impl IForm for FormText
 
     mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        x += newPosX
-        y += newPosY
-        w += newSizeX
-        h += newSizeY
+        me.x += newPosX
+        me.y += newPosY
+        me.w += newSizeX
+        me.h += newSizeY
     }
 
     mtd impl scaleBaseForm(val: f32)
     {
-        x = cast(s32) (x * val)
-        y = cast(s32) (y * val)
-        w = cast(s32) (w * val)
-        h = cast(s32) (h * val)
+        me.x = cast(s32) (me.x * val)
+        me.y = cast(s32) (me.y * val)
+        me.w = cast(s32) (me.w * val)
+        me.h = cast(s32) (me.h * val)
     }
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if newSizeX < 0
         {
-            x = newPosX + newSizeX
-            w = -newSizeX
+            me.x = newPosX + newSizeX
+            me.w = -newSizeX
         }
         else
         {
-            x = newPosX
-            w = newSizeX
+            me.x = newPosX
+            me.w = newSizeX
         }
 
         if newSizeY < 0
         {
-            y = newPosY + newSizeY
-            h = -newSizeY
+            me.y = newPosY + newSizeY
+            me.h = -newSizeY
         }
         else
         {
-            y = newPosY
-            h = newSizeY
+            me.y = newPosY
+            me.h = newSizeY
         }
     }
 
     mtd impl moveForm(newPosX, newPosY: s32)
     {
-        x += newPosX
-        y += newPosY
+        me.x += newPosX
+        me.y += newPosY
     }
 
     mtd impl movePoint(pt: u32, newPosX, newPosY: s32) {}
 
     mtd impl boundRect()->Math.Rectangle
     {
-        return Math.Rectangle{x, y, w, h}
+        return Math.Rectangle{me.x, me.y, me.w, me.h}
     }
 
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        return gizmo.mouse(view, pos, evt)
+        return me.gizmo.mouse(view, pos, evt)
     }
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags.has(.Hot | .Selected)
         {
-            gizmo.rect = boundRect() * z
-            gizmo.paint(painter, !flags.has(.Selected))
+            me.gizmo.rect = me.boundRect() * z
+            me.gizmo.paint(painter, !flags.has(.Selected))
         }
     }
 
@@ -172,7 +172,7 @@ impl IForm for FormText
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        let pp = boundRect() * z
+        let pp = me.boundRect() * z
         return pp.contains(pt)
     }
 
@@ -181,38 +181,38 @@ impl IForm for FormText
         var cxtCpy = cxt
         cxtCpy.z = 1
 
-        let bSize = adaptSize(borderSize, MinTextBorderSize, MaxTextBorderSize, cxtCpy, 2, 4)
-        let fSize = adaptSize(fontSize, MinFontSize, MaxFontSize, cxtCpy, 20, 48)
-        let sSize = adaptSize(boldSize, MinBoldSize, MaxBoldSize, cxtCpy, 1, 2)
+        let bSize = adaptSize(me.borderSize, MinTextBorderSize, MaxTextBorderSize, cxtCpy, 2, 4)
+        let fSize = adaptSize(me.fontSize, MinFontSize, MaxFontSize, cxtCpy, 20, 48)
+        let sSize = adaptSize(me.boldSize, MinBoldSize, MaxBoldSize, cxtCpy, 1, 2)
         let z     = cxt.z
 
-        let boundRect = boundRect() * z
+        let boundRect = me.boundRect() * z
         var pp        = boundRect
         pp.inflate(-bSize * 0.5)
 
-        if text.isEmpty()
+        if me.text.isEmpty()
         {
-            text    = "A"
-            isDirty = true
+            me.text    = "A"
+            me.isDirty = true
         }
 
         // Font
-        if !typeFace or isDirtyFont
+        if !me.typeFace or me.isDirtyFont
         {
-            isDirtyFont = false
-            if !fontName.length:
-                typeFace = null
+            me.isDirtyFont = false
+            if !me.fontName.length:
+                me.typeFace = null
             else
             {
-                var en = FontFamily.getFromOs(fontName)
-                typeFace = catch FontFamily.createTypeFace(en, fontStyle)
+                var en = FontFamily.getFromOs(me.fontName)
+                me.typeFace = catch FontFamily.createTypeFace(en, me.fontStyle)
             }
         }
 
-        var face = typeFace
+        var face = me.typeFace
         if !face
         {
-            switch fontStyle
+            switch me.fontStyle
             {
             case Regular:
                 face = g_App.theme.res.defaultTypeFaceR
@@ -225,36 +225,36 @@ impl IForm for FormText
             }
         }
 
-        if face != cacheFace or
-           bSize != cachebSize or
-           fSize != cachefSize or
-           sSize != cachesSize or
-           joinStyle != cacheStyle or
-           fontName != cacheFontN or
-           fontStyle != cacheFontS or
-           cacheBColorA != borderColor.a
+        if face != me.cacheFace or
+           bSize != me.cachebSize or
+           fSize != me.cachefSize or
+           sSize != me.cachesSize or
+           me.joinStyle != me.cacheStyle or
+           me.fontName != me.cacheFontN or
+           me.fontStyle != me.cacheFontS or
+           me.cacheBColorA != me.borderColor.a
         {
-            isDirty = true
+            me.isDirty = true
         }
 
-        var tokens = Tokenize.split(text, '\n''rune)
-        if isDirty
+        var tokens = Tokenize.split(me.text, '\n''rune)
+        if me.isDirty
         {
-            isDirty      = false
-            cacheFace    = face
-            cachesSize   = sSize
-            cachebSize   = bSize
-            cachefSize   = fSize
-            cacheStyle   = joinStyle
-            cacheFontN   = fontName
-            cacheFontS   = fontStyle
-            cacheBColorA = borderColor.a
+            me.isDirty      = false
+            me.cacheFace    = face
+            me.cachesSize   = sSize
+            me.cachebSize   = bSize
+            me.cachefSize   = fSize
+            me.cacheStyle   = me.joinStyle
+            me.cacheFontN   = me.fontName
+            me.cacheFontS   = me.fontStyle
+            me.cacheBColorA = me.borderColor.a
 
-            paths.clear()
-            paths.resize(tokens.count * 2)
-            runes.clear()
+            me.paths.clear()
+            me.paths.resize(tokens.count * 2)
+            me.runes.clear()
 
-            totalY = 0
+            me.totalY = 0
             foreach t, idx in tokens
             {
                 let pathl  = &paths[idx * 2]
@@ -304,17 +304,17 @@ impl IForm for FormText
             }
         }
 
-        let zscale  = z * (cxt.quickMode ? 1 : Math.map(scale, 0, 100, 1'f32, 2'f32))
+        let zscale  = z * (cxt.quickMode ? 1 : Math.map(me.scale, 0, 100, 1'f32, 2'f32))
         var y0      = 0'f32
         let addSize = (bSize + sSize) * zscale
 
-        let count = paths.count / 2
+        let count = me.paths.count / 2
 
-        var totalYZ = totalY * zscale
-        totalYZ += cast(f32) ((count - 1) * (lineSpacing * zscale))
+        var totalYZ = me.totalY * zscale
+        totalYZ += cast(f32) ((count - 1) * (me.lineSpacing * zscale))
 
-        let aV = cxt.quickMode ? FormTextAlign.Center : alignVert
-        let aH = cxt.quickMode ? FormTextAlign.Center : alignHorz
+        let aV = cxt.quickMode ? FormTextAlign.Center : me.alignVert
+        let aH = cxt.quickMode ? FormTextAlign.Center : me.alignHorz
         switch aV
         {
         case LeftTop:
@@ -325,9 +325,9 @@ impl IForm for FormText
             y0 = pp.bottom() - addSize - totalYZ
         }
 
-        for var i = 0; i < paths.count; i += 2
+        for var i = 0; i < me.paths.count; i += 2
         {
-            let pathl1 = &paths[i + 1]
+            let pathl1 = &me.paths[i + 1]
 
             let wt = (pathl1.bvMax.x - pathl1.bvMin.x) * zscale
             let ht = (pathl1.bvMax.y - pathl1.bvMin.y) * zscale
@@ -347,7 +347,7 @@ impl IForm for FormText
             let tt  = painter.curState.transform
 
             // Border
-            if !Math.isZeroEpsilon(bSize) and borderColor.a
+            if !Math.isZeroEpsilon(bSize) and me.borderColor.a
             {
                 painter.pushTransform()
                 painter.curState.transform.tx = 0
@@ -367,7 +367,7 @@ impl IForm for FormText
             }
 
             // Back
-            if backColor.a
+            if me.backColor.a
             {
                 painter.pushTransform()
                 painter.curState.transform.tx = 0
@@ -387,15 +387,15 @@ impl IForm for FormText
             }
 
             // Next line
-            y0 += ht + (lineSpacing * zscale)
+            y0 += ht + (me.lineSpacing * zscale)
         }
     }
 
     mtd impl setup(capt: *Capture)
     {
-        capture = capt
+        me.capture = capt
 
-        with gizmo
+        with me.gizmo
         {
             .roundShape        = true
             .anchorSize        = 10
@@ -404,7 +404,7 @@ impl IForm for FormText
             .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = mtd||(g, first, hitMove)
+        me.gizmo.sigChanged = mtd||(g, first, hitMove)
         {
             g.apply(me, first, hitMove)
         }

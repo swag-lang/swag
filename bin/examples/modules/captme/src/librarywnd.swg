@@ -39,52 +39,52 @@ impl LibraryWnd
 {
     mtd setPreviewSize(size: PreviewSize)
     {
-        previewSize = size
-        let sizeName = Reflection.getEnumName(PreviewSize, &previewSize, false)
-        zoomBtn.name.set(sizeName)
-        invalidate()
+        me.previewSize = size
+        let sizeName = Reflection.getEnumName(PreviewSize, &me.previewSize, false)
+        me.zoomBtn.name.set(sizeName)
+        me.invalidate()
     }
 
     mtd setSortMethod(method: SortMethod)
     {
-        sortMethod = method
-        let sortName = Reflection.getEnumName(SortMethod, &sortMethod, false)
-        sortBtn.name.set(sortName)
-        view.sort()
-        invalidate()
+        me.sortMethod = method
+        let sortName = Reflection.getEnumName(SortMethod, &me.sortMethod, false)
+        me.sortBtn.name.set(sortName)
+        me.view.sort()
+        me.invalidate()
     }
 
     mtd setSortOrder(invert: bool)
     {
-        invertSort = invert
-        view.sort()
-        invalidate()
+        me.invertSort = invert
+        me.view.sort()
+        me.invalidate()
     }
 
     mtd getCapture()->#null *Capture
     {
-        if view.focusItem < view.items.count:
-            return view.items[view.focusItem].capture
+        if me.view.focusItem < me.view.items.count:
+            return me.view.items[me.view.focusItem].capture
         return null
     }
 
     mtd requestClose()
     {
-        if view.thread.isValid()
+        if me.view.thread.isValid()
         {
-            view.thread.safeForceEnd()
-            view.thread.wait()
+            me.view.thread.safeForceEnd()
+            me.view.thread.wait()
         }
     }
 
     mtd const hasSelected()->bool
     {
-        return !view.selModel.isEmpty()
+        return !me.view.selModel.isEmpty()
     }
 
     mtd removeSelected()
     {
-        foreach it, i in view.items
+        foreach it, i in me.view.items
         {
             if it.filtered:
                 continue
@@ -96,69 +96,69 @@ impl LibraryWnd
 
     mtd moveSelHome()
     {
-        if view.items.isEmpty():
+        if me.view.items.isEmpty():
             return
-        view.setFocusItem(0)
-        view.scrollToFocus()
+        me.view.setFocusItem(0)
+        me.view.scrollToFocus()
     }
 
     mtd moveSelEnd()
     {
-        if view.items.isEmpty():
+        if me.view.items.isEmpty():
             return
-        view.setFocusItem(cast(u32) view.items.count - 1)
-        view.scrollToFocus()
+        me.view.setFocusItem(cast(u32) me.view.items.count - 1)
+        me.view.scrollToFocus()
     }
 
     mtd moveSelLeft()
     {
-        if view.items.isEmpty():
+        if me.view.items.isEmpty():
             return
-        if view.focusItem == 0 or view.focusItem == Swag.U32.Max:
+        if me.view.focusItem == 0 or me.view.focusItem == Swag.U32.Max:
             return
-        view.focusItem -= 1
-        view.setFocusItem(view.focusItem)
-        view.scrollToFocus()
+        me.view.focusItem -= 1
+        me.view.setFocusItem(me.view.focusItem)
+        me.view.scrollToFocus()
     }
 
     mtd moveSelRight()
     {
-        if view.items.isEmpty():
+        if me.view.items.isEmpty():
             return
-        if view.focusItem == view.items.count - 1 or view.focusItem == Swag.U32.Max:
+        if me.view.focusItem == me.view.items.count - 1 or me.view.focusItem == Swag.U32.Max:
             return
-        view.focusItem += 1
-        view.setFocusItem(view.focusItem)
-        view.scrollToFocus()
+        me.view.focusItem += 1
+        me.view.setFocusItem(me.view.focusItem)
+        me.view.scrollToFocus()
     }
 
     mtd moveSelTop()
     {
-        if view.items.isEmpty():
+        if me.view.items.isEmpty():
             return
-        let n = view.numImagesPerLine()
-        if view.focusItem < n or view.focusItem == Swag.U32.Max:
+        let n = me.view.numImagesPerLine()
+        if me.view.focusItem < n or me.view.focusItem == Swag.U32.Max:
             return
-        view.focusItem -= n
-        view.setFocusItem(view.focusItem)
-        view.scrollToFocus()
+        me.view.focusItem -= n
+        me.view.setFocusItem(me.view.focusItem)
+        me.view.scrollToFocus()
     }
 
     mtd moveSelBottom()
     {
-        if view.items.isEmpty():
+        if me.view.items.isEmpty():
             return
-        let n = view.numImagesPerLine()
-        if view.focusItem >= view.items.count - n or view.focusItem == Swag.U32.Max:
+        let n = me.view.numImagesPerLine()
+        if me.view.focusItem >= me.view.items.count - n or me.view.focusItem == Swag.U32.Max:
             return
-        view.focusItem += n
-        view.setFocusItem(view.focusItem)
-        view.scrollToFocus()
+        me.view.focusItem += n
+        me.view.setFocusItem(me.view.focusItem)
+        me.view.scrollToFocus()
     }
 
     mtd fill()
     {
-        if listCtrl.getLineCount():
+        if me.listCtrl.getLineCount():
             return
         g_Library.onDeleteFile += mtd||(file)
         {
@@ -173,7 +173,7 @@ impl LibraryWnd
             }
         }
 
-        let line = listCtrl.createLine("All Captures", Icon.from(&main.icons24, 4))
+        let line = me.listCtrl.createLine("All Captures", Icon.from(&me.main.icons24, 4))
         var item = line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
@@ -188,7 +188,7 @@ impl LibraryWnd
         var lastLineMonth: *ListLine
         var lastLineDay:   *ListLine
 
-        var icon1 = Icon.from(&main.icons24, 3)
+        var icon1 = Icon.from(&me.main.icons24, 3)
 
         var cptYear, cptMonth, cptDay = 0
 
@@ -262,22 +262,22 @@ impl LibraryWnd
         fillLastMonth()
         fillLastDay()
 
-        listCtrl.computeLayout()
-        catch view.fill()
+        me.listCtrl.computeLayout()
+        catch me.view.fill()
     }
 
     mtd registerActions()
     {
-        registerAction'ActionLibSort()
-        registerAction'ActionLibFilter()
-        registerAction'ActionLibSel()
+        me.registerAction'ActionLibSort()
+        me.registerAction'ActionLibFilter()
+        me.registerAction'ActionLibSel()
 
-        registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
-        registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
-        registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
-        registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
-        registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
-        registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
+        me.registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
+        me.registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
+        me.registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
+        me.registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
+        me.registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
+        me.registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
     }
 
     func create(parent: *MainWnd)->*LibraryWnd

@@ -30,54 +30,54 @@ impl GizmoRect
         switch evt.kind
         {
         case MousePressed:
-            if moving:
+            if me.moving:
                 return true
-            if evt.button != .Left or hotAnchor == Swag.U32.Max:
+            if evt.button != .Left or me.hotAnchor == Swag.U32.Max:
                 break
-            moving, firstMoving = true
-            startRect   = rect
-            movingRect  = rect
-            movingStart = pos
+            me.moving, me.firstMoving = true
+            me.startRect   = me.rect
+            me.movingRect  = me.rect
+            me.movingStart = pos
             view.captureMouse()
             return true
 
         case MouseReleased:
-            if moving
+            if me.moving
             {
                 if evt.button == .Left
                 {
-                    moving, firstMoving = false
-                    hotAnchor = Swag.U32.Max
+                    me.moving, me.firstMoving = false
+                    me.hotAnchor = Swag.U32.Max
                     view.releaseMouse()
-                    if !trackChange and sigChanged:
-                        sigChanged(me, false, 0)
-                    if sigHasChanged:
-                        sigHasChanged()
+                    if !me.trackChange and me.sigChanged:
+                        me.sigChanged(me, false, 0)
+                    if me.sigHasChanged:
+                        me.sigHasChanged()
                 }
 
                 return true
             }
 
         case MouseLeave:
-            if hotAnchor != Swag.U32.Max
+            if me.hotAnchor != Swag.U32.Max
             {
-                hotAnchor = Swag.U32.Max
+                me.hotAnchor = Swag.U32.Max
                 return true
             }
 
         case MouseMove:
-            if moving
+            if me.moving
             {
                 var hitMove = 0'u32
-                if firstMoving and sigChanged and trackChange:
-                    sigChanged(me, true, 0)
+                if me.firstMoving and me.sigChanged and me.trackChange:
+                    me.sigChanged(me, true, 0)
 
-                firstMoving = false
+                me.firstMoving = false
 
-                var diff = pos - movingStart
-                movingStart = pos
+                var diff = pos - me.movingStart
+                me.movingStart = pos
 
-                switch hotAnchor
+                switch me.hotAnchor
                 {
                 case 0:
                     if prop
@@ -88,16 +88,16 @@ impl GizmoRect
                             diff.x = diff.y
                     }
 
-                    movingRect.x      = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
-                    movingRect.y      = Math.min(startRect.bottom() - minSizeY, movingRect.y + diff.y)
-                    movingRect.width  = startRect.right() - movingRect.x
-                    movingRect.height = startRect.bottom() - movingRect.y
-                    hitMove           = 1 | 2
+                    me.movingRect.x      = Math.min(me.startRect.right() - me.minSizeX, me.movingRect.x + diff.x)
+                    me.movingRect.y      = Math.min(me.startRect.bottom() - me.minSizeY, me.movingRect.y + diff.y)
+                    me.movingRect.width  = me.startRect.right() - me.movingRect.x
+                    me.movingRect.height = me.startRect.bottom() - me.movingRect.y
+                    hitMove              = 1 | 2
 
                 case 1:
-                    movingRect.y      = Math.min(movingRect.y + diff.y, startRect.bottom() - minSizeY)
-                    movingRect.height = startRect.bottom() - movingRect.y
-                    hitMove           = 2
+                    me.movingRect.y      = Math.min(me.movingRect.y + diff.y, me.startRect.bottom() - me.minSizeY)
+                    me.movingRect.height = me.startRect.bottom() - me.movingRect.y
+                    hitMove              = 2
 
                 case 2:
                     if prop
@@ -108,19 +108,19 @@ impl GizmoRect
                             diff.x = -diff.y
                     }
 
-                    movingRect.y      = Math.min(startRect.bottom() - minSizeY, movingRect.y + diff.y)
-                    movingRect.width  = Math.max(movingRect.width + diff.x, minSizeX)
-                    movingRect.height = startRect.bottom() - movingRect.y
-                    hitMove           = 2 | 4
+                    me.movingRect.y      = Math.min(me.startRect.bottom() - me.minSizeY, me.movingRect.y + diff.y)
+                    me.movingRect.width  = Math.max(me.movingRect.width + diff.x, me.minSizeX)
+                    me.movingRect.height = me.startRect.bottom() - me.movingRect.y
+                    hitMove              = 2 | 4
 
                 case 3:
-                    movingRect.x     = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
-                    movingRect.width = startRect.right() - movingRect.x
-                    hitMove          = 1
+                    me.movingRect.x     = Math.min(me.startRect.right() - me.minSizeX, me.movingRect.x + diff.x)
+                    me.movingRect.width = me.startRect.right() - me.movingRect.x
+                    hitMove             = 1
 
                 case 4:
-                    movingRect.width = Math.max(movingRect.width + diff.x, minSizeX)
-                    hitMove          = 4
+                    me.movingRect.width = Math.max(me.movingRect.width + diff.x, me.minSizeX)
+                    hitMove             = 4
 
                 case 5:
                     if prop
@@ -131,14 +131,14 @@ impl GizmoRect
                             diff.x = -diff.y
                     }
 
-                    movingRect.x      = Math.min(startRect.right() - minSizeX, movingRect.x + diff.x)
-                    movingRect.width  = startRect.right() - movingRect.x
-                    movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
-                    hitMove           = 1 | 8
+                    me.movingRect.x      = Math.min(me.startRect.right() - me.minSizeX, me.movingRect.x + diff.x)
+                    me.movingRect.width  = me.startRect.right() - me.movingRect.x
+                    me.movingRect.height = Math.max(me.movingRect.height + diff.y, me.minSizeY)
+                    hitMove              = 1 | 8
 
                 case 6:
-                    movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
-                    hitMove           = 8
+                    me.movingRect.height = Math.max(me.movingRect.height + diff.y, me.minSizeY)
+                    hitMove              = 8
 
                 case 7:
                     if prop
@@ -149,25 +149,25 @@ impl GizmoRect
                             diff.x = diff.y
                     }
 
-                    movingRect.width  = Math.max(movingRect.width + diff.x, minSizeX)
-                    movingRect.height = Math.max(movingRect.height + diff.y, minSizeY)
-                    hitMove           = 4 | 8
+                    me.movingRect.width  = Math.max(me.movingRect.width + diff.x, me.minSizeX)
+                    me.movingRect.height = Math.max(me.movingRect.height + diff.y, me.minSizeY)
+                    hitMove              = 4 | 8
                 }
 
-                if trackChange and sigChanged:
-                    sigChanged(me, false, hitMove)
+                if me.trackChange and me.sigChanged:
+                    me.sigChanged(me, false, hitMove)
             }
             else
             {
-                hotAnchor = Swag.U32.Max
-                foreach c, i in anchors where c.contains(pos)
+                me.hotAnchor = Swag.U32.Max
+                foreach c, i in me.anchors where c.contains(pos)
                 {
-                    hotAnchor = i
+                    me.hotAnchor = i
                     break
                 }
             }
 
-            switch hotAnchor
+            switch me.hotAnchor
             {
             case 0, 7:
                 view.getApp().setFrameCursor(Cursor.from(.SizeNWSE))
@@ -179,7 +179,7 @@ impl GizmoRect
                 view.getApp().setFrameCursor(Cursor.from(.SizeWE))
             }
 
-            if hotAnchor != Swag.U32.Max:
+            if me.hotAnchor != Swag.U32.Max:
                 return true
         }
 
@@ -188,41 +188,41 @@ impl GizmoRect
 
     mtd paint(painter: *Painter, hot: bool, col: Color = Argb.White)
     {
-        let anchorSize2 = anchorSize * 0.5
+        let anchorSize2 = me.anchorSize * 0.5
 
         var color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
 
-        if moving and !trackChange:
-            painter.drawRect(movingRect, Pen.createDash(.Dot, color, 2))
+        if me.moving and !me.trackChange:
+            painter.drawRect(me.movingRect, Pen.createDash(.Dot, color, 2))
 
         if !hot
         {
-            if paintSimpleBorder:
-                painter.drawRect(rect, color, 2)
-            elif paintBigBorder
+            if me.paintSimpleBorder:
+                painter.drawRect(me.rect, color, 2)
+            elif me.paintBigBorder
             {
-                painter.drawRect(rect, Argb.DarkGray, 4)
-                var rect1 = rect
+                painter.drawRect(me.rect, Argb.DarkGray, 4)
+                var rect1 = me.rect
                 rect1.inflate(2)
                 painter.drawRect(rect1, col, 1)
-                var rect2 = rect
+                var rect2 = me.rect
                 rect2.inflate(-2)
                 painter.drawRect(rect2, col, 1)
             }
         }
 
-        anchors[0] = {rect.x - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
-        anchors[1] = {rect.horzCenter() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
-        anchors[2] = {rect.right() - anchorSize2, rect.y - anchorSize2, anchorSize, anchorSize}
-        anchors[3] = {rect.x - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
-        anchors[4] = {rect.right() - anchorSize2, rect.vertCenter() - anchorSize2, anchorSize, anchorSize}
-        anchors[5] = {rect.x - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
-        anchors[6] = {rect.horzCenter() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
-        anchors[7] = {rect.right() - anchorSize2, rect.bottom() - anchorSize2, anchorSize, anchorSize}
+        me.anchors[0] = {me.rect.x - anchorSize2, me.rect.y - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[1] = {me.rect.horzCenter() - anchorSize2, me.rect.y - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[2] = {me.rect.right() - anchorSize2, me.rect.y - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[3] = {me.rect.x - anchorSize2, me.rect.vertCenter() - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[4] = {me.rect.right() - anchorSize2, me.rect.vertCenter() - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[5] = {me.rect.x - anchorSize2, me.rect.bottom() - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[6] = {me.rect.horzCenter() - anchorSize2, me.rect.bottom() - anchorSize2, me.anchorSize, me.anchorSize}
+        me.anchors[7] = {me.rect.right() - anchorSize2, me.rect.bottom() - anchorSize2, me.anchorSize, me.anchorSize}
 
-        foreach c, i in anchors
+        foreach c, i in me.anchors
         {
-            if roundShape
+            if me.roundShape
             {
                 painter.fillCircle(c.horzCenter(), c.vertCenter(), anchorSize2, color)
                 painter.drawCircle(c.horzCenter(), c.vertCenter(), anchorSize2, Argb.Black, anchorSize2 * 0.3)
@@ -245,8 +245,8 @@ impl GizmoRect
         undo.baseForm = iform
         let zoom = capture.editView.zoom
 
-        let dx = cast(s32) ((movingRect.x - startRect.x) / zoom)
-        let dy = cast(s32) ((movingRect.y - startRect.y) / zoom)
+        let dx = cast(s32) ((me.movingRect.x - me.startRect.x) / zoom)
+        let dy = cast(s32) ((me.movingRect.y - me.startRect.y) / zoom)
         undo.newPosX = dx
         undo.newPosY = dy
         if hitMove & 1:
@@ -254,8 +254,8 @@ impl GizmoRect
         if hitMove & 2:
             capture.snap(null, &undo.newPosY, false, false)
 
-        let dsx = cast(s32) ((movingRect.width - startRect.width) / zoom)
-        let dsy = cast(s32) ((movingRect.height - startRect.height) / zoom)
+        let dsx = cast(s32) ((me.movingRect.width - me.startRect.width) / zoom)
+        let dsy = cast(s32) ((me.movingRect.height - me.startRect.height) / zoom)
         undo.newSizeX = dsx
         undo.newSizeY = dsy
         if hitMove & 4:

@@ -70,19 +70,19 @@ impl MainWnd
 {
     mtd swapLibraryMode()
     {
-        libraryMode = !libraryMode
+        me.libraryMode = !me.libraryMode
 
-        editWnd.show(!libraryMode)
-        quickStyleBar.show(!libraryMode)
-        recentBar.show(!libraryMode)
-        editZoomBar.show(!libraryMode)
-        editToolBar.show(!libraryMode)
+        me.editWnd.show(!me.libraryMode)
+        me.quickStyleBar.show(!me.libraryMode)
+        me.recentBar.show(!me.libraryMode)
+        me.editZoomBar.show(!me.libraryMode)
+        me.editToolBar.show(!me.libraryMode)
 
-        libWnd.show(libraryMode)
+        me.libWnd.show(me.libraryMode)
 
-        if libraryMode:
-            libWnd.fill()
+        if me.libraryMode:
+            me.libWnd.fill()
 
-        applyLayout()
+        me.applyLayout()
     }
 }

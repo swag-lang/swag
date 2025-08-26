@@ -125,7 +125,7 @@ impl MainWnd
 {
     mtd doProcessImage(cmdId: WndId, l, t, r, b, w, h: s32 = 0)
     {
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
 
         capture.serialUndo += 1
         let serial = capture.serialUndo
@@ -177,10 +177,10 @@ impl MainWnd
         #[Swag.Global]
         var g_KeepRatio: bool = true
 
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
-        let dlg = Dialog.createDialog(surface, 350, 265, title: "Resize Image")
+        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Resize Image")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {80, 15}, flags: .RightAlign)
@@ -223,7 +223,7 @@ impl MainWnd
         if w == capture.width and h == capture.height:
             return
 
-        doProcessImage(CmdIdResizeImage, w: w, h: h)
+        me.doProcessImage(CmdIdResizeImage, w: w, h: h)
     }
 
     mtd expandImage()
@@ -233,10 +233,10 @@ impl MainWnd
         #[Swag.Global]
         var g_ResizeMode: u64 = 5
 
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
-        let dlg = Dialog.createDialog(surface, 350, 265, title: "Expand Image")
+        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Expand Image")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.backImg.width), {30, 15}, flags: .RightAlign)
@@ -350,7 +350,7 @@ impl MainWnd
             t += ch
         }
 
-        doProcessImage(CmdIdExpandImage, l, t, r, b)
+        me.doProcessImage(CmdIdExpandImage, l, t, r, b)
     }
 
     mtd expandCapture()
@@ -360,10 +360,10 @@ impl MainWnd
         #[Swag.Global]
         var g_ResizeMode: u64 = 5
 
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
-        let dlg = Dialog.createDialog(surface, 350, 265, title: "Expand Capture")
+        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Expand Capture")
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags: .RightAlign)
@@ -481,7 +481,7 @@ impl MainWnd
 
     mtd trimCapture()
     {
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
         capture.selection.clear()
 
         var minX = Swag.F32.Max

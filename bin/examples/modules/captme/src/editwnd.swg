@@ -19,6 +19,6 @@ impl EditWnd
 
     mtd getCapture()->#null *Capture
     {
-        return editView.capture
+        return me.editView.capture
     }
 }

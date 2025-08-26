@@ -202,83 +202,83 @@ impl InPlaceEditWnd
         {
             foreach m in [{"draw", .Draw}, {"line", .Line}, {"circle", .Circle}, {"rect", .Rect}, {"arrow", .Arrow}, {"text", .Text}, {"marker", .Marker}]
             {
-                let btn = assume editBar.getButton(m.item0)
-                btn.setCheck(editMode == m.item1)
+                let btn = assume me.editBar.getButton(m.item0)
+                btn.setCheck(me.editMode == m.item1)
             }
         }
 
-        with newMain
+        with me.newMain
         {
-            switch editMode
+            switch me.editMode
             {
             case Draw:
                 .editMode                = .Draw
                 .mdlFormDraw.borderSize  = 8
-                .mdlFormDraw.borderColor = editColor
+                .mdlFormDraw.borderColor = me.editColor
             case Line:
                 .editMode                = .Line
                 .mdlFormLine.borderSize  = 8
-                .mdlFormLine.borderColor = editColor
+                .mdlFormLine.borderColor = me.editColor
             case Circle:
                 .editMode                 = .Shape
                 .mdlFormShape.kind        = .Ellipse
                 .mdlFormShape.borderSize  = 8
-                .mdlFormShape.borderColor = editColor
+                .mdlFormShape.borderColor = me.editColor
                 .mdlFormShape.backColor   = 0
             case Rect:
                 .editMode                 = .Shape
                 .mdlFormShape.kind        = .RoundRectangle
                 .mdlFormShape.borderSize  = 8
-                .mdlFormShape.borderColor = editColor
+                .mdlFormShape.borderColor = me.editColor
                 .mdlFormShape.backColor   = 0
             case Arrow:
                 .editMode                 = .Arrow
                 .mdlFormArrow.borderSize  = 8
                 .mdlFormArrow.endSize     = 5
                 .mdlFormArrow.endCap      = .ArrowAnchor
-                .mdlFormArrow.borderColor = editColor
+                .mdlFormArrow.borderColor = me.editColor
             case Text:
                 .editMode               = .Text
                 .mdlFormText.fontSize   = 40
                 .mdlFormText.borderSize = 3
                 .mdlFormText.text       = "A"
                 .mdlFormText.boldSize   = 2
-                .mdlFormText.backColor  = editColor
+                .mdlFormText.backColor  = me.editColor
             case Marker:
                 .editMode                = .Draw
                 .mdlFormDraw.borderSize  = 30
-                .mdlFormDraw.borderColor = editColorHilight.withAlpha(160)
+                .mdlFormDraw.borderColor = me.editColorHilight.withAlpha(160)
             }
         }
     }
 
     mtd moveButtons()
     {
-        var rect: Math.Rectangle{-capture.backImagePos.x, -capture.backImagePos.y, capture.width, capture.height}
+        var rect: Math.Rectangle{-me.capture.backImagePos.x, -me.capture.backImagePos.y, me.capture.width, me.capture.height}
 
         {
             const H = 40.0
-            let w   = actionBar.position.width
+            let w   = me.actionBar.position.width
 
             let x = Math.max(10, rect.right() - w)
             if rect.bottom() < g_ScreenHeight - H:
-                actionBar.setPosition(x, rect.bottom(), w, H)
+                me.actionBar.setPosition(x, rect.bottom(), w, H)
             elif rect.y > H:
-                actionBar.setPosition(x, rect.y - H, w, H)
+                me.actionBar.setPosition(x, rect.y - H, w, H)
             else:
-                actionBar.setPosition(x, rect.bottom() - H, w, H)
+                me.actionBar.setPosition(x, rect.bottom() - H, w, H)
         }
 
         {
-            let h   = editBar.position.height
+            let h   = me.editBar.position.height
             const W = 40.0
 
             if rect.right() < g_ScreenWidth - W:
-                editBar.setPosition(rect.right(), rect.bottom() - h, W, h)
+                me.editBar.setPosition(rect.right(), rect.bottom() - h, W, h)
             elif rect.x > W:
-                editBar.setPosition(rect.x - W, rect.bottom() - h, W, h)
+                me.editBar.setPosition(rect.x - W, rect.bottom() - h, W, h)
             else:
-                editBar.setPosition(rect.right() - W, rect.bottom() - h, W, h)
+                me.editBar.setPosition(rect.right() - W, rect.bottom() - h, W, h)
         }
     }
 }

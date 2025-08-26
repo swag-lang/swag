@@ -251,7 +251,7 @@ impl MainWnd
         var opt: FileDlgOptions
         with opt
         {
-            .state     = &fileDlgState
+            .state     = &me.fileDlgState
             .mode      = .SelectOneFile
             .title     = "Load Image"
             .btnOkName = "Load"
@@ -264,15 +264,15 @@ impl MainWnd
             .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
-        let dlg = FileDlg.create(surface, opt)
+        let dlg = FileDlg.create(me.surface, opt)
         if dlg.doModal() != Dialog.BtnOk:
             return
 
         let img = catch Image.load(dlg.getSelectedName())
         if @err != null:
-            MessageDlg.error(surface, "Failed to load image")
+            MessageDlg.error(me.surface, "Failed to load image")
         else:
-            newCapture(img, dlg.getSelectedName())
+            me.newCapture(img, dlg.getSelectedName())
     }
 
     mtd doSaveImage(capture: *Capture, img: *Image, nameFile: string)
@@ -301,39 +301,40 @@ impl MainWnd
         catch img.save(nameFile, optImg)
         if @err != null
         {
-            MessageDlg.error(surface, "Failed to save file")
+            MessageDlg.error(me.surface, "Failed to save file")
             return
         }
 
         capture.changed        = true
         capture.linkedUpToDate = true
         catch capture.save()
-        if recentWnd:
-            recentWnd.updateRecent()
+        if me.recentWnd:
+            me.recentWnd.updateRecent()
 
         var txt = Format.toString("Image <url>%</url> has been saved", nameFile)
-        let emb = EmbInfoCtrl.create(editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
-        emb.label.sigUrlClicked += func(lbl, msg) {
+        let emb = EmbInfoCtrl.create(me.editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
+        emb.label.sigUrlClicked += func(lbl, msg)
+        {
             Env.locateInExplorer(msg)
         }
     }
 
     mtd saveAsImage(linked = false)
     {
-        let fileName = geteSaveAsImageName()
+        let fileName = me.geteSaveAsImageName()
         if fileName.isEmpty():
             return
-        doSaveAsImage(fileName, linked)
+        me.doSaveAsImage(fileName, linked)
     }
 
     mtd geteSaveAsImageName()->String
     {
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
 
         var opt: FileDlgOptions
         with opt
         {
-            .state     = &fileDlgState
+            .state     = &me.fileDlgState
             .mode      = .CreateFile
             .title     = "Save As Image"
             .btnOkName = "Save"
@@ -347,8 +348,8 @@ impl MainWnd
             .filters.add({"TGA - Truevision Targa (*.tga)", ".tga"})
         }
 
-        let dlg = FileDlg.create(surface, opt)
-        if inPlaceEdit:
+        let dlg = FileDlg.create(me.surface, opt)
+        if me.inPlaceEdit:
             dlg.surface.setTopMost()
         if dlg.doModal() != Dialog.BtnOk:
             return ""
@@ -357,17 +358,17 @@ impl MainWnd
 
     mtd doSaveAsImage(fileName: String, linked = false)
     {
-        let capture = assume getCapture()
+        let capture = assume me.getCapture()
         Cursor.wait()
         var img = capture.toImage()
         if linked:
             capture.linkedImage = fileName
-        doSaveImage(capture, &img, fileName)
+        me.doSaveImage(capture, &img, fileName)
     }
 
     mtd newImage()
     {
-        let dlg = Dialog.createDialog(surface, 350, 235, title: "New Image")
+        let dlg = Dialog.createDialog(me.surface, 350, 235, title: "New Image")
         dlg.addButton("Create", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
         let edit0 = EditCtrl.create(dlg, "Width", "512", {90, 12}, flags: .RightAlign)
@@ -381,6 +382,6 @@ impl MainWnd
         let (h, ?, ?) = catch StrConv.parseS32(edit1.edit.text)
         var img = Image.create(w orelse 512, h orelse 512, .RGB8)
         img.fill(Argb.White)
-        newCapture(img)
+        me.newCapture(img)
     }
 }

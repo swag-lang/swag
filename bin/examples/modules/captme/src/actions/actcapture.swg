@@ -163,21 +163,21 @@ impl MainWnd
             .file        = Library.newFileName()
         }
 
-        editWnd.editView.setCapture(capture)
-        editWnd.editView.zoomToFit(false)
+        me.editWnd.editView.setCapture(capture)
+        me.editWnd.editView.zoomToFit(false)
 
         capture.computePreview()
-        recentWnd.addRecent(capture.file, capture.preview, linked: linked)
-        recentWnd.recentView.selected = 0
+        me.recentWnd.addRecent(capture.file, capture.preview, linked: linked)
+        me.recentWnd.recentView.selected = 0
 
         catch capture.save()
         g_Library.addFile(capture.file)
 
         // Force edition mode
-        if libraryMode
+        if me.libraryMode
         {
-            swapLibraryMode()
-            updateState()
+            me.swapLibraryMode()
+            me.updateState()
         }
     }
 

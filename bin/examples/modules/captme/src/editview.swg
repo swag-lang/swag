@@ -15,14 +15,14 @@ impl IWnd for EditView
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = false
-        if !capture:
+        if !me.capture:
             return
 
-        if capture.mouse(me, evt)
+        if me.capture.mouse(me, evt)
         {
-            invalidate()
+            me.invalidate()
             evt.accepted = true
-            setFocus()
+            me.setFocus()
             return
         }
 
@@ -32,38 +32,38 @@ impl IWnd for EditView
             if evt.modifiers & .Control
             {
                 evt.accepted = true
-                let z = zoom + (evt.move.y > 0 ? 0.1 : -0.1)
-                setZoom(z, true)
+                let z = me.zoom + (evt.move.y > 0 ? 0.1 : -0.1)
+                me.setZoom(z, true)
             }
         }
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if firstPaint
+        if me.firstPaint
         {
-            zoomToFit(false)
-            firstPaint = false
+            me.zoomToFit(false)
+            me.firstPaint = false
         }
 
         let painter = evt.bc.painter
 
         // Background
-        var rect = getClientRect()
-        rect.offset(scrollPos)
+        var rect = me.getClientRect()
+        rect.offset(me.scrollPos)
         painter.fillRect(rect, Argb.Black)
-        if !capture:
+        if !me.capture:
             return
 
         // Capture content
-        let captureRect = getCaptureRect()
+        let captureRect = me.getCaptureRect()
         var clip        = rect
         clip.inflate(100, 100)
-        capture.paint(painter, clip, captureRect)
+        me.capture.paint(painter, clip, captureRect)
 
         // Around capture
-        var col = main.editorOptions.editBackColor
-        col.a = main.editorOptions.clipToSelection ? 255 : 200
+        var col = me.main.editorOptions.editBackColor
+        col.a = me.main.editorOptions.clipToSelection ? 255 : 200
         painter.fillRect({rect.x, rect.y, captureRect.x, rect.height}, col)
         painter.fillRect({captureRect.x, rect.y, captureRect.width, captureRect.y}, col)
         painter.fillRect({captureRect.right(), rect.y, rect.right() - captureRect.right(), rect.height}, col)
@@ -72,8 +72,8 @@ impl IWnd for EditView
         // Capture gizmo
         painter.pushTransform()
         painter.translateTransform(captureRect.x, captureRect.y)
-        capture.gizmo.rect = Math.Rectangle{0, 0, captureRect.width, captureRect.height}
-        capture.gizmo.paint(painter, false)
+        me.capture.gizmo.rect = Math.Rectangle{0, 0, captureRect.width, captureRect.height}
+        me.capture.gizmo.paint(painter, false)
         painter.popTransform()
     }
 }
@@ -82,19 +82,19 @@ impl EditView
 {
     mtd opDrop()
     {
-        Memory.delete(capture)
+        Memory.delete(me.capture)
     }
 
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
-        var rect         = scroll.getClientScrollRect()
-        captureRect.width  = capture.width * zoom
-        captureRect.height = capture.height * zoom
-        if inPlaceEdit
+        var rect         = me.scroll.getClientScrollRect()
+        captureRect.width  = me.capture.width * me.zoom
+        captureRect.height = me.capture.height * me.zoom
+        if me.inPlaceEdit
         {
-            captureRect.x = -capture.backImagePos.x
-            captureRect.y = -capture.backImagePos.y
+            captureRect.x = -me.capture.backImagePos.x
+            captureRect.y = -me.capture.backImagePos.y
         }
         else
         {
@@ -114,49 +114,49 @@ impl EditView
         var mousePos, mousePos1: Math.Point
         if mouseCenter
         {
-            mousePos  = getApp().mouse.getPosition()
-            mousePos  = screenToSurface(mousePos)
-            mousePos  = surfaceToLocal(mousePos)
-            mousePos1 = mousePos + scrollPos
-            mousePos1 /= zoom
+            mousePos  = me.getApp().mouse.getPosition()
+            mousePos  = me.screenToSurface(mousePos)
+            mousePos  = me.surfaceToLocal(mousePos)
+            mousePos1 = mousePos + me.scrollPos
+            mousePos1 /= me.zoom
         }
 
-        zoom = Math.clamp(z, MinZoom, MaxZoom)
-        var captureRect = getCaptureRect()
-        scroll.setScrollSize(captureRect.width + (2 * viewMargin), captureRect.height + (2 * viewMargin))
+        me.zoom = Math.clamp(z, MinZoom, MaxZoom)
+        var captureRect = me.getCaptureRect()
+        me.scroll.setScrollSize(captureRect.width + (2 * me.viewMargin), captureRect.height + (2 * me.viewMargin))
 
         if mouseCenter
         {
-            mousePos1 *= zoom
+            mousePos1 *= me.zoom
             mousePos1 -= mousePos
-            scroll.setScrollPos(mousePos1.x, mousePos1.y)
+            me.scroll.setScrollPos(mousePos1.x, mousePos1.y)
         }
 
-        invalidate()
+        me.invalidate()
     }
 
-    mtd canZoomIn()  => zoom != MaxZoom
-    mtd canZoomOut() => zoom != MinZoom
+    mtd canZoomIn()  => me.zoom != MaxZoom
+    mtd canZoomOut() => me.zoom != MinZoom
 
     mtd zoomIn()
     {
-        setZoom(zoom + 0.1)
+        me.setZoom(me.zoom + 0.1)
     }
 
     mtd zoomOut()
     {
-        setZoom(zoom - 0.1)
+        me.setZoom(me.zoom - 0.1)
     }
 
     mtd zoomToFit(canZoom = true)
     {
-        if !capture:
+        if !me.capture:
             return
-        var rect = getClientRect()
-        rect.inflate(-viewMargin * 2)
+        var rect = me.getClientRect()
+        rect.inflate(-me.viewMargin * 2)
 
-        var zx = rect.width / capture.width
-        var zy = rect.height / capture.height
+        var zx = rect.width / me.capture.width
+        var zy = rect.height / me.capture.height
 
         if !canZoom
         {
@@ -164,18 +164,18 @@ impl EditView
             zy = Math.min(zy, 1)
         }
 
-        setZoom(Math.min(zx, zy))
+        me.setZoom(Math.min(zx, zy))
     }
 
     mtd setCapture(c: *Capture)
     {
-        if capture:
-            Memory.delete(capture)
-        capture = c
-        if capture:
-            capture.setup(me)
-        if main:
-            main.captureHasChanged()
-        invalidate()
+        if me.capture:
+            Memory.delete(me.capture)
+        me.capture = c
+        if me.capture:
+            me.capture.setup(me)
+        if me.main:
+            me.main.captureHasChanged()
+        me.invalidate()
     }
 }

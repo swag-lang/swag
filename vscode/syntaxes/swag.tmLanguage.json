@@ -31,6 +31,7 @@
     { "include": "#intrinsics-literal" },
     { "include": "#compiler-user" },
     { "include": "#compiler-invalid" },
+    { "include": "#types-me" },
     { "include": "#types" },
     { "include": "#strings" },
     { "include": "#var-decl" },
@@ -240,11 +241,19 @@
         }
       ]
     },
+    "types-me": {
+      "patterns": [
+        {
+          "name": "constant.character.escape",
+          "match": "\\b(me)\\b"
+        }
+      ]
+    },
     "types": {
       "patterns": [
         {
           "name": "storage.type",
-          "match": "\\b(me|any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo)\\b"
+          "match": "\\b(any|void|rune|f32|f64|s8|s16|s32|s64|u8|u16|u32|u64|bool|string|cstring|cvarargs|typeinfo)\\b"
         }
       ]
     },

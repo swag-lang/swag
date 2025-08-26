@@ -14,13 +14,13 @@ impl FormPolygon
 {
     mtd setDefaultShape()
     {
-        points.clear()
-        points.add({0, 10})
-        points.add({16, 0})
-        points.add({36, 10})
-        points.add({48, 32})
-        points.add({36, 48})
-        points.add({0, 48})
+        me.points.clear()
+        me.points.add({0, 10})
+        me.points.add({16, 0})
+        me.points.add({36, 10})
+        me.points.add({48, 32})
+        me.points.add({36, 48})
+        me.points.add({0, 48})
     }
 }
 
@@ -29,12 +29,12 @@ impl IForm for FormPolygon
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormPolygon) ptr
-        return borderColor == other.borderColor and
-               borderSize == other.borderSize and
-               backColor == other.backColor and
-               alpha == other.alpha and
-               bezier == other.bezier and
-               paintShadow == other.paintShadow
+        return me.borderColor == other.borderColor and
+               me.borderSize == other.borderSize and
+               me.backColor == other.backColor and
+               me.alpha == other.alpha and
+               me.bezier == other.bezier and
+               me.paintShadow == other.paintShadow
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -53,29 +53,29 @@ impl IForm for FormPolygon
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
-            if points.count > 3:
-                points.removeBack()
+            if me.points.count > 3:
+                me.points.removeBack()
             return false
         }
 
         let x0 = cast(s32) (localPos.x / zoom)
         let y0 = cast(s32) (localPos.y / zoom)
 
-        if points.count < 2
+        if me.points.count < 2
         {
             let xs = cast(s32) (movingStart.x / zoom)
             let ys = cast(s32) (movingStart.y / zoom)
-            points.add({xs, ys})
-            points.add({x0, y0})
+            me.points.add({xs, ys})
+            me.points.add({x0, y0})
         }
         elif evt.kind == .MouseReleased and evt.button == .Left
         {
-            points.add({x0, y0})
+            me.points.add({x0, y0})
         }
         else
         {
-            points[points.count - 1].x = x0
-            points[points.count - 1].y = y0
+            me.points[me.points.count - 1].x = x0
+            me.points[me.points.count - 1].y = y0
         }
 
         return true
@@ -83,7 +83,7 @@ impl IForm for FormPolygon
 
     mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        foreach &pt in points
+        foreach &pt in me.points
         {
             pt.x += newPosX
             pt.y += newPosY
@@ -92,7 +92,7 @@ impl IForm for FormPolygon
 
     mtd impl scaleBaseForm(val: f32)
     {
-        foreach &pt in points
+        foreach &pt in me.points
         {
             pt.x, pt.y *= val
         }
@@ -100,11 +100,11 @@ impl IForm for FormPolygon
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        var rect = boundRect()
+        var rect = me.boundRect()
         let fx   = newSizeX / rect.width
         let fy   = newSizeY / rect.height
 
-        foreach &pt in points
+        foreach &pt in me.points
         {
             pt.x -= rect.x
             pt.y -= rect.y
@@ -117,7 +117,7 @@ impl IForm for FormPolygon
 
     mtd impl moveForm(newPosX, newPosY: s32)
     {
-        foreach &pt in points
+        foreach &pt in me.points
         {
             pt.x += newPosX
             pt.y += newPosY
@@ -126,14 +126,14 @@ impl IForm for FormPolygon
 
     mtd impl movePoint(pt: u32, newPosX, newPosY: s32)
     {
-        points[pt].x += newPosX
-        points[pt].y += newPosY
+        me.points[pt].x += newPosX
+        me.points[pt].y += newPosY
     }
 
     mtd impl boundRect()->Math.Rectangle
     {
-        if !points.count:
-            setDefaultShape()
+        if !me.points.count:
+            me.setDefaultShape()
 
         var result: retval
 
@@ -141,7 +141,7 @@ impl IForm for FormPolygon
         var y0 = Swag.F32.Max
         var x1 = 0'f32
         var y1 = 0'f32
-        foreach &pt in points
+        foreach &pt in me.points
         {
             x0 = Math.min(x0, pt.x)
             y0 = Math.min(y0, pt.y)
@@ -159,24 +159,24 @@ impl IForm for FormPolygon
 
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        return gizmo.mouse(view, pos, evt)
+        return me.gizmo.mouse(view, pos, evt)
     }
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags.has(.Hot | .Selected)
         {
-            gizmo.anchors.clear()
-            foreach pt in points:
+            me.gizmo.anchors.clear()
+            foreach pt in me.points:
                 gizmo.anchors.add({pt.x * z, pt.y * z})
-            let col = subKind == .PixSel ? Argb.Yellow : Argb.White
-            gizmo.paint(null, painter, !flags.has(.Selected), col)
+            let col = me.subKind == .PixSel ? Argb.Yellow : Argb.White
+            me.gizmo.paint(null, painter, !flags.has(.Selected), col)
         }
     }
 
     mtd impl isInside(pt: Math.Point)->bool
     {
-        return Math.Geometry.polyContains(points, {pt.x, pt.y})
+        return Math.Geometry.polyContains(me.points, {pt.x, pt.y})
     }
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
@@ -186,16 +186,16 @@ impl IForm for FormPolygon
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
-        var dash  = dashStyle
-        var bSize = cxt.hitTest ? Math.max(borderSize, 5) : borderSize
-        bSize = adaptSize(borderSize, MinBorderSize, MaxBorderSize, cxt)
+        var dash  = me.dashStyle
+        var bSize = cxt.hitTest ? Math.max(me.borderSize, 5) : me.borderSize
+        bSize = adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
 
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
-        var bk        = backColor
-        if cxt.quickMode and alpha != 100 and subKind == .Highlight:
-            bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
+        var bk        = me.backColor
+        if cxt.quickMode and me.alpha != 100 and me.subKind == .Highlight:
+            bk.a = cast(u8) Math.map(cast(f32) me.alpha, 0, 100, 0, 255)
 
-        if subKind == .PixSel
+        if me.subKind == .PixSel
         {
             if cxt.hitTest
             {
@@ -208,42 +208,42 @@ impl IForm for FormPolygon
                 dash  = .Dash
             }
 
-            bk.a        = 5
-            borderColor = Argb.White
+            bk.a           = 5
+            me.borderColor = Argb.White
             painter.removeParams(.Antialiased)
         }
 
-        var pen = Pen.createDash(dash, borderColor, bSize)
+        var pen = Pen.createDash(dash, me.borderColor, bSize)
 
         let z = cxt.z
-        linePath.start(points[0].x * z, points[0].y * z)
-        for i in 1 until points.count
+        me.linePath.start(me.points[0].x * z, me.points[0].y * z)
+        for i in 1 until me.points.count
         {
-            if bezier:
-                linePath.curveTo(points[i].x * z, points[i].y * z)
+            if me.bezier:
+                me.linePath.curveTo(me.points[i].x * z, me.points[i].y * z)
             else:
-                linePath.lineTo(points[i].x * z, points[i].y * z)
+                me.linePath.lineTo(me.points[i].x * z, me.points[i].y * z)
         }
 
-        linePath.close()
+        me.linePath.close()
 
         if cxt.quickMode
         {
-            if alpha != 100 and subKind == .Highlight:
-                painter.fillPath(&linePath, backBrush)
-            painter.fillPath(&linePath, bk)
+            if me.alpha != 100 and me.subKind == .Highlight:
+                painter.fillPath(&me.linePath, backBrush)
+            painter.fillPath(&me.linePath, bk)
         }
         else:
-            painter.fillPolygon(&linePath, bk)
+            painter.fillPolygon(&me.linePath, bk)
 
-        pen.joinStyle = joinStyle
-        painter.drawPath(&linePath, pen)
+        pen.joinStyle = me.joinStyle
+        painter.drawPath(&me.linePath, pen)
     }
 
     mtd impl setup(capt: *Capture)
     {
-        capture          = capt
-        gizmo.sigChanged = mtd||(diff, pt, first)
+        me.capture          = capt
+        me.gizmo.sigChanged = mtd||(diff, pt, first)
         {
             GizmoPoints.apply(me, diff, pt, first)
         }

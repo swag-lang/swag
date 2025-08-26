@@ -17,7 +17,7 @@ impl IWnd for CaptureRectWnd
     mtd testAutoGrab()
     {
         let pt = Input.getMousePos()
-        let r  = getWndRectAtPos(surface, pt.x, pt.y)
+        let r  = getWndRectAtPos(me.surface, pt.x, pt.y)
         if !r.isEmpty()
         {
             g_StartGrabX = r.x
@@ -32,26 +32,26 @@ impl IWnd for CaptureRectWnd
         if evt.kind == .KeyPressed and evt.key == .Escape:
             g_Exit = true
 
-        if !tryStartGrab and !startGrab
+        if !me.tryStartGrab and !me.startGrab
         {
             if evt.key == .Shift or evt.key == .RShift
             {
                 if evt.kind == .KeyPressed
                 {
-                    autoGrab = true
-                    testAutoGrab()
+                    me.autoGrab = true
+                    me.testAutoGrab()
                 }
                 else
                 {
                     let pt = Input.getMousePos()
                     g_StartGrabX, g_EndGrabX = pt.x
                     g_StartGrabY, g_EndGrabY = pt.y
-                    autoGrab = false
+                    me.autoGrab = false
                 }
             }
         }
 
-        invalidate()
+        me.invalidate()
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
@@ -59,51 +59,51 @@ impl IWnd for CaptureRectWnd
         switch evt.kind
         {
         case MousePressed where evt.button == .Right:
-            startGrab    = false
-            tryStartGrab = false
-            cancelGrag   = true
+            me.startGrab    = false
+            me.tryStartGrab = false
+            me.cancelGrag   = true
 
         case MousePressed where evt.button == .Left:
-            tryStartGrab = true
+            me.tryStartGrab = true
 
         case MouseReleased where evt.button == .Left:
-            if cancelGrag
+            if me.cancelGrag
             {
-                cancelGrag = false
+                me.cancelGrag = false
                 break
             }
 
-            g_GrabDone = startGrab or autoGrab
+            g_GrabDone = me.startGrab or me.autoGrab
             g_Exit     = true
 
-        case MouseMove where tryStartGrab:
+        case MouseMove where me.tryStartGrab:
             g_EndGrabX = evt.surfacePos.x
             g_EndGrabY = evt.surfacePos.y
 
             if Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
                Math.abs(g_EndGrabY - g_StartGrabY) > 1
             {
-                tryStartGrab = false
-                startGrab    = true
+                me.tryStartGrab = false
+                me.startGrab    = true
             }
 
-        case MouseMove where startGrab:
+        case MouseMove where me.startGrab:
             g_EndGrabX = evt.surfacePos.x
             g_EndGrabY = evt.surfacePos.y
-            invalidate()
+            me.invalidate()
 
         case MouseMove:
-            if !autoGrab
+            if !me.autoGrab
             {
                 g_StartGrabX, g_EndGrabX = evt.surfacePos.x
                 g_StartGrabY, g_EndGrabY = evt.surfacePos.y
             }
             else
             {
-                testAutoGrab()
+                me.testAutoGrab()
             }
 
-            invalidate()
+            me.invalidate()
         }
     }
 
@@ -112,48 +112,48 @@ impl IWnd for CaptureRectWnd
         var grabRect = getGrabRect()
 
         // Lerp grab rectangle
-        if autoGrab
+        if me.autoGrab
         {
             let dt = 0.1'f32
-            lerpGrab.x      = Math.lerp(lerpGrab.x, grabRect.x, dt)
-            lerpGrab.y      = Math.lerp(lerpGrab.y, grabRect.y, dt)
-            lerpGrab.width  = Math.lerp(lerpGrab.width, grabRect.width, dt)
-            lerpGrab.height = Math.lerp(lerpGrab.height, grabRect.height, dt)
-            var roundRect = lerpGrab
+            me.lerpGrab.x      = Math.lerp(me.lerpGrab.x, grabRect.x, dt)
+            me.lerpGrab.y      = Math.lerp(me.lerpGrab.y, grabRect.y, dt)
+            me.lerpGrab.width  = Math.lerp(me.lerpGrab.width, grabRect.width, dt)
+            me.lerpGrab.height = Math.lerp(me.lerpGrab.height, grabRect.height, dt)
+            var roundRect = me.lerpGrab
             roundRect.round()
             if !grabRect.isEqualEpsilon(roundRect):
-                invalidate()
+                me.invalidate()
             grabRect = roundRect
         }
         else
         {
-            lerpGrab = grabRect
+            me.lerpGrab = grabRect
         }
 
         let painter = evt.bc.painter
 
         // Draw the desktop back ima
         painter.setInterpolationMode(.Linear)
-        painter.drawTexture(position, g_DesktopTexture)
+        painter.drawTexture(me.position, g_DesktopTexture)
 
         // Draw the normal desktop image inside the grab rectangle
         let col: Color = {0, 0, 0, 100}
         if !grabRect.isEmpty()
         {
-            painter.fillRect(0, 0, grabRect.x, position.height, col)
+            painter.fillRect(0, 0, grabRect.x, me.position.height, col)
             painter.fillRect(grabRect.x, 0, grabRect.width, grabRect.y, col)
-            painter.fillRect(grabRect.right(), 0, position.width - grabRect.right(), position.bottom(), col)
-            painter.fillRect(grabRect.x, grabRect.bottom(), grabRect.width, position.bottom() - grabRect.bottom(), col)
+            painter.fillRect(grabRect.right(), 0, me.position.width - grabRect.right(), me.position.bottom(), col)
+            painter.fillRect(grabRect.x, grabRect.bottom(), grabRect.width, me.position.bottom() - grabRect.bottom(), col)
         }
         else
         {
-            painter.fillRect(position, col)
+            painter.fillRect(me.position, col)
         }
 
         painter.drawRect(grabRect, Argb.White)
 
         // Rectangles
-        if main.captureOptions.drawCross and !autoGrab
+        if me.main.captureOptions.drawCross and !me.autoGrab
         {
             painter.drawLine(g_EndGrabX, 0, g_EndGrabX, cast() g_ScreenHeight, Argb.White)
             painter.drawLine(0, g_EndGrabY, cast() g_ScreenWidth, g_EndGrabY, Argb.White)
@@ -162,7 +162,7 @@ impl IWnd for CaptureRectWnd
         // Dimensions
         if grabRect.width > 0 and grabRect.height > 0
         {
-            let fontR = getFont().regular
+            let fontR = me.getFont().regular
             let str   = Format.toString("% x %", grabRect.width, grabRect.height)
             var xx    = grabRect.x
             var yy    = grabRect.y - fontR.height

@@ -683,7 +683,7 @@ impl IWnd for MyView
         painter.setParams(g_ModeAA ? .Antialiased : .Default)
         painter.setQuality(g_PaintQuality)
         painter.pushState()
-        painter.fillRect(getClientRect(), Color.fromArgb(0xFFEEEEEE))
+        painter.fillRect(me.getClientRect(), Color.fromArgb(0xFFEEEEEE))
 
         switch g_Page
         {
@@ -715,7 +715,7 @@ impl IWnd for MyView
             g_Page = (g_Page + 1) % MaxPages
             if g_Page == 0:
                 Env.exit(0)
-            invalidate()
+            me.invalidate()
         }
     }
 
@@ -729,23 +729,23 @@ impl IWnd for MyView
         {
         case F1:
             g_ModeAA = g_ModeAA ? false : true
-            invalidate()
+            me.invalidate()
 
         case F2:
             g_PaintQuality = cast(PaintQuality) ((cast(u32) g_PaintQuality + 1) % 2)
-            invalidate()
+            me.invalidate()
 
         case F3:
             g_Pattern = g_Pattern ? false : true
-            invalidate()
+            me.invalidate()
 
         case F4:
             if evt.modifiers & .Alt:
-                surface.destroy()
+                me.surface.destroy()
             else
             {
                 g_Page = (g_Page + 1) % MaxPages
-                invalidate()
+                me.invalidate()
             }
         }
     }

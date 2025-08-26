@@ -69,56 +69,56 @@ impl Undo
 {
     mtd opDrop()
     {
-        Capture.freeForms(toFreeForms)
+        Capture.freeForms(me.toFreeForms)
 
-        if kind == .SetFormFromModel
+        if me.kind == .SetFormFromModel
         {
-            Memory.delete(mdlValue, mdlType)
-            foreach f in oldForm:
+            Memory.delete(me.mdlValue, me.mdlType)
+            foreach f in me.oldForm:
                 Memory.delete(f, mdlType)
         }
     }
 
     mtd acceptsType(type: typeinfo)->bool
     {
-        if mdlType == null:
+        if me.mdlType == null:
             return true
-        if mdlType == type:
+        if me.mdlType == type:
             return true
-        if mdlType == FormLine and type == FormArrow:
+        if me.mdlType == FormLine and type == FormArrow:
             return true
         return false
     }
 
     mtd init()
     {
-        switch kind
+        switch me.kind
         {
         case RestoreOrg:
-            oldImagePos = capture.backImagePos
-            oldImg      = capture.backImg
-            oldForms    = capture.forms
-            oldS32.add(capture.width)
-            oldS32.add(capture.height)
+            me.oldImagePos = me.capture.backImagePos
+            me.oldImg      = me.capture.backImg
+            me.oldForms    = me.capture.forms
+            me.oldS32.add(me.capture.width)
+            me.oldS32.add(me.capture.height)
 
         case Flatten:
-            selection   = capture.selection
-            oldImg      = capture.backImg
-            oldImagePos = capture.backImagePos
-            oldForms    = capture.forms
+            me.selection   = me.capture.selection
+            me.oldImg      = me.capture.backImg
+            me.oldImagePos = me.capture.backImagePos
+            me.oldForms    = me.capture.forms
 
         case FlattenAll:
-            oldImg      = capture.backImg
-            oldImagePos = capture.backImagePos
-            oldForms    = capture.forms
+            me.oldImg      = me.capture.backImg
+            me.oldImagePos = me.capture.backImagePos
+            me.oldForms    = me.capture.forms
 
         case SetImage:
-            oldImg      = capture.backImg
-            oldImagePos = capture.backImagePos
+            me.oldImg      = me.capture.backImg
+            me.oldImagePos = me.capture.backImagePos
 
         case SetImageInside:
-            selection = capture.selection
-            foreach s in selection
+            me.selection = me.capture.selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormImage:
@@ -130,8 +130,8 @@ impl Undo
             }
 
         case SetText:
-            selection = capture.selection
-            foreach s in selection
+            me.selection = me.capture.selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -141,8 +141,8 @@ impl Undo
             }
 
         case SetFont:
-            selection = capture.selection
-            foreach s in selection
+            me.selection = me.capture.selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -153,8 +153,8 @@ impl Undo
             }
 
         case SetFontStyle:
-            selection = capture.selection
-            foreach s in selection
+            me.selection = me.capture.selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -164,8 +164,8 @@ impl Undo
             }
 
         case SetFormFromModel:
-            selection = capture.selection
-            foreach s in selection
+            me.selection = me.capture.selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)):
@@ -176,11 +176,11 @@ impl Undo
             }
 
         case AlignLeft, AlignCenter, AlignRight:
-            selection = capture.selection
-            minP      = Swag.S32.Max
-            maxP      = Swag.S32.Min
-            oldS32.reserve(selection.count)
-            foreach s in selection
+            me.selection = me.capture.selection
+            me.minP      = Swag.S32.Max
+            me.maxP      = Swag.S32.Min
+            me.oldS32.reserve(me.selection.count)
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -190,11 +190,11 @@ impl Undo
             }
 
         case AlignTop, AlignMiddle, AlignBottom:
-            selection = capture.selection
-            minP      = Swag.S32.Max
-            maxP      = Swag.S32.Min
-            oldS32.reserve(selection.count)
-            foreach s in selection
+            me.selection = me.capture.selection
+            me.minP      = Swag.S32.Max
+            me.maxP      = Swag.S32.Min
+            me.oldS32.reserve(me.selection.count)
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -204,11 +204,11 @@ impl Undo
             }
 
         case OffsetSelection:
-            selection = capture.selection
+            me.selection = me.capture.selection
 
         case SetTypedValue:
-            selection = capture.selection
-            foreach s in selection
+            me.selection = me.capture.selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)):
@@ -219,13 +219,13 @@ impl Undo
             }
 
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
-            selection = capture.selection
-            oldForms  = capture.forms
-            selection.sort()
+            me.selection = me.capture.selection
+            me.oldForms  = me.capture.forms
+            me.selection.sort()
 
         case DeleteSelection:
-            selection = capture.selection
-            oldForms  = capture.forms
+            me.selection = me.capture.selection
+            me.oldForms  = me.capture.forms
         }
     }
 
@@ -233,10 +233,10 @@ impl Undo
     {
         mtd removeSelection()
         {
-            toFreeForms.clear()
-            selection.sort()
+            me.toFreeForms.clear()
+            me.selection.sort()
             var offset = 0
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s - offset]
                 offset += 1
@@ -244,15 +244,15 @@ impl Undo
                 toFreeForms.add(f)
             }
 
-            capture.selection.clear()
-            capture.selectionHasChanged()
+            me.capture.selection.clear()
+            me.capture.selectionHasChanged()
         }
 
         #[Swag.Complete]
-        switch kind
+        switch me.kind
         {
         case RestoreOrg:
-            with capture
+            with me.capture
             {
                 .backImg = .backImgOriginal
                 .width   = .widthOrg
@@ -265,18 +265,18 @@ impl Undo
             }
 
         case Flatten:
-            with capture
+            with me.capture
             {
                 .backImg = .toImage(onlySel: true)
                 .backImagePos.clear()
                 .dirtyBackImg = true
             }
-            removeSelection()
+            me.removeSelection()
 
         case FlattenAll:
-            with capture
+            with me.capture
             {
-                .backImg = capture.toImage()
+                .backImg = me.capture.toImage()
                 .backImagePos.clear()
                 .selection.clear()
                 .forms.clear()
@@ -285,12 +285,12 @@ impl Undo
             }
 
         case SetImage:
-            capture.backImg      = newImg
-            capture.backImagePos = newImagePos
-            capture.dirtyBackImg = true
+            me.capture.backImg      = me.newImg
+            me.capture.backImagePos = me.newImagePos
+            me.capture.dirtyBackImg = true
 
         case SetImageInside:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormImage:
@@ -303,7 +303,7 @@ impl Undo
             }
 
         case SetText:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -314,7 +314,7 @@ impl Undo
             }
 
         case SetFont:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -326,7 +326,7 @@ impl Undo
             }
 
         case SetFontStyle:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -337,7 +337,7 @@ impl Undo
             }
 
         case SetFormFromModel:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)):
@@ -349,7 +349,7 @@ impl Undo
             }
 
         case SetTypedValue:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)):
@@ -357,10 +357,10 @@ impl Undo
                 Reflection.setFieldValue(@dataof(f), valRef, &valU32, true)
             }
 
-            capture.updateModelFromSelection()
+            me.capture.updateModelFromSelection()
 
         case AlignLeft:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -368,7 +368,7 @@ impl Undo
             }
 
         case AlignRight:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -376,7 +376,7 @@ impl Undo
             }
 
         case AlignCenter:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -384,7 +384,7 @@ impl Undo
             }
 
         case AlignTop:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -392,7 +392,7 @@ impl Undo
             }
 
         case AlignBottom:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -400,7 +400,7 @@ impl Undo
             }
 
         case AlignMiddle:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 let r = f.boundRect()
@@ -408,142 +408,142 @@ impl Undo
             }
 
         case MovePoint:
-            baseForm.movePoint(pointIdx, newPosX, newPosY)
+            me.baseForm.movePoint(me.pointIdx, me.newPosX, me.newPosY)
 
         case MoveBaseForm:
-            baseForm.moveBaseForm(newPosX, newPosY, newSizeX, newSizeY)
+            me.baseForm.moveBaseForm(me.newPosX, me.newPosY, me.newSizeX, me.newSizeY)
 
         case MoveCapture:
-            capture.backImagePos.x += newPosX
-            capture.backImagePos.y += newPosY
-            foreach f in capture.forms:
+            me.capture.backImagePos.x += me.newPosX
+            me.capture.backImagePos.y += me.newPosY
+            foreach f in me.capture.forms:
                 f.moveForm(newPosX, newPosY)
-            capture.width += newSizeX
-            capture.height += newSizeY
-            capture.width  = Math.clamp(capture.width, Capture.MinSize, Capture.MaxSize)
-            capture.height = Math.clamp(capture.height, Capture.MinSize, Capture.MaxSize)
+            me.capture.width += me.newSizeX
+            me.capture.height += me.newSizeY
+            me.capture.width  = Math.clamp(me.capture.width, Capture.MinSize, Capture.MaxSize)
+            me.capture.height = Math.clamp(me.capture.height, Capture.MinSize, Capture.MaxSize)
 
         case OffsetSelection:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 f.moveForm(newPosX, newPosY)
             }
 
         case MoveToFront:
-            capture.hotForm = Swag.U64.Max
-            var dstIdx = cast(s32) (capture.forms.count - 1)
-            for #reverse i in selection
+            me.capture.hotForm = Swag.U64.Max
+            var dstIdx = cast(s32) (me.capture.forms.count - 1)
+            for #reverse i in me.selection
             {
-                let srcIdx = selection[i]
+                let srcIdx = me.selection[i]
                 if srcIdx != dstIdx
                 {
-                    let form = capture.forms[srcIdx]
-                    capture.forms.removeAtOrdered(srcIdx)
-                    capture.forms.insertAt(cast() dstIdx, form)
-                    capture.selection.remove(srcIdx)
-                    capture.selection.add(cast() dstIdx)
+                    let form = me.capture.forms[srcIdx]
+                    me.capture.forms.removeAtOrdered(srcIdx)
+                    me.capture.forms.insertAt(cast() dstIdx, form)
+                    me.capture.selection.remove(srcIdx)
+                    me.capture.selection.add(cast() dstIdx)
                 }
 
                 dstIdx -= 1
             }
 
         case MoveToBack:
-            capture.hotForm = Swag.U64.Max
+            me.capture.hotForm = Swag.U64.Max
             var dstIdx = 0
-            for i in selection
+            for i in me.selection
             {
-                let srcIdx = selection[i]
+                let srcIdx = me.selection[i]
                 if srcIdx != dstIdx
                 {
-                    let form = capture.forms[srcIdx]
-                    capture.forms.removeAtOrdered(srcIdx)
-                    capture.forms.insertAt(cast() dstIdx, form)
-                    capture.selection.remove(srcIdx)
-                    capture.selection.add(cast() dstIdx)
+                    let form = me.capture.forms[srcIdx]
+                    me.capture.forms.removeAtOrdered(srcIdx)
+                    me.capture.forms.insertAt(cast() dstIdx, form)
+                    me.capture.selection.remove(srcIdx)
+                    me.capture.selection.add(cast() dstIdx)
                 }
 
                 dstIdx += 1
             }
 
         case MoveForward:
-            capture.hotForm = Swag.U64.Max
-            for #reverse i in selection
+            me.capture.hotForm = Swag.U64.Max
+            for #reverse i in me.selection
             {
-                let srcIdx = selection[i]
-                if srcIdx != capture.forms.count - 1
+                let srcIdx = me.selection[i]
+                if srcIdx != me.capture.forms.count - 1
                 {
-                    let form = capture.forms[srcIdx]
-                    capture.forms.removeAtOrdered(srcIdx)
-                    capture.forms.insertAt(srcIdx + 1, form)
-                    capture.selection.remove(srcIdx)
-                    capture.selection.add(srcIdx + 1)
+                    let form = me.capture.forms[srcIdx]
+                    me.capture.forms.removeAtOrdered(srcIdx)
+                    me.capture.forms.insertAt(srcIdx + 1, form)
+                    me.capture.selection.remove(srcIdx)
+                    me.capture.selection.add(srcIdx + 1)
                 }
             }
 
         case MoveBackward:
-            capture.hotForm = Swag.U64.Max
-            for i in selection
+            me.capture.hotForm = Swag.U64.Max
+            for i in me.selection
             {
-                let srcIdx = selection[i]
+                let srcIdx = me.selection[i]
                 if srcIdx != 0
                 {
-                    let form = capture.forms[srcIdx]
-                    capture.forms.removeAtOrdered(srcIdx)
-                    capture.forms.insertAt(srcIdx - 1, form)
-                    capture.selection.remove(srcIdx)
-                    capture.selection.add(srcIdx - 1)
+                    let form = me.capture.forms[srcIdx]
+                    me.capture.forms.removeAtOrdered(srcIdx)
+                    me.capture.forms.insertAt(srcIdx - 1, form)
+                    me.capture.selection.remove(srcIdx)
+                    me.capture.selection.add(srcIdx - 1)
                 }
             }
 
         case DeleteSelection:
-            removeSelection()
+            me.removeSelection()
 
         case CreateForm:
-            toFreeForms.clear()
-            foreach f in oldForms:
+            me.toFreeForms.clear()
+            foreach f in me.oldForms:
                 capture.forms.add(f)
         }
 
-        capture.hasChanged()
+        me.capture.hasChanged()
     }
 
     mtd undoIt()
     {
         #[Swag.Complete]
-        switch kind
+        switch me.kind
         {
         case RestoreOrg:
-            with capture
+            with me.capture
             {
-                .width   = oldS32[0]
-                .height  = oldS32[1]
-                .backImg = oldImg
-                .forms   = oldForms
+                .width   = me.oldS32[0]
+                .height  = me.oldS32[1]
+                .backImg = me.oldImg
+                .forms   = me.oldForms
                 .selection.clear()
                 .dirtyBackImg = true
-                .backImagePos = oldImagePos
+                .backImagePos = me.oldImagePos
                 .selectionHasChanged()
             }
 
         case Flatten, FlattenAll:
-            with capture
+            with me.capture
             {
-                .backImg      = oldImg
-                .backImagePos = oldImagePos
-                .forms        = oldForms
+                .backImg      = me.oldImg
+                .backImagePos = me.oldImagePos
+                .forms        = me.oldForms
                 .selection.clear()
                 .dirtyBackImg = true
                 .selectionHasChanged()
             }
 
         case SetImage:
-            capture.backImg      = oldImg
-            capture.backImagePos = oldImagePos
-            capture.dirtyBackImg = true
+            me.capture.backImg      = me.oldImg
+            me.capture.backImagePos = me.oldImagePos
+            me.capture.dirtyBackImg = true
 
         case SetImageInside:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormImage:
@@ -556,7 +556,7 @@ impl Undo
             }
 
         case SetText:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -567,7 +567,7 @@ impl Undo
             }
 
         case SetFont:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -579,7 +579,7 @@ impl Undo
             }
 
         case SetFontStyle:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if @kindof(f) != FormText:
@@ -590,7 +590,7 @@ impl Undo
             }
 
         case SetFormFromModel:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)):
@@ -602,7 +602,7 @@ impl Undo
             }
 
         case SetTypedValue:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let f = capture.forms[s]
                 if !acceptsType(@kindof(f)):
@@ -610,53 +610,53 @@ impl Undo
                 var val = oldU32[i]
                 Reflection.setFieldValue(@dataof(f), valRef, &val, true)
             }
-            capture.updateModelFromSelection()
+            me.capture.updateModelFromSelection()
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
-            foreach s, i in selection
+            foreach s, i in me.selection
             {
                 let b = cast(*BaseForm) @dataof(capture.forms[s])
                 b.x = oldS32[i]
             }
 
         case MovePoint:
-            baseForm.movePoint(pointIdx, -newPosX, -newPosY)
+            me.baseForm.movePoint(me.pointIdx, -me.newPosX, -me.newPosY)
 
         case MoveBaseForm:
-            baseForm.moveBaseForm(-newPosX, -newPosY, -newSizeX, -newSizeY)
+            me.baseForm.moveBaseForm(-me.newPosX, -me.newPosY, -me.newSizeX, -me.newSizeY)
 
         case MoveCapture:
-            capture.backImagePos.x += -newPosX
-            capture.backImagePos.y += -newPosY
-            foreach f in capture.forms:
+            me.capture.backImagePos.x += -me.newPosX
+            me.capture.backImagePos.y += -me.newPosY
+            foreach f in me.capture.forms:
                 f.moveForm(-newPosX, -newPosY)
-            capture.width -= newSizeX
-            capture.height -= newSizeY
+            me.capture.width -= me.newSizeX
+            me.capture.height -= me.newSizeY
 
         case OffsetSelection:
-            foreach s in selection
+            foreach s in me.selection
             {
                 let f = capture.forms[s]
                 f.moveForm(-newPosX, -newPosY)
             }
 
         case MoveToFront, MoveToBack, MoveForward, MoveBackward, DeleteSelection:
-            toFreeForms.clear()
-            capture.selection = selection
-            capture.forms     = oldForms
-            capture.selectionHasChanged()
+            me.toFreeForms.clear()
+            me.capture.selection = me.selection
+            me.capture.forms     = me.oldForms
+            me.capture.selectionHasChanged()
 
         case CreateForm:
-            toFreeForms = oldForms
-            for oldForms
+            me.toFreeForms = me.oldForms
+            for me.oldForms
             {
-                capture.selection.remove(capture.forms.count - 1)
-                capture.forms.removeBack()
+                me.capture.selection.remove(me.capture.forms.count - 1)
+                me.capture.forms.removeBack()
             }
 
-            capture.selectionHasChanged()
+            me.capture.selectionHasChanged()
         }
 
-        capture.hasChanged()
+        me.capture.hasChanged()
     }
 }

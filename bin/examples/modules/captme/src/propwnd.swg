@@ -27,7 +27,7 @@ impl PropWnd
 {
     mtd hasRealSelection()->bool
     {
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
         if !capture or capture.selection.count == 0:
             return false
         return true
@@ -35,10 +35,10 @@ impl PropWnd
 
     mtd getSelectedBaseForm()->*BaseForm
     {
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
         if !capture or capture.selection.count == 0
         {
-            let iform = assume main.editModeToModel(main.editMode)
+            let iform = assume me.main.editModeToModel(me.main.editMode)
             return cast(*BaseForm) @dataof(iform)
         }
 
@@ -47,10 +47,10 @@ impl PropWnd
 
     mtd getSelectedFormType()->typeinfo
     {
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
         if !capture or capture.selection.count == 0
         {
-            let iform = assume main.editModeToModel(main.editMode)
+            let iform = assume me.main.editModeToModel(me.main.editMode)
             return @kindof(iform)
         }
 
@@ -59,12 +59,12 @@ impl PropWnd
 
     mtd pushTypedValue(val: u32, type: typeinfo, name: string, first: bool, common = false)
     {
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
 
         // Change model
         if !capture or !capture.selection.count
         {
-            let form   = getSelectedBaseForm()
+            let form   = me.getSelectedBaseForm()
             let field  = assume Reflection.getField(#me.type, #me.name)
             var valU32 = val
             Reflection.setFieldValue(form, field, &valU32, true)
@@ -83,14 +83,14 @@ impl PropWnd
             capture.pushUndo(undo)
         }
 
-        main.quickWnd.updateSelection()
-        main.editWnd.invalidate()
+        me.main.quickWnd.updateSelection()
+        me.main.editWnd.invalidate()
     }
 
     #[Swag.Overload]
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
-        with let ctrl = SliderCtrl.create(mainLayout, #me.name)
+        with let ctrl = SliderCtrl.create(me.mainLayout, #me.name)
         {
             .setMinMaxS64(minv, maxv)
             .dockStyle = .Top
@@ -103,7 +103,7 @@ impl PropWnd
     #[Swag.Overload]
     mtd createRotate(val: f32)->*Circular
     {
-        with let ctrl = Circular.create(mainLayout)
+        with let ctrl = Circular.create(me.mainLayout)
         {
             .setMinMax(0, 360)
             .setValue(val)
@@ -155,7 +155,7 @@ impl PropWnd
 
         mtd updateBtnState(layout: *Wnd)
         {
-            let curSel = cast(*FormShape) getSelectedBaseForm()
+            let curSel = cast(*FormShape) me.getSelectedBaseForm()
             foreach c in layout.childs
             {
                 let btn  = cast(*IconButton) c
@@ -165,7 +165,7 @@ impl PropWnd
             }
         }
 
-        let curSel = cast(*FormShape) getSelectedBaseForm()
+        let curSel = cast(*FormShape) me.getSelectedBaseForm()
 
         for i in @countof(FormShapeKind)
         {
@@ -262,7 +262,7 @@ impl PropWnd
 
         mtd updateBtnState(layout: *Wnd)
         {
-            let curSel = cast(*FormLine) getSelectedBaseForm()
+            let curSel = cast(*FormLine) me.getSelectedBaseForm()
             foreach c in layout.childs
             {
                 let btn = cast(*IconButton) c
@@ -272,7 +272,7 @@ impl PropWnd
             }
         }
 
-        let curSel = cast(*FormLine) getSelectedBaseForm()
+        let curSel = cast(*FormLine) me.getSelectedBaseForm()
         foreach i in LineCapStyle
         {
             let btn0 = IconButton.create(layout, {}, {0, 0, 0, 40})
@@ -314,7 +314,7 @@ impl PropWnd
 
         mtd updateBtnState(layout: *Wnd)
         {
-            let curSel = cast(*FormLine) getSelectedBaseForm()
+            let curSel = cast(*FormLine) me.getSelectedBaseForm()
             foreach c in layout.childs
             {
                 let btn = cast(*IconButton) c
@@ -324,7 +324,7 @@ impl PropWnd
             }
         }
 
-        let curSel = cast(*FormLine) getSelectedBaseForm()
+        let curSel = cast(*FormLine) me.getSelectedBaseForm()
         foreach i in LineCapStyle
         {
             let btn0 = IconButton.create(layout, {}, {0, 0, 0, 40})
@@ -366,7 +366,7 @@ impl PropWnd
 
         mtd updateBtnState(layout: *Wnd)
         {
-            let curSel = getSelectedBaseForm()
+            let curSel = me.getSelectedBaseForm()
             foreach c in layout.childs
             {
                 let btn  = cast(*IconButton) c
@@ -376,7 +376,7 @@ impl PropWnd
             }
         }
 
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         foreach i in DashStyle
         {
             if i == .Pattern:
@@ -412,13 +412,13 @@ impl PropWnd
 
     mtd propBorderColor(stack: *Wnd)
     {
-        let curSel = cast(*FormText) getSelectedBaseForm()
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
 
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         switch curSelType
         {
         case FormLine, FormArrow, FormDraw:
@@ -457,10 +457,10 @@ impl PropWnd
 
     mtd propBackColor(stack: *Wnd)
     {
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind != .PixSel
         {
-            let curSelType = getSelectedFormType()
+            let curSelType = me.getSelectedFormType()
             if curSelType == FormLine or
                curSelType == FormArrow or
                curSelType == FormDraw:
@@ -517,10 +517,10 @@ impl PropWnd
 
     mtd propShape(stack: *Wnd)
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormShape:
             return
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind == .PixSel:
             return
 
@@ -558,7 +558,7 @@ impl PropWnd
 
     mtd propStep(stack: *Wnd)
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormStep:
             return
 
@@ -596,7 +596,7 @@ impl PropWnd
 
     mtd propStartCapStyle(stack: *Wnd)
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow:
             return
 
@@ -625,7 +625,7 @@ impl PropWnd
 
     mtd propEndCapStyle(stack: *Wnd)
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow:
             return
 
@@ -654,11 +654,11 @@ impl PropWnd
 
     mtd propDashStyle(stack: *Wnd)
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormShape and curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon:
             return
 
-        let curSel = cast(*FormText) getSelectedBaseForm()
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
@@ -684,13 +684,13 @@ impl PropWnd
 
     mtd propNextStep()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormStep:
             return
 
-        let stack = Wnd.create'Wnd(mainLayout, {0, 0, 0, getThemeMetrics().comboBox_Height})
+        let stack = Wnd.create'Wnd(me.mainLayout, {0, 0, 0, me.getThemeMetrics().comboBox_Height})
 
-        let curSel = cast(*FormStep) getSelectedBaseForm()
+        let curSel = cast(*FormStep) me.getSelectedBaseForm()
         with let combo = ComboBox.create(stack)
         {
             combo.dockStyle = .Center
@@ -740,12 +740,12 @@ impl PropWnd
 
     mtd propText()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormText:
             return
-        let curSel = cast(*FormText) getSelectedBaseForm()
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
 
-        let stack = StackLayoutCtrl.create(mainLayout, .Top, {0, 0, 0, 160})
+        let stack = StackLayoutCtrl.create(me.mainLayout, .Top, {0, 0, 0, 160})
         stack.padding = 8
 
         // Font
@@ -756,8 +756,8 @@ impl PropWnd
             combo.selectedIdx = 0
         combo.addSeparator()
 
-        sysFonts = FontFamily.enumerateFromOs()
-        foreach &fnt in sysFonts
+        me.sysFonts = FontFamily.enumerateFromOs()
+        foreach &fnt in me.sysFonts
         {
             combo.addItem(fnt.name, userData0: fnt)
             if curSel.fontName == fnt.name:
@@ -786,7 +786,7 @@ impl PropWnd
         // Text
         let edt = EditBox.create(stack, curSel.text)
         edt.rightMargin = 24
-        with let btnedt = IconButton.create(edt, getTheme().getIcon24(.More, 20), {0, 0, 20, 20})
+        with let btnedt = IconButton.create(edt, me.getTheme().getIcon24(.More, 20), {0, 0, 20, 20})
         {
             .dockStyle = .Right
             .sigPressed += func|edt|(btn)
@@ -813,8 +813,8 @@ impl PropWnd
         let stack2 = StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 30})
         with let bar2 = IconBar.create(stack2, 24)
         {
-            .addCheckableToggleItem(Icon.from(&main.icons24, 16), CmdIdTextBold)
-            .addCheckableToggleItem(Icon.from(&main.icons24, 17), CmdIdTextItalic)
+            .addCheckableToggleItem(Icon.from(&me.main.icons24, 16), CmdIdTextBold)
+            .addCheckableToggleItem(Icon.from(&me.main.icons24, 17), CmdIdTextItalic)
 
             .sigUpdateState += mtd||(evt)
             {
@@ -871,12 +871,12 @@ impl PropWnd
         let stack1 = StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 40})
         with let bar = IconBar.create(stack1, 24)
         {
-            .addCheckableItem(Icon.from(&main.icons24, 8), CmdIdTextHLeft)
-            .addCheckableItem(Icon.from(&main.icons24, 9), CmdIdTextHCenter)
-            .addCheckableItem(Icon.from(&main.icons24, 10), CmdIdTextHRight)
-            .addCheckableItem(Icon.from(&main.icons24, 11), CmdIdTextVTop)
-            .addCheckableItem(Icon.from(&main.icons24, 12), CmdIdTextVCenter)
-            .addCheckableItem(Icon.from(&main.icons24, 13), CmdIdTextVBottom)
+            .addCheckableItem(Icon.from(&me.main.icons24, 8), CmdIdTextHLeft)
+            .addCheckableItem(Icon.from(&me.main.icons24, 9), CmdIdTextHCenter)
+            .addCheckableItem(Icon.from(&me.main.icons24, 10), CmdIdTextHRight)
+            .addCheckableItem(Icon.from(&me.main.icons24, 11), CmdIdTextVTop)
+            .addCheckableItem(Icon.from(&me.main.icons24, 12), CmdIdTextVCenter)
+            .addCheckableItem(Icon.from(&me.main.icons24, 13), CmdIdTextVBottom)
 
             .sigUpdateState += mtd||(evt)
             {
@@ -927,12 +927,12 @@ impl PropWnd
 
     mtd propStartSize()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow:
             return
-        let curSel = cast(*FormLine) getSelectedBaseForm()
+        let curSel = cast(*FormLine) me.getSelectedBaseForm()
 
-        let ctrl = createSlider("Start Size", cast() MinCapSize, cast() MaxCapSize, curSel.startSize)
+        let ctrl = me.createSlider("Start Size", cast() MinCapSize, cast() MaxCapSize, curSel.startSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.startSize), true)
@@ -945,12 +945,12 @@ impl PropWnd
 
     mtd propEndSize()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow:
             return
 
-        let curSel = cast(*FormLine) getSelectedBaseForm()
-        let ctrl   = createSlider("End Size", cast() MinCapSize, cast() MaxCapSize, curSel.endSize)
+        let curSel = cast(*FormLine) me.getSelectedBaseForm()
+        let ctrl   = me.createSlider("End Size", cast() MinCapSize, cast() MaxCapSize, curSel.endSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.endSize), true)
@@ -963,15 +963,15 @@ impl PropWnd
 
     mtd propRoundSize()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormShape:
             return
 
-        let curSel = cast(*FormShape) getSelectedBaseForm()
+        let curSel = cast(*FormShape) me.getSelectedBaseForm()
         if curSel.kind != .RoundRectangle:
             return
 
-        let ctrl = createSlider("Round", cast() MinRoundSize, cast() MaxRoundSize, curSel.roundSize)
+        let ctrl = me.createSlider("Round", cast() MinRoundSize, cast() MaxRoundSize, curSel.roundSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), FormShape, #nameof(FormShape.roundSize), true)
@@ -984,15 +984,15 @@ impl PropWnd
 
     mtd propXY()
     {
-        if !hasRealSelection():
+        if !me.hasRealSelection():
             return
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormShape and curSelType != FormText:
             return
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
 
         {
-            let l     = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
+            let l     = StackLayoutCtrl.create(me.mainLayout, .HorzFit, {0, 0, 0, 40})
             let edit0 = EditCtrl.create(l, "x", Format.toString("%", curSel.x), flags: .AutoLoseFocus)
             edit0.labelSize = 15
             edit0.editSize  = 0
@@ -1015,7 +1015,7 @@ impl PropWnd
         }
 
         {
-            let l     = StackLayoutCtrl.create(mainLayout, .HorzFit, {0, 0, 0, 40})
+            let l     = StackLayoutCtrl.create(me.mainLayout, .HorzFit, {0, 0, 0, 40})
             let edit0 = EditCtrl.create(l, "w", Format.toString("%", curSel.w), flags: .AutoLoseFocus)
             edit0.labelSize = 15
             edit0.editSize  = 0
@@ -1040,11 +1040,11 @@ impl PropWnd
 
     mtd propBorderSize()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType == FormStep:
             return
 
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind == .PixSel:
             return
 
@@ -1062,7 +1062,7 @@ impl PropWnd
             minS = Math.max(minS, 1)
         }
 
-        let ctrl = createSlider(labl, cast() minS, cast() maxS, curSel.borderSize)
+        let ctrl = me.createSlider(labl, cast() minS, cast() maxS, curSel.borderSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.borderSize), true, true)
@@ -1075,12 +1075,12 @@ impl PropWnd
 
     mtd propFontSize()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormText:
             return
 
-        let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl   = createSlider("Size", cast() MinFontSize, cast() MaxFontSize, cast() curSel.fontSize)
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
+        let ctrl   = me.createSlider("Size", cast() MinFontSize, cast() MaxFontSize, cast() curSel.fontSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.fontSize), true)
@@ -1093,12 +1093,12 @@ impl PropWnd
 
     mtd propScale()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormText:
             return
 
-        let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl   = createSlider("Scale", 0, 100, cast() curSel.scale)
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
+        let ctrl   = me.createSlider("Scale", 0, 100, cast() curSel.scale)
         ctrl.edit.unit = "%"
 
         ctrl.slider.sigStartChange += mtd||(slider)
@@ -1113,15 +1113,15 @@ impl PropWnd
 
     mtd propRotate()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormText and curSelType != FormShape and curSelType != FormImage:
             return
-        let curSel = cast(*FormText) getSelectedBaseForm()
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
-        let ctrl  = createRotate(cast() curSel.rotate)
-        let ctrl1 = createSlider("Rotate", 0, 360, cast() curSel.rotate)
+        let ctrl  = me.createRotate(cast() curSel.rotate)
+        let ctrl1 = me.createSlider("Rotate", 0, 360, cast() curSel.rotate)
         ctrl1.edit.unit = "°"
 
         ctrl.sigStartChange += mtd|ctrl1|(rotate)
@@ -1149,11 +1149,11 @@ impl PropWnd
 
     mtd propShadow()
     {
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind == .PixSel:
             return
 
-        let ctrl = ComboCtrl.create(mainLayout, "Shadow")
+        let ctrl = ComboCtrl.create(me.mainLayout, "Shadow")
         ctrl.comboSize = 210
         with ctrl.combo
         {
@@ -1170,14 +1170,14 @@ impl PropWnd
 
     mtd propSmooth()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormLine and curSelType != FormArrow and curSelType != FormPolygon:
             return
-        let curSel = cast(*BaseForm) getSelectedBaseForm()
+        let curSel = cast(*BaseForm) me.getSelectedBaseForm()
         if curSel.subKind == .PixSel:
             return
 
-        let ctrl = ComboCtrl.create(mainLayout, "Line")
+        let ctrl = ComboCtrl.create(me.mainLayout, "Line")
         ctrl.comboSize = 210
         with ctrl.combo
         {
@@ -1194,12 +1194,12 @@ impl PropWnd
 
     mtd propBoldSize()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormText:
             return
 
-        let curSel = cast(*FormText) getSelectedBaseForm()
-        let ctrl   = createSlider("Strengh", cast() MinBoldSize, cast() MaxBoldSize, cast() curSel.boldSize)
+        let curSel = cast(*FormText) me.getSelectedBaseForm()
+        let ctrl   = me.createSlider("Strengh", cast() MinBoldSize, cast() MaxBoldSize, cast() curSel.boldSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.boldSize), true)
@@ -1212,11 +1212,11 @@ impl PropWnd
 
     mtd propOpacity()
     {
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind == .PixSel:
             return
 
-        let ctrl = createSlider("Opacity", 0, 100, cast() curSel.alpha)
+        let ctrl = me.createSlider("Opacity", 0, 100, cast() curSel.alpha)
         ctrl.edit.unit = "%"
 
         ctrl.slider.sigStartChange += mtd||(slider)
@@ -1231,13 +1231,13 @@ impl PropWnd
 
     mtd propImageKind()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormImage:
             return
 
-        let curSel = cast(*FormImage) getSelectedBaseForm()
+        let curSel = cast(*FormImage) me.getSelectedBaseForm()
 
-        let ctrl = ComboCtrl.create(mainLayout, "Kind")
+        let ctrl = ComboCtrl.create(me.mainLayout, "Kind")
         ctrl.comboSize = 210
         with ctrl.combo
         {
@@ -1251,7 +1251,7 @@ impl PropWnd
             }
         }
 
-        let ctrl1 = ComboCtrl.create(mainLayout, "Place")
+        let ctrl1 = ComboCtrl.create(me.mainLayout, "Place")
         ctrl1.comboSize = 210
         with ctrl1.combo
         {
@@ -1267,14 +1267,14 @@ impl PropWnd
 
     mtd propStrength()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormImage:
             return
-        let curSel = cast(*FormImage) getSelectedBaseForm()
+        let curSel = cast(*FormImage) me.getSelectedBaseForm()
         if curSel.kind == .Image:
             return
 
-        let ctrl = createSlider("Strength", 0, 100, cast() curSel.strength)
+        let ctrl = me.createSlider("Strength", 0, 100, cast() curSel.strength)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast(u32) slider.getValue(), FormImage, #nameof(FormImage.strength), true)
@@ -1287,14 +1287,14 @@ impl PropWnd
 
     mtd propJoinStyle()
     {
-        let curSelType = getSelectedFormType()
+        let curSelType = me.getSelectedFormType()
         if curSelType != FormText and curSelType != FormPolygon:
             return
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind == .PixSel:
             return
 
-        let ctrl = ComboCtrl.create(mainLayout, "Joins")
+        let ctrl = ComboCtrl.create(me.mainLayout, "Joins")
         ctrl.comboSize = 210
         with ctrl.combo
         {
@@ -1313,19 +1313,19 @@ impl PropWnd
 
     mtd propPixSel()
     {
-        let curSel = getSelectedBaseForm()
+        let curSel = me.getSelectedBaseForm()
         if curSel.subKind != .PixSel:
             return
 
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelFill)
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartFill)
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelClear)
-        discard PushButton.create(mainLayout, "", id: CmdIdPixSelSmartMove)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelFill)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelSmartFill)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelClear)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelSmartMove)
     }
 
     mtd propSep()
     {
-        let sep = Wnd.create'Wnd(mainLayout, {0, 0, 0, 1})
+        let sep = Wnd.create'Wnd(me.mainLayout, {0, 0, 0, 1})
         sep.margin.y        = 15
         sep.margin.w        = 8
         sep.backgroundStyle = .View
@@ -1333,58 +1333,58 @@ impl PropWnd
 
     mtd selectionHasChanged()
     {
-        foreach it in mainLayout.childs:
+        foreach it in me.mainLayout.childs:
             it.destroy()
-        if !getSelectedBaseForm():
+        if !me.getSelectedBaseForm():
             return
 
-        let stack0 = StackLayoutCtrl.create(mainLayout, .HorzCenter, {0, 0, 0, BtnColorHeight + 12})
-        propBackColor(stack0)
-        propBorderColor(stack0)
-        propShape(stack0)
-        propStep(stack0)
+        let stack0 = StackLayoutCtrl.create(me.mainLayout, .HorzCenter, {0, 0, 0, BtnColorHeight + 12})
+        me.propBackColor(stack0)
+        me.propBorderColor(stack0)
+        me.propShape(stack0)
+        me.propStep(stack0)
         if stack0.childs.count == 0:
             stack0.destroyNow()
 
-        let stack1 = StackLayoutCtrl.create(mainLayout, .HorzCenter, {0, 0, 0, BtnStyleHeight + 12})
-        propStartCapStyle(stack1)
-        propDashStyle(stack1)
-        propEndCapStyle(stack1)
+        let stack1 = StackLayoutCtrl.create(me.mainLayout, .HorzCenter, {0, 0, 0, BtnStyleHeight + 12})
+        me.propStartCapStyle(stack1)
+        me.propDashStyle(stack1)
+        me.propEndCapStyle(stack1)
         if stack1.childs.count == 0:
             stack1.destroyNow()
 
-        propImageKind()
-        propStrength()
-        propNextStep()
-        propText()
-        propFontSize()
-        propBoldSize()
-        propBorderSize()
-        propStartSize()
-        propEndSize()
-        propRoundSize()
-        propJoinStyle()
-        propSmooth()
-        propPixSel()
+        me.propImageKind()
+        me.propStrength()
+        me.propNextStep()
+        me.propText()
+        me.propFontSize()
+        me.propBoldSize()
+        me.propBorderSize()
+        me.propStartSize()
+        me.propEndSize()
+        me.propRoundSize()
+        me.propJoinStyle()
+        me.propSmooth()
+        me.propPixSel()
 
-        propSep()
+        me.propSep()
 
-        propScale()
-        propRotate()
-        propOpacity()
-        propShadow()
+        me.propScale()
+        me.propRotate()
+        me.propOpacity()
+        me.propShadow()
 
-        propSep()
+        me.propSep()
 
-        propXY()
+        me.propXY()
 
-        mainLayout.computeLayout()
-        if mainLayout.childs.count:
-            setScrollSize(0, mainLayout.childs.back().position.bottom() + 16)
+        me.mainLayout.computeLayout()
+        if me.mainLayout.childs.count:
+            me.setScrollSize(0, me.mainLayout.childs.back().position.bottom() + 16)
         else:
-            setScrollSize(0, 0)
+            me.setScrollSize(0, 0)
 
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
         if capture:
             capture.editView.setFocus()
     }

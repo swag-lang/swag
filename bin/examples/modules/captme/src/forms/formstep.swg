@@ -35,12 +35,12 @@ impl IForm for FormStep
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormStep) ptr
-        return borderColor == other.borderColor and
-               backColor == other.backColor and
-               alpha == other.alpha and
-               kind == other.kind and
-               paintShadow == other.paintShadow and
-               typeIndex == other.typeIndex
+        return me.borderColor == other.borderColor and
+               me.backColor == other.backColor and
+               me.alpha == other.alpha and
+               me.kind == other.kind and
+               me.paintShadow == other.paintShadow and
+               me.typeIndex == other.typeIndex
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -61,89 +61,89 @@ impl IForm for FormStep
     {
         var xa = cast(s32) (movingStart.x / zoom)
         var ya = cast(s32) (movingStart.y / zoom)
-        xa -= ws / 2
-        ya -= hs / 2
-        setBaseForm(xa, ya, ws, hs)
+        xa -= me.ws / 2
+        ya -= me.hs / 2
+        me.setBaseForm(xa, ya, me.ws, me.hs)
 
         var xbu = 0
         var ybu = 0
-        capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) me)
+        me.capture.snap(&xbu, &ybu, true, true, 0, cast(IForm) me)
         xa += xbu
         ya += ybu
-        setBaseForm(xa, ya, ws, hs)
+        me.setBaseForm(xa, ya, me.ws, me.hs)
 
-        index = capture.nextStepIndex
-        capture.nextStepIndex += 1
-        isDirty = true
+        me.index = me.capture.nextStepIndex
+        me.capture.nextStepIndex += 1
+        me.isDirty = true
 
         return false
     }
 
     mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        x += newPosX
-        y += newPosY
-        w += newSizeX
-        h += newSizeY
+        me.x += newPosX
+        me.y += newPosY
+        me.w += newSizeX
+        me.h += newSizeY
     }
 
     mtd impl scaleBaseForm(val: f32)
     {
-        x = cast(s32) (x * val)
-        y = cast(s32) (y * val)
-        w = cast(s32) (w * val)
-        h = cast(s32) (h * val)
+        me.x = cast(s32) (me.x * val)
+        me.y = cast(s32) (me.y * val)
+        me.w = cast(s32) (me.w * val)
+        me.h = cast(s32) (me.h * val)
     }
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
         if newSizeX < 0
         {
-            x = newPosX + newSizeX
-            w = -newSizeX
+            me.x = newPosX + newSizeX
+            me.w = -newSizeX
         }
         else
         {
-            x = newPosX
-            w = newSizeX
+            me.x = newPosX
+            me.w = newSizeX
         }
 
         if newSizeY < 0
         {
-            y = newPosY + newSizeY
-            h = -newSizeY
+            me.y = newPosY + newSizeY
+            me.h = -newSizeY
         }
         else
         {
-            y = newPosY
-            h = newSizeY
+            me.y = newPosY
+            me.h = newSizeY
         }
     }
 
     mtd impl moveForm(newPosX, newPosY: s32)
     {
-        x += newPosX
-        y += newPosY
+        me.x += newPosX
+        me.y += newPosY
     }
 
     mtd impl movePoint(pt: u32, newPosX, newPosY: s32) {}
 
     mtd impl boundRect()->Math.Rectangle
     {
-        return Math.Rectangle{x, y, w, h}
+        return Math.Rectangle{me.x, me.y, me.w, me.h}
     }
 
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        return gizmo.mouse(view, pos, evt)
+        return me.gizmo.mouse(view, pos, evt)
     }
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags.has(.Hot | .Selected)
         {
-            gizmo.rect = boundRect() * z
-            gizmo.paint(painter, !flags.has(.Selected))
+            me.gizmo.rect = me.boundRect() * z
+            me.gizmo.paint(painter, !flags.has(.Selected))
         }
     }
 
@@ -160,27 +160,27 @@ impl IForm for FormStep
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         let z     = cxt.z
-        var fSize = Math.min(w, h) * 0.6
+        var fSize = Math.min(me.w, me.h) * 0.6
         fSize = Math.max(fSize, 8)
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         let face = g_App.theme.res.defaultTypeFaceR
 
-        if fSize != cachefSize or typeIndex != cacheTypeIndex:
-            isDirty = true
+        if fSize != me.cachefSize or me.typeIndex != me.cacheTypeIndex:
+            me.isDirty = true
 
-        if isDirty
+        if me.isDirty
         {
-            isDirty        = false
-            cachefSize     = fSize
-            cacheTypeIndex = typeIndex
-            pathl.clear()
+            me.isDirty        = false
+            me.cachefSize     = fSize
+            me.cacheTypeIndex = me.typeIndex
+            me.pathl.clear()
 
             var t:       String
-            let curIndex = cxt.quickMode ? 1 : index
+            let curIndex = cxt.quickMode ? 1 : me.index
 
             #[Swag.Complete]
-            switch typeIndex
+            switch me.typeIndex
             {
             case Number:
                 t = Format.toString("%", curIndex)
@@ -190,43 +190,43 @@ impl IForm for FormStep
                 t = Format.toString("%", cast(rune) ('a''rune + curIndex - 1))
             }
 
-            assume face.getStringOutline(&pathl, t, cast() fSize)
-            pathl.flatten(painter.curState.paintQuality)
-            pathl.offset(1, JoinStyle.Round, 0.5)
-            pathl.clean()
+            assume face.getStringOutline(&me.pathl, t, cast() fSize)
+            me.pathl.flatten(painter.curState.paintQuality)
+            me.pathl.offset(1, JoinStyle.Round, 0.5)
+            me.pathl.clean()
         }
 
-        var bk = backColor
-        if cxt.quickMode and alpha != 100:
-            bk.a = cast(u8) Math.map(cast(f32) alpha, 0, 100, 0, 255)
+        var bk = me.backColor
+        if cxt.quickMode and me.alpha != 100:
+            bk.a = cast(u8) Math.map(cast(f32) me.alpha, 0, 100, 0, 255)
 
-        var pp = boundRect() * z
+        var pp = me.boundRect() * z
 
         #[Swag.Complete]
-        switch kind
+        switch me.kind
         {
         case Ellipse:
             let sizeX = pp.width * 0.5
             let sizeY = pp.height * 0.5
-            if cxt.quickMode and alpha != 100:
+            if cxt.quickMode and me.alpha != 100:
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
-            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backColor)
+            painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, me.backColor)
 
         case Rectangle:
-            if cxt.quickMode and alpha != 100:
+            if cxt.quickMode and me.alpha != 100:
                 painter.fillRect(pp, backBrush)
             painter.fillRect(pp, bk)
 
         case RoundRectangle:
-            var round = cast(f32) Math.min(w, h)
+            var round = cast(f32) Math.min(me.w, me.h)
             round /= 3
-            if cxt.quickMode and alpha != 100:
+            if cxt.quickMode and me.alpha != 100:
                 painter.fillRoundRect(pp, round, round, backBrush)
-            painter.fillRoundRect(pp, round, round, backColor)
+            painter.fillRoundRect(pp, round, round, me.backColor)
         }
 
-        let wt = (pathl.bvMax.x - pathl.bvMin.x) * z
-        let ht = (pathl.bvMax.y - pathl.bvMin.y) * z
+        let wt = (me.pathl.bvMax.x - me.pathl.bvMin.x) * z
+        let ht = (me.pathl.bvMax.y - me.pathl.bvMin.y) * z
         let x0 = pp.horzCenter() - (wt * 0.5)
         let y0 = pp.vertCenter() - (ht * 0.5)
 
@@ -238,17 +238,17 @@ impl IForm for FormStep
             .curState.transform.ty = 0
             .scaleTransform(z, z)
             .translateTransform(tt.tx, tt.ty)
-            .translateTransform(x0 - pathl.bvMin.x * z, y0 - pathl.bvMin.y * z)
-            .fillPath(&pathl, borderColor)
+            .translateTransform(x0 - me.pathl.bvMin.x * z, y0 - me.pathl.bvMin.y * z)
+            .fillPath(&me.pathl, me.borderColor)
             .popTransform()
         }
     }
 
     mtd impl setup(capt: *Capture)
     {
-        capture = capt
+        me.capture = capt
 
-        with gizmo
+        with me.gizmo
         {
             .roundShape        = true
             .anchorSize        = 10
@@ -257,7 +257,7 @@ impl IForm for FormStep
             .paintBigBorder    = true
         }
 
-        gizmo.sigChanged = mtd||(g, first, hitMove)
+        me.gizmo.sigChanged = mtd||(g, first, hitMove)
         {
             g.apply(me, first, hitMove)
         }

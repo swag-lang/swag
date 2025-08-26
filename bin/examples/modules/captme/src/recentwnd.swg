@@ -27,36 +27,36 @@ impl RecentView
 {
     mtd select(idx: u64, force = false)
     {
-        if selected == idx and !force:
+        if me.selected == idx and !force:
             return
 
-        if idx >= items.count
+        if idx >= me.items.count
         {
-            selected = Swag.U64.Max
+            me.selected = Swag.U64.Max
             return
         }
 
-        let view = main.editWnd.editView
+        let view = me.main.editWnd.editView
 
         // Save current zoom
-        if selected < items.count:
-            items[selected].zoom = view.zoom
+        if me.selected < me.items.count:
+            me.items[me.selected].zoom = view.zoom
 
         // Select new recent item
-        selected = idx
-        let item    = items[idx]
+        me.selected = idx
+        let item    = me.items[idx]
         let capture = catch Capture.load(item.file)
         if capture
         {
-            if main.getCapture():
-                catch main.getCapture().save()
+            if me.main.getCapture():
+                catch me.main.getCapture().save()
             view.setCapture(capture)
             if item.zoom == 0:
                 view.zoomToFit(false)
             else:
                 view.setZoom(item.zoom)
             view.main.freezeSelection(false)
-            invalidate()
+            me.invalidate()
         }
     }
 }
@@ -68,12 +68,12 @@ impl IWnd for RecentView
         if evt.kind == .MouseWheel:
             evt.accepted = false
 
-        var pos = surfaceToLocal(evt.surfacePos)
-        pos += recentWnd.getScrollPos()
+        var pos = me.surfaceToLocal(evt.surfacePos)
+        pos += me.recentWnd.getScrollPos()
 
         // Hit test
         var ht = Swag.U64.Max
-        foreach i, idx in items
+        foreach i, idx in me.items
         {
             if i.rect.contains(pos)
             {
@@ -82,17 +82,17 @@ impl IWnd for RecentView
             }
         }
 
-        if ht != hotItem
+        if ht != me.hotItem
         {
-            invalidate()
-            hotItem = ht
+            me.invalidate()
+            me.hotItem = ht
         }
 
-        if evt.kind == .MousePressed and hotItem != Swag.U64.Max
+        if evt.kind == .MousePressed and me.hotItem != Swag.U64.Max
         {
             if evt.button == .Left or evt.button == .Right
             {
-                select(hotItem)
+                me.select(me.hotItem)
                 if evt.button == .Right
                 {
                     with let menu = MenuCtrl.createPopup(me)
@@ -168,10 +168,10 @@ impl IWnd for RecentView
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter    = evt.bc.painter
-        var clientRect = getClientRectPadding()
+        var clientRect = me.getClientRectPadding()
 
         var x = clientRect.x
-        foreach item, idx in items
+        foreach item, idx in me.items
         {
             let w = clientRect.height * 4.0 / 3
 
@@ -181,7 +181,7 @@ impl IWnd for RecentView
             x = rect.right() + RecentPadding
         }
 
-        recentWnd.setScrollSize(x, 0)
+        me.recentWnd.setScrollSize(x, 0)
     }
 }
 
@@ -198,28 +198,28 @@ impl IWnd for RecentWnd
 {
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if timer:
-            getApp().deleteTimer(timer)
+        if me.timer:
+            me.getApp().deleteTimer(me.timer)
     }
 
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
         if capture and capture.changed
         {
             capture.computePreview()
-            let item = recentView.items[recentView.selected]
-            getApp().getRenderer().removeTexture(&item.preview)
-            item.preview = getApp().getRenderer().addImage(capture.preview)
-            invalidate()
+            let item = me.recentView.items[me.recentView.selected]
+            me.getApp().getRenderer().removeTexture(&item.preview)
+            item.preview = me.getApp().getRenderer().addImage(capture.preview)
+            me.invalidate()
 
-            main.libWnd.view.updateRecent(capture)
+            me.main.libWnd.view.updateRecent(capture)
 
             catch capture.save()
         }
 
-        getApp().deleteTimer(evt.timer)
-        timer = null
+        me.getApp().deleteTimer(evt.timer)
+        me.timer = null
     }
 }
 
@@ -246,9 +246,9 @@ impl RecentWnd
 
     mtd loadRecent()
     {
-        if loadDone:
+        if me.loadDone:
             return
-        loadDone = true
+        me.loadDone = true
 
         g_Library.fill()
         g_Library.onDeleteFile += mtd||(file)
@@ -303,34 +303,34 @@ impl RecentWnd
 
     mtd updateRecent()
     {
-        if recentView.selected >= recentView.items.count:
+        if me.recentView.selected >= me.recentView.items.count:
             return
 
-        if timer:
-            getApp().deleteTimer(timer)
-        timer = getApp().addTimer(1's, me)
+        if me.timer:
+            me.getApp().deleteTimer(me.timer)
+        me.timer = me.getApp().addTimer(1's, me)
 
-        let capture = main.getCapture()
+        let capture = me.main.getCapture()
         if !capture:
             return
 
-        let item = recentView.items[recentView.selected]
+        let item = me.recentView.items[me.recentView.selected]
         item.linked         = capture.linkedImage
         item.linkedUpToDate = capture.linkedUpToDate
-        invalidate()
+        me.invalidate()
     }
 
     mtd removeRecent()
     {
-        if recentView.selected >= recentView.items.count:
+        if me.recentView.selected >= me.recentView.items.count:
             return
 
-        let item = recentView.items[recentView.selected]
+        let item = me.recentView.items[me.recentView.selected]
 
         // Be sure there's no pending save
-        if timer:
-            getApp().deleteTimer(timer)
-        timer = null
+        if me.timer:
+            me.getApp().deleteTimer(me.timer)
+        me.timer = null
 
         // Delete file
         g_Library.removeFile(item.file)
@@ -340,16 +340,16 @@ impl RecentWnd
     mtd addRecent(file: string, front = true, sel = false)->*Capture throw
     {
         let capture = Capture.load(file)
-        addRecent(capture.file, capture.preview, front, sel, capture.linkedUpToDate, capture.linkedImage)
+        me.addRecent(capture.file, capture.preview, front, sel, capture.linkedUpToDate, capture.linkedImage)
 
         // Too much recent. Remove the oldest
-        if front and recentView.items.count > MaxRecent
+        if front and me.recentView.items.count > MaxRecent
         {
-            let back = recentView.items.back()
+            let back = me.recentView.items.back()
             if back.preview.isValid():
-                getApp().getRenderer().removeTexture(&back.preview)
-            recentView.items.deletePtr(back)
-            recentView.items.count -= 1
+                me.getApp().getRenderer().removeTexture(&back.preview)
+            me.recentView.items.deletePtr(back)
+            me.recentView.items.count -= 1
         }
 
         return capture
@@ -359,7 +359,7 @@ impl RecentWnd
     mtd addRecent(file: string, preview: Image, front = true, sel = false, linkedUpToDate = true, linked: string = null)
     {
         // Already there ?
-        foreach it, i in recentView.items
+        foreach it, i in me.recentView.items
         {
             if it.file == file
             {
@@ -380,27 +380,27 @@ impl RecentWnd
             }
         }
 
-        let item = recentView.items.newPtr()
-        item.preview        = getApp().getRenderer().addImage(preview)
+        let item = me.recentView.items.newPtr()
+        item.preview        = me.getApp().getRenderer().addImage(preview)
         item.file           = file
         item.linked         = linked
         item.linkedUpToDate = linkedUpToDate
         if front
         {
-            recentView.items.insertAt(0, item)
+            me.recentView.items.insertAt(0, item)
             if sel
             {
-                recentView.select(0, force: true)
-                setScrollPos(0, 0)
+                me.recentView.select(0, force: true)
+                me.setScrollPos(0, 0)
             }
         }
         else
         {
-            recentView.items.add(item)
+            me.recentView.items.add(item)
             if sel:
-                recentView.select(recentView.items.count - 1, force: true)
+                me.recentView.select(me.recentView.items.count - 1, force: true)
         }
 
-        invalidate()
+        me.invalidate()
     }
 }
