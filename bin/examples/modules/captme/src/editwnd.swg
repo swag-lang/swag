@@ -1,3 +1,4 @@
+#global marked
 struct EditWnd
 {
     using scrollWnd:     ScrollWnd

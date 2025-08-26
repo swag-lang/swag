@@ -1,3 +1,4 @@
+#global marked
 var g_Main: *MainWnd
 
 const ClipboardFormat = "Swag.CaptMe"
@@ -237,7 +238,7 @@ impl MainWnd
         {
             if md.isTag("Captme.File")
             {
-                let dupCapture = catch recentWnd.addRecent(cast(string) md.toSlice(), true, true)
+                let dupCapture = catch me.recentWnd.addRecent(cast(string) md.toSlice(), true, true)
                 Memory.delete(dupCapture)
                 done = true
                 break
@@ -436,7 +437,7 @@ impl MainWnd
         #[Swag.Mixin]
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
-            catch getApp().registerHotKey(mdf, key, wndId, me)
+            catch me.getApp().registerHotKey(mdf, key, wndId, me)
             if @err != null
             {
                 if !errorReg
@@ -645,19 +646,19 @@ impl MainWnd
 
         foreach c in icons
         {
-            if editorOptions.showToolBarLabels
+            if me.editorOptions.showToolBarLabels
             {
                 c.iconBtnFlags.remove(.HideName)
                 c.position.width, c.position.height = 64
                 c.iconSizeX, c.iconSizeY = 48
-                libraryBtn.position.x = 64
+                me.libraryBtn.position.x = 64
             }
             else
             {
                 c.iconBtnFlags.add(.HideName)
                 c.position.width, c.position.height = 40
                 c.iconSizeX, c.iconSizeY = 32
-                libraryBtn.position.x = 48
+                me.libraryBtn.position.x = 48
             }
         }
 

@@ -1,3 +1,4 @@
+#global marked
 struct FormArrow
 {
     using line: FormLine

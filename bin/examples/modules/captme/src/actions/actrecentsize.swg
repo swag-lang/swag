@@ -1,3 +1,4 @@
+#global marked
 using Gui
 
 const CmdIdRecentSmall  = "CmdIdRecentSmall"

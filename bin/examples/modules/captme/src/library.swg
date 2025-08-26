@@ -1,3 +1,4 @@
+#global marked
 var g_Library: Library
 
 struct Library
@@ -43,8 +44,8 @@ impl Library
                 catch File.delete(name)
                 if @err == null
                 {
-                    files.removeAtOrdered(idx)
-                    onDeleteFile.call(name)
+                    me.files.removeAtOrdered(idx)
+                    me.onDeleteFile.call(name)
                 }
 
                 break

@@ -1,3 +1,4 @@
+#global marked
 struct GizmoPoints
 {
     anchorSize:      f32 = 12
@@ -61,12 +62,12 @@ impl GizmoPoints
                 var rect: Math.Rectangle = undefined
                 foreach c, i in me.anchors
                 {
-                    rect.x = c.x - anchorSize * 0.5
-                    rect.y = c.y - anchorSize * 0.5
-                    rect.width, rect.height = anchorSize
+                    rect.x = c.x - me.anchorSize * 0.5
+                    rect.y = c.y - me.anchorSize * 0.5
+                    rect.width, rect.height = me.anchorSize
                     if rect.contains(pos)
                     {
-                        hotAnchor = cast(u32) i
+                        me.hotAnchor = cast(u32) i
                         break
                     }
                 }

@@ -1,3 +1,4 @@
+#global marked
 const MaxRecent = 15
 
 const RecentPadding = 8.0
@@ -177,7 +178,7 @@ impl IWnd for RecentView
 
             var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             item.rect = rect
-            paintRecent(me, painter, item.preview, rect, idx == hotItem, idx == selected, item.linkedUpToDate, item.linked)
+            paintRecent(me, painter, item.preview, rect, idx == me.hotItem, idx == me.selected, item.linkedUpToDate, item.linked)
             x = rect.right() + RecentPadding
         }
 
@@ -282,15 +283,15 @@ impl RecentWnd
         var cptRecent = 0
         foreach r, idx in res
         {
-            let capture = catch addRecent(r.fullname, front: false)
+            let capture = catch me.addRecent(r.fullname, front: false)
             defer #err Memory.delete(capture)
             if @err != null:
                 continue
 
             if idx == 0
             {
-                recentView.selected = 0
-                main.editWnd.editView.setCapture(capture)
+                me.recentView.selected = 0
+                me.main.editWnd.editView.setCapture(capture)
             }
             else:
                 Memory.delete(capture)
@@ -368,12 +369,12 @@ impl RecentWnd
                 // Move the item to the first position
                 if front and i
                 {
-                    recentView.items.swap(0, i)
+                    me.recentView.items.swap(0, i)
                     idxSel = 0
                 }
 
                 if sel:
-                    recentView.select(idxSel, true)
+                    me.recentView.select(idxSel, true)
 
                 it.linked = linked
                 return

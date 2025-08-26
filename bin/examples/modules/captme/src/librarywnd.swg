@@ -1,3 +1,4 @@
+#global marked
 using Threading, Time
 
 enum PreviewSize
@@ -89,7 +90,7 @@ impl LibraryWnd
             if it.filtered:
                 continue
 
-            if view.selModel.isSelected(cast() i):
+            if me.view.selModel.isSelected(cast() i):
                 g_Library.removeFile(it.fi.fullname)
         }
     }
@@ -230,7 +231,7 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {
                 fillLastYear()
-                lastLine           = listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
+                lastLine           = me.listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
                 lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLineYear       = lastLine
             }
@@ -238,7 +239,7 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
             {
                 fillLastMonth()
-                lastLine           = listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
+                lastLine           = me.listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
                 lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLine.userData1 = cast() cast(u64) fi.lastWriteTime.month
                 lastLineMonth      = lastLine
@@ -247,7 +248,7 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.day != lastDateTime.day)
             {
                 fillLastDay()
-                lastLine           = listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
+                lastLine           = me.listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
                 lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLine.userData1 = cast() cast(u64) fi.lastWriteTime.month
                 lastLine.userData2 = cast() cast(u64) fi.lastWriteTime.day

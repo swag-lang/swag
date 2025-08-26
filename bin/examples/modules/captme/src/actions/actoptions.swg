@@ -1,3 +1,4 @@
+#global marked
 using Gui
 
 const CmdIdOptions = "CmdIdOptions"

@@ -1,3 +1,4 @@
+#global marked
 using Gui
 
 const CmdIdMoveSelLeft    = "CmdIdMoveSelLeft"

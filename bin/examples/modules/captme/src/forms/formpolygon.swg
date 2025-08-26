@@ -1,3 +1,4 @@
+#global marked
 struct FormPolygon
 {
     using base:     BaseForm
@@ -168,7 +169,7 @@ impl IForm for FormPolygon
         {
             me.gizmo.anchors.clear()
             foreach pt in me.points:
-                gizmo.anchors.add({pt.x * z, pt.y * z})
+                me.gizmo.anchors.add({pt.x * z, pt.y * z})
             let col = me.subKind == .PixSel ? Argb.Yellow : Argb.White
             me.gizmo.paint(null, painter, !flags.has(.Selected), col)
         }
@@ -188,7 +189,7 @@ impl IForm for FormPolygon
     {
         var dash  = me.dashStyle
         var bSize = cxt.hitTest ? Math.max(me.borderSize, 5) : me.borderSize
-        bSize = adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
+        bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
 
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk        = me.backColor

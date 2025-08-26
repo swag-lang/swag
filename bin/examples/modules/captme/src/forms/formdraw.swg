@@ -1,3 +1,4 @@
+#global marked
 struct FormDraw
 {
     using base:     BaseForm
@@ -182,7 +183,7 @@ impl IForm for FormDraw
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var dash  = me.dashStyle
-        var bSize = adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
+        var bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
         bSize = Math.max(bSize, 2)
 
         let z   = cxt.z

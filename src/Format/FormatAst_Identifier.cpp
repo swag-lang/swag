@@ -95,8 +95,8 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
         concat->addChar('.');
     }
 
-    bool first = true;
-    int  idx   = 0;
+    bool     first = true;
+    uint32_t idx   = 0;
     for (const auto it : node->children)
     {
         if (g_CommandLine.patchMode)

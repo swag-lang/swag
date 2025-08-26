@@ -1,3 +1,4 @@
+#global marked
 enum FormStepKind
 {
     Ellipse

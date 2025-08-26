@@ -1,3 +1,4 @@
+#global marked
 using Serialization
 
 const PreviewHeight = 256.0
@@ -132,7 +133,7 @@ impl Capture
         {
             foreach sel in me.selection
             {
-                let f = forms[sel]
+                let f = me.forms[sel]
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
                     continue
@@ -242,7 +243,7 @@ impl Capture
         var imgDone = false
         foreach s in me.selection
         {
-            let itf = forms[s]
+            let itf = me.forms[s]
 
             // Add real image
             if !imgDone and @kindof(itf) == FormImage
@@ -662,9 +663,9 @@ impl Capture
         foreach f, i in me.forms
         {
             var flags = FormFlags.Zero
-            if i == hotForm:
+            if i == me.hotForm:
                 flags.add(.Hot)
-            if selection.contains(i):
+            if me.selection.contains(i):
                 flags.add(.Selected)
 
             painter.pushTransform()
@@ -756,7 +757,7 @@ impl Capture
         var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
         foreach s in me.selection
         {
-            let f = forms[s]
+            let f = me.forms[s]
             let r = f.boundRect()
             bound.x = Math.min(bound.x, r.x)
             bound.y = Math.min(bound.y, r.y)
@@ -797,7 +798,7 @@ impl Capture
 
         foreach f, i in me.forms
         {
-            let autoSel = selection.contains(i) or @dataof(f) == @dataof(editForm)
+            let autoSel = me.selection.contains(i) or @dataof(f) == @dataof(editForm)
             let form    = cast(*BaseForm) @dataof(f)
 
             switch f
@@ -854,7 +855,7 @@ impl Capture
         {
             foreach ax in arrX
             {
-                let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                let p   = me.getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbX = Math.abs(p.x - ax)
                 if nbX < bestX
                 {
@@ -868,7 +869,7 @@ impl Capture
         {
             foreach ay in arrY
             {
-                let p   = getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                let p   = me.getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbY = Math.abs(p.y - ay)
                 if nbY < bestY
                 {
@@ -1150,8 +1151,8 @@ impl Capture
             foreach f, idx in me.forms
             {
                 let pp = f.boundRect() * view.zoom
-                if pp.intersectWith(r) and !selection.contains(idx):
-                    selection.add(idx)
+                if pp.intersectWith(r) and !me.selection.contains(idx):
+                    me.selection.add(idx)
             }
 
             me.firstMouseMove = false

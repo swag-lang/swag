@@ -1,3 +1,4 @@
+#global marked
 enum FormImageKind
 {
     Image
@@ -297,7 +298,7 @@ impl IForm for FormImage
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         let z     = cxt.z
-        let bSize = adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
+        let bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
         var pp    = me.boundRect() * z
         var pen   = Pen.createSolid(me.borderColor, bSize)
 

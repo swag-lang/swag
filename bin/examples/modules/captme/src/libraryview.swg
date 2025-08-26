@@ -1,3 +1,4 @@
+#global marked
 using Threading, Time
 
 private var g_UpdatingLib: bool
@@ -145,30 +146,30 @@ impl IWnd for LibraryView
             it.visible = true
             if y + h < spos.y:
                 it.visible = false
-            if y > spos.y + position.height:
+            if y > spos.y + me.position.height:
                 it.visible = false
 
             // Retrieve the loaded capture if it exists
-            mutexLoaded.lock()
+            me.mutexLoaded.lock()
             let capture = it.capture
-            mutexLoaded.unlock()
+            me.mutexLoaded.unlock()
 
             // We have a capture but not yet a texture. Create it.
             if capture and !it.texture.isValid():
                 it.texture = evt.bc.renderer.addImage(capture.preview)
 
             it.rect = Math.Rectangle{x, y, w, h}
-            let selected = selModel.isSelected(cast() i)
+            let selected = me.selModel.isSelected(cast() i)
 
             if capture:
-                RecentView.IWnd.paintRecent(me, painter, it.texture, it.rect, i == hotItem, selected, capture.linkedUpToDate, capture.linkedImage)
+                RecentView.IWnd.paintRecent(me, painter, it.texture, it.rect, i == me.hotItem, selected, capture.linkedUpToDate, capture.linkedImage)
             else:
-                RecentView.IWnd.paintRecent(me, painter, it.texture, it.rect, i == hotItem, selected, false, null)
+                RecentView.IWnd.paintRecent(me, painter, it.texture, it.rect, i == me.hotItem, selected, false, null)
 
             // Waiting for texture
             if !it.texture.isValid()
             {
-                var icon  = getTheme().getIcon64(.HourGlass, 48)
+                var icon  = me.getTheme().getIcon64(.HourGlass, 48)
                 var color = Color.fromArgb(50, Argb.White)
                 icon.paint(painter, it.rect.horzCenter() - icon.sizeX * 0.5, it.rect.vertCenter() - icon.sizeY * 0.5, color)
             }
@@ -224,8 +225,8 @@ impl LibraryView
             {
                 if it.capture and it.texture.isValid()
                 {
-                    getApp().getRenderer().removeTexture(&it.texture)
-                    it.texture = getApp().getRenderer().addImage(capture.preview)
+                    me.getApp().getRenderer().removeTexture(&it.texture)
+                    it.texture = me.getApp().getRenderer().addImage(capture.preview)
                 }
 
                 break
@@ -240,23 +241,23 @@ impl LibraryView
         {
             it.filtered = true
 
-            mutexLoaded.lock()
+            me.mutexLoaded.lock()
             let capture = it.capture
-            mutexLoaded.unlock()
+            me.mutexLoaded.unlock()
 
             if !capture:
                 continue
-            if !capture.linkedImage.isEmpty() and !libWnd.showLinkedImage:
+            if !capture.linkedImage.isEmpty() and !me.libWnd.showLinkedImage:
                 continue
-            if capture.linkedImage.isEmpty() and !libWnd.showUnLinkedImage:
+            if capture.linkedImage.isEmpty() and !me.libWnd.showUnLinkedImage:
                 continue
-            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUpToDateLinkedImage:
+            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !me.libWnd.showUpToDateLinkedImage:
                 continue
-            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !libWnd.showUnSavedLinkedImage:
+            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !me.libWnd.showUnSavedLinkedImage:
                 continue
 
             it.filtered = false
-            items.add(it)
+            me.items.add(it)
         }
 
         me.invalidate()
@@ -374,7 +375,7 @@ impl LibraryView
 
         me.mutexLoaded.lock()
         foreach it, i in nitems:
-            items[i] = nitems[i]
+            me.items[i] = nitems[i]
         me.mutexLoaded.unlock()
     }
 
@@ -425,9 +426,9 @@ impl LibraryView
         var res: Array'File.FileInfo
         foreach fi in g_Library.files
         {
-            if (filterYear == 0 or fi.lastWriteTime.year == filterYear) and
-               (filterMonth == 0 or fi.lastWriteTime.month == filterMonth) and
-               (filterDay == 0 or fi.lastWriteTime.day == filterDay)
+            if (me.filterYear == 0 or fi.lastWriteTime.year == me.filterYear) and
+               (me.filterMonth == 0 or fi.lastWriteTime.month == me.filterMonth) and
+               (me.filterDay == 0 or fi.lastWriteTime.day == me.filterDay)
             {
                 res.add(fi)
             }
@@ -442,7 +443,7 @@ impl LibraryView
         me.allItems.reserve(res.count)
         foreach fi in res
         {
-            let ptr = allItems.addNewPtr()
+            let ptr = me.allItems.addNewPtr()
             ptr.fi = fi
         }
 

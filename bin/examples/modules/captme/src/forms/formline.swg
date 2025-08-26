@@ -1,3 +1,4 @@
+#global marked
 struct FormLine
 {
     using base:         BaseForm
@@ -172,9 +173,9 @@ impl IForm for FormLine
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         var bSize = cxt.hitTest ? Math.max(me.borderSize, 5) : me.borderSize
-        bSize = adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)
-        let sSize = cxt.quickMode ? adaptSize(me.startSize, MinCapSize, MaxCapSize, cxt, 1, 4) : me.startSize
-        let eSize = cxt.quickMode ? adaptSize(me.endSize, MinCapSize, MaxCapSize, cxt, 1, 4) : me.endSize
+        bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt, 8, 12)
+        let sSize = cxt.quickMode ? BaseForm.adaptSize(me.startSize, MinCapSize, MaxCapSize, cxt, 1, 4) : me.startSize
+        let eSize = cxt.quickMode ? BaseForm.adaptSize(me.endSize, MinCapSize, MaxCapSize, cxt, 1, 4) : me.endSize
 
         if me.bezier
         {

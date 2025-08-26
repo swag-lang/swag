@@ -1,3 +1,4 @@
+#global marked
 impl MainWnd
 {
     mtd updateModel(f: IForm)

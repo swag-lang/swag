@@ -1,3 +1,4 @@
+#global marked
 const CmdIdPixSelClear     = "CmdIdPixSelClear"
 const CmdIdPixSelFill      = "CmdIdPixSelFill"
 const CmdIdPixSelSmartFill = "CmdIdPixSelSmartFill"

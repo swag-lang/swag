@@ -1,3 +1,4 @@
+#global marked
 enum FormTextAlign
 {
     LeftTop
@@ -181,9 +182,9 @@ impl IForm for FormText
         var cxtCpy = cxt
         cxtCpy.z = 1
 
-        let bSize = adaptSize(me.borderSize, MinTextBorderSize, MaxTextBorderSize, cxtCpy, 2, 4)
-        let fSize = adaptSize(me.fontSize, MinFontSize, MaxFontSize, cxtCpy, 20, 48)
-        let sSize = adaptSize(me.boldSize, MinBoldSize, MaxBoldSize, cxtCpy, 1, 2)
+        let bSize = BaseForm.adaptSize(me.borderSize, MinTextBorderSize, MaxTextBorderSize, cxtCpy, 2, 4)
+        let fSize = BaseForm.adaptSize(me.fontSize, MinFontSize, MaxFontSize, cxtCpy, 20, 48)
+        let sSize = BaseForm.adaptSize(me.boldSize, MinBoldSize, MaxBoldSize, cxtCpy, 1, 2)
         let z     = cxt.z
 
         let boundRect = me.boundRect() * z
@@ -257,12 +258,12 @@ impl IForm for FormText
             me.totalY = 0
             foreach t, idx in tokens
             {
-                let pathl  = &paths[idx * 2]
-                let pathl1 = &paths[(idx * 2) + 1]
+                let pathl  = &me.paths[idx * 2]
+                let pathl1 = &me.paths[(idx * 2) + 1]
 
                 Utf8.visitRunes(|c| t)
                 {
-                    var it = runes.tryFind(c)
+                    var it = me.runes.tryFind(c)
                     if !it
                     {
                         var ftr: FormTextRune
@@ -273,14 +274,14 @@ impl IForm for FormText
                         ftr.back.clean()
 
                         // Border
-                        if !Math.isZeroEpsilon(bSize) and borderColor.a
+                        if !Math.isZeroEpsilon(bSize) and me.borderColor.a
                         {
                             assume face.getRuneOutline(&ftr.border, c, cast() fSize, cast() sSize)
                             ftr.border.flatten(painter.curState.paintQuality)
-                            ftr.border.offset(bSize, joinStyle, 0.5)
+                            ftr.border.offset(bSize, me.joinStyle, 0.5)
                         }
 
-                        it = runes.add(c, ftr)
+                        it = me.runes.add(c, ftr)
                     }
 
                     pathl.bvMax.x += it.value.advance
@@ -300,7 +301,7 @@ impl IForm for FormText
                     }
                 }
 
-                totalY += (pathl.bvMax.y - pathl.bvMin.y)
+                me.totalY += (pathl.bvMax.y - pathl.bvMin.y)
             }
         }
 
@@ -357,9 +358,9 @@ impl IForm for FormText
                 painter.translateTransform(x0, y0 - (pathl1.bvMin.y * zscale))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
-                    let it = runes.find(c)
+                    let it = me.runes.find(c)
                     pl.paths.add(it.value.border.paths.toSlice())
-                    painter.fillPath(&pl, borderColor)
+                    painter.fillPath(&pl, me.borderColor)
                     pl.paths.count = 0
                     painter.translateTransform(cast(f32) it.value.advance * zscale, 0)
                 }
@@ -377,9 +378,9 @@ impl IForm for FormText
                 painter.translateTransform(x0, y0 - (pathl1.bvMin.y * zscale))
                 Utf8.visitRunes(|c| tokens[i / 2])
                 {
-                    let it = runes.find(c)
+                    let it = me.runes.find(c)
                     pl.paths.add(it.value.back.paths.toSlice())
-                    painter.fillPath(&pl, backColor)
+                    painter.fillPath(&pl, me.backColor)
                     pl.paths.count = 0
                     painter.translateTransform(cast(f32) it.value.advance * zscale, 0)
                 }

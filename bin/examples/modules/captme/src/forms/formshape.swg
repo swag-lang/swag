@@ -1,3 +1,4 @@
+#global marked
 enum FormShapeKind
 {
     Ellipse
@@ -176,8 +177,8 @@ impl IForm for FormShape
     {
         var dash  = me.dashStyle
         var bSize = cxt.hitTest ? Math.max(me.borderSize, 5) : me.borderSize
-        bSize = adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)
-        let rSize = adaptSize(me.roundSize, MinRoundSize, MaxRoundSize, cxt)
+        bSize = BaseForm.adaptSize(bSize, MinBorderSize, MaxBorderSize, cxt)
+        let rSize = BaseForm.adaptSize(me.roundSize, MinRoundSize, MaxRoundSize, cxt)
         var bk    = me.backColor
 
         if me.subKind == .PixSel

@@ -1,3 +1,4 @@
+#global marked
 enum UndoKind
 {
     MoveBaseForm
@@ -75,7 +76,7 @@ impl Undo
         {
             Memory.delete(me.mdlValue, me.mdlType)
             foreach f in me.oldForm:
-                Memory.delete(f, mdlType)
+                Memory.delete(f, me.mdlType)
         }
     }
 
@@ -120,59 +121,59 @@ impl Undo
             me.selection = me.capture.selection
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormImage:
                     continue
                 let b = cast(*FormImage) @dataof(f)
                 if b.kind != .Image:
                     continue
-                oldImage.add(b.image)
+                me.oldImage.add(b.image)
             }
 
         case SetText:
             me.selection = me.capture.selection
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                oldText.add(b.text)
+                me.oldText.add(b.text)
             }
 
         case SetFont:
             me.selection = me.capture.selection
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                oldText.add(b.fontName)
-                oldU32.add(cast(u32) b.fontStyle)
+                me.oldText.add(b.fontName)
+                me.oldU32.add(cast(u32) b.fontStyle)
             }
 
         case SetFontStyle:
             me.selection = me.capture.selection
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                oldU32.add(cast(u32) b.fontStyle)
+                me.oldU32.add(cast(u32) b.fontStyle)
             }
 
         case SetFormFromModel:
             me.selection = me.capture.selection
             foreach s in me.selection
             {
-                let f = capture.forms[s]
-                if !acceptsType(@kindof(f)):
+                let f = me.capture.forms[s]
+                if !me.acceptsType(@kindof(f)):
                     continue
-                let save = cast(*BaseForm) Memory.new(mdlType)
+                let save = cast(*BaseForm) Memory.new(me.mdlType)
                 f.copy(save, cast(*BaseForm) @dataof(f))
-                oldForm.add(save)
+                me.oldForm.add(save)
             }
 
         case AlignLeft, AlignCenter, AlignRight:
@@ -182,11 +183,11 @@ impl Undo
             me.oldS32.reserve(me.selection.count)
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                oldS32.add(cast(s32) r.x)
-                minP = Math.min(minP, cast(s32) r.x)
-                maxP = Math.max(maxP, cast(s32) (r.x + r.width))
+                me.oldS32.add(cast(s32) r.x)
+                me.minP = Math.min(me.minP, cast(s32) r.x)
+                me.maxP = Math.max(me.maxP, cast(s32) (r.x + r.width))
             }
 
         case AlignTop, AlignMiddle, AlignBottom:
@@ -196,11 +197,11 @@ impl Undo
             me.oldS32.reserve(me.selection.count)
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                oldS32.add(cast(s32) r.x)
-                minP = Math.min(minP, cast(s32) r.y)
-                maxP = Math.max(maxP, cast(s32) (r.y + r.height))
+                me.oldS32.add(cast(s32) r.x)
+                me.minP = Math.min(me.minP, cast(s32) r.y)
+                me.maxP = Math.max(me.maxP, cast(s32) (r.y + r.height))
             }
 
         case OffsetSelection:
@@ -210,12 +211,12 @@ impl Undo
             me.selection = me.capture.selection
             foreach s in me.selection
             {
-                let f = capture.forms[s]
-                if !acceptsType(@kindof(f)):
+                let f = me.capture.forms[s]
+                if !me.acceptsType(@kindof(f)):
                     continue
                 var val: u32
-                Reflection.getFieldValue(&val, valRef, @dataof(f), true)
-                oldU32.add(val)
+                Reflection.getFieldValue(&val, me.valRef, @dataof(f), true)
+                me.oldU32.add(val)
             }
 
         case MoveToFront, MoveToBack, MoveBackward, MoveForward:
@@ -238,10 +239,10 @@ impl Undo
             var offset = 0
             foreach s in me.selection
             {
-                let f = capture.forms[s - offset]
+                let f = me.capture.forms[s - offset]
                 offset += 1
-                capture.forms.removeOrdered(f)
-                toFreeForms.add(f)
+                me.capture.forms.removeOrdered(f)
+                me.toFreeForms.add(f)
             }
 
             me.capture.selection.clear()
@@ -292,69 +293,69 @@ impl Undo
         case SetImageInside:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormImage:
                     continue
                 let b = cast(*FormImage) @dataof(f)
                 if b.kind != .Image:
                     continue
-                b.image = oldImg
+                b.image = me.oldImg
                 b.dirty = true
             }
 
         case SetText:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.text    = text
+                b.text    = me.text
                 b.isDirty = true
             }
 
         case SetFont:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontName    = text
-                b.fontStyle   = fontStyle
+                b.fontName    = me.text
+                b.fontStyle   = me.fontStyle
                 b.isDirtyFont = true
             }
 
         case SetFontStyle:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontStyle   = fontStyle
+                b.fontStyle   = me.fontStyle
                 b.isDirtyFont = true
             }
 
         case SetFormFromModel:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
-                if !acceptsType(@kindof(f)):
+                let f = me.capture.forms[s]
+                if !me.acceptsType(@kindof(f)):
                     continue
                 let bf = cast(*BaseForm) @dataof(f)
-                if bf.subKind != mdlValue.subKind:
+                if bf.subKind != me.mdlValue.subKind:
                     continue
-                f.copy(cast(*BaseForm) @dataof(f), mdlValue)
+                f.copy(cast(*BaseForm) @dataof(f), me.mdlValue)
             }
 
         case SetTypedValue:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
-                if !acceptsType(@kindof(f)):
+                let f = me.capture.forms[s]
+                if !me.acceptsType(@kindof(f)):
                     continue
-                Reflection.setFieldValue(@dataof(f), valRef, &valU32, true)
+                Reflection.setFieldValue(@dataof(f), me.valRef, &me.valU32, true)
             }
 
             me.capture.updateModelFromSelection()
@@ -362,49 +363,49 @@ impl Undo
         case AlignLeft:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                f.moveBaseForm(minP - cast(s32) r.x, 0, 0, 0)
+                f.moveBaseForm(me.minP - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignRight:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                f.moveBaseForm((maxP - cast(s32) r.width) - cast(s32) r.x, 0, 0, 0)
+                f.moveBaseForm((me.maxP - cast(s32) r.width) - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignCenter:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                f.moveBaseForm(((maxP + minP) / 2 - (cast(s32) r.width / 2)) - cast(s32) r.x, 0, 0, 0)
+                f.moveBaseForm(((me.maxP + me.minP) / 2 - (cast(s32) r.width / 2)) - cast(s32) r.x, 0, 0, 0)
             }
 
         case AlignTop:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                f.moveBaseForm(0, minP - cast(s32) r.y, 0, 0)
+                f.moveBaseForm(0, me.minP - cast(s32) r.y, 0, 0)
             }
 
         case AlignBottom:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                f.moveBaseForm(0, (maxP - cast(s32) r.height) - cast(s32) r.y, 0, 0)
+                f.moveBaseForm(0, (me.maxP - cast(s32) r.height) - cast(s32) r.y, 0, 0)
             }
 
         case AlignMiddle:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 let r = f.boundRect()
-                f.moveBaseForm(0, ((maxP + minP) / 2 - (cast(s32) r.height / 2)) - cast(s32) r.y, 0, 0)
+                f.moveBaseForm(0, ((me.maxP + me.minP) / 2 - (cast(s32) r.height / 2)) - cast(s32) r.y, 0, 0)
             }
 
         case MovePoint:
@@ -417,7 +418,7 @@ impl Undo
             me.capture.backImagePos.x += me.newPosX
             me.capture.backImagePos.y += me.newPosY
             foreach f in me.capture.forms:
-                f.moveForm(newPosX, newPosY)
+                f.moveForm(me.newPosX, me.newPosY)
             me.capture.width += me.newSizeX
             me.capture.height += me.newSizeY
             me.capture.width  = Math.clamp(me.capture.width, Capture.MinSize, Capture.MaxSize)
@@ -426,8 +427,8 @@ impl Undo
         case OffsetSelection:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
-                f.moveForm(newPosX, newPosY)
+                let f = me.capture.forms[s]
+                f.moveForm(me.newPosX, me.newPosY)
             }
 
         case MoveToFront:
@@ -502,7 +503,7 @@ impl Undo
         case CreateForm:
             me.toFreeForms.clear()
             foreach f in me.oldForms:
-                capture.forms.add(f)
+                me.capture.forms.add(f)
         }
 
         me.capture.hasChanged()
@@ -545,78 +546,78 @@ impl Undo
         case SetImageInside:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormImage:
                     continue
                 let b = cast(*FormImage) @dataof(f)
                 if b.kind != .Image:
                     continue
-                b.image = oldImage[i]
+                b.image = me.oldImage[i]
                 b.dirty = true
             }
 
         case SetText:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.text    = oldText[i]
+                b.text    = me.oldText[i]
                 b.isDirty = true
             }
 
         case SetFont:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontName    = oldText[i]
-                b.fontStyle   = cast() oldU32[i]
+                b.fontName    = me.oldText[i]
+                b.fontStyle   = cast() me.oldU32[i]
                 b.isDirtyFont = true
             }
 
         case SetFontStyle:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
+                let f = me.capture.forms[s]
                 if @kindof(f) != FormText:
                     continue
                 let b = cast(*FormText) @dataof(f)
-                b.fontStyle   = cast() oldU32[i]
+                b.fontStyle   = cast() me.oldU32[i]
                 b.isDirtyFont = true
             }
 
         case SetFormFromModel:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
-                if !acceptsType(@kindof(f)):
+                let f = me.capture.forms[s]
+                if !me.acceptsType(@kindof(f)):
                     continue
                 let bf = cast(*BaseForm) @dataof(f)
-                if bf.subKind != mdlValue.subKind:
+                if bf.subKind != me.mdlValue.subKind:
                     continue
-                f.copy(cast(*BaseForm) @dataof(f), oldForm[i])
+                f.copy(cast(*BaseForm) @dataof(f), me.oldForm[i])
             }
 
         case SetTypedValue:
             foreach s, i in me.selection
             {
-                let f = capture.forms[s]
-                if !acceptsType(@kindof(f)):
+                let f = me.capture.forms[s]
+                if !me.acceptsType(@kindof(f)):
                     continue
-                var val = oldU32[i]
-                Reflection.setFieldValue(@dataof(f), valRef, &val, true)
+                var val = me.oldU32[i]
+                Reflection.setFieldValue(@dataof(f), me.valRef, &val, true)
             }
             me.capture.updateModelFromSelection()
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
             foreach s, i in me.selection
             {
-                let b = cast(*BaseForm) @dataof(capture.forms[s])
-                b.x = oldS32[i]
+                let b = cast(*BaseForm) @dataof(me.capture.forms[s])
+                b.x = me.oldS32[i]
             }
 
         case MovePoint:
@@ -629,15 +630,15 @@ impl Undo
             me.capture.backImagePos.x += -me.newPosX
             me.capture.backImagePos.y += -me.newPosY
             foreach f in me.capture.forms:
-                f.moveForm(-newPosX, -newPosY)
+                f.moveForm(-me.newPosX, -me.newPosY)
             me.capture.width -= me.newSizeX
             me.capture.height -= me.newSizeY
 
         case OffsetSelection:
             foreach s in me.selection
             {
-                let f = capture.forms[s]
-                f.moveForm(-newPosX, -newPosY)
+                let f = me.capture.forms[s]
+                f.moveForm(-me.newPosX, -me.newPosY)
             }
 
         case MoveToFront, MoveToBack, MoveForward, MoveBackward, DeleteSelection:

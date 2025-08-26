@@ -1,3 +1,4 @@
+#global marked
 var g_App: Application
 
 #main
