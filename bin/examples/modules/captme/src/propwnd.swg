@@ -700,7 +700,7 @@ impl PropWnd
             .selectItem(cast(u32) curSel.typeIndex)
             .sigChanged += mtd||(combo, val)
             {
-                pushTypedValue(cast() val, FormStep, #nameof(FormStep.typeIndex), true)
+                me.pushTypedValue(cast() val, FormStep, #nameof(FormStep.typeIndex), true)
             }
         }
 
@@ -711,7 +711,7 @@ impl PropWnd
             .toolTip   = "Reset the global step count to 1"
             btn.sigPressed += mtd||(btn)
             {
-                let capture = assume main.getCapture()
+                let capture = assume me.main.getCapture()
                 capture.nextStepIndex = 1
             }
         }
@@ -769,7 +769,7 @@ impl PropWnd
             if idx == Swag.U32.Max:
                 return
 
-            var capture = assume main.getCapture()
+            var capture = assume me.main.getCapture()
             var undo    = capture.newUndo(.SetFont)
 
             var sel = combo.items[idx]
@@ -799,10 +799,10 @@ impl PropWnd
         edt.name = "Enter text"
         edt.sigLoseFocus += mtd||(edit)
         {
-            let curSel = cast(*FormText) getSelectedBaseForm()
+            let curSel = cast(*FormText) me.getSelectedBaseForm()
             if curSel.text != edit.text
             {
-                let capture = assume main.getCapture()
+                let capture = assume me.main.getCapture()
                 let undo    = capture.newUndo(.SetText)
                 undo.text = edit.text
                 capture.pushUndo(undo)
@@ -818,7 +818,7 @@ impl PropWnd
 
             .sigUpdateState += mtd||(evt)
             {
-                let curSel = cast(*FormText) getSelectedBaseForm()
+                let curSel = cast(*FormText) me.getSelectedBaseForm()
                 evt.setFlags.add(.Checked)
                 evt.accepted = true
 
@@ -833,8 +833,8 @@ impl PropWnd
 
             .sigCheckChanged += mtd||(btn)
             {
-                let capture = assume main.getCapture()
-                let curSel  = cast(*FormText) getSelectedBaseForm()
+                let capture = assume me.main.getCapture()
+                let curSel  = cast(*FormText) me.getSelectedBaseForm()
                 var fstyle  = curSel.fontStyle
                 switch btn.id
                 {
@@ -907,17 +907,17 @@ impl PropWnd
                 switch btn.id
                 {
                 case CmdIdTextHLeft:
-                    pushTypedValue(cast(u32) FormTextAlign.LeftTop, FormText, #nameof(FormText.alignHorz), true)
+                    me.pushTypedValue(cast(u32) FormTextAlign.LeftTop, FormText, #nameof(FormText.alignHorz), true)
                 case CmdIdTextHCenter:
-                    pushTypedValue(cast(u32) FormTextAlign.Center, FormText, #nameof(FormText.alignHorz), true)
+                    me.pushTypedValue(cast(u32) FormTextAlign.Center, FormText, #nameof(FormText.alignHorz), true)
                 case CmdIdTextHRight:
-                    pushTypedValue(cast(u32) FormTextAlign.RightBottom, FormText, #nameof(FormText.alignHorz), true)
+                    me.pushTypedValue(cast(u32) FormTextAlign.RightBottom, FormText, #nameof(FormText.alignHorz), true)
                 case CmdIdTextVTop:
-                    pushTypedValue(cast(u32) FormTextAlign.LeftTop, FormText, #nameof(FormText.alignVert), true)
+                    me.pushTypedValue(cast(u32) FormTextAlign.LeftTop, FormText, #nameof(FormText.alignVert), true)
                 case CmdIdTextVCenter:
-                    pushTypedValue(cast(u32) FormTextAlign.Center, FormText, #nameof(FormText.alignVert), true)
+                    me.pushTypedValue(cast(u32) FormTextAlign.Center, FormText, #nameof(FormText.alignVert), true)
                 case CmdIdTextVBottom:
-                    pushTypedValue(cast(u32) FormTextAlign.RightBottom, FormText, #nameof(FormText.alignVert), true)
+                    me.pushTypedValue(cast(u32) FormTextAlign.RightBottom, FormText, #nameof(FormText.alignVert), true)
                 }
             }
 
@@ -935,11 +935,11 @@ impl PropWnd
         let ctrl = createSlider("Start Size", cast() MinCapSize, cast() MaxCapSize, curSel.startSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.startSize), true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.startSize), true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.startSize), false)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.startSize), false)
         }
     }
 
@@ -953,11 +953,11 @@ impl PropWnd
         let ctrl   = createSlider("End Size", cast() MinCapSize, cast() MaxCapSize, curSel.endSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.endSize), true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.endSize), true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.endSize), false)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormLine, #nameof(FormLine.endSize), false)
         }
     }
 
@@ -974,11 +974,11 @@ impl PropWnd
         let ctrl = createSlider("Round", cast() MinRoundSize, cast() MaxRoundSize, curSel.roundSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormShape, #nameof(FormShape.roundSize), true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormShape, #nameof(FormShape.roundSize), true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormShape, #nameof(FormShape.roundSize), false)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormShape, #nameof(FormShape.roundSize), false)
         }
     }
 
@@ -1000,7 +1000,7 @@ impl PropWnd
             edit0.edit.sigLoseFocus += mtd||(ed)
             {
                 let (v, ?, ?) = catch StrConv.parseS32(ed.text)
-                pushTypedValue(v, BaseForm, #nameof(BaseForm.x), true, true)
+                me.pushTypedValue(v, BaseForm, #nameof(BaseForm.x), true, true)
             }
 
             let edit1 = EditCtrl.create(l, "y", Format.toString("%", curSel.y), flags: .AutoLoseFocus)
@@ -1010,7 +1010,7 @@ impl PropWnd
             edit1.edit.sigLoseFocus += mtd||(ed)
             {
                 let (v, ?, ?) = catch StrConv.parseS32(ed.text)
-                pushTypedValue(v, BaseForm, #nameof(BaseForm.y), true, true)
+                me.pushTypedValue(v, BaseForm, #nameof(BaseForm.y), true, true)
             }
         }
 
@@ -1023,7 +1023,7 @@ impl PropWnd
             edit0.edit.sigLoseFocus += mtd||(ed)
             {
                 let (v, ?, ?) = catch StrConv.parseS32(ed.text)
-                pushTypedValue(v, BaseForm, #nameof(BaseForm.w), true, true)
+                me.pushTypedValue(v, BaseForm, #nameof(BaseForm.w), true, true)
             }
 
             let edit1 = EditCtrl.create(l, "h", Format.toString("%", curSel.h), flags: .AutoLoseFocus)
@@ -1033,7 +1033,7 @@ impl PropWnd
             edit1.edit.sigLoseFocus += mtd||(ed)
             {
                 let (v, ?, ?) = catch StrConv.parseS32(ed.text)
-                pushTypedValue(v, BaseForm, #nameof(BaseForm.h), true, true)
+                me.pushTypedValue(v, BaseForm, #nameof(BaseForm.h), true, true)
             }
         }
     }
@@ -1065,11 +1065,11 @@ impl PropWnd
         let ctrl = createSlider(labl, cast() minS, cast() maxS, curSel.borderSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.borderSize), true, true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.borderSize), true, true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.borderSize), false, true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.borderSize), false, true)
         }
     }
 
@@ -1083,11 +1083,11 @@ impl PropWnd
         let ctrl   = createSlider("Size", cast() MinFontSize, cast() MaxFontSize, cast() curSel.fontSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.fontSize), true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.fontSize), true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.fontSize), false)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.fontSize), false)
         }
     }
 
@@ -1103,11 +1103,11 @@ impl PropWnd
 
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), true, true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), true, true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), false, true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.scale), false, true)
         }
     }
 
@@ -1126,23 +1126,23 @@ impl PropWnd
 
         ctrl.sigStartChange += mtd|ctrl1|(rotate)
         {
-            pushTypedValue(cast #bit (u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
+            me.pushTypedValue(cast #bit (u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
             ctrl1.setValueNoChange(rotate.getValue())
         }
         ctrl.sigChanged += mtd|ctrl1|(rotate)
         {
-            pushTypedValue(cast #bit (u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
+            me.pushTypedValue(cast #bit (u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
             ctrl1.setValueNoChange(rotate.getValue())
         }
 
         ctrl1.slider.sigStartChange += mtd|ctrl|(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
             ctrl.setValueNoChange(slider.getValue())
         }
         ctrl1.slider.sigChanged += mtd|ctrl|(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
             ctrl.setValueNoChange(slider.getValue())
         }
     }
@@ -1163,7 +1163,7 @@ impl PropWnd
             .sigChanged += mtd||(combo, val)
             {
                 var b = val == 1 ? true : false
-                pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.paintShadow), true, true)
+                me.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.paintShadow), true, true)
             }
         }
     }
@@ -1187,7 +1187,7 @@ impl PropWnd
             .sigChanged += mtd||(combo, val)
             {
                 var b = val == 1 ? true : false
-                pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.bezier), true, true)
+                me.pushTypedValue(cast() b, BaseForm, #nameof(BaseForm.bezier), true, true)
             }
         }
     }
@@ -1202,11 +1202,11 @@ impl PropWnd
         let ctrl   = createSlider("Strengh", cast() MinBoldSize, cast() MaxBoldSize, cast() curSel.boldSize)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.boldSize), true)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.boldSize), true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.boldSize), false)
+            me.pushTypedValue(cast #bit (u32) slider.getValue(), FormText, #nameof(FormText.boldSize), false)
         }
     }
 
@@ -1221,11 +1221,11 @@ impl PropWnd
 
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast(u32) slider.getValue(), BaseForm, #nameof(BaseForm.alpha), true, true)
+            me.pushTypedValue(cast(u32) slider.getValue(), BaseForm, #nameof(BaseForm.alpha), true, true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast(u32) slider.getValue(), BaseForm, #nameof(BaseForm.alpha), false, true)
+            me.pushTypedValue(cast(u32) slider.getValue(), BaseForm, #nameof(BaseForm.alpha), false, true)
         }
     }
 
@@ -1246,8 +1246,8 @@ impl PropWnd
             .selectItem(cast(u32) curSel.kind)
             .sigChanged += mtd||(combo, val)
             {
-                pushTypedValue(val, FormImage, #nameof(FormImage.kind), true)
-                selectionHasChanged()
+                me.pushTypedValue(val, FormImage, #nameof(FormImage.kind), true)
+                me.selectionHasChanged()
             }
         }
 
@@ -1260,7 +1260,7 @@ impl PropWnd
             .selectItem(cast(u32) curSel.place)
             .sigChanged += mtd||(combo, val)
             {
-                pushTypedValue(val, FormImage, #nameof(FormImage.place), true)
+                me.pushTypedValue(val, FormImage, #nameof(FormImage.place), true)
             }
         }
     }
@@ -1277,11 +1277,11 @@ impl PropWnd
         let ctrl = createSlider("Strength", 0, 100, cast() curSel.strength)
         ctrl.slider.sigStartChange += mtd||(slider)
         {
-            pushTypedValue(cast(u32) slider.getValue(), FormImage, #nameof(FormImage.strength), true)
+            me.pushTypedValue(cast(u32) slider.getValue(), FormImage, #nameof(FormImage.strength), true)
         }
         ctrl.slider.sigChanged += mtd||(slider)
         {
-            pushTypedValue(cast(u32) slider.getValue(), FormImage, #nameof(FormImage.strength), false)
+            me.pushTypedValue(cast(u32) slider.getValue(), FormImage, #nameof(FormImage.strength), false)
         }
     }
 
@@ -1306,7 +1306,7 @@ impl PropWnd
             .sigChanged += mtd||(combo, val)
             {
                 var v = val + 1
-                pushTypedValue(cast() v, BaseForm, #nameof(BaseForm.joinStyle), true, true)
+                me.pushTypedValue(cast() v, BaseForm, #nameof(BaseForm.joinStyle), true, true)
             }
         }
     }

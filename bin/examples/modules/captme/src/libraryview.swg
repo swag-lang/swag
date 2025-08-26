@@ -458,7 +458,7 @@ impl LibraryView
         // Launch thread to read all captures
         try
         {
-            thread.init(mtd||(th: Thread) { loadFiles(th); })
+            thread.init(mtd||(th: Thread) { me.loadFiles(th); })
             thread.start()
         }
 

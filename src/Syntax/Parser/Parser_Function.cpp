@@ -1309,7 +1309,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
         if (isMethod)
         {
             const auto meId = Ast::newIdentifierRef(g_LangSpec->name_me, this, cp);
-            meId->addAstFlag(AST_DECL_USING | AST_GENERATED | AST_IN_CAPTURE_BLOCK);
+            meId->addAstFlag(AST_GENERATED | AST_IN_CAPTURE_BLOCK);
         }
 
         // We want the lambda to be evaluated only once the captured block has been typed

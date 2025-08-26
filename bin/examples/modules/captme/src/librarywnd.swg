@@ -166,8 +166,8 @@ impl LibraryWnd
             {
                 if it.fi.fullname == file
                 {
-                    view.selModel.select(cast() i, false)
-                    view.items.removeAtOrdered(i)
+                    me.view.selModel.select(cast() i, false)
+                    me.view.items.removeAtOrdered(i)
                     break
                 }
             }

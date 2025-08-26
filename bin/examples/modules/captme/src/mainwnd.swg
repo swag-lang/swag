@@ -295,8 +295,8 @@ impl MainWnd
             embInfoFreeze = EmbInfoCtrl.create(editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
             embInfoFreeze.sigOnClose += mtd||(ctrl)
             {
-                freezeSel     = false
-                embInfoFreeze = null
+                me.freezeSel     = false
+                me.embInfoFreeze = null
             }
 
             let capture = assume getCapture()

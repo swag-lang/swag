@@ -693,16 +693,16 @@ impl QuickWnd
             btn.sigRightPressed += mtd||(btn)
             {
                 var rect = btn.getSurfaceRect()
-                btnPopup(btn, rect.center())
+                me.btnPopup(btn, rect.center())
             }
 
             btn.sigCheckChanged += mtd|it|(btn)
             {
                 if !btn.isChecked:
                     return
-                main.updateModel(it)
+                me.main.updateModel(it)
 
-                var capture = assume main.getCapture()
+                var capture = assume me.main.getCapture()
                 if capture.selection.count
                 {
                     let mdlValue = MainWnd.newFormFromForm(it)
@@ -716,8 +716,8 @@ impl QuickWnd
                     capture.selection.clear()
                 }
 
-                updateSelection()
-                main.updateState()
+                me.updateSelection()
+                me.main.updateState()
             }
         }
 
@@ -778,8 +778,8 @@ impl QuickWnd
                 let mdl = main.newFormFromModel(main.getEditMode())
                 if mdl
                 {
-                    currentStyle.forms.add(mdl)
-                    updateQuickStyles()
+                    me.currentStyle.forms.add(mdl)
+                    me.updateQuickStyles()
                 }
             }
         }

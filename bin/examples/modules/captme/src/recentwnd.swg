@@ -253,19 +253,19 @@ impl RecentWnd
         g_Library.fill()
         g_Library.onDeleteFile += mtd||(file)
         {
-            foreach it, i in recentView.items
+            foreach it, i in me.recentView.items
             {
                 if it.file == file
                 {
                     // Remove from recent
-                    recentView.items.deletePtr(it)
-                    recentView.items.removeAtOrdered(i)
+                    me.recentView.items.deletePtr(it)
+                    me.recentView.items.removeAtOrdered(i)
 
                     // Select new one
-                    if recentView.selected == i
+                    if me.recentView.selected == i
                     {
-                        recentView.selected = Swag.U64.Max
-                        recentView.select(i)
+                        me.recentView.selected = Swag.U64.Max
+                        me.recentView.select(i)
                     }
 
                     break
