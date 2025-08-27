@@ -1,9 +1,9 @@
 #global testerror "Err0088"
 
-struct A{}
+struct A {}
 impl A
 {
-    mtd opPostCopy(){}
+    mtd opPostCopy() {}
 }
 //#[Swag.PrintBc]
 #test

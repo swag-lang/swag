@@ -4,5 +4,5 @@
 #test
 {
     var x = 0
-	#inject(x)
+    #inject(x)
 }

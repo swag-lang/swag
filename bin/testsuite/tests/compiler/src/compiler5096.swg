@@ -19,12 +19,12 @@ impl I for B
 
 struct C
 {
-    using a: A
-    using b: B
+    using a:     A
+    using b:     B
 }
 
 #test
 {
     var c: C
-    var i = cast(I) c
+    var i  = cast(I) c
 }

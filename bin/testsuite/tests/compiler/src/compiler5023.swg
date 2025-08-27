@@ -1,9 +1,7 @@
 #global testerror "Err0472"
 
 #[Swag.Macro]
-func toto()->s32
-{
-}
+func toto()->s32 {}
 
 #test
 {

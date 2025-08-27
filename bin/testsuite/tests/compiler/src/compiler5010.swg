@@ -1,7 +1,7 @@
 #global testerror "Err0083"
 
 #[Swag.NoCopy]
-struct A{}
+struct A {}
 
 #test
 {

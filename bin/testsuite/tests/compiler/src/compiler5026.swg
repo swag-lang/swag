@@ -1,9 +1,9 @@
 #global testerror "Err0089"
 
-struct A{}
+struct A {}
 impl A
 {
-    mtd opPostMove(){}
+    mtd opPostMove() {}
 }
 //#[Swag.PrintBc]
 #test

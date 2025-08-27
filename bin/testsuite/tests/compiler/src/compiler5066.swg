@@ -1,11 +1,10 @@
 #global testerror "Err0350"
 
-attr toto();
+attr toto()
 
 #test
 {
     using toto
     {
-
     }
 }

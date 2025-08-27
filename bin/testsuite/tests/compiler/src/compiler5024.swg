@@ -1,9 +1,9 @@
 #global testerror "Err0087"
 
-struct A{}
+struct A {}
 impl A
 {
-    mtd opDrop(){}
+    mtd opDrop() {}
 }
 //#[Swag.PrintBc]
 #test

@@ -1,6 +1,3 @@
 #global testerror "Err0590"
 
-enum A: [..] s32
-{
-
-}
+enum A: [..] s32 {  }

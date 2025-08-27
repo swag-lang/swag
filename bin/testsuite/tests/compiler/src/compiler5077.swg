@@ -1,4 +1,6 @@
 #global testerror "Err0263"
-namespace A {}
+namespace A
+{
+}
 
 func toto()->A {}
