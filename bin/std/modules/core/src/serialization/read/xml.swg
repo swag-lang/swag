@@ -152,82 +152,82 @@ public impl Xml
 
     mtd(NT) readNative()->NT throw
     {
-        zapBlanks()
+        me.zapBlanks()
         #if NT == bool
         {
-            var val = StrConv.parseBool(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseBool(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f32
         {
-            var val = StrConv.parseF32(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseF32(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f64
         {
-            var val = StrConv.parseF64(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseF64(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s8
         {
-            var val = StrConv.parseS8(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseS8(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s16
         {
-            var val = StrConv.parseS16(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseS16(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s32
         {
-            var val = StrConv.parseS32(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseS32(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s64
         {
-            var val = StrConv.parseS64(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseS64(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u8
         {
-            var val = StrConv.parseU8(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseU8(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u16
         {
-            var val = StrConv.parseU16(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseU16(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u32
         {
-            var val = StrConv.parseU32(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseU32(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u64
         {
-            var val = StrConv.parseU64(stream.remainReadToString())
-            stream.moveSeek(val.eat)
+            var val = StrConv.parseU64(me.stream.remainReadToString())
+            me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == Core.String
         {
             var result: retval
-            var c       = stream.peekU8()
+            var c       = me.stream.peekU8()
             while c and c != '<'
             {
-                c = stream.readU8()
+                c = me.stream.readU8()
                 result += c
-                c = stream.peekU8()
+                c = me.stream.peekU8()
             }
 
             return result

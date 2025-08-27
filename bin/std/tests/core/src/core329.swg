@@ -15,7 +15,7 @@ impl AA
 
     mtd call(params: ...)
     {
-        foreach fn in arr
+        foreach fn in me.arr
         {
             #ast
             {

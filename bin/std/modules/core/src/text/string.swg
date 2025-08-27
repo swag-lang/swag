@@ -208,7 +208,7 @@ impl String
             #error("visiting runes by pointer is not supported")
         #if back:
             #error("visiting runes in reverse order is not supported")
-        Utf8.visitRunes(|#alias0, #alias1, #alias2| toSlice(), stmt)
+        Utf8.visitRunes(|#alias0, #alias1, #alias2| me.toSlice(), stmt)
     }
 
     // Visit the String utf8 bytes

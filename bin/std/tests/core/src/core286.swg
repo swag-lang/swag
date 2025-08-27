@@ -11,8 +11,8 @@ impl P
     //#[Swag.PrintBc]//, Swag.Optimize("", false)]
     mtd toto()
     {
-        bvMin.set(Swag.F32.Max, Swag.F32.Max)
-        bvMax.set(-Swag.F32.Max, -Swag.F32.Max)
+        me.bvMin.set(Swag.F32.Max, Swag.F32.Max)
+        me.bvMax.set(-Swag.F32.Max, -Swag.F32.Max)
     }
 }
 

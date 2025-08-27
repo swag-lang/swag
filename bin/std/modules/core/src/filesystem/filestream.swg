@@ -1,3 +1,4 @@
+#global marked
 #global public
 #global namespace File
 
@@ -26,6 +27,6 @@ impl FileStream
     // Reads a value of type 'T' from the stream into 'buffer'; returns true if read was successful
     mtd(T) readValue(buffer: *T)->bool
     {
-        return read(buffer, #sizeof(T)) == #sizeof(T)
+        return me.read(buffer, #sizeof(T)) == #sizeof(T)
     }
 }

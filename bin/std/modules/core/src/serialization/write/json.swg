@@ -162,21 +162,21 @@ impl JSon
     {
         #if NT == bool
         {
-            output.addBytes(value ? "true" : "false")
+            me.output.addBytes(value ? "true" : "false")
         }
         #elif Reflection.isFloat(NT)
         {
-            StrConv.convertFloat(output, value, fmtFloat)
+            StrConv.convertFloat(me.output, value, me.fmtFloat)
         }
         #elif Reflection.isInteger(NT)
         {
-            StrConv.convertInt(output, value, fmtInt)
+            StrConv.convertInt(me.output, value, me.fmtInt)
         }
         #elif NT == string
         {
-            output.addNative('"''u8)
-            output.addBytes(value)
-            output.addNative('"''u8)
+            me.output.addNative('"''u8)
+            me.output.addBytes(value)
+            me.output.addNative('"''u8)
         }
         #else
         {
