@@ -1,4 +1,3 @@
-#global marked
 struct QuickStyle
 {
     forms: Array'IForm
@@ -98,38 +97,41 @@ impl QuickWnd
 {
     mtd setDefault()
     {
-        if me.qsArrow.forms.isEmpty():
-            me.defaultQuickStyleArrow()
-        if me.qsShape.forms.isEmpty():
-            me.defaultQuickStyleShape()
-        if me.qsImage.forms.isEmpty():
-            me.defaultQuickStyleImage()
-        if me.qsStep.forms.isEmpty():
-            me.defaultQuickStyleStep()
-        if me.qsLine.forms.isEmpty():
-            me.defaultQuickStyleLine()
-        if me.qsPolygon.forms.isEmpty():
-            me.defaultQuickStylePolygon()
-        if me.qsText.forms.isEmpty():
-            me.defaultQuickStyleText()
-        if me.qsDraw.forms.isEmpty():
-            me.defaultQuickStyleDraw()
-        if me.qsHighlight.forms.isEmpty():
-            me.defaultQuickStyleHighlight()
-        if me.qsPixSel.forms.isEmpty():
-            me.defaultQuickStylePixSel()
+        with me
+        {
+            if .qsArrow.forms.isEmpty():
+                .defaultQuickStyleArrow()
+            if .qsShape.forms.isEmpty():
+                .defaultQuickStyleShape()
+            if .qsImage.forms.isEmpty():
+                .defaultQuickStyleImage()
+            if .qsStep.forms.isEmpty():
+                .defaultQuickStyleStep()
+            if .qsLine.forms.isEmpty():
+                .defaultQuickStyleLine()
+            if .qsPolygon.forms.isEmpty():
+                .defaultQuickStylePolygon()
+            if .qsText.forms.isEmpty():
+                .defaultQuickStyleText()
+            if .qsDraw.forms.isEmpty():
+                .defaultQuickStyleDraw()
+            if .qsHighlight.forms.isEmpty():
+                .defaultQuickStyleHighlight()
+            if .qsPixSel.forms.isEmpty():
+                .defaultQuickStylePixSel()
 
-        me.updateQuickStyles()
+            .updateQuickStyles()
 
-        me.main.updateModel(me.qsArrow.forms[0])
-        me.main.updateModel(me.qsLine.forms[0])
-        me.main.updateModel(me.qsShape.forms[0])
-        me.main.updateModel(me.qsImage.forms[0])
-        me.main.updateModel(me.qsStep.forms[0])
-        me.main.updateModel(me.qsPolygon.forms[0])
-        me.main.updateModel(me.qsText.forms[0])
-        me.main.updateModel(me.qsDraw.forms[0])
-        me.updateSelection()
+            .main.updateModel(.qsArrow.forms[0])
+            .main.updateModel(.qsLine.forms[0])
+            .main.updateModel(.qsShape.forms[0])
+            .main.updateModel(.qsImage.forms[0])
+            .main.updateModel(.qsStep.forms[0])
+            .main.updateModel(.qsPolygon.forms[0])
+            .main.updateModel(.qsText.forms[0])
+            .main.updateModel(.qsDraw.forms[0])
+            .updateSelection()
+        }
     }
 
     mtd btnPopup(btn: #null *Button, pos: Math.Point)
@@ -186,20 +188,23 @@ impl QuickWnd
         const BorderSize = 10.0
         const ArrowSize  = 5.0
 
-        me.add(0, BorderSize, ArrowSize, ColorRed)
-        me.add(0, BorderSize, ArrowSize, ColorGreen)
-        me.add(0, BorderSize, ArrowSize, ColorBlue)
-        me.add(0, BorderSize, ArrowSize, ColorYellow)
+        with me
+        {
+            .add(0, BorderSize, ArrowSize, ColorRed)
+            .add(0, BorderSize, ArrowSize, ColorGreen)
+            .add(0, BorderSize, ArrowSize, ColorBlue)
+            .add(0, BorderSize, ArrowSize, ColorYellow)
 
-        me.add(ArrowSize, BorderSize, ArrowSize, ColorRed)
-        me.add(ArrowSize, BorderSize, ArrowSize, ColorGreen)
-        me.add(ArrowSize, BorderSize, ArrowSize, ColorBlue)
-        me.add(ArrowSize, BorderSize, ArrowSize, ColorYellow)
+            .add(ArrowSize, BorderSize, ArrowSize, ColorRed)
+            .add(ArrowSize, BorderSize, ArrowSize, ColorGreen)
+            .add(ArrowSize, BorderSize, ArrowSize, ColorBlue)
+            .add(ArrowSize, BorderSize, ArrowSize, ColorYellow)
 
-        me.add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorRed, .RoundAnchor, .Dot)
-        me.add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorGreen, .RoundAnchor, .Dot)
-        me.add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorBlue, .RoundAnchor, .Dot)
-        me.add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorYellow, .RoundAnchor, .Dot)
+            .add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorRed, .RoundAnchor, .Dot)
+            .add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorGreen, .RoundAnchor, .Dot)
+            .add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorBlue, .RoundAnchor, .Dot)
+            .add(ArrowSize * 0.5, BorderSize, ArrowSize, ColorYellow, .RoundAnchor, .Dot)
+        }
     }
 
     mtd defaultQuickStyleLine()
@@ -216,13 +221,16 @@ impl QuickWnd
 
         const BorderSize = 10.0
 
-        me.add(BorderSize, ColorRed)
-        me.add(BorderSize, ColorGreen)
-        me.add(BorderSize, ColorBlue)
-        me.add(BorderSize, ColorYellow)
-        me.add(BorderSize, Argb.White)
-        me.add(BorderSize, Argb.Gray)
-        me.add(BorderSize, Argb.Black)
+        with me
+        {
+            .add(BorderSize, ColorRed)
+            .add(BorderSize, ColorGreen)
+            .add(BorderSize, ColorBlue)
+            .add(BorderSize, ColorYellow)
+            .add(BorderSize, Argb.White)
+            .add(BorderSize, Argb.Gray)
+            .add(BorderSize, Argb.Black)
+        }
     }
 
     mtd defaultQuickStyleShape()
@@ -241,26 +249,29 @@ impl QuickWnd
 
         const BorderSize = 10.0
 
-        me.add(BorderSize, .RoundRectangle, ColorRed, Argb.Zero)
-        me.add(BorderSize, .RoundRectangle, ColorGreen, Argb.Zero)
-        me.add(BorderSize, .RoundRectangle, ColorBlue, Argb.Zero)
-        me.add(BorderSize, .RoundRectangle, ColorYellow, Argb.Zero)
+        with me
+        {
+            .add(BorderSize, .RoundRectangle, ColorRed, Argb.Zero)
+            .add(BorderSize, .RoundRectangle, ColorGreen, Argb.Zero)
+            .add(BorderSize, .RoundRectangle, ColorBlue, Argb.Zero)
+            .add(BorderSize, .RoundRectangle, ColorYellow, Argb.Zero)
 
-        me.add(BorderSize, .Rectangle, ColorRed, Argb.Zero)
-        me.add(BorderSize, .Rectangle, ColorGreen, Argb.Zero)
-        me.add(BorderSize, .Rectangle, ColorBlue, Argb.Zero)
-        me.add(BorderSize, .Rectangle, ColorYellow, Argb.Zero)
+            .add(BorderSize, .Rectangle, ColorRed, Argb.Zero)
+            .add(BorderSize, .Rectangle, ColorGreen, Argb.Zero)
+            .add(BorderSize, .Rectangle, ColorBlue, Argb.Zero)
+            .add(BorderSize, .Rectangle, ColorYellow, Argb.Zero)
 
-        me.add(BorderSize, .Ellipse, ColorRed, Argb.Zero)
-        me.add(BorderSize, .Ellipse, ColorGreen, Argb.Zero)
-        me.add(BorderSize, .Ellipse, ColorBlue, Argb.Zero)
-        me.add(BorderSize, .Ellipse, ColorYellow, Argb.Zero)
+            .add(BorderSize, .Ellipse, ColorRed, Argb.Zero)
+            .add(BorderSize, .Ellipse, ColorGreen, Argb.Zero)
+            .add(BorderSize, .Ellipse, ColorBlue, Argb.Zero)
+            .add(BorderSize, .Ellipse, ColorYellow, Argb.Zero)
 
-        me.add(BorderSize, .Rectangle, Argb.White, Argb.Zero)
-        me.add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
+            .add(BorderSize, .Rectangle, Argb.White, Argb.Zero)
+            .add(BorderSize, .Rectangle, Argb.Black, Argb.Zero)
 
-        me.add(0, .Rectangle, Argb.Zero, Argb.White)
-        me.add(0, .Rectangle, Argb.Zero, Argb.Black)
+            .add(0, .Rectangle, Argb.Zero, Argb.White)
+            .add(0, .Rectangle, Argb.Zero, Argb.Black)
+        }
     }
 
     mtd defaultQuickStyleImage()
@@ -279,11 +290,14 @@ impl QuickWnd
             me.qsImage.forms.add(it)
         }
 
-        me.add(2, .Image, Argb.White)
-        me.add(2, .Zoom, Argb.White)
-        me.add(0, .Blur, Argb.Zero)
-        me.add(0, .Pixelate, Argb.Zero)
-        me.add(0, .Capture, Argb.Zero)
+        with me
+        {
+            .add(2, .Image, Argb.White)
+            .add(2, .Zoom, Argb.White)
+            .add(0, .Blur, Argb.Zero)
+            .add(0, .Pixelate, Argb.Zero)
+            .add(0, .Capture, Argb.Zero)
+        }
     }
 
     mtd defaultQuickStyleStep()
@@ -299,15 +313,18 @@ impl QuickWnd
             me.qsStep.forms.add(it)
         }
 
-        me.add(.Ellipse, Argb.White, ColorRed)
-        me.add(.Ellipse, Argb.White, ColorGreen)
-        me.add(.Ellipse, Argb.White, ColorBlue)
-        me.add(.Ellipse, Argb.White, ColorYellow)
+        with me
+        {
+            .add(.Ellipse, Argb.White, ColorRed)
+            .add(.Ellipse, Argb.White, ColorGreen)
+            .add(.Ellipse, Argb.White, ColorBlue)
+            .add(.Ellipse, Argb.White, ColorYellow)
 
-        me.add(.RoundRectangle, Argb.White, ColorRed)
-        me.add(.RoundRectangle, Argb.White, ColorGreen)
-        me.add(.RoundRectangle, Argb.White, ColorBlue)
-        me.add(.RoundRectangle, Argb.White, ColorYellow)
+            .add(.RoundRectangle, Argb.White, ColorRed)
+            .add(.RoundRectangle, Argb.White, ColorGreen)
+            .add(.RoundRectangle, Argb.White, ColorBlue)
+            .add(.RoundRectangle, Argb.White, ColorYellow)
+        }
     }
 
     mtd defaultQuickStylePolygon()
@@ -326,18 +343,21 @@ impl QuickWnd
 
         const BorderSize = 5.0
 
-        me.add(BorderSize, ColorRed)
-        me.add(BorderSize, ColorGreen)
-        me.add(BorderSize, ColorBlue)
-        me.add(BorderSize, ColorYellow)
+        with me
+        {
+            .add(BorderSize, ColorRed)
+            .add(BorderSize, ColorGreen)
+            .add(BorderSize, ColorBlue)
+            .add(BorderSize, ColorYellow)
 
-        me.add(BorderSize, ColorRed, true)
-        me.add(BorderSize, ColorGreen, true)
-        me.add(BorderSize, ColorBlue, true)
-        me.add(BorderSize, ColorYellow, true)
+            .add(BorderSize, ColorRed, true)
+            .add(BorderSize, ColorGreen, true)
+            .add(BorderSize, ColorBlue, true)
+            .add(BorderSize, ColorYellow, true)
 
-        me.add(BorderSize, Argb.White)
-        me.add(BorderSize, Argb.Black)
+            .add(BorderSize, Argb.White)
+            .add(BorderSize, Argb.Black)
+        }
     }
 
     mtd defaultQuickStyleText()
@@ -355,23 +375,26 @@ impl QuickWnd
             me.qsText.forms.add(it)
         }
 
-        me.add(4, 24, Argb.White, ColorRed)
-        me.add(4, 24, Argb.White, ColorGreen)
-        me.add(4, 48, Argb.White, ColorBlue)
-        me.add(4, 48, Argb.White, ColorYellow)
+        with me
+        {
+            .add(4, 24, Argb.White, ColorRed)
+            .add(4, 24, Argb.White, ColorGreen)
+            .add(4, 48, Argb.White, ColorBlue)
+            .add(4, 48, Argb.White, ColorYellow)
 
-        me.add(4, 72, Argb.White, ColorRed)
-        me.add(4, 72, Argb.White, ColorGreen)
-        me.add(4, 72, Argb.White, ColorBlue)
-        me.add(4, 72, Argb.White, ColorYellow)
+            .add(4, 72, Argb.White, ColorRed)
+            .add(4, 72, Argb.White, ColorGreen)
+            .add(4, 72, Argb.White, ColorBlue)
+            .add(4, 72, Argb.White, ColorYellow)
 
-        me.add(4, 48, Argb.Zero, Argb.White)
-        me.add(4, 48, Argb.Zero, Argb.Gray)
-        me.add(4, 48, Argb.Zero, Argb.Black)
+            .add(4, 48, Argb.Zero, Argb.White)
+            .add(4, 48, Argb.Zero, Argb.Gray)
+            .add(4, 48, Argb.Zero, Argb.Black)
 
-        me.add(4, 72, Argb.Zero, Argb.White)
-        me.add(4, 72, Argb.Zero, Argb.Gray)
-        me.add(4, 72, Argb.Zero, Argb.Black)
+            .add(4, 72, Argb.Zero, Argb.White)
+            .add(4, 72, Argb.Zero, Argb.Gray)
+            .add(4, 72, Argb.Zero, Argb.Black)
+        }
     }
 
     mtd defaultQuickStyleDraw()
@@ -387,14 +410,18 @@ impl QuickWnd
         }
 
         const BorderSize = 10.0
-        me.add(BorderSize, ColorRed)
-        me.add(BorderSize, ColorGreen)
-        me.add(BorderSize, ColorBlue)
-        me.add(BorderSize, ColorYellow)
 
-        me.add(BorderSize, Argb.White)
-        me.add(BorderSize, Argb.Gray)
-        me.add(BorderSize, Argb.Black)
+        with me
+        {
+            .add(BorderSize, ColorRed)
+            .add(BorderSize, ColorGreen)
+            .add(BorderSize, ColorBlue)
+            .add(BorderSize, ColorYellow)
+
+            .add(BorderSize, Argb.White)
+            .add(BorderSize, Argb.Gray)
+            .add(BorderSize, Argb.Black)
+        }
     }
 
     mtd defaultQuickStyleHighlight()
@@ -438,21 +465,24 @@ impl QuickWnd
             me.qsHighlight.forms.add(it)
         }
 
-        me.addShape(.Rectangle, ColorRed)
-        me.addShape(.Rectangle, ColorGreen)
-        me.addShape(.Rectangle, ColorBlue)
-        me.addShape(.Rectangle, ColorYellow)
-
         const BorderSize = 20.0
-        me.addDraw(BorderSize, ColorRed)
-        me.addDraw(BorderSize, ColorGreen)
-        me.addDraw(BorderSize, ColorBlue)
-        me.addDraw(BorderSize, ColorYellow)
+        with me
+        {
+            .addShape(.Rectangle, ColorRed)
+            .addShape(.Rectangle, ColorGreen)
+            .addShape(.Rectangle, ColorBlue)
+            .addShape(.Rectangle, ColorYellow)
 
-        me.addPoly(ColorRed)
-        me.addPoly(ColorGreen)
-        me.addPoly(ColorBlue)
-        me.addPoly(ColorYellow)
+            .addDraw(BorderSize, ColorRed)
+            .addDraw(BorderSize, ColorGreen)
+            .addDraw(BorderSize, ColorBlue)
+            .addDraw(BorderSize, ColorYellow)
+
+            .addPoly(ColorRed)
+            .addPoly(ColorGreen)
+            .addPoly(ColorBlue)
+            .addPoly(ColorYellow)
+        }
     }
 
     mtd defaultQuickStylePixSel()
@@ -488,10 +518,13 @@ impl QuickWnd
             me.qsPixSel.forms.add(it)
         }
 
-        me.addShape(.Rectangle)
-        me.addShape(.Ellipse)
-        me.addPoly()
-        me.addDraw()
+        with me
+        {
+            .addShape(.Rectangle)
+            .addShape(.Ellipse)
+            .addPoly()
+            .addDraw()
+        }
     }
 
     mtd updateSelection()
