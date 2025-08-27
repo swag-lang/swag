@@ -81,7 +81,6 @@ bool FormatAst::outputIdentifier(const FormatContext& context, AstNode* node)
     return true;
 }
 
-#pragma optimize("", off)
 bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
 {
     if (node->hasAstFlag(AST_DISCARD))

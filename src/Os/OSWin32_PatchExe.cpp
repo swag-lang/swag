@@ -2,7 +2,6 @@
 #ifdef WIN32
 #include "Backend/Runtime.h"
 #include "Os/Os.h"
-#pragma optimize("", off)
 
 namespace
 {
