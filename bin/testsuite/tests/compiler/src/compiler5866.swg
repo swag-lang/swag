@@ -1,4 +1,4 @@
-#global testerror "Err0349"
+#global testerror "Err0699"
 
 struct V2 {x, y: s32}
 
@@ -7,7 +7,7 @@ struct V2 {x, y: s32}
     var a: s32
 
     var f: func||()
-    f = func|using a|()
+    f = func|a|()
     {
         @assert(x == 1)
     }

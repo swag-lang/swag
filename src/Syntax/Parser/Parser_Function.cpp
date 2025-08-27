@@ -1069,14 +1069,6 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
         {
             auto parentId = castAst<AstNode>(capture);
             auto byRef    = false;
-            auto byUsing  = false;
-
-            // Using
-            if (tokenParse.is(TokenId::KwdUsing))
-            {
-                byUsing = true;
-                eatToken();
-            }
 
             // Capture by reference
             if (tokenParse.is(TokenId::SymAmpersand))
@@ -1086,8 +1078,6 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
                 parentId->addSpecFlag(AstMakePointer::SPEC_FLAG_TO_REF);
                 eatToken();
                 byRef = true;
-                if (byUsing)
-                    parentId->addAstFlag(AST_DECL_USING);
             }
 
             AstNode* idRef = nullptr;
@@ -1095,8 +1085,6 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
 
             if (byRef)
                 setForceTakeAddress(idRef);
-            else if (byUsing)
-                idRef->addAstFlag(AST_DECL_USING);
 
             if (tokenParse.is(TokenId::SymVertical))
                 break;

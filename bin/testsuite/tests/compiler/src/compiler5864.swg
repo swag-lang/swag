@@ -6,9 +6,9 @@ struct V2 {x, y: s32}
     a.x = 1
 
     var f: func||()
-    f = func|using &a|()
+    f = func|&a|()
     {
-        @assert(x == 1)
+        @assert(a.x == 1)
     }
 
     f()
