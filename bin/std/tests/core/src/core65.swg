@@ -10,7 +10,7 @@ var G = 0
 
 impl BOUBOU
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G += 1
     }

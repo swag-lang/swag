@@ -82,7 +82,7 @@ public struct tcf_Point
 
 public impl tcf_Point
 {
-    func set(using me)
+    func set(me)
     {
         x = 444
         y = 555

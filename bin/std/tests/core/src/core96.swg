@@ -8,12 +8,12 @@ struct TOTO
 
 impl IConvert for TOTO
 {
-    func impl convert(using me, buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
+    func impl convert(me, buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("! x = ")
-        convertInt(buf, x, {}, null)
+        convertInt(buf, me.x, {}, null)
         buf.addBytes(", y = ")
-        convertInt(buf, y, {}, null)
+        convertInt(buf, me.y, {}, null)
         buf.addBytes(" !")
     }
 }

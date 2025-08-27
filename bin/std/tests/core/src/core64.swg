@@ -9,7 +9,7 @@ var G = 0
 
 impl X
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G += 1
         //@print("opDrop64 ")

@@ -49,7 +49,7 @@ impl Image
     }
 
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using me, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(me, stmt: #code void)
     {
         var scan = pixels.buffer
         for width * height

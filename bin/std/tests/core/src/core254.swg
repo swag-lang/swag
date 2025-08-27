@@ -6,7 +6,7 @@ var G = 0
 
 impl ILogWriter for W
 {
-    func impl print(using me, text: string)
+    func impl print(me, text: string)
     {
         @assert(text == "titi toto")
         G += 1

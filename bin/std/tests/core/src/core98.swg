@@ -8,7 +8,7 @@ struct TOTO
 
 impl IConvert for TOTO
 {
-    func impl convert(using me, buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
+    func impl convert(me, buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         @assert(strFormat == "ABC")
     }
