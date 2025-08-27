@@ -20,7 +20,7 @@ impl SoaTest
         {
             var sb: StringBuilder
             foreach p in #typeof(T).fields:
-                sb.appendFormat("%.reserve(size)\n", p.name)
+                sb.appendFormat("me.%.reserve(size)\n", p.name)
             return sb.toString()
         }
     }

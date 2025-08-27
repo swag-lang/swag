@@ -31,7 +31,7 @@ struct A
     {
         if @index:
             sb.appendString(" and ")
-        sb.appendFormat("% == other.%", f.name, f.name)
+        sb.appendFormat("me.% == other.%", f.name, f.name)
     }
 
     sb.appendString("\n}\n")

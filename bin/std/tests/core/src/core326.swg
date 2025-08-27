@@ -15,6 +15,7 @@ func gen(type: const *Swag.TypeInfoStruct)->String
     {
         if @index:
             result += " and "
+        result += "me."
         result += f.name
         result += " == "
         result += "other."

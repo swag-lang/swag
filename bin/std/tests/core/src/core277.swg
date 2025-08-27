@@ -32,23 +32,23 @@ impl AA
         #if !isIn(TV):
             #error("invalid type " ++ #stringof(#typeof(TV)))
 
-        if cur and cur != TV and cur.flags & Swag.TypeInfoFlags.HasDrop
+        if me.cur and me.cur != TV and me.cur.flags & Swag.TypeInfoFlags.HasDrop
         {
-            let typeStruct = cast(const *Swag.TypeInfoStruct) cur
-            typeStruct.opDrop(buf)
-            @init(cast(*TV) buf, 1)
+            let typeStruct = cast(const *Swag.TypeInfoStruct) me.cur
+            typeStruct.opDrop(me.buf)
+            @init(cast(*TV) me.buf, 1)
         }
 
-        cur                = TV
-        dref cast(*TV) buf = v
+        me.cur                = TV
+        dref cast(*TV) me.buf = v
     }
 
     mtd(TV) get()->TV
     {
         #if !isIn(TV):
             #error("invalid type " ++ #stringof(#typeof(TV)))
-        @assert(cur == TV)
-        return dref cast(*TV) buf
+        @assert(me.cur == TV)
+        return dref cast(*TV) me.buf
     }
 }
 

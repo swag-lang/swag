@@ -257,7 +257,7 @@ public impl JSon
                     return result
                 }
 
-                throw getError("malformed string, missing opening [[\"]]")
+                throw me.getError("malformed string, missing opening [[\"]]")
             }
 
             c = me.stream.peekU8()
@@ -270,7 +270,7 @@ public impl JSon
 
             c = me.stream.readU8()
             if c != '"':
-                throw getError("malformed string, missing closing [[\"]]")
+                throw me.getError("malformed string, missing closing [[\"]]")
 
             return result
         }

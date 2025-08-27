@@ -10,7 +10,7 @@ impl AA
     mtd(op: string) opAssign(t: T)
     {
         #assert((op == "+="))
-        arr.add(t)
+        me.arr.add(t)
     }
 
     mtd call(params: ...)
