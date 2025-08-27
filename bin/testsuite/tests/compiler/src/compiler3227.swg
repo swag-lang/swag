@@ -13,7 +13,7 @@ impl A
 {
     mtd titi()->s32
     {
-        return x
+        return me.x
     }
 }
 

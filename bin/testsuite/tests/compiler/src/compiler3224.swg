@@ -16,6 +16,6 @@ impl C
 {
     mtd titi()
     {
-        toto()
+        me.toto()
     }
 }

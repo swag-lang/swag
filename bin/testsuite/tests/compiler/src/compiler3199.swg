@@ -18,7 +18,7 @@ impl I for AA
 {
     mtd impl toto()
     {
-        @assert(x == 555)
+        @assert(me.x == 555)
     }
 }
 

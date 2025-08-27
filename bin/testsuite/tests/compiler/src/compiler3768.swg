@@ -25,7 +25,7 @@ impl B
 
     mtd toto()
     {
-        clear()
+        me.clear()
     }
 }
 

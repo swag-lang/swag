@@ -8,7 +8,7 @@ impl IntPoint
     #[Swag.NoInline]
     mtd opEquals(other: IntPoint)->bool
     {
-        return Y == other.Y
+        return me.Y == other.Y
     }
 }
 

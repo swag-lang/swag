@@ -21,7 +21,7 @@ impl Base
     //#[Swag.PrintBc, Swag.Safety("", false)]
     mtd toto()->s32
     {
-        return itf.toCheck()
+        return me.itf.toCheck()
     }
 }
 

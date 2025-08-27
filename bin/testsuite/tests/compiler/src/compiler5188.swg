@@ -28,9 +28,9 @@ impl A
         let ot = t
         let op = t
 
-        let o = orient2d(eq, op, ep)
-        t = nextFlipTriangle(o, t, ot, p, op)
-        flipEdgeEvent(ep, eq, t, p)
+        let o = me.orient2d(eq, op, ep)
+        t = me.nextFlipTriangle(o, t, ot, p, op)
+        me.flipEdgeEvent(ep, eq, t, p)
     }
 }
 

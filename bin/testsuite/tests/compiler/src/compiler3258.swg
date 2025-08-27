@@ -7,12 +7,12 @@ impl AA
 {
     mtd titi()
     {
-        @assert(x == 555)
+        @assert(me.x == 555)
     }
 
     mtd toto()
     {
-        @assert(x == 666)
+        @assert(me.x == 666)
 
         var v: AA
         with v

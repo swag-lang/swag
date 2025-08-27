@@ -15,7 +15,7 @@ impl B
 {
     mtd titi()
     {
-        toto()
+        me.toto()
     }
 }
 

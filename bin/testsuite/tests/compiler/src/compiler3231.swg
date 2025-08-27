@@ -32,7 +32,7 @@ impl IWnd for MessageDlg
     mtd impl titi(vv: s32)
     {
         G += 1
-        dlg.IWnd.titi(vv)
+        me.dlg.IWnd.titi(vv)
     }
 }
 

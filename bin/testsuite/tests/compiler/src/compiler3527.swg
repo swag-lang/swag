@@ -23,8 +23,8 @@ impl G
 {
     mtd opAffect(v: const [..] T)
     {
-        field = v[0]
-        field.fct()
+        me.field = v[0]
+        me.field.fct()
     }
 }
 

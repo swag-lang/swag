@@ -8,25 +8,25 @@ impl A
     #[Swag.Overload]
     mtd opCast()->[..] T
     {
-        return toSlice()
+        return me.toSlice()
     }
 
     #[Swag.Overload]
     mtd const opCast()->const [..] T
     {
-        return toSlice()
+        return me.toSlice()
     }
 
     #[Swag.Overload]
     mtd toSlice()->[..] T
     {
-        return a
+        return me.a
     }
 
     #[Swag.Overload]
     mtd const toSlice()->const [..] T
     {
-        return a
+        return me.a
     }
 }
 

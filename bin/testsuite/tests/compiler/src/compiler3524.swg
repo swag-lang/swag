@@ -12,9 +12,9 @@ impl Array
         @assert(v[1] == 15)
         @assert(v[2] == 23)
         @assert(@countof(v) == 3)
-        x = v[0]
-        y = v[1]
-        z = v[2]
+        me.x = v[0]
+        me.y = v[1]
+        me.z = v[2]
     }
 }
 

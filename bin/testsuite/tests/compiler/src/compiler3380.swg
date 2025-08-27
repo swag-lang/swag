@@ -9,7 +9,7 @@ impl A
 {
     mtd opCast()->fct
     {
-        return sig
+        return me.sig
     }
 }
 

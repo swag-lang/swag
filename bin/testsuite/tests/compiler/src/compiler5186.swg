@@ -8,7 +8,7 @@ impl A
     #[Swag.Inline]
     mtd toto()->string
     {
-        return @mkstring(buf, len)
+        return @mkstring(me.buf, me.len)
     }
 
     mtd titi(x, y: string)
@@ -19,7 +19,7 @@ impl A
     //#[Swag.PrintBc]
     mtd tata()
     {
-        titi(toto(), "")
+        me.titi(me.toto(), "")
     }
 }
 

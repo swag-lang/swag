@@ -28,7 +28,7 @@ impl Array
     #[Inline]
     mtd opIndexAffect(index: u64, value: T)
     {
-        buffer[index] = value
+        me.buffer[index] = value
     }
 }
 

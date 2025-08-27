@@ -24,7 +24,7 @@ impl I for XX
 {
     mtd impl toto()
     {
-        @assert(x == 666)
+        @assert(me.x == 666)
     }
 }
 

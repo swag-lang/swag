@@ -8,7 +8,7 @@ impl A
     #[Swag.Inline]
     mtd opIndex(x: u64)->const &T
     {
-        return buffer + x
+        return me.buffer + x
     }
 }
 

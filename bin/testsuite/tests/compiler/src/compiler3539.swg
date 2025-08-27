@@ -23,7 +23,7 @@ impl Thing
 #[Swag.NoInline]
     mtd(op: string) opBinary(other: Thing)->Thing
     {
-        return {number + other.number}
+        return {me.number + other.number}
     }
 }
 

@@ -9,7 +9,7 @@ impl A
     #[Swag.Optimize("", false)]
     mtd opIndex(x: u64)->const &T
     {
-        return &t
+        return &me.t
     }
 }
 

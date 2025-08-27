@@ -13,8 +13,8 @@ impl Array
     {
         var request: AllocatorRequest
         request.mode    = AllocatorMode.Free
-        request.address = buffer
-        request.size    = cast(u64) size * #sizeof(T)
+        request.address = me.buffer
+        request.size    = cast(u64) me.size * #sizeof(T)
         @getcontext().allocator.req(&request)
     }
 

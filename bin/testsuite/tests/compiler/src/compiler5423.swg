@@ -8,7 +8,7 @@ impl A
     #[Swag.Overload]
     mtd opCast()->[..] T
     {
-        return toSlice()
+        return me.toSlice()
     }
 
     /*#[Swag.Overload]
@@ -20,7 +20,7 @@ impl A
     #[Swag.Overload]
     mtd toSlice()->[..] T
     {
-        return a
+        return me.a
     }
 
     #[Swag.Overload]

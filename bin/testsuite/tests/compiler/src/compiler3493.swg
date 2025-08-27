@@ -10,7 +10,7 @@ impl A
     //#[Swag.Macro]
     mtd opIndex(idx: u64)->s32
     {
-        @assert(a == 666)
+        @assert(me.a == 666)
         return 10
     }
 }

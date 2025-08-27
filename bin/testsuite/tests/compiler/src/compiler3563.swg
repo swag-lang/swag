@@ -8,7 +8,7 @@ impl Arr
     mtd add(x: CB)
     {
         me.a = x
-        a()
+        me.a()
     }
 }
 

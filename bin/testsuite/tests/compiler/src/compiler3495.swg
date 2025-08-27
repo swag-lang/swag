@@ -13,7 +13,7 @@ impl A
     #[Swag.Overload]
     mtd toto(x: T)
     {
-        @assert(a == 666)
+        @assert(me.a == 666)
     }
 }
 
@@ -32,7 +32,7 @@ impl C
 {
     mtd titi()
     {
-        v.toto(null)
+        me.v.toto(null)
     }
 }
 

@@ -9,7 +9,7 @@ impl A
 {
     mtd call(params: ...)
     {
-        fn(params[0], params[1])
+        me.fn(params[0], params[1])
     }
 }
 

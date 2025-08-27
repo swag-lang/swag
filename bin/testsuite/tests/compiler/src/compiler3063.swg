@@ -7,13 +7,13 @@ impl AA
 {
     mtd opCount()->u64
     {
-        @assert(vv == 666)
+        @assert(me.vv == 666)
         return 4
     }
 
     mtd opSlice(a, b: u64)->const [..] s32
     {
-        @assert(vv == 666)
+        @assert(me.vv == 666)
         @assert(a == 0)
         @assert(b == 3)
         return [1, 2, 3 ,4]

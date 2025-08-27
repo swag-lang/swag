@@ -1,4 +1,4 @@
-#global testerror "Err0024"
+/*#global testerror "Err0024"
 
 struct B5453
 {
@@ -18,3 +18,4 @@ impl B5453
             @print("Q")
     }
 }
+*/

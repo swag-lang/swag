@@ -22,7 +22,7 @@ impl B
     mtd clear()
     {
         G = 1
-        a.clear()
+        me.a.clear()
     }
 }
 

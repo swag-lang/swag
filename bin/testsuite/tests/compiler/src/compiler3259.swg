@@ -13,7 +13,7 @@ impl AA
     {
         with ptr
         {
-            titi()
+            me.titi()
         }
     }
 }

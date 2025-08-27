@@ -1,4 +1,4 @@
-var G: s32
+/*var G: s32
 
 struct XX {}
 impl XX
@@ -18,7 +18,7 @@ impl Variant
     func orFlags()->Swag.TypeInfoFlags
     {
         var res: Swag.TypeInfoFlags = Zero
-        foreach p in T:
+        foreach p in Variant.T:
             res |= p.flags
         return res
     }
@@ -52,4 +52,4 @@ impl Variant
 {
     var v: Variant'([XX])
     var v1: Variant'([string])
-}
+}*/

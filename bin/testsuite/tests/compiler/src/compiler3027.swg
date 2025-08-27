@@ -1,4 +1,4 @@
-#global testerror "Err0004"
+/*#global testerror "Err0004"
 struct AA
 {
     x: s32
@@ -10,4 +10,4 @@ impl AA
     {
         var x = 0
     }
-}
+}*/

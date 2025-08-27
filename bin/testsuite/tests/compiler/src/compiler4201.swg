@@ -23,7 +23,7 @@ impl A
     mtd toto()
     {
         #if #defined(T.titi):
-            rng.titi()
+            me.rng.titi()
     }
 }
 

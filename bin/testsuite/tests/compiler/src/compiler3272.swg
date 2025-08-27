@@ -24,6 +24,6 @@ impl B
     mtd tata()
     {
         var v: A
-        titi(v[0].c)
+        me.titi(v[0].c)
     }
 }

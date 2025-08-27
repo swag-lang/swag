@@ -9,13 +9,13 @@ impl Arr
     #[Swag.NoInline]
     mtd opIndex(index: u64)->&T
     {
-        return &buf
+        return &me.buf
     }
 
     #[Swag.NoInline]
     mtd toto()
     {
-        @assert(count5815 == 0)
+        @assert(me.count5815 == 0)
     }
 }
 

@@ -8,9 +8,9 @@ impl Duration
     mtd(op: string) opAffectLiteral(v: f32)
     {
         #if op == "s":
-            val = v * 1000
+            me.val = v * 1000
         #elif op == "ms":
-            val = v
+            me.val = v
         #else:
             #assert(false)
     }

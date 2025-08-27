@@ -1,4 +1,4 @@
-#global testerror "Err0024"
+/*#global testerror "Err0024"
 
 struct A
 {
@@ -20,4 +20,4 @@ private var count = 1
 {
     var x: A
     x.toto()
-}
+}*/

@@ -8,7 +8,7 @@ impl A
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
-        @assert(x == 666)
+        @assert(me.x == 666)
         for 4
         {
             #inject(stmt)

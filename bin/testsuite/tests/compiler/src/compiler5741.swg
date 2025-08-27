@@ -19,7 +19,7 @@ struct Magazine {
 
 impl Printable for Magazine {
     mtd impl printDetails() {
-        @print("Magazine Issue: ", issueNumber)
+        @print("Magazine Issue: ", me.issueNumber)
     }
 }
 

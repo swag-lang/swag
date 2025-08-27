@@ -27,15 +27,15 @@ impl AA
     mtd(TV) set(v: TV)
     {
         #if !isIn(TV): #error("invalid type " ++ #stringof(#typeof(TV)))
-        cur = TV
-        dref cast(*TV) buf = v
+        me.cur = TV
+        dref cast(*TV) me.buf = v
     }
 
     mtd(TV) get()->TV
     {
         #if !isIn(TV): #error("invalid type " ++ #stringof(#typeof(TV)))
-        @assert(cur == TV)
-        return dref cast(*TV) buf
+        @assert(me.cur == TV)
+        return dref cast(*TV) me.buf
     }
 }
 

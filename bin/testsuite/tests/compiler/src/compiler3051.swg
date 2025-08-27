@@ -8,11 +8,11 @@ impl AA
     mtd(T) opAffect(other: T)
     {
         if T == bool:
-            x = 1
+            me.x = 1
         elif T == s32:
-            x = 2
+            me.x = 2
         else:
-            x = 3
+            me.x = 3
     }
 }
 

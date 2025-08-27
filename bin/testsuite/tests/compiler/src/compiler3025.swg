@@ -13,7 +13,7 @@ impl BB
     #[Swag.Inline]
     mtd opIndex(idx: u64)->*AA
     {
-        return &aa;
+        return &me.aa;
     }
 }
 

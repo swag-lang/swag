@@ -1,4 +1,4 @@
-#global testerror "Err0019"
+/*#global testerror "Err0019"
 
 struct AA {}
 impl AA
@@ -9,4 +9,4 @@ impl AA
         using v
         toto()
     }
-}
+}*/

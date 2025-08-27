@@ -7,7 +7,7 @@ impl Vector2
 {
     mtd(op: string) opBinary(other: Vector2)->Vector2
     {
-        return Vector2{x + other.x, y + other.y}
+        return Vector2{me.x + other.x, me.y + other.y}
     }
 }
 

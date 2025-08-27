@@ -10,7 +10,7 @@ struct B
 
 impl B
 {
-    mtd getA() => &a
+    mtd getA() => &me.a
 }
 
 #test

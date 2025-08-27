@@ -23,7 +23,7 @@ impl A
     #[Swag.Macro]
     mtd titi()
     {
-        count = 0
+        me.count = 0
     }
 }
 

@@ -15,7 +15,7 @@ impl AA
         var v: AA
         with v
         {
-            name = "1"
+            me.name = "1"
         }
     }
 }

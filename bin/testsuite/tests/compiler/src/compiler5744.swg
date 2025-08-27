@@ -11,7 +11,7 @@ struct Book {
 
 impl Printable for Book {
     mtd impl printDetails() {
-        @print("Book Title: ", title)
+        @print("Book Title: ", me.title)
     }
 }
 

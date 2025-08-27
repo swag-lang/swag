@@ -10,7 +10,7 @@ impl A
     mtd titi()
     {
         //@print(x)
-        @assert(x == 666)
+        @assert(me.x == 666)
     }
 
     #[Swag.Macro]

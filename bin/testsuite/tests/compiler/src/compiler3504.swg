@@ -22,7 +22,7 @@ impl C
         var b: B
         with b
         {
-            n = true
+            me.n = true
         }
     }
 }

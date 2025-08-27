@@ -13,7 +13,7 @@ struct Wnd
 impl Wnd
 {
     #[Swag.Inline]
-    mtd getTheme() => &theme
+    mtd getTheme() => &me.theme
 }
 
 #test

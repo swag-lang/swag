@@ -24,7 +24,7 @@ impl I for Base
 impl I for BB
 {
     //#[Swag.PrintBc]
-    mtd impl init() => base.I.init()
+    mtd impl init() => me.base.I.init()
 
     mtd impl close()->s32 => 20
 }
