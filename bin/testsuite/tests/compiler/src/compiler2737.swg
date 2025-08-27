@@ -9,7 +9,7 @@ struct AA
 
 impl AA
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G += 1
     }

@@ -5,9 +5,9 @@ struct AA
 
 impl AA
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
-        @free(x)
+        @free(me.x)
         /*@print("x ")
         @print(cast(s64) cast(u64) x)
         @print(" drop ")
@@ -15,9 +15,9 @@ impl AA
         @print("\n")*/
     }
 
-    func opPostCopy(using me)
+    func opPostCopy(me)
     {
-        x = @alloc(10)
+        me.x = @alloc(10)
         /*@print("x ")
         @print(cast(s64) cast(u64) x)
         @print(" copy ")
@@ -25,7 +25,7 @@ impl AA
         @print("\n")*/
     }
 
-    /*func opPostMove(using me)
+    /*func opPostMove(me)
     {
         @print("move\n")
     }*/

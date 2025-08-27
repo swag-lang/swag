@@ -36,34 +36,6 @@ code verbosity and improving readability.
 }
 
 /**
-# `using` in Function Parameters
-When applied to function parameters, `using` allows fields of a struct to be accessed directly within
-the function, similar to how a `this` pointer works in C++. This can simplify function code by
-eliminating the need to repeatedly dereference a pointer or reference a parameter name, making the
-function logic clearer and easier to follow.
-*/
-#test
-{
-    struct Point { x: s32, y: s32 }
-
-    func setOne(using point: *Point)
-    {
-        // Access the fields of 'point' directly without prefixing with 'point->'.
-        x, y = 1
-    }
-
-    var pt: Point
-    setOne(&pt)           // Call 'setOne' and modify 'pt' directly.
-    @assert(pt.x == 1)    // Validate that 'x' was set correctly.
-    @assert(pt.y == 1)    // Validate that 'y' was set correctly.
-
-    // UFCS (Uniform Function Call Syntax) allows calling the function as if it were a method.
-    pt.setOne()           // Equivalent to 'setOne(&pt)'.
-    @assert(pt.x == 1)    // Ensure 'x' remains correct.
-    @assert(pt.y == 1)    // Ensure 'y' remains correct.
-}
-
-/**
 # `using` with Struct Fields
 The `using` statement can also be applied to a field within a struct. This allows the fields of a
 nested struct to be accessed as if they were part of the containing struct. This feature is especially
@@ -92,9 +64,9 @@ removing unnecessary layers of field access.
     @assert(&value.y == &value.base.y)  // Validate that 'y' refers to the correct memory location.
 
     // The compiler can automatically cast 'Point3' to 'Point2' due to the `using` statement.
-    func set1(using ptr: *Point2)
+    func set1(ptr: *Point2)
     {
-        x, y = 1          // Direct access to 'x' and 'y' fields.
+        ptr.x, ptr.y = 1 // Direct access to 'x' and 'y' fields.
     }
 
     set1(&value)          // Automatic cast to 'Point2' and modify 'value'.

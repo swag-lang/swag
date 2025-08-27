@@ -7,9 +7,9 @@ struct(T) Array
 
 impl Array
 {
-    func add(using me)
+    func add(me)
     {
-        buffer[0] = 666
+        me.buffer[0] = 666
         //count = 0
     }
 }

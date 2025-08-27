@@ -6,9 +6,9 @@ struct Toto
 impl Toto
 {
     #[Swag.Implicit]
-	func opCast(using me)->s32
+	func opCast(me)->s32
 	{
-		return x + y
+		return me.x + me.y
 	}
 }
 

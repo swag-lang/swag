@@ -1,4 +1,4 @@
-#global testerror "Err0024"
+//#global testerror "Err0024"
 
 struct Argb
 {
@@ -7,7 +7,7 @@ struct Argb
 
 impl Argb
 {
-    func set(using me, a: u8)
+    func set(me, a: u8)
     {
         me.a = a
     }

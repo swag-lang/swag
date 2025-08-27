@@ -18,37 +18,37 @@ impl Array
         @getcontext().allocator.req(&request)
     }
 
-    func validateCount(using me, newCount: u32)
+    func validateCount(me, newCount: u32)
     {
-        if newCount < size:
+        if newCount < me.size:
             return
 
-        size = size * 2
-        if size < 8:
-            size = 8
+        me.size = me.size * 2
+        if me.size < 8:
+            me.size = 8
 
         let context = @getcontext()
 
         var request: AllocatorRequest
-        request.size = cast(u64) size * #sizeof(T)
+        request.size = cast(u64) me.size * #sizeof(T)
         context.allocator.req(&request)
         let newBuffer = request.address
 
-        if buffer:
-            @memcpy(newBuffer, buffer, cast(u64) count * #sizeof(T))
+        if me.buffer:
+            @memcpy(newBuffer, me.buffer, cast(u64) me.count * #sizeof(T))
 
         request.mode    = AllocatorMode.Free
-        request.address = buffer
+        request.address = me.buffer
         context.allocator.req(&request)
 
-        buffer = cast() newBuffer
+        me.buffer = cast() newBuffer
     }
 
-    func add(using me, value: T)
+    func add(me, value: T)
     {
-        validateCount(me, count + 1)
-        buffer[count] = value
-        count += 1
+        validateCount(me, me.count + 1)
+        me.buffer[me.count] = value
+        me.count += 1
     }
 }
 

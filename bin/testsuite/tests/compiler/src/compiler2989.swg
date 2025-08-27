@@ -4,11 +4,11 @@ struct(T) AA
 
 impl AA
 {
-    func index(using me, i: u64)->bool
+    func index(me, i: u64)->bool
     {
         return false
     }
-    func opIndex(using me, i: u64)->bool
+    func opIndex(me, i: u64)->bool
     {
         return false
     }

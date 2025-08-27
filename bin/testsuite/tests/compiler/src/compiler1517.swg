@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Macro]
-    func toto(using me)
+    func toto(me)
     {
         #macro
         {

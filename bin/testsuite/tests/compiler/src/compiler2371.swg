@@ -11,7 +11,7 @@ struct BB
 
 impl AA
 {
-    func opIndex(using me, idx: u64)->const &BB
+    func opIndex(me, idx: u64)->const &BB
     {
         return v
     }
@@ -19,7 +19,7 @@ impl AA
 
 impl BB
 {
-    func toto(using const me)
+    func toto(const me)
     {
         @assert(v == 555)
     }

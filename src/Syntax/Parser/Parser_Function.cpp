@@ -267,13 +267,6 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
     if (tokenParse.is(TokenId::SymDotDotDot) || tokenParse.is(TokenId::NativeType))
         return context->report({sourceFile, tokenParse.token, formErr(Err0465, tokenParse.cstr())});
 
-    // Using variable
-    if (tokenParse.is(TokenId::KwdUsing))
-    {
-        SWAG_CHECK(eatToken());
-        paramNode->addAstFlag(AST_DECL_USING);
-    }
-
     // @QuestionAsParam
     // Unused parameter
     Vector<Token> unnamedTokens;

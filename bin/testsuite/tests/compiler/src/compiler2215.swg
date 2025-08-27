@@ -7,7 +7,7 @@ struct A
 
 impl A
 {
-    func toto(using me, value: DWORD)->A
+    func toto(me, value: DWORD)->A
     {
         var result: retval
         result.myX = 0xAA's64

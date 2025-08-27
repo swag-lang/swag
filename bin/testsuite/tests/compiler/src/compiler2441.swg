@@ -10,12 +10,12 @@ struct B
 
 impl A
 {
-    func(op: string) opBinary(using me, o: B)->A
+    func(op: string) opBinary(me, o: B)->A
     {
         #if op == "+":
-            return {v + o.v}
+            return {me.v + o.v}
         #if op == "*":
-            return {v * o.v}
+            return {me.v * o.v}
     }
 }
 

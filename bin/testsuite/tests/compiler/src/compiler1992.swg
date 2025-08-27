@@ -6,10 +6,10 @@ struct A
 var G = 0
 impl A
 {
-    func opCmp(using me, other: A)->s32
+    func opCmp(me, other: A)->s32
     {
         G += 1
-        return x <=> other.x
+        return me.x <=> other.x
     }
 }
 

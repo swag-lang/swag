@@ -6,7 +6,7 @@ struct A
 impl A
 {
     #[Swag.Overload]
-    func toto(using me, x: A)->s32
+    func toto(me, x: A)->s32
     {
         return 1
     }

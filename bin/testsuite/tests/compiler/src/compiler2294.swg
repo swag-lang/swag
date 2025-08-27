@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func titi(using me) => true
+    func titi(me) => true
 }
 
 #[Swag.Inline]

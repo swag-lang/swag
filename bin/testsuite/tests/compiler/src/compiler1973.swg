@@ -13,7 +13,7 @@ var G = 0'u32
 
 impl HashTable
 {
-    func grow(using me)
+    func grow(me)
     {
         /*@print(#typeof(HashTableEntry.K).name)
         @print(#typeof(HashTableEntry.V).name)

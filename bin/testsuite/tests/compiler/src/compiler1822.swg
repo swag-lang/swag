@@ -10,9 +10,9 @@ interface IPrintable
 
 impl IPrintable for Point
 {
-    func impl print(using me)
+    func impl print(me)
     {
-        @print(x)
+        @print(me.x)
     }
 }
 

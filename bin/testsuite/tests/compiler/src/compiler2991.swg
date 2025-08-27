@@ -10,15 +10,15 @@ interface BB
 
 impl AA
 {
-    func toto(using me, v: u64, a: s32 = 0)
+    func toto(me, v: u64, a: s32 = 0)
     {
     }
 }
 
 impl BB for AA
 {
-    func impl toto(using me, ptr: *u8)
+    func impl toto(me, ptr: *u8)
     {
-        toto(0)
+        me.toto(0)
     }
 }

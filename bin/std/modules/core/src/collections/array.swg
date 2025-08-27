@@ -142,9 +142,9 @@ impl Array
     // Visiting by address and in reverse order is supported via parameters.
     // Aliases: #alias0 for the element or a pointer to it, #alias1 for the index.
     #[Macro]
-    func(ptr: bool, back: bool) opVisit(using const me, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(const me, stmt: #code void)
     {
-        if !count:
+        if !me.count:
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly

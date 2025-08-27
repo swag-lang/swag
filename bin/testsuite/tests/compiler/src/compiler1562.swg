@@ -10,7 +10,7 @@ struct BOUBOU
 
 impl BOUBOU
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         @assert(false)
     }

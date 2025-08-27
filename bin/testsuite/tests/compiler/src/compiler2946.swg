@@ -9,7 +9,7 @@ struct RenderOgl
 
 impl BaseRenderOgl
 {
-    func toto(using me)
+    func toto(me)
     {
 
     }

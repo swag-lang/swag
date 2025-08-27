@@ -8,7 +8,7 @@ var G: s64
 
 impl CStr
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G += 1
     }

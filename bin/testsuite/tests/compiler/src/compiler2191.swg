@@ -5,17 +5,17 @@ public struct A2191
 
 public impl A2191
 {
-    func toto(using me)
+    func toto(me)
     {
-        titi()
+        me.titi()
     }
 
-    func tata(using me)
+    func tata(me)
     {
     }
 
-    func titi(using me)
+    func titi(me)
     {
-        tata()
+        me.tata()
     }
 }

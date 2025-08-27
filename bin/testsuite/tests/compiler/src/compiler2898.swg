@@ -7,7 +7,7 @@ struct A
 
 impl A
 {
-    func trim(using me)
+    func trim(me)
     {
     }
 }

@@ -12,7 +12,7 @@ struct TITI
 
 impl TOTO for TITI
 {
-	func impl print(using me)
+	func impl print(me)
 	{
 	}
 }

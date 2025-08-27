@@ -10,9 +10,9 @@ interface IHash
 
 impl IHash for AA
 {
-    func impl hash(using me)->u32
+    func impl hash(me)->u32
     {
-        return val
+        return me.val
     }
 }
 

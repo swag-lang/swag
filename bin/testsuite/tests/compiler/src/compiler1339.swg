@@ -14,7 +14,7 @@ const COMPILE = false
 {
     impl TOTO for TITI
     {
-        func print(using me)
+        func print(me)
         {
         }
     }

@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     #[Swag.Inline]
-    func opCount(using me)->u64 => l
+    func opCount(me)->u64 => me.l
 }
 
 //#[Swag.PrintBc]

@@ -6,16 +6,16 @@ struct Color
 impl Color
 {
     //#[Swag.Implicit]
-    func opAffect(using me, v: bool)
+    func opAffect(me, v: bool)
     {
-        b = v
+        me.b = v
     }
 }
 
 struct Painter{}
 impl Painter
 {
-    func draw(using me, col: Color, size: f32)
+    func draw(me, col: Color, size: f32)
     {
         @assert(col.b == true)
     }

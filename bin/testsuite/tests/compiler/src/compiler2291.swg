@@ -5,11 +5,11 @@ struct AA
 
 impl AA
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         //@print(x)
         //@assert(x == 1)
-        x = 666
+        me.x = 666
         //@print("drop")
     }
 }

@@ -7,17 +7,17 @@ var G = 0
 
 impl A
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G += 1
     }
 
-    func opPostMove(using me)
+    func opPostMove(me)
     {
         //@assert(false)
     }
 
-    func opPostCopy(using me)
+    func opPostCopy(me)
     {
         //@assert(false)
     }

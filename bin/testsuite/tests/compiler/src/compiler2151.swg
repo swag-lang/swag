@@ -17,8 +17,8 @@ impl Point
     {
     }
 
-    func toto(using me)
+    func toto(me)
     {
-        contains(0'f32)
+        me.contains(0'f32)
     }
 }

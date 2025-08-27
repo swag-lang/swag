@@ -6,7 +6,7 @@ struct V2
 impl V2
 {
     #[Swag.Inline]
-    func set(using me, x, y: f32)
+    func set(me, x, y: f32)
     {
         me.x = #me.x
         me.y = #me.y

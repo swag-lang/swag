@@ -5,14 +5,14 @@ struct A
 
 impl A
 {
-    func titi(using me)
+    func titi(me)
     {
-        @assert(x == 555)
+        @assert(me.x == 555)
     }
 
-    func toto(using me)
+    func toto(me)
     {
-        titi()
+        me.titi()
     }
 }
 

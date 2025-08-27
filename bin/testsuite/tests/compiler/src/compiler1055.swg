@@ -43,7 +43,7 @@ impl Array
         me.buffer = cast() newBuffer
     }
 
-    func add(using me, value: T)
+    func add(me, value: T)
     {
         validateCount(me, me.count + 1)
         me.buffer[me.count] = value

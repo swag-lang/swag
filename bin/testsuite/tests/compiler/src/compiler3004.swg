@@ -6,9 +6,9 @@ struct R
 impl R
 {
     #[Swag.Inline]
-    func Y(using me)->s32
+    func Y(me)->s32
     {
-        return x + 1
+        return me.x + 1
     }
 }
 

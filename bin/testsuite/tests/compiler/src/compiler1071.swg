@@ -5,7 +5,7 @@ struct titi
 
 impl titi
 {
-    func toString(using me)->const [..] u8
+    func toString(me)->const [..] u8
     {
         return @mkslice(&me.buf[0], 4)
     }

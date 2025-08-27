@@ -10,7 +10,7 @@ struct B
 
 impl B
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         //@print("drop")
     }

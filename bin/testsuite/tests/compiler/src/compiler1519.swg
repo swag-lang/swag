@@ -6,13 +6,13 @@ struct A
 impl A
 {
     #[Swag.Macro]
-    func toto(using me)
+    func toto(me)
     {
-        if !myTruc:
+        if !me.myTruc:
             return
 
         //@print(cast(s64) myTruc)
-        for myTruc
+        for me.myTruc
         {
         }
     }

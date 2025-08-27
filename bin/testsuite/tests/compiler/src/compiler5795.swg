@@ -5,12 +5,12 @@ struct B { x: A }
 
 //#[Swag.PrintGenBc]
 #[Swag.Sanity(true)]
-func toto(using s: B)
+func toto(s: B)
 {
     var a: bool = undefined
 
     //#[Swag.Complete]
-    switch x
+    switch s.x
     {
     case R: a = true
     case G: a = true

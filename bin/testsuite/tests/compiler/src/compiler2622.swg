@@ -12,7 +12,7 @@ struct(T) BB
 impl BB
 {
     //#[Swag.compileif(#typeof(T) != AA)]
-    func opIndexAffect(using me, index: u64, value: T)
+    func opIndexAffect(me, index: u64, value: T)
         where #typeof(T) != AA
     {
         var x: T

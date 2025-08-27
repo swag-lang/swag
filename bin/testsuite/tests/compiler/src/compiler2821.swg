@@ -5,7 +5,7 @@
 
 impl AA
 {
-    func opCast(using me)->const [..] T
+    func opCast(me)->const [..] T
     {
         return v
     }

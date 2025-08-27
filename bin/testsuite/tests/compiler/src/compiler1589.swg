@@ -10,9 +10,9 @@ struct(T) Array
 
 impl Array
 {
-    func emplace(using me, x: *T)
+    func emplace(me, x: *T)
     {
-        buffer[0] = #nodrop #move dref x
+        me.buffer[0] = #nodrop #move dref x
     }
 }
 

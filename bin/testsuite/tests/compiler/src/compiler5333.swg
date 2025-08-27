@@ -1,4 +1,4 @@
-#global testerror "Err0487"
+#global testerror "Err0579"
 
 struct A
 {
@@ -12,7 +12,7 @@ impl A
     }
 }
 
-func toto(using x: A)
+func toto(x: A)
 {
-    titi()
+    x.titi()
 }

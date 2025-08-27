@@ -6,7 +6,7 @@ struct Utf8
 
 impl Utf8
 {
-	func opAffect(using me, from: string)
+	func opAffect(me, from: string)
 	{
 		@assert(@countof(from) != 0)
 		@assert(@dataof(from) != null)

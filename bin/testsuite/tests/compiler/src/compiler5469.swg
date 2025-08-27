@@ -7,9 +7,9 @@ struct AA
 impl AA
 {
     #[Swag.Inline]
-    func opCmp(using me, x: s32)->s32
+    func opCmp(me, x: s32)->s32
     {
-        return vv <=> x
+        return me.vv <=> x
     }
 }
 

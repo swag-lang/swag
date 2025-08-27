@@ -14,7 +14,7 @@ impl B
 
 impl A
 {
-    mtd titi(using ptr: *B)
+    mtd titi(ptr: *B)
     {
         ptr.toto(2)
     }

@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func toto(using me, x: s32)
+    func toto(me, x: s32)
     {
         me.x = #me.x
     }

@@ -8,7 +8,7 @@ struct S
 impl S
 {
     #[Swag.Macro]
-    /*func visitBytes(using me)//, stmt: #code void)
+    /*func visitBytes(me)//, stmt: #code void)
     {
         #macro
         {

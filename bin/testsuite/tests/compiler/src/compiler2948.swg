@@ -11,7 +11,7 @@ struct Color
 
 impl Color
 {
-    func opAffect(using me, c: Rgb)
+    func opAffect(me, c: Rgb)
     {
     }
 }

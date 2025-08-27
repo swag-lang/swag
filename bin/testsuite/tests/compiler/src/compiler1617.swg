@@ -7,12 +7,12 @@ struct A
 impl A
 {
     #[Swag.Macro]
-    func mac(using me)
+    func mac(me)
     {
-        xx = 666
+        me.xx = 666
     }
 
-    func toto(using me)
+    func toto(me)
     {
         mac(me)
     }

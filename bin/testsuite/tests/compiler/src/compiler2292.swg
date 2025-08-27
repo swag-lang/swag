@@ -7,21 +7,21 @@ var G: s32
 
 impl AA
 {
-    func opPostMove(using me)
+    func opPostMove(me)
     {
         G = 1
     }
 
-    func opPostCopy(using me)
+    func opPostCopy(me)
     {
         @assert(false)
     }
 
-    func opDrop(using me)
+    func opDrop(me)
     {
         //@print(x)
         //@assert(x == 1)
-        x = 666
+        me.x = 666
         //@print("drop")
     }
 }

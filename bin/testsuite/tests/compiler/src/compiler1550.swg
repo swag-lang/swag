@@ -12,7 +12,7 @@ struct Y
 
 impl Y
 {
-    func toto(using me)
+    func toto(me)
     {
     }
 }

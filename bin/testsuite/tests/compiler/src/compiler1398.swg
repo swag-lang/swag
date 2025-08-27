@@ -5,9 +5,9 @@ struct A
 
 impl A
 {
-    func toto(using me)
+    func toto(me)
     {
-        x = 0
+        me.x = 0
     }
 
     func tata()

@@ -139,7 +139,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
         content += "func impl ";
         content += missingNode->name;
 
-        content += "(using me";
+        content += "(me";
         const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(missingNode->typeInfo, TypeInfoKind::LambdaClosure);
         for (uint32_t i = 1; i < typeFunc->parameters.size(); i++)
         {

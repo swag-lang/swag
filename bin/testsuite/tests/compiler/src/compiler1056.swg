@@ -5,9 +5,9 @@ struct(T) Array
 
 impl Array
 {
-    func add(using me)
+    func add(me)
     {
-        count += 1
+        me.count += 1
     }
 }
 

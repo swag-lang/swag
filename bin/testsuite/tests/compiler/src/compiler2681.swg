@@ -5,16 +5,16 @@ struct AA
 
 impl AA
 {
-    func titi(using me, ptr: *AA)
+    func titi(me, ptr: *AA)
     {
         @assert(ptr.x == 10)
         ptr.x = 666
     }
 
-    func toto(using me)->AA
+    func toto(me)->AA
     {
         var result: retval = create()
-        titi(&result)
+        me.titi(&result)
         return result
     }
 }

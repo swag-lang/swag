@@ -6,9 +6,9 @@ struct AA
 impl AA
 {
     #[Swag.Implicit, Swag.Complete]
-    func opAffect(using me, p: s64)
+    func opAffect(me, p: s64)
     {
-        x = p
+        me.x = p
     }
 }
 

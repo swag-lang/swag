@@ -6,15 +6,15 @@ struct Vector2
 impl Vector2
 {
     #[Swag.Overload]
-    func(op: string) opBinary(using me, other: Vector2)->Vector2
+    func(op: string) opBinary(me, other: Vector2)->Vector2
     {
-        return Vector2{x + other.x, y + other.y}
+        return Vector2{me.x + other.x, me.y + other.y}
     }
 
     #[Swag.Overload]
-    func(op: string) opBinary(using me, other: f32)->Vector2
+    func(op: string) opBinary(me, other: f32)->Vector2
     {
-        return Vector2{x * other, y * other}
+        return Vector2{me.x * other, me.y * other}
     }
 }
 

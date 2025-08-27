@@ -6,9 +6,9 @@ struct A
 impl A
 {
     #[Swag.Inline]
-    func right(using me)->s64
+    func right(me)->s64
     {
-        return x
+        return me.x
     }
 }
 

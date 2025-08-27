@@ -9,7 +9,7 @@ impl Array
 {
     func validateCount(me, newCount: u32) {}
 
-    func add(using me, value: T)
+    func add(me, value: T)
     {
         validateCount(me, me.count + 1)
     }

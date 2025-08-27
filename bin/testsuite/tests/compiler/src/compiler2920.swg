@@ -10,7 +10,7 @@ struct BB
 
 impl AA
 {
-    func toto(using me, v: BB = {})
+    func toto(me, v: BB = {})
     {
         @assert(v.yy == 666)
     }

@@ -13,14 +13,14 @@ struct C
     using b: B
 }
 
-func toto(using vv: C)
+func toto(vv: C)
 {
-    @assert(x == 555)
+    @assert(vv.x == 555)
 }
 
-func toto1(using vv: *C)
+func toto1(vv: *C)
 {
-    @assert(x == 555)
+    @assert(vv.x == 555)
 }
 
 #test

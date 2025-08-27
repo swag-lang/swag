@@ -7,9 +7,9 @@ struct Vector2
 impl Vector2
 {
     //#[Swag.PrintBc]
-    func normalize(using me)->Vector2
+    func normalize(me)->Vector2
     {
-        return Vector2{x + 1, y + 1}
+        return Vector2{me.x + 1, me.y + 1}
     }
 }
 

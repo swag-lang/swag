@@ -6,7 +6,7 @@
 impl A
 {
     #[Swag.property]
-    func right(using me, t: s64)
+    func right(me, t: s64)
     {
         x = t
     }

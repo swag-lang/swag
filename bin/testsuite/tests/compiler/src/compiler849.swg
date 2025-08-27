@@ -7,27 +7,27 @@ struct Utf8
 
 impl Utf8
 {
-	func reserveSize(using me, newSize: u64)
+	func reserveSize(me, newSize: u64)
 	{
-		if(size >= newSize):
+		if(me.size >= newSize):
 			return;
 
 		let newPtr = @alloc(newSize)
-		if buffer:
-			@memcpy(newPtr, buffer, size)
-		size = newSize
-		@free(buffer)
-		buffer = cast() newPtr
+		if me.buffer:
+			@memcpy(newPtr, me.buffer, me.size)
+		me.size = newSize
+		@free(me.buffer)
+		me.buffer = cast() newPtr
 	}
 
-	func opAffect(using me, from: string)
+	func opAffect(me, from: string)
 	{
-		length = @countof(from)
-		me.reserveSize(length + 1)
-		if length:
-			@memcpy(buffer, @dataof(from), length + 1)
+		me.length = @countof(from)
+		me.reserveSize(me.length + 1)
+		if me.length:
+			@memcpy(me.buffer, @dataof(from), me.length + 1)
 		else:
-			buffer[0] = 0
+			me.buffer[0] = 0
 	}
 }
 

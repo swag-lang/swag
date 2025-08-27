@@ -10,9 +10,9 @@ struct B
 
 impl B
 {
-    func opIndex(using me, index: u64)->*A
+    func opIndex(me, index: u64)->*A
     {
-        return &buffer[index]
+        return &me.buffer[index]
     }
 }
 

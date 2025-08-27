@@ -8,9 +8,9 @@ struct A
 impl A
 {
     //#[Swag.property]
-    func right(using me, a, b, c, d: s32)->s64
+    func right(me, a, b, c, d: s32)->s64
     {
-        return x + w
+        return me.x + me.w
     }
 }
 

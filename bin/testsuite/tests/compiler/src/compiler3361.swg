@@ -26,9 +26,9 @@ impl A
     }
 
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using me, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(me, stmt: #code void)
     {
-        toto(|#alias0| titi())
+        toto(|#alias0| me.titi())
         {
             #inject(stmt)
         }

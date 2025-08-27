@@ -8,7 +8,7 @@ struct B
 
 impl B
 {
-    func toto(using me)
+    func toto(me)
     {
         var x: s32
         x.front = 666

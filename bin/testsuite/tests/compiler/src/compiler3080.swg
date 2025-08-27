@@ -11,14 +11,14 @@ struct BB
 var G: s32
 impl AA for BB
 {
-    func titi(using me)
+    func titi(me)
     {
-        G = x
+        G = me.x
     }
 
-    func impl toto(using me)
+    func impl toto(me)
     {
-        titi()
+        me.titi()
     }
 }
 

@@ -11,15 +11,15 @@ struct TITI
 
 impl TOTO for TITI
 {
-	func impl print(using me)
+	func impl print(me)
 	{
 	}
 
-	func impl print1(using me, x: s32)
+	func impl print1(me, x: s32)
 	{
 	}
 
-    func impl print2(using me, x: bool)
+    func impl print2(me, x: bool)
 	{
 	}
 }

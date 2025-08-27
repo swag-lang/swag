@@ -10,9 +10,9 @@ struct A
 
 impl Print for A
 {
-    func impl toto(using me)->s32
+    func impl toto(me)->s32
     {
-        @assert(x == 666)
+        @assert(me.x == 666)
         return 667
     }
 }

@@ -5,7 +5,7 @@ struct AA
 
 impl AA
 {
-    func toto(using me, v: AA = {true})
+    func toto(me, v: AA = {true})
     {
         @assert(v.yy)
     }

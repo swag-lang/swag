@@ -16,7 +16,7 @@ namespace Parse
 
     impl IParse for Drawing.Color
     {
-        func xoxo(using me)
+        func xoxo(me)
         {
         }
     }

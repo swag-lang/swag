@@ -4,7 +4,7 @@ struct(T) AA
 
 impl AA
 {
-    func toto(using me)->{a: T}
+    func toto(me)->{a: T}
     {
         return {5}
     }

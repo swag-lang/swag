@@ -8,9 +8,9 @@ struct X
 
 impl X
 {
-    func toto(using const me)
+    func toto(const me)
     {
-        G = x
+        G = me.x
     }
 }
 

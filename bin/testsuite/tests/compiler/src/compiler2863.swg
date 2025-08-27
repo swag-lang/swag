@@ -7,12 +7,12 @@ var G = 0
 
 impl AA
 {
-    func titi(using me)
+    func titi(me)
     {
         G += 1
     }
 
-    func toto(using me)
+    func toto(me)
     {
         var x: func(*AA)
         x = &titi

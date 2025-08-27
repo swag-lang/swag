@@ -6,13 +6,13 @@
 impl A
 {
     #[Swag.property]
-    func right(using me)->s64
+    func right(me)->s64
     {
         return x + w
     }
 
     #[Swag.property]
-    func right(using me, t: s64)
+    func right(me, t: s64)
     {
         w = t - x
     }

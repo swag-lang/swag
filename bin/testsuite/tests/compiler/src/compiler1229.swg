@@ -13,9 +13,9 @@ namespace std.math
 
 	impl Vector2
 	{
-		func isZeroEpsilon(using me, eps: Float = cast(Float) 1)->bool
+		func isZeroEpsilon(me, eps: Float = cast(Float) 1)->bool
 		{
-			return isZeroEpsilon(x, eps)
+			return isZeroEpsilon(me.x, eps)
 		}
 	}
 }

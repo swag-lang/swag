@@ -5,10 +5,10 @@ struct AA
 
 impl AA
 {
-    func opAffect(using me, x: u32)
+    func opAffect(me, x: u32)
     {
         //@print("affect\n")
-        v = x
+        me.v = x
     }
 }
 

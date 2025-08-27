@@ -10,10 +10,9 @@ public impl AA2072
         Y
     }
 
-    func toto(using me)
+    func toto(me)
     {
-        using me.ENUM
-        var y = X
+        var y = ENUM.X
     }
 }
 

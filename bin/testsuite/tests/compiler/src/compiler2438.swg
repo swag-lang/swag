@@ -5,22 +5,22 @@ struct A
 
 impl A
 {
-    func(op: string) opBinary(using me, o: s32)->A
+    func(op: string) opBinary(me, o: s32)->A
     {
         #if op == "+":
-            return {v + o}
+            return {me.v + o}
         #if op == "*":
-            return {v * o}
+            return {me.v * o}
         #if op == "/":
-            return {v / o}
+            return {me.v / o}
         #if op == "%":
-            return {v % o}
+            return {me.v % o}
         #if op == "|":
-            return {v | o}
+            return {me.v | o}
         #if op == "&":
-            return {v & o}
+            return {me.v & o}
         #if op == "^":
-            return {v ^ o}
+            return {me.v ^ o}
     }
 }
 

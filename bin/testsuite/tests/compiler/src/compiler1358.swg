@@ -13,7 +13,7 @@ struct TITI
 impl TOTO for TITI
 {
     //#[Swag.PrintBc]
-    func impl print(using me, b: bool)
+    func impl print(me, b: bool)
     {
     }
 }

@@ -5,9 +5,9 @@ struct(T, N: u32) NumericArray
 
 impl NumericArray
 {
-    func opIndex(using me, idx: u64)->T
+    func opIndex(me, idx: u64)->T
     {
-        return buf[idx]
+        return me.buf[idx]
     }
 }
 

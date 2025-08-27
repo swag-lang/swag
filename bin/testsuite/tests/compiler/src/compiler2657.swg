@@ -10,7 +10,7 @@ impl Image
 
     }
 
-    func fill(using me, x: AA)
+    func fill(me, x: AA)
     {
         var f = {x, me}
     }

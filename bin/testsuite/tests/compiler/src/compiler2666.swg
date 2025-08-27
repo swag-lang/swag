@@ -6,15 +6,15 @@ struct AA
 impl AA
 {
     #[Swag.Inline]
-    func opAffect(using me, x: s32)
+    func opAffect(me, x: s32)
     {
-        vv = x
+        me.vv = x
     }
 
     #[Swag.Inline]
-    func tata(using me)
+    func tata(me)
     {
-        vv = 666
+        me.vv = 666
     }
 
     #[Swag.Inline]

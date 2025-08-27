@@ -7,9 +7,9 @@ struct(T) Array
 
 impl Array
 {
-    func add(using me, value: T)
+    func add(me, value: T)
     {
-        buffer[0] = value
+        me.buffer[0] = value
     }
 }
 

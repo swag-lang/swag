@@ -2,8 +2,8 @@
 struct A {}
 
 #[Swag.Overload]
-func set(using a: *A) {}
-func get(using a: *A) => 0
+func set(a: *A) {}
+func get(a: *A) => 0
 
 var a: A
 

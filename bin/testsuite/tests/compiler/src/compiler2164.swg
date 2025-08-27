@@ -18,11 +18,11 @@ var G: s32 = 0
 
 impl B
 {
-    func close(using me)
+    func close(me)
     {
         G += 1
         @assert(G == 1)
-        x.close()
+        me.x.close()
     }
 }
 

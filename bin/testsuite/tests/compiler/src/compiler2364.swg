@@ -10,9 +10,9 @@ struct ErrorString
 
 impl ErrorId for ErrorString
 {
-    func impl toString(using me)->string
+    func impl toString(me)->string
     {
-        return err
+        return me.err
     }
 }
 /*

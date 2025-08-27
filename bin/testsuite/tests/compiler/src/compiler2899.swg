@@ -6,7 +6,7 @@ struct AA
 
 impl AA
 {
-    func toto(using const me)
+    func toto(const me)
     {
     }
 }

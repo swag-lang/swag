@@ -20,9 +20,9 @@ var G = 0
 impl TOTO for TITI
 {
     //#[Swag.PrintBc]
-    func impl print(using me, tt: bool)
+    func impl print(me, tt: bool)
     {
-        @assert(val == 666)
+        @assert(me.val == 666)
         G += 1
     }
 }
@@ -30,9 +30,9 @@ impl TOTO for TITI
 impl TOTO for TATA
 {
     //#[Swag.PrintBc]
-    func impl print(using me, tt: bool)
+    func impl print(me, tt: bool)
     {
-        @assert(val == "TATA")
+        @assert(me.val == "TATA")
         G += 2
     }
 }

@@ -8,7 +8,7 @@ struct AA
 
 impl AA
 {
-    func opPostCopy(using me)
+    func opPostCopy(me)
     {
 
     }

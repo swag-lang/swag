@@ -6,7 +6,7 @@ var G: u32 = 0
 
 impl A
 {
-    func opIndexAffect(using me, idx: u64, v: T)
+    func opIndexAffect(me, idx: u64, v: T)
     {
         G += 1
     }
@@ -19,8 +19,8 @@ struct B
 
 impl B
 {
-    func toto(using me)
+    func toto(me)
     {
-        x[0] = null
+        me.x[0] = null
     }
 }

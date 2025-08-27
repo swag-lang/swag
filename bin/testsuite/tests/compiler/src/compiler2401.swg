@@ -5,7 +5,7 @@ struct(T, N: u8) A
 
 impl A
 {
-    func toto(using me)
+    func toto(me)
     {
         //@print(#typeof(x).name)
     }

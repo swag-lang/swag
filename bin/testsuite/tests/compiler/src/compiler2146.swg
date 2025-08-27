@@ -7,7 +7,7 @@ struct P
 alias Alias = P
 impl Alias
 {
-    func toto(using me)
+    func toto(me)
     {
     }
 }

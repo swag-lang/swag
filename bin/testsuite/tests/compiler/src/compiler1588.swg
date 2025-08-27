@@ -7,7 +7,7 @@ struct(T) B
 
 impl B
 {
-    func emplace(using me)
+    func emplace(me)
     {
         let y = T
         @assert(#typeof(y) == const *Swag.TypeInfoNative)

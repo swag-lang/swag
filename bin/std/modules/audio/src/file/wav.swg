@@ -112,7 +112,7 @@ struct WAVEFORMATEXTENSIBLE
     subFormat:         GUID     // Format identifier GUID
 }
 
-func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
+func setEncodingFormat(file: *SoundFile, formatTag: u16) throw
 {
     switch formatTag
     {

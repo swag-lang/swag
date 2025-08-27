@@ -11,7 +11,7 @@ impl AA
     }
 
     #[Swag.Macro]
-    func titi(using me, ptr: *void, stmt: #code void)
+    func titi(me, ptr: *void, stmt: #code void)
     {
         func toto(ptr: *void)
         {
@@ -19,9 +19,9 @@ impl AA
         }
     }
 
-    func tata(using me)
+    func tata(me)
     {
-        titi(null)
+        me.titi(null)
         {
             var v = cast(*ENUM) ptr
         }

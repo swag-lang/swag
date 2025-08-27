@@ -6,9 +6,9 @@ struct AA
 impl AA
 {
     #[Swag.Macro]
-    func titi(using me, stmt: #code void)
+    func titi(me, stmt: #code void)
     {
-        count = 0
+        me.count = 0
         #macro
         {
             #inject(#up stmt)
@@ -24,11 +24,11 @@ struct BB
 
 impl BB
 {
-    func toto(using me)
+    func toto(me)
     {
-        x.titi()
+        me.x.titi()
         {
-            yyyy = 0
+            me.yyyy = 0
         }
     }
 }

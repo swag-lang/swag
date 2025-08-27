@@ -6,35 +6,35 @@ struct(T) PointBase
 
 impl PointBase
 {
-    func(op: string) opAssign(using me, value: T)
+    func(op: string) opAssign(me, value: T)
     {
-        #if   op == "+="    { x += value; y += value; }
-        #elif op == "-="    { x -= value; y -= value; }
-        #elif op == "*="    { x *= value; y *= value; }
+        #if   op == "+="    { me.x += value; me.y += value; }
+        #elif op == "-="    { me.x -= value; me.y -= value; }
+        #elif op == "*="    { me.x *= value; me.y *= value; }
         #else              : #error("unsupported assign operation '" ++ op ++ "'")
     }
 
-    func(op: string) opBinary(using me, other: PointBase)->PointBase
+    func(op: string) opBinary(me, other: PointBase)->PointBase
     {
-        #if   op == "+": return PointBase{x + other.x, y + other.y}
-        #elif op == "-": return PointBase{x - other.x, y - other.y}
-        #elif op == "*": return PointBase{x * other.x, y * other.y}
+        #if   op == "+": return PointBase{me.x + other.x, me.y + other.y}
+        #elif op == "-": return PointBase{me.x - other.x, me.y - other.y}
+        #elif op == "*": return PointBase{me.x * other.x, me.y * other.y}
         #else          : #error("unsupported binary operation '" ++ op ++ "'")
     }
 
     // Offset this Point by a given value
     #[Swag.Overload]
-    func offset(using me, value: T)
+    func offset(me, value: T)
     {
-        x, y += value
+        me.x, me.y += value
     }
 
     // Offset this Point by a given value
     #[Swag.Overload]
-    func offset(using me, valueX, valueY: T)
+    func offset(me, valueX, valueY: T)
     {
-        x += valueX
-        y += valueY
+        me.x += valueX
+        me.y += valueY
     }
 }
 

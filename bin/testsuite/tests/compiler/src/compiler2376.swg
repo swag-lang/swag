@@ -6,7 +6,7 @@ struct AA
 impl AA
 {
     #[Swag.Implicit]
-    func opCast(using me)->s32 => 666
+    func opCast(me)->s32 => 666
 }
 
 func toto(v: s32)

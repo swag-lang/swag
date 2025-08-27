@@ -1,4 +1,4 @@
-#global testerror "Err0024"
+//#global testerror "Err0024"
 
 struct Color
 {
@@ -8,9 +8,9 @@ struct Color
 
 impl Color
 {
-    func toto(using me, b: u32)
+    func toto(me, b: u32)
     {
-        a = b
+        me.a = b
     }
 }
 

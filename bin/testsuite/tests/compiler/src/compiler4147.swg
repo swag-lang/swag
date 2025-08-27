@@ -19,7 +19,7 @@ impl A
     {
     }
 
-    mtd titi(using ptr2: *B)
+    mtd titi(ptr2: *B)
     {
         me.toto()
     }

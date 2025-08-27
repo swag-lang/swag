@@ -2,8 +2,8 @@ struct(T) Random {}
 
 impl Random
 {
-    func nextS64(using me)->u64 => nextU64(me)
-    func nextU64(using me)->u64 => 1
+    func nextS64(me)->u64 => nextU64(me)
+    func nextU64(me)->u64 => 1
 }
 
 #test

@@ -16,27 +16,27 @@ namespace std
 
     impl String1372
     {
-        func free(using me)
+        func free(me)
         {
-            if !buffer:
+            if !me.buffer:
                 return
             var req: AllocatorRequest
             req.mode = AllocatorMode.Free
-            req.address = buffer
-            allocator.req(&req)
+            req.address = me.buffer
+            me.allocator.req(&req)
         }
 
-        func realloc(using me, newSize: u32)
+        func realloc(me, newSize: u32)
         {
-            if allocator == null:
-                allocator = @getcontext().allocator
+            if me.allocator == null:
+                me.allocator = @getcontext().allocator
 
             var req: AllocatorRequest
             req.mode = AllocatorMode.Realloc
             req.size = cast(u64) newSize
-            req.address = buffer
-            allocator.req(&req)
-            buffer = cast() req.address
+            req.address = me.buffer
+            me.allocator.req(&req)
+            me.buffer = cast() req.address
         }
     }
 }

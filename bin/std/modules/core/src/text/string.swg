@@ -695,7 +695,7 @@ impl String
 
 impl Hash.IHash32 for String
 {
-    func impl compute(using const me)->u32
+    func impl compute(const me)->u32
     {
         return Hash.Crc32.compute(@mkslice(me.buffer, me.length))
     }

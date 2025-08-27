@@ -7,7 +7,7 @@ impl AA
 {
     #[Swag.Inline]
     #[Swag.Implicit]
-    func opCast(using me)->s64 => 666
+    func opCast(me)->s64 => 666
 }
 
 //#[Swag.PrintBc]

@@ -4,7 +4,7 @@ struct AA
 
 impl AA
 {
-    func opCast(using me)->string
+    func opCast(me)->string
     {
         return "toto"
     }

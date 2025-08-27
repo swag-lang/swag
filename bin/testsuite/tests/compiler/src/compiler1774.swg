@@ -10,7 +10,7 @@ struct X
 
 impl A for X
 {
-    func impl x(using me)
+    func impl x(me)
     {
 
     }

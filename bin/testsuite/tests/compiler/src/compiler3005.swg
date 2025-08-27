@@ -6,7 +6,7 @@ var G = 0
 
 impl BB
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G = 1
     }
@@ -19,7 +19,7 @@ struct AA
 
 impl AA
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         @assert(G == 0)
     }

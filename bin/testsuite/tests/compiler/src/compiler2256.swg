@@ -5,7 +5,7 @@ struct B
 
 impl B
 {
-    func opPostMove(using me)
+    func opPostMove(me)
     {
         //@print("postmove")
     }

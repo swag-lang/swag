@@ -6,9 +6,9 @@ struct A
 
 impl A
 {
-    func opData(using me)->const *void
+    func opData(me)->const *void
     {
-        return @dataof(x)
+        return @dataof(me.x)
     }
 }
 

@@ -1,9 +1,9 @@
 /**
 # Introduction to Uniform Function Call Syntax (UFCS)
 
-*UFCS* stands for *Uniform Function Call Syntax*. It allows any function to be called using the 
-`param.func()` form when the first parameter of `func()` matches the type of `param`. This syntax 
-provides a way to call static functions as if they were methods on an instance, enhancing 
+*UFCS* stands for *Uniform Function Call Syntax*. It allows any function to be called using the
+`param.func()` form when the first parameter of `func()` matches the type of `param`. This syntax
+provides a way to call static functions as if they were methods on an instance, enhancing
 readability and method-like behavior.
 */
 
@@ -18,8 +18,8 @@ readability and method-like behavior.
 /**
 # Static Functions as Methods
 
-In Swag, all functions are *static*, meaning they are not inherently bound to instances of structs 
-or classes. However, UFCS allows these functions to be called in a method-like style, making 
+In Swag, all functions are *static*, meaning they are not inherently bound to instances of structs
+or classes. However, UFCS allows these functions to be called in a method-like style, making
 struct manipulation more intuitive and the code more readable.
 */
 
@@ -27,9 +27,9 @@ struct manipulation more intuitive and the code more readable.
 {
     struct Point { x, y: s32 }
 
-    func set(using pt: *Point, value: s32)
+    func set(pt: *Point, value: s32)
     {
-        x, y = value
+        pt.x, pt.y = value
     }
 
     var pt: Point
@@ -46,8 +46,8 @@ struct manipulation more intuitive and the code more readable.
 /**
 # UFCS with Multiple Parameters
 
-UFCS works seamlessly with functions that take multiple parameters, as long as the first parameter 
-matches the type of the instance. This allows for consistent and readable function calls, even with 
+UFCS works seamlessly with functions that take multiple parameters, as long as the first parameter
+matches the type of the instance. This allows for consistent and readable function calls, even with
 more complex function signatures.
 */
 
@@ -55,10 +55,10 @@ more complex function signatures.
 {
     struct Vector { x, y: f32 }
 
-    func add(using vec: *Vector, dx: f32, dy: f32)
+    func add(vec: *Vector, dx: f32, dy: f32)
     {
-        x += dx
-        y += dy
+        vec.x += dx
+        vec.y += dy
     }
 
     var v: Vector
@@ -75,8 +75,8 @@ more complex function signatures.
 /**
 # UFCS and Function Overloading
 
-UFCS supports function overloading, where the appropriate function is chosen based on the types 
-of the parameters provided. This feature ensures that UFCS remains versatile and applicable across 
+UFCS supports function overloading, where the appropriate function is chosen based on the types
+of the parameters provided. This feature ensures that UFCS remains versatile and applicable across
 a wide range of function signatures, allowing for flexible and context-appropriate behavior.
 */
 
@@ -92,10 +92,10 @@ a wide range of function signatures, allowing for flexible and context-appropria
     }
 
     #[Swag.Overload]
-    func multiply(using c: *Complex, other: *Complex)
+    func multiply(c: *Complex, other: *Complex)
     {
-        real = (real * other.real) - (imag * other.imag)
-        imag = (real * other.imag) + (imag * other.real)
+        c.real = (c.real * other.real) - (c.imag * other.imag)
+        c.imag = (c.real * other.imag) + (c.imag * other.real)
     }
 
     var c1 = Complex{2.0, 3.0}

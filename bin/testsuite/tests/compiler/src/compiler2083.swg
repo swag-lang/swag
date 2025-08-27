@@ -7,7 +7,7 @@ var G = 0
 
 impl AA
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         G = 1
     }

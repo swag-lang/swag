@@ -10,7 +10,7 @@ interface ITF
 
 impl ITF for AA
 {
-    func impl cb(using me)
+    func impl cb(me)
     {
 
     }

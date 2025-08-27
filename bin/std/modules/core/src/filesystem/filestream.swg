@@ -19,7 +19,7 @@ struct FileStream
 impl FileStream
 {
     // Returns true if the stream is currently open and valid
-    func isOpen(using const me)->bool
+    func isOpen(const me)->bool
     {
         return me.handle != null
     }

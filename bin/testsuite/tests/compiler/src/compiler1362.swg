@@ -18,9 +18,9 @@ var G = 0
 impl IPrintable for TITI
 {
     //#[Swag.PrintBc]
-    func impl print(using me)
+    func impl print(me)
     {
-        @assert(val == 666)
+        @assert(me.val == 666)
         G += 1
     }
 }

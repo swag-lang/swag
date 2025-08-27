@@ -9,9 +9,9 @@ struct S
 impl S
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using me, stmt: #code void)
+    func(ptr: bool, back: bool) opVisit(me, stmt: #code void)
     {
-        for var v = down; v <= up; v += 1
+        for var v = me.down; v <= me.up; v += 1
         {
             #macro
             {

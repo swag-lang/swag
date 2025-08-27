@@ -12,17 +12,17 @@ struct TITI
 
 impl IIncrementable for TITI
 {
-    func impl incr(using me)
+    func impl incr(me)
     {
-        val += 1
+        me.val += 1
     }
 
-    /*func decr(using me)
+    /*func decr(me)
     {
         val -= 1
     }
 
-    func done(using me)->bool
+    func done(me)->bool
     {
         return val == 0
     } */

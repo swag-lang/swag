@@ -1,4 +1,4 @@
-#global testerror "Err0347"
+#global testerror "Err0699"
 
 struct Point
 {
@@ -7,8 +7,8 @@ struct Point
 }
 
 //#[Swag.PrintBc]
-func toto(using pt: *u32)
+func toto(pt: *u32)
 {
-    x = 10
-    y = 20
+    pt.x = 10
+    pt.y = 20
 }

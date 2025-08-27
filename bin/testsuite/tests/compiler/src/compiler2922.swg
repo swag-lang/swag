@@ -1,18 +1,18 @@
 struct AA {}
 impl AA
 {
-    func titi(using me, x: s32 = 10)
+    func titi(me, x: s32 = 10)
     {
     }
 
     #[Swag.Inline]
-    func toto(using me, x: s32)
+    func toto(me, x: s32)
     {
-        titi()
+        me.titi()
     }
 
-    func tata(using me)
+    func tata(me)
     {
-        toto(10)
+        me.toto(10)
     }
 }

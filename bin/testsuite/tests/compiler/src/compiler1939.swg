@@ -1,4 +1,4 @@
-#global testerror "Err0004"
+//#global testerror "Err0004"
 struct B
 {
     xxx: s32
@@ -6,7 +6,7 @@ struct B
 
 impl B
 {
-    func toto(using me)
+    func toto(me)
     {
         var xxx = 0
     }

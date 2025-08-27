@@ -6,11 +6,11 @@ struct CStr
 
 impl CStr
 {
-    func opDrop(using me)
+    func opDrop(me)
     {
         //@print("XXXXXdropXXXXX\n")
         //@assert(buffer != null)
-        @free(buffer)
+        @free(me.buffer)
     }
 }
 

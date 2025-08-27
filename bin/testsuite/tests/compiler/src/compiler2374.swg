@@ -7,13 +7,13 @@ struct AA
 
 impl AA
 {
-    func opEquals(using me, other: string)->bool
+    func opEquals(me, other: string)->bool
     {
         return other == "toto"
     }
 
     #[Implicit]
-    func opCast(using me)->string
+    func opCast(me)->string
     {
         return "toto"
     }

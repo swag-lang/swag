@@ -7,7 +7,7 @@ struct S
 impl S
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(using me, stmt: s32)
+    func(ptr: bool, back: bool) opVisit(me, stmt: s32)
     {
         for 10
         {
