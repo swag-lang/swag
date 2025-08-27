@@ -44,7 +44,6 @@ int main(int argc, const char* argv[])
 
     // Command
     if (command != "build" &&
-        command != "patch" &&
         command != "run" &&
         command != "doc" &&
         command != "test" &&
@@ -86,10 +85,6 @@ int main(int argc, const char* argv[])
     if (command == "build")
     {
         g_Workspace->build();
-    }
-    else if (command == "patch")
-    {
-        g_Workspace->patch();
     }
     else if (command == "run")
     {

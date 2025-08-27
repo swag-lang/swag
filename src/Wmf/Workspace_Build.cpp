@@ -887,15 +887,14 @@ bool Workspace::build()
             g_Log.messageHeaderCentered("Done", form("%.3fs", OS::timerToSeconds(g_Workspace->totalTime.load())));
     }
 
+    if (result && g_CommandLine.patchMode)
+        patch();
+
     return result;
 }
 
 bool Workspace::patch()
 {
-    g_CommandLine.patchMode = true;
-
-    SWAG_CHECK(build());
-
     for (const auto m : g_Workspace->modules)
     {
         if (m->is(ModuleKind::Dependency))

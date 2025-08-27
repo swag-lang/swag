@@ -47,7 +47,7 @@ struct Workspace
     static void computeWaitingJobs();
     static void checkPendingJobs();
     bool        build();
-    bool        patch();
+    static bool patch();
 
     static Diagnostic* errorPendingJob(Job* prevJob, const Job* depJob);
     static bool        buildRTModule(Module* module);

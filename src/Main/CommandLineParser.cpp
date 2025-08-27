@@ -103,6 +103,7 @@ void CommandLineParser::setup(CommandLine* cmdLine)
     addArg("bu sc doc", "--randomize", nullptr, CommandLineType::Bool, &cmdLine->randomize, nullptr, "[devmode] randomize behavior");
     addArg("bu sc doc", "--seed", nullptr, CommandLineType::Int, &cmdLine->randSeed, nullptr, "[devmode] set seed for randomize behavior");
     addArg("bu sc doc", "--force-format", nullptr, CommandLineType::Bool, &cmdLine->forceFormat, nullptr, "[devmode] force code to be reformatted before parsing");
+    addArg("bu te sc doc", "--patch", nullptr, CommandLineType::Bool, &cmdLine->patchMode, nullptr, "[devmode] apply a patch on all compiled modules");
 #else
     addArg("bu sc doc", "--devmode", nullptr, CommandLineType::Bool, &cmdLine->dbgDevMode, nullptr, "message box in case of exception");
 #endif
