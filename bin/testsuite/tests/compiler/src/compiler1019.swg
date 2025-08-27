@@ -3,12 +3,12 @@ using Swag
 //#[Swag.PrintBc]
 #test
 {
-	let context = @getcontext()
+    let context = @getcontext()
 
-	var req: AllocatorRequest
-	req.size = 16
+    var req: AllocatorRequest
+    req.size = 16
 
-	context.allocator.req(&req)
-	req.mode = AllocatorMode.Free
-	context.allocator.req(&req)
+    context.allocator.req(&req)
+    req.mode = AllocatorMode.Free
+    context.allocator.req(&req)
 }

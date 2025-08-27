@@ -1,31 +1,31 @@
 //#[Swag.public]
 struct RNG
 {
-	xx: s32
+    xx:  s32
 }
 
 impl RNG
 {
-	func call(using me, x: s32)
-	{
-		//@print(cast(s64) x)
-	}
+    func call(using me, x: s32)
+    {
+        //@print(cast(s64) x)
+    }
 }
 
 //#[Swag.public]
 struct(T) toto
 {
-	rng: RNG
+    rng: RNG
 }
 
 impl toto
 {
-	//#[Swag.public]
-	func toto1(using me, x: s32) => rng.call(x);
+    //#[Swag.public]
+    func toto1(using me, x: s32) => rng.call(x)
 }
 
 #test
 {
-	var t: toto'bool
-	t.toto1(10)
+    var t: toto'bool
+    t.toto1(10)
 }

@@ -1,13 +1,9 @@
 namespace toto.titi
 {
-	struct Mwc
-	{
-	}
+    struct Mwc {}
 }
 
 namespace toto.titi
 {
-	struct(T = Mwc) Random
-	{
-	}
+    struct(T = Mwc) Random {}
 }

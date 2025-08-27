@@ -1,16 +1,15 @@
-
-#global testpass syntax;
+#global testpass syntax
 
 enum A: u8
 {
-	Red;
-	Green;
-	Blue;
+    Red
+    Green
+    Blue
 }
 
 enum B: string
 {
-	Red;
-	Green;
-	Blue;
+    Red
+    Green
+    Blue
 }

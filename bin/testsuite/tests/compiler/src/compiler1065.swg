@@ -1,12 +1,10 @@
-
-
 struct Point
 {
-	x = 4
+    x    = 4
 }
 
 #test
 {
-	var pt = Point{}
-	@assert(pt.x == 4)
+    var pt = Point{}
+    @assert(pt.x == 4)
 }

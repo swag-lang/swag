@@ -1,7 +1,4 @@
-struct A
-{
-    x, y, z: s32
-}
+struct A { x, y, z: s32 }
 
 interface I
 {
@@ -36,14 +33,14 @@ func titi(itf: *I)
 
 struct BB
 {
-    itf: I
-    pitf: *I
+    itf:      I
+    pitf:     *I
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var x: I
+    var x:  I
     var st: A
     x = cast(I) st
     G = &x

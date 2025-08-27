@@ -1,6 +1,4 @@
-func toto()
-{
-}
+func toto() {}
 
 func toto1() => toto()
 

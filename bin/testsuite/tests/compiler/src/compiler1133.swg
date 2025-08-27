@@ -1,11 +1,10 @@
 using Swag
-namespace A {
-namespace B {
-
-#[ConstExpr]
-func toto()
+namespace A
 {
-}
+    namespace B
+    {
 
-}
+        #[ConstExpr]
+        func toto() {}
+    }
 }

@@ -1,10 +1,5 @@
+#global testpass syntax
 
-#global testpass syntax;
+func main() {}
 
-func main ()
-{
-}
-
-func main () -> u32
-{
-}
+func main()->u32 {}

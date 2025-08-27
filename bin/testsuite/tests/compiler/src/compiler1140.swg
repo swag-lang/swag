@@ -2,17 +2,15 @@
 
 namespace A.B
 {
-	using A.C
+    using A.C
 }
 
 namespace A.B
 {
-	func toto1() => toto()
+    func toto1() => toto()
 }
 
 namespace A.C
 {
-	func toto()
-	{
-	}
+    func toto() {}
 }

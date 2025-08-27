@@ -1,9 +1,9 @@
 using Swag
 #[AttrUsage(AttributeUsage.StructVariable)]
-attr NC();
+attr NC()
 
 struct Toto
 {
-	#[NC]
-	x: s32 = 10
+    #[NC]
+    x:   s32 = 10
 }

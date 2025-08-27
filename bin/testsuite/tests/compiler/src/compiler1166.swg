@@ -3,22 +3,20 @@ const TITI = true
 
 #if TOTO
 {
-	#if TOTO
-	{
-		func toto()
-		{
-			@assert(false)
-		}
-	}
+    #if TOTO
+    {
+        func toto()
+        {
+            @assert(false)
+        }
+    }
 }
 #elif TITI and !TOTO
 {
-	func toto()
-	{
-	}
+    func toto() {}
 }
 
 #test
 {
-	toto()
+    toto()
 }

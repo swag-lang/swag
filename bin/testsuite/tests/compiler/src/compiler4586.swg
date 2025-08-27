@@ -8,7 +8,7 @@ impl String
     #[Swag.Implicit]
     mtd opAffect(x: string)
     {
-        val = x
+        me.val = x
     }
 }
 

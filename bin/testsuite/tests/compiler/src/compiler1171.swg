@@ -1,4 +1,4 @@
 #if #cfg == "frffrrf"
 {
-#assert(false)
+    #assert(false)
 }

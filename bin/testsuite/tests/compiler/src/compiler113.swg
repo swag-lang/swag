@@ -1,6 +1,1 @@
-;
-;
-
-func main ()
-{
-}
+func main() {}

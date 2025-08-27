@@ -1,10 +1,6 @@
-struct(K) Array
-{
-}
+struct(K) Array {}
 
-struct String1981
-{
-}
+struct String1981 {}
 
 func(T) titi(x: T)
 {

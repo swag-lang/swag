@@ -84,9 +84,9 @@ public impl tcf_Point
 {
     func set(me)
     {
-        x = 444
-        y = 555
-        z = 666
+        me.x = 444
+        me.y = 555
+        me.z = 666
     }
 }
 
