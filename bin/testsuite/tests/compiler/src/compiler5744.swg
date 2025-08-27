@@ -9,7 +9,7 @@ struct Book {
     title: string = "TOTO"
 }
 
-impl Printable for Book {       
+impl Printable for Book {
     mtd impl printDetails() {
         @print("Book Title: ", title)
     }
@@ -18,10 +18,10 @@ impl Printable for Book {
 struct Magazine {
     issueNumber: s32
 }
-    
-impl Printable for Magazine {       
+
+impl Printable for Magazine {
     mtd impl printDetails() {
-        @print("Magazine Issue: ", issueNumber)
+        @print("Magazine Issue: ", me.issueNumber)
     }
 }
 
@@ -31,7 +31,7 @@ const items: Printable = Book{title: "Swift Programming"}
 const A: any = Book{title: "Swift Programming"}
 //#[Swag.PrintBc]
 #test
-{   
+{
     let ptr = @dataof(A)
     @assert(#typeof(ptr).flags & .Const == .Const)
 

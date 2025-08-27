@@ -10,7 +10,7 @@ impl A
     #[Swag.Inline]
     mtd opAffect(p: func||())
     {
-        x = p
+        me.x = p
     }
 }
 

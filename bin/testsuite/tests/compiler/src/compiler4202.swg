@@ -19,7 +19,7 @@ impl A
     #[Swag.Inline]
     mtd toto()
     {
-        b.titi()
+        me.b.titi()
     }
 }
 

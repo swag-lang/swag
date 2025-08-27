@@ -7,8 +7,8 @@ impl A
 {
     mtd opDrop()
     {
-        @assert(x == 0)
-        x = 1
+        @assert(me.x == 0)
+        me.x = 1
     }
 }
 

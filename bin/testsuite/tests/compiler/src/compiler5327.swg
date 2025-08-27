@@ -15,7 +15,7 @@ impl S
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
-        opVisitBytes'(ptr, back)(|#alias0| stmt)
+        me.opVisitBytes'(ptr, back)(|#alias0| stmt)
     }
 }
 

@@ -27,8 +27,8 @@ private impl Bot
 {
     mtd add(v: s32)
     {
-        val[count] = v
-        orderMinMax(&val[0], &val[1])
+        me.val[me.count] = v
+        orderMinMax(&me.val[0], &me.val[1])
     }
 }
 

@@ -10,7 +10,7 @@ impl A
     #[Swag.Optimize("", true)]
     mtd titi()
     {
-        if !toto():
+        if !me.toto():
             return
         @assert(false)
     }

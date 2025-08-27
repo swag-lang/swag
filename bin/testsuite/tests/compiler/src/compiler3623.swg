@@ -9,13 +9,13 @@ impl Angle
     #[ConstExpr, Implicit, Inline]
     mtd opAffect(valueRad: s32)
     {
-        rad = valueRad
+        me.rad = valueRad
     }
 
     #[ConstExpr, Implicit, Inline]
     mtd(suffix: string) opAffectLiteral(value: s32)
     {
-        rad = value * 2
+        me.rad = value * 2
     }
 }
 

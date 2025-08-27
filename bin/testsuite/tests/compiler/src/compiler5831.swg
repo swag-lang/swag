@@ -11,7 +11,7 @@ impl String
     #[Implicit]
     mtd opAffect(value: string)
     {
-        x = value
+        me.x = value
     }
 }
 

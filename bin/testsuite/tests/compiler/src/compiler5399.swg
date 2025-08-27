@@ -13,7 +13,7 @@ impl A
 {
     mtd opIndex(i: u64)->&*B
     {
-        return &ptr[0]
+        return &me.ptr[0]
     }
 }
 

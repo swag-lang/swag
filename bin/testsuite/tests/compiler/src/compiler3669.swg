@@ -8,7 +8,7 @@ impl A
     #[Swag.Inline]
     mtd opIndexAffect(index: u64, value: s32)
     {
-        x[index] = value
+        me.x[index] = value
     }
 }
 

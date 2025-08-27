@@ -9,7 +9,7 @@ impl Array
     mtd add(x: T) {}
     mtd opCast()->const [..] T
     {
-        return @mkslice(buf,1)
+        return @mkslice(me.buf,1)
     }
 }
 

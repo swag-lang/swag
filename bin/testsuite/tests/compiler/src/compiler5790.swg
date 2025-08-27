@@ -25,7 +25,7 @@ impl A
 
     mtd toto()
     {
-        newCommand()
+        me.newCommand()
     }
 }
 

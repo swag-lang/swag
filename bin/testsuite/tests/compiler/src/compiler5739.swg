@@ -7,19 +7,19 @@ struct Book {
     title: string = "TOTO"
 }
 
-impl Printable for Book {       
+impl Printable for Book {
     mtd impl printDetails() {
-        @print("Book Title: ", title)
+        @print("Book Title: ", me.title)
     }
 }
 
 struct Magazine {
     issueNumber: s32
 }
-    
-impl Printable for Magazine {       
+
+impl Printable for Magazine {
     mtd impl printDetails() {
-        @print("Magazine Issue: ", issueNumber)
+        @print("Magazine Issue: ", me.issueNumber)
     }
 }
 
@@ -33,7 +33,7 @@ const A: any = Book{}//{title: "Swift Programming"}
 {
     let ptr = cast(const *Book) @dataof(A)
     @assert(ptr.title == "TOTO")
-    
+
     /*let printableItem = items as Book
     @print(printableItem.title)*/
 

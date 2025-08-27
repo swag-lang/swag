@@ -17,7 +17,7 @@ impl Array
 
     mtd opDrop()
     {
-        @assert(count == 5)
+        @assert(me.count == 5)
     }
 }
 

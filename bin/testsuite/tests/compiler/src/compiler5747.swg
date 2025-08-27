@@ -11,9 +11,9 @@ struct Book {
     title: string = "TOTO"
 }
 
-impl Printable for Book {       
+impl Printable for Book {
     mtd const impl printDetails() {
-        if title == "Swift Programming":
+        if me.title == "Swift Programming":
             G += 1
     }
 }
@@ -21,16 +21,16 @@ impl Printable for Book {
 struct Magazine {
     issueNumber: s32
 }
-    
-impl Printable for Magazine {       
+
+impl Printable for Magazine {
     mtd const impl printDetails() {
-        G += issueNumber
+        G += me.issueNumber
     }
 }
 
 //#[Swag.PrintBc]
 #test
-{   
+{
     var items: [] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
 
     foreach item in items {

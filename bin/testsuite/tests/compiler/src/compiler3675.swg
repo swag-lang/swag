@@ -8,7 +8,7 @@ impl A
     #[Swag.Mixin]
     mtd toto(index0: u64, value: s32)
     {
-        #ast "x[index0] " ++ "+=" ++ " value"
+        #ast "me.x[index0] " ++ "+=" ++ " value"
     }
 }
 

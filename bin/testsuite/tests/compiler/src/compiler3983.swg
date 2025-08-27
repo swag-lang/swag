@@ -7,7 +7,7 @@ impl Vec2
 {
     mtd const opIndex(idx: u64)->f32
     {
-        return buffer[idx]
+        return me.buffer[idx]
     }
 }
 

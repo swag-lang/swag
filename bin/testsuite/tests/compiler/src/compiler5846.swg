@@ -3,7 +3,7 @@ impl A
 {
     mtd opDrop()
     {
-        @assert(x == 0)
+        @assert(me.x == 0)
     }
 }
 

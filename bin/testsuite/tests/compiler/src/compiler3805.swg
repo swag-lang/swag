@@ -8,7 +8,7 @@ impl String
     #[Swag.Inline]
     mtd opCast()->string
     {
-        return a
+        return me.a
     }
 }
 

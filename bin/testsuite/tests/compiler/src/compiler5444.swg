@@ -6,7 +6,7 @@ struct Vector2
 impl Vector2
 {
     #[Swag.Inline]
-    mtd(op: string) const opBinary(other: s32)->Vector2 => Vector2{x*other}
+    mtd(op: string) const opBinary(other: s32)->Vector2 => Vector2{me.x*other}
 }
 
 //#[Swag.PrintAsm]

@@ -1,4 +1,4 @@
-struct A 
+struct A
 {
     y: u32
 }
@@ -9,7 +9,7 @@ impl A
     #[Swag.Optimize("", false)]
     mtd opAffect(x: u32)
     {
-        y = x
+        me.y = x
     }
 
     #[Swag.Optimize("", false)]

@@ -9,7 +9,7 @@ impl Arr
 {
     mtd opDrop()
     {
-        G += tt
+        G += me.tt
     }
 }
 

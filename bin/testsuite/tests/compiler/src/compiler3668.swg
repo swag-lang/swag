@@ -8,11 +8,11 @@ impl A
     #[Swag.Inline]
     mtd read()
     {
-        x += 1
+        me.x += 1
     }
 
     mtd test()
     {
-        read()
+        me.read()
     }
 }

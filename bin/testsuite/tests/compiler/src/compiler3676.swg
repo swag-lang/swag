@@ -13,7 +13,7 @@ impl I for A
 {
     mtd impl toto()
     {
-        G = xx
+        G = me.xx
     }
 }
 

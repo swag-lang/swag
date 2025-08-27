@@ -11,7 +11,7 @@ impl B
     mtd opEquals(o: B)->bool
     {
         G += 1
-        return b == o.b
+        return me.b == o.b
     }
 }
 

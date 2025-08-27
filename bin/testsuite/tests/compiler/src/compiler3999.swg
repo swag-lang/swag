@@ -7,7 +7,7 @@ impl A
 {
     mtd opIndex(i: u64)->const &s32
     {
-        return &x
+        return &me.x
     }
 }
 

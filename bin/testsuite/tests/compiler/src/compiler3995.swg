@@ -7,7 +7,7 @@ impl V
 {
     mtd opEquals(other: V)->bool
     {
-        return x == other.x and y == other.y
+        return me.x == other.x and me.y == other.y
     }
 }
 

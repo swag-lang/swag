@@ -9,7 +9,7 @@ impl A
     mtd opDrop()
     {
         G += 1
-        @assert(vv == 666)
+        @assert(me.vv == 666)
         //@print("drop ", vv, "\n");
     }
 

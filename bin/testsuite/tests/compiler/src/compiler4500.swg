@@ -13,7 +13,7 @@ impl BitArray
     mtd opAffect(what: const [..] bool)
     {
         let len = @countof(what)
-        reserve(len)
+        me.reserve(len)
     }
 
 #[Swag.NoInline]
@@ -21,13 +21,13 @@ impl BitArray
 //#[Swag.Optimize("", false)]
     mtd reserve(maxBits: u64)
     {
-        count = maxBits
-        capacity = maxBits >> 5
-        if capacity << 5 < maxBits:
-            capacity += 1
+        me.count = maxBits
+        me.capacity = maxBits >> 5
+        if me.capacity << 5 < maxBits:
+            me.capacity += 1
 
-        capacity *= 4
-        @assert(capacity > 0)
+        me.capacity *= 4
+        @assert(me.capacity > 0)
     }
 }
 

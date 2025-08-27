@@ -13,7 +13,7 @@ impl A
 {
     mtd toto()->&*B
     {
-        return &ptr[0]
+        return &me.ptr[0]
     }
 }
 

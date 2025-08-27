@@ -16,31 +16,31 @@ impl Queue
 {
     mtd init(alloc: Swag.IAllocator)
     {
-        gpa = alloc
+        me.gpa = alloc
     }
 
-    mtd enqueue(value: T) 
+    mtd enqueue(value: T)
     {
         let node = cast(*Node) @alloc(#sizeof(Node))
         @init(node)
         node.data = value
-        if end:
-            end.next = node
+        if me.end:
+            me.end.next = node
         else:
-            start = node
-        end = node
+            me.start = node
+        me.end = node
     }
 
-    mtd dequeue() -> T 
+    mtd dequeue() -> T
     {
         let start = start orelse null
-        defer gpa.destroy(start)
+        defer me.gpa.destroy(me.start)
         if start.next:
-            start = next
+            me.start = next
         else:
-            start, end = null
+            me.start, me.end = null
         return data;
-    }        
+    }
 }
 
 #test

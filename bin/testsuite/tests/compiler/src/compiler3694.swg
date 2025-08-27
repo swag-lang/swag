@@ -9,7 +9,7 @@ impl Array
 {
     mtd opDrop()
     {
-        @assert(buf == 666)
+        @assert(me.buf == 666)
     }
 }
 

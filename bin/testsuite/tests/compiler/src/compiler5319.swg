@@ -41,7 +41,7 @@ impl A
     //#[Swag.PrintBc]
     mtd clear()
     {
-        x.clear()
+        me.x.clear()
     }
 }
 

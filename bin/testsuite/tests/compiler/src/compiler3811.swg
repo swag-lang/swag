@@ -15,7 +15,7 @@ impl A
 {
     mtd toto(rr: RR)
     {
-        x = rr
+        me.x = rr
     }
 }
 

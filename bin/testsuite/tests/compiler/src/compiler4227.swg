@@ -7,7 +7,7 @@ impl A
 {
     mtd opDrop()
     {
-        x = 666
+        me.x = 666
     }
 }
 

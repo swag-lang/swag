@@ -7,7 +7,7 @@ impl V
 {
     mtd opIndexAffect(idx: u64, val: s32)
     {
-        x, y = val
+        me.x, me.y = val
     }
 }
 

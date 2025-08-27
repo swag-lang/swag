@@ -9,7 +9,7 @@ impl A
 {
     mtd opAffect(p: func||())
     {
-        x = p
+        me.x = p
     }
 }
 

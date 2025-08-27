@@ -10,7 +10,7 @@ impl B
     mtd opEquals(v: s32)->bool
     {
         G = 1
-        return v == x
+        return v == me.x
     }
 }
 
@@ -23,7 +23,7 @@ impl A
 {
     mtd opIndex(i: u64)->const &B
     {
-        return &b
+        return &me.b
     }
 }
 

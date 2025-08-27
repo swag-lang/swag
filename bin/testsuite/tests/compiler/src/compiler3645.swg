@@ -8,7 +8,7 @@ impl C
     #[Swag.ConstExpr]
     mtd opAffect(x: s32)
     {
-        vv = x
+        me.vv = x
     }
 }
 

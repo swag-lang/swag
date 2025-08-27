@@ -7,6 +7,6 @@ impl A
         {
         }
 
-        titi()
+        me.titi()
     }
 }

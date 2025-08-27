@@ -9,6 +9,6 @@ impl A
 
     mtd titi()
     {
-        toto(1, 2, false)
+        me.toto(1, 2, false)
     }
 }

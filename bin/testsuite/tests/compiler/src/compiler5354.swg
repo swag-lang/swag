@@ -8,7 +8,7 @@ impl AA
 {
     mtd opCount()->u64
     {
-        @assert(vv == 666)
+        @assert(me.vv == 666)
         return 1
     }
 

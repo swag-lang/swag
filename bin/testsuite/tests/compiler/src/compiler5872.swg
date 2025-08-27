@@ -4,7 +4,7 @@ impl V2
 {
     mtd titi()
     {
-        @assert(x == 10)
+        @assert(me.x == 10)
     }
 
     mtd toto()

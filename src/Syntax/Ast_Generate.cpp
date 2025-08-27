@@ -54,7 +54,7 @@ bool Ast::generateOpEquals(SemanticContext* context, TypeInfo* typeLeft, TypeInf
             {
                 const auto typeArr = castTypeInfo<TypeInfoArray>(typeField->typeInfo, TypeInfoKind::Array);
                 if (!typeArr->finalType->isStruct())
-                    content += form("if @memcmp(&%s[0], &o.%s[0], #sizeof(%s)) != 0: return false\n", leftN, rightN, leftN);
+                    content += form("if @memcmp(&me.%s[0], &o.%s[0], #sizeof(%s)) != 0: return false\n", leftN, rightN, leftN);
                 else
                 {
                     content += form("for i in me.%s: ", leftN);

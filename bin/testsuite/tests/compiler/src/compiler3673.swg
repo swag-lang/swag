@@ -12,7 +12,7 @@ impl A
         @assert(index1 == 40)
         @assert(index2 == 400)
         @assert(value == 666)
-        x[2] = 666
+        me.x[2] = 666
     }
 }
 

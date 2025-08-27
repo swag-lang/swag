@@ -8,7 +8,7 @@ impl A
 {
     mtd length()->s32
     {
-        return x
+        return me.x
     }
 
     mtd opIndex(x: u32)->&*A

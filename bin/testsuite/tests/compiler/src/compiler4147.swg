@@ -1,5 +1,5 @@
-#global testerror "Err0024"
-#global testerror "Err0019"
+//#global testerror "Err0024"
+//#global testerror "Err0019"
 
 struct A
 {
@@ -21,6 +21,6 @@ impl A
 
     mtd titi(using ptr2: *B)
     {
-        toto()
+        me.toto()
     }
 }

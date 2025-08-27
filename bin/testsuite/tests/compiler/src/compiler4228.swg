@@ -7,12 +7,12 @@ impl A
 {
     mtd opDrop()
     {
-        x = 666
+        me.x = 666
     }
 
     mtd(op:string) opBinary(other: A)->A
     {
-        return {x+other.x}
+        return {me.x+other.x}
     }
 }
 

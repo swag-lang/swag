@@ -9,7 +9,7 @@ impl V
 {
     mtd(op: string) opAssign(val: s32)
     {
-        x, y += val
+        me.x, me.y += val
     }
 }
 

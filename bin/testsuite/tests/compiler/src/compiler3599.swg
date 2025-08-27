@@ -13,6 +13,6 @@ impl X
 
     mtd toto1()
     {
-        toto(.R, .G)
+        me.toto(.R, .G)
     }
 }

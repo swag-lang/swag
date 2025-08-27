@@ -1,5 +1,5 @@
 struct String
-{    
+{
 aa: u64
 }
 
@@ -14,7 +14,7 @@ impl String
     #[Swag.Implicit]
     mtd opAffect(x: string)
     {
-        aa = 60
+        me.aa = 60
     }
 }
 

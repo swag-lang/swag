@@ -10,19 +10,19 @@ struct Book {
     title: string = "TOTO"
 }
 
-impl Printable for Book {       
+impl Printable for Book {
     mtd const impl printDetails() {
-        G = title
+        G = me.title
     }
 }
 
 struct Magazine {
     issueNumber: s32
 }
-    
-impl Printable for Magazine {       
+
+impl Printable for Magazine {
     mtd const impl printDetails() {
-        @print("Magazine Issue: ", issueNumber)
+        @print("Magazine Issue: ", me.issueNumber)
     }
 }
 
@@ -31,7 +31,7 @@ const items: Printable = Book{title: "Swift Programming"}
 
 //#[Swag.PrintBc]
 #test
-{   
+{
     let printableItem = items as Book
     printableItem.Printable.printDetails()
     @assert(G == "Swift Programming")
