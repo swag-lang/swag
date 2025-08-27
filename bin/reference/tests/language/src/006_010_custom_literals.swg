@@ -27,7 +27,7 @@ impl Duration
     #[Swag.ConstExpr, Swag.Implicit, Swag.Inline]
     mtd opAffect(valueMs: s32)
     {
-        timeInSeconds = valueMs / 1000.0
+        me.timeInSeconds = valueMs / 1000.0
     }
 }
 
@@ -48,22 +48,22 @@ impl Duration
         // Check if the suffix is 's' (seconds)
         #if suffix == "s":
             // Directly assign the value as seconds
-            timeInSeconds = value
+            me.timeInSeconds = value
 
         // Check if the suffix is 'ms' (milliseconds)
         #elif suffix == "ms":
             // Convert milliseconds to seconds and assign
-            timeInSeconds = value / 1000.0
+            me.timeInSeconds = value / 1000.0
 
         // Check if the suffix is 'min' (minutes)
         #elif suffix == "min":
             // Convert minutes to seconds (1 min = 60 seconds)
-            timeInSeconds = value * 60.0
+            me.timeInSeconds = value * 60.0
 
         // Check if the suffix is 'h' (hours)
         #elif suffix == "h":
             // Convert hours to seconds (1 hour = 3600 seconds)
-            timeInSeconds = value * 3600.0
+            me.timeInSeconds = value * 3600.0
 
         // Handle unsupported or invalid suffixes
         #else:

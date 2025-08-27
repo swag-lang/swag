@@ -13,14 +13,14 @@ impl Vector3
     // It exemplifies "copy semantics" and can be customized for specific behaviors post-copy.
     mtd opPostCopy()
     {
-        x, y, z += 1    // Increment all fields by 1 to signify a copy operation has occurred.
+        me.x, me.y, me.z += 1    // Increment all fields by 1 to signify a copy operation has occurred.
     }
 
     // This method is invoked following a move operation.
     // It represents "move semantics" and can be customized for specific behaviors post-move.
     mtd opPostMove()
     {
-        x, y, z += 2    // Increment all fields by 2 to signify a move operation has occurred.
+        me.x, me.y, me.z += 2    // Increment all fields by 2 to signify a move operation has occurred.
     }
 
     // This method is invoked when an object is about to be destroyed.
@@ -65,7 +65,7 @@ impl Vector3
     a = #nodrop #move b          // Move 'b' to 'a' without invoking 'opDrop' on 'a' first.
 
     // The `#moveraw` modifier prevents the reinitialization of 'b' after the move.
-    // This approach is risky and should be employed only when certain that 'b' won't be dropped or 
+    // This approach is risky and should be employed only when certain that 'b' won't be dropped or
     // when reinitialization is handled manually.
 
     a = #moveraw b               // Move 'b' to 'a' without resetting 'b'.

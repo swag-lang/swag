@@ -1,7 +1,7 @@
 /**
 # `with` Statement
-The `with` statement is designed to reduce repetition by allowing you to access the fields and methods 
-of a variable or object within a specified scope. Inside a `with` block, you can use the `.` prefix to 
+The `with` statement is designed to reduce repetition by allowing you to access the fields and methods
+of a variable or object within a specified scope. Inside a `with` block, you can use the `.` prefix to
 refer to the fields or methods of the specified object, making the code more concise and easier to read.
 */
 
@@ -11,14 +11,14 @@ impl Point
 {
     mtd setOne()
     {
-        x, y = 1   // Set both x and y to 1 within the Point instance.
+        me.x, me.y = 1   // Set both x and y to 1 within the Point instance.
     }
 }
 
 /**
 # `with` on a Variable
-The `with` statement can be used with a variable to streamline access to its fields and methods, 
-eliminating the need to repeatedly reference the variable name. This makes the code cleaner and reduces 
+The `with` statement can be used with a variable to streamline access to its fields and methods,
+eliminating the need to repeatedly reference the variable name. This makes the code cleaner and reduces
 clutter, especially when working with objects that have multiple fields or methods.
 */
 #test
@@ -36,8 +36,8 @@ clutter, especially when working with objects that have multiple fields or metho
 
 /**
 # `with` with Function Calls
-The `with` statement also simplifies function calls on an object or struct by allowing direct 
-invocation of methods and access to fields within the `with` block. This approach helps maintain 
+The `with` statement also simplifies function calls on an object or struct by allowing direct
+invocation of methods and access to fields within the `with` block. This approach helps maintain
 cleaner and more intuitive code by reducing the repetition of the object or variable name.
 */
 #test
@@ -57,8 +57,8 @@ cleaner and more intuitive code by reducing the repetition of the object or vari
 
 /**
 # `with` with a Namespace
-The `with` statement can also be applied to a namespace, allowing you to call functions or access 
-constants within that namespace without needing to fully qualify the names. This is particularly useful 
+The `with` statement can also be applied to a namespace, allowing you to call functions or access
+constants within that namespace without needing to fully qualify the names. This is particularly useful
 when working with large namespaces or when multiple calls to namespace members are required.
 */
 #test
@@ -72,8 +72,8 @@ when working with large namespaces or when multiple calls to namespace members a
 
 /**
 # `with` with Variable Declaration
-In addition to existing variables, the `with` statement can be used directly with variable declarations. 
-This allows you to immediately work with the fields of the newly declared variable within the scope of 
+In addition to existing variables, the `with` statement can be used directly with variable declarations.
+This allows you to immediately work with the fields of the newly declared variable within the scope of
 the `with` block, streamlining initialization and setup tasks.
 */
 #test
@@ -100,8 +100,8 @@ the `with` block, streamlining initialization and setup tasks.
 
 /**
 # `with` with an Assignment Statement
-The `with` statement can also be used with an assignment, allowing you to immediately access and modify 
-the fields of the newly assigned value. This can be particularly helpful in scenarios where you want 
+The `with` statement can also be used with an assignment, allowing you to immediately access and modify
+the fields of the newly assigned value. This can be particularly helpful in scenarios where you want
 to initialize or adjust an object’s fields immediately after creation or assignment.
 */
 #test

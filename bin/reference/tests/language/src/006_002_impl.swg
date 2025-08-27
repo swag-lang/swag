@@ -52,15 +52,15 @@ impl MyStruct
 # Method Syntax Sugar
 
 Swag provides syntactic sugar for method definitions. If you use 'mtd' (method) instead
-of 'func', the first parameter is implicitly 'using me'. If you use 'mtd const',
-it becomes 'const using me'. This feature simplifies method definitions,
+of 'func', the first parameter is implicitly 'me'. If you use 'mtd const',
+it becomes 'const me'. This feature simplifies method definitions,
 especially for common cases where 'me' is required.
 */
 
 impl MyStruct
 {
-    mtd methodReturnX()          => x  // Equivalent to 'func methodReturnX(using me) => x'
-    func funcReturnX(using me) => x  // Explicitly using 'me' to return 'x'
+    mtd methodReturnX()  => me.x  // Equivalent to 'func methodReturnX(using me) => x'
+    func funcReturnX(me) => me.x  // Using 'me' to return 'x'
 }
 
 #test

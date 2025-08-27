@@ -7,12 +7,12 @@ This allows for implementing an interface for a given struct without altering th
 
 struct Point2
 {
-    x, y: f32  // Represents the coordinates of a point in a 2D space
+    x, y: f32 // Represents the coordinates of a point in a 2D space
 }
 
 struct Point3
 {
-    x, y, z: f32  // Represents the coordinates of a point in a 3D space
+    x, y, z: f32 // Represents the coordinates of a point in a 3D space
 }
 
 /**
@@ -39,18 +39,22 @@ impl IReset for Point2
     // You must add 'impl' to indicate that you want to implement a function of the interface.
     mtd impl set(val: f32)
     {
-        x = val              // Set x to the given value
-        y = val + 1          // Set y to the value incremented by 1
+        me.x = val // Set x to the given value
+        me.y = val + 1 // Set y to the value incremented by 1
     }
 
     // Don't forget that 'mtd' is just syntactic sugar. 'func' still works.
     func impl reset(me)
     {
-        me.x, me.y = 0   // Reset x and y to 0
+        // Reset x and y to 0
+        me.x, me.y = 0
     }
 
     // Note that you can also declare 'normal' functions or methods in an 'impl' block.
-    mtd myOtherMethod() {}   // Example of an additional method
+    mtd myOtherMethod()
+    {
+        // Example of an additional method
+    }
 }
 
 /**
@@ -61,14 +65,15 @@ impl IReset for Point3
 {
     mtd impl set(val: f32)
     {
-        x = val              // Set x to the given value
-        y = val + 1          // Set y to the value incremented by 1
-        z = val + 2          // Set z to the value incremented by 2
+        me.x = val // Set x to the given value
+        me.y = val + 1 // Set y to the value incremented by 1
+        me.z = val + 2 // Set z to the value incremented by 2
     }
 
     mtd impl reset()
     {
-        x, y, z = 0          // Reset x, y, and z to 0
+        me.x, me.y, me.z = 0
+        // Reset x, y, and z to 0
     }
 }
 
@@ -150,7 +155,11 @@ Just declare a body in the interface function to provide a default implementatio
 */
 interface ITest
 {
-    mtd isImplemented()->bool { return false; }  // Default implementation returns false
+    mtd isImplemented()->bool
+    {
+        return false
+        // Default implementation returns false
+    }
 }
 
 /**
@@ -158,7 +167,11 @@ Here we define a specific version of 'isImplemented' for `Point2`, and no specif
 */
 impl ITest for Point2
 {
-    mtd impl isImplemented()->bool { return true; }  // Override to return true for Point2
+    mtd impl isImplemented()->bool
+    {
+        return true
+        // Override to return true for Point2
+    }
 }
 
 impl ITest for Point3
