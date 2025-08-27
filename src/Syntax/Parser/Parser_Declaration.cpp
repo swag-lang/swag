@@ -146,28 +146,11 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
     auto savedToken = tokenParse;
     SWAG_CHECK(eatToken());
 
-    switch (tokenParse.token.id)
+    if (tokenParse.token.id == TokenId::KwdNamespace)
     {
-        case TokenId::KwdNamespace:
-            SWAG_CHECK(doNamespace(parent, result, false, true));
-            FormatAst::inheritFormatBefore(this, *result, &savedToken);
-            return true;
-
-        case TokenId::KwdVar:
-        {
-            AstNode* varNode;
-            SWAG_CHECK(doVarDecl(parent, &varNode));
-
-            if (!varNode->is(AstNodeKind::VarDecl))
-            {
-                const Diagnostic err{varNode->token.sourceFile, varNode->firstChild()->token.startLocation, varNode->lastChild()->token.endLocation, toErr(Err0276)};
-                return context->report(err);
-            }
-
-            varNode->addAstFlag(AST_DECL_USING);
-            FormatAst::inheritFormatBefore(this, varNode, &savedToken);
-            return true;
-        }
+        SWAG_CHECK(doNamespace(parent, result, false, true));
+        FormatAst::inheritFormatBefore(this, *result, &savedToken);
+        return true;
     }
 
     // We must ensure that no job can be run before the using

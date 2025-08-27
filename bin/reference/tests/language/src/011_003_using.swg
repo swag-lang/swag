@@ -1,8 +1,8 @@
 /**
 # `using` with Enums and Namespaces
-The `using` statement allows you to bring the scope of a namespace, struct, or enum into the current 
-scope. This makes it possible to reference members directly without the need for full qualification. 
-For example, when working with enums, this can simplify the code by removing the need to constantly 
+The `using` statement allows you to bring the scope of a namespace, struct, or enum into the current
+scope. This makes it possible to reference members directly without the need for full qualification.
+For example, when working with enums, this can simplify the code by removing the need to constantly
 prefix enum values with the enum type name.
 */
 #test
@@ -16,9 +16,9 @@ prefix enum values with the enum type name.
 
 /**
 # `using` with Variables
-The `using` statement can also be applied to variables, particularly those of struct types. This allows 
-you to access the fields of a struct directly within the current scope, eliminating the need to 
-reference the variable name each time you access a field. This is particularly useful for reducing 
+The `using` statement can also be applied to variables, particularly those of struct types. This allows
+you to access the fields of a struct directly within the current scope, eliminating the need to
+reference the variable name each time you access a field. This is particularly useful for reducing
 code verbosity and improving readability.
 */
 #test
@@ -36,28 +36,10 @@ code verbosity and improving readability.
 }
 
 /**
-# Declaring Variables with `using`
-You can declare a variable with the `using` keyword, which immediately brings the variable’s fields 
-into the current scope. This approach can streamline your code by allowing direct access to struct 
-fields without the need to prefix them with the variable name, making the code cleaner and more 
-concise.
-*/
-#test
-{
-    struct Point { x: s32, y: s32 }
-    using var pt: Point   // Declare 'pt' and bring its fields into the current scope.
-    x = 1                 // Direct access to 'x' without specifying 'pt'.
-    y = 2                 // Direct access to 'y' without specifying 'pt'.
-
-    @assert(pt.x == 1)    // Ensure that 'x' was correctly set.
-    @assert(pt.y == 2)    // Ensure that 'y' was correctly set.
-}
-
-/**
 # `using` in Function Parameters
-When applied to function parameters, `using` allows fields of a struct to be accessed directly within 
-the function, similar to how a `this` pointer works in C++. This can simplify function code by 
-eliminating the need to repeatedly dereference a pointer or reference a parameter name, making the 
+When applied to function parameters, `using` allows fields of a struct to be accessed directly within
+the function, similar to how a `this` pointer works in C++. This can simplify function code by
+eliminating the need to repeatedly dereference a pointer or reference a parameter name, making the
 function logic clearer and easier to follow.
 */
 #test
@@ -83,9 +65,9 @@ function logic clearer and easier to follow.
 
 /**
 # `using` with Struct Fields
-The `using` statement can also be applied to a field within a struct. This allows the fields of a 
-nested struct to be accessed as if they were part of the containing struct. This feature is especially 
-useful when working with inheritance or composition, enabling cleaner and more intuitive code by 
+The `using` statement can also be applied to a field within a struct. This allows the fields of a
+nested struct to be accessed as if they were part of the containing struct. This feature is especially
+useful when working with inheritance or composition, enabling cleaner and more intuitive code by
 removing unnecessary layers of field access.
 */
 #test
