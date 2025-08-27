@@ -215,9 +215,9 @@ impl Painter
         }
     }
 
-    mtd drawDashCap(using cxt: *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
+    mtd drawDashCap(cxt: *Context, capStyle: DashCapStyle, p, d: Math.Vector2, sens: f32)
     {
-        if penSize < 3:
+        if cxt.penSize < 3:
             return
 
         #[Swag.Complete]
@@ -226,11 +226,11 @@ impl Painter
         case None:
             break
         case Triangle:
-            me.drawCapTriangle(p, d, sens, dref pen)
+            me.drawCapTriangle(p, d, sens, dref cxt.pen)
         case Round:
-            me.drawCapRound(p, d, sens, dref pen)
+            me.drawCapRound(p, d, sens, dref cxt.pen)
         case Square:
-            me.drawCapSquare(p, d, sens, dref pen)
+            me.drawCapSquare(p, d, sens, dref cxt.pen)
         }
     }
 
@@ -378,215 +378,215 @@ impl Painter
         }
     }
 
-    mtd drawJoin(using cxt: *Context, p, d1, d2: Math.Vector2)
+    mtd drawJoin(cxt: *Context, p, d1, d2: Math.Vector2)
     {
         #[Swag.Complete]
-        switch pen.joinStyle
+        switch cxt.pen.joinStyle
         {
         case None:
             break
         case Bevel:
-            me.drawJoinBevel(p, d1, d2, dref pen)
+            me.drawJoinBevel(p, d1, d2, dref cxt.pen)
         case Round:
-            me.drawJoinRound(p, d1, d2, dref pen)
+            me.drawJoinRound(p, d1, d2, dref cxt.pen)
         case Miter:
-            me.drawJoinMiter(p, d1, d2, true, dref pen)
+            me.drawJoinMiter(p, d1, d2, true, dref cxt.pen)
         case MiterBevel:
-            me.drawJoinMiter(p, d1, d2, false, dref pen)
+            me.drawJoinMiter(p, d1, d2, false, dref cxt.pen)
         }
     }
 
-    mtd drawDashEndCap(using cxt: *Context, posCap, normalCap: Math.Vector2)
+    mtd drawDashEndCap(cxt: *Context, posCap, normalCap: Math.Vector2)
     {
-        if beginLine or lastLineInvalid:
+        if cxt.beginLine or cxt.lastLineInvalid:
             return
 
         // Cap is defined
-        if pen.dashEndCapStyle != DashCapStyle.None:
-            me.drawDashCap(cxt, pen.dashEndCapStyle, posCap, normalCap, -1.0)
+        if cxt.pen.dashEndCapStyle != DashCapStyle.None:
+            me.drawDashCap(cxt, cxt.pen.dashEndCapStyle, posCap, normalCap, -1.0)
 
         // AA end edge if no cap
         elif me.curState.paintParams & .Antialiased
         {
-            let prim2p = me.vertexBuffer.buffer + prim2
+            let prim2p = me.vertexBuffer.buffer + cxt.prim2
             let prim2t = prim2p + 2
-            me.addEdgeAA(prim1, prim2p.pos, prim2t.pos)
-            me.addEdgeAA(prim2, prim2p.pos, prim2t.pos)
+            me.addEdgeAA(cxt.prim1, prim2p.pos, prim2t.pos)
+            me.addEdgeAA(cxt.prim2, prim2p.pos, prim2t.pos)
         }
     }
 
-    func drawMoveCursor(using cxt: *Context, pos: Math.Vector2)
+    func drawMoveCursor(cxt: *Context, pos: Math.Vector2)
     {
-        if pos.distanceTo(path.endPoint) < 1
+        if pos.distanceTo(cxt.path.endPoint) < 1
         {
-            prev = path.endPoint
-            if path.isClosed:
-                beginLine = true
+            cxt.prev = cxt.path.endPoint
+            if cxt.path.isClosed:
+                cxt.beginLine = true
         }
         else
         {
-            prev      = pos
-            beginLine = true
+            cxt.prev      = pos
+            cxt.beginLine = true
         }
     }
 
-    mtd drawLineInternal(using cxt: *Context, pos: Math.Vector2)
+    mtd drawLineInternal(cxt: *Context, pos: Math.Vector2)
     {
         // Compute line (half width on each side)
         var newPos = pos
-        var n      = newPos - prev
+        var n      = newPos - cxt.prev
 
         // If previous and next point are too close, we will take
         // the last normal
         if !n.isZeroEpsilon()
         {
             n.normalize()
-            normal = n.cross(1)
-            normal *= penSize2
+            cxt.normal = n.cross(1)
+            cxt.normal *= cxt.penSize2
         }
 
         // If this is still invalid, there's nothing we can:
-        lastLineInvalid = normal.isZeroEpsilon()
-        if lastLineInvalid:
+        cxt.lastLineInvalid = cxt.normal.isZeroEpsilon()
+        if cxt.lastLineInvalid:
             return
 
         // First line cap
-        var flatBegin = !path.isClosed or pen.dashStyle != .None
-        if pen.dashStyle != .None and (!firstLine or path.isClosed) and beginLine and pen.dashBegCapStyle != .None
+        var flatBegin = !cxt.path.isClosed or cxt.pen.dashStyle != .None
+        if cxt.pen.dashStyle != .None and (!cxt.firstLine or cxt.path.isClosed) and cxt.beginLine and cxt.pen.dashBegCapStyle != .None
         {
             flatBegin = false
-            me.drawDashCap(cxt, pen.dashBegCapStyle, prev, normal, 1.0)
+            me.drawDashCap(cxt, cxt.pen.dashBegCapStyle, cxt.prev, cxt.normal, 1.0)
         }
 
         // Joints
-        if !beginLine:
-            me.drawJoin(cxt, prev, normalPrev, normal)
+        if !cxt.beginLine:
+            me.drawJoin(cxt, cxt.prev, cxt.normalPrev, cxt.normal)
 
         // Draw quad
-        var v0 = prev - normal
-        var v1 = newPos - normal
-        var v3 = prev + normal
-        var v2 = newPos + normal
-        prim1 = me.pushTriangle(v0, v1, v3, pen.brush.color)
-        prim2 = me.pushTriangle(v1, v3, v2, pen.brush.color)
+        var v0 = cxt.prev - cxt.normal
+        var v1 = newPos - cxt.normal
+        var v3 = cxt.prev + cxt.normal
+        var v2 = newPos + cxt.normal
+        cxt.prim1 = me.pushTriangle(v0, v1, v3, cxt.pen.brush.color)
+        cxt.prim2 = me.pushTriangle(v1, v3, v2, cxt.pen.brush.color)
 
         // Generate AA edges
         if me.curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(prim1, v0, v1)
-            me.addEdgeAA(prim1, v3, v2)
-            me.addEdgeAA(prim2, v0, v1)
-            me.addEdgeAA(prim2, v3, v2)
+            me.addEdgeAA(cxt.prim1, v0, v1)
+            me.addEdgeAA(cxt.prim1, v3, v2)
+            me.addEdgeAA(cxt.prim2, v0, v1)
+            me.addEdgeAA(cxt.prim2, v3, v2)
 
             // If we are starting a line, and the line does not have a cap before, then
             // we must AA the corresponding edge
-            if flatBegin and beginLine and (!firstLine or pen.begCapStyle == .None or path.isClosed)
+            if flatBegin and cxt.beginLine and (!cxt.firstLine or cxt.pen.begCapStyle == .None or cxt.path.isClosed)
             {
-                me.addEdgeAA(prim1, v0, v3)
-                me.addEdgeAA(prim2, v0, v3)
+                me.addEdgeAA(cxt.prim1, v0, v3)
+                me.addEdgeAA(cxt.prim2, v0, v3)
             }
         }
 
         // To draw end joint
-        if firstLine:
-            normalFirst = normal
+        if cxt.firstLine:
+            cxt.normalFirst = cxt.normal
 
-        normalPrev = normal
-        prev       = newPos
-        beginLine, firstLine = false
+        cxt.normalPrev = cxt.normal
+        cxt.prev       = newPos
+        cxt.beginLine, cxt.firstLine = false
     }
 
-    func preparePattern(using cxt: *Context)
+    func preparePattern(cxt: *Context)
     {
         #[Swag.Complete]
-        switch pen.dashStyle
+        switch cxt.pen.dashStyle
         {
         case None:
             return
         case Pattern:
-            pattern      = pen.pattern.buffer
-            patternCount = cast(s32) pen.pattern.count
-            if patternCount == 0:
+            cxt.pattern      = cxt.pen.pattern.buffer
+            cxt.patternCount = cast(s32) cxt.pen.pattern.count
+            if cxt.patternCount == 0:
                 fallthrough
         case Dot:
             const P = [1.0, 1.0]
-            pattern      = @dataof(P)
-            patternCount = 2
+            cxt.pattern      = @dataof(P)
+            cxt.patternCount = 2
         case Dash:
             const P = [2.0, 1.0]
-            pattern      = @dataof(P)
-            patternCount = 2
+            cxt.pattern      = @dataof(P)
+            cxt.patternCount = 2
         case DashDot:
             const P = [2.0, 1.0, 1.0, 1.0]
-            pattern      = @dataof(P)
-            patternCount = 4
+            cxt.pattern      = @dataof(P)
+            cxt.patternCount = 4
         }
 
-        patternTotalLen = 0
-        for i in patternCount:
-            patternTotalLen += Math.max(pattern[i], 0.01)
-        patternTotalLen *= pen.size
+        cxt.patternTotalLen = 0
+        for i in cxt.patternCount:
+            cxt.patternTotalLen += Math.max(cxt.pattern[i], 0.01)
+        cxt.patternTotalLen *= cxt.pen.size
 
-        let repeatCount = cast(s32) (path.polygon.totalLen / patternTotalLen)
-        error = path.polygon.totalLen - (repeatCount * patternTotalLen)
+        let repeatCount = cast(s32) (cxt.path.polygon.totalLen / cxt.patternTotalLen)
+        cxt.error = cxt.path.polygon.totalLen - (repeatCount * cxt.patternTotalLen)
 
         // We must dispatch error at each blank in the pattern. So "divError" is the
         // number of blanks to add at each 'move', between solid patterns
-        let numBlanks = repeatCount * patternCount / 2
-        divError = numBlanks ? error / numBlanks : 0
+        let numBlanks = repeatCount * cxt.patternCount / 2
+        cxt.divError = numBlanks ? cxt.error / numBlanks : 0
 
         // First pattern. We start at half the size of the first pattern, in order to not
         // finish on a blank, but with half the size of the first pattern also.
-        patternIndex        = 0
-        remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
-        remainingPatternLen *= pen.size
-        if !path.isClosed:
-            remainingPatternLen *= 0.5
+        cxt.patternIndex        = 0
+        cxt.remainingPatternLen = Math.max(cxt.pattern[cxt.patternIndex], 0.01)
+        cxt.remainingPatternLen *= cxt.pen.size
+        if !cxt.path.isClosed:
+            cxt.remainingPatternLen *= 0.5
     }
 
     #[Swag.Overload]
-    mtd drawLine(using cxt: *Context, pos: Math.Vector2)
+    mtd drawLine(cxt: *Context, pos: Math.Vector2)
     {
         // solid
-        if pen.dashStyle == .None
+        if cxt.pen.dashStyle == .None
         {
             me.drawLineInternal(cxt, pos)
             return
         }
 
-        var v               = pos - prev
+        var v               = pos - cxt.prev
         var remainingSegLen = v.length()
         v.normalizeSafe()
 
         // True when we are "drawing" blanks
-        var blankPatternIdx = patternIndex & 1 ? true : false
+        var blankPatternIdx = cxt.patternIndex & 1 ? true : false
 
         for
         {
-            var lengthInPattern = remainingPatternLen
+            var lengthInPattern = cxt.remainingPatternLen
 
             // If we are drawing a blank, take care of error adjustement
             var addBlank = 0'f32
-            if divError > 0 and blankPatternIdx
+            if cxt.divError > 0 and blankPatternIdx
             {
-                addBlank = Math.min(error, divError)
+                addBlank = Math.min(cxt.error, cxt.divError)
                 lengthInPattern += addBlank
             }
 
             if blankPatternIdx:
-                lengthInPattern *= pen.dashBlankScale
+                lengthInPattern *= cxt.pen.dashBlankScale
 
             // The current remaining length in the current segment is greater
             // than what's left in the current pattern. We draw to cover the
             // current pattern, and change the pattern to be the next
             if remainingSegLen > lengthInPattern
             {
-                var nextp = prev + (v * lengthInPattern)
+                var nextp = cxt.prev + (v * lengthInPattern)
                 if blankPatternIdx
                 {
-                    me.drawDashEndCap(cxt, prev, normal)
+                    me.drawDashEndCap(cxt, cxt.prev, cxt.normal)
                     drawMoveCursor(cxt, nextp)
-                    error -= addBlank
+                    cxt.error -= addBlank
                 }
                 else
                 {
@@ -595,19 +595,19 @@ impl Painter
 
                 // Start a new fresh pattern index
                 remainingSegLen -= lengthInPattern
-                patternIndex        = (patternIndex + 1) % patternCount
-                blankPatternIdx     = blankPatternIdx ? false : true
-                remainingPatternLen = Math.max(pattern[patternIndex], 0.01)
-                remainingPatternLen *= pen.size
+                cxt.patternIndex        = (cxt.patternIndex + 1) % cxt.patternCount
+                blankPatternIdx         = blankPatternIdx ? false : true
+                cxt.remainingPatternLen = Math.max(cxt.pattern[cxt.patternIndex], 0.01)
+                cxt.remainingPatternLen *= cxt.pen.size
                 continue
             }
 
             // Here the segment does not have enough remaining length to cover the current
             // pattern. So draw what remains, and exit. The next line will try to cover the rest.
-            remainingPatternLen -= remainingSegLen
+            cxt.remainingPatternLen -= remainingSegLen
             if blankPatternIdx
             {
-                me.drawDashEndCap(cxt, prev, normal)
+                me.drawDashEndCap(cxt, cxt.prev, cxt.normal)
                 drawMoveCursor(cxt, pos)
             }
             else
@@ -628,7 +628,7 @@ impl Painter
     }
 
     // Enhanced function that calculates skip distance AND finds the corresponding point
-    func getAnchorSkipInfo(using cxt: *Context, capStyle: LineCapStyle, start: bool)->AnchorSkipInfo
+    func getAnchorSkipInfo(cxt: *Context, capStyle: LineCapStyle, start: bool)->AnchorSkipInfo
     {
         var info: AnchorSkipInfo
         info.hasAdjustment = false
@@ -637,16 +637,16 @@ impl Painter
         switch capStyle
         {
         case ArrowAnchor, ArrowAnchor2:
-            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
-            info.distance = pen.size * 0.5 * scale
+            let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
+            info.distance = cxt.pen.size * 0.5 * scale
 
         case SquareAnchor:
-            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
-            info.distance = pen.size * 0.5 * scale
+            let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
+            info.distance = cxt.pen.size * 0.5 * scale
 
         case RoundAnchor:
-            let scale = start ? pen.capBegScaleX : pen.capEndScaleX
-            info.distance = pen.size * 0.5 * scale
+            let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
+            info.distance = cxt.pen.size * 0.5 * scale
 
         default:
             info.distance = 0
@@ -657,7 +657,7 @@ impl Painter
         if info.distance <= 0:
             return info
 
-        let pointCount = path.polygon.points.count
+        let pointCount = cxt.path.polygon.points.count
         if pointCount < 2:
             return info
 
@@ -665,12 +665,12 @@ impl Painter
 
         if start
         {
-            let startPoint = path.polygon.getPoint(0, offsetPath)
+            let startPoint = cxt.path.polygon.getPoint(0, cxt.offsetPath)
             var lastPoint  = startPoint
 
             for i in 1 until pointCount
             {
-                let currentPoint = path.polygon.getPoint(i, offsetPath)
+                let currentPoint = cxt.path.polygon.getPoint(i, cxt.offsetPath)
                 let segmentVec   = currentPoint - lastPoint
                 let segmentLen   = segmentVec.length()
 
@@ -694,12 +694,12 @@ impl Painter
         }
         else
         {
-            let endPoint  = path.polygon.getPoint(pointCount - 1, offsetPath)
+            let endPoint  = cxt.path.polygon.getPoint(pointCount - 1, cxt.offsetPath)
             var lastPoint = endPoint
 
             for #reverse i in 0 to pointCount - 2
             {
-                let currentPoint = path.polygon.getPoint(i, offsetPath)
+                let currentPoint = cxt.path.polygon.getPoint(i, cxt.offsetPath)
                 let segmentVec   = lastPoint - currentPoint
                 let segmentLen   = segmentVec.length()
 
@@ -727,80 +727,80 @@ impl Painter
 
     // Simplified drawPath method using the optimized approach
     #[Swag.Overload]
-    mtd drawPath(using cxt: *Context)
+    mtd drawPath(cxt: *Context)
     {
-        if pen.size < 1 or path.polygon.points.count == 0:
+        if cxt.pen.size < 1 or cxt.path.polygon.points.count == 0:
             return
 
-        penSize        = pen.size
-        cxt.offsetPath = pen.plotOffset
-        penSize2       = penSize * 0.5
-        beginLine      = true
-        firstLine      = true
+        cxt.penSize    = cxt.pen.size
+        cxt.offsetPath = cxt.pen.plotOffset
+        cxt.penSize2   = cxt.penSize * 0.5
+        cxt.beginLine  = true
+        cxt.firstLine  = true
 
         // Get skip information for both caps in one pass
-        let beginSkipInfo = getAnchorSkipInfo(cxt, pen.begCapStyle, true)
-        let endSkipInfo   = getAnchorSkipInfo(cxt, pen.endCapStyle, false)
+        let beginSkipInfo = getAnchorSkipInfo(cxt, cxt.pen.begCapStyle, true)
+        let endSkipInfo   = getAnchorSkipInfo(cxt, cxt.pen.endCapStyle, false)
 
-        var actualStartPoint = path.polygon.getPoint(0, cxt.offsetPath)
-        var actualEndPoint   = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
+        var actualStartPoint = cxt.path.polygon.getPoint(0, cxt.offsetPath)
+        var actualEndPoint   = cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 1, cxt.offsetPath)
         var startPointIndex  = 0'u64
-        var endPointIndex    = path.polygon.points.count - 1
+        var endPointIndex    = cxt.path.polygon.points.count - 1
 
         // Apply adjustments if needed
-        if !path.isClosed and beginSkipInfo.hasAdjustment
+        if !cxt.path.isClosed and beginSkipInfo.hasAdjustment
         {
             actualStartPoint = beginSkipInfo.adjustedPoint
             startPointIndex  = beginSkipInfo.pointIndex
         }
 
-        if !path.isClosed and endSkipInfo.hasAdjustment
+        if !cxt.path.isClosed and endSkipInfo.hasAdjustment
         {
             actualEndPoint = endSkipInfo.adjustedPoint
             endPointIndex  = endSkipInfo.pointIndex
         }
 
         // Set starting position
-        prev = actualStartPoint
+        cxt.prev = actualStartPoint
 
         // Draw line caps first (if not closed)
-        if !path.isClosed
+        if !cxt.path.isClosed
         {
             // Draw begin cap
-            if pen.begCapStyle != .None
+            if cxt.pen.begCapStyle != .None
             {
-                var v1 = path.polygon.getPoint(0, cxt.offsetPath)
-                var v2 = beginSkipInfo.hasAdjustment ? actualStartPoint : path.polygon.getPoint(1, cxt.offsetPath)
+                var v1 = cxt.path.polygon.getPoint(0, cxt.offsetPath)
+                var v2 = beginSkipInfo.hasAdjustment ? actualStartPoint : cxt.path.polygon.getPoint(1, cxt.offsetPath)
                 var n  = v2 - v1
                 n.normalizeSafe()
                 var c = n.cross(1)
-                c *= penSize2
-                me.drawLineCap(pen.begCapStyle, v1, c, 1.0, dref pen, true)
+                c *= cxt.penSize2
+                me.drawLineCap(cxt.pen.begCapStyle, v1, c, 1.0, dref cxt.pen, true)
             }
 
             // Draw end cap
-            if pen.endCapStyle != .None
+            if cxt.pen.endCapStyle != .None
             {
-                var v1 = path.polygon.getPoint(path.polygon.points.count - 1, cxt.offsetPath)
-                var v2 = endSkipInfo.hasAdjustment ? actualEndPoint : path.polygon.getPoint(path.polygon.points.count - 2, cxt.offsetPath)
+                var v1 = cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 1, cxt.offsetPath)
+                var v2 = endSkipInfo.hasAdjustment ? actualEndPoint : cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 2, cxt.offsetPath)
                 var n  = v1 - v2
                 n.normalizeSafe()
                 var c = n.cross(1)
-                c *= penSize2
-                me.drawLineCap(pen.endCapStyle, v1, c, -1.0, dref pen, false)
+                c *= cxt.penSize2
+                me.drawLineCap(cxt.pen.endCapStyle, v1, c, -1.0, dref cxt.pen, false)
             }
         }
 
         // Draw the line segments with proper start/end adjustment
-        if path.polygon.points.count > 1
+        if cxt.path.polygon.points.count > 1
         {
             // Draw intermediate segments
             if startPointIndex < endPointIndex
             {
                 // Draw from adjusted start to the appropriate next point
-                if startPointIndex < path.polygon.points.count
+                if startPointIndex < cxt.path.polygon.points.count
                 {
-                    let nextPoint = path.polygon.getPoint(startPointIndex, cxt.offsetPath)
+                    let nextPoint = cxt.path.polygon.getPoint(startPointIndex, cxt.offsetPath)
                     let startTo   = actualStartPoint - nextPoint
                     if startTo.length() > 0.01:
                         me.drawLine(cxt, nextPoint)
@@ -808,15 +808,15 @@ impl Painter
 
                 for i in (startPointIndex + 1) to endPointIndex
                 {
-                    if i < path.polygon.points.count
+                    if i < cxt.path.polygon.points.count
                     {
-                        var p = path.polygon.getPoint(i, cxt.offsetPath)
+                        var p = cxt.path.polygon.getPoint(i, cxt.offsetPath)
                         me.drawLine(cxt, p)
                     }
                 }
 
                 // Draw final segment to adjusted end point if needed
-                let endTo = actualEndPoint - path.polygon.getPoint(endPointIndex, cxt.offsetPath)
+                let endTo = actualEndPoint - cxt.path.polygon.getPoint(endPointIndex, cxt.offsetPath)
                 if endTo.length() > 0.01
                 {
                     me.drawLine(cxt, actualEndPoint)
@@ -829,16 +829,16 @@ impl Painter
         }
 
         // Handle AA and closing as before...
-        if !lastLineInvalid and !path.isClosed and (me.curState.paintParams & .Antialiased) and (pen.endCapStyle == .None)
+        if !cxt.lastLineInvalid and !cxt.path.isClosed and (me.curState.paintParams & .Antialiased) and (cxt.pen.endCapStyle == .None)
         {
-            let prim2p = me.vertexBuffer.buffer + prim2
+            let prim2p = me.vertexBuffer.buffer + cxt.prim2
             let prim2t = prim2p + 2
-            me.addEdgeAA(prim1, prim2p.pos, prim2t.pos)
-            me.addEdgeAA(prim2, prim2p.pos, prim2t.pos)
+            me.addEdgeAA(cxt.prim1, prim2p.pos, prim2t.pos)
+            me.addEdgeAA(cxt.prim2, prim2p.pos, prim2t.pos)
         }
-        elif path.isClosed and !firstLine and !beginLine
+        elif cxt.path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
-            me.drawJoin(cxt, prev, normal, normalFirst)
+            me.drawJoin(cxt, cxt.prev, cxt.normal, cxt.normalFirst)
         }
     }
 }

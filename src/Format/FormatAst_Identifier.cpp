@@ -103,27 +103,14 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
             if (!node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE | AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE))
             {
                 idx++;
-                if (it->token.text == "me" && it->hasAstFlag(AST_GENERATED))
-                {
-                    if (idx != node->children.size() &&
-                        (!node->children[idx]->resolvedSymbolName() || !node->children[idx]->resolvedSymbolName()->is(SymbolKind::GenericType)))
-                    {
-                        concat->addString("me.");
-                    }
-                }
-                else if (idx == 1 &&
-                         it->resolvedSymbolName() &&
-                         it->resolvedSymbolName()->is(SymbolKind::Function) &&
+                if (idx == 1 &&
+                        it->hasAstFlag(AST_GENERATED) &&
+                         it->resolvedSymbolOverload() &&
+                         it->resolvedSymbolOverload()->flags.has(OVERLOAD_VAR_FUNC_PARAM) && 
                          it->is(AstNodeKind::Identifier))
                 {
-                    const auto id = castAst<AstIdentifier>(it, AstNodeKind::Identifier);
-                    if (id->callParameters &&
-                        !id->callParameters->children.empty() &&
-                        id->callParameters->firstChild()->hasAstFlag(AST_GENERATED) &&
-                        id->callParameters->firstChild()->token.text == "me")
-                    {
-                        concat->addString("me.");
-                    }
+                    concat->addString(it->token.text);
+                    concat->addChar('.');
                 }
             }
         }

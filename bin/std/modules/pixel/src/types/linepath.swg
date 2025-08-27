@@ -439,7 +439,7 @@ impl LinePath
     {
         let minDist = getFlattenDistance(quality)
         let startPt = me.endPosBuffer
-        let endPt   = p0 + p1 + p2 + p3               // Point at t=1
+        let endPt   = p0 + p1 + p2 + p3 // Point at t=1
 
         // Calculate optimal number of segments analytically
         let numSegments = calculateCubicPolynomialSegments(p0, p1, p2, p3, startPt, endPt, minDist)
@@ -613,7 +613,7 @@ impl LinePath
     mtd flattenArc(pos, p1, p2: Vector2, quality: PaintQuality)
     {
         let angleSpan = p1.y - p1.x
-        let radius    = Math.max(p2.x, p2.y)     // Use the larger radius component
+        let radius    = Math.max(p2.x, p2.y) // Use the larger radius component
 
         // Calculate required number of segments analytically
         let numSegments = calculateFlattenArcSegments(angleSpan, radius, quality)
