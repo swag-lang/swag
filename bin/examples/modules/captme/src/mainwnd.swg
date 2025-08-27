@@ -386,7 +386,8 @@ impl MainWnd
             .registerAction'ActionAbout()
             .registerAction'ActionOptions()
             .registerAction'ActionView()
-        }   }
+        }
+    }
 
     mtd registerShortcuts()
     {
