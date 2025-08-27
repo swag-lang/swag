@@ -7,14 +7,13 @@ impl DateTime
 {
     mtd setSYSTEMTIME(systemTime: SYSTEMTIME)
     {
-        using systemTime
-        me.day         = wDay
-        me.month       = wMonth
-        me.year        = wYear
-        me.hour        = wHour
-        me.minute      = wMinute
-        me.second      = wSecond
-        me.millisecond = wMilliseconds
+        me.day         = systemTime.wDay
+        me.month       = systemTime.wMonth
+        me.year        = systemTime.wYear
+        me.hour        = systemTime.wHour
+        me.minute      = systemTime.wMinute
+        me.second      = systemTime.wSecond
+        me.millisecond = systemTime.wMilliseconds
     }
 }
 

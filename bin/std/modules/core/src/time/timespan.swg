@@ -36,9 +36,8 @@ impl TimeSpan
     func from(dateTime: DateTime)->TimeSpan
     {
         var result: retval = undefined
-        using result, dateTime
-        ticks = dateToTicks(year, month, day)
-        ticks += timeToTicks(hour, minute, second, millisecond)
+        result.ticks = dateToTicks(dateTime.year, dateTime.month, dateTime.day)
+        result.ticks += timeToTicks(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond)
         return result
     }
 

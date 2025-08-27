@@ -142,7 +142,7 @@ func setEncodingFormat(using file: *SoundFile, formatTag: u16) throw
     }
 }
 
-func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
+func readChunkFmt(file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
     if chunkSize < #sizeof(WAVEFORMAT):
         throw InvalidFormatError{"invalid wav"}
@@ -151,14 +151,14 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
     if !stream.readValue(&wf):
         throw InvalidFormatError{"invalid wav"}
 
-    frequency     = wf.nSamplesPerSec
-    channelCount  = wf.nChannels
-    bitsPerSample = (wf.nAvgBytesPerSec * 8 / wf.nChannels) / wf.nSamplesPerSec
-    setEncodingFormat(wf.wFormatTag)
+    file.frequency     = wf.nSamplesPerSec
+    file.channelCount  = wf.nChannels
+    file.bitsPerSample = (wf.nAvgBytesPerSec * 8 / wf.nChannels) / wf.nSamplesPerSec
+    file.setEncodingFormat(wf.wFormatTag)
 
-    validity = .Format
-    validity |= .Frequency
-    validity |= .ChannelCount
+    file.validity = .Format
+    file.validity |= .Frequency
+    file.validity |= .ChannelCount
 
     ////////
     if chunkSize < #sizeof(PCMWAVEFORMAT):
@@ -166,11 +166,11 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
 
     var pcmwf: PCMWAVEFORMAT
     pcmwf.wf = wf
-    validity |= .BitsPerSample
+    file.validity |= .BitsPerSample
 
     if !stream.readValue(&pcmwf.wBitsPerSample):
         throw InvalidFormatError{"invalid wav"}
-    setEncodingFormat(wf.wFormatTag)
+    file.setEncodingFormat(wf.wFormatTag)
 
     ////////
     if chunkSize < #sizeof(WAVEFORMATEX):
@@ -189,8 +189,8 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
     var wfex: WAVEFORMATEXTENSIBLE
     wfex.fmtex              = wfx
     file.validBitsPerSample = wfex.samples.wValidBitsPerSample
-    validity |= .ChannelMask
-    validity |= .ValidBitsPerSample
+    file.validity |= .ChannelMask
+    file.validity |= .ValidBitsPerSample
 
     if !stream.readValue(&wfex.samples):
         throw InvalidFormatError{"invalid wav"}
@@ -204,32 +204,32 @@ func readChunkFmt(using file: *SoundFile, stream: *File.FileStream, chunkSize: u
         switch
         {
         case Memory.equals(&wfex.subFormat, GUID_PCM):
-            setEncodingFormat(WAVE_FORMAT_PCM)
+            file.setEncodingFormat(WAVE_FORMAT_PCM)
         case Memory.equals(&wfex.subFormat, GUID_IEEE_FLOAT):
-            setEncodingFormat(WAVE_FORMAT_IEEE_FLOAT)
+            file.setEncodingFormat(WAVE_FORMAT_IEEE_FLOAT)
         default:
             throw UnsupportedFormatError{"unsupported wav format"}
         }
     }
 }
 
-func readChunkData(using file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
+func readChunkData(file: *SoundFile, stream: *File.FileStream, chunkSize: u32) throw
 {
-    validity |= .Data
-    dataSeek = stream.getPosition()
-    dataSize = chunkSize
+    file.validity |= .Data
+    file.dataSeek = stream.getPosition()
+    file.dataSize = chunkSize
 
-    validity |= .SampleCount
-    sampleCount = dataSize / (channelCount * (bitsPerSample / 8))
-    if validity & .Frequency
+    file.validity |= .SampleCount
+    file.sampleCount = file.dataSize / (file.channelCount * (file.bitsPerSample / 8))
+    if file.validity & .Frequency
     {
-        duration = cast(f32) (sampleCount / cast(f64) frequency)
-        validity |= .Duration
+        file.duration = cast(f32) (file.sampleCount / cast(f64) file.frequency)
+        file.validity |= .Duration
     }
 }
 
 // Load a wav file
-public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas = true, loadMetaDatas = false) throw
+public func loadFile(file: *SoundFile, stream: *File.FileStream, loadDatas = true, loadMetaDatas = false) throw
 {
     enum Stage
     {
@@ -275,8 +275,8 @@ public func loadFile(using file: *SoundFile, stream: *File.FileStream, loadDatas
                 readChunkData(file, stream, header.chunkSize)
                 if loadDatas
                 {
-                    datas.resize(header.chunkSize)
-                    if stream.read(datas.buffer, header.chunkSize) != header.chunkSize:
+                    file.datas.resize(header.chunkSize)
+                    if stream.read(file.datas.buffer, header.chunkSize) != header.chunkSize:
                         throw InvalidFormatError{"cannot read datas"}
                 }
                 elif loadMetaDatas
