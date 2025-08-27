@@ -1338,7 +1338,7 @@ impl Wnd
     mtd(T) registerAction()
     {
         var itfAct = @mkinterface(null, #typeof(T), IActionUI)
-        actions.add(itfAct)
+        me.actions.add(itfAct)
     }
 
     internal mtd updateAction(evt: *CommandStateEvent)->bool
