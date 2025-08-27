@@ -160,7 +160,7 @@ bool Semantic::collectScopeHierarchy(Scope*                           startScope
         return true;
     }
 
-    // Only deal with previous scope if the previous node wants to
+    // Only deal with the previous scope if the previous node wants to
     bool addAlternative = true;
     if (identifierRef->previousNode && identifierRef->previousNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
         addAlternative = false;
@@ -176,6 +176,16 @@ bool Semantic::collectScopeHierarchy(Scope*                           startScope
         }
     }
 
+    // As we are looking first in a specific scope, we do not collect "global" scopes
+    VectorNative<CollectedScope> result;
+    for (auto &h: scopeHierarchy)
+    {
+        if (h.scope->is(ScopeKind::Namespace))
+            continue;
+        result.push_back(h);
+    }
+
+    scopeHierarchy = std::move(result);
     return true;
 }
 
