@@ -36,7 +36,7 @@ impl IPropertyNotify for NoiseParams
 {
     mtd impl isItemEnabled(list: *Properties, item: *PropertiesItem)->bool
     {
-        let isFractal = kind != Noise.FastNoiseKind.Perlin and kind != Noise.FastNoiseKind.Value
+        let isFractal = me.kind != Noise.FastNoiseKind.Perlin and me.kind != Noise.FastNoiseKind.Value
 
         switch item.typeValue.name
         {
@@ -44,10 +44,10 @@ impl IPropertyNotify for NoiseParams
             return isFractal
 
         case #nameof(NoiseParams.lacunarity):
-            return isFractal and octaves > 1
+            return isFractal and me.octaves > 1
 
         case #nameof(NoiseParams.gain):
-            return isFractal and octaves > 1
+            return isFractal and me.octaves > 1
         }
 
         return true
