@@ -41,9 +41,8 @@ the current instance and the struct type, respectively.
 impl MyStruct
 {
     // 'me' is implicitly defined as 'var me: MyStruct'
-    func returnX(me) => x         // Method to return 'x', using 'me' implicitly
-
-    func returnY(me)       => me.y      // Method to return 'y', explicitly using 'me'
+    func returnX(me) => me.x
+    func returnY(me) => me.y
 
     func returnZ(self: MyStruct) => self.z  // Method to return 'z'
 }
