@@ -967,7 +967,6 @@ void initErrors()
     SWAG_ERROR(Nte0026, "cannot resolve type [[%s]]");
     SWAG_ERROR(Nte0027, "consider adding [['&']] to get the address of this expression");
     SWAG_ERROR(Nte0028, "consider adding [[impl]] before if this is intentional");
-    SWAG_ERROR(Nte0029, "consider adding [[using]] before [[me]] if you intend to access members of the instance directly");
     SWAG_ERROR(Nte0030, "consider adding a [[break]] if you want to exit without any action");
     SWAG_ERROR(Nte0031, "consider adding a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
     SWAG_ERROR(Nte0032, "consider adding a return type [[->%s]] to the declaration");
@@ -1165,8 +1164,9 @@ void initErrors()
     SWAG_ERROR(Nte0223, "this is the culprit");
     SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as %s");
     SWAG_ERROR(Nte0225, "this implies a nullable value");
-
     SWAG_ERROR(Nte0009, "function [[%s]] is a method and should be called with a pointer to [[%s]] as a first argument");
+    
+    SWAG_ERROR(Nte0029, nullptr);
     SWAG_ERROR(Nte0016, nullptr);
     SWAG_ERROR(Nte0226, nullptr);
 }

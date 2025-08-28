@@ -119,8 +119,6 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
                 const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
                 if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
                     err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0058));
-                else if (!typeFct->parameters.empty() && typeFct->parameters[0]->typeInfo->isMe() && !typeFct->parameters[0]->typeInfo->hasFlag(TYPEINFO_HAS_USING))
-                    err.addNote(nodeFct->parameters->firstChild(), toNte(Nte0029));
                 else
                     err.addNote(toNte(Nte0071));
             }
