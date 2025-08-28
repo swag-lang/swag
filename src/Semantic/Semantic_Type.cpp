@@ -105,7 +105,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_VAR_STRUCT))
     {
-        Diagnostic err{node, formErr(Err0484, overload->symbol->name.cstr(), overload->symbol->ownerTable->scope->name.cstr())};
+        Diagnostic err{node, node->token, formErr(Err0484, overload->symbol->name.cstr(), overload->symbol->ownerTable->scope->name.cstr())};
 
         // Missing 'me'?
         if (node->childCount() <= 1 &&
@@ -124,7 +124,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(err);
     }
 
-    Diagnostic err{node, formErr(Err0485, Naming::kindName(node->resolvedSymbolName()->kind).cstr(), node->resolvedSymbolName()->name.cstr())};
+    Diagnostic err{node, node->token, formErr(Err0485, Naming::kindName(node->resolvedSymbolName()->kind).cstr(), node->resolvedSymbolName()->name.cstr())};
 
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
