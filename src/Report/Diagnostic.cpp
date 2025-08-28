@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
-#include "Report/ErrorIds.h"
 #include "Report/Log.h"
 #include "Semantic/Symbol/Symbol.h"
 #include "Semantic/Type/TypeInfo.h"
@@ -414,12 +413,19 @@ void Diagnostic::printErrorLevel(Log* log)
 
 void Diagnostic::printPreRemarks(Log* log) const
 {
-    if (!preRemarks.empty())
+    if (preRemarks.empty())
+        return;
+
+    for (const auto& r : preRemarks)
     {
-        for (const auto& r : preRemarks)
+        if (r.empty())
+            continue;
+
+        Vector<Utf8> lines;
+        Utf8::wordWrap(r, lines, g_CommandLine.errorRightColumn);
+
+        for (const auto& line : lines)
         {
-            if (r.empty())
-                continue;
             printMargin(log, false, true, 0);
             if (r.empty() || r[0] == ' ')
             {
@@ -433,44 +439,76 @@ void Diagnostic::printPreRemarks(Log* log) const
             }
 
             log->write(" ");
-            log->print(r);
+            log->print(line);
             log->writeEol();
         }
     }
 }
+
 
 void Diagnostic::printRemarks(Log* log) const
 {
-    if (!autoRemarks.empty())
+    // Auto remarks
+    for (const auto& r : autoRemarks)
     {
-        for (const auto& r : autoRemarks)
+        if (r.empty())
+            continue;
+
+        Vector<Utf8> lines;
+        Utf8::wordWrap(r, lines, g_CommandLine.errorRightColumn);
+
+        bool firstLine = true;
+        for (const auto& line : lines)
         {
-            if (r.empty())
-                continue;
             printMargin(log, false, true, 0);
             log->setColor(autoRemarkColor);
-            log->print(LogSymbol::DotList);
-            log->write(" ");
-            log->print(r);
+            if (firstLine)
+            {
+                log->print(LogSymbol::DotList);
+                log->write(" ");
+                firstLine = false;
+            }
+            else
+            {
+                log->write("  ");
+            }
+
+            log->print(line);
             log->writeEol();
         }
     }
 
-    if (!remarks.empty())
+    // Manual remarks
+    for (const auto& r : remarks)
     {
-        for (const auto& r : remarks)
+        if (r.empty())
+            continue;
+
+        Vector<Utf8> lines;
+        Utf8::wordWrap(r, lines, g_CommandLine.errorRightColumn);
+
+        bool firstLine = true;
+        for (const auto& line : lines)
         {
-            if (r.empty())
-                continue;
             printMargin(log, false, true, 0);
             log->setColor(remarkColor);
-            log->print(LogSymbol::DotList);
-            log->write(" ");
-            log->print(r);
+            if (firstLine)
+            {
+                log->print(LogSymbol::DotList);
+                log->write(" ");
+                firstLine = false;
+            }
+            else
+            {
+                log->write("  ");
+            }
+
+            log->print(line);
             log->writeEol();
         }
     }
 }
+
 
 namespace
 {
