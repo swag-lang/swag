@@ -127,7 +127,7 @@ bool Semantic::getUFCS(SemanticContext* context, const AstIdentifierRef* identif
             {
                 const auto subNode = identifierRef->previousNode ? identifierRef->previousNode : node;
                 Diagnostic err{subNode, subNode->token, formErr(Err0205, idRefSymbolName->name.cstr(), Naming::aKindName(idRefSymbolName->kind).cstr())};
-                err.addNote(node->token, toNte(Nte0174));
+                err.addNote(node->token, "this is a lambda expression");
                 return context->report(err);
             }
         }

@@ -248,18 +248,18 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
                     const auto childParam = funcDecl->parameters->children[idx];
                     if (childParam->isGeneratedMe())
                     {
-                        msg = formNte(Nte0224, "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
+                        msg = form("%s [[%s]] does not accept a null value as %s", "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
                         err->addNote(funcDecl, funcDecl->getTokenName(), msg);
                     }
                     else
                     {
-                        msg = formNte(Nte0224, "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
+                        msg = form("%s [[%s]] does not accept a null value as %s", "function", funcDecl->token.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr());
                         err->addNote(childParam, msg);
                     }
                 }
                 else if (!intrinsic.empty())
                 {
-                    err->addNote(formNte(Nte0224, "intrinsic", intrinsic.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr()));
+                    err->addNote(form("%s [[%s]] does not accept a null value as %s", "intrinsic", intrinsic.cstr(), Naming::aNiceArgumentRank(idx + 1).cstr()));
                 }
 
                 return context.report(*err);

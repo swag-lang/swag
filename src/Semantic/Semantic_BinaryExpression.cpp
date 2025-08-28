@@ -34,7 +34,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, toErr(Err0225)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(toNte(Nte0101));
+            err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
 
@@ -57,7 +57,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             Diagnostic err{node, node->token, toErr(Err0225)};
             err.addNote(right, Diagnostic::isType(rightTypeInfo));
-            err.addNote(toNte(Nte0101));
+            err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
 
@@ -96,7 +96,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             if (left->hasFlagComputedValue() || right->hasFlagComputedValue())
-                err.addNote(toNte(Nte0049));
+                err.addNote("consider using [[++]] to concatenate literal strings at compile-time");
             return context->report(err);
         }
         default:
@@ -229,7 +229,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         {
             Diagnostic err{node, node->token, toErr(Err0225)};
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(toNte(Nte0101));
+            err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
 
@@ -890,7 +890,7 @@ bool Semantic::resolveAppend(SemanticContext* context, AstNode* left, AstNode* r
     const auto node = context->node;
 
     {
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0137); }, true);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return "the operator [['++']] requires compile-time strings as arguments"; }, true);
         SWAG_CHECK(checkIsConstExpr(context, left->hasFlagComputedValue(), left));
         SWAG_CHECK(checkIsConstExpr(context, right->hasFlagComputedValue(), right));
     }
@@ -1092,14 +1092,14 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->isAny())
     {
         Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, toNte(Nte0035));
+        err.addNote(left, "consider casting to the underlying [[any]] type");
         return context->report(err);
     }
 
     if (rightTypeInfo->isAny())
     {
         Diagnostic err{node, node->token, formErr(Err0598, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
-        err.addNote(right, toNte(Nte0035));
+        err.addNote(right, "consider casting to the underlying [[any]] type");
         return context->report(err);
     }
 

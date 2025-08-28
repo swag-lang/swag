@@ -15,6 +15,5 @@ extern Utf8 g_E[MaxErrors];
 extern void initErrors();
 
 extern Utf8 formErr(ErrorID idx, ...);
-extern Utf8 formNte(ErrorID idx, ...);
 extern Utf8 toErr(ErrorID idx);
-extern Utf8 toNte(ErrorID idx);
+

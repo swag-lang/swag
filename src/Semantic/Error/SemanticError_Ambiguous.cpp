@@ -47,7 +47,7 @@ void SemanticError::ambiguousArguments(SemanticContext*, Diagnostic& err, Vector
             }
 
             const auto callParam = i < matches[0]->paramParameters.size() ? matches[0]->paramParameters[i].param : matches[0]->parameters[i];
-            const auto note      = Diagnostic::note(callParam, formNte(Nte0115, matches[0]->solvedParameters[i]->declNode->token.cstr(), toWhat.cstr()));
+            const auto note      = Diagnostic::note(callParam, form("the argument [[%s]] could be converted to %s", matches[0]->solvedParameters[i]->declNode->token.cstr(), toWhat.cstr()));
             err.addNote(note);
             break;
         }
@@ -65,9 +65,9 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     bool first = true;
     for (const auto match : matches)
     {
-        auto couldBe = toNte(Nte0075);
+        auto couldBe = "could be";
         if (!first)
-            couldBe = "or " + couldBe;
+            couldBe = Utf8("or ") + couldBe;
 
         const auto note   = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->getTokenName(), couldBe);
         note->canBeMerged = false;
@@ -121,15 +121,15 @@ bool SemanticError::ambiguousOverloadError(SemanticContext* context, AstNode* no
             if (doneGenerics.contains(typeGen))
                 continue;
             doneGenerics.insert(typeGen);
-            couldBe = formNte(Nte0072, typeGen->getDisplayNameC());
+            couldBe = form("could be an instance of the generic function [[%s]]", typeGen->getDisplayNameC());
         }
         else
         {
             const auto kindName = Naming::kindName(match->symbolOverload);
             if (here.contains(kindName))
-                couldBe = formNte(Nte0074, kindName.cstr());
+                couldBe = form("could be this other %s", kindName.cstr());
             else
-                couldBe = formNte(Nte0073, kindName.cstr());
+                couldBe = form("could be this %s", kindName.cstr());
             here.insert(kindName);
         }
 
@@ -159,9 +159,9 @@ bool SemanticError::ambiguousSymbolError(SemanticContext* context, AstIdentifier
 
         const auto kindName = Naming::kindName(p1.symbol->kind);
         if (here.contains(kindName))
-            couldBe = formNte(Nte0074, kindName.cstr());
+            couldBe = form("could be this other %s", kindName.cstr());
         else
-            couldBe = formNte(Nte0073, kindName.cstr());
+            couldBe = form("could be this %s", kindName.cstr());
         here.insert(kindName);
 
         if (!first)

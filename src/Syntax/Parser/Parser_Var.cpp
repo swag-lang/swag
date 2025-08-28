@@ -373,18 +373,18 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarD
 
             Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
-                err.addNote(toNte(Nte0080));
+                err.addNote("did you mean to assign a value with the symbol [['=']] instead?");
 
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {
                 if (kind == AstNodeKind::ConstDecl)
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "constant", leftNode->token.cstr())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form("this is the declaration of the constant [[%s]]", leftNode->token.cstr())));
                 else
-                    err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0184), "variable", leftNode->token.cstr())));
+                    err.addNote(Diagnostic::hereIs(leftNode, form("this is the declaration of the variable [[%s]]", leftNode->token.cstr())));
             }
             else
             {
-                err.addNote(Diagnostic::hereIs(leftNode, form(toNte(Nte0181), "declaration")));
+                err.addNote(Diagnostic::hereIs(leftNode, "this is the declaration"));
             }
 
             return context->report(err);

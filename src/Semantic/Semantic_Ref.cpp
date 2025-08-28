@@ -21,14 +21,14 @@ bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, con
         if (forType->isSlice())
         {
             Diagnostic err{arrayAccess, toErr(Err0218)};
-            err.addNote(arrayNode, toNte(Nte0212));
+            err.addNote(arrayNode, "this slice appears to be null or empty");
             return context->report(err);
         }
 
         if (forType->isString())
         {
             Diagnostic err{arrayAccess, toErr(Err0218)};
-            err.addNote(arrayNode, toNte(Nte0213));
+            err.addNote(arrayNode, "this string appears to be null or empty");
             return context->report(err);
         }
     }
@@ -47,17 +47,17 @@ bool Semantic::checkCanMakeFuncPointer(SemanticContext* context, AstFuncDecl* fu
     if (funcNode->hasAttribute(ATTRIBUTE_MIXIN))
     {
         msg  = toErr(Err0151);
-        msg1 = toNte(Nte0125);
+        msg1 = "the function is marked with [[#[Swag.Mixin]]]";
     }
     else if (funcNode->hasAttribute(ATTRIBUTE_MACRO))
     {
         msg  = toErr(Err0150);
-        msg1 = toNte(Nte0124);
+        msg1 = "the function is marked with [[#[Swag.Macro]]]";
     }
     else if (funcNode->hasAttribute(ATTRIBUTE_INLINE))
     {
         msg  = toErr(Err0153);
-        msg1 = toNte(Nte0123);
+        msg1 = "the function is marked with [[#[Swag.Inline]]]";
     }
 
     if (!msg.empty())
@@ -83,7 +83,7 @@ bool Semantic::checkCanTakeAddress(SemanticContext* context, AstNode* node)
             if (overload->hasFlag(OVERLOAD_VAR_IS_LET))
             {
                 Diagnostic err{node, node->token, toErr(Err0152)};
-                err.addNote(formNte(Nte0114, node->token.cstr()));
+                err.addNote(form("the address of [[%s]] is taken implicitly because it is a mutable UFCS argument", node->token.cstr()));
                 return context->report(err);
             }
 
@@ -213,7 +213,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
             }
 
             Diagnostic err{node, node->token, formErr(Err0149, typeInfo->getDisplayNameC())};
-            err.addNote(formNte(Nte0099, Naming::aKindName(typeInfo).cstr()));
+            err.addNote(form("only the address of a returned reference can be taken, and this is %s", Naming::aKindName(typeInfo).cstr()));
             return context->report(err, Diagnostic::hereIs(overload));
         }
     }
@@ -395,7 +395,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic err{node, node->token, toErr(Err0228)};
             err.addNote(node->array, Diagnostic::isType(typeVar));
-            err.addNote(toNte(Nte0101));
+            err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
 
@@ -433,7 +433,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (!symbol)
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0234, node->array->token.cstr(), typeInfo->getDisplayNameC())};
-            err.hint = formNte(Nte0155, g_LangSpec->name_opSlice.cstr());
+            err.hint = form("there is a hidden call to [[%s]]", g_LangSpec->name_opSlice.cstr());
             err.addNote(node->array, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
@@ -452,7 +452,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (node->lowerBound->computedValue()->reg.u64 > node->upperBound->computedValue()->reg.u64)
         {
             Diagnostic err{node->lowerBound, formErr(Err0503, node->lowerBound->computedValue()->reg.u64, node->upperBound->computedValue()->reg.u64)};
-            err.addNote(node->upperBound, formNte(Nte0211, node->lowerBound->computedValue()->reg.u64));
+            err.addNote(node->upperBound, form("this should be greater than [[%lld]]", node->lowerBound->computedValue()->reg.u64));
             return context->report(err);
         }
     }
@@ -521,19 +521,19 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
         if (front->is(AstNodeKind::IdentifierRef) && front->firstChild()->is(AstNodeKind::ArrayPointerIndex))
         {
-            err.addNote(front, toNte(Nte0027));
+            err.addNote(front, "consider adding [['&']] to get the address of this expression");
             return context->report(err);
         }
 
         if (front->is(AstNodeKind::IdentifierRef))
         {
-            err.hint = toNte(Nte0136);
-            err.addNote(front, formNte(Nte0048, front->token.cstr()));
+            err.hint = "the operation is not allowed on a non-pointer type";
+            err.addNote(front, form("consider using [['&']] to get the address of [[%s]]", front->token.cstr()));
             return context->report(err);
         }
 
         err.addNote(front, Diagnostic::isType(typeInfo));
-        err.hint = toNte(Nte0136);
+        err.hint = "the operation is not allowed on a non-pointer type";
         return context->report(err);
     }
 
@@ -706,7 +706,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             {
                 Diagnostic err{arrayNode->array, formErr(Err0178, arrayType->getDisplayNameC())};
                 if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0162));
+                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, "this [[dref]] operation is not possible here");
                 return context->report(err);
             }
 
@@ -754,7 +754,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
                 {
                     Diagnostic err{arrayNode->access, toErr(Err0249)};
-                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0162));
+                    err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, "this [[dref]] operation is not possible here");
                     return context->report(err);
                 }
 
@@ -876,7 +876,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
         {
             Diagnostic err{arrayNode->access, toErr(Err0249)};
-            err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0162));
+            err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, "this [[dref]] operation is not possible here");
             return context->report(err);
         }
 
@@ -928,7 +928,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 Diagnostic err{arrayNode->access, formErr(Err0224, arrayNode->resolvedSymbolName()->name.cstr(), arrayType->getDisplayNameC())};
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
-                err.addNote(toNte(Nte0101));
+                err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
                 return context->report(err);
             }
 
@@ -1091,7 +1091,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 YIELD();
                 Diagnostic err{arrayNode->access, formErr(Err0175, arrayNode->array->token.cstr(), arrayType->getDisplayNameC())};
-                err.hint = formNte(Nte0155, g_LangSpec->name_opIndex.cstr());
+                err.hint = form("there is a hidden call to [[%s]]", g_LangSpec->name_opIndex.cstr());
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(err);
             }
@@ -1104,7 +1104,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         {
             Diagnostic err{arrayNode->array, formErr(Err0178, arrayNode->array->typeInfo->getDisplayNameC())};
             if (arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF))
-                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, toNte(Nte0162));
+                err.addNote(arrayNode->token.startLocation, arrayNode->token.endLocation, "this [[dref]] operation is not possible here");
             return context->report(err);
         }
     }
@@ -1128,12 +1128,12 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
             if (count->hasFlagComputedValue())
             {
                 Diagnostic err{expression, formErr(Err0554, node->token.cstr(), expression->typeInfo->getDisplayNameC())};
-                err.addNote(count, formNte(Nte0133, count->computedValue()->reg.u64));
+                err.addNote(count, form("the number of values ([[%d]]) is greater than one", count->computedValue()->reg.u64));
                 return context->report(err);
             }
 
             Diagnostic err{expression, formErr(Err0555, node->token.cstr(), expression->typeInfo->getDisplayNameC())};
-            err.addNote(count, toNte(Nte0134));
+            err.addNote(count, "the number of values is variable and could be greater than one");
             return context->report(err);
         }
     }
@@ -1184,7 +1184,7 @@ bool Semantic::resolveInit(SemanticContext* context)
             const auto child = node->parameters->firstChild();
 
             {
-                PushErrCxtStep ec(context, node->expression, ErrCxtStepKind::Note, [node] { return formNte(Nte0113, node->expression->typeInfo->getDisplayNameC()); });
+                PushErrCxtStep ec(context, node->expression, ErrCxtStepKind::Note, [node] { return form("the [[@init]] initialization value should conform to this pointed type ([[%s]])", node->expression->typeInfo->getDisplayNameC()); });
                 SWAG_CHECK(TypeManager::makeCompatibles(context, pointedType, child->typeInfo, nullptr, child));
             }
         }

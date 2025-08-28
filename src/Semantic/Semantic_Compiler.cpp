@@ -39,19 +39,19 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                 {
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        const auto result = Diagnostic::note(c, c->token, formNte(Nte0120, symbolName->name.cstr()));
-                        result->hint      = toNte(Nte0039);
+                        const auto result = Diagnostic::note(c, c->token, form("the function [[%s]] is not marked with [[#[Swag.ConstExpr]]]", symbolName->name.cstr()));
+                        result->hint      = "consider prefixing with [[#run]] to enforce a compile-time call";
                         return result;
                     }
 
-                    return Diagnostic::note(c, c->token, toNte(Nte0168));
+                    return Diagnostic::note(c, c->token, "this function call cannot be evaluated at compile-time");
                 }
             }
 
             if (symbolName->is(SymbolKind::Variable))
-                return Diagnostic::note(c, c->token, formNte(Nte0005, symbolName->name.cstr()));
+                return Diagnostic::note(c, c->token, form("[[%s]] is a variable, and variables in expressions cannot be evaluated at compile-time", symbolName->name.cstr()));
 
-            return Diagnostic::note(c, toNte(Nte0081));
+            return Diagnostic::note(c, "evaluation failed during compile-time");
         }
     }
 
@@ -121,7 +121,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             {
                 Diagnostic err{node, formErr(Err0044, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-                err.hint          = formNte(Nte0155, userOp->symbol->name.cstr());
+                err.hint          = form("there is a hidden call to [[%s]]", userOp->symbol->name.cstr());
                 return context->report(err);
             }
 
@@ -141,7 +141,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic err{node, formErr(Err0044, realType->getDisplayNameC())};
-                    err.hint = toNte(Nte0039);
+                    err.hint = "consider prefixing with [[#run]] to enforce a compile-time call";
                     return context->report(err);
                 }
             }
@@ -1055,7 +1055,7 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
             SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0158, Naming::aKindName(defaultVal).cstr())}));
 
             {
-                PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return toNte(Nte0112); });
+                PushErrCxtStep ec(context, typeNode, ErrCxtStepKind::Note, [] { return "the [[#gettag]] default value should conform to this type"; });
                 SWAG_CHECK(TypeManager::makeCompatibles(context, typeNode->typeInfo, defaultVal->typeInfo, nullptr, defaultVal, CAST_FLAG_DEFAULT));
             }
 
@@ -1068,7 +1068,7 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
                 if (!TypeManager::makeCompatibles(context, typeNode->typeInfo, tag->type, nullptr, typeNode, CAST_FLAG_JUST_CHECK))
                 {
                     Diagnostic err{typeNode, formErr(Err0766, typeNode->typeInfo->getDisplayNameC(), tag->type->getDisplayNameC(), tag->name.cstr())};
-                    err.addNote(formNte(Nte0117, tag->cmdLine.cstr()));
+                    err.addNote(form("the associated command line option is [[%s]]", tag->cmdLine.cstr()));
                     return context->report(err);
                 }
 

@@ -187,8 +187,8 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         if (nakedName == "node")
             nakedName.clear();
         Diagnostic err{oneAttribute, formErr(Err0376, oneAttribute->token.cstr())};
-        err.addNote(formNte(Nte0084, specificMsg));
-        err.addNote(checkNode, checkNode->getTokenName(), formNte(Nte0024, nakedName.cstr()));
+        err.addNote(form("it can only be applied to %s", specificMsg));
+        err.addNote(checkNode, checkNode->getTokenName(), form("but it is applied to this %s", nakedName.cstr()));
         if (!isBootstrap)
             err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
         return context->report(err);

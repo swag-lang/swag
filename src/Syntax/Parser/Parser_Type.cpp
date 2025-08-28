@@ -206,8 +206,8 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 tokenAmb.endLocation   = tokenParse.token.startLocation;
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0026)};
-                const auto note = Diagnostic::note(lastParameter, formNte(Nte0001, lastParameter->type->token.cstr()));
-                note->hint      = formNte(Nte0046, lastParameter->type->token.cstr(), lastParameter->type->token.cstr());
+                const auto note = Diagnostic::note(lastParameter, form("[[%s]] could refer to either a type or a parameter name", lastParameter->type->token.cstr()));
+                note->hint      = form("consider using [[#type]] before [[%s]] if it is a type, or specify a [[:type]] after [[%s]] if it is a parameter name", lastParameter->type->token.cstr(), lastParameter->type->token.cstr());
                 err.addNote(note);
                 return context->report(err);
             }
@@ -452,13 +452,13 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
         err = new Diagnostic{sourceFile, tokenParse, toErr(Err0264)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
-        err->addNote(toNte(Nte0055));
+        err->addNote("consider using [[func(]] to declare a lambda type");
     else if (tokenParse.is(TokenId::SymDotDotDot))
-        err->addNote(toNte(Nte0145));
+        err->addNote("the symbol [[...]] is used to declare variadic function parameters, which is not valid in this context");
     else if (Tokenizer::isKeyword(tokenParse.token.id))
-        err->addNote(formNte(Nte0130, tokenParse.cstr()));
+        err->addNote(form("the keyword [[%s]] cannot be used as an identifier", tokenParse.cstr()));
     else if (tokenParse.is(TokenId::CompilerTypeOf) || tokenParse.is(TokenId::IntrinsicKindOf))
-        err->addNote(toNte(Nte0053));
+        err->addNote("consider using [[#decltype]] to retrieve the type of an expression");
 
     return context->report(*err);
 }

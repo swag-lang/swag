@@ -105,7 +105,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
         {
             Diagnostic err{fromNode->children[maxCount], formErr(Err0523, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-            err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
+            err.addNote(Diagnostic::note(errNode, "this is the tuple definition"));
             return context->report(err);
         }
 
@@ -114,7 +114,7 @@ bool Ast::convertLiteralTupleToStructVar(JobContext* context, TypeInfo* toType, 
             const auto locNode = fromNode->childCount() ? fromNode->firstChild() : fromNode;
             Diagnostic err{locNode, formErr(Err0491, maxCount, countParams)};
             const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-            err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
+            err.addNote(Diagnostic::note(errNode, "this is the tuple definition"));
             return context->report(err);
         }
     }
@@ -202,14 +202,14 @@ bool Ast::convertLiteralTupleToStructType(JobContext* context, AstNode* paramNod
     {
         Diagnostic err{fromNode->firstChild()->children[maxCount], formErr(Err0523, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-        err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
+        err.addNote(Diagnostic::note(errNode, "this is the tuple definition"));
         return context->report(err);
     }
     if (countParams < maxCount)
     {
         Diagnostic err{fromNode->firstChild()->lastChild(), formErr(Err0491, maxCount, countParams)};
         const auto errNode = destStruct->originalParent ? destStruct->originalParent : destStruct;
-        err.addNote(Diagnostic::note(errNode, toNte(Nte0202)));
+        err.addNote(Diagnostic::note(errNode, "this is the tuple definition"));
         return context->report(err);
     }
 

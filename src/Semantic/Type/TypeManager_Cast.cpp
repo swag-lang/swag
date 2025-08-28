@@ -2688,9 +2688,9 @@ bool TypeManager::castStructToStruct(SemanticContext* context,
                         if (fromNode && !castFlags.has(CAST_FLAG_JUST_CHECK))
                         {
                             Diagnostic err{fromNode, formErr(Err0020, fromType->getDisplayNameC(), toType->getDisplayNameC())};
-                            err.addNote(formNte(Nte0153, toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
-                            err.addNote(foundField->declNode, toNte(Nte0179));
-                            err.addNote(field->declNode, toNte(Nte0178));
+                            err.addNote(form("there are multiple [[using]] fields of type [[%s]] in [[%s]], so it is unclear which one to use", toStruct->getDisplayNameC(), fromStruct->getDisplayNameC()));
+                            err.addNote(foundField->declNode, "this is one");
+                            err.addNote(field->declNode, "this is another one");
                             return context->report(err);
                         }
                     }
@@ -2727,8 +2727,8 @@ bool TypeManager::collectInterface(SemanticContext* context, TypeInfoStruct* fro
                 if (foundField)
                 {
                     Diagnostic err{context->node, formErr(Err0022, fromTypeStruct->getDisplayNameC(), toTypeItf->name.cstr())};
-                    err.addNote(it.field->declNode, formNte(Nte0163, it.field->typeInfo->getDisplayNameC()));
-                    err.addNote(foundField->declNode, formNte(Nte0165, foundField->typeInfo->getDisplayNameC()));
+                    err.addNote(it.field->declNode, form("this [[using]] field is convertible because [[%s]] implements the interface", it.field->typeInfo->getDisplayNameC()));
+                    err.addNote(foundField->declNode, form("this can be converted too because [[%s]] also implements the interface", foundField->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 

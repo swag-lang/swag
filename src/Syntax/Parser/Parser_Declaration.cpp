@@ -46,7 +46,7 @@ bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
         default:
         {
             Diagnostic err{sourceFile, tokenAttr, formErr(Err0360, tokenAttr.cstr(), tokenParse.cstr())};
-            err.addNote(tokenParse.token, toNte(Nte0166));
+            err.addNote(tokenParse.token, "this cannot be prefixed with an access specifier");
             return context->report(err);
         }
     }
@@ -176,7 +176,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                 default:
                 {
                     Diagnostic err{sourceFile, tokenParse, toErr(Err0407)};
-                    err.addNote(child, child->token, toNte(Nte0197));
+                    err.addNote(child, child->token, "this is the prior declaration");
                     return context->report(err);
                 }
             }
@@ -462,7 +462,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
             cpy.token.endLocation   = cpy.token.startLocation;
 
             Diagnostic err{sourceFile, cpy, toErr(Err0424)};
-            err.addNote(parent, forToken, formNte(Nte0111, forToken.cstr()));
+            err.addNote(parent, forToken, form("the [[%s]] block should either start with [[':']] or be enclosed in [[{}]]", forToken.cstr()));
             return context->report(err);
         }
 
@@ -485,7 +485,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         tokenParse.is(TokenId::SymRightSquare))
     {
         Diagnostic err{sourceFile, tokenParse, toErr(Err0631)};
-        err.addNote(statement, statement->token, toNte(Nte0200));
+        err.addNote(statement, statement->token, "this is the start of the block");
         return context->report(err);
     }
 
@@ -873,7 +873,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0661)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
-                err.addNote(toNte(Nte0067));
+                err.addNote("consider using the syntax [[var name: type]] or [[var name = expression]] to declare a variable");
             return context->report(err);
         }
 

@@ -142,9 +142,9 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         {
             if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
             {
-                err.addNote(formNte(Nte0062, parent->lastChild()->token.cstr(), tokenParse.cstr()));
+                err.addNote(form("consider using square brackets [[%s[%s]]] to access an element by index", parent->lastChild()->token.cstr(), tokenParse.cstr()));
                 if (tokenParse.literalValue.u64 < 32)
-                    err.addNote(formNte(Nte0047, parent->lastChild()->token.cstr(), tokenParse.cstr()));
+                    err.addNote(form("consider using [[%s.item%s]] to access a struct or a tuple element", parent->lastChild()->token.cstr(), tokenParse.cstr()));
             }
         }
 
@@ -372,8 +372,8 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {
                 Diagnostic err{sourceFile, tokenParse, formErr(Err0712, tokenParse.cstr())};
-                err.addNote(sourceFile, discardToken.token, toNte(Nte0161));
-                err.addNote(toNte(Nte0010));
+                err.addNote(sourceFile, discardToken.token, "this [[discard]] should be removed");
+                err.addNote("[[discard]] cannot be used with an intrinsic, as an intrinsic result should always be utilized");
                 return context->report(err);
             }
 

@@ -306,10 +306,10 @@ bool Semantic::checkAccess(JobContext* context, AstNode* node)
 
     Diagnostic err{node, node->getTokenName(), msg};
     if (onNode == culprit)
-        err.addNote(culprit, culprit->token, formNte(Nte0158, Naming::kindName(culprit->resolvedSymbolOverload()).cstr(), accessCulprit));
+        err.addNote(culprit, culprit->token, form("this %s has [[%s]] access", Naming::kindName(culprit->resolvedSymbolOverload()).cstr(), accessCulprit));
     else
     {
-        err.addNote(onNode, onNode->token, formNte(Nte0172, accessCulprit, onNode->typeInfo->getDisplayNameC()));
+        err.addNote(onNode, onNode->token, form("this has [[%s]] access (type is [[%s]])", accessCulprit, onNode->typeInfo->getDisplayNameC()));
         err.addNote(Diagnostic::hereIs(culprit));
     }
     return context->report(err);

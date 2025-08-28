@@ -54,7 +54,7 @@ bool SemanticError::warnDeprecated(SemanticContext* context, AstNode* identifier
     }
 
     Diagnostic err{identifier, identifier->token, formErr(Wrn0002, Naming::kindName(symbol->kind).cstr(), identifier->resolvedSymbolOverload()->symbol->name.cstr()), DiagnosticLevel::Warning};
-    const auto note1   = Diagnostic::hereIs(node, toNte(Nte0185));
+    const auto note1   = Diagnostic::hereIs(node, "this is the deprecated definition");
     note1->canBeMerged = false;
     err.addNote(note1);
 
@@ -92,7 +92,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 
     Diagnostic err{funcDecl, funcDecl->tokenName, formErr(Wrn0006, "function", "function", funcDecl->token.cstr()), DiagnosticLevel::Warning};
     if (!funcDecl->isSpecialFunctionName())
-        err.hint = formNte(Nte0043, funcDecl->token.cstr());
+        err.hint = form("consider renaming it to [[_%s]] if this is intentional", funcDecl->token.cstr());
     return Report::report(err);
 }
 
@@ -177,7 +177,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         {
             const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            err.addNote(formNte(Nte0043, sym->name.cstr()));
+            err.addNote(form("consider renaming it to [[_%s]] if this is intentional", sym->name.cstr()));
             isOk = isOk && context->report(err);
         }
         else if (overload->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
@@ -197,15 +197,15 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
                     continue;
                 const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
                 Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
-                err.hint = toNte(Nte0157);
-                err.addNote(toNte(Nte0056));
+                err.hint = "there is an implied first parameter [[me]]";
+                err.addNote("consider using [[func]] instead of [[mtd]] to avoid the implicit [[me]] parameter.");
                 isOk = isOk && context->report(err);
             }
             else
             {
                 const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
                 Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-                err.addNote(formNte(Nte0043, sym->name.cstr()));
+                err.addNote(form("consider renaming it to [[_%s]] if this is intentional", sym->name.cstr()));
                 isOk = isOk && context->report(err);
             }
         }
@@ -213,14 +213,14 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         {
             const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            err.addNote(formNte(Nte0043, sym->name.cstr()));
+            err.addNote(form("consider renaming it to [[_%s]] if this is intentional", sym->name.cstr()));
             isOk = isOk && context->report(err);
         }
         else if (overload->hasFlag(OVERLOAD_CONSTANT))
         {
             const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
             Diagnostic err{front, front->token, msg, DiagnosticLevel::Warning};
-            err.addNote(formNte(Nte0043, sym->name.cstr()));
+            err.addNote(form("consider renaming it to [[_%s]] if this is intentional", sym->name.cstr()));
             isOk = isOk && context->report(err);
         }
     }
@@ -301,11 +301,11 @@ bool SemanticError::warnWhereDoIf(SemanticContext* context)
     {
         SourceLocation loc;
         expression->computeLocation(loc, loc);
-        err.addNote(loc, loc, toNte(Nte0061));
+        err.addNote(loc, loc, "consider using [[where <expression>]] after this to replace the [[if]] statement");
     }
     else
     {
-        err.addNote(node, node->token, toNte(Nte0061));
+        err.addNote(node, node->token, "consider using [[where <expression>]] after this to replace the [[if]] statement");
     }
 
     SWAG_CHECK(context->report(err));

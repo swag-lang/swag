@@ -482,7 +482,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
                 if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
                 {
                     Diagnostic err{assign, toErr(Err0056)};
-                    err.addNote(node->type, toNte(Nte0189));
+                    err.addNote(node->type, "this is the first initialization");
                     return context->report(err);
                 }
 

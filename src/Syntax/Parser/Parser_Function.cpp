@@ -324,7 +324,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0664)};
-                err.addNote(unnamedTokens.back(), toNte(Nte0219));
+                err.addNote(unnamedTokens.back(), "unnamed parameters ([['?']]) cannot have an explicit type");
                 return context->report(err);
             }
 
@@ -380,7 +380,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             if (unnamedTokens.size() == parent->childCount())
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0362)};
-                err.addNote(unnamedTokens.back(), toNte(Nte0177));
+                err.addNote(unnamedTokens.back(), "this is an unnamed parameter ([['?']])");
                 return context->report(err);
             }
 
@@ -404,9 +404,9 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0466)};
                 if (otherVariables.empty())
-                    err.addNote(paramNode, toNte(Nte0205));
+                    err.addNote(paramNode, "this parameter is missing its type");
                 else
-                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, toNte(Nte0204));
+                    err.addNote(sourceFile, paramNode->token.startLocation, otherVariables.back()->token.endLocation, "this list of parameters is missing their type");
                 return context->report(err);
             }
 
@@ -457,7 +457,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
         if (tokenParse.is(TokenId::Identifier) && getNextToken().is(TokenId::SymLeftParen))
         {
-            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&] { return formNte(Nte0065, tokenParse.cstr(), parent->token.cstr()); });
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&] { return form("consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type", tokenParse.cstr(), parent->token.cstr()); });
             return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.cstr()));
         }
 
@@ -556,8 +556,8 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             if (isType)
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0197)};
-                err.addNote(Diagnostic::note(oneParam, formNte(Nte0007, oneParam->token.cstr())));
-                err.addNote(Diagnostic::note(sourceFile, tokenForce, toNte(Nte0040)));
+                err.addNote(Diagnostic::note(oneParam, form("[[%s]] is interpreted as a type, not a generic value, due to the preceding [[var]]", oneParam->token.cstr())));
+                err.addNote(Diagnostic::note(sourceFile, tokenForce, "consider removing [[var]] or replacing it with [[const]] if you intend to declare a generic value"));
                 return context->report(err);
             }
 
@@ -582,7 +582,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return formNte(Nte0038, oneParam->token.cstr()); }, true);
+                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return form("consider prefixing [[%s]] with [[const]] to declare a generic constant", oneParam->token.cstr()); }, true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else
@@ -822,7 +822,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     {
         Utf8 note;
         if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
-            note = toNte(Nte0063);
+            note = "consider using the [[@args]] intrinsic value to retrieve the program arguments";
         return error(tokenParse, formErr(Err0652, funcNode->getDisplayNameC()), note.cstr());
     }
 

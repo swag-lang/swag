@@ -27,7 +27,7 @@ bool Semantic::resolveMove(SemanticContext* context)
         {
             Diagnostic err{right, formErr(Err0213, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                err.addNote(toNte(Nte0083));
+                err.addNote("function parameters are immutable and cannot be modified");
             return context->report(err);
         }
     }
@@ -57,7 +57,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     {
         Diagnostic err{mpl, toErr(Err0527)};
         err.addNote(node, Diagnostic::isType(node->typeInfo));
-        err.addNote(toNte(Nte0017));
+        err.addNote("a lambda can be converted to a closure type, but not vice versa");
         return context->report(err);
     }
 
@@ -123,7 +123,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             if (child->hasAstFlag(AST_FUNC_CALL | AST_FUNC_INLINE_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
-                hint = formNte(Nte0122, left->typeInfo->getDisplayNameC());
+                hint = form("the function call returns an immutable [[%s]]", left->typeInfo->getDisplayNameC());
                 break;
             }
 
@@ -153,9 +153,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
             SWAG_ASSERT(left->resolvedSymbolOverload());
             if (left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0198));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, "this is the reference to the immutable value");
             else if (!left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, toNte(Nte0198), Diagnostic::isType(left->typeInfo));
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, "this is the reference to the immutable value"), Diagnostic::isType(left->typeInfo);
         }
     }
 
@@ -166,7 +166,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
             err.addNote(left, Diagnostic::isType(left->typeInfo));
             err.addNote(note);
-            err.addNote(toNte(Nte0083));
+            err.addNote("function parameters are immutable and cannot be modified");
             return context->report(err);
         }
 
@@ -190,7 +190,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
-        err.addNote(left, toNte(Nte0013));
+        err.addNote(left, "a [[let]] variable is immutable and cannot be modified");
         err.addNote(Diagnostic::hereIs(left->resolvedSymbolOverload()->node));
         return context->report(err);
     }
@@ -209,7 +209,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
         if (hint.empty())
-            hint = toNte(Nte0173);
+            hint = "this is a constant";
         err.addNote(left, hint);
         return context->report(err);
     }
@@ -371,7 +371,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                             Diagnostic err{right, formErr(Err0239, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.hint = Diagnostic::isType(rightTypeInfo);
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                            err.addNote(node, node->token, formNte(Nte0154, "opIndexAffect", rightTypeInfo->getDisplayNameC()));
+                            err.addNote(node, node->token, form("there is a hidden call to [[%s]] for the type [[%s]]", "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                             return context->report(err);
                         }
 
@@ -498,7 +498,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 {
                     Diagnostic err{node, node->token, toErr(Err0225)};
                     err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                    err.addNote(toNte(Nte0101));
+                    err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
                     return context->report(err);
                 }
 

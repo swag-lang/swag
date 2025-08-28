@@ -29,14 +29,14 @@ void Workspace::setup()
     if (!std::filesystem::exists(workspacePath, err))
     {
         Report::error(formErr(Fat0035, workspacePath.cstr()));
-        g_Log.messageInfo(toNte(Nte0050));
+        g_Log.messageInfo("consider using [[-w:<path>]] or [[--workspace:<path>]] to specify a valid workspace folder, or run [[Swag]] from an appropriate workspace");
         OS::exit(-1);
     }
 
     if (!g_CommandLine.scriptCommand && !std::filesystem::exists(modulesPath, err) && !std::filesystem::exists(testsPath, err))
     {
         Report::error(formErr(Fat0027, workspacePath.cstr()));
-        g_Log.messageInfo(toNte(Nte0050));
+        g_Log.messageInfo("consider using [[-w:<path>]] or [[--workspace:<path>]] to specify a valid workspace folder, or run [[Swag]] from an appropriate workspace");
         OS::exit(-1);
     }
 

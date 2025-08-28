@@ -27,7 +27,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                const auto note   = Diagnostic::note(p, p->getTokenName(), toNte(Nte0194));
+                const auto note   = Diagnostic::note(p, p->getTokenName(), "this is the other definition");
                 note->canBeMerged = false;
                 err.addNote(note);
                 break;
@@ -74,9 +74,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != valText.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr())};
-                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0194));
+                        err.addNote(it->second, it->second->getTokenName(), "this is the other definition");
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(formNte(Nte0119, val.cstr()));
+                        err.addNote(form("the duplicated underlying enum value is [[%s]]", val.cstr()));
                         return context->report(err);
                     }
 
@@ -93,9 +93,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != val64.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr())};
-                        err.addNote(it->second, it->second->getTokenName(), toNte(Nte0194));
+                        err.addNote(it->second, it->second->getTokenName(), "this is the other definition");
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(formNte(Nte0119, val.cstr()));
+                        err.addNote(form("the duplicated underlying enum value is [[%s]]", val.cstr()));
                         return context->report(err);
                     }
 
@@ -280,7 +280,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
         YIELD();
 
         PushErrCxtStep ec{context, enumNode->type, ErrCxtStepKind::Note, [rawTypeInfo] {
-            return formNte(Nte0148, rawTypeInfo->getDisplayNameC());
+            return form("the type [[%s]] is expected because of the enum's specific type", rawTypeInfo->getDisplayNameC());
         }};
 
         if (rawTypeInfo->isArray())

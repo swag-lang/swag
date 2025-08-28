@@ -997,7 +997,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     if (!typeInfo)
         return "";
 
-    auto str = formNte(Nte0216, typeInfo->getDisplayNameC());
+    auto str = form("this type is [[%s]]", typeInfo->getDisplayNameC());
 
     if (typeInfo->isAlias())
     {
@@ -1013,7 +1013,7 @@ Utf8 Diagnostic::isType(const SymbolOverload* overload)
 {
     if (!overload || !overload->typeInfo)
         return "";
-    return formNte(Nte0160, Naming::kindName(overload).cstr(), overload->typeInfo->getDisplayNameC());
+    return form("this %s has type [[%s]]", Naming::kindName(overload).cstr(), overload->typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const AstNode* node)
@@ -1048,7 +1048,7 @@ Diagnostic* Diagnostic::hereIs(AstNode* node, const char* msg)
         return note(node, node->getTokenName(), txt1);
     }
 
-    const auto txt  = toNte(Nte0180);
+    const auto txt  = "this is the %s [[%s]]";
     const Utf8 txt1 = form(txt, Naming::kindName(node).cstr(), node->token.cstr());
     return note(node, node->getTokenName(), txt1);
 }

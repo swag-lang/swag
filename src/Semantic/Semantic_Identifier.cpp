@@ -50,14 +50,14 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
     {
         Diagnostic err{back, formErr(Err0361, Naming::aKindName(symbolName->kind).cstr())};
 
-        err.addNote(toNte(Nte0011));
+        err.addNote("this makes the conversion from [[%s]] to [[%s]] ambiguous");
 
         if (symbolName->is(SymbolKind::Enum) ||
             symbolName->is(SymbolKind::Interface) ||
             symbolName->is(SymbolKind::TypeAlias) ||
             symbolName->is(SymbolKind::Struct))
         {
-            err.addNote(node, node->kwdLoc, formNte(Nte0059, Naming::aKindName(symbolName->kind).cstr()));
+            err.addNote(node, node->kwdLoc, form("consider using [[alias]] to create an alias for %s", Naming::aKindName(symbolName->kind).cstr()));
         }
 
         return context->report(err);
@@ -409,14 +409,14 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             if (dep.node->isGeneratedMe())
             {
                 Diagnostic err{dependentVar, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
-                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, toNte(Nte0138));
-                err.addNote(toNte(Nte0041));
+                err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, "the other one is an implicit parameter [[using me]]");
+                err.addNote("consider removing one [[using]]");
                 return context->report(err);
             }
 
             Diagnostic err{dep.node, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
-            err.addNote(dependentVar, toNte(Nte0178));
-            err.addNote(toNte(Nte0041));
+            err.addNote(dependentVar, "this is another one");
+            err.addNote("consider removing one [[using]]");
             return context->report(err);
         }
 
@@ -636,7 +636,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
         {
             const auto firstNode = symbol->nodes.front();
             Diagnostic err{genericParameters, formErr(Err0636, Naming::aKindName(symbol->kind).cstr())};
-            err.addNote(node, node->token, formNte(Nte0127, node->token.cstr(), Naming::aKindName(symbol->kind).cstr()));
+            err.addNote(node, node->token, form("the identifier [[%s]] is %s, not a function or a struct", node->token.cstr(), Naming::aKindName(symbol->kind).cstr()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
         }

@@ -72,15 +72,15 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     if (numUnpack < typeStruct->fields.size())
     {
         Diagnostic err{varDecl, varDecl->token, formErr(Err0701, numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, formNte(Nte0215, typeStruct->fields.size()));
-        err.addNote(toNte(Nte0052));
+        err.addNote(varDecl->assignment, form("this tuple has [[%d]] fields", typeStruct->fields.size()));
+        err.addNote("consider using [[?]] to unpack and discard a variable");
         return context->report(err);
     }
 
     if (numUnpack > typeStruct->fields.size())
     {
         Diagnostic err{varDecl, varDecl->token, formErr(Err0702, numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, formNte(Nte0215, typeStruct->fields.size()));
+        err.addNote(varDecl->assignment, form("this tuple has [[%d]] fields", typeStruct->fields.size()));
         return context->report(err);
     }
 
@@ -175,7 +175,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         SWAG_ASSERT(overload->hasFlag(OVERLOAD_INCOMPLETE));
 
         {
-            PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return formNte(Nte0015, Naming::kindName(node).cstr()); }, true);
+            PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return form("a %s requires compile-time evaluation", Naming::kindName(node).cstr()); }, true);
             SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
         }
 
@@ -322,7 +322,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     if (identifier->callParameters)
     {
         Diagnostic err{assign, toErr(Err0056)};
-        err.addNote(identifier->callParameters, toNte(Nte0189));
+        err.addNote(identifier->callParameters, "this is the first initialization");
         return context->report(err);
     }
 
@@ -526,7 +526,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
     if (paramIdx >= typeLambda->parameters.count)
     {
         Diagnostic err{nodeParam, formErr(Err0517, typeLambda->parameters.count, nodeParam->parent->children.count)};
-        err.addNote(formNte(Nte0131, typeLambda->getDisplayNameC()));
+        err.addNote(form("the lambda type is [[%s]]", typeLambda->getDisplayNameC()));
         return context->report(err);
     }
 
@@ -991,7 +991,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     {
         Diagnostic err{node, node->token, formErr(Err0368, concreteNodeType->getDisplayNameC())};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
-        err.addNote(attr, formNte(Nte0181, "attribute"));
+        err.addNote(attr, form("this is the %s", "attribute"));
         return context->report(err);
     }
 
@@ -1092,14 +1092,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (overFlags.has(OVERLOAD_CONSTANT))
         {
             Diagnostic err{node->assignment, toErr(Err0455)};
-            err.addNote(toNte(Nte0044));
+            err.addNote("consider replacing [[undefined]] with an explicit initialization value");
             return context->report(err);
         }
 
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
         {
             Diagnostic err{node->assignment, toErr(Err0454)};
-            err.addNote(toNte(Nte0044));
+            err.addNote("consider replacing [[undefined]] with an explicit initialization value");
             return context->report(err);
         }
     }
@@ -1150,8 +1150,8 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     if (!userOp->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic err{node->assignment, toErr(Err0043)};
-                        err.hint = formNte(Nte0217, leftConcreteType->getDisplayNameC());
-                        err.addNote(node->assignToken, formNte(Nte0155, g_LangSpec->name_opAffect.cstr()));
+                        err.hint = form("this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]", leftConcreteType->getDisplayNameC());
+                        err.addNote(node->assignToken, form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
                         return context->report(err);
                     }
                 }
@@ -1284,7 +1284,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             }
             else if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL))
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return formNte(Nte0015, Naming::kindName(node).cstr()); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return form("a %s requires compile-time evaluation", Naming::kindName(node).cstr()); }, true);
                 SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0042)));
             }
         }
@@ -1303,7 +1303,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
             {
                 const auto typeNode = castAst<AstTypeExpression>(node->type, AstNodeKind::TypeExpression);
                 Diagnostic err{typeNode->token.sourceFile, typeNode->locNullable, typeNode->locNullable, formErr(Err0509)};
-                err.addNote(node->assignment, toNte(Nte0225));
+                err.addNote(node->assignment, "this implies a nullable value");
                 return context->report(err);
             }
         }

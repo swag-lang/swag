@@ -158,7 +158,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     if (node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         Diagnostic err{node, node->getTokenName(), formErr(Err0297, node->token.cstr())};
-        err.addNote(toNte(Nte0014));
+        err.addNote("a [[public]] struct should export all of its special functions");
         err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdInternal)));
         return context->report(err);
     }
@@ -166,7 +166,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     if (!node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
         Diagnostic err{node, node->getTokenName(), formErr(Err0298, node->token.cstr())};
-        err.addNote(toNte(Nte0020));
+        err.addNote("an [[internal]] struct cannot export its special functions");
         err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
         return context->report(err);
     }
@@ -352,12 +352,12 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         Diagnostic err{node, node->getTokenName(), formErr(Err0511, name.cstr())};
         if (appendMsg.empty())
         {
-            err.addNote(toNte(Nte0082));
+            err.addNote("function names starting with [[op]] and an uppercase letter are reserved for struct functions");
             return context->report(err);
         }
 
         err.addNote(node, node->getTokenName(), appendMsg);
-        err.addNote(toNte(Nte0082));
+        err.addNote("function names starting with [[op]] and an uppercase letter are reserved for struct functions");
         return context->report(err);
     }
 
@@ -415,9 +415,9 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
     if (results.size() > 1)
     {
         Diagnostic err{context->node, formErr(Err0023, name.cstr())};
-        err.addNote(context->node, formNte(Nte0155, name.cstr()));
+        err.addNote(context->node, form("there is a hidden call to [[%s]]", name.cstr()));
         for (const auto& f : results)
-            err.addNote(f.usingField->declNode, formNte(Nte0008, name.cstr(), f.parentStruct->getDisplayNameC()));
+            err.addNote(f.usingField->declNode, form("[[%s]] was found in [[%s]] because of a [[using]] field", name.cstr(), f.parentStruct->getDisplayNameC()));
         return context->report(err);
     }
 
@@ -515,9 +515,9 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             YIELD();
 
             Diagnostic err{context->node, context->node->token, formErr(Err0209, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            err.hint = formNte(Nte0155, g_LangSpec->name_opAffectLiteral.cstr());
+            err.hint = form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffectLiteral.cstr());
             err.addNote(left->token, Diagnostic::isType(leftTypeInfo));
-            err.addNote(right->firstChild(), formNte(Nte0192, suffix.cstr()));
+            err.addNote(right->firstChild(), form("this is the literal suffix [[%s]]", suffix.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode));
             return context->report(err);
         }
@@ -541,7 +541,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             Diagnostic err{right, formErr(Err0531, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             err.hint = Diagnostic::isType(rightTypeInfo);
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(context->node, context->node->token, formNte(Nte0155, g_LangSpec->name_opAffect.cstr()));
+            err.addNote(context->node, context->node->token, form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload()));
             return context->report(err);
         }
@@ -581,14 +581,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         if (!opConst)
         {
             Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0240, name.cstr(), leftType->getDisplayNameC())};
-            err.hint = formNte(Nte0155, name.cstr());
+            err.hint = form("there is a hidden call to [[%s]]", name.cstr());
             err.addNote(left, Diagnostic::isType(leftType));
             err.addNote(note);
             return context->report(err);
         }
 
         Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0241, name.cstr(), leftType->getDisplayNameC(), opConst)};
-        err.hint = formNte(Nte0155, name.cstr());
+        err.hint = form("there is a hidden call to [[%s]]", name.cstr());
         err.addNote(left, Diagnostic::isType(leftType));
         err.addNote(note);
         return context->report(err);
@@ -630,7 +630,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return formNte(Nte0154, name.cstr(), leftType->getDisplayNameC()); }, true);
+        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return form("there is a hidden call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
         const Diagnostic err(left, formErr(Err0081, name.cstr()));
         return context->report(err);
     }
@@ -658,7 +658,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         }
 
         {
-            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return formNte(Nte0154, name.cstr(), leftType->getDisplayNameC()); }, true);
+            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return form("there is a hidden call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
             context->node = left->parent;
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
             context->node = node;

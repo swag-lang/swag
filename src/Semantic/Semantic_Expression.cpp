@@ -19,7 +19,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     {
         Diagnostic err{expression, expression->token, formErr(Err0044, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-        err.hint          = formNte(Nte0155, userOp->symbol->name.cstr());
+        err.hint          = form("there is a hidden call to [[%s]]", userOp->symbol->name.cstr());
         err.addNote(note);
         return context->report(err);
     }
@@ -245,7 +245,7 @@ bool Semantic::resolveConditionalOp(SemanticContext* context)
 
     // Make the cast
     {
-        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, [] { return toNte(Nte0218); });
+        PushErrCxtStep ec(context, rightT, ErrCxtStepKind::Note, [] { return "trying to match the type of the other part of the conditional expression"; });
         SWAG_CHECK(TypeManager::makeCompatibles(context, rightT, leftT, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
     }
 
@@ -369,7 +369,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     }
     else
     {
-        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [] { return toNte(Nte0023); });
+        PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [] { return "both branches of an [[orelse]] should have the same type"; });
         SWAG_CHECK(TypeManager::makeCompatibles(context, expression, ifZero, CAST_FLAG_COMMUTATIVE | CAST_FLAG_STRICT));
 
         node->typeInfo    = expression->typeInfo;
@@ -405,7 +405,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
         Diagnostic err{node->expressionLow, formErr(Err0230, node->expressionLow->typeInfo->getDisplayNameC())};
-        err.addNote(toNte(Nte0065));
+        err.addNote("consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type");
         return context->report(err);
     }
 

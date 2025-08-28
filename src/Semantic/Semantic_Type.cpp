@@ -116,9 +116,9 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         {
             const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
-                err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0058));
+                err.addNote(node->ownerFct, node->ownerFct->token, "consider using [[mtd]] instead of [[func]] to implicitly include [[me]] as the first parameter");
             else
-                err.addNote(toNte(Nte0071));
+                err.addNote("could [[me]] be missing?");
         }
 
         return context->report(err);
@@ -129,7 +129,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     // struct.field
     const auto symbolName = node->resolvedSymbolName();
     if (symbolName && symbolName->is(SymbolKind::Struct))
-        err.addNote(formNte(Nte0085, symbolName->name.cstr(), symbolName->name.cstr()));
+        err.addNote(form("it seems like you're trying to access a nested member of [[%s]], but [[%s]] itself is not a value", symbolName->name.cstr(), symbolName->name.cstr()));
 
     return context->report(err);
 }

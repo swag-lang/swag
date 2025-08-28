@@ -523,8 +523,8 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isAny() && !rightTypeInfo->isPointerToTypeInfo())
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0573, rightTypeInfo->getDisplayNameC())};
-            err.addNote(left, leftTypeInfo->isAny() ? toNte(Nte0035) : Diagnostic::isType(leftTypeInfo));
-            err.addNote(right, rightTypeInfo->isAny() ? toNte(Nte0035) : Diagnostic::isType(rightTypeInfo));
+            err.addNote(left, leftTypeInfo->isAny() ? "consider casting to the underlying [[any]] type" : Diagnostic::isType(leftTypeInfo).cstr());
+            err.addNote(right, rightTypeInfo->isAny() ? "consider casting to the underlying [[any]] type" : Diagnostic::isType(rightTypeInfo).cstr());
             return context->report(err);
         }
     }
@@ -542,7 +542,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         if (leftTypeInfo->isAny())
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, toNte(Nte0035));
+            err.addNote(left, "consider casting to the underlying [[any]] type");
             return context->report(err);
         }
     }

@@ -84,7 +84,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
     else
     {
         const Utf8 related = Naming::tokenToName(id);
-        err.addNote(sourceFile, start, start, formNte(Nte0209, related.cstr()));
+        err.addNote(sourceFile, start, start, form("this should be associated with a [[%s]]", related.cstr()));
     }
 
     if (parent)
@@ -97,7 +97,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
             if (Tokenizer::isCompiler(parent->token.id) ||
                 Tokenizer::isKeyword(parent->token.id))
             {
-                err.addNote(formNte(Nte0002, parent->token.cstr()));
+                err.addNote(form("[[%s]] does not accept arguments within parentheses, so what follows should be a standard [[(expression)]]", parent->token.cstr()));
             }
         }
     }
@@ -107,7 +107,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         err.addNote(sourceFile,
                     tokenizer.lastOpenLeftCurly,
                     tokenizer.lastOpenLeftCurly,
-                    formNte(Nte0221, Naming::tokenToName(Tokenizer::tokenRelated(id)).cstr()));
+                    form("this is the last [[%s]]", Naming::tokenToName(Tokenizer::tokenRelated(id)).cstr()));
     }
 
     return context->report(err);

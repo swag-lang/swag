@@ -209,8 +209,8 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             if (itfSymbol)
             {
                 Diagnostic err{childFct, childFct->tokenName, formErr(Err0434, childFct->token.text.cstr(), typeInterface->name.cstr())};
-                err.hint = toNte(Nte0028);
-                err.addNote(toNte(Nte0019));
+                err.hint = "consider adding [[impl]] before if this is intentional";
+                err.addNote("a standard function in an [[impl]] block cannot overshadow a function from the corresponding interface");
                 return context->report(err);
             }
 
@@ -221,7 +221,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         {
             Diagnostic err{childFct, childFct->tokenName, formErr(Err0685, childFct->token.text.cstr(), typeInterface->getDisplayNameC())};
             if (childFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_IMPL))
-                err.addNote(childFct->implLoc, childFct->implLoc, toNte(Nte0126));
+                err.addNote(childFct->implLoc, childFct->implLoc, "the function is supposed to be part of the interface due to [[impl]]");
             err.addNote(SemanticError::findClosestMatchesMsg(childFct->token.text, {{.scope = typeInterface->scope, .flags = 0}}, IdentifierSearchFor::Whatever));
             return context->report(err);
         }
@@ -268,23 +268,23 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 case MatchResult::BadSignature:
                 {
                     Diagnostic err{childFct, childFct->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
-                    err.addNote(childFct->parameters->children[bi.badSignatureNum2], formNte(Nte0100, childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                    err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, formNte(Nte0139, typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                    err.addNote(childFct->parameters->children[bi.badSignatureNum2], form("parameter mismatch (type is [[%s]])", childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
+                    err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, form("the parameter should conform to the type [[%s]]", typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::MissingReturnType:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
-                    err.hint = toNte(Nte0018);
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0128, typeLambda->returnType->getDisplayNameC()));
+                    err.hint = "a return type is missing";
+                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, form("the interface declaration returns type [[%s]]", typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::NoReturnType:
                 {
                     Diagnostic err{childFct->returnType, formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, toNte(Nte0129));
+                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, "the interface declaration yields no return");
                     return context->report(err);
                 }
 
@@ -292,15 +292,15 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 {
                     Diagnostic err{childFct->returnType, formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
                     err.hint = Diagnostic::isType(childFct->returnType->typeInfo);
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, formNte(Nte0128, typeLambda->returnType->getDisplayNameC()));
+                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, form("the interface declaration returns type [[%s]]", typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::MismatchThrow:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
-                    err.hint          = toNte(Nte0097);
-                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0186));
+                    err.hint          = "one function declares [[throw]], while the other does not";
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), "this is the expected signature");
                     note->canBeMerged = false;
                     err.addNote(note);
                     return context->report(err);
@@ -309,7 +309,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 default:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
-                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), toNte(Nte0186));
+                    const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), "this is the expected signature");
                     note->canBeMerged = false;
                     err.addNote(note);
                     return context->report(err);
@@ -586,7 +586,7 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Sc
     {
         Diagnostic err{node, node->token, formErr(Err0300, node->token.cstr())};
         err.addNote(Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
-        err.addNote(formNte(Nte0140, scopeImpl->parentScope->getFullName().cstr(), node->token.cstr(), scope->parentScope->getFullName().cstr()));
+        err.addNote(form("the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]", scopeImpl->parentScope->getFullName().cstr(), node->token.cstr(), scope->parentScope->getFullName().cstr()));
         return context->report(err);
     }
 
@@ -899,8 +899,8 @@ bool Semantic::postResolveStruct(SemanticContext* context)
             if (idx != UINT32_MAX)
             {
                 Diagnostic err(key->declNode, formErr(Err0019, typeStruct->getDisplayNameC()));
-                err.addNote(where[idx], toNte(Nte0194));
-                err.addNote(formNte(Nte0011, typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
+                err.addNote(where[idx], "this is the other definition");
+                err.addNote(form("this makes the conversion from [[%s]] to [[%s]] ambiguous", typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
                 return context->report(err);
             }
 
@@ -990,7 +990,7 @@ bool Semantic::resolveStruct(SemanticContext* context)
         if (child->typeInfo == typeInfo)
         {
             Diagnostic err{node, node->getTokenName(), formErr(Err0507, node->token.cstr())};
-            err.addNote(child, toNte(Nte0188));
+            err.addNote(child, "this is the field causing the recursion");
             return context->report(err);
         }
 

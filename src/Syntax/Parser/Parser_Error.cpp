@@ -61,15 +61,15 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             {
                 Diagnostic err{sourceFile, startToken, formErr(Err0645, startToken.cstr())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
-                    err.addNote(toNte(Nte0057));
+                    err.addNote("consider using [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
-                    err.addNote(formNte(Nte0079, "public"));
+                    err.addNote(form("did you mean [[%s]]?", "public"));
                 else if (nextToken.is(TokenId::SymLeftParen))
-                    err.addNote(toNte(Nte0057));
+                    err.addNote("consider using [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    err.addNote(toNte(Nte0057));
+                    err.addNote("consider using [[func]] to declare a function");
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
-                    err.addNote(toNte(Nte0076));
+                    err.addNote("did you forget [[var]] or [[const]] to declare a global variable or constant?");
                 else
                     err.addNote(SemanticError::findClosestMatchesMsg(startToken.text, {}, IdentifierSearchFor::TopLevelInstruction));
                 return context->report(err);
@@ -89,15 +89,15 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             {
                 msg = toErr(Err0247);
                 if (startToken.is(TokenId::KwdLet))
-                    note = toNte(Nte0060);
+                    note = "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or constant";
                 else if (startToken.is(TokenId::CompilerInclude))
-                    note = toNte(Nte0054);
+                    note = "consider using [[const Value = #include(\"path\")]] to embed an external file in a constant byte array";
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    note = toNte(Nte0057);
+                    note = "consider using [[func]] to declare a function";
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
-                    note = formNte(Nte0066, nextToken.token.cstr(), startToken.cstr());
+                    note = form("consider using the syntax [[var %s: %s]] to declare a variable", nextToken.token.cstr(), startToken.cstr());
                 else
-                    note = toNte(Nte0203);
+                    note = "this is unexpected in global scope";
             }
 
             break;
@@ -158,7 +158,7 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
     const Utf8 message = msg ? Utf8{msg} : toErr(Err0200);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
-        err.addNote(formNte(Nte0130, myToken.token.cstr()));
+        err.addNote(form("the keyword [[%s]] cannot be used as an identifier", myToken.token.cstr()));
     return context->report(err);
 }
 
@@ -184,16 +184,16 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0644)};
             const auto nextToken = getNextToken();
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
-                err.addNote(formNte(Nte0078, id->token.cstr(), tokenParse.cstr()));
+                err.addNote(form("did you forget a [['.']] between [[%s]] and [[%s]]?", id->token.cstr(), tokenParse.cstr()));
             else if (Tokenizer::isStartOfNewStatement(nextToken))
-                err.addNote(formNte(Nte0066, tokenParse.cstr(), id->token.cstr()));
+                err.addNote(form("consider using the syntax [[var %s: %s]] to declare a variable", tokenParse.cstr(), id->token.cstr()));
             else
-                err.addNote(leftNode, toNte(Nte0208));
+                err.addNote(leftNode, "this should be a function call or an affectation");
             return context->report(err);
         }
     }
 
-    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return toNte(Nte0210); });
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return "this should be followed by an affectation or by arguments"; });
 
     Utf8 afterMsg = "left expression";
     if (leftNode->is(AstNodeKind::IdentifierRef) && leftNode->lastChild()->is(AstNodeKind::Identifier))

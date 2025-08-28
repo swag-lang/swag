@@ -545,7 +545,7 @@ bool Semantic::resolveLiteral(SemanticContext* context)
     {
         Diagnostic err{node, node->token, errMsg};
         if (suffix && suffix->typeInfo)
-            err.addNote(suffix, formNte(Nte0214, suffix->typeInfo->getDisplayNameC()));
+            err.addNote(suffix, form("this suffix forces the literal to be converted to [[%s]]", suffix->typeInfo->getDisplayNameC()));
         return context->report(err);
     }
 

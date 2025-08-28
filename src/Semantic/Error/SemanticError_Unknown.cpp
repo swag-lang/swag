@@ -23,7 +23,7 @@ namespace
             const auto err        = new Diagnostic{identifier, formErr(Err0684, identifier->token.cstr())};
             const auto structNode = castAst<AstStruct>(identifierRef->previousScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->previousScope->owner;
-            const auto note       = Diagnostic::note(errNode, toNte(Nte0202));
+            const auto note       = Diagnostic::note(errNode, "this is the tuple definition");
             notes.push_back(note);
             return err;
         }
@@ -143,7 +143,7 @@ namespace
         {
             const auto userOp   = prev->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
             const auto typeInfo = TypeManager::concreteType(userOp->typeInfo);
-            const auto msg      = formNte(Nte0118, userOp->symbol->name.cstr(), typeInfo->getDisplayNameC());
+            const auto msg      = form("the call to [[%s]] returns type [[%s]], which does not have a sub-scope", userOp->symbol->name.cstr(), typeInfo->getDisplayNameC());
             const auto note     = Diagnostic::note(prev, msg);
             notes.push_back(note);
         }
@@ -151,7 +151,7 @@ namespace
         {
             const auto api       = castAst<AstArrayPointerIndex>(prev, AstNodeKind::ArrayPointerIndex);
             const auto typeArray = castTypeInfo<TypeInfoArray>(api->array->typeInfo, TypeInfoKind::Array);
-            const auto note      = Diagnostic::note(api->array, formNte(Nte0006, api->array->token.cstr(), typeArray->finalType->getDisplayNameC()));
+            const auto note      = Diagnostic::note(api->array, form("[[%s]] is an array of type [[%s]], which does not have a sub-scope", api->array->token.cstr(), typeArray->finalType->getDisplayNameC()));
             notes.push_back(note);
         }
         else
@@ -160,9 +160,9 @@ namespace
             const auto        kindName = Naming::aKindName(prev->resolvedSymbolName()->kind);
             const auto        prevType = prev->typeInfo->getConcreteAlias();
             if (prevType)
-                note = Diagnostic::note(prev, formNte(Nte0003, prev->token.cstr(), kindName.cstr(), prevType->getDisplayNameC()));
+                note = Diagnostic::note(prev, form("[[%s]] is %s of type [[%s]], which does not contain a sub-scope", prev->token.cstr(), kindName.cstr(), prevType->getDisplayNameC()));
             else
-                note = Diagnostic::note(prev, formNte(Nte0004, prev->token.cstr(), kindName.cstr()));
+                note = Diagnostic::note(prev, form("[[%s]] is %s, which does not have a sub-scope", prev->token.cstr(), kindName.cstr()));
             notes.push_back(note);
 
             if (prev->typeInfo && prev->typeInfo->declNode)
@@ -228,7 +228,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0646, identifier->token.cstr())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0207)));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], "this scope is unexpected"));
         return context->report(*err, notes);
     }
 
@@ -236,7 +236,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0628, identifier->token.cstr())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], toNte(Nte0207)));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], "this scope is unexpected"));
         return context->report(*err, notes);
     }
 
@@ -259,12 +259,12 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         case IdentifierSearchFor::Type:
             if (identifier->token.text == "int")
-                notes.push_back(Diagnostic::note(formNte(Nte0079, "s32")));
+                notes.push_back(Diagnostic::note(form("did you mean [[%s]]?", "s32")));
             break;
 
         case IdentifierSearchFor::Variable:
             if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
-                notes.push_back(Diagnostic::note(toNte(Nte0077)));
+                notes.push_back(Diagnostic::note("did you forget [[var]], [[let]], or [[const]] to declare a variable or constant?"));
             break;
     }
 

@@ -26,7 +26,7 @@ void SemanticError::errorConstraintFailed(SemanticContext*, const ErrorParam& er
     const auto msg = formErr(errID, constraintExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), constraintExpr->token.cstr());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
-    errorParam.addNote(Diagnostic::hereIs(constraintExpr, formNte(Nte0187, constraintExpr->token.cstr())));
+    errorParam.addNote(Diagnostic::hereIs(constraintExpr, form("this is the failed [[%s]] constraint", constraintExpr->token.cstr())));
 }
 
 void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTryMatch*>& tryMatches, AstNode* node, Diagnostic* err, Vector<const Diagnostic*>& notes)
@@ -40,7 +40,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         tryMatches[0]->dependentVar &&
         !tryMatches[0]->dependentVar->isGeneratedMe())
     {
-        const auto msg  = formNte(Nte0144, tryMatches[0]->overload->symbol->getFullName().cstr());
+        const auto msg  = form("the symbol [[%s]] was found through a [[using]] statement", tryMatches[0]->overload->symbol->getFullName().cstr());
         const auto note = Diagnostic::note(tryMatches[0]->dependentVar, tryMatches[0]->dependentVar->token, msg);
         notes.push_back(note);
     }
@@ -61,7 +61,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = formNte(Nte0109,
+                const auto msg = form("the %s [[%s]] wasn't found in [[%s]]. The alternative from [[%s]] was selected",
                                          Naming::kindName(overload).cstr(),
                                          node->token.cstr(),
                                          identifierRef->typeInfo->getDisplayNameC(),
@@ -73,7 +73,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
             {
                 if (s->is(ScopeKind::Impl) && s->symTable.find(node->token.text))
                 {
-                    auto msg = formNte(Nte0143, node->token.cstr(), s->getFullName().cstr());
+                    auto msg = form("the symbol [[%s]] is already present in the interface scope [[%s]]", node->token.cstr(), s->getFullName().cstr());
                     err->remarks.push_back(msg);
                 }
             }
@@ -117,9 +117,9 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context,
     Diagnostic err{sourceFile, token, formErr(Err0004, what.cstr(), Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
 
     if (otherSymbolDecl->isGeneratedMe())
-        err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, toNte(Nte0156));
+        err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, "there is already an implied first parameter named [[me]] because of [[mtd]]");
     else
-        err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), toNte(Nte0194));
+        err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), "this is the other definition");
 
     return context->report(err);
 }

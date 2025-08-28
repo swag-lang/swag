@@ -116,30 +116,30 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::DuringGeneric:
-                    msg = formNte(Nte0093, name.cstr());
+                    msg = form("occurred during the generic instantiation of [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringInline:
-                    msg = formNte(Nte0094, name.cstr());
+                    msg = form("occurred during the inline expansion of [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringCompileTime:
-                    msg = formNte(Nte0089, name.cstr());
+                    msg = form("occurred during compile-time evaluation", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringWhere:
                     if (exp.node->is(AstNodeKind::StructDecl))
-                        msg = formNte(Nte0092, name.cstr());
+                        msg = form("occurred during the [[where]] check of the struct [[%s]]", name.cstr());
                     else
-                        msg = formNte(Nte0091, name.cstr());
+                        msg = form("occurred during the [[where]] check of the call to [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringVerify:
-                    msg = formNte(Nte0090, name.cstr());
+                    msg = form("occurred during the [[verify]] check of the call to [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
@@ -177,12 +177,12 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
         sourceNode = exportNode;
     if (sourceNode && sourceNode->token.sourceFile && sourceNode->token.sourceFile->fromNode && !sourceNode->token.sourceFile->fileForSourceLocation)
     {
-        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, toNte(Nte0095));
+        const auto note = Diagnostic::note(sourceNode->token.sourceFile->fromNode, "occurred in generated code");
         notes.push_back(note);
     }
     else if (diagnostic.sourceFile && diagnostic.sourceFile->hasFlag(FILE_EXTERNAL) && diagnostic.sourceFile->hasFlag(FILE_FROM_AST) && sourceNode)
     {
-        const auto note = Diagnostic::note(sourceNode, toNte(Nte0095));
+        const auto note = Diagnostic::note(sourceNode, "occurred in generated code");
         notes.push_back(note);
     }
 }

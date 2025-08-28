@@ -23,7 +23,7 @@ bool Semantic::resolveIf(SemanticContext* context)
     node->boolExpression->typeInfo = getConcreteTypeUnRef(node->boolExpression, CONCRETE_ALL);
 
     {
-        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0012); }, true);
+        PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return "a [[bool]] type is expected because the [[if]] statement checks if the variable is [[true]] (non-zero) or [[false]] (zero)"; }, true);
         SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoBool, nullptr, node->boolExpression, CAST_FLAG_AUTO_BOOL));
     }
 
@@ -178,7 +178,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     {
         Diagnostic err{node, node->token, toErr(Err0366)};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-        err.addNote(attr, formNte(Nte0181, "attribute"));
+        err.addNote(attr, form("this is the %s", "attribute"));
         return context->report(err);
     }
 
@@ -227,7 +227,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
                             Diagnostic err{expr, formErr(Err0016, expr->computedValue()->text.cstr())};
-                            err.addNote(valExpression[idx], toNte(Nte0194));
+                            err.addNote(valExpression[idx], "this is the other definition");
                             return context->report(err);
                         }
 
@@ -249,7 +249,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
-                            const auto note = Diagnostic::note(valExpression[idx], toNte(Nte0194));
+                            const auto note = Diagnostic::note(valExpression[idx], "this is the other definition");
                             if (expr->isConstantGenTypeInfo())
                                 return context->report({expr, formErr(Err0015, expr->token.cstr())}, note);
                             if (expr->typeInfo->isEnum())
@@ -283,7 +283,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
         if (back->expressions.empty())
         {
             const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
-            const auto note = Diagnostic::note(attr, formNte(Nte0181, "attribute"));
+            const auto note = Diagnostic::note(attr, form("this is the %s", "attribute"));
             return context->report({back, back->token, toErr(Err0326)}, note);
         }
 
@@ -304,7 +304,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (!valText.contains(one->value->text))
                         {
                             Diagnostic err{node, node->token, formErr(Err0436, typeEnum->name.cstr(), one->name.cstr())};
-                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0132));
+                            err.addNote(one->declNode, one->declNode->token, "the missing value can be found here");
                             return context->report(err);
                         }
                     }
@@ -318,7 +318,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (!val64.contains(one->value->reg.u64))
                         {
                             Diagnostic err{node, node->token, formErr(Err0436, typeEnum->name.cstr(), one->name.cstr())};
-                            err.addNote(one->declNode, one->declNode->token, toNte(Nte0132));
+                            err.addNote(one->declNode, one->declNode->token, "the missing value can be found here");
                             return context->report(err);
                         }
                     }
@@ -408,7 +408,7 @@ bool Semantic::resolveCase(SemanticContext* context)
                 }
                 else if (!typeInfo->isInterface())
                 {
-                    PushErrCxtStep ec(context, caseNode->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return formNte(Nte0147, typeInfo->getDisplayNameC(), "the switch expression"); });
+                    PushErrCxtStep ec(context, caseNode->ownerSwitch->expression, ErrCxtStepKind::Note, [typeInfo] { return form("the type [[%s]] is expected because of %s", typeInfo->getDisplayNameC(), "the switch expression"); });
                     const auto     typeSwitch = TypeManager::concretePtrRefType(caseNode->ownerSwitch->expression->typeInfo, CONCRETE_FUNC);
                     SWAG_CHECK(TypeManager::makeCompatibles(context, typeSwitch, caseNode->ownerSwitch->expression, oneExpression, CAST_FLAG_FOR_COMPARE));
                 }
@@ -447,7 +447,7 @@ bool Semantic::resolveLoop(SemanticContext* context)
                 SWAG_CHECK(checkIsConcrete(context, node->expression));
 
             {
-                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return toNte(Nte0022); }, true);
+                PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [] { return "an implicit [[@countof]] is present here"; }, true);
                 SWAG_CHECK(resolveIntrinsicCountOf(context, node->expression, node->expression));
                 YIELD();
             }

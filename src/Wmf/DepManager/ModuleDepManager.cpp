@@ -358,7 +358,7 @@ bool ModuleDepManager::resolveModuleDependency(const Module* srcModule, ModuleDe
             case CompareVersionResult::VersionLower:
             {
                 Diagnostic err{dep->node, formErr(Err0775, dep->name.cstr(), dep->verNum, cfgModule->fetchDep->verNum)};
-                err.addNote(cfgModule->fetchDep->node, toNte(Nte0193));
+                err.addNote(cfgModule->fetchDep->node, "this is the other [[#import]]");
                 Report::report(err);
                 return false;
             }

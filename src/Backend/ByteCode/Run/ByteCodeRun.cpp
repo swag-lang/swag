@@ -352,8 +352,8 @@ namespace
 
             level   = DiagnosticLevel::Exception;
             userMsg = toErr(Err0718);
-            notes.push_back(Diagnostic::note(toNte(Nte0102)));
-            notes.push_back(Diagnostic::note(toNte(Nte0105)));
+            notes.push_back(Diagnostic::note("potential issue detected in your program's compile-time component"));
+            notes.push_back(Diagnostic::note("run [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised"));
         }
 
         // Message
@@ -400,7 +400,7 @@ namespace
             runContext->ip--;
 
         if (!g_CommandLine.dbgCallStack)
-            notes.push_back(Diagnostic::note(toNte(Nte0104)));
+            notes.push_back(Diagnostic::note("run [[Swag]] with [[--callstack]] for additional context and details"));
 
         Report::report(*err, notes, runContext);
 
@@ -1808,7 +1808,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
-                        context->internalPanicHint   = toNte(Nte0037);
+                        context->internalPanicHint   = "consider initializing the global variable with [[undefined]] instead of zero";
                         callInternalPanic(context, ip, formErr(Err0092, over->node->token.cstr()));
                     }
                 }
@@ -1830,7 +1830,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         else if (module->bssCannotChange)
                         {
                             context->internalPanicSymbol = over;
-                            context->internalPanicHint   = toNte(Nte0037);
+                            context->internalPanicHint   = "consider initializing the global variable with [[undefined]] instead of zero";
                             callInternalPanic(context, ip, formErr(Err0092, over->node->token.cstr()));
                         }
                     }

@@ -138,7 +138,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         const auto to   = castTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
         const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint            = formNte(Nte0116, from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        hint            = form("the array has [[%d]] elements of type [[%s]], which does not match a slice of type [[%s]]", from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
     {
@@ -150,13 +150,13 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
 
         msg = formErr(Err0202, fromType->getDisplayNameC(), toType->getDisplayNameC());
-        notes.push_back(Diagnostic::note(formNte(Nte0220, fromType->getDisplayNameC(), toType->getDisplayNameC())));
+        notes.push_back(Diagnostic::note(form("the [[%s]] does not implement the [[%s]]", fromType->getDisplayNameC(), toType->getDisplayNameC())));
     }
     else if (toType->isPointerTo(TypeInfoKind::Struct) && fromType->isInterface())
     {
         msg    = formErr(Err0202, fromType->getDisplayNameC(), toType->getDisplayNameC());
         toType = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer)->pointedType;
-        notes.push_back(Diagnostic::note(formNte(Nte0220, toType->getDisplayNameC(), fromType->getDisplayNameC())));
+        notes.push_back(Diagnostic::note(form("the [[%s]] does not implement the [[%s]]", toType->getDisplayNameC(), fromType->getDisplayNameC())));
     }
     else if (toType->isStruct() && fromType->isInterface())
     {
@@ -167,16 +167,16 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         msg = formErr(Err0601, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
-            hint = toNte(Nte0135);
+            hint = "the only accepted type for an integer to pointer conversion is [[u64]]";
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = formNte(Nte0175, fromType->getDisplayNameC());
+        hint = form("this is a type value, also known as [[typeinfo]], or [[%s]]", fromType->getDisplayNameC());
         msg  = formErr(Err0528, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        hint = toNte(Nte0017);
+        hint = "a lambda can be converted to a closure type, but not vice versa";
         msg  = toErr(Err0527);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
@@ -223,7 +223,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CAST_FLAG_CAST))
-            hint = toNte(Nte0045);
+            hint = "consider taking the address with [['&']] to create a reference";
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
@@ -272,7 +272,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
         {
             if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(fromNode, formNte(Nte0033, toType->getDisplayNameC())));
+                notes.push_back(Diagnostic::note(fromNode, form("consider adding an explicit [[cast(%s)]] if necessary", toType->getDisplayNameC())));
         }
 
         Diagnostic err{fromNode, msg};

@@ -48,14 +48,14 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         {
             Utf8 msg;
             if (first)
-                msg = formNte(Nte0151, t.second->getDisplayNameC());
+                msg = form("the value could come from [[%s]]", t.second->getDisplayNameC());
             else
-                msg = formNte(Nte0150, t.second->getDisplayNameC());
+                msg = form("the value could also come from [[%s]]", t.second->getDisplayNameC());
             err.addNote(t.first, msg);
             first = false;
         }
 
-        err.addNote(toNte(Nte0064));
+        err.addNote("consider using the full name of the enum value");
         return context->report(err);
     }
 
