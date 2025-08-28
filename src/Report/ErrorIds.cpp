@@ -995,7 +995,7 @@ void initErrors()
     SWAG_ERROR(Nte0055, "consider using [[func(]] to declare a lambda type");
     SWAG_ERROR(Nte0056, "consider using [[func]] instead of [[mtd]] to avoid the implicit [[me]] parameter.");
     SWAG_ERROR(Nte0057, "consider using [[func]] to declare a function");
-    SWAG_ERROR(Nte0058, "consider using [[mtd]] instead of [[func]] to implicitly include [[using me]] as the first parameter");
+    SWAG_ERROR(Nte0058, "consider using [[mtd]] instead of [[func]] to implicitly include [[me]] as the first parameter");
     SWAG_ERROR(Nte0059, "consider using [[alias]] to create an alias for %s");
     SWAG_ERROR(Nte0060, "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or constant");
     SWAG_ERROR(Nte0061, "consider using [[where <expression>]] after this to replace the [[if]] statement");

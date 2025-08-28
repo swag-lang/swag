@@ -107,21 +107,18 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
     {
         Diagnostic err{node, formErr(Err0484, overload->symbol->name.cstr(), overload->symbol->ownerTable->scope->name.cstr())};
 
-        // Missing 'me' ?
+        // Missing 'me'?
         if (node->childCount() <= 1 &&
             node->ownerStructScope &&
             node->ownerStructScope == context->node->ownerStructScope &&
-            node->ownerFct)
+            node->ownerFct &&
+            node->ownerStructScope->symTable.find(node->resolvedSymbolName()->name))
         {
-            if (node->ownerStructScope->symTable.find(node->resolvedSymbolName()->name))
-            {
-                const auto nodeFct = castAst<AstFuncDecl>(node->ownerFct, AstNodeKind::FuncDecl);
-                const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
-                if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
-                    err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0058));
-                else
-                    err.addNote(toNte(Nte0071));
-            }
+            const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
+            if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
+                err.addNote(node->ownerFct, node->ownerFct->token, toNte(Nte0058));
+            else
+                err.addNote(toNte(Nte0071));
         }
 
         return context->report(err);
