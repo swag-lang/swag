@@ -279,7 +279,7 @@ namespace
         const auto&              match    = errorParam.oneTry->symMatchContext;
         const BadSignatureInfos& bi       = match.badSignatureInfos;
 
-        // In case of lambda, replace undefined with the corresponding match, if possible
+        // In the case of lambda, replace undefined with the corresponding match, if possible
         if (bi.badSignatureRequestedType->isLambdaClosure() && bi.badSignatureGivenType->isLambdaClosure())
         {
             const auto type1 = castTypeInfo<TypeInfoFuncAttr>(bi.badSignatureRequestedType, TypeInfoKind::LambdaClosure);
@@ -299,8 +299,8 @@ namespace
             destParamNode = errorParam.destParameters->children[bi.badSignatureParameterIdx];
         const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
-        Diagnostic* err;
-        bool        addSpecificCastErr = true;
+        Diagnostic* err                = nullptr;
+        bool        addCastErrorMsg = true;
         if (overload->typeInfo->isStruct())
         {
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
@@ -313,7 +313,7 @@ namespace
         {
             const auto msg     = formErr(Err0579, bi.badSignatureGivenType->getDisplayNameC());
             err                = new Diagnostic{callParamNode, callParamNode->token, msg};
-            addSpecificCastErr = false;
+            addCastErrorMsg = false;
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
         {
@@ -329,7 +329,7 @@ namespace
             err             = new Diagnostic{callParamNode, msg};
             const auto note = Diagnostic::note(context->node, context->node->token, formNte(Nte0009, errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC()));
             errorParam.addNote(note);
-            addSpecificCastErr = false;
+            addCastErrorMsg = false;
         }
         else
         {
@@ -357,7 +357,7 @@ namespace
         }
 
         // A more specific cast message?
-        if (addSpecificCastErr)
+        if (addCastErrorMsg)
         {
             Utf8                      castMsg, castHint;
             Vector<Utf8>              castRemarks;

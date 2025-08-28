@@ -179,7 +179,6 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
         hint = toNte(Nte0017);
         msg  = toErr(Err0527);
     }
-
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
