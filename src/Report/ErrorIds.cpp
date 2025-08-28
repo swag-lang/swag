@@ -267,7 +267,7 @@ void initErrors()
     SWAG_ERROR(Err0118, "invalid [[#alias]] number                         $ cannot use [[%s]] at the end of an [[#alias]] variable name                                                                              $ an [[#alias]] variable name should end with a number, such as [[#alias0]], [[#alias1]], etc.");
     SWAG_ERROR(Err0119, "invalid [[#alignof]]                              $ cannot compute the alignment of a generic expression                                                                                     $ ");
     SWAG_ERROR(Err0120, "invalid [[#inject]] replacement keyword           $ expected a [[#inject]] replacement keyword, found $$TKN$$ instead                                                                        $ a [[#inject]] block only accepts [[break]] and [[continue]] as possible replacements");
-    SWAG_ERROR(Err0121, "invalid [[#uniq]] number                          $ cannot use [[%s]] at the end of a [[#uniq]] variable name                                                                                 $ a [[#mix]] variable name should end with a number, such as [[#mix0]], [[#mix1]], etc.");
+    SWAG_ERROR(Err0121, "invalid [[#uniq]] number                          $ cannot use [[%s]] at the end of a [[#uniq]] variable name                                                                                $ a [[#mix]] variable name should end with a number, such as [[#mix0]], [[#mix1]], etc.");
     SWAG_ERROR(Err0122, "invalid [[#sizeof]]                               $ cannot compute the size of a generic expression                                                                                          $ ");
     SWAG_ERROR(Err0123, "invalid [[#up]] count                             $ expected a non zero value for the [[#up]] count                                                                                          $ ");
     SWAG_ERROR(Err0124, "invalid [[#up]] count                             $ expected an untyped integer for the [[#up]] count, found [[%s]] instead                                                                  $ ");
@@ -349,8 +349,8 @@ void initErrors()
     SWAG_ERROR(Err0200, "invalid identifier                                $ expected an identifier, found $$TKN$$ instead                                                                                            $ ");
     SWAG_ERROR(Err0201, "invalid initialization                            $ cannot initialize a constant array (the type is [[%s]]) with one single value                                                            $ only variables can be initialized that way");
     SWAG_ERROR(Err0202, "invalid interface conversion                      $ cannot cast from [[%s]] to [[%s]] because of a missing implementation                                                                    $ ");
-    SWAG_ERROR(Err0203, "invalid interface function                        $ expected [[me]] as the first parameter, but type [[%s]] instead                                                                        $ consider declaring the interface function with [[mtd]] instead of [[func]]");
-    SWAG_ERROR(Err0204, "invalid interface function                        $ expected at least [[me]] as the first parameter of the interface function [[%s]]                                                       $ consider declaring the interface function with [[mtd]] instead of [[func]]");
+    SWAG_ERROR(Err0203, "invalid interface function                        $ expected [[me]] as the first parameter, but type [[%s]] instead                                                                          $ consider declaring the interface function with [[mtd]] instead of [[func]]");
+    SWAG_ERROR(Err0204, "invalid interface function                        $ expected at least [[me]] as the first parameter of the interface function [[%s]]                                                         $ consider declaring the interface function with [[mtd]] instead of [[func]]");
     SWAG_ERROR(Err0205, "invalid lambda call                               $ cannot make that lambda call because [[%s]] is not a variable, it is %s                                                                  $ ");
     SWAG_ERROR(Err0206, "invalid literal suffix                            $ cannot use the symbol [[%s]] as a literal suffix because it is [[%s]]                                                                    $ this should be a type");
     SWAG_ERROR(Err0207, "invalid literal suffix                            $ cannot use the type [[%s]] as a float literal suffix                                                                                     $ only [[f32]] and [[f64]] are accepted");
@@ -414,8 +414,8 @@ void initErrors()
     SWAG_ERROR(Err0265, "invalid type declaration                          $ expected the array type after its dimensions, found $$TKN$$ instead                                                                      $ ");
     SWAG_ERROR(Err0266, "invalid unicode value                             $ cannot convert the value [[0x%x]] to UTF8 because it is not a valid unicode code point                                                   $ ");
     SWAG_ERROR(Err0267, "invalid variable name                             $ cannot use [[#alias]] as a variable name outside of a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function                                    $ ");
-    SWAG_ERROR(Err0268, "invalid variable name                             $ cannot use [[#uniq]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                           $ ");
-    SWAG_ERROR(Err0269, "invalid variable name                             $ cannot use [[me]] as a variable name                                                                                                   $ ");
+    SWAG_ERROR(Err0268, "invalid variable name                             $ cannot use [[#uniq]] as a variable name outside of a [[#[Swag.Mixin]]] function                                                          $ ");
+    SWAG_ERROR(Err0269, "invalid variable name                             $ cannot use [[me]] as a variable name                                                                                                     $ ");
     SWAG_ERROR(Err0270, "invalid variable name                             $ expected a variable name, found $$TKN$$ instead                                                                                          $ ");
     SWAG_ERROR(Err0271, "invalid variable name                             $ expected another variable name after [[,]], found $$TKN$$ instead                                                                        $ ");
     SWAG_ERROR(Err0272, "invalid variable name                             $ expected the match variable name, found $$TKN$$ instead                                                                                  $ ");
@@ -456,7 +456,7 @@ void initErrors()
     SWAG_ERROR(Err0307, "misplaced [[#load]]                               $ cannot use [[#load]] outside of [[module.swg]] or [[.swgs]] files                                                                        $ ");
     SWAG_ERROR(Err0308, "misplaced [[#macro]]                              $ cannot use [[#macro]] outside of a [[#[Swag.Macro]]] function                                                                            $ ");
     SWAG_ERROR(Err0309, "misplaced [[#placeholder]]                        $ cannot use [[#placeholder]] outside of a top-level scope                                                                                 $ ");
-    SWAG_ERROR(Err0310, "misplaced [[#me]]                               $ cannot use [[#me]] outside functions                                                                                                   $ ");
+    SWAG_ERROR(Err0310, "misplaced [[#me]]                               $ cannot use [[#me]] outside functions                                                                                                       $ ");
     SWAG_ERROR(Err0311, "misplaced [[#up]]                                 $ cannot use [[#up]] outside of a [[#[Swag.Macro]]] function                                                                               $ ");
     SWAG_ERROR(Err0312, "misplaced [[%s]]                                  $ cannot combine [[%s]] with [[%s]]                                                                                                        $ ");
     SWAG_ERROR(Err0313, "misplaced [[%s]]                                  $ cannot combine [[%s]] with another [[%s]]                                                                                                $ ");
@@ -469,7 +469,7 @@ void initErrors()
     SWAG_ERROR(Err0320, nullptr);
     SWAG_ERROR(Err0321, "misplaced [[alias]]                               $ cannot use [[alias]] on a struct member                                                                                                  $ ");
     SWAG_ERROR(Err0322, "misplaced [[break]]                               $ cannot use [[break]] outside of a breakable block such as [[for]], [[foreach]] etc.                                                      $ ");
-    SWAG_ERROR(Err0323, "misplaced [[const]]                               $ expected [[me]] after [[const]] when declaring a function parameter, found $$TKN$$ instead                                             $ ");
+    SWAG_ERROR(Err0323, "misplaced [[const]]                               $ expected [[me]] after [[const]] when declaring a function parameter, found $$TKN$$ instead                                               $ ");
     SWAG_ERROR(Err0324, "misplaced [[const]] qualifier                     $ cannot use the [[const]] qualifier after [[func]], only after [[mtd]]                                                                    $ ");
     SWAG_ERROR(Err0325, "misplaced [[continue]]                            $ cannot use [[continue]] outside of a breakable block such as [[for]], [[foreach]] etc.                                                   $ ");
     SWAG_ERROR(Err0326, "misplaced [[default]]                             $ cannot use a [[default]] statement in a [[switch]] marked with [[#[Swag.Complete]]]                                                      $ ");
@@ -491,7 +491,7 @@ void initErrors()
     SWAG_ERROR(Err0342, "misplaced [[retval]]                              $ cannot use the [[retval]] special type in a function that returns nothing                                                                $ ");
     SWAG_ERROR(Err0343, "misplaced [[retval]]                              $ cannot use the [[retval]] special type outside of a function body                                                                        $ ");
     SWAG_ERROR(Err0344, "misplaced [[retval]] return type                  $ cannot use [[retval]] as a return type                                                                                                   $ it is only valid as a local variable type");
-    SWAG_ERROR(Err0345, "misplaced [[me]]                                $ cannot use [[me]] outside an [[impl]] block of an enum or a struct                                                                     $ ");
+    SWAG_ERROR(Err0345, "misplaced [[me]]                                $ cannot use [[me]] outside an [[impl]] block of an enum or a struct                                                                         $ ");
     SWAG_ERROR(Err0346, "misplaced [[throw]] qualifier                     $ cannot use the [[throw]] qualifier on an attribute, as it cannot raise errors                                                            $ ");
     SWAG_ERROR(Err0347, "misplaced [[using]]                               $ cannot associate [[using]] with a pointer to [[%s]]                                                                                      $ [[using]] can only be used on pointers to struct");
     SWAG_ERROR(Err0348, "misplaced [[using]]                               $ cannot associate [[using]] with a variable at [[%s]] scope                                                                               $ ");
@@ -532,7 +532,7 @@ void initErrors()
     SWAG_ERROR(Err0384, "misplaced compiler instruction                    $ cannot use [[#callerfunction]] outside of a function parameter                                                                           $ ");
     SWAG_ERROR(Err0385, "misplaced compiler instruction                    $ cannot use [[#callerlocation]] outside of a function parameter                                                                           $ ");
     SWAG_ERROR(Err0386, "misplaced default parameters                      $ cannot redefine the default parameters of a lambda or a closure                                                                          $ ");
-    SWAG_ERROR(Err0387, "misplaced default value                           $ cannot define a default value to [[me]]                                                                                                $ ");
+    SWAG_ERROR(Err0387, "misplaced default value                           $ cannot define a default value to [[me]]                                                                                                  $ ");
     SWAG_ERROR(Err0388, "misplaced default value                           $ cannot define a default value to lambda parameters                                                                                       $ ");
     SWAG_ERROR(Err0389, "misplaced digit separator                         $ cannot end a number with a digit separator [['_']]                                                                                       $ ");
     SWAG_ERROR(Err0390, "misplaced digit separator                         $ cannot have [[_]] at the start of the exponent part                                                                                      $ ");
@@ -555,7 +555,7 @@ void initErrors()
     SWAG_ERROR(Err0407, "misplaced top-level [[using]]                     $ cannot place a top-level [[using]] after other declarations                                                                              $ ");
     SWAG_ERROR(Err0408, "misplaced tuple unpacking                         $ cannot unpack a tuple in %s                                                                                                              $ ");
     SWAG_ERROR(Err0409, "misplaced type                                    $ cannot use the type [[%s]] outside of a function parameter                                                                               $ ");
-    SWAG_ERROR(Err0410, "misplaced type                                    $ cannot use [[#code]] outside of a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function                                                       $ ");
+    SWAG_ERROR(Err0410, "misplaced type                                    $ cannot use [[#code]] outside of a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function                                                        $ ");
     SWAG_ERROR(Err0411, "misplaced variadic argument                       $ cannot place a variadic argument anywhere but at the end                                                                                 $ ");
     SWAG_ERROR(Err0412, "misplaced variadic parameter                      $ cannot place a variadic parameter anywhere but at the end                                                                                $ ");
     SWAG_ERROR(Err0413, "misplaced variadic parameter                      $ cannot use variadic parameters in an inline function                                                                                     $ ");
@@ -565,7 +565,7 @@ void initErrors()
     SWAG_ERROR(Err0417, "missing [[#global testwarning]] string argument   $ expected the warning string to check after [[#global testwarning]], found $$TKN$$ instead                                                $ ");
     SWAG_ERROR(Err0418, "missing [[#if]] boolean expression                $ expected a boolean expression after [[#if]], found $$TKN$$ instead                                                                       $ ");
     SWAG_ERROR(Err0419, "missing [[#message]] parameter                    $ expected a parameter of type [[Swag.CompilerMsgMask]] for [[#message]]                                                                   $ ");
-    SWAG_ERROR(Err0420, "missing [[#uniq]] number                          $ cannot use a [[#uniq]] variable name without a trailing number, such as [[#uniq0]], [[#uniq1]], etc.                                        $ ");
+    SWAG_ERROR(Err0420, "missing [[#uniq]] number                          $ cannot use a [[#uniq]] variable name without a trailing number, such as [[#uniq0]], [[#uniq1]], etc.                                     $ ");
     SWAG_ERROR(Err0421, "missing [[#placeholder]] identifier               $ expected an identifier after [[#placeholder]], found $$TKN$$ instead                                                                     $ ");
     SWAG_ERROR(Err0422, "missing [[%s]]                                    $ expected [[%s]] %s but none was found after                                                                                              $ ");
     SWAG_ERROR(Err0423, "missing [[%s]]                                    $ expected [[%s]] %s, found $$TKN$$ instead                                                                                                $ ");
@@ -639,7 +639,7 @@ void initErrors()
     SWAG_ERROR(Err0492, "not enough parameters                             $ expected [[%d]] parameters for [[%s]], found [[%d]] instead                                                                              $ ");
     SWAG_ERROR(Err0493, "not enough parameters                             $ expected at least [[%d]] parameters for [[%s]], found [[%d]] instead                                                                     $ ");
     SWAG_ERROR(Err0494, "out of range [[#alias]] number                    $ cannot use [[%u]] for an [[#alias]] number                                                                                               $ it should be in the range [0, 31]");
-    SWAG_ERROR(Err0495, "out of range [[#uniq]] number                     $ cannot use [[%u]] for a [[#uniq]] number                                                                                                  $ it should be in the range [0, 31]");
+    SWAG_ERROR(Err0495, "out of range [[#uniq]] number                     $ cannot use [[%u]] for a [[#uniq]] number                                                                                                 $ it should be in the range [0, 31]");
     SWAG_ERROR(Err0496, "out of range [[#up]] count                        $ cannot use [[%u]] for the [[#up]] count                                                                                                  $ it should be in the range [1, 255]");
     SWAG_ERROR(Err0497, "out of range array dimensions                     $ cannot have more than [[254]] array dimensions                                                                                           $ ");
     SWAG_ERROR(Err0498, "out of range callback parameters                  $ cannot create a callback if the function has more than [[%d]] parameters (got [[%d]])                                                    $ ");
@@ -653,7 +653,7 @@ void initErrors()
     SWAG_ERROR(Err0506, "overload mismatch                                 $ cannot match any of the [[%d]] overloads for [[%s]]                                                                                      $ ");
     SWAG_ERROR(Err0507, "recursive evaluation                              $ cannot evaluate the struct [[%s]] because it references itself, causing a recursion                                                      $ ");
     SWAG_ERROR(Err0508, "redundant access specifier                        $ cannot use the [[%s]] access specifier because of [[#global export]]                                                                     $ consider removing the [[public]] modifier, as [[#global export]] ensures all declarations in this file are publicly accessible");
-    SWAG_ERROR(Err0509, "redundant nullable definition                     $ a function parameter with a [[null]] default value is implicitly nullable $ consider removing the nullable marker [[#null]]                 $ ");
+    SWAG_ERROR(Err0509, "redundant nullable definition                     $ a function parameter with a [[null]] default value is implicitly nullable $ consider removing the nullable marker [[#null]]              $ ");
     SWAG_ERROR(Err0510, "reserved field name                               $ cannot name a field [[%s]] because it is reserved by the compiler                                                                        $ struct member names beginning with [[item]] are reserved by the language");
     SWAG_ERROR(Err0511, "reserved function name                            $ cannot name a function [[%s]] because it is reserved by the compiler                                                                     $ ");
     SWAG_ERROR(Err0512, "reserved name                                     $ cannot use an identifier named with a single [[_]]                                                                                       $ an identifier named with one single [[_]] is reserved by the compiler");
@@ -680,7 +680,7 @@ void initErrors()
     SWAG_ERROR(Err0533, "type mismatch                                     $ expected a return of type [[%s]] for [[%s]], found type [[%s]] instead                                                                   $ ");
     SWAG_ERROR(Err0534, "type mismatch                                     $ expected the slice bound to be an integer, found type [[%s]] instead                                                                     $ ");
     SWAG_ERROR(Err0535, "type mismatch                                     $ expected the type [[%s]] in the [[%s]] assignment, found type [[%s]] instead                                                             $ ");
-    SWAG_ERROR(Err0536, "type mismatch                                     $ expected the type [[%s]], found type [[%s]] instead                                                                                          $ ");
+    SWAG_ERROR(Err0536, "type mismatch                                     $ expected the type [[%s]], found type [[%s]] instead                                                                                      $ ");
     SWAG_ERROR(Err0537, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]], found type [[%s]] instead                                                                      $ ");
     SWAG_ERROR(Err0538, "type mismatch [[#message]]                        $ expected a type [[Swag.CompilerMsgMask]] as the [[#message]] parameter, found type [[%s]] instead                                        $ ");
     SWAG_ERROR(Err0539, "type mismatch [[@mkany]]                          $ cannot match the pointer type [[%s]] to the second argument [[%s]]                                                                       $ you should have a pointer to [[%s]] as a first argument, or [[%s]] as the second");
@@ -807,7 +807,7 @@ void initErrors()
     SWAG_ERROR(Err0660, "unexpected tuple unpacking name                   $ expected a variable name or [[?]] for tuple unpacking, found $$TKN$$ instead                                                             $ ");
     SWAG_ERROR(Err0661, "unexpected type                                   $ cannot start a declaration with a type                                                                                                   $ ");
     SWAG_ERROR(Err0662, "unexpected type alias                             $ cannot use a type alias as an [[impl]] block name                                                                                        $ expected a direct type instead");
-    SWAG_ERROR(Err0663, "unexpected type declaration                       $ cannot have a type declaration after [[me]]                                                                                            $ [[me]] is implicitly typed; consider removing the redundant type");
+    SWAG_ERROR(Err0663, "unexpected type declaration                       $ cannot have a type declaration after [[me]]                                                                                              $ [[me]] is implicitly typed; consider removing the redundant type");
     SWAG_ERROR(Err0664, "unexpected type declaration                       $ cannot have a type declaration after an unnamed parameter                                                                                $ ");
     SWAG_ERROR(Err0665, "unexpected type suffix                            $ cannot have a type suffix after %s                                                                                                       $ ");
     SWAG_ERROR(Err0666, "unknown [[#global]] instruction                   $ cannot recognize [[%s]] as a valid [[#global]] instruction                                                                               $ ");
@@ -935,7 +935,7 @@ void initErrors()
     SWAG_ERROR(Err0785, "missing [[#import]] location                      $ expected the location as the second argument of [[#import]], found $$TKN$$ instead                                                       $ the second argument should be [[location:\"location\"]])");
     SWAG_ERROR(Err0773, "missing [[#import]] version                       $ expected the version as the third argument of [[#import]], found $$TKN$$ instead                                                         $ the third argument should be [[version:\"version\"]])");
 
-    SWAG_ERROR(Err0668, nullptr);
+    SWAG_ERROR(Err0668, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]]                                                                                                 $ ");
     SWAG_ERROR(Err0060, nullptr);
 
     /////////////////////////////////////////////////////////////////////
@@ -1166,7 +1166,7 @@ void initErrors()
     SWAG_ERROR(Nte0224, "%s [[%s]] does not accept a null value as %s");
     SWAG_ERROR(Nte0225, "this implies a nullable value");
 
-    SWAG_ERROR(Nte0009, nullptr);
+    SWAG_ERROR(Nte0009, "function [[%s]] is a method and should be called with a pointer to [[%s]] as a first argument");
     SWAG_ERROR(Nte0016, nullptr);
     SWAG_ERROR(Nte0226, nullptr);
 }

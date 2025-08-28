@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Backend/LLVM/LlvmInc.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/Error/SemanticError.h"
@@ -317,6 +319,17 @@ namespace
         {
             const auto msg = formErr(Err0537, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{callParamNode, callParamNode->token, msg};
+        }
+        else if (bi.badSignatureParameterIdx == 0 &&
+                 errorParam.oneTry->overload->node->is(AstNodeKind::FuncDecl) &&
+                 !bi.badSignatureGivenType->isPointerTo(TypeInfoKind::Struct) &&
+                 errorParam.oneTry->overload->node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+        {
+            const auto msg  = formErr(Err0668, bi.badSignatureRequestedType->getDisplayNameC());
+            err             = new Diagnostic{callParamNode, msg};
+            const auto note = Diagnostic::note(context->node, context->node->token, formNte(Nte0009, errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC()));
+            errorParam.addNote(note);
+            addSpecificCastErr = false;
         }
         else
         {
