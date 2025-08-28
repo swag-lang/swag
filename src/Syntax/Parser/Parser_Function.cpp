@@ -221,8 +221,6 @@ bool Parser::doFuncDeclParameterMe(AstVarDecl* paramNode)
     {
         const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
         typeNode->typeFlags.add(TYPE_FLAG_IS_ME);
-        if (paramNode->hasAstFlag(AST_DECL_USING))
-            typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
         typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
         paramNode->type      = typeNode;
     }
@@ -232,8 +230,6 @@ bool Parser::doFuncDeclParameterMe(AstVarDecl* paramNode)
         const auto typeNode = Ast::newTypeExpression(nullptr, paramNode);
         typeNode->typeFlags.add(isConst ? TYPE_FLAG_IS_CONST : 0);
         typeNode->typeFlags.add(TYPE_FLAG_IS_ME | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
-        if (paramNode->hasAstFlag(AST_DECL_USING))
-            typeNode->typeFlags.add(TYPE_FLAG_HAS_USING);
         typeNode->identifier = Ast::newIdentifierRef(paramNode->ownerStructScope->name, this, typeNode);
         paramNode->type      = typeNode;
     }

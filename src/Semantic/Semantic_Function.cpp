@@ -1092,14 +1092,6 @@ bool Semantic::resolveCaptureFuncCallParams(SemanticContext* context)
     {
         auto typeField = c->typeInfo;
 
-        if (c->hasAstFlag(AST_DECL_USING))
-        {
-            const auto makeLambda = castAst<AstMakePointer>(node->parent, AstNodeKind::MakePointerLambda);
-            if (c->is(AstNodeKind::MakePointer))
-                c = c->firstChild();
-            SWAG_CHECK(resolveUsingVar(context, c, typeField, makeLambda->lambda));
-        }
-
         if (typeField->isArray())
         {
             const auto typeArray = castTypeInfo<TypeInfoArray>(typeField, TypeInfoKind::Array);
