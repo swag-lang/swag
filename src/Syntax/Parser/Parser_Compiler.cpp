@@ -110,7 +110,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
 
         if (forIf)
             parent = parent->parent;
-        err.addNote(parent, parent->token, form("the [[%s]] block should either start with [[':']] or be enclosed in [[{}]]", parent->token.cstr()));
+        err.addNote(parent, parent->token, form("the [[%s]] block should start with [[:]] or be enclosed in [[{}]]", parent->token.cstr()));
         return context->report(err);
     }
 
