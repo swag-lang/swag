@@ -240,7 +240,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         return context->report(*err, notes);
     }
 
-    // Find best matches
+    // Find the best matches
     if (!badParentScope(identifier, notes))
     {
         auto& scopeHierarchy     = context->cacheScopeHierarchy;
@@ -263,7 +263,12 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
             break;
 
         case IdentifierSearchFor::Variable:
-            if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
+            if (identifier->token.text == g_LangSpec->name_me)
+            {
+                if (identifier->ownerFct && !identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+                    notes.push_back(Diagnostic::note(identifier->ownerFct, identifier->ownerFct->token, "consider using [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter"));
+            }
+            else if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
                 notes.push_back(Diagnostic::note("did you forget [[var]], [[let]], or [[const]] to declare a variable or constant?"));
             break;
     }
