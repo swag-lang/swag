@@ -123,6 +123,13 @@ void Log::print(LogSymbol symbol)
                 write("\xE2\x80\xa2");
             break;
 
+        case LogSymbol::Cross:
+            if (g_CommandLine.logAscii)
+                write("X");
+            else
+                write("\xE2\x9C\x96");
+            break;
+
         case LogSymbol::HorizontalLine:
             if (g_CommandLine.logAscii)
                 write("-");

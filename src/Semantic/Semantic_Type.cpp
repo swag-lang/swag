@@ -124,12 +124,15 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(err);
     }
 
-    Diagnostic err{node, node->token, formErr(Err0485, Naming::kindName(node->resolvedSymbolName()->kind).cstr(), node->resolvedSymbolName()->name.cstr())};
+    Diagnostic err{node, node->token, formErr(Err0485, node->resolvedSymbolName()->name.cstr(), Naming::kindName(node->resolvedSymbolName()->kind).cstr())};
 
     // struct.field
-    const auto symbolName = node->resolvedSymbolName();
-    if (symbolName && symbolName->is(SymbolKind::Struct))
-        err.addNote(form("it seems like you're trying to access a nested member of [[%s]], but [[%s]] itself is not a value", symbolName->name.cstr(), symbolName->name.cstr()));
+    if (node->childParentIdx())
+    {
+        const auto symbolName = node->resolvedSymbolName();
+        if (symbolName && symbolName->is(SymbolKind::Struct))
+            err.addNote(form("it seems like you're trying to access a nested member of [[%s]], but [[%s]] itself is not a value", symbolName->name.cstr(), symbolName->name.cstr()));
+    }
 
     return context->report(err);
 }

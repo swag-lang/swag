@@ -16,7 +16,7 @@ constexpr int MAX_INDENT_BLANKS = 10;
 void Diagnostic::setupColors()
 {
     errorColor                = LogColor::Red;
-    errorColorHint            = LogColor::Red;
+    errorColorHint            = LogColor::White;
     errorColorHintHighLight   = LogColor::DarkRed;
     warningColor              = LogColor::Magenta;
     warningColorHint          = LogColor::Magenta;
@@ -745,7 +745,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Arrow)
                 log->setColor(errorColor);
             else if (part == HintPart::ErrorLevel)
-                log->setColor(errorColorHint);
+                log->setColor(errorColor);
             else
                 log->setColor(errorColorHint);
             if (logCxt)
@@ -757,7 +757,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
             else if (part == HintPart::ErrorLevel)
-                log->setColor(warningColorHint);
+                log->setColor(warningColor);
             else
                 log->setColor(warningColorHint);
             if (logCxt)
@@ -823,6 +823,14 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
         LogWriteContext logCxt;
+
+        if (r.errorLevel == DiagnosticLevel::Error)
+        {
+            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+            log->print(LogSymbol::Cross);
+            log->print("  ");
+        }
+
         setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
         log->print(tokens[i], &logCxt);
 

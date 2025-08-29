@@ -65,6 +65,7 @@ enum class LogSymbol
     RightDown,
     DotCenter,
     DotList,
+    Cross,
 };
 
 enum class LogPassType
