@@ -27,9 +27,8 @@ impl TimeSpan
     mtd setNow()
     {
         var dateTime = DateTime.now()
-        using dateTime
-        me.ticks = dateToTicks(year, month, day)
-        me.ticks += timeToTicks(hour, minute, second, millisecond)
+        me.ticks = dateToTicks(dateTime.year, dateTime.month, dateTime.day)
+        me.ticks += timeToTicks(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond)
     }
 
     // Creates a TimeSpan from a DateTime
@@ -45,9 +44,8 @@ impl TimeSpan
     mtd toDateTime()->DateTime
     {
         var dateTime: retval = undefined
-        using dateTime
-        (year, month, day) = ticksToDate(me.ticks)
-        (hour, minute, second, millisecond) = ticksToTime(me.ticks)
+        (dateTime.year, dateTime.month, dateTime.day) = ticksToDate(me.ticks)
+        (dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond) = ticksToTime(me.ticks)
         return dateTime
     }
 

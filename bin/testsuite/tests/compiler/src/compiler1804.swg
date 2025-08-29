@@ -1,3 +1,4 @@
+#global testerror "Err0350"
 #test
 {
     // using can be used with a variable or a function parameter

@@ -18,8 +18,7 @@ struct Monster
 
 func set(phys: Phys)
 {
-    using phys
-    @assert(speed[0] == 666)
+    @assert(phys.speed[0] == 666)
 }
 
 func set1(monster: Monster)
@@ -34,8 +33,7 @@ func set1(monster: Monster)
     var v: Monster
     v.entity = &e
 
-    using v
     //using entity
-    position[0] = 666
+    v.position[0] = 666
     @assert(e.position[0] == 666)
 }

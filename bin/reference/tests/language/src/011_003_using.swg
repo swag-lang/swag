@@ -15,27 +15,6 @@ prefix enum values with the enum type name.
 }
 
 /**
-# `using` with Variables
-The `using` statement can also be applied to variables, particularly those of struct types. This allows
-you to access the fields of a struct directly within the current scope, eliminating the need to
-reference the variable name each time you access a field. This is particularly useful for reducing
-code verbosity and improving readability.
-*/
-#test
-{
-    struct Point { x: s32, y: s32 }
-
-    var pt: Point         // Declaring a variable of struct type 'Point.'
-
-    using pt              // Bringing the fields of 'pt' into the current scope.
-    x = 1                 // Direct access to 'x' without needing 'pt.x'.
-    y = 2                 // Direct access to 'y' without needing 'pt.y'.
-
-    @assert(pt.x == 1)    // Verifying that 'x' was set correctly.
-    @assert(pt.y == 2)    // Verifying that 'y' was set correctly.
-}
-
-/**
 # `using` with Struct Fields
 The `using` statement can also be applied to a field within a struct. This allows the fields of a
 nested struct to be accessed as if they were part of the containing struct. This feature is especially

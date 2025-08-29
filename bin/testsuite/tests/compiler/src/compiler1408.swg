@@ -1,3 +1,4 @@
+#global testerror "Err0350"
 struct A
 {
     a: s32

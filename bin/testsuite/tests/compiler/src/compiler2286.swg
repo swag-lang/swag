@@ -18,8 +18,7 @@ struct Monster
 
 func set(phys: Phys)
 {
-    using phys
-    @assert(speed[0] == 666)
+    @assert(phys.speed[0] == 666)
 }
 
 //#[Swag.PrintBc]

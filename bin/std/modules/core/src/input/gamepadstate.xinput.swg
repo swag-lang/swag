@@ -47,13 +47,13 @@ impl GamePadState
             me.pressed[mapButtons[i]] = state.Gamepad.wButtons & cast(u16) (1 << i)
 
         // Move
-        using GamePadButton, state.Gamepad
-        me.position[LeftStick].x    = sThumbLX / 32767.0'f32
-        me.position[LeftStick].y    = sThumbLY / 32767.0'f32
-        me.position[RightStick].x   = sThumbRX / 32767.0'f32
-        me.position[RightStick].y   = sThumbRY / 32767.0'f32
-        me.position[LeftTrigger].y  = bLeftTrigger / 255.0'f32
-        me.position[RightTrigger].y = bRightTrigger / 255.0'f32
+        using GamePadButton
+        me.position[LeftStick].x    = state.Gamepad.sThumbLX / 32767.0'f32
+        me.position[LeftStick].y    = state.Gamepad.sThumbLY / 32767.0'f32
+        me.position[RightStick].x   = state.Gamepad.sThumbRX / 32767.0'f32
+        me.position[RightStick].y   = state.Gamepad.sThumbRY / 32767.0'f32
+        me.position[LeftTrigger].y  = state.Gamepad.bLeftTrigger / 255.0'f32
+        me.position[RightTrigger].y = state.Gamepad.bRightTrigger / 255.0'f32
 
         // Simulate pressed with #move
         #[Swag.Inline]

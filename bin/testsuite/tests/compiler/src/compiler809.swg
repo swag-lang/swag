@@ -1,3 +1,4 @@
+#global testerror "Err0350"
 struct Point
 {
     x:     s32

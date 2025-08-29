@@ -44,19 +44,18 @@ impl Transform2
     func createRotation(angle: f32, centerX, centerY: f32)->Transform2
     {
         var result: retval = undefined
-        using result
 
         let s  = Math.sin(angle)
         let c  = Math.cos(angle)
         let c1 = 1.0 - c
 
-        tx = (centerX * c1) + (centerY * s)
-        ty = (centerY * c1) - (centerX * s)
+        result.tx = (centerX * c1) + (centerY * s)
+        result.ty = (centerY * c1) - (centerX * s)
 
-        m11 = c
-        m12 = s
-        m21 = -s
-        m22 = c
+        result.m11 = c
+        result.m12 = s
+        result.m21 = -s
+        result.m22 = c
 
         return result
     }
@@ -65,14 +64,13 @@ impl Transform2
     func createScale(scaleX, scaleY: f32, centerX, centerY: f32)->Transform2
     {
         var result: retval = undefined
-        using result
 
-        m11 = scaleX
-        m12 = 0
-        m21 = 0
-        m22 = scaleY
-        tx  = centerX - scaleX * centerX
-        ty  = centerY - scaleY * centerY
+        result.m11 = scaleX
+        result.m12 = 0
+        result.m21 = 0
+        result.m22 = scaleY
+        result.tx  = centerX - scaleX * centerX
+        result.ty  = centerY - scaleY * centerY
 
         return result
     }
@@ -81,14 +79,13 @@ impl Transform2
     func createTranslation(x, y: f32)->Transform2
     {
         var result: retval = undefined
-        using result
 
-        m11 = 1
-        m12 = 0
-        m21 = 0
-        m22 = 1
-        tx  = x
-        ty  = y
+        result.m11 = 1
+        result.m12 = 0
+        result.m21 = 0
+        result.m22 = 1
+        result.tx  = x
+        result.ty  = y
 
         return result
     }

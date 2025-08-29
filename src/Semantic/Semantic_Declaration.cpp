@@ -160,17 +160,14 @@ bool Semantic::resolveUsing(SemanticContext* context)
         const auto idRef = castAst<AstIdentifierRef>(child, AstNodeKind::IdentifierRef);
         node->addAstFlag(AST_NO_BYTECODE);
 
-        SWAG_ASSERT(idRef->resolvedSymbolName());
-        if (idRef->resolvedSymbolName()->is(SymbolKind::Variable))
-        {
-            SWAG_CHECK(resolveUsingVar(context, idRef, idRef->resolvedSymbolOverload()->typeInfo));
-            continue;
-        }
-
+        const auto symbol = idRef->resolvedSymbolName();
+        SWAG_ASSERT(symbol);
+        if (symbol->is(SymbolKind::Variable))
+            return context->report({node, formErr(Err0350, Naming::aKindName(symbol->kind).cstr())});
         const auto typeResolved = idRef->resolvedSymbolOverload()->typeInfo;
         const auto scope        = makeUsingScope(node->parent, typeResolved);
         if (!scope)
-            return context->report({node, formErr(Err0350, typeResolved->getDisplayNameC())});
+            return context->report({node, formErr(Err0350, Naming::aKindName(symbol->kind).cstr())});
         if (!idRef->ownerFct)
             node->parent->token.sourceFile->addGlobalUsing(scope);
     }
