@@ -21,7 +21,7 @@ enum class DiagnosticLevel
 
 enum class HintPart
 {
-    ErrorLevel,
+    Title,
     Underline,
     Arrow,
     Text
@@ -237,13 +237,16 @@ struct Diagnostic
     uint32_t                  lineCodeMaxDigits = 0;
     uint32_t                  minBlanks         = 0;
     LogColor                  errorColor;
+    LogColor                  errorColorHighLight;
     LogColor                  errorColorHint;
     LogColor                  errorColorHintHighLight;
     LogColor                  warningColor;
+    LogColor                  warningColorHighLight;   
     LogColor                  warningColorHint;
     LogColor                  warningColorHintHighLight;
-    LogColor                  noteTitleColor;
+    LogColor                  noteHeaderColor;
     LogColor                  noteColor;
+    LogColor                  noteColorHighLight;  
     LogColor                  noteColorHint;
     LogColor                  noteColorHintHighLight;
     LogColor                  marginBorderColor;

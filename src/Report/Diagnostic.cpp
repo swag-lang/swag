@@ -101,26 +101,36 @@ namespace
 
 void Diagnostic::setupColors()
 {
-    errorColor                = LogColor::Red;
-    errorColorHint            = LogColor::White;
-    errorColorHintHighLight   = LogColor::Gray;
+    errorColor              = LogColor::Red;
+    errorColorHighLight     = LogColor::DarkRed;
+    errorColorHint          = LogColor::White;
+    errorColorHintHighLight = LogColor::Gray;
+
     warningColor              = LogColor::Magenta;
+    warningColorHighLight     = LogColor::DarkMagenta;
     warningColorHint          = LogColor::White;
     warningColorHintHighLight = LogColor::Gray;
-    noteColorHint             = LogColor::White;
-    noteColorHintHighLight    = LogColor::Gray;
-    noteTitleColor            = LogColor::White;
-    noteColor                 = LogColor::White;
-    marginBorderColor         = LogColor::Cyan;
-    marginBorderColorContext  = LogColor::Gray;
-    codeLineNoColor           = LogColor::Cyan;
-    codeLineNoColorContext    = LogColor::Gray;
-    stackColor                = LogColor::DarkYellow;
-    preRemarkColor            = LogColor::White;
-    remarkColor               = LogColor::Gray;
-    autoRemarkColor           = LogColor::Gray;
-    sourceFileColor           = LogColor::Cyan;
-    sourceFileColorContext    = LogColor::Gray;
+
+    noteColor              = LogColor::White;
+    noteColorHighLight     = LogColor::White;
+    noteColorHint          = LogColor::White;
+    noteColorHintHighLight = LogColor::Gray;
+    noteHeaderColor        = LogColor::White;
+
+    marginBorderColor        = LogColor::Cyan;
+    marginBorderColorContext = LogColor::Gray;
+
+    codeLineNoColor        = LogColor::Cyan;
+    codeLineNoColorContext = LogColor::Gray;
+
+    sourceFileColor        = LogColor::Cyan;
+    sourceFileColorContext = LogColor::Gray;
+
+    stackColor = LogColor::DarkYellow;
+
+    preRemarkColor  = LogColor::White;
+    remarkColor     = LogColor::Gray;
+    autoRemarkColor = LogColor::Gray;
 }
 
 void Diagnostic::setup()
@@ -485,7 +495,7 @@ void Diagnostic::printErrorLevel(Log* log)
             break;
 
         case DiagnosticLevel::Note:
-            log->setColor(noteTitleColor);
+            log->setColor(noteHeaderColor);
             log->write("note: ");
             log->setColor(noteColor);
             break;
@@ -826,40 +836,49 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
     {
         case DiagnosticLevel::Error:
         case DiagnosticLevel::Panic:
-            if (part == HintPart::Underline)
-                log->setColor(errorColor);
-            else if (part == HintPart::Arrow)
-                log->setColor(errorColor);
-            else if (part == HintPart::ErrorLevel)
-                log->setColor(errorColor);
-            else
-                log->setColor(errorColorHint);
             if (logCxt)
                 logCxt->colorHighlight = Log::colorToVTS(errorColorHintHighLight);
+            if (part == HintPart::Underline)
+                log->setColor(errorColor);
+            else if (part == HintPart::Arrow)
+                log->setColor(errorColor);
+            else if (part == HintPart::Title)
+            {
+                log->setColor(errorColor);
+                logCxt->colorHighlight = Log::colorToVTS(errorColorHighLight);
+            }
+            else
+                log->setColor(errorColorHint);
             break;
         case DiagnosticLevel::Warning:
-            if (part == HintPart::Underline)
-                log->setColor(warningColor);
-            else if (part == HintPart::Arrow)
-                log->setColor(noteColor);
-            else if (part == HintPart::ErrorLevel)
-                log->setColor(warningColor);
-            else
-                log->setColor(warningColorHint);
             if (logCxt)
                 logCxt->colorHighlight = Log::colorToVTS(warningColorHintHighLight);
+            if (part == HintPart::Underline)
+                log->setColor(warningColor);
+            else if (part == HintPart::Arrow)
+                log->setColor(noteColor);
+            else if (part == HintPart::Title)
+            {
+                log->setColor(warningColor);
+                logCxt->colorHighlight = Log::colorToVTS(warningColorHighLight);
+            }
+            else
+                log->setColor(warningColorHint);
             break;
         case DiagnosticLevel::Note:
+            if (logCxt)
+                logCxt->colorHighlight = Log::colorToVTS(noteColorHintHighLight);
             if (part == HintPart::Underline)
                 log->setColor(noteColor);
             else if (part == HintPart::Arrow)
                 log->setColor(noteColor);
-            else if (part == HintPart::ErrorLevel)
+            else if (part == HintPart::Title)
+            {
                 log->setColor(noteColor);
+                logCxt->colorHighlight = Log::colorToVTS(noteColorHighLight);
+            }
             else
                 log->setColor(noteColorHint);
-            if (logCxt)
-                logCxt->colorHighlight = Log::colorToVTS(noteColorHintHighLight);
             break;
     }
 }
@@ -914,7 +933,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
         {
             if (i == 0)
             {
-                setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+                setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
                 log->print(LogSymbol::Cross);
                 log->print("  ");
             }
@@ -1098,7 +1117,7 @@ void Diagnostic::report(Log* log)
             printErrorLevel(log);
 
             LogWriteContext logCxt;
-            setColorRanges(log, errorLevel, HintPart::ErrorLevel, &logCxt);
+            setColorRanges(log, errorLevel, HintPart::Title, &logCxt);
             log->print(textMsg, &logCxt);
             log->writeEol();
         }
