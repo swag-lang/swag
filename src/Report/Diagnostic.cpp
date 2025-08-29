@@ -9,6 +9,7 @@
 #include "Syntax/SyntaxColor.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 constexpr int MAX_INDENT_BLANKS = 10;
 
@@ -653,7 +654,7 @@ void Diagnostic::collectSourceCode()
     lineCodeNum = location0.line;
     minBlanks   = 0;
 
-    // Remove blanks on the left, but keep indentation
+    // Remove blanks on the left but keep indentation
     const auto pz = lineCode.cstr();
     if (*pz && SWAG_IS_NOT_WIN_EOL(*pz) && SWAG_IS_NOT_EOL(*pz))
     {
@@ -661,7 +662,7 @@ void Diagnostic::collectSourceCode()
         if (countBlanks > MAX_INDENT_BLANKS)
             minBlanks = countBlanks - MAX_INDENT_BLANKS;
 
-        // Is error at the start of the line?
+        // Is the error at the start of the line?
         if (location0.line && location0.column - countBlanks == 0)
         {
             lineCodeNumPrev = location0.line;

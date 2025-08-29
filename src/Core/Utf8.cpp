@@ -886,6 +886,21 @@ void Utf8::wordWrap(const Utf8& str, Vector<Utf8>& tokens, uint32_t maxLength)
                 continue;
             }
 
+            if (SWAG_IS_EOL(*pz))
+            {
+                tokens.push_back(one);
+                one.clear();
+                extraLength = 0;
+                i--;
+                pz++;
+                while (i && SWAG_IS_BLANK(*pz))
+                {
+                    pz++;
+                    i--;
+                }                
+                continue;
+            }
+
             one += *pz++;
             i--;
         }

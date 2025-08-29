@@ -76,7 +76,7 @@ bool SourceFile::load()
     Timer read(&g_Stats.readFilesTime);
 #endif
 
-    // Seems that we need 'N' flag to avoid handle to be shared with spawned processes
+    // It seems that we need the 'N' flag to avoid a handle to be shared with spawned processes
     FILE* handle = nullptr;
     if (fopen_s(&handle, path, "rbN"))
     {
