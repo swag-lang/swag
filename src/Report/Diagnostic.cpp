@@ -9,6 +9,7 @@
 #include "Syntax/SyntaxColor.h"
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
+#include <winternl.h>
 #pragma optimize("", off)
 
 constexpr int MAX_INDENT_BLANKS = 10;
@@ -993,20 +994,27 @@ void Diagnostic::printRanges(Log* log)
 
     while (!ranges.empty())
     {
-        auto&      r        = ranges.back();
-        auto       unFormat = Log::removeFormat(r.hint.cstr());
-        const auto mid      = static_cast<int>(r.mid - minBlanks);
+        auto&      r   = ranges.back();
+        const auto mid = static_cast<int>(r.mid - minBlanks);
+
+        // Compute the maximum length of one line.
+        auto         unFormat = Log::removeFormat(r.hint.cstr());
+        Vector<Utf8> tokens;
+        int          unFormatLen = 0;
+        wordWrap(unFormat, tokens, 100000); // Just take care of '\n'
+        for (const auto& token : tokens)
+            unFormatLen = std::max(unFormatLen, static_cast<int>(token.length()));
 
         curColumn = printRangesVerticalBars(log, ranges.size() - 1);
         setColorRanges(log, r.errorLevel, HintPart::Arrow);
 
-        const bool notEnoughRoomRight = mid + 3 + static_cast<int>(unFormat.length()) > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
-        const bool enoughRoomLeft     = mid - 2 - static_cast<int>(unFormat.length()) >= 0;
+        const bool notEnoughRoomRight = mid + 3 + unFormatLen > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
+        const bool enoughRoomLeft     = mid - 2 - unFormatLen >= 0;
 
         // Can we stick the hint before the line reference? (must be the last one)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
         {
-            alignRangeColumn(log, curColumn, r.mid - 2 - static_cast<int>(unFormat.length()));
+            alignRangeColumn(log, curColumn, r.mid - 2 - unFormatLen);
             setColorRanges(log, r.errorLevel, HintPart::Text);
             log->print(r.hint);
             log->write(" ");
@@ -1029,7 +1037,7 @@ void Diagnostic::printRanges(Log* log)
                 curColumn = minBlanks;
             }
 
-            if (mid - 2 - static_cast<int>(unFormat.length()) > -4)
+            if (mid - 2 - unFormatLen > -4)
                 alignRangeColumn(log, curColumn, curColumn + 4);
 
             printLastRangeHint(log, curColumn);

@@ -98,6 +98,33 @@ namespace
             }
         }
 
+        // If multiple notes have the same source code location, then merge them on multiple lines
+        for (uint32_t i = 0; i < notes.size(); i++)
+        {
+            for (uint32_t j = i + 1; j < notes.size(); j++)
+            {
+                if (notes[j]->startLocation.line == notes[i]->startLocation.line && notes[j]->startLocation.column == notes[i]->startLocation.column)
+                {
+                    if (!notes[i]->hint.empty())
+                        notes[i]->hint += "\n=> ";
+                    notes[i]->hint += notes[j]->textMsg;
+                    notes[j]->textMsg.clear();
+                    continue;
+                }
+            }
+        }
+
+        // Remove notes without messages
+        for (uint32_t i = 0; i < notes.size(); i++)
+        {
+            if (notes[i]->textMsg.empty())
+            {
+                notes.erase(notes.begin() + i);
+                i--;
+                continue;
+            }
+        }
+
         computeAutoRemarks(notes);
 
         for (const auto note : notes)
@@ -250,6 +277,7 @@ namespace
         }
     }
 
+#pragma optimize("", off)
     void reportInternal(Log* log, const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)
     {
         if (g_CommandLine.errorOneLine)
@@ -266,8 +294,9 @@ namespace
         notes.push_back(c);
         for (const auto n : inNotes)
         {
-            if (n)
-                notes.push_back(new Diagnostic{*n});
+            if (!n)
+                continue;
+            notes.push_back(new Diagnostic{*n});
         }
 
         std::ranges::sort(notes, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
