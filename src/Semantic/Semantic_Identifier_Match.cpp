@@ -768,7 +768,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     if (typeInfo->isLambdaClosure() && identifier->callParameters)
     {
         SWAG_CHECK(checkIsConcrete(context, identifier));
-        
+
         auto typeInfoRet = castTypeInfo<TypeInfoFuncAttr>(typeInfo, TypeInfoKind::LambdaClosure)->returnType;
         typeInfoRet      = typeInfoRet->getConcreteAlias();
 
@@ -831,12 +831,30 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     const auto childIdx = identifier->childParentIdx();
     if (childIdx)
     {
-        const auto prev       = identifier->identifierRef()->children[childIdx - 1];
-        const auto symbolName = prev->resolvedSymbolName();
+        const auto identifierRef = identifier->identifierRef();
+        const auto prev          = identifierRef->children[childIdx - 1];
+        const auto symbolName    = prev->resolvedSymbolName();
         if (symbolName && symbolName->is(SymbolKind::Variable) && !prev->hasAstFlag(AST_FROM_UFCS))
         {
-            Diagnostic err{prev, formErr(Err0480, Naming::kindName(prev->resolvedSymbolOverload()->node).cstr(), prev->token.cstr(), identifier->token.cstr())};
-            err.addNote(identifier->token, form("this function cannot be called with UFCS using a value of type [[%s]]", prev->typeInfo->getDisplayNameC()));
+            const auto kindPrev = Naming::kindName(prev->resolvedSymbolOverload()->node);
+            Diagnostic err{prev, formErr(Err0480, kindPrev.cstr(), prev->token.cstr(), identifier->token.cstr())};
+            if (!funcDecl->parameters || funcDecl->parameters->children.empty())
+                err.addNote(identifier->token, form("the function [[%s]] does not have parameters", identifier->token.cstr()));
+            else
+                err.addNote(identifier->token, form("the function [[%s]] already has the correct number of arguments, so [[%s]] was not used", identifier->token.cstr(), prev->token.cstr()));
+
+            if (prev->is(AstNodeKind::Identifier) && prev->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
+            {
+                const auto prevIdentifier = castAst<AstIdentifier>(prev, AstNodeKind::Identifier);
+                const auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
+                err.addNote(widthNode, form("the %s [[%s]] comes from a [[with]]", kindPrev.cstr(), prev->token.cstr()));
+            }
+            else if (oneMatch.oneOverload->scope == identifierRef->previousScope)
+            {
+                err.addNote(form("[[%s]] was only used as a scope qualifier to find the function [[%s]]", prev->token.cstr(), identifier->token.cstr()));
+                err.addNote(form("consider removing [[%s]], or replacing it with the scope [[%s]]", prev->token.cstr(), identifierRef->previousScope->name.cstr()));
+            }
+
             return context->report(err, Diagnostic::hereIs(funcDecl));
         }
     }
@@ -1234,44 +1252,6 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         !prevNode->typeInfo->isStruct())
     {
         const Diagnostic err{prevNode, formErr(Err0176, prevNode->token.cstr(), prevNode->typeInfo->getDisplayNameC())};
-        return context->report(err);
-    }
-
-    // If a variable on the left has only been used for scoping and not evaluated as an UFCS source, then this is an
-    // error too, because it's too strange.
-    // x.toto() with toto taking no argument, for example, but toto is 'in' x scope.
-    if (symbol &&
-        symbol->is(SymbolKind::Function) &&
-        identifierRef->previousScope &&
-        prevNode &&
-        prevNode->resolvedSymbolName() &&
-        (prevNode->resolvedSymbolName()->is(SymbolKind::Variable) || prevNode->resolvedSymbolName()->is(SymbolKind::Function)) &&
-        !prevNode->hasAstFlag(AST_FROM_UFCS))
-    {
-        if (prevNode->is(AstNodeKind::Identifier) && prevNode->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
-        {
-            Diagnostic err{prevNode, formErr(Err0481, prevNode->token.cstr(), symbol->name.cstr())};
-            const auto prevIdentifier = castAst<AstIdentifier>(prevNode, AstNodeKind::Identifier);
-            const auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
-            err.addNote(oneMatch.oneOverload->overload->node, oneMatch.oneOverload->overload->node->getTokenName(), form("this function cannot be called with UFCS using a value of type [[%s]]", prevNode->typeInfo->getDisplayNameC()));
-            err.addNote(Diagnostic::hereIs(widthNode));
-            err.addNote(form("consider adding the scope [[%s]] before [[.]]", identifierRef->previousScope->name.cstr()));
-            return context->report(err);
-        }
-
-        if (oneMatch.oneOverload->scope == identifierRef->previousScope)
-        {
-            Diagnostic err{prevNode, formErr(Err0480, Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), prevNode->token.cstr(), symbol->name.cstr())};
-            err.addNote(identifier->token, form("this function cannot be called with UFCS using a value of type [[%s]]", prevNode->typeInfo->getDisplayNameC()));
-            err.addNote(form("the % s [[%s]] has only been used as a scope to find function [[%s]]", Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), prevNode->token.cstr(), symbol->name.cstr()));
-            err.addNote(Diagnostic::hereIs(oneMatch.oneOverload->overload));
-            err.addNote(form("consider removing the %s or replacing it with the scope [[%s]]", Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), identifierRef->previousScope->name.cstr()));
-            return context->report(err);
-        }
-
-        Diagnostic err{prevNode, formErr(Err0480, Naming::kindName(prevNode->resolvedSymbolName()->kind).cstr(), prevNode->token.cstr(), symbol->name.cstr())};
-        err.addNote(identifier->token, form("this function cannot be called with UFCS using a value of type [[%s]]", prevNode->typeInfo->getDisplayNameC()));
-        err.addNote(Diagnostic::hereIs(oneMatch.oneOverload->overload));
         return context->report(err);
     }
 

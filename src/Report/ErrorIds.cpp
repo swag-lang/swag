@@ -623,8 +623,8 @@ void initErrors()
     SWAG_ERROR(Err0477, "missing struct name                               $ expected the struct name before the start of the body [['{']]                                                                            $ ");
     SWAG_ERROR(Err0478, "missing type                                      $ expected a type after [[#type]], found $$TKN$$ instead                                                                                   $ ");
     SWAG_ERROR(Err0479, "missing variable type                             $ expected an assignment or [[:]] to define a type, found $$TKN$$ instead                                                                  $ ");
-    SWAG_ERROR(Err0480, "misused UFCS                                      $ cannot use the %s [[%s]] as the first argument of [[%s]]                                                                                 $ ");
-    SWAG_ERROR(Err0481, "misused UFCS                                      $ cannot use the hidden [[with]] variable [[%s]] as the first argument of [[%s]]                                                           $ ");
+    SWAG_ERROR(Err0480, "misused UFCS                                      $ the %s [[%s]] was not used as the first argument of [[%s]]                                                                               $ ");
+    SWAG_ERROR(Err0481, nullptr);
     SWAG_ERROR(Err0482, "non-contiguous [[#alias]]                         $ unexpected non-contiguous [[#alias]] in function [[%s]]                                                                                  $ the alias [[#alias%u]] is missing");
     SWAG_ERROR(Err0483, "non-transferable [[cvarargs]] type                $ cannot pass a parameter with the type [[cvarargs]] to another function                                                                   $ ");
     SWAG_ERROR(Err0484, "invalid value reference                           $ [[%s]] is a static member of [[%s]], but is used as an instance field                                                                    $ ");
