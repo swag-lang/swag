@@ -650,7 +650,25 @@ void Diagnostic::collectSourceCode()
     auto location0 = startLocation;
     location0.line -= sourceFile->offsetGetLine;
 
-    lineCode    = sourceFile->getLine(location0.line);
+    lineCode = sourceFile->getLine(location0.line);
+
+    // Change locations in case of '\t'
+    while (true)
+    {
+        const auto i = lineCode.find("\t");
+        if (i == -1)
+            break;
+
+        lineCode.remove(i, 1);
+        lineCode.insert(i, "    ");
+        startLocation.column += 3;
+        for (auto& r: ranges)
+        {
+            r.startLocation.column += 3;
+            r.endLocation.column += 3;
+        }
+    }
+
     lineCodeNum = location0.line;
     minBlanks   = 0;
 
