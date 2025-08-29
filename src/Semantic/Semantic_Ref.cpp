@@ -128,8 +128,8 @@ bool Semantic::resolveMakePointerLambda(SemanticContext* context)
     else
         child = node->firstChild();
 
-    SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
+    SWAG_CHECK(checkCanTakeAddress(context, child));
     node->addAstFlag(AST_R_VALUE);
     node->setResolvedSymbol(child->resolvedSymbolName(), child->resolvedSymbolOverload());
 
@@ -218,8 +218,8 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         }
     }
 
-    SWAG_CHECK(checkCanTakeAddress(context, child));
     SWAG_CHECK(checkIsConcrete(context, child));
+    SWAG_CHECK(checkCanTakeAddress(context, child));
     node->addAstFlag(AST_R_VALUE);
     node->setResolvedSymbol(symbol, overload);
     node->byteCodeFct = ByteCodeGen::emitMakePointer;
