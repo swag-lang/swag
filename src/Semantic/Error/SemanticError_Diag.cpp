@@ -93,7 +93,7 @@ namespace
         else if (errorParam.destAttrDecl)
             err = new Diagnostic{node, node->token, formErr(Err0486, node->token.cstr())};
         else
-            err = new Diagnostic{node, node->token, formErr(Err0487, node->token.cstr())};
+            err = new Diagnostic{node, node->token, formErr(Err0487, niceName.cstr(), node->token.cstr())};
 
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
@@ -147,7 +147,7 @@ namespace
         if (errorParam.destFuncDecl && errorParam.destFuncDecl->isSpecialFunctionName())
             err = new Diagnostic{errNode, errNode->token, formErr(Err0705, niceName.cstr(), errorParam.destFuncDecl->token.cstr())};
         else if (genericParameters)
-            err = new Diagnostic{genericParameters, formErr(Err0488, niceName.cstr())};
+            err = new Diagnostic{genericParameters, formErr(Err0488, niceName.cstr(), overload->symbol->name.cstr())};
         else
             err = new Diagnostic{errNode, errNode->token, formErr(Err0721, niceName.cstr())};
         errorParam.addError(err);

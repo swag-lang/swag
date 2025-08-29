@@ -124,7 +124,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         return context->report(err);
     }
 
-    Diagnostic err{node, node->token, formErr(Err0485, node->resolvedSymbolName()->name.cstr(), Naming::kindName(node->resolvedSymbolName()->kind).cstr())};
+    Diagnostic err{node, node->token, formErr(Err0485, node->resolvedSymbolName()->name.cstr(), Naming::aKindName(node->resolvedSymbolName()->kind).cstr())};
 
     // struct.field
     if (node->childParentIdx())

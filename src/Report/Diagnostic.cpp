@@ -13,14 +13,100 @@
 
 constexpr int MAX_INDENT_BLANKS = 10;
 
+namespace
+{
+    void wordWrap(const Utf8& str, Vector<Utf8>& tokens, uint32_t maxLength)
+    {
+        tokens.clear();
+
+        auto pz = str.buffer;
+        if (!pz)
+            return;
+
+        auto     i           = str.count;
+        uint32_t extraLength = 0;
+        Utf8     one;
+
+        while (i)
+        {
+            while (i && !SWAG_IS_BLANK(*pz))
+            {
+                // Special display format
+                if (pz[0] == '[' && pz[1] == '[')
+                {
+                    one += *pz++;
+                    one += *pz++;
+                    extraLength += 2;
+                    i -= 2;
+                    while (i && (pz[0] != ']' || pz[1] != ']' || pz[2] == ']'))
+                    {
+                        one += *pz++;
+                        extraLength += 1;
+                        i--;
+                    }
+                    if (i)
+                    {
+                        one += *pz++;
+                        one += *pz++;
+                        extraLength += 2;
+                        i -= 2;
+                    }
+
+                    continue;
+                }
+
+                if (SWAG_IS_EOL(*pz))
+                {
+                    tokens.push_back(one);
+                    one.clear();
+                    extraLength = 0;
+                    i--;
+                    pz++;
+                    while (i && SWAG_IS_BLANK(*pz))
+                    {
+                        pz++;
+                        i--;
+                    }
+                    continue;
+                }
+
+                one += *pz++;
+                i--;
+            }
+
+            if (i && one.length() > extraLength && (one.length() - extraLength) > maxLength && i > 10)
+            {
+                tokens.push_back(one);
+                one.clear();
+                extraLength = 0;
+
+                while (i && SWAG_IS_BLANK(*pz))
+                {
+                    pz++;
+                    i--;
+                }
+            }
+
+            while (i && SWAG_IS_BLANK(*pz))
+            {
+                one += *pz++;
+                i--;
+            }
+        }
+
+        if (!one.empty())
+            tokens.push_back(one);
+    }
+}
+
 void Diagnostic::setupColors()
 {
     errorColor                = LogColor::Red;
     errorColorHint            = LogColor::White;
-    errorColorHintHighLight   = LogColor::DarkRed;
+    errorColorHintHighLight   = LogColor::Gray;
     warningColor              = LogColor::Magenta;
-    warningColorHint          = LogColor::Magenta;
-    warningColorHintHighLight = LogColor::DarkMagenta;
+    warningColorHint          = LogColor::White;
+    warningColorHintHighLight = LogColor::Gray;
     noteColorHint             = LogColor::White;
     noteColorHintHighLight    = LogColor::Gray;
     noteTitleColor            = LogColor::White;
@@ -423,7 +509,7 @@ void Diagnostic::printPreRemarks(Log* log) const
             continue;
 
         Vector<Utf8> lines;
-        Utf8::wordWrap(r, lines, g_CommandLine.errorRightColumn);
+        wordWrap(r, lines, g_CommandLine.errorRightColumn);
 
         for (const auto& line : lines)
         {
@@ -456,7 +542,7 @@ void Diagnostic::printRemarks(Log* log) const
             continue;
 
         Vector<Utf8> lines;
-        Utf8::wordWrap(r, lines, g_CommandLine.errorRightColumn);
+        wordWrap(r, lines, g_CommandLine.errorRightColumn);
 
         bool firstLine = true;
         for (const auto& line : lines)
@@ -486,7 +572,7 @@ void Diagnostic::printRemarks(Log* log) const
             continue;
 
         Vector<Utf8> lines;
-        Utf8::wordWrap(r, lines, g_CommandLine.errorRightColumn);
+        wordWrap(r, lines, g_CommandLine.errorRightColumn);
 
         bool firstLine = true;
         for (const auto& line : lines)
@@ -662,7 +748,7 @@ void Diagnostic::collectSourceCode()
         lineCode.remove(i, 1);
         lineCode.insert(i, "    ");
         startLocation.column += 3;
-        for (auto& r: ranges)
+        for (auto& r : ranges)
         {
             r.startLocation.column += 3;
             r.endLocation.column += 3;
@@ -749,7 +835,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else
                 log->setColor(errorColorHint);
             if (logCxt)
-                logCxt->colorHighlight = Log::colorToVTS(errorColorHintHighLight) + Log::colorToVTS(LogColor::Underline);
+                logCxt->colorHighlight = Log::colorToVTS(errorColorHintHighLight);
             break;
         case DiagnosticLevel::Warning:
             if (part == HintPart::Underline)
@@ -761,7 +847,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else
                 log->setColor(warningColorHint);
             if (logCxt)
-                logCxt->colorHighlight = Log::colorToVTS(warningColorHintHighLight) + Log::colorToVTS(LogColor::Underline);
+                logCxt->colorHighlight = Log::colorToVTS(warningColorHintHighLight);
             break;
         case DiagnosticLevel::Note:
             if (part == HintPart::Underline)
@@ -818,7 +904,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
 
     Vector<Utf8>   tokens;
     const uint32_t maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
-    Utf8::wordWrap(r.hint, tokens, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
+    wordWrap(r.hint, tokens, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
 
     for (uint32_t i = 0; i < tokens.size(); i++)
     {
@@ -826,9 +912,16 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
 
         if (r.errorLevel == DiagnosticLevel::Error)
         {
-            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
-            log->print(LogSymbol::Cross);
-            log->print("  ");
+            if (i == 0)
+            {
+                setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+                log->print(LogSymbol::Cross);
+                log->print("  ");
+            }
+            else
+            {
+                log->print("   ");
+            }
         }
 
         setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
@@ -980,7 +1073,7 @@ void Diagnostic::report(Log* log)
             printErrorLevel(log);
 
             Vector<Utf8> tokens;
-            Utf8::wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
+            wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
             for (uint32_t i = 0; i < tokens.size(); i++)
             {
                 log->setColor(noteColorHint);
