@@ -10,20 +10,12 @@
 void SemanticError::errorConstraintFailed(SemanticContext*, const ErrorParam& errorParam, AstNode* constraintExpr)
 {
     AstNode* node;
-    ErrorID  errID;
-
     if (errorParam.destFuncDecl)
-    {
-        errID = Err0078;
-        node  = errorParam.destFuncDecl;
-    }
+        node = errorParam.destFuncDecl;
     else
-    {
-        errID = Err0079;
-        node  = errorParam.destStructDecl;
-    }
+        node = errorParam.destStructDecl;
 
-    const auto msg = formErr(errID, constraintExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), constraintExpr->token.cstr());
+    const auto msg = formErr(Err0078, constraintExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), constraintExpr->token.cstr());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
     errorParam.addNote(Diagnostic::hereIs(constraintExpr, form("this is the failed [[%s]] constraint", constraintExpr->token.cstr())));
@@ -62,10 +54,10 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
             if (identifierRef->typeInfo)
             {
                 const auto msg = form("the %s [[%s]] wasn't found in [[%s]]. The alternative from [[%s]] was selected",
-                                         Naming::kindName(overload).cstr(),
-                                         node->token.cstr(),
-                                         identifierRef->typeInfo->getDisplayNameC(),
-                                         overload->node->ownerStructScope->owner->token.cstr());
+                                      Naming::kindName(overload).cstr(),
+                                      node->token.cstr(),
+                                      identifierRef->typeInfo->getDisplayNameC(),
+                                      overload->node->ownerStructScope->owner->token.cstr());
                 err->remarks.push_back(msg);
             }
 

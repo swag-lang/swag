@@ -312,7 +312,7 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
         }
 
-        case TokenId::CompilerIndex:
+        case TokenId::IntrinsicIndex:
             SWAG_CHECK(doCompilerIndex(parent, result));
             break;
 

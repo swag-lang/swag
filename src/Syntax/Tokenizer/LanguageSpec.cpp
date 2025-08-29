@@ -464,7 +464,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("@err", TokenId::IntrinsicGetErr);
     keywords.add("@args", TokenId::IntrinsicArguments);
     keywords.add("@bytecode", TokenId::IntrinsicIsByteCode);
-    keywords.add("@index", TokenId::CompilerIndex);
+    keywords.add("@index", TokenId::IntrinsicIndex);
     keywords.add("@rtflags", TokenId::IntrinsicRtFlags);
     keywords.add("@pinfos", TokenId::IntrinsicGetProcessInfos);
     keywords.add("@modules", TokenId::IntrinsicModules);

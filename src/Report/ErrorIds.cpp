@@ -224,7 +224,6 @@ void initErrors()
     SWAG_ERROR(Err0076, "expected function body                            $ expected [[{]] to start the %s body, found [[;]] instead                                                                                 $ ");
     SWAG_ERROR(Err0077, "expected replacement block                        $ expected [[{]] to start the [[#inject]] replacement block, found $$TKN$$ instead                                                         $ ");
     SWAG_ERROR(Err0078, "failed [[%s]] constraint                          $ cannot use the %s [[%s]] because of a failed [[%s]] constraint                                                                           $ ");
-    SWAG_ERROR(Err0079, "failed [[%s]] constraint                          $ cannot use the %s [[%s]] because of a failed [[%s]] constraint                                                                           $ ");
     SWAG_ERROR(Err0080, "failed generic instantiation                      $ cannot instantiate a partial type alias ([[%s]]) with a generic struct                                                                   $ ");
     SWAG_ERROR(Err0081, "failed generic instantiation                      $ cannot instantiate the generic function [[%s]] because of missing generic arguments                                                      $ ");
     SWAG_ERROR(Err0082, "failed generic instantiation                      $ cannot instantiate the generic struct [[%s]] because of missing generic arguments                                                        $ ");
@@ -465,7 +464,6 @@ void initErrors()
     SWAG_ERROR(Err0317, "misplaced [[@cvastart]]                           $ expected the intrinsic [[@cvastart]] to be used in a function with a last parameter of type [[cvarargs]]                                 $ ");
     SWAG_ERROR(Err0318, "misplaced [[@kindof]]                             $ cannot apply [[@kindof]] to the type [[%s]]                                                                                              $ the [[@kindof]] intrinsic should be used on the type [[any]] or on an interface");
     SWAG_ERROR(Err0319, "invalid type declaration                          $ expected a type declaration after [[code]], found $$TKN$$ instead                                                                        $ [[code]] should be followed by a type or [[void]]");
-    SWAG_ERROR(Err0320, nullptr);
     SWAG_ERROR(Err0321, "misplaced [[alias]]                               $ cannot use [[alias]] on a struct member                                                                                                  $ ");
     SWAG_ERROR(Err0322, "misplaced [[break]]                               $ cannot use [[break]] outside of a breakable block such as [[for]], [[foreach]] etc.                                                      $ ");
     SWAG_ERROR(Err0323, "misplaced [[const]]                               $ expected [[me]] after [[const]] when declaring a function parameter, found $$TKN$$ instead                                               $ ");
@@ -624,7 +622,6 @@ void initErrors()
     SWAG_ERROR(Err0478, "missing type                                      $ expected a type after [[#type]], found $$TKN$$ instead                                                                                   $ ");
     SWAG_ERROR(Err0479, "missing variable type                             $ expected an assignment or [[:]] to define a type, found $$TKN$$ instead                                                                  $ ");
     SWAG_ERROR(Err0480, "misused UFCS                                      $ the %s [[%s]] was not used as the first argument of [[%s]]                                                                               $ ");
-    SWAG_ERROR(Err0481, nullptr);
     SWAG_ERROR(Err0482, "non-contiguous [[#alias]]                         $ unexpected non-contiguous [[#alias]] in function [[%s]]                                                                                  $ the alias [[#alias%u]] is missing");
     SWAG_ERROR(Err0483, "non-transferable [[cvarargs]] type                $ cannot pass a parameter with the type [[cvarargs]] to another function                                                                   $ ");
     SWAG_ERROR(Err0484, "invalid value reference                           $ [[%s]] is a static member of [[%s]], but is used as an instance field                                                                    $ ");
@@ -935,7 +932,11 @@ void initErrors()
     SWAG_ERROR(Err0773, "missing [[#import]] version                       $ expected the version as the third argument of [[#import]], found $$TKN$$ instead                                                         $ the third argument should be [[version:\"version\"]])");
 
     SWAG_ERROR(Err0668, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]]                                                                                                 $ ");
+    
     SWAG_ERROR(Err0060, nullptr);
+    SWAG_ERROR(Err0079, nullptr);
+    SWAG_ERROR(Err0320, nullptr);
+    SWAG_ERROR(Err0481, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

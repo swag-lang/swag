@@ -1,4 +1,4 @@
-#global testerror "Err0079"
+#global testerror "Err0078"
 #test
 {
     #[Swag.ConstExpr]
