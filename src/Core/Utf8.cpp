@@ -714,17 +714,6 @@ void Utf8::insert(uint32_t index, char c)
     buffer[count] = 0;
 }
 
-bool Utf8::isAtWordBoundary(uint32_t pos, uint32_t len) const
-{
-    // Check if the match starts at a word boundary
-    const bool startsAtBoundary = (pos == 0) || !SWAG_IS_ALPHA(buffer[pos - 1]);
-
-    // Check if the match ends at a word boundary
-    const bool endsAtBoundary = (pos + len >= length()) || !SWAG_IS_ALPHA(buffer[pos + len]);
-
-    return startsAtBoundary && endsAtBoundary;
-}
-
 void Utf8::replace(const char* src, const char* dst, bool wordBoundaryOnly)
 {
     makeLocal();
@@ -737,10 +726,14 @@ void Utf8::replace(const char* src, const char* dst, bool wordBoundaryOnly)
         if (nPos == -1)
             break;
 
-        if (wordBoundaryOnly && !isAtWordBoundary(pos, len))
+        if (wordBoundaryOnly)
         {
-            pos += 1; // Move forward by 1 to continue searching
-            continue;
+            const bool startsAtBoundary = (pos == 0) || !SWAG_IS_ALPHA(buffer[pos - 1]);
+            if (!startsAtBoundary)
+            {
+                pos += 1; // Move forward by 1 to continue searching
+                continue;
+            }
         }
 
         pos = static_cast<uint32_t>(nPos);

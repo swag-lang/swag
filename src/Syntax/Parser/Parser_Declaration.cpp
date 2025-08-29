@@ -462,7 +462,7 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
             cpy.token.endLocation   = cpy.token.startLocation;
 
             Diagnostic err{sourceFile, cpy, toErr(Err0424)};
-            err.addNote(parent, forToken, form("the [[%s]] block should start with [[':']] or be enclosed in [[{}]]", forToken.cstr()));
+            err.addNote(parent, forToken, form("the [[%s]] block should start with [[:]] or be enclosed in [[{}]]", forToken.cstr()));
             return context->report(err);
         }
 

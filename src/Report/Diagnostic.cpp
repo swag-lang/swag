@@ -233,25 +233,25 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
             if (isSymbol && inside.length() <= 1)
             {
                 if (inside == ',')
-                    replace += " $$A$$ [[comma]] ','";
+                    replace += " $$A$$ comma [',']";
                 else if (inside == ';')
-                    replace += " $$A$$ [[semicolon]] ';'";
+                    replace += " $$A$$ semicolon [[';']]";
                 else if (inside == '(')
-                    replace += " $$A$$ [[left parenthesis]] '('";
+                    replace += " $$A$$ left parenthesis [['(']]";
                 else if (inside == ')')
-                    replace += " $$A$$ [[right parenthesis]] ')'";
+                    replace += " $$A$$ right parenthesis [[')']]";
                 else if (inside == ':')
-                    replace += " $$A$$ [[colon]] ':'";
+                    replace += " $$A$$ colon [[':']]";
                 else if (inside == '{')
-                    replace += " $$A$$ [[left curly bracket]] '{'";
+                    replace += " $$A$$ left curly bracket [['{']]";
                 else if (inside == '}')
-                    replace += " $$A$$ [[right curly bracket]] '}'";
+                    replace += " $$A$$ right curly bracket [['}']]";
                 else if (inside == '[')
-                    replace += " $$A$$ [[left square bracket]] '['";
+                    replace += " $$A$$ left square bracket [['[']]";
                 else if (inside == ']')
-                    replace += " $$A$$ [[right square bracket]] ']'";
+                    replace += " $$A$$ right square bracket [[']']]";
                 else if (inside == '_')
-                    replace += " $$AN$$ [[underscore]] '_'";
+                    replace += " $$AN$$ underscore [['_']]";
                 else
                 {
                     replace += " $$A$$ symbol [['";
