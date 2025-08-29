@@ -22,7 +22,7 @@ void Diagnostic::setupColors()
     warningColorHintHighLight = LogColor::DarkMagenta;
     noteColorHint             = LogColor::White;
     noteColorHintHighLight    = LogColor::Gray;
-    noteTitleColor            = LogColor::DarkYellow;
+    noteTitleColor            = LogColor::White;
     noteColor                 = LogColor::White;
     marginBorderColor         = LogColor::Cyan;
     marginBorderColorContext  = LogColor::Gray;

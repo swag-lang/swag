@@ -69,43 +69,42 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    // Any
-    SWAG_ERROR(Saf0001, "safety violation $ invalid attempt to cast from [[any]] to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
-    SWAG_ERROR(Saf0002, "safety violation $ invalid attempt to cast a null value to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
-    // Bool
-    SWAG_ERROR(Saf0003, "safety violation $ usage of an invalid boolean value $ [[#[Swag.Safety(\"bool\")]]] is true");
-    // BoundCheck
-    SWAG_ERROR(Saf0004, "safety violation $ attempt to access an index outside of bounds $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0005, "safety violation $ operation failed as the lower bound exceeds the upper bound $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0006, "safety violation $ slicing operation failed as the lower bound exceeds the upper bound $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0007, "safety violation $ slicing operation failed as the upper bound is out of bounds $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    // Math
-    SWAG_ERROR(Saf0008, "safety violation $ [[@abs]] operation resulted in an overflow (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0009, "safety violation $ [[@acos]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0010, "safety violation $ [[@asin]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0011, "safety violation $ [[@log]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0012, "safety violation $ [[@log10]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0013, "safety violation $ [[@log2]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0014, "safety violation $ [[@sqrt]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0015, "safety violation $ [[@pow]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0016, "safety violation $ division by zero $ [[#[Swag.Safety(\"math\")]]] is true");
-    // NaN
-    SWAG_ERROR(Saf0017, "safety violation $ invalid use of a NaN (Not a Number) value $ [[#[Swag.Safety(\"nan\")]]] is true");
-    // Null
-    SWAG_ERROR(Saf0018, "safety violation $ attempt to dereference a null pointer $ [[#[Swag.Safety(\"null\")]]] is true");
-    SWAG_ERROR(Saf0019, "safety violation $ attempt to throw a non-existent error $ [[#[Swag.Safety(\"null\")]]] is true");
-    // Overflow
-    SWAG_ERROR(Saf0020, "safety violation $ casting a negative value [[%I64d]] to an unsigned type [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0021, "safety violation $ casting a negative value of type [[%s]] to an unsigned type [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0022, "safety violation $ casting a negative value [[%g]] to an unsigned type [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0023, "safety violation $ value [[%s]] ([[%I64u]]) exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0024, "safety violation $ value [[%I64u]] exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0025, "safety violation $ value [[%I64d]] exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0026, "safety violation $ value [[%g]] exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0027, "safety violation $ operation [['%s']] resulted in an overflow (type is [[%s]]) $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0028, "safety violation $ truncation from [[%s]] to [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
-    // Switch
-    SWAG_ERROR(Saf0029, "safety violation $ unexpected switch value encountered $ [[#[Swag.Safety(\"switch\")]]] is true");
+    SWAG_ERROR(Saf0001, "[safety] invalid cast from any $ invalid attempt to cast from [[any]] to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
+    SWAG_ERROR(Saf0002, "[safety] null cast attempt $ invalid attempt to cast a null value to [[%s]] $ [[#[Swag.Safety(\"dyncast\")]]] is true");
+    
+    SWAG_ERROR(Saf0003, "[safety] invalid boolean value $ usage of an invalid boolean value $ [[#[Swag.Safety(\"bool\")]]] is true");
+    
+    SWAG_ERROR(Saf0004, "[safety] index out of bounds $ attempt to access an index outside of bounds $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
+    SWAG_ERROR(Saf0005, "[safety] invalid range bounds $ operation failed as the lower bound exceeds the upper bound $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
+    SWAG_ERROR(Saf0006, "[safety] slice bounds error $ slicing operation failed as the lower bound exceeds the upper bound $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
+    SWAG_ERROR(Saf0007, "[safety] slice out of bounds $ slicing operation failed as the upper bound is out of bounds $ [[#[Swag.Safety(\"boundcheck\")]]] is true");
+    
+    SWAG_ERROR(Saf0008, "[safety] arithmetic overflow $ [[@abs]] operation resulted in an overflow (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0009, "[safety] invalid argument $ [[@acos]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0010, "[safety] invalid argument $ [[@asin]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0011, "[safety] invalid argument $ [[@log]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0012, "[safety] invalid argument $ [[@log10]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0013, "[safety] invalid argument $ [[@log2]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0014, "[safety] invalid argument $ [[@sqrt]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0015, "[safety] invalid argument $ [[@pow]] received an invalid argument (type is [[%s]]) $ [[#[Swag.Safety(\"math\")]]] is true");
+    SWAG_ERROR(Saf0016, "[safety] division by zero $ division by zero $ [[#[Swag.Safety(\"math\")]]] is true");
+    
+    SWAG_ERROR(Saf0017, "[safety] nan value used $ invalid use of a NaN (Not a Number) value $ [[#[Swag.Safety(\"nan\")]]] is true");
+    
+    SWAG_ERROR(Saf0018, "[safety] null pointer dereference $ attempt to dereference a null pointer $ [[#[Swag.Safety(\"null\")]]] is true");
+    SWAG_ERROR(Saf0019, "[safety] null error thrown $ attempt to throw a non-existent error $ [[#[Swag.Safety(\"null\")]]] is true");
+    
+    SWAG_ERROR(Saf0020, "[safety] negative to unsigned cast $ casting a negative value [[%I64d]] to an unsigned type [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0021, "[safety] negative to unsigned cast $ casting a negative value of type [[%s]] to an unsigned type [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0022, "[safety] negative to unsigned cast $ casting a negative value [[%g]] to an unsigned type [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0023, "[safety] value exceeds type limits $ value [[%s]] ([[%I64u]]) exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0024, "[safety] value exceeds type limits $ value [[%I64u]] exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0025, "[safety] value exceeds type limits $ value [[%I64d]] exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0026, "[safety] value exceeds type limits $ value [[%g]] exceeds the limits of type [[%s]] $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0027, "[safety] arithmetic overflow $ operation [['%s']] resulted in an overflow (type is [[%s]]) $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    SWAG_ERROR(Saf0028, "[safety] truncation not allowed $ truncation from [[%s]] to [[%s]] is not allowed $ [[#[Swag.Safety(\"overflow\")]]] is true");
+    
+    SWAG_ERROR(Saf0029, "[safety] unhandled switch value $ unexpected switch value encountered $ [[#[Swag.Safety(\"switch\")]]] is true");
 
     SWAG_ERROR(Saf0030, nullptr);
     SWAG_ERROR(Saf0031, nullptr);
