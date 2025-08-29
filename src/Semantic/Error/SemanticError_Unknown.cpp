@@ -173,6 +173,7 @@ namespace
     }
 }
 
+#pragma optimize("", off)
 bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     // What kind of thing to we search for?
@@ -263,13 +264,22 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
             break;
 
         case IdentifierSearchFor::Variable:
-            if (identifier->token.text == g_LangSpec->name_me)
-            {
-                if (identifier->ownerFct && !identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
-                    notes.push_back(Diagnostic::note(identifier->ownerFct, identifier->ownerFct->token, "consider using [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter"));
-            }
-            else if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
+            if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
                 notes.push_back(Diagnostic::note("did you forget [[var]], [[let]], or [[const]] to declare a variable or constant?"));
+            break;
+    }
+
+    switch (searchFor)
+    {
+        case IdentifierSearchFor::Whatever:
+        case IdentifierSearchFor::Variable:
+            if (identifier->token.text == g_LangSpec->name_me &&
+                identifier->ownerFct &&
+                !identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD) &&
+                identifier->ownerStructScope)
+            {
+                notes.push_back(Diagnostic::note(identifier->ownerFct, identifier->ownerFct->token, "consider using [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter"));
+            }
             break;
     }
 
