@@ -48,6 +48,13 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
 
             // Determine if we have the same location in a previous note
             bool hasSameNode = false;
+            if (exp.node &&
+                diagnostic.sourceFile == exp.node->token.sourceFile &&
+                diagnostic.startLocation.line == exp.node->token.startLocation.line)
+            {
+                hasSameNode = true;
+            }
+            
             for (const auto note : notes)
             {
                 if (exp.node &&
@@ -81,7 +88,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::DuringInline:
                     exp.hide = doneInline;
                     doneInline = true;
-                    if (hasSameNode)
+                    if (hasSameNode || !diagnostic.sourceNode || diagnostic.sourceNode->hasAstFlag(AST_IN_MIXIN))
                         exp.hide = true;
                     break;
 

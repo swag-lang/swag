@@ -103,30 +103,6 @@ namespace
             err = new Diagnostic{identifier, identifier->token, formErr(Err0682, identifier->token.cstr())};
         }
 
-        // Variable before
-        if (prevIdentifier &&
-            prevIdentifier->resolvedSymbolName() &&
-            prevIdentifier->resolvedSymbolName()->is(SymbolKind::Variable) &&
-            !prevIdentifier->hasAstFlag(AST_GENERATED))
-        {
-            err->addNote(prevIdentifier, Diagnostic::isType(prevIdentifier));
-        }
-
-        switch (identifierRef->previousScope->owner->kind)
-        {
-            case AstNodeKind::StructDecl:
-            case AstNodeKind::InterfaceDecl:
-            case AstNodeKind::EnumDecl:
-            {
-                const auto note = Diagnostic::hereIs(identifierRef->previousScope->owner);
-                if (note)
-                    notes.push_back(note);
-                break;
-            }
-            default:
-                break;
-        }
-
         return err;
     }
 
