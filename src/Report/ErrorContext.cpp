@@ -26,6 +26,7 @@ PushErrCxtStep::~PushErrCxtStep()
     cxt->errCxtSteps.pop_back();
 }
 
+#pragma optimize("", off)
 void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& notes)
 {
     diagnostic.contextNode = node;
@@ -44,6 +45,18 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             Utf8 msg;
             if (exp.err)
                 msg = exp.err();
+
+            // Determine if we have the same location in a previous note
+            bool hasSameNode = false;
+            for (const auto note : notes)
+            {
+                if (exp.node &&
+                    note->sourceFile == exp.node->token.sourceFile &&
+                    note->startLocation.line == exp.node->token.startLocation.line)
+                {
+                    hasSameNode = true;
+                }
+            }
 
             switch (exp.type)
             {
@@ -68,6 +81,8 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::DuringInline:
                     exp.hide = doneInline;
                     doneInline = true;
+                    if (hasSameNode)
+                        exp.hide = true;
                     break;
 
                 case ErrCxtStepKind::DuringCompileTime:
