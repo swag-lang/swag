@@ -104,7 +104,8 @@ struct Utf8
 
     void         toUni16(VectorNative<uint16_t>& uni, int maxChars = -1) const;
     void         toUni32(VectorNative<uint32_t>& uni, int maxChars = -1) const;
-    void         replace(const char* src, const char* dst);
+    bool         isAtWordBoundary(uint32_t pos, uint32_t len) const;
+    void         replace(const char* src, const char* dst, bool wordBoundaryOnly = false);
     bool         toChar32(uint32_t& ch) const;
     std::wstring toWString() const;
 
