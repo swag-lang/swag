@@ -1305,13 +1305,16 @@ impl Decoder
 
     func coeffBufOpen(blkNumX, blkNumY, blkLenX, blkLenY: s32)->CoeffBuf
     {
-        var result: retval
-        result.blockNumX = blkNumX
-        result.blockNumY = blkNumY
-        result.blockLenX = blkLenX
-        result.blockLenY = blkLenY
-        result.blockSize = (blkLenX * blkLenY) * #sizeof(s16)
-        result.pdata.resize(cast(u64) result.blockSize * blkNumX * blkNumY)
+        with var result: retval
+        {
+            .blockNumX = blkNumX
+            .blockNumY = blkNumY
+            .blockLenX = blkLenX
+            .blockLenY = blkLenY
+            .blockSize = (blkLenX * blkLenY) * #sizeof(s16)
+            .pdata.resize(cast(u64) .blockSize * blkNumX * blkNumY)
+        }
+
         return result
     }
 
