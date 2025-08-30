@@ -1,9 +1,11 @@
 #include "pch.h"
+#include "pch.h"
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
 #include "Main/Statistics.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Syntax/AstNode.h"
 #include "Wmf/Module.h"
 #include "Wmf/SourceFile.h"
 
@@ -381,6 +383,15 @@ void ScbeOptimizer::computeContextStack(const ScbeMicro& out)
     rangeReadStack.clear();
     usedStackRanges.clear();
 
+    for (const auto n : out.cpuFct->bc->localVars)
+    {
+        const auto over = n->resolvedSymbolOverload();
+        if (!over)
+            continue;
+        const auto offset = out.cpuFct->getStackOffsetBC() + over->computedValue.storageOffset;
+        aliasStack.push_back(offset, over->typeInfo->sizeOf);
+    }
+
     auto inst = out.getFirstInstruction();
     while (!inst->isEnd())
     {
@@ -556,6 +567,8 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
+    //if (!out.cpuFct->bc->getPrintName().containsNoCase("day2B1"))
+    //    return;
 
     bool globalChanged = true;
     while (globalChanged)
