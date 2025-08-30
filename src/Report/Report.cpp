@@ -106,9 +106,11 @@ namespace
                 if (notes[j]->startLocation.line == notes[i]->startLocation.line && notes[j]->startLocation.column == notes[i]->startLocation.column)
                 {
                     if (!notes[i]->hint.empty())
+                    {
                         notes[i]->hint += "\n=> ";
-                    notes[i]->hint += notes[j]->textMsg;
-                    notes[j]->textMsg.clear();
+                        notes[i]->hint += notes[j]->textMsg;
+                        notes[j]->textMsg.clear();
+                    }
                     continue;
                 }
             }

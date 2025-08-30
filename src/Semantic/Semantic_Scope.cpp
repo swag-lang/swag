@@ -85,7 +85,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
                 return context->report(err);
             }
 
-            Diagnostic err{identifier, formErr(Err0681, identifier->token.cstr())};
+            Diagnostic err{identifier, identifier->token, formErr(Err0681, identifier->token.cstr())};
 
             // Call to a function?
             if (testedOver.size() == 1)
