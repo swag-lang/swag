@@ -42,10 +42,13 @@ func filter(file: File.FileInfo)->bool
     var binPath   = Path.combine(dataPath, "bin")
 
     // Enumerate list of files to release
-    var options: Directory.EnumerationOptions
-    options.wantDirectories = false
-    options.recurse         = true
-    options.filterLambda    = &filter
+    with var options: Directory.EnumerationOptions
+    {
+        .wantDirectories = false
+        .recurse         = true
+        .filterLambda    = &filter
+    }
+
     var allFiles = try Directory.enumerate(binPath, options)
 
     // Generate list of files

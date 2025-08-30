@@ -1130,7 +1130,7 @@ bool ByteCodeGen::emitLambdaCall(ByteCodeGenContext* context)
     SWAG_CHECK(emitIdentifier(context));
     if (node->resultRegisterRc.empty())
         Report::internalError(node, "emitLambdaCall, no result register");
-    
+
     node->allocateExtension(ExtensionKind::Misc);
     node->extMisc()->additionalRegisterRC = node->resultRegisterRc;
     const auto allParams                  = node->children.empty() ? nullptr : node->lastChild();
@@ -1409,8 +1409,9 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0442, funcNode->token.cstr())};
-        return context->report(err, Diagnostic::hereIs(srcNode, form("the %s [[%s]] is marked with [[throw]] and may raise errors you should handle", Naming::kindName(srcNode).cstr(), srcNode->token.cstr())));
+        Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0442, funcNode->token.cstr())};
+        err.addNote(form("the %s [[%s]] is marked with [[throw]] and may raise errors you should handle", Naming::kindName(srcNode).cstr(), srcNode->token.cstr()));
+        return context->report(err);
     }
 
     if (!raiseErrors)
