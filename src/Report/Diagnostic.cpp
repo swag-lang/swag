@@ -233,7 +233,7 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
             if (isSymbol && inside.length() <= 1)
             {
                 if (inside == ',')
-                    replace += " $$A$$ comma [',']";
+                    replace += " $$A$$ comma [[',']]";
                 else if (inside == ';')
                     replace += " $$A$$ semicolon [[';']]";
                 else if (inside == '(')
