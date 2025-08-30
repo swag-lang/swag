@@ -56,7 +56,7 @@ namespace
                     continue;
                 }
 
-                if (SWAG_IS_EOL(*pz))
+                if (SWAG_IS_EOL(*pz)) 
                 {
                     tokens.push_back(one);
                     one.clear();
@@ -70,6 +70,22 @@ namespace
                     }
                     continue;
                 }
+
+                if (*pz == ',' && one.length() > (maxLength - (maxLength / 3))) 
+                {
+                    one += ",";
+                    tokens.push_back(one);
+                    one.clear();
+                    extraLength = 0;
+                    i--;
+                    pz++;
+                    while (i && SWAG_IS_BLANK(*pz))
+                    {
+                        pz++;
+                        i--;
+                    }
+                    continue;
+                }                
 
                 one += *pz++;
                 i--;

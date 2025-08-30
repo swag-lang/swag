@@ -2,6 +2,7 @@
 using Gui
 
 const CmdIdSelectAll       = "CmdIdSelectAll"
+const CmdIdSelectSameAll   = "CmdIdSelectSameAll"
 const CmdIdDeSelectAll     = "CmdIdDeSelectAll"
 const CmdIdInvertSelection = "CmdIdInvertSelection"
 const CmdIdDeleteSelection = "CmdIdDeleteSelection"
@@ -15,7 +16,7 @@ impl IActionUI for ActionSelection
     {
         switch cxt.id
         {
-        case CmdIdSelectAll, CmdIdDeSelectAll, CmdIdInvertSelection, CmdIdDeleteSelection, CmdIdSnap, CmdIdFreeze:
+        case CmdIdSelectAll, CmdIdSelectSameAll, CmdIdDeSelectAll, CmdIdInvertSelection, CmdIdDeleteSelection, CmdIdSnap, CmdIdFreeze:
             return true
         }
 
@@ -36,6 +37,11 @@ impl IActionUI for ActionSelection
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count
             evt.name     = "Select All Objects"
+
+        case CmdIdSelectSameAll:
+            evt.setFlags |= .Disabled | .Name
+            evt.disabled = !capture or !capture.forms.count or !hasSel
+            evt.name     = "Select All Same Objects"
 
         case CmdIdDeSelectAll:
             evt.setFlags |= .Disabled | .Name
@@ -78,6 +84,17 @@ impl IActionUI for ActionSelection
             capture.selection.clear()
             for capture.forms:
                 capture.selection.add(@index)
+            capture.selectionHasChanged()
+
+        case CmdIdSelectSameAll:
+            let firstType = capture.getSelectedFormType()
+            capture.selection.clear()
+            foreach form in capture.forms
+            {
+                if @kindof(form) == firstType:
+                    capture.selection.add(@index)
+            }
+
             capture.selectionHasChanged()
 
         case CmdIdDeSelectAll:

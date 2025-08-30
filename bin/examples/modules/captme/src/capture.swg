@@ -957,6 +957,7 @@ impl Capture
         {
             .addSeparator()
             .addItem(CmdIdSelectAll)
+            .addItem(CmdIdSelectSameAll)
             .addItem(CmdIdDeSelectAll)
             .addSeparator()
             .addItem(CmdIdFlatten)

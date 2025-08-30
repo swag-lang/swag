@@ -540,6 +540,7 @@ impl MainWnd
             .addItem(CmdIdPaste)
             .addSeparator()
             .addItem(CmdIdSelectAll)
+            .addItem(CmdIdSelectSameAll)
             .addItem(CmdIdDeSelectAll)
             .addItem(CmdIdInvertSelection)
             .addSeparator()
