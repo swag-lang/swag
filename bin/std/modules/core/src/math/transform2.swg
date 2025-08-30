@@ -24,12 +24,15 @@ impl Transform2
     // Set transform to identity
     mtd setIdentity()
     {
-        me.m11 = 1
-        me.m12 = 0
-        me.m21 = 0
-        me.m22 = 1
-        me.m31 = 0
-        me.m32 = 0
+        with me
+        {
+            .m11 = 1
+            .m12 = 0
+            .m21 = 0
+            .m22 = 1
+            .m31 = 0
+            .m32 = 0
+        }
     }
 
     // Checks if the transform is the identity matrix
@@ -43,19 +46,19 @@ impl Transform2
     // Creates a rotation matrix, with a given center of rotation
     func createRotation(angle: f32, centerX, centerY: f32)->Transform2
     {
-        var result: retval = undefined
-
         let s  = Math.sin(angle)
         let c  = Math.cos(angle)
         let c1 = 1.0 - c
 
-        result.tx = (centerX * c1) + (centerY * s)
-        result.ty = (centerY * c1) - (centerX * s)
-
-        result.m11 = c
-        result.m12 = s
-        result.m21 = -s
-        result.m22 = c
+        with var result: retval = undefined
+        {
+            .tx  = (centerX * c1) + (centerY * s)
+            .ty  = (centerY * c1) - (centerX * s)
+            .m11 = c
+            .m12 = s
+            .m21 = -s
+            .m22 = c
+        }
 
         return result
     }
@@ -63,14 +66,15 @@ impl Transform2
     // Creates a scale matrix, with a given center
     func createScale(scaleX, scaleY: f32, centerX, centerY: f32)->Transform2
     {
-        var result: retval = undefined
-
-        result.m11 = scaleX
-        result.m12 = 0
-        result.m21 = 0
-        result.m22 = scaleY
-        result.tx  = centerX - scaleX * centerX
-        result.ty  = centerY - scaleY * centerY
+        with var result: retval = undefined
+        {
+            .m11 = scaleX
+            .m12 = 0
+            .m21 = 0
+            .m22 = scaleY
+            .tx  = centerX - scaleX * centerX
+            .ty  = centerY - scaleY * centerY
+        }
 
         return result
     }
@@ -78,14 +82,15 @@ impl Transform2
     // Creates a translation matrix
     func createTranslation(x, y: f32)->Transform2
     {
-        var result: retval = undefined
-
-        result.m11 = 1
-        result.m12 = 0
-        result.m21 = 0
-        result.m22 = 1
-        result.tx  = x
-        result.ty  = y
+        with var result: retval = undefined
+        {
+            .m11 = 1
+            .m12 = 0
+            .m21 = 0
+            .m22 = 1
+            .tx  = x
+            .ty  = y
+        }
 
         return result
     }
