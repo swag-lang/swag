@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "pch.h"
 #include "Backend/SCBE/Encoder/Micro/Optimize/ScbeOptimizer.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicro.h"
 #include "Backend/SCBE/Encoder/Micro/ScbeMicroInstruction.h"
