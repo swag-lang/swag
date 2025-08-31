@@ -149,7 +149,6 @@ namespace
     }
 }
 
-#pragma optimize("", off)
 bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     // What kind of thing to we search for?

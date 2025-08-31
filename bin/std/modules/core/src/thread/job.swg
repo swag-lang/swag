@@ -123,8 +123,8 @@ func removeJobNoLock(job: *Job)
 #[Swag.Discardable]
 func clearState(job: *Job, state: JobState) => Atomic.logicAnd(cast(*u32) &job.state, cast(u32) ~state)
 #[Swag.Discardable]
-func setState(job: *Job, state: JobState)   => Atomic.logicOr(cast(*u32) &job.state, cast(u32) state)
-func testState(job: *Job, state: JobState)  => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
+func setState(job: *Job, state: JobState) => Atomic.logicOr(cast(*u32) &job.state, cast(u32) state)
+func testState(job: *Job, state: JobState) => Atomic.get(cast(*u32) &job.state) & cast(u32) state != 0
 
 // Returns true is the job system has been initialized
 public func isSynchrone()->bool => g_numWorkers == 0

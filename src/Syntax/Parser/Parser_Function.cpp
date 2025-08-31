@@ -11,6 +11,7 @@
 #include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off) 
 
 bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result)
 {
@@ -928,6 +929,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
 
                 if (res && Tokenizer::isStartOfNewStatement(tokenParse))
                 {
+                    ParserPushFreezeFormat ff(this);
                     const auto returnNode   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, node);
                     returnNode->semanticFct = Semantic::resolveReturn;
                     Ast::addChildBack(returnNode, expr);
@@ -955,6 +957,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
 
                 if (res && Tokenizer::isStartOfNewStatement(tokenParse))
                 {
+                    ParserPushFreezeFormat ff(this);
                     const auto returnNode   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, stmt);
                     returnNode->semanticFct = Semantic::resolveReturn;
                     funcNode->content       = returnNode;

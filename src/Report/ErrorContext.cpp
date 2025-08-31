@@ -26,7 +26,6 @@ PushErrCxtStep::~PushErrCxtStep()
     cxt->errCxtSteps.pop_back();
 }
 
-#pragma optimize("", off)
 void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& notes)
 {
     diagnostic.contextNode = node;

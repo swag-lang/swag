@@ -279,7 +279,6 @@ namespace
         }
     }
 
-#pragma optimize("", off)
     void reportInternal(Log* log, const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)
     {
         if (g_CommandLine.errorOneLine)

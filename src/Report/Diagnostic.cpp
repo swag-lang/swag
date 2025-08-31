@@ -10,7 +10,6 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 #include <winternl.h>
-#pragma optimize("", off)
 
 constexpr int MAX_INDENT_BLANKS = 10;
 
