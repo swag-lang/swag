@@ -149,9 +149,9 @@ impl Vector3
     #[Swag.Inline]
     mtd set(x, y, z: f32)
     {
-        me.x = #me.x
-        me.y = #me.y
-        me.z = #me.z
+        me.x = x
+        me.y = y
+        me.z = z
     }
 
     // Returns the length (magnitude) of the vector.

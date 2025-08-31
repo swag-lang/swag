@@ -119,7 +119,7 @@ public impl Voice
     {
         if me.hasState(.Playing):
             return
-        me.playFlags = #me.playFlags
+        me.playFlags = playFlags
         me.playNative()
         me.setState(.Playing)
 

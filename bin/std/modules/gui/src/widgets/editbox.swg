@@ -1005,7 +1005,7 @@ impl EditBox
     // Sets the visual form of the EditBox.
     mtd setForm(form: EditBoxForm)
     {
-        me.form = #me.form
+        me.form = form
 
         #[Swag.Complete]
         switch me.form

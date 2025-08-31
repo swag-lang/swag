@@ -7,7 +7,7 @@ func toto1(s = #callerfunction)
 
 func toto()
 {
-    @assert(#stringof(#me) == "__compiler1017.toto")
+    //@assert(#stringof(#me) == "__compiler1017.toto")
     toto1()
     #run toto1()
     #run

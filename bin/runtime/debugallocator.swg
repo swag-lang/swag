@@ -158,8 +158,8 @@ impl DebugAllocator
     // Setup the allocator
     mtd setup(allocator: IAllocator)
     {
-        @assert(#me.allocator != null)
-        me.allocator = #me.allocator
+        @assert(allocator != null)
+        me.allocator = allocator
     }
 
     // Output to the console the list of all allocated blocks (leaks)

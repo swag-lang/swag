@@ -92,9 +92,6 @@ bool FormatAst::outputCompilerSpecialValue(FormatContext&, AstNode* node) const
 {
     switch (node->token.id)
     {
-        case TokenId::CompilerMe:
-            concat->addString("#me");
-            break;
         case TokenId::CompilerCallerFunction:
             concat->addString("#callerfunction");
             break;

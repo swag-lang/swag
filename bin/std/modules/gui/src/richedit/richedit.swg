@@ -286,7 +286,7 @@ impl RichEditCtrl
     // Set form
     mtd setForm(form: RichEditForm)
     {
-        me.form = #me.form
+        me.form = form
         let colors = me.getThemeColors()
 
         switch me.form

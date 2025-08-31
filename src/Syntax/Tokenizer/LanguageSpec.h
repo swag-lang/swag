@@ -244,8 +244,6 @@ struct LanguageSpec
     Utf8 name_at_rtflags;
     Utf8 name_at_err;
 
-    Utf8 name_sharp_me;
-
     Utf8 name_powf;
     Utf8 name_atan2f;
     Utf8 name_pow;

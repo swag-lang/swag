@@ -1,6 +1,6 @@
 func toto(x: s32)
 {
-    let y = #me.x
+    let y = x
     @assert(y == 10)
 }
 

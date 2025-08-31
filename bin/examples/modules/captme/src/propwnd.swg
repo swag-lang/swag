@@ -66,7 +66,7 @@ impl PropWnd
         if !capture or !capture.selection.count
         {
             let form   = me.getSelectedBaseForm()
-            let field  = assume Reflection.getField(#me.type, #me.name)
+            let field  = assume Reflection.getField(type, name)
             var valU32 = val
             Reflection.setFieldValue(form, field, &valU32, true)
         }
@@ -79,8 +79,8 @@ impl PropWnd
             let undo = capture.newUndo(.SetTypedValue)
             undo.valU32 = val
             if !common:
-                undo.mdlType = #me.type
-            undo.valRef = Reflection.getField(#me.type, #me.name)
+                undo.mdlType = type
+            undo.valRef = Reflection.getField(type, name)
             capture.pushUndo(undo)
         }
 
@@ -91,7 +91,7 @@ impl PropWnd
     #[Swag.Overload]
     mtd createSlider(name: string, minv, maxv: s64, val: f32)->*SliderCtrl
     {
-        with let ctrl = SliderCtrl.create(me.mainLayout, #me.name)
+        with let ctrl = SliderCtrl.create(me.mainLayout, name)
         {
             .setMinMaxS64(minv, maxv)
             .dockStyle = .Top

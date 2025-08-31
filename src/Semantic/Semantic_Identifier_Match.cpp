@@ -2183,39 +2183,3 @@ bool Semantic::matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch
     return true;
 }
 
-bool Semantic::matchSharpMe(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
-{
-    SWAG_VERIFY(identifier->ownerFct, context->report({identifier, toErr(Err0310)}));
-    AstNode* parent = identifier;
-    while (parent->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
-        parent = parent->ownerFct->parent;
-    SWAG_VERIFY(parent, context->report({parent, toErr(Err0310)}));
-
-    if (parent->ownerScope->is(ScopeKind::Struct) || parent->ownerScope->is(ScopeKind::Enum))
-    {
-        parent = parent->ownerScope->owner;
-        identifier->addAstFlag(AST_CAN_MATCH_INCOMPLETE);
-    }
-    else
-    {
-        SWAG_VERIFY(parent->ownerFct, context->report({parent, toErr(Err0310)}));
-        parent = parent->ownerFct;
-
-        // Force scope
-        if (!identifier->callParameters && identifier != identifierRef->lastChild())
-        {
-            identifier->addSemFlag(SEMFLAG_FORCE_SCOPE);
-            identifier->typeInfo        = g_TypeMgr->typeInfoVoid;
-            identifierRef->previousNode = identifier;
-            if (identifier->hasOwnerInline())
-                identifierRef->previousScope = identifier->ownerInline()->parametersScope;
-            else
-                identifierRef->previousScope = identifier->ownerFct->scope;
-            identifier->addAstFlag(AST_NO_BYTECODE);
-            return true;
-        }
-    }
-
-    addSymbolMatch(symbolsMatch, parent->resolvedSymbolName(), nullptr, 0);
-    return true;
-}

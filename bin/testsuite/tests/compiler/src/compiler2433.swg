@@ -1,7 +1,7 @@
 func append()
     where
     {
-        @assert(#stringof(#me) == "__compiler2433.append")
+        @assert(#curlocation.funcName == "append")
         return true
     }
 {

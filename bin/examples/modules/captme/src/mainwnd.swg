@@ -596,7 +596,7 @@ impl MainWnd
         {
             with let b = IconButton.create(me.editToolBar, {}, position: {0, 0, 60, 64})
             {
-                .id = #me.id
+                .id = id
                 .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
                 if canCheck:

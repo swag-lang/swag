@@ -1,4 +1,4 @@
-func toto(x: s32)->s32
+/*func toto(x: s32)->s32
 {
     //#print(#nameof(toto))
     if x == 1: return 1
@@ -9,4 +9,4 @@ func toto(x: s32)->s32
 {
     let x = toto(4)
     @assert(x == 10)
-}
+}*/

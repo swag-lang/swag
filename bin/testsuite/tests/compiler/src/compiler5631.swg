@@ -1,5 +1,5 @@
 /*#test
 {
-    @print(#nameof(#me))
+    @print(#curlocation.funcName)
 }
 */

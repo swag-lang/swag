@@ -1219,13 +1219,23 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     const auto sourceFile = node->token.sourceFile;
     const auto module     = sourceFile->module;
 
-    const auto str = sourceFile->path;
-    uint8_t*   addrName;
-    const auto offsetName = seg->addString(str, &addrName);
+    const auto strFile = sourceFile->path;
+    uint8_t*   addFileName;
+    const auto offsetFileName = seg->addString(strFile, &addFileName);
+
+    const AstNode* parent = node;
+    while (parent->ownerFct && parent->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) && parent->ownerFct->parent->ownerFct)
+        parent = parent->ownerFct->parent;
+
+    const Utf8 strFunc = parent->ownerFct ? parent->ownerFct->token.text : Utf8("");
+    uint8_t*   addFuncName;
+    const auto offsetFuncName = seg->addString(strFunc, &addFuncName);
 
     SourceLocationCache tmpLoc;
-    tmpLoc.loc.fileName.buffer = addrName;
-    tmpLoc.loc.fileName.count  = str.length();
+    tmpLoc.loc.fileName.buffer = addFileName;
+    tmpLoc.loc.fileName.count  = strFile.length();
+    tmpLoc.loc.funcName.buffer = addFuncName;
+    tmpLoc.loc.funcName.count  = strFunc.length();
     tmpLoc.loc.lineStart       = node->token.startLocation.line;
     tmpLoc.loc.colStart        = node->token.startLocation.column;
     tmpLoc.loc.lineEnd         = node->token.endLocation.line;
@@ -1234,7 +1244,8 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     ScopedLock lock(module->mutexSourceLoc);
 
     // Is the same location is in the cache ?
-    uint32_t crc  = Crc32::compute(addrName, str.length());
+    uint32_t crc  = Crc32::compute(addFileName, strFile.length());
+    crc           = Crc32::compute(addFuncName, strFunc.length(), crc);
     crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.startLocation.line), sizeof(uint32_t), crc);
     crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.startLocation.column), sizeof(uint32_t), crc);
     crc           = Crc32::compute(reinterpret_cast<uint8_t*>(&node->token.endLocation.line), sizeof(uint32_t), crc);
@@ -1249,7 +1260,8 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
                 l.loc.lineEnd == node->token.endLocation.line &&
                 l.loc.colEnd == node->token.endLocation.column &&
                 l.storageSegment == seg &&
-                !strncmp(static_cast<const char*>(l.loc.fileName.buffer), reinterpret_cast<const char*>(addrName), l.loc.fileName.count))
+                !strncmp(static_cast<const char*>(l.loc.funcName.buffer), reinterpret_cast<const char*>(addFileName), l.loc.funcName.count) &&
+                !strncmp(static_cast<const char*>(l.loc.fileName.buffer), reinterpret_cast<const char*>(addFileName), l.loc.fileName.count))
             {
                 *storageOffset = l.storageOffset;
                 return;
@@ -1258,8 +1270,10 @@ void ByteCodeGen::computeSourceLocation(const JobContext* context, AstNode* node
     }
 
     SwagSourceCodeLocation* loc;
-    const auto              offset = seg->reserve(sizeof(SwagSourceCodeLocation), reinterpret_cast<uint8_t**>(&loc), sizeof(void*));
-    seg->addInitPtr(offset, offsetName);
+
+    const auto offset = seg->reserve(sizeof(SwagSourceCodeLocation), reinterpret_cast<uint8_t**>(&loc), sizeof(void*));
+    seg->addInitPtr(offset, offsetFileName);
+    seg->addInitPtr(offset + sizeof(SwagSlice), offsetFuncName);
     std::copy_n(&tmpLoc.loc, 1, loc);
 
     // Store in the cache

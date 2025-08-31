@@ -83,6 +83,7 @@ struct SwagAny
 struct SwagSourceCodeLocation
 {
     SwagSlice fileName;
+    SwagSlice funcName;
     uint32_t  lineStart, colStart;
     uint32_t  lineEnd,   colEnd;
 };

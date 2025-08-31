@@ -322,7 +322,6 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doCompilerTag(parent, result));
             break;
 
-        case TokenId::CompilerMe:
         case TokenId::CompilerCurLocation:
         case TokenId::CompilerLocation:
         case TokenId::CompilerSizeOf:
@@ -1447,7 +1446,6 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
         case TokenId::Identifier:
         case TokenId::CompilerUp:
-        case TokenId::CompilerMe:
         {
             AstNode* exprNode    = nullptr;
             AstNode* multi       = nullptr;
@@ -1524,7 +1522,6 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
         case TokenId::SymLeftParen:
         case TokenId::Identifier:
         case TokenId::CompilerUp:
-        case TokenId::CompilerMe:
             SWAG_CHECK(doLeftExpressionVar(parent, result, IDENTIFIER_ZERO, VAR_DECL_FLAG_ZERO, withNode));
             Ast::removeFromParent(*result);
             return true;

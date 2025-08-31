@@ -454,7 +454,6 @@ void initErrors()
     SWAG_ERROR(Err0307, "invalid [[#load]]                                 $ cannot use [[#load]] outside of [[module.swg]] or [[.swgs]] files                                                                        $ ");
     SWAG_ERROR(Err0308, "invalid [[#macro]]                                $ cannot use [[#macro]] outside of a [[#[Swag.Macro]]] function                                                                            $ ");
     SWAG_ERROR(Err0309, "invalid [[#placeholder]]                          $ cannot use [[#placeholder]] outside of a top-level scope                                                                                 $ ");
-    SWAG_ERROR(Err0310, "invalid [[#me]]                                   $ cannot use [[#me]] outside functions                                                                                                     $ ");
     SWAG_ERROR(Err0311, "invalid [[#up]]                                   $ cannot use [[#up]] outside of a [[#[Swag.Macro]]] function                                                                               $ ");
     SWAG_ERROR(Err0312, "invalid [[%s]]                                    $ cannot combine [[%s]] with [[%s]]                                                                                                        $ ");
     SWAG_ERROR(Err0313, "invalid [[%s]]                                    $ cannot combine [[%s]] with another [[%s]]                                                                                                $ ");
@@ -932,6 +931,7 @@ void initErrors()
 
     SWAG_ERROR(Err0668, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]]                                                                                                 $ ");
     
+    SWAG_ERROR(Err0310, nullptr);
     SWAG_ERROR(Err0468, nullptr);
     SWAG_ERROR(Err0060, nullptr);
     SWAG_ERROR(Err0079, nullptr);

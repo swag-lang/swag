@@ -42,7 +42,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
-        checkFormat(#nameof(#me), fmt, values)
+        checkFormat(#curlocation.funcName, fmt, values)
         return true
     }
 {
@@ -78,7 +78,7 @@ func toString(fmt: string, values: ...)->String
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
-        checkFormat(#nameof(#me), fmt, values)
+        checkFormat(#curlocation.funcName, fmt, values)
         return true
     }
 {
@@ -96,7 +96,7 @@ func toStringTemp(fmt: string, values: ...)->string
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
-        checkFormat(#nameof(#me), fmt, values)
+        checkFormat(#curlocation.funcName, fmt, values)
         return true
     }
 {
@@ -115,7 +115,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     {
         if !#isconstexpr(fmt) or !#isconstexpr(values):
             return true
-        checkFormat(#nameof(#me), fmt, values)
+        checkFormat(#curlocation.funcName, fmt, values)
         return true
     }
 {

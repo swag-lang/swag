@@ -78,7 +78,7 @@ void Llvm::createRuntime(LlvmEncoder& pp)
         I32_TY(),                                                       // hasError
         };
 
-        static_assert(sizeof(SwagContext) == 1600);
+        static_assert(sizeof(SwagContext) == 1616);
         pp.contextTy = llvm::StructType::create(context, members, "SwagContext");
         SWAG_ASSERT(pp.contextTy->isSized());
     }

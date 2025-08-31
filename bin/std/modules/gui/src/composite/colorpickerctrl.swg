@@ -403,7 +403,7 @@ impl ColorPickerCtrl
     // Change the display mode
     mtd setMode(mode: ColorPickerViewMode)
     {
-        me.mode = #me.mode
+        me.mode = mode
         switch me.mode
         {
         case SaturationLightness:
@@ -437,7 +437,7 @@ impl ColorPickerCtrl
     // Set the selected color but does not change alpha
     mtd setColorKeepAlpha(color: Color)
     {
-        var col = #me.color
+        var col = color
         col.a = me.color.a
         me.setColor(col)
     }
@@ -445,7 +445,7 @@ impl ColorPickerCtrl
     // Set the selected color
     mtd setColor(color: Color)
     {
-        var col = #me.color
+        var col = color
         if !me.pickerFlags.has(.Alpha):
             col.a = 255
 

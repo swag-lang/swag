@@ -147,7 +147,7 @@ impl Dialog
     #[Swag.Discardable]
     mtd addButton(str: string, id: WndId, isDefault: bool = false)->*PushButton
     {
-        with let btn = PushButton.create(me.wndBottom, str, {}, #me.id)
+        with let btn = PushButton.create(me.wndBottom, str, {}, id)
         {
             .form = isDefault ? .Default : .Strong
 
@@ -160,7 +160,7 @@ impl Dialog
             me.buttons.add(btn)
         }
 
-        if #me.id == BtnCancel or #me.id == BtnNo:
+        if id == BtnCancel or id == BtnNo:
             me.surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn

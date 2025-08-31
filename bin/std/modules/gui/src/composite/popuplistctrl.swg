@@ -253,11 +253,11 @@ impl PopupListCtrl
         let item = me.items.newPtr()
         with item
         {
-            .name      = #me.name
-            .icon      = #me.icon
-            .id        = #me.id
-            .userData0 = #me.userData0
-            .userData1 = #me.userData1
+            .name      = name
+            .icon      = icon
+            .id        = id
+            .userData0 = userData0
+            .userData1 = userData1
         }
 
         if item.icon.isValid():

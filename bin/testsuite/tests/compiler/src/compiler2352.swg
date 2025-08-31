@@ -7,6 +7,6 @@ impl AA
 {
     func toto(me, x: s32)
     {
-        me.x = #me.x
+        me.x = x
     }
 }

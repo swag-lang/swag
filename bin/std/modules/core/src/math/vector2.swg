@@ -139,8 +139,8 @@ impl Vector2
     #[Swag.Inline]
     mtd set(x, y: f32)
     {
-        me.x = #me.x
-        me.y = #me.y
+        me.x = x
+        me.y = y
     }
 
     // Returns the length (magnitude) of the vector.

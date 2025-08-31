@@ -45,7 +45,7 @@ impl EditCtrl
 
         with let ctrl = Wnd.create'EditCtrl(parent, pos, id)
         {
-            .label                   = Label.create(ctrl, #me.name, {})
+            .label                   = Label.create(ctrl, name, {})
             .label.horzAlignmentText = .Right
             .edit                    = EditBox.create(ctrl, text, {})
             .edit.editBoxFlags       = flags

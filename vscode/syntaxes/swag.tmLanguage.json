@@ -197,7 +197,7 @@
       "patterns": [
         {
           "name": "constant.character.escape",
-          "match": "(#)(tokenpos|curlocation|file|line|cfg|os|arch|cpu|module|backend|me|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos)"
+          "match": "(#)(tokenpos|curlocation|file|line|cfg|os|arch|cpu|module|backend|callerlocation|callerfunction|swagversion|swagrevision|swagbuildnum|swagos)"
         }
       ]
     },

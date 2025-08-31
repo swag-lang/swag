@@ -930,6 +930,7 @@ namespace Swag
     struct SourceCodeLocation
     {
         fileName:      string     // Full path name of the source file
+        funcName:      string     // Name of the function
         lineStart:     u32        // Start line (starts at 0)
         colStart:      u32        // Start column
         lineEnd:       u32        // End line

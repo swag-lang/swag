@@ -34,10 +34,10 @@ impl Icon
     // Initialize the icon from an image list
     mtd set(imageList: *ImageList, index: s32, sizeX, sizeY: f32 = 0)
     {
-        me.imageList = #me.imageList
-        me.index     = #me.index
-        let sx = #me.sizeX orelse cast(f32) #me.imageList.frameSizeX
-        let sy = #me.sizeY orelse cast(f32) #me.imageList.frameSizeY
+        me.imageList = imageList
+        me.index     = index
+        let sx = sizeX orelse cast(f32) imageList.frameSizeX
+        let sy = sizeY orelse cast(f32) imageList.frameSizeY
         me.sizeX = sx
         me.sizeY = sy
     }

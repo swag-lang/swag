@@ -40,7 +40,7 @@ impl ComboCtrl
 
         with let ctrl = Wnd.create'ComboCtrl(parent, pos, id)
         {
-            .label                   = Label.create(ctrl, #me.name)
+            .label                   = Label.create(ctrl, name)
             .label.horzAlignmentText = .Right
 
             .combo = ComboBox.create(ctrl)

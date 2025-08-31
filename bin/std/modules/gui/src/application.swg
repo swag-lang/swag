@@ -722,7 +722,7 @@ impl Application
     mtd postQuitEvent(quitCode: s32 = 0)
     {
         let evt = Event.create'QuitEvent()
-        evt.quitCode = #me.quitCode
+        evt.quitCode = quitCode
         me.postEvent(evt)
     }
 

@@ -80,8 +80,8 @@ impl IForm for FormLine
 
     mtd impl scaleBaseForm(scale: f32)
     {
-        me.xa, me.xb *= #me.scale
-        me.ya, me.yb *= #me.scale
+        me.xa, me.xb *= scale
+        me.ya, me.yb *= scale
     }
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)

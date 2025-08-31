@@ -56,9 +56,9 @@ impl IconBar
     {
         Debug.assert(parent != null)
         var pos = position
-        pos.height = #me.iconSize
+        pos.height = iconSize
         let res = Wnd.create'IconBar(parent, null, pos, id)
-        res.iconSize = #me.iconSize
+        res.iconSize = iconSize
         return res
     }
 

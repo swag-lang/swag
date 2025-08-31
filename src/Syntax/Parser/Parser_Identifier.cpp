@@ -154,7 +154,6 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     if (tokenParse.isNot(TokenId::Identifier) &&
         tokenParse.isNot(TokenId::NativeType) &&
         tokenParse.isNot(TokenId::SymQuestion) &&
-        tokenParse.isNot(TokenId::CompilerMe) &&
         !Tokenizer::isIntrinsicReturn(tokenParse.token.id) &&
         !Tokenizer::isIntrinsicNoReturn(tokenParse.token.id))
     {

@@ -160,10 +160,10 @@ impl Vector4
     #[Swag.Inline]
     mtd set(x, y, z, w: f32)
     {
-        me.x = #me.x
-        me.y = #me.y
-        me.z = #me.z
-        me.w = #me.w
+        me.x = x
+        me.y = y
+        me.z = z
+        me.w = w
     }
 
     // Returns the length (magnitude) of the vector.

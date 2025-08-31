@@ -133,9 +133,9 @@ impl RadioButton
     // Set the checked state
     mtd setChecked(checked: bool)
     {
-        if me.checked == #me.checked:
+        if me.checked == checked:
             return
-        me.checked = #me.checked
+        me.checked = checked
         me.invalidate()
     }
 }

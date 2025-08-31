@@ -255,9 +255,9 @@ impl FrameWnd
     // Set the frame wnd form
     mtd setFrameForm(form: FrameWndForm)
     {
-        if me.frameForm == #me.form:
+        if me.frameForm == form:
             return
-        me.frameForm = #me.form
+        me.frameForm = form
 
         #[Swag.Complete]
         switch me.frameForm

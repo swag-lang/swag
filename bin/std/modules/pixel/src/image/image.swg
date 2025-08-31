@@ -71,9 +71,9 @@ impl Image
     mtd init(width, height: s32, pf: PixelFormat)
     {
         me.pixels.clear()
-        me.width  = #me.width
-        me.height = #me.height
-        me.pf     = #me.pf
+        me.width  = width
+        me.height = height
+        me.pf     = pf
 
         me.bpp    = me.pf.bpp()
         me.bpp8   = cast(u8) (me.bpp >> 3)

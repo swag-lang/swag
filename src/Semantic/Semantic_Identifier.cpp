@@ -906,10 +906,6 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
             YIELD();
         }
 
-        // Because of #me
-        if (identifier->hasSemFlag(SEMFLAG_FORCE_SCOPE))
-            return true;
-
         if (symbolsMatch.empty())
         {
             SWAG_ASSERT(identifierRef->hasAstFlag(AST_SILENT_CHECK));

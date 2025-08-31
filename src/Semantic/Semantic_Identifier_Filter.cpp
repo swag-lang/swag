@@ -5,6 +5,7 @@
 #include "Syntax/AstFlags.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/SourceFile.h"
+#pragma optimize("", off)
 
 namespace
 {
@@ -513,13 +514,25 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
 
         // Inline Function Parameters Over Call Site Symbols
         // An inline parameter has priority over a symbol coming from the call site.
-        if (curMatch->symbolOverload->hasFlag(OVERLOAD_VAR_INLINE) && !curMatch->remove)
+        if (curMatch->symbolOverload->fromInlineParam &&
+            curMatch->symbolOverload->node->hasOwnerInline())
         {
             for (uint32_t j = 0; j < countMatches; j++)
             {
                 if (i == j)
                     continue;
-                if (matches[j]->symbolOverload->hasFlag(OVERLOAD_VAR_INLINE))
+                if (matches[j]->symbolOverload->fromInlineParam &&
+                    matches[j]->symbolOverload->node->hasOwnerInline())
+                    continue;
+                matches[j]->remove = true;
+            }
+        }
+
+        if (curMatch->symbolOverload->hasFlag(OVERLOAD_VAR_INLINE) && !curMatch->remove)
+        {
+            for (uint32_t j = 0; j < countMatches; j++)
+            {
+                if (i == j)
                     continue;
 
                 // If the competing symbol is from outside the inline function scope (i.e., from call site)
@@ -528,7 +541,7 @@ bool Semantic::filterMatchesCompare(const SemanticContext* context, VectorNative
                     matches[j]->remove = true;
                 }
             }
-        }        
+        }
     }
 
     // Direct Scope Over Alternative Context Scopes

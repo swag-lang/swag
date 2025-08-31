@@ -103,7 +103,7 @@ impl MainWnd
 {
     mtd setBottomSize(bottomSize: BottomSize)
     {
-        me.bottomSize = #me.bottomSize
+        me.bottomSize = bottomSize
         switch me.bottomSize
         {
         case Small:

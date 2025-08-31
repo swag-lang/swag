@@ -662,7 +662,7 @@ public impl MenuCtrl
     {
         with let res = Wnd.create'MenuCtrl(parent.getTopView(), null, {}, id)
         {
-            .owner = owner orelse #me.parent
+            .owner = owner orelse parent
             .setAllPaddings(.getThemeMetrics().menuPopup_Padding)
             .wndFlags |= .Hidden
         }
@@ -690,7 +690,7 @@ public impl MenuCtrl
     #[Swag.Overload]
     mtd addItem(id: WndId)
     {
-        me.addItem(null, #me.id)
+        me.addItem(null, id)
     }
 
     // Add a new item
@@ -699,9 +699,9 @@ public impl MenuCtrl
     {
         with let mitem = me.items.newPtr()
         {
-            .name      = #me.name
-            .icon      = #me.icon
-            .id        = #me.id
+            .name      = name
+            .icon      = icon
+            .id        = id
             .rightName = rightName
             .disabled  = disabled
             .checked   = checked
@@ -715,7 +715,7 @@ public impl MenuCtrl
     #[Swag.Overload]
     mtd addPopup(popup: *MenuCtrl, id: WndId)
     {
-        me.addPopup(null, popup, id: #me.id)
+        me.addPopup(null, popup, id: id)
     }
 
     // Add a new popup item
@@ -724,10 +724,10 @@ public impl MenuCtrl
     {
         with let mitem = me.items.newPtr()
         {
-            .name  = #me.name
-            .icon  = #me.icon
-            .popup = #me.popup
-            .id    = #me.id
+            .name  = name
+            .icon  = icon
+            .popup = popup
+            .id    = id
         }
 
         popup.ownerMenu = me

@@ -72,9 +72,9 @@ impl ScratchAllocator
     // be called at an early stage
     mtd setCapacity(newCapacity: u64, allocator: IAllocator)
     {
-        @assert(#me.allocator != null)
+        @assert(allocator != null)
         me.release()
-        me.allocator = #me.allocator
+        me.allocator = allocator
         me.capacity  = newCapacity
 
         var req: AllocatorRequest

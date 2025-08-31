@@ -656,7 +656,6 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
             break;
 
         case TokenId::CompilerUp:
-        case TokenId::CompilerMe:
         case TokenId::Identifier:
         case TokenId::SymLeftParen:
         case TokenId::KwdDeRef:
@@ -719,7 +718,6 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         case TokenId::CompilerUp:
         case TokenId::SymLeftParen:
-        case TokenId::CompilerMe:
 
         case TokenId::IntrinsicAtomicAdd:
         case TokenId::IntrinsicAtomicAnd:

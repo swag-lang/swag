@@ -160,25 +160,17 @@ bool Semantic::collectScopeHierarchy(Scope*                           startScope
         return true;
     }
 
-    // Only deal with the previous scope if the previous node wants to
-    bool addAlternative = true;
-    if (identifierRef->previousNode && identifierRef->previousNode->hasSemFlag(SEMFLAG_FORCE_SCOPE))
-        addAlternative = false;
-
-    if (addAlternative)
+    // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
+    // relevant and we cannot use it
+    if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->hasExtension())
     {
-        // A namespace scope can in fact be shared between multiple nodes, so the 'owner' is not
-        // relevant and we cannot use it
-        if (startScope->isNot(ScopeKind::Namespace) && startScope->owner->hasExtension())
-        {
-            collectAlternativeScopes(startScope->owner, scopeHierarchy);
-            collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
-        }
+        collectAlternativeScopes(startScope->owner, scopeHierarchy);
+        collectAlternativeScopeVars(startScope->owner, scopeHierarchy, scopeHierarchyVars);
     }
 
     // As we are looking first in a specific scope, we do not collect "global" scopes
     VectorNative<CollectedScope> result;
-    for (auto &h: scopeHierarchy)
+    for (auto& h : scopeHierarchy)
     {
         if (h.scope->is(ScopeKind::Namespace))
             continue;
@@ -219,13 +211,6 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     if (identifier->token.is(g_LangSpec->name_retval))
     {
         SWAG_CHECK(matchRetval(context, symbolsMatch, identifier));
-        return true;
-    }
-
-    // #me
-    if (identifier->token.is(g_LangSpec->name_sharp_me))
-    {
-        SWAG_CHECK(matchSharpMe(context, symbolsMatch, identifierRef, identifier));
         return true;
     }
 

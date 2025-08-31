@@ -987,7 +987,7 @@ impl ListCtrl
     mtd createLine(name: string, icon: Icon = {}, parentLine: *ListLine = null)->*ListLine
     {
         let line = me.createLine(parentLine)
-        line.setItem(0, #me.name, #me.icon)
+        line.setItem(0, name, icon)
         return line
     }
 
@@ -1006,7 +1006,7 @@ impl ListCtrl
     mtd addColumn(name: string, width: f32 = 100, icon: Icon = {})
     {
         Debug.assert(me.header != null)
-        me.header.addItem(#me.name, width, #me.icon)
+        me.header.addItem(name, width, icon)
     }
 
     // Set the column width

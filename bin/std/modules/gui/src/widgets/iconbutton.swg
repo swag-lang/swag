@@ -518,7 +518,7 @@ impl IconButton
     // Set the button form
     mtd setForm(form: IconButtonForm)
     {
-        me.form = #me.form
+        me.form = form
         me.invalidate()
     }
 

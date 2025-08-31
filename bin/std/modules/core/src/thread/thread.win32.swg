@@ -71,8 +71,8 @@ impl Thread
         me.userLambda = lambda
         me.requestEnd = false
 
-        me.userParam = #me.userParam
-        try me.setPriority(#me.priority)
+        me.userParam = userParam
+        try me.setPriority(priority)
     }
 
     // Resume the given thread, if it was paused
@@ -87,7 +87,7 @@ impl Thread
     {
         Debug.assert(me.isValid())
 
-        let newPrio = #me.priority
+        let newPrio = priority
         if me.priority == newPrio:
             return
         me.priority = newPrio
