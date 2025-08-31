@@ -1,8 +1,8 @@
-#global testerror "Err0630"
+//#global testerror "Err0630"
 
 interface toto
 {
-    func print(me) = &titi;
+    func print(me) => &titi
 }
 
 func titi()

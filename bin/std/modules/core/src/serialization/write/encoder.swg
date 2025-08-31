@@ -339,16 +339,16 @@ impl IEncoder for Encoder
         }
     }
 
-    mtd impl writeBool(value: bool)     = me.serializer.writeNative(value)
-    mtd impl writeS8(value: s8)         = me.serializer.writeNative(value)
-    mtd impl writeS16(value: s16)       = me.serializer.writeNative(value)
-    mtd impl writeS32(value: s32)       = me.serializer.writeNative(value)
-    mtd impl writeS64(value: s64)       = me.serializer.writeNative(value)
-    mtd impl writeU8(value: u8)         = me.serializer.writeNative(value)
-    mtd impl writeU16(value: u16)       = me.serializer.writeNative(value)
-    mtd impl writeU32(value: u32)       = me.serializer.writeNative(value)
-    mtd impl writeU64(value: u64)       = me.serializer.writeNative(value)
-    mtd impl writeF32(value: f32)       = me.serializer.writeNative(value)
-    mtd impl writeF64(value: f64)       = me.serializer.writeNative(value)
-    mtd impl writeString(value: string) = me.serializer.writeNative(value)
+    mtd impl writeBool(value: bool)     => me.serializer.writeNative(value)
+    mtd impl writeS8(value: s8)         => me.serializer.writeNative(value)
+    mtd impl writeS16(value: s16)       => me.serializer.writeNative(value)
+    mtd impl writeS32(value: s32)       => me.serializer.writeNative(value)
+    mtd impl writeS64(value: s64)       => me.serializer.writeNative(value)
+    mtd impl writeU8(value: u8)         => me.serializer.writeNative(value)
+    mtd impl writeU16(value: u16)       => me.serializer.writeNative(value)
+    mtd impl writeU32(value: u32)       => me.serializer.writeNative(value)
+    mtd impl writeU64(value: u64)       => me.serializer.writeNative(value)
+    mtd impl writeF32(value: f32)       => me.serializer.writeNative(value)
+    mtd impl writeF64(value: f64)       => me.serializer.writeNative(value)
+    mtd impl writeString(value: string) => me.serializer.writeNative(value)
 }

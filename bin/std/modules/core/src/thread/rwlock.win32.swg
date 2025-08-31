@@ -11,8 +11,15 @@ struct RWLock
 
 impl RWLock
 {
-    mtd lock()   = me.lockExclusive()
-    mtd unlock() = me.unlockExclusive()
+    mtd lock()
+    {
+        me.lockExclusive()
+    }
+
+    mtd unlock()
+    {
+        me.unlockExclusive()
+    }
 
     // Try to lock the mutex, and return 'true' if it's the case
     mtd tryLockExclusive()->bool

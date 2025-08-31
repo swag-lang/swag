@@ -164,7 +164,7 @@ bool FormatAst::outputFuncDecl(FormatContext& context, AstNode* node, uint32_t m
     {
         concat->alignToColumn(startColumn + maxLenSignature);
         concat->addBlank();
-        concat->addChar('=');
+        concat->addString("=>");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, funcDecl->content->firstChild()));
         concat->addEol();

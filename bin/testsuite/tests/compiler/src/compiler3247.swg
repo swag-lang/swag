@@ -10,7 +10,7 @@ struct Color
 impl Color
 {
     #[Complete, Inline, ConstExpr]
-    func opAffect(me, argb: u32) = me.argb = argb
+    func opAffect(me, argb: u32) => me.argb = argb
 
     #[ConstExpr]
     func getDarken(col: u32)->u32

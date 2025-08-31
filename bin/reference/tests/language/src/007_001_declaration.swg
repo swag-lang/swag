@@ -26,10 +26,10 @@ func sum(x, y: s32) => x + y                        // Return type is inferred a
 
 /**
 # Shorter Syntax for Functions Without Return Values
-When a function does not return a value, a concise syntax can be used. Instead of a full function
-body, a single expression can be provided after `=`.
+When a function does not return a value, a concise syntax can be used also. Instead of a full function
+body, a single expression can be provided after `=>`.
 */
-func print(val: string) = @print(val)               // Prints the given string value
+func print(val: string) => @print(val)               // Prints the given string value
 
 /**
 # Defining Parameters in Functions

@@ -774,9 +774,9 @@ impl Painter
         me.curState.colorMask = cmd.colorMask
     }
 
-    mtd setColorMaskColor() = me.setColorMask(true, true, true, false)
-    mtd setColorMaskFull()  = me.setColorMask(true, true, true, true)
-    mtd setColorMaskAlpha() = me.setColorMask(false, false, false, true)
+    mtd setColorMaskColor() => me.setColorMask(true, true, true, false)
+    mtd setColorMaskFull()  => me.setColorMask(true, true, true, true)
+    mtd setColorMaskAlpha() => me.setColorMask(false, false, false, true)
 
     // Bind a render target
     mtd bindRenderTarget(tgt: *RenderTarget, paintAlpha = false)

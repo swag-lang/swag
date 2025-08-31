@@ -18,7 +18,7 @@ public func destroyEngine()
 }
 
 // Set the general output volume
-public func setOutputVolume(volume: f32) throw = g_Driver.setOutputVolume(volume)
+public func setOutputVolume(volume: f32) throw => g_Driver.setOutputVolume(volume)
 
 // Get the general output volume
 public func getOutputVolume()->f32 => g_Driver.getOutputVolume()

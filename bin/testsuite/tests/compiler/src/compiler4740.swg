@@ -11,4 +11,4 @@ func driver()->*A { return &a; }
 
 #[Swag.Overload]
 func set(x: s32) {}
-func set1(x: s32) = driver().set(x)
+func set1(x: s32) => driver().set(x)

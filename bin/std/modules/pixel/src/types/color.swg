@@ -25,15 +25,15 @@ impl Color
 {
     // Assignment operator for u32 ARGB value.
     #[Complete, Inline, ConstExpr, Overload]
-    func opAffect(me, argb: u32) = me.argb = argb
+    func opAffect(me, argb: u32) => me.argb = argb
 
     // Assignment operator for 'Argb' enum value.
     #[Complete, Inline, Implicit, ConstExpr, Overload]
-    func opAffect(me, argb: Argb) = me.argb = cast(u32) argb
+    func opAffect(me, argb: Argb) => me.argb = cast(u32) argb
 
     // Assignment operator for color name string.
     #[Complete, Inline, ConstExpr, Overload]
-    func opAffect(me, name: string) = me.argb = cast(u32) Argb.fromName(name)
+    func opAffect(me, name: string) => me.argb = cast(u32) Argb.fromName(name)
 
     // Equality comparison with u32 ARGB value.
     #[Inline, Overload]

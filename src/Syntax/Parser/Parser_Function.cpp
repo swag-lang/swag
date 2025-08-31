@@ -3,6 +3,7 @@
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Report.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
@@ -902,7 +903,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
         ParserPushFct   scopedFct(this, funcNode);
         AstNode*        resStmt = nullptr;
 
-        // One single return expression
+        // Single syntax for both expressions and statements
         if (tokenParse.is(TokenId::SymEqualGreater))
         {
             SWAG_CHECK(eatToken());
@@ -916,56 +917,64 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
                 funcNode->content = node;
 
                 ParserPushTryCatchAssume sc(this, node);
-                const auto               returnNode = Ast::newNode<AstReturn>(AstNodeKind::Return, this, node);
-                returnNode->semanticFct             = Semantic::resolveReturn;
-                funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
-                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
+
+                // First try to parse as expression (return statement)
+                tokenizer.saveState(tokenParse);
+                g_SilentError++;
+                AstNode*   expr = nullptr;
+                const auto res  = doExpression(funcNode, EXPR_FLAG_NONE, &expr);
+                g_SilentError--;
+                Ast::removeFromParent(expr);
+
+                if (res && Tokenizer::isStartOfNewStatement(tokenParse))
+                {
+                    const auto returnNode   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, node);
+                    returnNode->semanticFct = Semantic::resolveReturn;
+                    Ast::addChildBack(returnNode, expr);
+                    funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
+                }
+                else
+                {
+                    // Failed to parse as expression - try as statement instead
+                    tokenizer.restoreState(tokenParse);
+                    const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
+                    SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
+                }
             }
             else
             {
-                const auto stmt         = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, funcNode);
-                const auto returnNode   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, stmt);
-                returnNode->semanticFct = Semantic::resolveReturn;
-                funcNode->content       = returnNode;
-                funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
-                SWAG_CHECK(doExpression(returnNode, EXPR_FLAG_NONE, &dummyResult));
+                const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, funcNode);
+
+                // First try to parse as expression (return statement)
+                tokenizer.saveState(tokenParse);
+                g_SilentError++;
+                AstNode*   expr = nullptr;
+                const auto res  = doExpression(funcNode, EXPR_FLAG_NONE, &expr);
+                g_SilentError--;
+                Ast::removeFromParent(expr);
+
+                if (res && Tokenizer::isStartOfNewStatement(tokenParse))
+                {
+                    const auto returnNode   = Ast::newNode<AstReturn>(AstNodeKind::Return, this, stmt);
+                    returnNode->semanticFct = Semantic::resolveReturn;
+                    funcNode->content       = returnNode;
+                    funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_LAMBDA);
+                    Ast::addChildBack(returnNode, expr);
+                }
+                else
+                {
+                    // Failed to parse as expression - try as statement instead
+                    tokenizer.restoreState(tokenParse);
+                    funcNode->content = stmt;
+                    SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
+                }
             }
 
             funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM);
             funcNode->content->token.endLocation = tokenParse.token.startLocation;
             resStmt                              = funcNode->content;
         }
-
-        // One single statement
-        else if (tokenParse.is(TokenId::SymEqual))
-        {
-            SWAG_CHECK(eatToken());
-
-            if (funcNode->hasSpecFlag(AstFuncDecl::SPEC_FLAG_THROW))
-            {
-                const auto node   = Ast::newNode<AstTryCatchAssume>(AstNodeKind::Try, this, funcNode);
-                node->semanticFct = Semantic::resolveTryBlock;
-                node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_GENERATED | AstTryCatchAssume::SPEC_FLAG_BLOCK);
-                funcNode->content = node;
-
-                const auto stmt = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, node);
-
-                ParserPushTryCatchAssume sc(this, node);
-                SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
-            }
-            else
-            {
-                const auto stmt   = Ast::newNode<AstStatement>(AstNodeKind::Statement, this, funcNode);
-                funcNode->content = stmt;
-
-                SWAG_CHECK(doEmbeddedInstruction(stmt, &dummyResult));
-            }
-
-            funcNode->content->token.endLocation = tokenParse.token.startLocation;
-            resStmt                              = funcNode->content;
-            funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_SHORT_FORM);
-        }
-
+        
         // Normal curly statement
         else
         {

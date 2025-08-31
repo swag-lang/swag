@@ -1,9 +1,9 @@
 /**
 # Generic Functions
-A function can be made generic by specifying type parameters after the `func` keyword. These type 
-parameters allow the function to operate on various types using the same implementation. The generic 
-type parameters are placed within parentheses after `func`. When calling the function, the generic 
-types are specified using `funcCall'(type1, type2, ...)`. If there is only one generic parameter, 
+A function can be made generic by specifying type parameters after the `func` keyword. These type
+parameters allow the function to operate on various types using the same implementation. The generic
+type parameters are placed within parentheses after `func`. When calling the function, the generic
+types are specified using `funcCall'(type1, type2, ...)`. If there is only one generic parameter,
 you can omit the parentheses.
 */
 
@@ -47,7 +47,7 @@ you can omit the parentheses.
 
 /**
 # Type Deduction
-Generic types can often be deduced from the function's parameters, eliminating the need to specify 
+Generic types can often be deduced from the function's parameters, eliminating the need to specify
 the type explicitly at the call site.
 */
 
@@ -70,19 +70,19 @@ In the example below, `N` is a constant of type `s32`.
 
 #test
 {
-    func(const N: s32) myFunc() = @assert(N == 10)
-    myFunc'10()                                // Call the function with a constant value of 10.
+    func(const N: s32) myFunc() => @assert(N == 10)
+    myFunc'10()
 }
 
 /**
-`const` can be omitted when declaring constants, as an identifier followed by a type is considered 
+`const` can be omitted when declaring constants, as an identifier followed by a type is considered
 a constant.
 */
 
 #test
 {
-    func(N: s32) myFunc() = @assert(N == 10)
-    myFunc'10()                                // Function called with a constant value of 10.
+    func(N: s32) myFunc() => @assert(N == 10)
+    myFunc'10()
 }
 
 /**
@@ -91,19 +91,19 @@ You can also assign a default value to a constant parameter.
 
 #test
 {
-    func(N: s32 = 10) myFunc() = @assert(N == 10)
-    myFunc()                                   // Calls the function using the default value of 10.
+    func(N: s32 = 10) myFunc() => @assert(N == 10)
+    myFunc()
 }
 
 /**
-If you declare the constant using `const`, the type can be omitted, and it will be deduced from 
+If you declare the constant using `const`, the type can be omitted, and it will be deduced from
 the assignment expression.
 */
 
 #test
 {
-    func(const N = 10) myFunc() = @assert(N == 10)
-    myFunc()                                   // Constant value is deduced as 's32'.
+    func(const N = 10) myFunc() => @assert(N == 10)
+    myFunc()
 }
 
 /**

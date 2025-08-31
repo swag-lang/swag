@@ -95,7 +95,7 @@ impl RichString
     #[Swag.Inline]
     mtd opCount() => me.raw.length
     #[Swag.Inline]
-    mtd opAffect(str: string) = me.set(str)
+    mtd opAffect(str: string) => me.set(str)
 
     // Returns 'true' if the string is empty.
     #[Swag.Inline]

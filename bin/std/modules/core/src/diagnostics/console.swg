@@ -28,8 +28,8 @@ internal var g_lock: Sync.Mutex
 // Use to access console with multiple threads.
 // No console function is thread safe, so it is the user responsability
 // to lock the console when necessary
-func lock()   = g_lock.lock()
-func unlock() = g_lock.unlock()
+func lock()   => g_lock.lock()
+func unlock() => g_lock.unlock()
 
 // Disable console output. This is a counter, so can be called
 // multiple times with the same 'value'

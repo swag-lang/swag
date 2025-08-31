@@ -8,7 +8,7 @@ interface I
 struct A {}
 impl I for A
 {
-    mtd impl call1() = @assert(false)
+    mtd impl call1() => @assert(false)
 
     mtd impl call()
     {

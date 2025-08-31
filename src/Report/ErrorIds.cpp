@@ -609,7 +609,6 @@ void initErrors()
     SWAG_ERROR(Err0465, "missing parameter name                            $ expected the parameter name and [[:]] before [[%s]]                                                                                      $ ");
     SWAG_ERROR(Err0466, "missing parameter type                            $ expected an assignment or [[:]] to define a type, found $$TKN$$ instead                                                                  $ ");
     SWAG_ERROR(Err0467, "missing parameters                                $ cannot have a special function [[%s]] without parameters                                                                                 $ ");
-    SWAG_ERROR(Err0468, "missing return type                               $ cannot have a [[public]] function without an explicitly defined return type                                                              $ ");
     SWAG_ERROR(Err0469, "missing return type                               $ cannot have a special function [[%s]] without a return type                                                                              $ ");
     SWAG_ERROR(Err0470, "missing return type                               $ cannot have a special function [[%s]] without a return type [[%s]]                                                                       $ ");
     SWAG_ERROR(Err0471, "missing return type                               $ expected a return value because the function [[%s]] is marked with [[#[Swag.Discardable]]]                                               $ ");
@@ -933,6 +932,7 @@ void initErrors()
 
     SWAG_ERROR(Err0668, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]]                                                                                                 $ ");
     
+    SWAG_ERROR(Err0468, nullptr);
     SWAG_ERROR(Err0060, nullptr);
     SWAG_ERROR(Err0079, nullptr);
     SWAG_ERROR(Err0320, nullptr);

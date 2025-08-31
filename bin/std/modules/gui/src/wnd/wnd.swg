@@ -685,9 +685,9 @@ impl Wnd
     }
 
     #[Swag.Overload]
-    mtd setAllMargins(value: f32) = me.setMargin(value, value, value, value)
+    mtd setAllMargins(value: f32) => me.setMargin(value, value, value, value)
     #[Swag.Overload]
-    mtd setAllMargins(value: Math.Vector4) = me.setMargin(value.x, value.y, value.z, value.w)
+    mtd setAllMargins(value: Math.Vector4) => me.setMargin(value.x, value.y, value.z, value.w)
 
     // Set padding for childs
     // If a value is Swag.F32.Inf, then it won't be changed
@@ -709,9 +709,9 @@ impl Wnd
     }
 
     #[Swag.Overload]
-    mtd setAllPaddings(value: f32) = me.setPadding(value, value, value, value)
+    mtd setAllPaddings(value: f32) => me.setPadding(value, value, value, value)
     #[Swag.Overload]
-    mtd setAllPaddings(value: Math.Vector4) = me.setPadding(value.x, value.y, value.z, value.w)
+    mtd setAllPaddings(value: Math.Vector4) => me.setPadding(value.x, value.y, value.z, value.w)
 
     // Force the window to be the first painted (before all siblings)
     mtd bringToFront()
