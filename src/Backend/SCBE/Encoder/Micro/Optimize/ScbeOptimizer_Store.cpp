@@ -6,6 +6,7 @@
 
 void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
 {
+    return;
     mapValReg.clear();
     mapRegVal.clear();
 

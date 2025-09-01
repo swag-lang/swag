@@ -41,7 +41,7 @@ impl IActionUI for ActionSelection
         case CmdIdSelectSameAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count or !hasSel
-            evt.name     = "Select All Same Objects"
+            evt.name     = "Select Similar Objects"
 
         case CmdIdDeSelectAll:
             evt.setFlags |= .Disabled | .Name
