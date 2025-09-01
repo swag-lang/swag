@@ -269,16 +269,19 @@ impl LibraryWnd
 
     mtd registerActions()
     {
-        me.registerAction'ActionLibSort()
-        me.registerAction'ActionLibFilter()
-        me.registerAction'ActionLibSel()
+        with me
+        {
+            .registerAction'ActionLibSort()
+            .registerAction'ActionLibFilter()
+            .registerAction'ActionLibSel()
 
-        me.registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
-        me.registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
-        me.registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
-        me.registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
-        me.registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
-        me.registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
+            .registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
+            .registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
+            .registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
+            .registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
+            .registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
+            .registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
+        }
     }
 
     func create(parent: *MainWnd)->*LibraryWnd
@@ -344,9 +347,11 @@ impl LibraryWnd
             .backgroundStyle = .Window
         }
 
-        view.imgSpin = ImageRect.create(res, {4, 4, 24, 24})
-        view.imgSpin.setMovie(view.getTheme().res.spin)
-        view.imgSpin.hide()
+        with view.imgSpin = ImageRect.create(res, {4, 4, 24, 24})
+        {
+            .setMovie(view.getTheme().res.spin)
+            .hide()
+        }
 
         // Image Size
         with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Search), {0, 0, 120, 32})
