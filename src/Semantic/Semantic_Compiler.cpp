@@ -339,9 +339,9 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
     if (!expression->computedValue()->text.empty())
     {
         CompilerAstKind kind;
-        if (node->ownerScope->is(ScopeKind::Struct))
+        if (node->findParent(AstNodeKind::StructDecl))
             kind = CompilerAstKind::StructVarDecl;
-        else if (node->ownerScope->is(ScopeKind::Enum))
+        else if (node->findParent(AstNodeKind::EnumDecl))
             kind = CompilerAstKind::EnumValue;
         else if (node->ownerScope->isGlobalOrImpl())
             kind = CompilerAstKind::TopLevelInstruction;
