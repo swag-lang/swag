@@ -97,17 +97,17 @@ impl IWnd for RecentView
                 {
                     with let menu = MenuCtrl.createPopup(me)
                     {
-                        .addItem(CmdIdUpdateLinkedImage)
+                        .addItem(CmdId.UpdateLinkedImage)
                         .addSeparator()
-                        .addItem(CmdIdDupCapture)
-                        .addItem(CmdIdDeleteCapture)
+                        .addItem(CmdId.DupCapture)
+                        .addItem(CmdId.DeleteCapture)
                         .addSeparator()
-                        .addItem(CmdIdCopyAsImage)
+                        .addItem(CmdId.CopyAsImage)
                         .addSeparator()
-                        .addItem(CmdIdCaptureFileLocation)
-                        .addItem(CmdIdLinkedFileLocation)
+                        .addItem(CmdId.CaptureFileLocation)
+                        .addItem(CmdId.LinkedFileLocation)
                         .addSeparator()
-                        .addItem(CmdIdFileDetails)
+                        .addItem(CmdId.FileDetails)
                     }
 
                     discard menu.doModal(evt.surfacePos, autoDestroy: true)

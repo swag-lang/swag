@@ -3,7 +3,7 @@
 alias WndId = string
 
 #[Swag.Mixin]
-func newCommandId(val: #code void)
+func newCmdId(val: string)
 {
-    #ast "const " ++ #nameof(val) ++ " = \"" ++ #nameof(val) ++ "\""
+    #ast "namespace CmdId { const " ++ val ++ " = \"" ++ val ++ "\" }"
 }

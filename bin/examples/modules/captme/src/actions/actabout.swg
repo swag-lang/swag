@@ -1,6 +1,6 @@
 using Gui
 
-const CmdIdAbout = "CmdIdAbout"
+newCmdId("About")
 
 struct ActionAbout {}
 impl IActionUI for ActionAbout
@@ -9,7 +9,7 @@ impl IActionUI for ActionAbout
     {
         switch cxt.id
         {
-        case CmdIdAbout:
+        case CmdId.About:
             return true
         }
 
@@ -21,7 +21,7 @@ impl IActionUI for ActionAbout
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdIdAbout:
+        case CmdId.About:
             evt.setFlags |= .Name | .Icon
             evt.name = "About..."
             evt.icon = main.getTheme().getIcon24(.About)

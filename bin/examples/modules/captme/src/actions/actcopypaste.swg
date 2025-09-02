@@ -1,10 +1,10 @@
 using Gui
 
-const CmdIdCopy             = "CmdIdCopy"
-const CmdIdPaste            = "CmdIdPaste"
-const CmdIdCut              = "CmdIdCut"
-const CmdIdPasteImageInside = "CmdIdPasteImageInside"
-const CmdIdCopyAsImage      = "CmdIdCopyAsImage"
+newCmdId("Copy")
+newCmdId("Paste")
+newCmdId("Cut")
+newCmdId("PasteImageInside")
+newCmdId("CopyAsImage")
 
 struct ActionCopyPaste {}
 impl IActionUI for ActionCopyPaste
@@ -13,7 +13,7 @@ impl IActionUI for ActionCopyPaste
     {
         switch cxt.id
         {
-        case CmdIdCopy, CmdIdCut, CmdIdPaste, CmdIdPasteImageInside, CmdIdCopyAsImage:
+        case CmdId.Copy, CmdId.Cut, CmdId.Paste, CmdId.PasteImageInside, CmdId.CopyAsImage:
             return true
         }
 
@@ -28,19 +28,19 @@ impl IActionUI for ActionCopyPaste
 
         switch cxt.id
         {
-        case CmdIdCopy:
+        case CmdId.Copy:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Copy"
             evt.icon     = main.getTheme().getIcon24(.Copy)
 
-        case CmdIdCut:
+        case CmdId.Cut:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Cut"
             evt.icon     = main.getTheme().getIcon24(.Cut)
 
-        case CmdIdPaste:
+        case CmdId.Paste:
             evt.setFlags |= .Disabled | .Name | .Icon
             if !capture:
                 evt.disabled = true
@@ -49,7 +49,7 @@ impl IActionUI for ActionCopyPaste
             evt.name = "Paste"
             evt.icon = main.getTheme().getIcon24(.Paste)
 
-        case CmdIdPasteImageInside:
+        case CmdId.PasteImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
             evt.disabled, evt.hidden = true
             evt.name = "Paste Inside Image"
@@ -74,7 +74,7 @@ impl IActionUI for ActionCopyPaste
                 }
             }
 
-        case CmdIdCopyAsImage:
+        case CmdId.CopyAsImage:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = capture == null
             evt.name     = "Copy Image to Clipboard"
@@ -90,15 +90,15 @@ impl IActionUI for ActionCopyPaste
 
         switch cxt.id
         {
-        case CmdIdCopy:
+        case CmdId.Copy:
             capture.copy()
-        case CmdIdCut:
+        case CmdId.Cut:
             capture.cut()
-        case CmdIdPaste:
+        case CmdId.Paste:
             capture.paste()
-        case CmdIdPasteImageInside:
+        case CmdId.PasteImageInside:
             capture.pasteImageInside()
-        case CmdIdCopyAsImage:
+        case CmdId.CopyAsImage:
             capture.copyAll()
         }
 

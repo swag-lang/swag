@@ -1,18 +1,18 @@
 using Gui
 
-const CmdIdCapture            = "CmdIdCapture"
-const CmdIdCaptureArea        = "CmdIdCaptureArea"
-const CmdIdCaptureLastArea    = "CmdIdCaptureLastArea"
-const CmdIdCaptureFullScreen  = "CmdIdCaptureFullScreen"
-const CmdIdCaptureScreen0     = "CmdIdCaptureScreen0"
-const CmdIdCaptureScreen1     = "CmdIdCaptureScreen1"
-const CmdIdCaptureScreen2     = "CmdIdCaptureScreen2"
-const CmdIdCaptureScreen3     = "CmdIdCaptureScreen3"
-const CmdIdCaptureActiveWnd   = "CmdIdCaptureActiveWnd"
-const CmdIdCaptureHideEditor  = "CmdIdCaptureHideEditor"
-const CmdIdCaptureToInPlace   = "CmdIdCaptureToInPlace"
-const CmdIdCaptureToEditor    = "CmdIdCaptureToEditor"
-const CmdIdCaptureToClipboard = "CmdIdCaptureToClipboard"
+newCmdId("Capture")
+newCmdId("CaptureArea")
+newCmdId("CaptureLastArea")
+newCmdId("CaptureFullScreen")
+newCmdId("CaptureScreen0")
+newCmdId("CaptureScreen1")
+newCmdId("CaptureScreen2")
+newCmdId("CaptureScreen3")
+newCmdId("CaptureActiveWnd")
+newCmdId("CaptureHideEditor")
+newCmdId("CaptureToInPlace")
+newCmdId("CaptureToEditor")
+newCmdId("CaptureToClipboard")
 
 struct ActionCapture {}
 impl IActionUI for ActionCapture
@@ -21,10 +21,10 @@ impl IActionUI for ActionCapture
     {
         switch cxt.id
         {
-        case CmdIdCapture, CmdIdCaptureArea, CmdIdCaptureLastArea, CmdIdCaptureFullScreen,
-             CmdIdCaptureScreen0, CmdIdCaptureScreen1, CmdIdCaptureScreen2, CmdIdCaptureScreen3,
-             CmdIdCaptureActiveWnd, CmdIdCaptureHideEditor, CmdIdCaptureToInPlace, CmdIdCaptureToEditor,
-             CmdIdCaptureToClipboard:
+        case CmdId.Capture, CmdId.CaptureArea, CmdId.CaptureLastArea, CmdId.CaptureFullScreen,
+             CmdId.CaptureScreen0, CmdId.CaptureScreen1, CmdId.CaptureScreen2, CmdId.CaptureScreen3,
+             CmdId.CaptureActiveWnd, CmdId.CaptureHideEditor, CmdId.CaptureToInPlace, CmdId.CaptureToEditor,
+             CmdId.CaptureToClipboard:
             return true
         }
 
@@ -37,59 +37,59 @@ impl IActionUI for ActionCapture
 
         switch cxt.id
         {
-        case CmdIdCapture:
+        case CmdId.Capture:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture"
             evt.icon = Icon.from(&main.icons48, 6)
-        case CmdIdCaptureArea:
+        case CmdId.CaptureArea:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Area"
             evt.icon = Icon.from(&main.icons24, 7)
-        case CmdIdCaptureLastArea:
+        case CmdId.CaptureLastArea:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Last Area"
             evt.icon = Icon.from(&main.icons24, 15)
-        case CmdIdCaptureFullScreen:
+        case CmdId.CaptureFullScreen:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Full Screen"
             evt.icon = Icon.from(&main.icons24, 6)
-        case CmdIdCaptureActiveWnd:
+        case CmdId.CaptureActiveWnd:
             evt.setFlags |= .Name | .Icon
             evt.name = "Capture Active Window"
             evt.icon = Icon.from(&main.icons24, 14)
-        case CmdIdCaptureScreen0:
+        case CmdId.CaptureScreen0:
             evt.setFlags |= .Name | .Icon
             evt.name = Format.toString("Capture Monitor 0 (%x%)", main.monitors[0].rect.width, main.monitors[0].rect.height)
             evt.icon = Icon.from(&main.icons24, 5)
-        case CmdIdCaptureScreen1:
+        case CmdId.CaptureScreen1:
             evt.setFlags |= .Name | .Icon
             evt.name = Format.toString("Capture Monitor 1 (%x%)", main.monitors[1].rect.width, main.monitors[1].rect.height)
             evt.icon = Icon.from(&main.icons24, 5)
-        case CmdIdCaptureScreen2:
+        case CmdId.CaptureScreen2:
             evt.setFlags |= .Name | .Icon
             evt.name = Format.toString("Capture Monitor 2 (%x%)", main.monitors[2].rect.width, main.monitors[2].rect.height)
             evt.icon = Icon.from(&main.icons24, 5)
-        case CmdIdCaptureScreen3:
+        case CmdId.CaptureScreen3:
             evt.setFlags |= .Name | .Icon
             evt.name = Format.toString("Capture Monitor 3 (%x%)", main.monitors[3].rect.width, main.monitors[3].rect.height)
             evt.icon = Icon.from(&main.icons24, 5)
 
-        case CmdIdCaptureHideEditor:
+        case CmdId.CaptureHideEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Hide Editor Before Capture"
             evt.checked  = main.captureOptions.hideEditorBefore
             evt.accepted = true
-        case CmdIdCaptureToInPlace:
+        case CmdId.CaptureToInPlace:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Edit Captured Area In Place"
             evt.checked  = main.captureOptions.inPlaceEdit
             evt.accepted = true
-        case CmdIdCaptureToEditor:
+        case CmdId.CaptureToEditor:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Editor"
             evt.checked  = main.captureOptions.sendToEditor
             evt.accepted = true
-        case CmdIdCaptureToClipboard:
+        case CmdId.CaptureToClipboard:
             evt.setFlags |= .Name | .Checked
             evt.name     = "Send Capture To Clipboard"
             evt.checked  = main.captureOptions.sendToClipboard
@@ -105,32 +105,32 @@ impl IActionUI for ActionCapture
 
         switch cxt.id
         {
-        case CmdIdCapture:
+        case CmdId.Capture:
             main.captureScreen(.Area)
-        case CmdIdCaptureArea:
+        case CmdId.CaptureArea:
             main.captureScreen(.Area)
-        case CmdIdCaptureLastArea:
+        case CmdId.CaptureLastArea:
             main.captureScreen(.LastArea)
-        case CmdIdCaptureFullScreen:
+        case CmdId.CaptureFullScreen:
             main.captureScreen(.FullScreen)
-        case CmdIdCaptureActiveWnd:
+        case CmdId.CaptureActiveWnd:
             main.captureScreen(.ActiveWindow)
-        case CmdIdCaptureScreen0:
+        case CmdId.CaptureScreen0:
             main.captureScreen(.Screen0)
-        case CmdIdCaptureScreen1:
+        case CmdId.CaptureScreen1:
             main.captureScreen(.Screen1)
-        case CmdIdCaptureScreen2:
+        case CmdId.CaptureScreen2:
             main.captureScreen(.Screen2)
-        case CmdIdCaptureScreen3:
+        case CmdId.CaptureScreen3:
             main.captureScreen(.Screen3)
 
-        case CmdIdCaptureToInPlace:
+        case CmdId.CaptureToInPlace:
             main.captureOptions.inPlaceEdit = !main.captureOptions.inPlaceEdit
-        case CmdIdCaptureHideEditor:
+        case CmdId.CaptureHideEditor:
             main.captureOptions.hideEditorBefore = !main.captureOptions.hideEditorBefore
-        case CmdIdCaptureToEditor:
+        case CmdId.CaptureToEditor:
             main.captureOptions.sendToEditor = !main.captureOptions.sendToEditor
-        case CmdIdCaptureToClipboard:
+        case CmdId.CaptureToClipboard:
             main.captureOptions.sendToClipboard = !main.captureOptions.sendToClipboard
         }
 

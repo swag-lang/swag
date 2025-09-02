@@ -456,7 +456,8 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarD
         if (!parent || parent->isNot(AstNodeKind::If))
         {
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqualEqual), error(tokenParse, toErr(Err0627)));
-            SWAG_CHECK(eatSemiCol("variable declaration"));
+            if (tokenParse.isNot(TokenId::SymRightCurly))
+                SWAG_CHECK(eatSemiCol("variable declaration"));
         }
     }
 

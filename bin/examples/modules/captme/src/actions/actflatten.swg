@@ -1,7 +1,7 @@
 using Gui
 
-const CmdIdFlatten    = "CmdIdFlatten"
-const CmdIdFlattenAll = "CmdIdFlattenAll"
+newCmdId("Flatten")
+newCmdId("FlattenAll")
 
 struct ActionFlatten {}
 impl IActionUI for ActionFlatten
@@ -10,7 +10,7 @@ impl IActionUI for ActionFlatten
     {
         switch cxt.id
         {
-        case CmdIdFlatten, CmdIdFlattenAll:
+        case CmdId.Flatten, CmdId.FlattenAll:
             return true
         }
 
@@ -25,12 +25,12 @@ impl IActionUI for ActionFlatten
 
         switch cxt.id
         {
-        case CmdIdFlatten:
+        case CmdId.Flatten:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Flatten"
             evt.disabled = !capture or !hasSel
 
-        case CmdIdFlattenAll:
+        case CmdId.FlattenAll:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Flatten All"
             evt.disabled = !capture or !capture.forms.count
@@ -47,9 +47,9 @@ impl IActionUI for ActionFlatten
         var undo: *Undo
         switch cxt.id
         {
-        case CmdIdFlatten:
+        case CmdId.Flatten:
             undo = capture.newUndo(.Flatten)
-        case CmdIdFlattenAll:
+        case CmdId.FlattenAll:
             undo = capture.newUndo(.FlattenAll)
         }
 

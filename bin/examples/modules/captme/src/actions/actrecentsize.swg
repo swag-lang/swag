@@ -1,11 +1,11 @@
 using Gui
 
-const CmdIdRecentSmall  = "CmdIdRecentSmall"
-const CmdIdRecentMedium = "CmdIdRecentMedium"
-const CmdIdRecentBig    = "CmdIdRecentBig"
-const CmdIdLibSmall     = "CmdIdLibSmall"
-const CmdIdLibMedium    = "CmdIdLibMedium"
-const CmdIdLibBig       = "CmdIdLibBig"
+newCmdId("RecentSmall")
+newCmdId("RecentMedium")
+newCmdId("RecentBig")
+newCmdId("LibSmall")
+newCmdId("LibMedium")
+newCmdId("LibBig")
 
 struct ActionRecentSize {}
 impl IActionUI for ActionRecentSize
@@ -14,9 +14,9 @@ impl IActionUI for ActionRecentSize
     {
         switch cxt.id
         {
-        case CmdIdRecentSmall, CmdIdRecentMedium, CmdIdRecentBig:
+        case CmdId.RecentSmall, CmdId.RecentMedium, CmdId.RecentBig:
             return true
-        case CmdIdLibSmall, CmdIdLibMedium, CmdIdLibBig:
+        case CmdId.LibSmall, CmdId.LibMedium, CmdId.LibBig:
             return true
         }
 
@@ -29,37 +29,37 @@ impl IActionUI for ActionRecentSize
 
         switch cxt.id
         {
-        case CmdIdRecentSmall:
+        case CmdId.RecentSmall:
             evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Small recent view"
             evt.checked = main.bottomSize == .Small
             evt.icon    = Icon.from(&main.icons24, 0)
 
-        case CmdIdRecentMedium:
+        case CmdId.RecentMedium:
             evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Medium recent view"
             evt.checked = main.bottomSize == .Medium
             evt.icon    = Icon.from(&main.icons24, 1)
 
-        case CmdIdRecentBig:
+        case CmdId.RecentBig:
             evt.setFlags |= .Name | .ToolTip | .Checked | .Icon
             evt.toolTip = "Big recent view"
             evt.checked = main.bottomSize == .Big
             evt.icon    = Icon.from(&main.icons24, 2)
 
-        case CmdIdLibSmall:
+        case CmdId.LibSmall:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Small view"
             evt.checked       = main.libWnd.previewSize == .Small
 
-        case CmdIdLibMedium:
+        case CmdId.LibMedium:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Medium view"
             evt.checked       = main.libWnd.previewSize == .Medium
 
-        case CmdIdLibBig:
+        case CmdId.LibBig:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Big view"
@@ -75,22 +75,22 @@ impl IActionUI for ActionRecentSize
 
         switch cxt.id
         {
-        case CmdIdRecentSmall:
+        case CmdId.RecentSmall:
             main.setBottomSize(.Small)
 
-        case CmdIdRecentMedium:
+        case CmdId.RecentMedium:
             main.setBottomSize(.Medium)
 
-        case CmdIdRecentBig:
+        case CmdId.RecentBig:
             main.setBottomSize(.Big)
 
-        case CmdIdLibSmall:
+        case CmdId.LibSmall:
             main.libWnd.setPreviewSize(.Small)
 
-        case CmdIdLibMedium:
+        case CmdId.LibMedium:
             main.libWnd.setPreviewSize(.Medium)
 
-        case CmdIdLibBig:
+        case CmdId.LibBig:
             main.libWnd.setPreviewSize(.Big)
         }
 
