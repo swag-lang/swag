@@ -915,21 +915,3 @@ bool Parser::doCompilerImport(AstNode* parent)
 
     return true;
 }
-
-bool Parser::doCompilerPlaceHolder(AstNode* parent)
-{
-    const auto node = Ast::newNode<AstNode>(AstNodeKind::CompilerPlaceHolder, this, parent);
-    SWAG_CHECK(eatToken());
-
-    const auto startLoc = tokenParse.token.startLocation;
-    SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
-    SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0421)));
-    node->inheritTokenName(tokenParse.token);
-    node->inheritTokenLocation(tokenParse.token);
-    SWAG_CHECK(eatToken());
-    SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-    SWAG_CHECK(eatSemiCol("[[#placeholder]] directive"));
-
-    currentScope->symTable.registerSymbolName(context, node, SymbolKind::PlaceHolder);
-    return true;
-}

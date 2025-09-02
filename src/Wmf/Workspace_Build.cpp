@@ -752,10 +752,31 @@ bool Workspace::buildTarget()
     {
         g_ThreadMgr.waitEndJobs();
 
-        auto       waitingJobs  = g_ThreadMgr.waitingJobs;
+        auto               waitingJobs = g_ThreadMgr.waitingJobs;
+        VectorNative<Job*> toRelaunch;
+
+        for (uint32_t i = 0; i < waitingJobs.size(); i++)
+        {
+            const auto job = waitingJobs[i];
+            if (job->hasFlag(JOB_PENDING_PLACE_HOLDER))
+            {
+                SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
+                job->addFlag(JOB_ACCEPT_PENDING_COUNT);
+                waitingJobs.erase_unordered(i);
+                i--;
+                toRelaunch.push_back(job);
+            }
+        }
+
+        if (!toRelaunch.empty())
+        {
+            for (const auto job : toRelaunch)
+                g_ThreadMgr.addJob(job);
+            continue;
+        }
+
         const bool metaChanged  = g_ThreadMgr.metaChanged;
         g_ThreadMgr.metaChanged = false;
-        VectorNative<Job*> toRelaunch;
 
         for (uint32_t i = 0; i < waitingJobs.size(); i++)
         {
@@ -785,26 +806,6 @@ bool Workspace::buildTarget()
             {
                 job->removeFlag(JOB_PENDING_META_CHANGE);
                 job->addFlag(JOB_NO_PENDING_META_CHANGE);
-                SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
-                job->addFlag(JOB_ACCEPT_PENDING_COUNT);
-                waitingJobs.erase_unordered(i);
-                i--;
-                toRelaunch.push_back(job);
-            }
-        }
-
-        if (!toRelaunch.empty())
-        {
-            for (const auto job : toRelaunch)
-                g_ThreadMgr.addJob(job);
-            continue;
-        }        
-
-        for (uint32_t i = 0; i < waitingJobs.size(); i++)
-        {
-            const auto job = waitingJobs[i];
-            if (job->hasFlag(JOB_PENDING_PLACE_HOLDER))
-            {
                 SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
                 job->addFlag(JOB_ACCEPT_PENDING_COUNT);
                 waitingJobs.erase_unordered(i);

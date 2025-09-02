@@ -376,7 +376,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("#import", TokenId::CompilerImport);
     keywords.add("#inject", TokenId::CompilerInject);
     keywords.add("#macro", TokenId::CompilerMacro);
-    keywords.add("#placeholder", TokenId::CompilerPlaceHolder);
     keywords.add("#if", TokenId::CompilerIf);
     keywords.add("#else", TokenId::CompilerElse);
     keywords.add("#elif", TokenId::CompilerElseIf);

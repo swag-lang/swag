@@ -35,8 +35,6 @@ var toTreatCpt: u32
     }
 }
 
-#placeholder(GG)
-
 #message(CompilerMsgMask.PassAfterSemantic)
 {
     let itf = @compiler

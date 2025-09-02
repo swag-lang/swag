@@ -120,7 +120,6 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #error
 #warning
 #import
-#placeholder
 #if
 #else
 #elif

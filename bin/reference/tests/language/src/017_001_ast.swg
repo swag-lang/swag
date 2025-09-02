@@ -148,13 +148,4 @@ The `#ast` block can also be employed at the global scope to dynamically generat
     return "const myGeneratedConst = " ++ value // Generates a global constant 'myGeneratedConst' with the value 666.
 }
 
-/**
-# `#placeholder` Usage
-When generating global symbols that may be referenced elsewhere in the code, it is necessary to use `#placeholder`. This directive informs Swag that the symbol will be generated later, preventing compilation errors when the symbol is referenced before it exists.
-*/
-#placeholder(myGeneratedConst) // Declares that the symbol `myGeneratedConst` will be generated.
-
-/**
-Here, thanks to the `#placeholder`, the `#assert` will wait for the symbol `myGeneratedConst` to be replaced with its actual value before performing the assertion.
-*/
 #assert(myGeneratedConst == 666) // Asserts that the generated constant 'myGeneratedConst' equals 666.

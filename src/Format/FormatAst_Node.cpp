@@ -55,13 +55,6 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             forceEOL = true;
             break;
 
-        case AstNodeKind::CompilerPlaceHolder:
-            concat->addString("#placeholder");
-            concat->addChar('(');
-            concat->addString(node->token.text);
-            concat->addChar(')');
-            break;
-
         case AstNodeKind::CompilerInclude:
         case AstNodeKind::CompilerDefined:
         case AstNodeKind::CompilerLocation:

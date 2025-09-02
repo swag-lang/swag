@@ -59,7 +59,6 @@ var g: Array'OneFunc
     itf.compileString(strFunc.toString())
 }
 
-#placeholder(printAll)
 #test
 {
     printAll()

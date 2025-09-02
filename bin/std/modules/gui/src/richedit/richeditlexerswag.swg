@@ -363,7 +363,6 @@ impl IRichEditLexer for RichEditLexerSwag
         me.mapWords.add("#import", State.CompilerStatement)
         me.mapWords.add("#inject", State.CompilerStatement)
         me.mapWords.add("#macro", State.CompilerStatement)
-        me.mapWords.add("#placeholder", State.CompilerStatement)
         me.mapWords.add("#if", State.CompilerStatement)
         me.mapWords.add("#else", State.CompilerStatement)
         me.mapWords.add("#elif", State.CompilerStatement)

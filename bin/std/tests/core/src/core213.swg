@@ -1,4 +1,3 @@
-/*
 using Core
 
 #[Swag.Mixin]
@@ -12,10 +11,9 @@ func mk(name: string, type: typeinfo)
 }
 
 mk("toto", s32)
-#placeholder(toto)
 
 #test
 {
     @assert(toto == 444)
     @assert(#typeof(toto) == s32)
-}*/
+}

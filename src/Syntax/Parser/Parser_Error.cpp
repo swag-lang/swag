@@ -122,8 +122,6 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 msg = toErr(Err0285);
             else if (startToken.is(TokenId::SymRightSquare))
                 msg = toErr(Err0282);
-            else if (startToken.is(TokenId::CompilerPlaceHolder))
-                msg = toErr(Err0309);
             else
             {
                 Diagnostic err{sourceFile, startToken, toErr(Err0630)};

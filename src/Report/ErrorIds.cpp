@@ -453,7 +453,6 @@ void initErrors()
     SWAG_ERROR(Err0306, "invalid [[#inject]] block                         $ cannot use a [[#inject]] block outside of a breakable block such as [[for]], [[foreach]] etc.                                            $ ");
     SWAG_ERROR(Err0307, "invalid [[#load]]                                 $ cannot use [[#load]] outside of [[module.swg]] or [[.swgs]] files                                                                        $ ");
     SWAG_ERROR(Err0308, "invalid [[#macro]]                                $ cannot use [[#macro]] outside of a [[#[Swag.Macro]]] function                                                                            $ ");
-    SWAG_ERROR(Err0309, "invalid [[#placeholder]]                          $ cannot use [[#placeholder]] outside of a top-level scope                                                                                 $ ");
     SWAG_ERROR(Err0311, "invalid [[#up]]                                   $ cannot use [[#up]] outside of a [[#[Swag.Macro]]] function                                                                               $ ");
     SWAG_ERROR(Err0312, "invalid [[%s]]                                    $ cannot combine [[%s]] with [[%s]]                                                                                                        $ ");
     SWAG_ERROR(Err0313, "invalid [[%s]]                                    $ cannot combine [[%s]] with another [[%s]]                                                                                                $ ");
@@ -562,8 +561,6 @@ void initErrors()
     SWAG_ERROR(Err0418, "missing [[#if]] boolean expression                $ expected a boolean expression after [[#if]], found $$TKN$$ instead                                                                       $ ");
     SWAG_ERROR(Err0419, "missing [[#message]] parameter                    $ expected a parameter of type [[Swag.CompilerMsgMask]] for [[#message]]                                                                   $ ");
     SWAG_ERROR(Err0420, "missing [[#uniq]] number                          $ cannot use a [[#uniq]] variable name without a trailing number, such as [[#uniq0]], [[#uniq1]], etc.                                     $ ");
-    SWAG_ERROR(Err0421, "missing [[#placeholder]] identifier               $ expected an identifier after [[#placeholder]], found $$TKN$$ instead                                                                     $ ");
-    SWAG_ERROR(Err0422, nullptr);
     SWAG_ERROR(Err0423, "missing [[%s]]                                    $ expected a closing [[%s]] %s                                                                                                             $ ");
     SWAG_ERROR(Err0424, "missing block start                               $ expected [[:]] or [[{]]                                                                                                                  $ ");
     SWAG_ERROR(Err0425, "missing [[(]] before arguments                    $ expected [[(]] to start the list of arguments of [[%s]], found $$TKN$$ instead                                                           $ ");
@@ -932,6 +929,10 @@ void initErrors()
     SWAG_ERROR(Err0668, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]]                                                                                                 $ ");
     
     SWAG_ERROR(Err0310, "invalid top level call                            $ function [[%s]] is not marked with [[#[Swag.Mixin]]]                                                                                     $ only call to mixin functions are permitted at top level");
+    
+    SWAG_ERROR(Err0421, nullptr);
+    SWAG_ERROR(Err0309, nullptr);
+    SWAG_ERROR(Err0422, nullptr);
     SWAG_ERROR(Err0468, nullptr);
     SWAG_ERROR(Err0060, nullptr);
     SWAG_ERROR(Err0079, nullptr);

@@ -162,7 +162,6 @@ struct Parser
     bool doCompilerInclude(AstNode* parent, AstNode** result);
     bool doCompilerLoad(AstNode* parent);
     bool doCompilerImport(AstNode* parent);
-    bool doCompilerPlaceHolder(AstNode* parent);
     bool doTopLevelInstruction(AstNode* parent, AstNode** result);
     bool doVarDeclMultiIdentifier(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags, bool acceptDeref);
     bool doVarDeclMultiIdentifierTuple(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags, bool acceptDeref);

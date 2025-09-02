@@ -66,14 +66,6 @@ This `#message` will be called for each function of the `Ogl` module.
 */
 
 /**
-We will generate a `glInitExtensions` global function, so we register it as a placeholder.
-
-```swag
-#placeholder(glInitExtensions)
-```
-*/
-
-/**
 This code is called once all functions of the module have been typed, and it handles the main
 code generation process.
 
