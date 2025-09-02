@@ -1,5 +1,4 @@
-//#global marked
-
+//
 struct A {}
 struct B {}
 

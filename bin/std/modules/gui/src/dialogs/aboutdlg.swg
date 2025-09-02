@@ -1,4 +1,3 @@
-#global marked
 using Core, Pixel
 
 public struct AboutDlg

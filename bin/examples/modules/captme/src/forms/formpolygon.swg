@@ -1,4 +1,3 @@
-#global marked
 struct FormPolygon
 {
     using base:     BaseForm

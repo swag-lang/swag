@@ -1,4 +1,3 @@
-#global marked
 enum UndoKind
 {
     MoveBaseForm

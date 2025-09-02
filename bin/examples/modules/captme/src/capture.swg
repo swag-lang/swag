@@ -1,4 +1,3 @@
-#global marked
 using Serialization
 
 const PreviewHeight = 256.0

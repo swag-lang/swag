@@ -1,4 +1,3 @@
-#global marked
 impl Properties
 {
     func setDescEditBox(item: *PropertiesItem)

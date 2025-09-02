@@ -1,4 +1,3 @@
-#global marked
 impl Properties
 {
     func refreshNative(item: *PropertiesItem)

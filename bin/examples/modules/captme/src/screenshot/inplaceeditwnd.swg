@@ -1,4 +1,3 @@
-#global marked
 using Core, Win32, Gdi32, Pixel
 
 enum InPlaceEditMode

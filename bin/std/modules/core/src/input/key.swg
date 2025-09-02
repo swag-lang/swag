@@ -1,4 +1,3 @@
-#global marked
 #global namespace Input
 
 // Represents a virtual system key

@@ -1,4 +1,3 @@
-#global marked
 #global namespace Swag
 
 struct SystemAllocator {}

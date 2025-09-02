@@ -1,4 +1,3 @@
-#global marked
 #global #if WINDOWS
 #global namespace Console
 using Win32

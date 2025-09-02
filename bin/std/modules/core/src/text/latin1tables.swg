@@ -5,7 +5,6 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global marked
 #global public
 #global namespace Latin1
 

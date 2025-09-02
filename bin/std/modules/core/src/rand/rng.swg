@@ -1,4 +1,3 @@
-#global marked
 #global namespace Random
 #global public
 

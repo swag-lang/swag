@@ -1,4 +1,3 @@
-#global marked
 #global public
 using Swag, Core, Core.Serialization
 

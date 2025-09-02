@@ -1,4 +1,3 @@
-#global marked
 var g_Main: *MainWnd
 
 const ClipboardFormat = "Swag.CaptMe"

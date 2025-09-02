@@ -1,4 +1,3 @@
-#global marked
 #global namespace Parser
 using Errors
 

@@ -1,4 +1,3 @@
-#global marked
 #global namespace Serialization
 #global namespace Read
 using Swag, Core.Errors

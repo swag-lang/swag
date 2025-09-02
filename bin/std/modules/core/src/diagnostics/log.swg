@@ -1,4 +1,3 @@
-#global marked
 #global public
 
 // Flags to control the format of log output.

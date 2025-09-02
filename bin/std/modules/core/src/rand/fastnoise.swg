@@ -4,7 +4,6 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global marked
 #global namespace Noise
 #global #[Swag.Safety("", false)]
 

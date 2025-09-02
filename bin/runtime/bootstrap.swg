@@ -1,4 +1,3 @@
-#global marked
 namespace Swag
 {
     enum AttributeUsage: u32

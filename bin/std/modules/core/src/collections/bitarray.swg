@@ -1,4 +1,3 @@
-#global marked
 using Swag
 
 // Manages a compact array of bit values.

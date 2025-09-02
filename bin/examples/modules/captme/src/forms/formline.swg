@@ -1,4 +1,3 @@
-#global marked
 struct FormLine
 {
     using base:         BaseForm

@@ -1,4 +1,3 @@
-#global marked
 #global namespace Hash
 #global #[Swag.CanOverflow(true)]
 

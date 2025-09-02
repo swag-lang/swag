@@ -1,4 +1,3 @@
-#global marked
 enum FormTextAlign
 {
     LeftTop

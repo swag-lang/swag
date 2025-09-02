@@ -1,4 +1,3 @@
-#global marked
 #global namespace ImageStatistics
 using Core, Core.Math
 

@@ -1,4 +1,3 @@
-#global marked
 using Pixel
 
 #[Swag.Opaque]

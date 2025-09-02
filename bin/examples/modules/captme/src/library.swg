@@ -1,4 +1,3 @@
-#global marked
 var g_Library: Library
 
 struct Library

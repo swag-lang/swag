@@ -1,4 +1,3 @@
-#global marked
 struct EditView
 {
     using wnd:       Wnd

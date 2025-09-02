@@ -5,7 +5,6 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global marked
 #global namespace Compress
 #global #[Swag.CanOverflow(true)]
 using Core.Errors

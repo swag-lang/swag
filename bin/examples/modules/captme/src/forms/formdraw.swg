@@ -1,4 +1,3 @@
-#global marked
 struct FormDraw
 {
     using base:     BaseForm

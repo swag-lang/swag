@@ -1,8 +1,6 @@
-#global marked
 #global public
 using Core, Pixel
 
-alias WndId     = string
 alias HookEvent = func||(*Wnd, IEvent)->bool
 
 // Automatic placement and size of the window in the parent client rectangle

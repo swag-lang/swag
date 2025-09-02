@@ -1,4 +1,3 @@
-#global marked
 using Threading, Time
 
 enum PreviewSize

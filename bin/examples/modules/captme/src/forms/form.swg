@@ -1,4 +1,3 @@
-#global marked
 interface IForm
 {
     mtd paintGizmo(painter: *Painter, z: f32, flags: FormFlags);

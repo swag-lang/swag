@@ -1,4 +1,3 @@
-#global marked
 
 #[Swag.EnumIndex]
 public enum HatchStyle

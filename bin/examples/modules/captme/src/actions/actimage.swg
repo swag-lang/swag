@@ -1,4 +1,3 @@
-#global marked
 const CmdIdTrimCapture      = "CmdIdTrimCapture"
 const CmdIdResizeImage      = "CmdIdResizeImage"
 const CmdIdExpandImage      = "CmdIdExpandImage"

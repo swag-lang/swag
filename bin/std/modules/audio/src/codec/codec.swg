@@ -1,4 +1,3 @@
-#global marked
 using Core
 
 var g_Codecs: Array'CodecDesc

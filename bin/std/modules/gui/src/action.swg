@@ -1,4 +1,3 @@
-#global marked
 public struct ActionContext
 {
     wnd:     *Wnd

@@ -1,4 +1,3 @@
-#global marked
 public interface IRichEditLexer
 {
     func setup(me, ed: *RichEditCtrl);

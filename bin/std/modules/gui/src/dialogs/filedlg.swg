@@ -1,4 +1,3 @@
-#global marked
 #global public
 using Core, File, Directory
 

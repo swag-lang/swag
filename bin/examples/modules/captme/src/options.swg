@@ -1,4 +1,3 @@
-#global marked
 #[Swag.Using(Properties)]
 struct CaptureOptions
 {

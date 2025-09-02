@@ -1,4 +1,3 @@
-#global marked
 using Swag, Core, Core.Errors
 
 struct ImageEncoder

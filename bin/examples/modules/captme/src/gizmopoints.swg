@@ -1,4 +1,3 @@
-#global marked
 struct GizmoPoints
 {
     anchorSize:      f32 = 12

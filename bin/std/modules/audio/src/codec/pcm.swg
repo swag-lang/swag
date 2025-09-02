@@ -1,4 +1,3 @@
-#global marked
 using Core, Core.Errors
 
 struct CodecPcmToPcm16

@@ -1,4 +1,3 @@
-#global marked
 using Core, Core.Math
 
 public enum ElementType

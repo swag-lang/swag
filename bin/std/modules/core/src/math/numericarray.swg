@@ -1,4 +1,3 @@
-#global marked
 #global export
 #global namespace Math
 using Swag

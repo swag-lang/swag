@@ -1,4 +1,3 @@
-#global marked
 struct GizmoRect
 {
     paintSimpleBorder:     bool = true

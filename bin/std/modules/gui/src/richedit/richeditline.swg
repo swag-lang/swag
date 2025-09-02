@@ -1,4 +1,3 @@
-#global marked
 using Core
 
 #[Swag.Opaque]

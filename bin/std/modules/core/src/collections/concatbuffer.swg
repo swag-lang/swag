@@ -1,4 +1,3 @@
-#global marked
 #global public
 
 // Represents a single memory block (a bucket) within a ConcatBuffer.

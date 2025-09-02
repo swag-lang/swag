@@ -1,4 +1,3 @@
-#global marked
 using Core, FreeType
 
 public struct GlyphAtlas

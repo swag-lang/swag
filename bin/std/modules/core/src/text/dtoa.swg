@@ -5,7 +5,6 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global marked
 #global namespace StrConv
 #global namespace Dtoa
 #global #[Swag.Safety("overflow|nan", false)]

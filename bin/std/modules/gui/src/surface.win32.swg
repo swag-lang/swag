@@ -1,4 +1,3 @@
-#global marked
 #global public
 #global #if #os == Swag.TargetOs.Windows
 #foreignlib("dwmapi")

@@ -1,4 +1,3 @@
-#global marked
 const BtnColorWidth  = 68.0
 const BtnColorHeight = 88.0
 const BtnStyleWidth  = 88.0

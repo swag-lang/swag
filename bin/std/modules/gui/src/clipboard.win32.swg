@@ -1,4 +1,3 @@
-#global marked
 #global #if #os == Swag.TargetOs.Windows
 #global namespace Clipboard
 #global public

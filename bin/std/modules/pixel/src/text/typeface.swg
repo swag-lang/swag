@@ -1,4 +1,3 @@
-#global marked
 using Core, FreeType
 
 var g_FT: FT_Library

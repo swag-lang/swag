@@ -1,4 +1,3 @@
-#global marked
 using Gui
 
 const CmdIdAbout = "CmdIdAbout"

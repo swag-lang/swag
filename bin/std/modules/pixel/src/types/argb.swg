@@ -1,4 +1,3 @@
-#global marked
 public enum Argb: u32
 {
     AliceBlue            = 0xFFF0F8FF

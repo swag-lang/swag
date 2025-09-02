@@ -1,4 +1,3 @@
-#global marked
 #global namespace Wav
 using Core, Core.Errors, Win32
 

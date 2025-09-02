@@ -1,4 +1,3 @@
-#global marked
 #global using Core, Pixel, Gui
 
 #dependencies

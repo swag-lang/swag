@@ -1,4 +1,3 @@
-#global marked
 const MinBorderSize     = 1.0
 const MaxBorderSize     = 100.0
 const MinTextBorderSize = 1.0

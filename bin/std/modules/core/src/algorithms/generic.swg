@@ -1,4 +1,3 @@
-#global marked
 #global export
 
 // Swaps the values of two variables.

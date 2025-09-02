@@ -8,7 +8,6 @@
     See LICENCE.md for the corresponding licence.
 */
 
-#global marked
 #global namespace Random
 
 public const NN = 312
