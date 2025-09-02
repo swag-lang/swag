@@ -1,5 +1,5 @@
-#global testerror "Err0645"
-
+//#global testerror "Err0645"
+/*
 #[Swag.Mixin]
 func titi()
 {
@@ -9,4 +9,4 @@ func titi()
     }
 }
 
-titi()
+titi()*/

@@ -12,6 +12,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#pragma optimize("", off)
 
 bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 {
@@ -998,6 +999,9 @@ bool Parser::doTopLevelInstruction(AstNode* parent, AstNode** result)
             return true;
         case TokenId::CompilerForeignLib:
             SWAG_CHECK(doCompilerForeignLib(parent, result));
+            return true;
+        case TokenId::Identifier:
+            SWAG_CHECK(doTopLevelIdentifierRef(parent));
             return true;
     }
 

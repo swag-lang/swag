@@ -70,6 +70,34 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
 }
 
 // ReSharper disable once CppParameterMayBeConstPtrOrRef
+bool Semantic::resolveTopLevelIdentifier(SemanticContext* context)
+{
+    const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
+    SWAG_CHECK(resolveIdentifier(context));
+    YIELD();
+    
+    if(!node->resolvedSymbolName()->is(SymbolKind::Function))
+    {
+        const Diagnostic err{node, node->token, formErr(Err0310, node->token.cstr())};
+        return context->report(err);
+    }
+
+    const auto funcDecl = castAst<AstFuncDecl>(node->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
+    if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
+    {
+        const Diagnostic err{node, node->token, formErr(Err0310, node->token.cstr())};
+        return context->report(err);
+    }
+    
+    for (const auto p: node->callParameters->children)
+    {
+        SWAG_CHECK(checkIsConstExpr(context, p));
+    }
+    
+    return true;
+}
+
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::preResolveIdentifierRef(SemanticContext* context)
 {
     const auto node = castAst<AstIdentifierRef>(context->node, AstNodeKind::IdentifierRef);
@@ -558,18 +586,18 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                const Diagnostic err{identifier, identifier->token, formErr(Err0188, identifier->token.cstr(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                const Diagnostic err{callParameters, formErr(Err0188, identifier->token.cstr(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
             }
 
-            const Diagnostic err{identifier, identifier->token, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
+            const Diagnostic err{callParameters, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
             return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
         }
 
         if (symbolKind == SymbolKind::TypeAlias &&
             !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCE_ALIAS)->isStruct())
         {
-            const Diagnostic err{identifier, identifier->token, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
+            const Diagnostic err{callParameters, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
             return context->report(err, Diagnostic::hereIs(symbol->overloads[0]));
         }
     }

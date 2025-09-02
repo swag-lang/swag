@@ -69,6 +69,7 @@ constexpr IdentifierFlags IDENTIFIER_NO_GEN_PARAMS   = 0x00000002;
 constexpr IdentifierFlags IDENTIFIER_TYPE_DECL       = 0x00000004;
 constexpr IdentifierFlags IDENTIFIER_ACCEPT_QUESTION = 0x00000008;
 constexpr IdentifierFlags IDENTIFIER_NO_ARRAY        = 0x00000010;
+constexpr IdentifierFlags IDENTIFIER_TOP_LEVEL       = 0x00000020;
 constexpr IdentifierFlags IDENTIFIER_NO_PARAMS       = IDENTIFIER_NO_CALL_PARAMS | IDENTIFIER_NO_GEN_PARAMS | IDENTIFIER_NO_ARRAY;
 
 constexpr ExprFlags EXPR_FLAG_NONE                  = 0x00000000;
@@ -180,6 +181,7 @@ struct Parser
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags = VAR_DECL_FLAG_ZERO);
     bool doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
     bool doIdentifier(AstNode* parent, IdentifierFlags identifierFlags = 0);
+    bool doTopLevelIdentifierRef(AstNode* parent);
     bool doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result);
     bool doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard = false);

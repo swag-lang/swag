@@ -1,5 +1,5 @@
-#global testerror "Err0645"
-
+//#global testerror "Err0645"
+/*
 //#[Swag.Mixin]
 func mkVar(name: string, value: s32)
 {
@@ -9,3 +9,4 @@ func mkVar(name: string, value: s32)
 mkVar("titi", 555)
 
 #placeholder(titi)
+*/

@@ -424,7 +424,8 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
         // This will work for compile-time values, otherwise we will have an out-of-stack frame when generating the code
         cloneContext.alternativeScope = inlineNode->parametersScope;
 
-        SWAG_CHECK(funcDecl->cloneSubDecl(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
+        if (inlineNode->ownerFct)
+            SWAG_CHECK(funcDecl->cloneSubDecl(context, cloneContext, funcDecl->content, inlineNode->ownerFct, newContent));
     }
 
     // Need to reevaluate the identifier (if this is an identifier) because the makeInline can be called

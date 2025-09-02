@@ -1238,7 +1238,7 @@ bool Parser::doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result
             typeCode->rawType   = nullptr;
             typeCode->content->addAstFlag(AST_NO_SEMANTIC);
             node->typeInfo = typeCode;
-            node->addAstFlag(AST_NO_BYTECODE);
+            node->addAstFlag(AST_NO_BYTECODE | AST_CONST_EXPR);
             boolExpression = node;
             break;
         }

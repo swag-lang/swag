@@ -332,7 +332,7 @@ void initErrors()
     SWAG_ERROR(Err0185, "invalid expression                                $ expected an expression, found a type instead                                                                                             $ ");
     SWAG_ERROR(Err0186, "invalid function call                             $ cannot call [[%s]] because the function is declared but not defined                                                                      $ ");
     SWAG_ERROR(Err0187, "invalid function call                             $ unexpected [[{}]] to call function [[%s]] with arguments                                                                                 $ consider using [[()]] instead");
-    SWAG_ERROR(Err0188, "invalid function call                             $ unexpected call arguments because [[%s]] has the type [[%s]] which is not a function                                                     $ ");
+    SWAG_ERROR(Err0188, "invalid function call                             $ unexpected call arguments because [[%s]] has the type [[%s]]                                                                             $ ");
     SWAG_ERROR(Err0189, "invalid function call                             $ unexpected call arguments because [[%s]] is [[%s]] and not a function                                                                    $ ");
     SWAG_ERROR(Err0190, "invalid function declaration                      $ expected [[func]] or [[mtd]] to declare an interface function, found $$TKN$$ instead                                                     $ consider using [[func]] or [[mtd]] to declare a function within an interface");
     SWAG_ERROR(Err0191, "invalid function name                             $ expected a function name, found $$TKN$$ instead                                                                                          $ ");
@@ -931,7 +931,7 @@ void initErrors()
 
     SWAG_ERROR(Err0668, "type mismatch UFCS                                $ expected an UFCS argument of type [[%s]]                                                                                                 $ ");
     
-    SWAG_ERROR(Err0310, nullptr);
+    SWAG_ERROR(Err0310, "invalid top level call                            $ function [[%s]] is not marked with [[#[Swag.Mixin]]]                                                                                     $ only call to mixin functions are permitted at top level");
     SWAG_ERROR(Err0468, nullptr);
     SWAG_ERROR(Err0060, nullptr);
     SWAG_ERROR(Err0079, nullptr);

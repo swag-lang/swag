@@ -342,6 +342,7 @@ namespace Semantic
     bool resolveFuncDeclAfterSI(SemanticContext* context);
     bool resolveFuncDeclParams(SemanticContext* context);
     bool resolveFuncDeclType(SemanticContext* context);
+    bool resolveTopLevelIdentifier(SemanticContext* context);
     bool resolveIdentifier(SemanticContext* context);
     bool resolveIdentifierRef(SemanticContext* context);
     bool resolveIf(SemanticContext* context);

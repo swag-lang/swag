@@ -289,6 +289,29 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
     return true;
 }
 
+bool Parser::doTopLevelIdentifierRef(AstNode* parent)
+{
+    AstNode* identifierRef;
+    SWAG_CHECK(doIdentifierRef(parent, &identifierRef, IDENTIFIER_TOP_LEVEL));
+    if (identifierRef->lastChild()->isNot(AstNodeKind::Identifier))
+    {
+        const Diagnostic err{identifierRef, tokenParse.token, toErr(Err0645)};
+        return context->report(err);
+    }
+
+    const auto identifier = castAst<AstIdentifier>(identifierRef->lastChild(), AstNodeKind::Identifier);
+    if (!identifier->callParameters)
+    {
+        const Diagnostic err{identifierRef, tokenParse.token, toErr(Err0645)};
+        return context->report(err);
+    }
+
+    identifier->semanticFct = Semantic::resolveTopLevelIdentifier;
+    identifier->byteCodeFct = nullptr;
+
+    return true;
+}
+
 bool Parser::doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags)
 {
     const auto identifierRef = Ast::newIdentifierRef(this, parent);
