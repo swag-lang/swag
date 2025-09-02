@@ -15,17 +15,19 @@ struct SymbolName;
 struct SymbolOverload;
 struct TypeInfo;
 
-using JobFlags                              = Flags<uint32_t>;
-constexpr JobFlags JOB_IS_IN_QUEUE          = 0x00000001;
-constexpr JobFlags JOB_IS_IN_THREAD         = 0x00000002;
-constexpr JobFlags JOB_IS_PENDING           = 0x00000004;
-constexpr JobFlags JOB_IS_PENDING_RUN       = 0x00000008;
-constexpr JobFlags JOB_COMPILER_PASS        = 0x00000010;
-constexpr JobFlags JOB_IS_IO                = 0x00000020;
-constexpr JobFlags JOB_IS_OPT               = 0x00000040;
-constexpr JobFlags JOB_PENDING_PLACE_HOLDER = 0x00000080;
-constexpr JobFlags JOB_ACCEPT_PENDING_COUNT = 0x00000100;
-constexpr JobFlags JOB_IS_DEBUGGER          = 0x00000200;
+using JobFlags                                = Flags<uint32_t>;
+constexpr JobFlags JOB_IS_IN_QUEUE            = 0x00000001;
+constexpr JobFlags JOB_IS_IN_THREAD           = 0x00000002;
+constexpr JobFlags JOB_IS_PENDING             = 0x00000004;
+constexpr JobFlags JOB_IS_PENDING_RUN         = 0x00000008;
+constexpr JobFlags JOB_COMPILER_PASS          = 0x00000010;
+constexpr JobFlags JOB_IS_IO                  = 0x00000020;
+constexpr JobFlags JOB_IS_OPT                 = 0x00000040;
+constexpr JobFlags JOB_PENDING_PLACE_HOLDER   = 0x00000080;
+constexpr JobFlags JOB_ACCEPT_PENDING_COUNT   = 0x00000100;
+constexpr JobFlags JOB_IS_DEBUGGER            = 0x00000200;
+constexpr JobFlags JOB_PENDING_META_CHANGE    = 0x00000400;
+constexpr JobFlags JOB_NO_PENDING_META_CHANGE = 0x00000800;
 
 enum class ContextResult
 {
@@ -89,6 +91,7 @@ enum class JobWaitKind
     WaitDepDoneExec,
     WaitStructSymbol,
     WaitPreResolve,
+    UnknownSymbol,
 };
 
 struct Job

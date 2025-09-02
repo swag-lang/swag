@@ -784,7 +784,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                     arrayNode->structFlatParams.push_back(arrayNode->access);
 
                     AstNode* child = arrayNode->array;
-                    while (child->is(AstNodeKind::ArrayPointerIndex))
+                    while (child && child->is(AstNodeKind::ArrayPointerIndex))
                     {
                         const auto arrayChild = castAst<AstArrayPointerIndex>(child, AstNodeKind::ArrayPointerIndex);
                         arrayNode->structFlatParams.push_front(arrayChild->access);

@@ -48,6 +48,7 @@ struct ThreadManager
     std::atomic<int>         currentJobsIO    = 0;
     uint32_t                 numWorkers       = 0;
     bool                     debuggerMode     = false;
+    bool                     metaChanged      = false;
 };
 
 extern ThreadManager g_ThreadMgr;

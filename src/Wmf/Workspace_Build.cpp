@@ -752,8 +752,54 @@ bool Workspace::buildTarget()
     {
         g_ThreadMgr.waitEndJobs();
 
-        bool restart     = false;
-        auto waitingJobs = g_ThreadMgr.waitingJobs;
+        auto       waitingJobs  = g_ThreadMgr.waitingJobs;
+        const bool metaChanged  = g_ThreadMgr.metaChanged;
+        g_ThreadMgr.metaChanged = false;
+        VectorNative<Job*> toRelaunch;
+
+        for (uint32_t i = 0; i < waitingJobs.size(); i++)
+        {
+            const auto job = waitingJobs[i];
+            if (job->hasFlag(JOB_PENDING_META_CHANGE) && metaChanged)
+            {
+                job->removeFlag(JOB_PENDING_META_CHANGE);
+                SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
+                job->addFlag(JOB_ACCEPT_PENDING_COUNT);
+                waitingJobs.erase_unordered(i);
+                i--;
+                toRelaunch.push_back(job);
+            }
+        }
+
+        if (!toRelaunch.empty())
+        {
+            for (const auto job : toRelaunch)
+                g_ThreadMgr.addJob(job);
+            continue;
+        }
+
+        for (uint32_t i = 0; i < waitingJobs.size(); i++)
+        {
+            const auto job = waitingJobs[i];
+            if (job->hasFlag(JOB_PENDING_META_CHANGE))
+            {
+                job->removeFlag(JOB_PENDING_META_CHANGE);
+                job->addFlag(JOB_NO_PENDING_META_CHANGE);
+                SWAG_ASSERT(!job->hasFlag(JOB_IS_IN_THREAD));
+                job->addFlag(JOB_ACCEPT_PENDING_COUNT);
+                waitingJobs.erase_unordered(i);
+                i--;
+                toRelaunch.push_back(job);
+            }
+        }
+
+        if (!toRelaunch.empty())
+        {
+            for (const auto job : toRelaunch)
+                g_ThreadMgr.addJob(job);
+            continue;
+        }        
+
         for (uint32_t i = 0; i < waitingJobs.size(); i++)
         {
             const auto job = waitingJobs[i];
@@ -763,16 +809,19 @@ bool Workspace::buildTarget()
                 job->addFlag(JOB_ACCEPT_PENDING_COUNT);
                 waitingJobs.erase_unordered(i);
                 i--;
-                restart = true;
-                g_ThreadMgr.addJob(job);
+                toRelaunch.push_back(job);
             }
         }
 
-        if (!restart)
+        if (!toRelaunch.empty())
         {
-            checkPendingJobs();
-            break;
+            for (const auto job : toRelaunch)
+                g_ThreadMgr.addJob(job);
+            continue;
         }
+
+        checkPendingJobs();
+        break;
     }
 
     return true;

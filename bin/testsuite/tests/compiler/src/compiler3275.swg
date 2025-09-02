@@ -16,7 +16,7 @@ func toto()
     cpt()
 }
 
-#placeholder(G)
+//#placeholder(G)
 #test
 {
     toto()

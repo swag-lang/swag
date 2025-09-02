@@ -6,6 +6,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Threading/ThreadManager.h"
 #include "Wmf/Module.h"
 
 void SymTable::release()
@@ -221,6 +222,7 @@ SymbolOverload* SymTable::addSymbolTypeInfoNoLock(ErrorContext* context, AddSymb
         symbol->dependentJobs.setRunning();
     }
 
+    g_ThreadMgr.metaChanged = true;
     return overload;
 }
 

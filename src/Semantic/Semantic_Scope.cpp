@@ -204,6 +204,7 @@ void Semantic::findSymbolsInHierarchy(VectorNative<CollectedScope>& scopeHierarc
     }
 }
 
+#pragma optimize("", off)
 bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<OneSymbolMatch>& symbolsMatch, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
     // When this is "retval" type, no need to do fancy things, we take the corresponding function
@@ -322,7 +323,14 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     // Error, no symbol!
     if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
         return true;
-    return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
+
+    if (job->hasFlag(JOB_NO_PENDING_META_CHANGE))
+        return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
+
+    identifier->removeSemFlag(SEMFLAG_FORCE_UFCS);
+    job->addFlag(JOB_PENDING_META_CHANGE);
+    job->setPending(JobWaitKind::UnknownSymbol, nullptr, identifier, nullptr);
+    return true;
 }
 
 void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<CollectedScope>& scopes)
