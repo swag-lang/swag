@@ -11,7 +11,6 @@
 #include "Syntax/Parser/Parser_Push.h"
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off) 
 
 bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** result)
 {
