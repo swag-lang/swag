@@ -293,16 +293,17 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
 {
     AstNode* identifierRef;
     SWAG_CHECK(doIdentifierRef(parent, &identifierRef, IDENTIFIER_TOP_LEVEL));
-    if (identifierRef->lastChild()->isNot(AstNodeKind::Identifier))
+    const auto lastChild = identifierRef->lastChild();
+    if (lastChild->isNot(AstNodeKind::Identifier))
     {
-        const Diagnostic err{identifierRef, tokenParse.token, toErr(Err0645)};
+        const Diagnostic err{lastChild, lastChild->token, formErr(Err0645, lastChild->token.cstr())};
         return context->report(err);
     }
 
-    const auto identifier = castAst<AstIdentifier>(identifierRef->lastChild(), AstNodeKind::Identifier);
+    const auto identifier = castAst<AstIdentifier>(lastChild, AstNodeKind::Identifier);
     if (!identifier->callParameters)
     {
-        const Diagnostic err{identifierRef, tokenParse.token, toErr(Err0645)};
+        const Diagnostic err{lastChild, lastChild->token, formErr(Err0645, lastChild->token.cstr())};
         return context->report(err);
     }
 
