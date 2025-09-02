@@ -12,7 +12,6 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
-#pragma optimize("", off)
 
 bool Parser::doCheckPublicInternalPrivate(const Token& tokenAttr) const
 {
