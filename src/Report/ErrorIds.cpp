@@ -563,8 +563,8 @@ void initErrors()
     SWAG_ERROR(Err0419, "missing [[#message]] parameter                    $ expected a parameter of type [[Swag.CompilerMsgMask]] for [[#message]]                                                                   $ ");
     SWAG_ERROR(Err0420, "missing [[#uniq]] number                          $ cannot use a [[#uniq]] variable name without a trailing number, such as [[#uniq0]], [[#uniq1]], etc.                                     $ ");
     SWAG_ERROR(Err0421, "missing [[#placeholder]] identifier               $ expected an identifier after [[#placeholder]], found $$TKN$$ instead                                                                     $ ");
-    SWAG_ERROR(Err0422, "missing [[%s]]                                    $ expected [[%s]] %s but none was found after                                                                                              $ ");
-    SWAG_ERROR(Err0423, "missing [[%s]]                                    $ expected [[%s]] %s, found $$TKN$$ instead                                                                                                $ ");
+    SWAG_ERROR(Err0422, nullptr);
+    SWAG_ERROR(Err0423, "missing [[%s]]                                    $ expected a closing [[%s]] %s                                                                                                             $ ");
     SWAG_ERROR(Err0424, "missing block start                               $ expected [[:]] or [[{]]                                                                                                                  $ ");
     SWAG_ERROR(Err0425, "missing [[(]] before arguments                    $ expected [[(]] to start the list of arguments of [[%s]], found $$TKN$$ instead                                                           $ ");
     SWAG_ERROR(Err0426, "missing [[(]] before parameters                   $ expected [[(]] to start the list of parameters, found $$TKN$$ instead                                                                    $ ");

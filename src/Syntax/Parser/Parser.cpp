@@ -64,27 +64,13 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         return true;
     }
 
-    Utf8 errMsg;
-    SWAG_ASSERT(msg);
-    if (msg[0] == 0)
-        msg = "$$$";
-    if (tokenParse.is(TokenId::EndOfFile))
-        errMsg = formErr(Err0422, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
-    else
-        errMsg = formErr(Err0423, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
-    errMsg.replace(" $$$", "");
+    const Utf8 errMsg = formErr(Err0423, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
+    Diagnostic err{sourceFile, start, start, errMsg};
 
-    Diagnostic err{sourceFile, tokenParse, errMsg};
-
-    if (tokenParse.is(TokenId::EndOfFile))
-    {
-        err.startLocation = start;
-        err.endLocation   = start;
-    }
-    else
+    if (!tokenParse.is(TokenId::EndOfFile))
     {
         const Utf8 related = Naming::tokenToName(id);
-        err.addNote(sourceFile, start, start, form("this should be associated with a [[%s]]", related.cstr()));
+        err.addNote(tokenParse.token.startLocation, tokenParse.token.endLocation, form("found [[%s]] instead", tokenParse.cstr()));
     }
 
     if (parent)
@@ -102,7 +88,9 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         }
     }
 
-    if (tokenizer.lastOpenLeftCurly.line)
+    if (id == TokenId::SymRightCurly &&
+        tokenizer.lastOpenLeftCurly.line &&
+        tokenizer.lastOpenLeftCurly != start)
     {
         err.addNote(sourceFile,
                     tokenizer.lastOpenLeftCurly,
