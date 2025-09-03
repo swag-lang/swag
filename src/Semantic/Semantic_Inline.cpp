@@ -415,6 +415,10 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
 
     newContent->removeAstFlag(AST_NO_SEMANTIC);
 
+    // Propagate attributes
+    if (node->is(AstNodeKind::Identifier) && node->parent->is(AstNodeKind::IdentifierRef))
+        newContent->setOwnerAttrUseFrom(node->parent);
+    
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecl.empty())
     {

@@ -841,8 +841,20 @@ AstNode* AstNode::findChildRefRec(AstNode* ref, AstNode* fromChild) const
     return nullptr;
 }
 
+void AstNode::setOwnerAttrUseFrom(const AstNode* from)
+{
+    if (!from->hasExtOwner())
+        return;
+    if (!from->extOwner()->ownerAttrUse)
+        return;
+    setOwnerAttrUse(from->extOwner()->ownerAttrUse);
+}
+
 void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
 {
+    allocateExtension(ExtensionKind::Owner);
+    extOwner()->ownerAttrUse = attrUse;
+
     switch (kind)
     {
         case AstNodeKind::CompilerAst:
@@ -854,11 +866,6 @@ void AstNode::setOwnerAttrUse(AstAttrUse* attrUse)
         case AstNodeKind::SwitchCaseBlock:
             for (const auto s : children)
                 s->setOwnerAttrUse(attrUse);
-            break;
-
-        default:
-            allocateExtension(ExtensionKind::Owner);
-            extOwner()->ownerAttrUse = attrUse;
             break;
     }
 }

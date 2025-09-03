@@ -87,10 +87,10 @@ impl IWnd for Dialog
 
 impl Dialog
 {
-    const BtnYes    = "Dialog.yes"
-    const BtnNo     = "Dialog.no"
-    const BtnOk     = "Dialog.ok"
-    const BtnCancel = "Dialog.cancel"
+    newCmdId("BtnYes")
+    newCmdId("BtnNo")
+    newCmdId("BtnOk")
+    newCmdId("BtnCancel")
 
     // Creates a simple dialog box
     func createDialog(from: *Surface, width = 512, height = 300, title: string = null, flags = SurfaceFlags.Zero)->*Dialog

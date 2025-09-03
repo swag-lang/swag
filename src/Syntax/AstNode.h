@@ -592,6 +592,7 @@ struct AstNode
         return 0;
     }
 
+    void setOwnerAttrUseFrom(const AstNode* from);
     void setOwnerAttrUse(AstAttrUse* attrUse);
     void setOwnerBreakable(AstBreakable* bkp);
 

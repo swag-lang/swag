@@ -354,7 +354,12 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
 
         job->nodes.pop_back();
         for (uint32_t i = node->childCount() - 1; i != UINT32_MAX; i--)
-            job->nodes.push_back(node->children[i]);
+        {
+            const auto child = node->children[i];
+            child->setOwnerAttrUseFrom(node);
+            job->nodes.push_back(child);
+        }
+        
         job->nodes.push_back(node);
     }
 
