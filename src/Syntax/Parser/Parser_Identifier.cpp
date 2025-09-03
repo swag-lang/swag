@@ -293,6 +293,7 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
 {
     AstNode* identifierRef;
     SWAG_CHECK(doIdentifierRef(parent, &identifierRef, IDENTIFIER_TOP_LEVEL));
+
     const auto lastChild = identifierRef->lastChild();
     if (lastChild->isNot(AstNodeKind::Identifier))
     {
@@ -301,6 +302,8 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
     }
 
     const auto identifier = castAst<AstIdentifier>(lastChild, AstNodeKind::Identifier);
+    identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_TOP_LEVEL);
+    
     if (!identifier->callParameters)
     {
         const Diagnostic err{lastChild, lastChild->token, formErr(Err0645, lastChild->token.cstr())};

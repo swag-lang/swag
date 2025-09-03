@@ -698,6 +698,7 @@ struct AstIdentifier : AstNode
     static constexpr SpecFlags SPEC_FLAG_CLOSURE_FIRST_PARAM = 0x0008;
     static constexpr SpecFlags SPEC_FLAG_SILENT_CALL         = 0x0010;
     static constexpr SpecFlags SPEC_FLAG_NAME_ALIAS          = 0x0020;
+    static constexpr SpecFlags SPEC_FLAG_TOP_LEVEL           = 0x0040;
 
     struct IdentifierExtension
     {

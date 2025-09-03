@@ -279,7 +279,13 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (!identifierRef->previousNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
         if (!identifierRef->previousNode)
-            return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
+        {
+            if (job->hasFlag(JOB_NO_PENDING_META_CHANGE))
+                return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
+            job->addFlag(JOB_PENDING_META_CHANGE);
+            job->setPending(JobWaitKind::UnknownSymbol, nullptr, identifier, nullptr);
+            return true;
+        }
 
         identifier->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
