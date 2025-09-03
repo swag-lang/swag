@@ -8,7 +8,7 @@ func newCmdId(val: string)
 
 impl ActionUndo
 {
-    const CmdIdUndo = "CmdIdUndo"
+    newCmdId("Undo")
 }
 
 interface IActionUI
