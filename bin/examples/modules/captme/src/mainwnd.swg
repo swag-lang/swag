@@ -89,10 +89,10 @@ impl IWnd for MainWnd
         {
             .addItem(CmdIdShowEditor)
             .addSeparator()
-            .addItem(CmdIdCaptureArea)
-            .addItem(CmdIdCaptureLastArea)
-            .addItem(CmdIdCaptureFullScreen)
-            .addItem(CmdIdCaptureActiveWnd)
+            .addItem(ActionCapture.Area)
+            .addItem(ActionCapture.LastArea)
+            .addItem(ActionCapture.FullScreen)
+            .addItem(ActionCapture.ActiveWnd)
             .addSeparator()
             .addItem(CmdIdExit)
 
@@ -451,10 +451,10 @@ impl MainWnd
             }
         }
 
-        registerHotKey(.Zero, .PrintScreen, CmdIdCaptureArea)
-        registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureLastArea)
-        registerHotKey(.Control, .PrintScreen, CmdIdCaptureFullScreen)
-        registerHotKey(.Alt, .PrintScreen, CmdIdCaptureActiveWnd)
+        registerHotKey(.Zero, .PrintScreen, ActionCapture.Area)
+        registerHotKey(.CtrlShift, .PrintScreen, ActionCapture.LastArea)
+        registerHotKey(.Control, .PrintScreen, ActionCapture.FullScreen)
+        registerHotKey(.Alt, .PrintScreen, ActionCapture.ActiveWnd)
     }
 
     mtd createTopMenu()
@@ -487,28 +487,28 @@ impl MainWnd
 
         with let captureMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdIdCaptureArea)
-            .addItem(CmdIdCaptureLastArea)
-            .addItem(CmdIdCaptureFullScreen)
-            .addItem(CmdIdCaptureActiveWnd)
+            .addItem(ActionCapture.Area)
+            .addItem(ActionCapture.LastArea)
+            .addItem(ActionCapture.FullScreen)
+            .addItem(ActionCapture.ActiveWnd)
 
             foreach m, idx in me.monitors
             {
                 switch idx
                 {
                 case 0:
-                    .addItem(CmdIdCaptureScreen0)
+                    .addItem(ActionCapture.Screen0)
                 case 1:
-                    .addItem(CmdIdCaptureScreen1)
+                    .addItem(ActionCapture.Screen1)
                 case 2:
-                    .addItem(CmdIdCaptureScreen2)
+                    .addItem(ActionCapture.Screen2)
                 case 3:
-                    .addItem(CmdIdCaptureScreen3)
+                    .addItem(ActionCapture.Screen3)
                 }
             }
 
             .addSeparator()
-            .addItem(CmdIdCaptureHideEditor)
+            .addItem(ActionCapture.HideEditor)
 
             with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: me)
             {
@@ -524,9 +524,9 @@ impl MainWnd
             topMenu.addPopup("Capture", captureMenu)
 
             .addSeparator()
-            .addItem(CmdIdCaptureToInPlace)
-            .addItem(CmdIdCaptureToEditor)
-            .addItem(CmdIdCaptureToClipboard)
+            .addItem(ActionCapture.ToInPlace)
+            .addItem(ActionCapture.ToEditor)
+            .addItem(ActionCapture.ToClipboard)
         }
 
         with let editMenu = MenuCtrl.createPopup(me.parent, owner: me)
@@ -625,7 +625,7 @@ impl MainWnd
         me.createBtn(CmdIdModeImage)
         me.createBtn(CmdIdModePixSel)
 
-        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
+        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.Capture)
         me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
     }
 
