@@ -102,7 +102,7 @@ impl IWnd for RecentView
                         .addItem(CmdIdDupCapture)
                         .addItem(CmdIdDeleteCapture)
                         .addSeparator()
-                        .addItem(CmdIdCopyAsImage)
+                        .addItem(ActionCopyPaste.CopyAsImage)
                         .addSeparator()
                         .addItem(CmdIdCaptureFileLocation)
                         .addItem(CmdIdLinkedFileLocation)

@@ -913,19 +913,19 @@ impl Capture
                 switch t
                 {
                 case FormText:
-                    .addItem(CmdIdEditText)
+                    .addItem(ActionEdit.Text)
                     .addSeparator()
                 }
             }
 
-            .addItem(CmdIdCopy)
-            .addItem(CmdIdCut)
-            .addItem(CmdIdPaste)
+            .addItem(ActionCopyPaste.Copy)
+            .addItem(ActionCopyPaste.Cut)
+            .addItem(ActionCopyPaste.Paste)
             .addSeparator()
-            .addItem(CmdIdCopyAsImage)
+            .addItem(ActionCopyPaste.CopyAsImage)
             .addSeparator()
-            .addItem(CmdIdPasteImageInside)
-            .addItem(CmdIdClearImageInside)
+            .addItem(ActionCopyPaste.PasteImageInside)
+            .addItem(ActionEdit.ClearImageInside)
             .addSeparator()
             .addItem(CmdIdDeleteSelection)
             .addSeparator()

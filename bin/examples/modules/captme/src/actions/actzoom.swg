@@ -1,18 +1,22 @@
 using Gui
 
-const CmdIdZoom1 = "CmdIdZoom1"
-const CmdIdZoomFit = "CmdIdZoomFit"
-const CmdIdZoomIn = "CmdIdZoomIn"
-const CmdIdZoomOut = "CmdIdZoomOut"
-
 struct ActionZoom {}
+
+impl ActionZoom
+{
+    newCmdId("Zoom1")
+    newCmdId("ZoomFit")
+    newCmdId("ZoomIn")
+    newCmdId("ZoomOut")
+}
+
 impl IActionUI for ActionZoom
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdZoom1, CmdIdZoomFit, CmdIdZoomIn, CmdIdZoomOut:
+        case ActionZoom.Zoom1, ActionZoom.ZoomFit, ActionZoom.ZoomIn, ActionZoom.ZoomOut:
             return true
         }
 
@@ -26,23 +30,23 @@ impl IActionUI for ActionZoom
 
         switch cxt.id
         {
-        case CmdIdZoom1:
+        case ActionZoom.Zoom1:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Actual Size"
             evt.disabled = !capture
 
-        case CmdIdZoomFit:
+        case ActionZoom.ZoomFit:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Fit To View"
             evt.disabled = !capture
 
-        case CmdIdZoomIn:
+        case ActionZoom.ZoomIn:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom In"
             evt.disabled = !capture or !main.editWnd.editView.canZoomIn()
             evt.icon     = main.getTheme().getIcon24(.ZoomIn)
 
-        case CmdIdZoomOut:
+        case ActionZoom.ZoomOut:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom Out"
             evt.disabled = !capture or !main.editWnd.editView.canZoomOut()
@@ -59,16 +63,16 @@ impl IActionUI for ActionZoom
 
         switch cxt.id
         {
-        case CmdIdZoom1:
+        case ActionZoom.Zoom1:
             view.setZoom(1)
 
-        case CmdIdZoomFit:
+        case ActionZoom.ZoomFit:
             view.zoomToFit()
 
-        case CmdIdZoomIn:
+        case ActionZoom.ZoomIn:
             view.zoomIn()
 
-        case CmdIdZoomOut:
+        case ActionZoom.ZoomOut:
             view.zoomOut()
         }
 

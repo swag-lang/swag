@@ -392,11 +392,11 @@ impl MainWnd
     {
         with me
         {
-            .registerKeyShortcut(.Control, .C, CmdIdCopy)
-            .registerKeyShortcut(.Control, .X, CmdIdCut)
-            .registerKeyShortcut(.Control, .V, CmdIdPaste)
-            .registerKeyShortcut(.Control, .Insert, CmdIdCopy)
-            .registerKeyShortcut(.Shift, .Insert, CmdIdPaste)
+            .registerKeyShortcut(.Control, .C, ActionCopyPaste.Copy)
+            .registerKeyShortcut(.Control, .X, ActionCopyPaste.Cut)
+            .registerKeyShortcut(.Control, .V, ActionCopyPaste.Paste)
+            .registerKeyShortcut(.Control, .Insert, ActionCopyPaste.Copy)
+            .registerKeyShortcut(.Shift, .Insert, ActionCopyPaste.Paste)
             .registerKeyShortcut(.Control, .Z, ActionUndo.Undo)
             .registerKeyShortcut(.Control, .Y, ActionUndo.Redo)
             .registerKeyShortcut(.Zero, .Home, ActionMoveSel.SendToFront)
@@ -404,13 +404,13 @@ impl MainWnd
             .registerKeyShortcut(.Zero, .PageUp, ActionMoveSel.MoveForward)
             .registerKeyShortcut(.Zero, .PageDown, ActionMoveSel.MoveBackward)
             .registerKeyShortcut(.Zero, .Delete, CmdIdDeleteSelection)
-            .registerKeyShortcut(.CtrlShift, .A, CmdIdCopyAsImage)
+            .registerKeyShortcut(.CtrlShift, .A, ActionCopyPaste.CopyAsImage)
             .registerKeyShortcut(.Control, .Space, CmdIdFreeze)
             .registerKeyShortcut(.Control, .A, CmdIdSelectAll)
             .registerKeyShortcut(.Control, .D, CmdIdDeSelectAll)
-            .registerKeyShortcut(.Control, .Add, CmdIdZoomIn)
-            .registerKeyShortcut(.Control, .Subtract, CmdIdZoomOut)
-            .registerKeyShortcut(.Control, .NumPad0, CmdIdZoom1)
+            .registerKeyShortcut(.Control, .Add, ActionZoom.ZoomIn)
+            .registerKeyShortcut(.Control, .Subtract, ActionZoom.ZoomOut)
+            .registerKeyShortcut(.Control, .NumPad0, ActionZoom.Zoom1)
             .registerKeyShortcut(.CtrlShift, .D, CmdIdDupCapture)
             .registerKeyShortcut(.CtrlShift, .I, CmdIdInvertSelection)
             .registerKeyShortcut(.CtrlShift, .T, CmdIdFlattenAll)
@@ -429,7 +429,7 @@ impl MainWnd
             .registerKeyShortcut(.Zero, .Right, CmdIdMoveSelRight)
             .registerKeyShortcut(.Zero, .Down, CmdIdMoveSelBottom)
             .registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
-            .registerKeyShortcut(.Zero, .F2, CmdIdEditText)
+            .registerKeyShortcut(.Zero, .F2, ActionEdit.Text)
         }
 
         var errorReg = false
@@ -534,9 +534,9 @@ impl MainWnd
             .addItem(ActionUndo.Undo)
             .addItem(ActionUndo.Redo)
             .addSeparator()
-            .addItem(CmdIdCopy)
-            .addItem(CmdIdCut)
-            .addItem(CmdIdPaste)
+            .addItem(ActionCopyPaste.Copy)
+            .addItem(ActionCopyPaste.Cut)
+            .addItem(ActionCopyPaste.Paste)
             .addSeparator()
             .addItem(CmdIdSelectAll)
             .addItem(CmdIdSelectSameAll)
@@ -551,7 +551,7 @@ impl MainWnd
 
         with let imageMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdIdCopyAsImage)
+            .addItem(ActionCopyPaste.CopyAsImage)
             .addSeparator()
             .addItem(CmdIdRestoreOrg)
             .addSeparator()
@@ -571,13 +571,13 @@ impl MainWnd
 
         with let viewMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdIdZoomIn)
-            .addItem(CmdIdZoomOut)
+            .addItem(ActionZoom.ZoomIn)
+            .addItem(ActionZoom.ZoomOut)
             .addSeparator()
-            .addItem(CmdIdZoom1)
-            .addItem(CmdIdZoomFit)
+            .addItem(ActionZoom.Zoom1)
+            .addItem(ActionZoom.ZoomFit)
             .addSeparator()
-            .addItem(CmdIdViewClip)
+            .addItem(ActionView.Clip)
             topMenu.addPopup("View", viewMenu)
         }
 
@@ -778,8 +778,8 @@ impl MainWnd
                 var pos  = btn.getSurfaceRect()
                 var menu = MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
-                menu.addItem(CmdIdZoom1)
-                menu.addItem(CmdIdZoomFit)
+                menu.addItem(ActionZoom.Zoom1)
+                menu.addItem(ActionZoom.ZoomFit)
                 discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }

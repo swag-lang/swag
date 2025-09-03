@@ -1,15 +1,19 @@
 using Gui
 
-const CmdIdViewClip = "CmdIdViewClip"
-
 struct ActionView {}
+
+impl ActionView
+{
+    newCmdId("Clip")
+}
+
 impl IActionUI for ActionView
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdViewClip:
+        case ActionView.Clip:
             return true
         }
 
@@ -21,7 +25,7 @@ impl IActionUI for ActionView
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdIdViewClip:
+        case ActionView.Clip:
             evt.setFlags |= .Name | .Disabled | .Checked
             evt.name    = "Hide Outside Box"
             evt.checked = main.editorOptions.clipToSelection
@@ -35,7 +39,7 @@ impl IActionUI for ActionView
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdIdViewClip:
+        case ActionView.Clip:
             main.editorOptions.clipToSelection = !main.editorOptions.clipToSelection
         }
 
