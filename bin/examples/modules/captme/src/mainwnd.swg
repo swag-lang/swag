@@ -367,7 +367,7 @@ impl MainWnd
         {
             .registerAction'ActionAlign()
             .registerAction'ActionUndo()
-            .registerAction'ActionDelay()
+            .registerAction'ActionCaptureDelay()
             .registerAction'ActionPixSel()
             .registerAction'ActionCapture()
             .registerAction'ActionMoveSel()
@@ -512,13 +512,13 @@ impl MainWnd
 
             with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: me)
             {
-                .addItem(CmdIdCaptureDelay0)
+                .addItem(ActionCaptureDelay.Delay0)
                 .addSeparator()
-                .addItem(CmdIdCaptureDelay1)
-                .addItem(CmdIdCaptureDelay2)
-                .addItem(CmdIdCaptureDelay5)
-                .addItem(CmdIdCaptureDelay9)
-                captureMenu.addPopup(delayMenu, CmdIdCaptureDelay)
+                .addItem(ActionCaptureDelay.Delay1)
+                .addItem(ActionCaptureDelay.Delay2)
+                .addItem(ActionCaptureDelay.Delay5)
+                .addItem(ActionCaptureDelay.Delay9)
+                captureMenu.addPopup(delayMenu, ActionCaptureDelay.Delay)
             }
 
             topMenu.addPopup("Capture", captureMenu)
