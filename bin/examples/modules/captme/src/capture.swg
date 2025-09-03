@@ -933,22 +933,22 @@ impl Capture
 
         with let popup0 = MenuCtrl.createPopup(view)
         {
-            .addItem(CmdIdAlignLeft)
-            .addItem(CmdIdAlignCenter)
-            .addItem(CmdIdAlignRight)
+            .addItem(ActionMoveSel.AlignLeft)
+            .addItem(ActionMoveSel.AlignCenter)
+            .addItem(ActionMoveSel.AlignRight)
             .addSeparator()
-            .addItem(CmdIdAlignTop)
-            .addItem(CmdIdAlignMiddle)
-            .addItem(CmdIdAlignBottom)
+            .addItem(ActionMoveSel.AlignTop)
+            .addItem(ActionMoveSel.AlignMiddle)
+            .addItem(ActionMoveSel.AlignBottom)
             menu.addPopup("Align", popup0)
         }
 
         with let popup1 = MenuCtrl.createPopup(view)
         {
-            .addItem(CmdIdSendToFront)
-            .addItem(CmdIdSendToBack)
-            .addItem(CmdIdMoveForward)
-            .addItem(CmdIdMoveBackward)
+            .addItem(ActionMoveSel.SendToFront)
+            .addItem(ActionMoveSel.SendToBack)
+            .addItem(ActionMoveSel.MoveForward)
+            .addItem(ActionMoveSel.MoveBackward)
             menu.addPopup("Arrange", popup1)
         }
 

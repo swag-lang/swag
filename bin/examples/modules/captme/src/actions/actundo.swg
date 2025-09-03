@@ -1,16 +1,20 @@
 using Gui
 
-const CmdIdUndo = "CmdIdUndo"
-const CmdIdRedo = "CmdIdRedo"
-
 struct ActionUndo {}
+
+impl ActionUndo
+{
+    newCmdId("Undo")
+    newCmdId("Redo")
+}
+
 impl IActionUI for ActionUndo
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdUndo, CmdIdRedo:
+        case ActionUndo.Undo, ActionUndo.Redo:
             return true
         }
 
@@ -24,13 +28,13 @@ impl IActionUI for ActionUndo
 
         switch cxt.id
         {
-        case CmdIdUndo:
+        case ActionUndo.Undo:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.name     = "Undo"
             evt.disabled = !capture or !capture.canUndo()
             evt.icon     = main.getTheme().getIcon24(.Undo)
 
-        case CmdIdRedo:
+        case ActionUndo.Redo:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.name     = "Redo"
             evt.disabled = !capture or !capture.canRedo()
@@ -47,9 +51,9 @@ impl IActionUI for ActionUndo
 
         switch cxt.id
         {
-        case CmdIdUndo:
+        case ActionUndo.Undo:
             capture.undo()
-        case CmdIdRedo:
+        case ActionUndo.Redo:
             capture.redo()
         }
 
