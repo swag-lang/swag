@@ -1,12 +1,12 @@
 using Gui
 
-newCmdId("SelectAll")
-newCmdId("SelectSameAll")
-newCmdId("DeSelectAll")
-newCmdId("InvertSelection")
-newCmdId("DeleteSelection")
-newCmdId("Snap")
-newCmdId("Freeze")
+const CmdIdSelectAll = "CmdIdSelectAll"
+const CmdIdSelectSameAll = "CmdIdSelectSameAll"
+const CmdIdDeSelectAll = "CmdIdDeSelectAll"
+const CmdIdInvertSelection = "CmdIdInvertSelection"
+const CmdIdDeleteSelection = "CmdIdDeleteSelection"
+const CmdIdSnap = "CmdIdSnap"
+const CmdIdFreeze = "CmdIdFreeze"
 
 struct ActionSelection {}
 impl IActionUI for ActionSelection
@@ -15,7 +15,7 @@ impl IActionUI for ActionSelection
     {
         switch cxt.id
         {
-        case CmdId.SelectAll, CmdId.SelectSameAll, CmdId.DeSelectAll, CmdId.InvertSelection, CmdId.DeleteSelection, CmdId.Snap, CmdId.Freeze:
+        case CmdIdSelectAll, CmdIdSelectSameAll, CmdIdDeSelectAll, CmdIdInvertSelection, CmdIdDeleteSelection, CmdIdSnap, CmdIdFreeze:
             return true
         }
 
@@ -32,38 +32,38 @@ impl IActionUI for ActionSelection
 
         switch cxt.id
         {
-        case CmdId.SelectAll:
+        case CmdIdSelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count
             evt.name     = "Select All Objects"
 
-        case CmdId.SelectSameAll:
+        case CmdIdSelectSameAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count or !hasSel
             evt.name     = "Select Similar Objects"
 
-        case CmdId.DeSelectAll:
+        case CmdIdDeSelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !hasSel
             evt.name     = "Deselect All Objects"
 
-        case CmdId.InvertSelection:
+        case CmdIdInvertSelection:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture
             evt.name     = "Invert Selection"
 
-        case CmdId.DeleteSelection:
+        case CmdIdDeleteSelection:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Delete"
             evt.icon     = main.getTheme().getIcon24(.Remove)
 
-        case CmdId.Snap:
+        case CmdIdSnap:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Snap To Forms"
             evt.checked = main.snap
 
-        case CmdId.Freeze:
+        case CmdIdFreeze:
             evt.setFlags |= .Name | .Checked | .Name
             evt.name    = "Freeze Selection"
             evt.checked = main.freezeSel
@@ -79,13 +79,13 @@ impl IActionUI for ActionSelection
 
         switch cxt.id
         {
-        case CmdId.SelectAll:
+        case CmdIdSelectAll:
             capture.selection.clear()
             for capture.forms:
                 capture.selection.add(@index)
             capture.selectionHasChanged()
 
-        case CmdId.SelectSameAll:
+        case CmdIdSelectSameAll:
             let firstType = capture.getSelectedFormType()
             capture.selection.clear()
             foreach form in capture.forms
@@ -96,24 +96,24 @@ impl IActionUI for ActionSelection
 
             capture.selectionHasChanged()
 
-        case CmdId.DeSelectAll:
+        case CmdIdDeSelectAll:
             capture.selection.clear()
             capture.selectionHasChanged()
 
-        case CmdId.InvertSelection:
+        case CmdIdInvertSelection:
             var newSel: Array'u64
             for i in capture.forms where !capture.selection.contains(i):
                 newSel.add(i)
             capture.selection = newSel
             capture.selectionHasChanged()
 
-        case CmdId.DeleteSelection:
+        case CmdIdDeleteSelection:
             capture.pushUndo(capture.newUndo(.DeleteSelection))
 
-        case CmdId.Snap:
+        case CmdIdSnap:
             main.snap = !main.snap
 
-        case CmdId.Freeze:
+        case CmdIdFreeze:
             if main.freezeSel:
                 main.freezeSelection(false)
             else:

@@ -1,17 +1,17 @@
 using Gui
 
-newCmdId("SaveAsImage")
-newCmdId("SaveAsLinkedImage")
-newCmdId("OpenImage")
-newCmdId("UpdateLinkedImage")
-newCmdId("UnlinkImage")
-newCmdId("DupCapture")
-newCmdId("DeleteCapture")
-newCmdId("CaptureFileLocation")
-newCmdId("LinkedFileLocation")
-newCmdId("NewImage")
-newCmdId("NewFromClipboard")
-newCmdId("FileDetails")
+const CmdIdSaveAsImage = "CmdIdSaveAsImage"
+const CmdIdSaveAsLinkedImage = "CmdIdSaveAsLinkedImage"
+const CmdIdOpenImage = "CmdIdOpenImage"
+const CmdIdUpdateLinkedImage = "CmdIdUpdateLinkedImage"
+const CmdIdUnlinkImage = "CmdIdUnlinkImage"
+const CmdIdDupCapture = "CmdIdDupCapture"
+const CmdIdDeleteCapture = "CmdIdDeleteCapture"
+const CmdIdCaptureFileLocation = "CmdIdCaptureFileLocation"
+const CmdIdLinkedFileLocation = "CmdIdLinkedFileLocation"
+const CmdIdNewImage = "CmdIdNewImage"
+const CmdIdNewFromClipboard = "CmdIdNewFromClipboard"
+const CmdIdFileDetails = "CmdIdFileDetails"
 
 struct ActionFile {}
 impl IActionUI for ActionFile
@@ -20,9 +20,9 @@ impl IActionUI for ActionFile
     {
         switch cxt.id
         {
-        case CmdId.SaveAsImage, CmdId.SaveAsLinkedImage, CmdId.OpenImage, CmdId.FileDetails,
-             CmdId.UpdateLinkedImage, CmdId.UnlinkImage, CmdId.DupCapture, CmdId.DeleteCapture,
-             CmdId.CaptureFileLocation, CmdId.LinkedFileLocation, CmdId.NewImage, CmdId.NewFromClipboard:
+        case CmdIdSaveAsImage, CmdIdSaveAsLinkedImage, CmdIdOpenImage, CmdIdFileDetails,
+             CmdIdUpdateLinkedImage, CmdIdUnlinkImage, CmdIdDupCapture, CmdIdDeleteCapture,
+             CmdIdCaptureFileLocation, CmdIdLinkedFileLocation, CmdIdNewImage, CmdIdNewFromClipboard:
             return true
         }
 
@@ -36,44 +36,44 @@ impl IActionUI for ActionFile
 
         switch cxt.id
         {
-        case CmdId.NewImage:
+        case CmdIdNewImage:
             evt.setFlags |= .Name
             evt.name = "New Image"
 
-        case CmdId.NewFromClipboard:
+        case CmdIdNewFromClipboard:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "New From Clipboard"
             evt.disabled = !Clipboard.hasImage()
 
-        case CmdId.SaveAsImage:
+        case CmdIdSaveAsImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Save As Image..."
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.SaveAs)
 
-        case CmdId.SaveAsLinkedImage:
+        case CmdIdSaveAsLinkedImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Save As Linked Image..."
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Export)
 
-        case CmdId.OpenImage:
+        case CmdIdOpenImage:
             evt.setFlags |= .Name | .Icon
             evt.name = "Open Image..."
             evt.icon = main.getTheme().getIcon24(.OpenFile)
 
-        case CmdId.UpdateLinkedImage:
+        case CmdIdUpdateLinkedImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Update Linked Image"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Update)
 
-        case CmdId.UnlinkImage:
+        case CmdIdUnlinkImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Unlink Image"
             evt.disabled = !capture or capture.linkedImage.length == 0
 
-        case CmdId.DeleteCapture:
+        case CmdIdDeleteCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name = "Delete"
             if main.libraryMode:
@@ -82,25 +82,25 @@ impl IActionUI for ActionFile
                 evt.disabled = !capture
             evt.icon = main.getTheme().getIcon24(.Remove)
 
-        case CmdId.DupCapture:
+        case CmdIdDupCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Duplicate"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Duplicate)
 
-        case CmdId.CaptureFileLocation:
+        case CmdIdCaptureFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Locate Capture File"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.OpenFile)
 
-        case CmdId.LinkedFileLocation:
+        case CmdIdLinkedFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Locate Linked Image"
             evt.disabled = !capture or capture.linkedImage.isEmpty()
             evt.icon     = main.getTheme().getIcon24(.Link)
 
-        case CmdId.FileDetails:
+        case CmdIdFileDetails:
             evt.setFlags |= .Name | .Disabled
             evt.name = "File Details"
             if main.libraryMode:
@@ -119,22 +119,22 @@ impl IActionUI for ActionFile
 
         switch cxt.id
         {
-        case CmdId.NewImage:
+        case CmdIdNewImage:
             main.newImage()
 
-        case CmdId.NewFromClipboard:
+        case CmdIdNewFromClipboard:
             main.newCapture(Clipboard.getImage())
 
-        case CmdId.SaveAsImage:
+        case CmdIdSaveAsImage:
             main.saveAsImage()
 
-        case CmdId.SaveAsLinkedImage:
+        case CmdIdSaveAsLinkedImage:
             main.saveAsImage(linked: true)
 
-        case CmdId.OpenImage:
+        case CmdIdOpenImage:
             main.openImage()
 
-        case CmdId.UnlinkImage:
+        case CmdIdUnlinkImage:
             let res = MessageDlg.confirm(main.surface, "This will remove the image association.")
             if res == MessageDlg.BtnYes
             {
@@ -145,7 +145,7 @@ impl IActionUI for ActionFile
                 main.recentWnd.updateRecent()
             }
 
-        case CmdId.UpdateLinkedImage:
+        case CmdIdUpdateLinkedImage:
             if capture.linkedImage.length == 0
             {
                 main.saveAsImage(linked: true)
@@ -179,7 +179,7 @@ impl IActionUI for ActionFile
             var img = capture.toImage()
             main.doSaveImage(capture, &img, capture.linkedImage)
 
-        case CmdId.DeleteCapture:
+        case CmdIdDeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")
             if res == MessageDlg.BtnYes
             {
@@ -189,7 +189,7 @@ impl IActionUI for ActionFile
                     main.recentWnd.removeRecent()
             }
 
-        case CmdId.DupCapture:
+        case CmdIdDupCapture:
             Cursor.wait()
             catch capture.save()
 
@@ -207,13 +207,13 @@ impl IActionUI for ActionFile
             let dupCapture = trycatch main.recentWnd.addRecent(file, true, true)
             Memory.delete(dupCapture)
 
-        case CmdId.CaptureFileLocation:
+        case CmdIdCaptureFileLocation:
             Env.locateInExplorer(capture.file)
 
-        case CmdId.LinkedFileLocation:
+        case CmdIdLinkedFileLocation:
             Env.locateInExplorer(capture.linkedImage)
 
-        case CmdId.FileDetails:
+        case CmdIdFileDetails:
 
             func addLine(lt: *Wnd, title, val: string)
             {

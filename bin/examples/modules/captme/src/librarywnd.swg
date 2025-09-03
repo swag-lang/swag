@@ -274,12 +274,12 @@ impl LibraryWnd
             .registerAction'ActionLibFilter()
             .registerAction'ActionLibSel()
 
-            .registerKeyShortcut(.Zero, .Left, CmdId.LibMoveSelLeft)
-            .registerKeyShortcut(.Zero, .Right, CmdId.LibMoveSelRight)
-            .registerKeyShortcut(.Zero, .Up, CmdId.LibMoveSelUp)
-            .registerKeyShortcut(.Zero, .Down, CmdId.LibMoveSelDown)
-            .registerKeyShortcut(.Zero, .Home, CmdId.LibMoveSelHome)
-            .registerKeyShortcut(.Zero, .End, CmdId.LibMoveSelEnd)
+            .registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
+            .registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
+            .registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
+            .registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
+            .registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
+            .registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
         }
     }
 
@@ -364,9 +364,9 @@ impl LibraryWnd
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
-                    .addItem(CmdId.LibSmall)
-                    .addItem(CmdId.LibMedium)
-                    .addItem(CmdId.LibBig)
+                    .addItem(CmdIdLibSmall)
+                    .addItem(CmdIdLibMedium)
+                    .addItem(CmdIdLibBig)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }
@@ -384,11 +384,11 @@ impl LibraryWnd
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
-                    .addItem(CmdId.LibSortRecent)
-                    .addItem(CmdId.LibSortFileSize)
-                    .addItem(CmdId.LibSortSimilar)
+                    .addItem(CmdIdLibSortRecent)
+                    .addItem(CmdIdLibSortFileSize)
+                    .addItem(CmdIdLibSortSimilar)
                     .addSeparator()
-                    .addItem(CmdId.LibSortInvert)
+                    .addItem(CmdIdLibSortInvert)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }
@@ -407,11 +407,11 @@ impl LibraryWnd
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
-                    .addItem(CmdId.LibShowUpToDateLinkedImage)
-                    .addItem(CmdId.LibShowUnSavedLinkedImage)
+                    .addItem(CmdIdLibShowUpToDateLinkedImage)
+                    .addItem(CmdIdLibShowUnSavedLinkedImage)
                     .addSeparator()
-                    .addItem(CmdId.LibShowLinkedImage)
-                    .addItem(CmdId.LibShowUnLinkedImage)
+                    .addItem(CmdIdLibShowLinkedImage)
+                    .addItem(CmdIdLibShowUnLinkedImage)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }

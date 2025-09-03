@@ -1,11 +1,11 @@
 using Gui
 
-newCmdId("CaptureDelay")
-newCmdId("CaptureDelay0")
-newCmdId("CaptureDelay1")
-newCmdId("CaptureDelay2")
-newCmdId("CaptureDelay5")
-newCmdId("CaptureDelay9")
+const CmdIdCaptureDelay = "CmdIdCaptureDelay"
+const CmdIdCaptureDelay0 = "CmdIdCaptureDelay0"
+const CmdIdCaptureDelay1 = "CmdIdCaptureDelay1"
+const CmdIdCaptureDelay2 = "CmdIdCaptureDelay2"
+const CmdIdCaptureDelay5 = "CmdIdCaptureDelay5"
+const CmdIdCaptureDelay9 = "CmdIdCaptureDelay9"
 
 struct ActionDelay {}
 impl IActionUI for ActionDelay
@@ -14,7 +14,7 @@ impl IActionUI for ActionDelay
     {
         switch cxt.id
         {
-        case CmdId.CaptureDelay, CmdId.CaptureDelay0, CmdId.CaptureDelay1, CmdId.CaptureDelay2, CmdId.CaptureDelay5, CmdId.CaptureDelay9:
+        case CmdIdCaptureDelay, CmdIdCaptureDelay0, CmdIdCaptureDelay1, CmdIdCaptureDelay2, CmdIdCaptureDelay5, CmdIdCaptureDelay9:
             return true
         }
 
@@ -26,7 +26,7 @@ impl IActionUI for ActionDelay
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdId.CaptureDelay:
+        case CmdIdCaptureDelay:
             evt.setFlags |= .Name
             switch main.captureOptions.delay
             {
@@ -42,27 +42,27 @@ impl IActionUI for ActionDelay
                 evt.name = "Delay Before Capture (9 seconds)"
             }
 
-        case CmdId.CaptureDelay0:
+        case CmdIdCaptureDelay0:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "No Delay"
             evt.checked       = main.captureOptions.delay == 0
-        case CmdId.CaptureDelay1:
+        case CmdIdCaptureDelay1:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "1 second"
             evt.checked       = main.captureOptions.delay == 1
-        case CmdId.CaptureDelay2:
+        case CmdIdCaptureDelay2:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "2 seconds"
             evt.checked       = main.captureOptions.delay == 2
-        case CmdId.CaptureDelay5:
+        case CmdIdCaptureDelay5:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "5 seconds"
             evt.checked       = main.captureOptions.delay == 5
-        case CmdId.CaptureDelay9:
+        case CmdIdCaptureDelay9:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "9 seconds"
@@ -77,15 +77,15 @@ impl IActionUI for ActionDelay
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdId.CaptureDelay0:
+        case CmdIdCaptureDelay0:
             main.captureOptions.delay = 0
-        case CmdId.CaptureDelay1:
+        case CmdIdCaptureDelay1:
             main.captureOptions.delay = 1
-        case CmdId.CaptureDelay2:
+        case CmdIdCaptureDelay2:
             main.captureOptions.delay = 2
-        case CmdId.CaptureDelay5:
+        case CmdIdCaptureDelay5:
             main.captureOptions.delay = 5
-        case CmdId.CaptureDelay9:
+        case CmdIdCaptureDelay9:
             main.captureOptions.delay = 9
         }
 

@@ -5,5 +5,5 @@ alias WndId = string
 #[Swag.Mixin]
 func newCmdId(val: string)
 {
-    #ast "namespace CmdId { const " ++ val ++ " = \"" ++ val ++ "\" }"
+    #ast "const " ++ val ++ " = \"" ++ val ++ "\""
 }

@@ -1,17 +1,17 @@
 using Gui
 
-newCmdId("ModeShape")
-newCmdId("ModeLine")
-newCmdId("ModeArrow")
-newCmdId("ModePolygon")
-newCmdId("ModeText")
-newCmdId("ModeFavorites")
-newCmdId("ModeSelection")
-newCmdId("ModeDraw")
-newCmdId("ModeHighlight")
-newCmdId("ModeStep")
-newCmdId("ModeImage")
-newCmdId("ModePixSel")
+const CmdIdModeShape = "CmdIdModeShape"
+const CmdIdModeLine = "CmdIdModeLine"
+const CmdIdModeArrow = "CmdIdModeArrow"
+const CmdIdModePolygon = "CmdIdModePolygon"
+const CmdIdModeText = "CmdIdModeText"
+const CmdIdModeFavorites = "CmdIdModeFavorites"
+const CmdIdModeSelection = "CmdIdModeSelection"
+const CmdIdModeDraw = "CmdIdModeDraw"
+const CmdIdModeHighlight = "CmdIdModeHighlight"
+const CmdIdModeStep = "CmdIdModeStep"
+const CmdIdModeImage = "CmdIdModeImage"
+const CmdIdModePixSel = "CmdIdModePixSel"
 
 struct ActionToolMode {}
 impl IActionUI for ActionToolMode
@@ -20,7 +20,7 @@ impl IActionUI for ActionToolMode
     {
         switch cxt.id
         {
-        case CmdId.ModeShape, CmdId.ModeLine, CmdId.ModeArrow, CmdId.ModePolygon, CmdId.ModeText, CmdId.ModeFavorites, CmdId.ModeSelection, CmdId.ModeDraw, CmdId.ModeHighlight, CmdId.ModeStep, CmdId.ModeImage, CmdId.ModePixSel:
+        case CmdIdModeShape, CmdIdModeLine, CmdIdModeArrow, CmdIdModePolygon, CmdIdModeText, CmdIdModeFavorites, CmdIdModeSelection, CmdIdModeDraw, CmdIdModeHighlight, CmdIdModeStep, CmdIdModeImage, CmdIdModePixSel:
             return true
         }
 
@@ -34,84 +34,84 @@ impl IActionUI for ActionToolMode
 
         switch cxt.id
         {
-        case CmdId.ModeShape:
+        case CmdIdModeShape:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 0)
             evt.name    = "Shape"
             evt.toolTip = "Add circles and rectangle to the capture"
             evt.checked = main.editMode == .Shape
 
-        case CmdId.ModeArrow:
+        case CmdIdModeArrow:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 3)
             evt.name    = "Arrow"
             evt.toolTip = "Add arrows to the capture"
             evt.checked = main.editMode == .Arrow
 
-        case CmdId.ModeLine:
+        case CmdIdModeLine:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 1)
             evt.name    = "Line"
             evt.toolTip = "Add lines to the capture"
             evt.checked = main.editMode == .Line
 
-        case CmdId.ModePolygon:
+        case CmdIdModePolygon:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 2)
             evt.name    = "Polygon"
             evt.toolTip = "Add polygons to the capture"
             evt.checked = main.editMode == .Polygon
 
-        case CmdId.ModeText:
+        case CmdIdModeText:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 4)
             evt.name    = "Text"
             evt.toolTip = "Add some text to the capture"
             evt.checked = main.editMode == .Text
 
-        case CmdId.ModeDraw:
+        case CmdIdModeDraw:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 7)
             evt.name    = "Draw"
             evt.toolTip = "Add some free hand paint to the capture"
             evt.checked = main.editMode == .Draw
 
-        case CmdId.ModeHighlight:
+        case CmdIdModeHighlight:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 9)
             evt.name    = "Highlight"
             evt.toolTip = "Highlight some parts of the capture"
             evt.checked = main.editMode == .Highlight
 
-        case CmdId.ModeStep:
+        case CmdIdModeStep:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 12)
             evt.name    = "Step"
             evt.toolTip = "Add some steps"
             evt.checked = main.editMode == .Step
 
-        case CmdId.ModeImage:
+        case CmdIdModeImage:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 13)
             evt.name    = "Image"
             evt.toolTip = "Add some images/effects"
             evt.checked = main.editMode == .Image
 
-        case CmdId.ModePixSel:
+        case CmdIdModePixSel:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 17)
             evt.name    = "PixSel"
             evt.toolTip = "Pixel selection"
             evt.checked = main.editMode == .PixSel
 
-        case CmdId.ModeFavorites:
+        case CmdIdModeFavorites:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 5)
             evt.name    = "Favorites"
             evt.toolTip = "Save multiple quick styles in one single location"
             evt.checked = main.editMode == .Favorites
 
-        case CmdId.ModeSelection:
+        case CmdIdModeSelection:
             evt.setFlags |= .Icon | .Checked | .Name | .ToolTip
             evt.icon    = Icon.from(&main.icons48, 10)
             evt.name    = "Select"
@@ -127,29 +127,29 @@ impl IActionUI for ActionToolMode
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdId.ModeShape:
+        case CmdIdModeShape:
             main.editMode = .Shape
-        case CmdId.ModeArrow:
+        case CmdIdModeArrow:
             main.editMode = .Arrow
-        case CmdId.ModeLine:
+        case CmdIdModeLine:
             main.editMode = .Line
-        case CmdId.ModePolygon:
+        case CmdIdModePolygon:
             main.editMode = .Polygon
-        case CmdId.ModeText:
+        case CmdIdModeText:
             main.editMode = .Text
-        case CmdId.ModeDraw:
+        case CmdIdModeDraw:
             main.editMode = .Draw
-        case CmdId.ModeHighlight:
+        case CmdIdModeHighlight:
             main.editMode = .Highlight
-        case CmdId.ModeStep:
+        case CmdIdModeStep:
             main.editMode = .Step
-        case CmdId.ModeImage:
+        case CmdIdModeImage:
             main.editMode = .Image
-        case CmdId.ModePixSel:
+        case CmdIdModePixSel:
             main.editMode = .PixSel
-        case CmdId.ModeFavorites:
+        case CmdIdModeFavorites:
             main.editMode = .Favorites
-        case CmdId.ModeSelection:
+        case CmdIdModeSelection:
             main.editMode = .Selection
         }
 

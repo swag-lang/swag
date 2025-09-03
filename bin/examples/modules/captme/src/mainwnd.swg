@@ -87,14 +87,14 @@ impl IWnd for MainWnd
         let sf = catch me.surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
         with let menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
-            .addItem(CmdId.ShowEditor)
+            .addItem(CmdIdShowEditor)
             .addSeparator()
-            .addItem(CmdId.CaptureArea)
-            .addItem(CmdId.CaptureLastArea)
-            .addItem(CmdId.CaptureFullScreen)
-            .addItem(CmdId.CaptureActiveWnd)
+            .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureLastArea)
+            .addItem(CmdIdCaptureFullScreen)
+            .addItem(CmdIdCaptureActiveWnd)
             .addSeparator()
-            .addItem(CmdId.Exit)
+            .addItem(CmdIdExit)
 
             .owner        = me
             .paintByFrame = true
@@ -156,7 +156,7 @@ impl IWnd for MainWnd
             if me.editorOptions.hideOnClose:
                 me.surface.hide()
             else:
-                me.postCommandEvent(CmdId.Exit)
+                me.postCommandEvent(CmdIdExit)
         }
     }
 
@@ -392,44 +392,44 @@ impl MainWnd
     {
         with me
         {
-            .registerKeyShortcut(.Control, .C, CmdId.Copy)
-            .registerKeyShortcut(.Control, .X, CmdId.Cut)
-            .registerKeyShortcut(.Control, .V, CmdId.Paste)
-            .registerKeyShortcut(.Control, .Insert, CmdId.Copy)
-            .registerKeyShortcut(.Shift, .Insert, CmdId.Paste)
-            .registerKeyShortcut(.Control, .Z, CmdId.Undo)
-            .registerKeyShortcut(.Control, .Y, CmdId.Redo)
-            .registerKeyShortcut(.Zero, .Home, CmdId.SendToFront)
-            .registerKeyShortcut(.Zero, .End, CmdId.SendToBack)
-            .registerKeyShortcut(.Zero, .PageUp, CmdId.MoveForward)
-            .registerKeyShortcut(.Zero, .PageDown, CmdId.MoveBackward)
-            .registerKeyShortcut(.Zero, .Delete, CmdId.DeleteSelection)
-            .registerKeyShortcut(.CtrlShift, .A, CmdId.CopyAsImage)
-            .registerKeyShortcut(.Control, .Space, CmdId.Freeze)
-            .registerKeyShortcut(.Control, .A, CmdId.SelectAll)
-            .registerKeyShortcut(.Control, .D, CmdId.DeSelectAll)
-            .registerKeyShortcut(.Control, .Add, CmdId.ZoomIn)
-            .registerKeyShortcut(.Control, .Subtract, CmdId.ZoomOut)
-            .registerKeyShortcut(.Control, .NumPad0, CmdId.Zoom1)
-            .registerKeyShortcut(.CtrlShift, .D, CmdId.DupCapture)
-            .registerKeyShortcut(.CtrlShift, .I, CmdId.InvertSelection)
-            .registerKeyShortcut(.CtrlShift, .T, CmdId.FlattenAll)
-            .registerKeyShortcut(.Alt, .F4, CmdId.Exit)
-            .registerKeyShortcut(.Control, .N, CmdId.NewImage)
-            .registerKeyShortcut(.CtrlShift, .N, CmdId.NewFromClipboard)
-            .registerKeyShortcut(.CtrlShift, .S, CmdId.SaveAsImage)
-            .registerKeyShortcut(.Control, .S, CmdId.UpdateLinkedImage)
-            .registerKeyShortcut(.Control, .O, CmdId.OpenImage)
-            .registerKeyShortcut(.Shift, .Left, CmdId.MoveSelLeft1)
-            .registerKeyShortcut(.Shift, .Up, CmdId.MoveSelTop1)
-            .registerKeyShortcut(.Shift, .Right, CmdId.MoveSelRight1)
-            .registerKeyShortcut(.Shift, .Down, CmdId.MoveSelBottom1)
-            .registerKeyShortcut(.Zero, .Left, CmdId.MoveSelLeft)
-            .registerKeyShortcut(.Zero, .Up, CmdId.MoveSelTop)
-            .registerKeyShortcut(.Zero, .Right, CmdId.MoveSelRight)
-            .registerKeyShortcut(.Zero, .Down, CmdId.MoveSelBottom)
-            .registerKeyShortcut(.CtrlAlt, .O, CmdId.Options)
-            .registerKeyShortcut(.Zero, .F2, CmdId.EditText)
+            .registerKeyShortcut(.Control, .C, CmdIdCopy)
+            .registerKeyShortcut(.Control, .X, CmdIdCut)
+            .registerKeyShortcut(.Control, .V, CmdIdPaste)
+            .registerKeyShortcut(.Control, .Insert, CmdIdCopy)
+            .registerKeyShortcut(.Shift, .Insert, CmdIdPaste)
+            .registerKeyShortcut(.Control, .Z, CmdIdUndo)
+            .registerKeyShortcut(.Control, .Y, CmdIdRedo)
+            .registerKeyShortcut(.Zero, .Home, CmdIdSendToFront)
+            .registerKeyShortcut(.Zero, .End, CmdIdSendToBack)
+            .registerKeyShortcut(.Zero, .PageUp, CmdIdMoveForward)
+            .registerKeyShortcut(.Zero, .PageDown, CmdIdMoveBackward)
+            .registerKeyShortcut(.Zero, .Delete, CmdIdDeleteSelection)
+            .registerKeyShortcut(.CtrlShift, .A, CmdIdCopyAsImage)
+            .registerKeyShortcut(.Control, .Space, CmdIdFreeze)
+            .registerKeyShortcut(.Control, .A, CmdIdSelectAll)
+            .registerKeyShortcut(.Control, .D, CmdIdDeSelectAll)
+            .registerKeyShortcut(.Control, .Add, CmdIdZoomIn)
+            .registerKeyShortcut(.Control, .Subtract, CmdIdZoomOut)
+            .registerKeyShortcut(.Control, .NumPad0, CmdIdZoom1)
+            .registerKeyShortcut(.CtrlShift, .D, CmdIdDupCapture)
+            .registerKeyShortcut(.CtrlShift, .I, CmdIdInvertSelection)
+            .registerKeyShortcut(.CtrlShift, .T, CmdIdFlattenAll)
+            .registerKeyShortcut(.Alt, .F4, CmdIdExit)
+            .registerKeyShortcut(.Control, .N, CmdIdNewImage)
+            .registerKeyShortcut(.CtrlShift, .N, CmdIdNewFromClipboard)
+            .registerKeyShortcut(.CtrlShift, .S, CmdIdSaveAsImage)
+            .registerKeyShortcut(.Control, .S, CmdIdUpdateLinkedImage)
+            .registerKeyShortcut(.Control, .O, CmdIdOpenImage)
+            .registerKeyShortcut(.Shift, .Left, CmdIdMoveSelLeft1)
+            .registerKeyShortcut(.Shift, .Up, CmdIdMoveSelTop1)
+            .registerKeyShortcut(.Shift, .Right, CmdIdMoveSelRight1)
+            .registerKeyShortcut(.Shift, .Down, CmdIdMoveSelBottom1)
+            .registerKeyShortcut(.Zero, .Left, CmdIdMoveSelLeft)
+            .registerKeyShortcut(.Zero, .Up, CmdIdMoveSelTop)
+            .registerKeyShortcut(.Zero, .Right, CmdIdMoveSelRight)
+            .registerKeyShortcut(.Zero, .Down, CmdIdMoveSelBottom)
+            .registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
+            .registerKeyShortcut(.Zero, .F2, CmdIdEditText)
         }
 
         var errorReg = false
@@ -451,10 +451,10 @@ impl MainWnd
             }
         }
 
-        registerHotKey(.Zero, .PrintScreen, CmdId.CaptureArea)
-        registerHotKey(.CtrlShift, .PrintScreen, CmdId.CaptureLastArea)
-        registerHotKey(.Control, .PrintScreen, CmdId.CaptureFullScreen)
-        registerHotKey(.Alt, .PrintScreen, CmdId.CaptureActiveWnd)
+        registerHotKey(.Zero, .PrintScreen, CmdIdCaptureArea)
+        registerHotKey(.CtrlShift, .PrintScreen, CmdIdCaptureLastArea)
+        registerHotKey(.Control, .PrintScreen, CmdIdCaptureFullScreen)
+        registerHotKey(.Alt, .PrintScreen, CmdIdCaptureActiveWnd)
     }
 
     mtd createTopMenu()
@@ -469,122 +469,122 @@ impl MainWnd
 
         with let fileMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdId.NewImage)
-            .addItem(CmdId.NewFromClipboard)
+            .addItem(CmdIdNewImage)
+            .addItem(CmdIdNewFromClipboard)
             .addSeparator()
-            .addItem(CmdId.OpenImage)
-            .addItem(CmdId.SaveAsImage)
+            .addItem(CmdIdOpenImage)
+            .addItem(CmdIdSaveAsImage)
             .addSeparator()
-            .addItem(CmdId.SaveAsLinkedImage)
-            .addItem(CmdId.UpdateLinkedImage)
-            .addItem(CmdId.UnlinkImage)
+            .addItem(CmdIdSaveAsLinkedImage)
+            .addItem(CmdIdUpdateLinkedImage)
+            .addItem(CmdIdUnlinkImage)
             .addSeparator()
-            .addItem(CmdId.FileDetails)
+            .addItem(CmdIdFileDetails)
             .addSeparator()
-            .addItem(CmdId.Exit)
+            .addItem(CmdIdExit)
             topMenu.addPopup("File", fileMenu)
         }
 
         with let captureMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdId.CaptureArea)
-            .addItem(CmdId.CaptureLastArea)
-            .addItem(CmdId.CaptureFullScreen)
-            .addItem(CmdId.CaptureActiveWnd)
+            .addItem(CmdIdCaptureArea)
+            .addItem(CmdIdCaptureLastArea)
+            .addItem(CmdIdCaptureFullScreen)
+            .addItem(CmdIdCaptureActiveWnd)
 
             foreach m, idx in me.monitors
             {
                 switch idx
                 {
                 case 0:
-                    .addItem(CmdId.CaptureScreen0)
+                    .addItem(CmdIdCaptureScreen0)
                 case 1:
-                    .addItem(CmdId.CaptureScreen1)
+                    .addItem(CmdIdCaptureScreen1)
                 case 2:
-                    .addItem(CmdId.CaptureScreen2)
+                    .addItem(CmdIdCaptureScreen2)
                 case 3:
-                    .addItem(CmdId.CaptureScreen3)
+                    .addItem(CmdIdCaptureScreen3)
                 }
             }
 
             .addSeparator()
-            .addItem(CmdId.CaptureHideEditor)
+            .addItem(CmdIdCaptureHideEditor)
 
             with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: me)
             {
-                .addItem(CmdId.CaptureDelay0)
+                .addItem(CmdIdCaptureDelay0)
                 .addSeparator()
-                .addItem(CmdId.CaptureDelay1)
-                .addItem(CmdId.CaptureDelay2)
-                .addItem(CmdId.CaptureDelay5)
-                .addItem(CmdId.CaptureDelay9)
-                captureMenu.addPopup(delayMenu, CmdId.CaptureDelay)
+                .addItem(CmdIdCaptureDelay1)
+                .addItem(CmdIdCaptureDelay2)
+                .addItem(CmdIdCaptureDelay5)
+                .addItem(CmdIdCaptureDelay9)
+                captureMenu.addPopup(delayMenu, CmdIdCaptureDelay)
             }
 
             topMenu.addPopup("Capture", captureMenu)
 
             .addSeparator()
-            .addItem(CmdId.CaptureToInPlace)
-            .addItem(CmdId.CaptureToEditor)
-            .addItem(CmdId.CaptureToClipboard)
+            .addItem(CmdIdCaptureToInPlace)
+            .addItem(CmdIdCaptureToEditor)
+            .addItem(CmdIdCaptureToClipboard)
         }
 
         with let editMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdId.Undo)
-            .addItem(CmdId.Redo)
+            .addItem(CmdIdUndo)
+            .addItem(CmdIdRedo)
             .addSeparator()
-            .addItem(CmdId.Copy)
-            .addItem(CmdId.Cut)
-            .addItem(CmdId.Paste)
+            .addItem(CmdIdCopy)
+            .addItem(CmdIdCut)
+            .addItem(CmdIdPaste)
             .addSeparator()
-            .addItem(CmdId.SelectAll)
-            .addItem(CmdId.SelectSameAll)
-            .addItem(CmdId.DeSelectAll)
-            .addItem(CmdId.InvertSelection)
+            .addItem(CmdIdSelectAll)
+            .addItem(CmdIdSelectSameAll)
+            .addItem(CmdIdDeSelectAll)
+            .addItem(CmdIdInvertSelection)
             .addSeparator()
-            .addItem(CmdId.Freeze)
+            .addItem(CmdIdFreeze)
             .addSeparator()
-            .addItem(CmdId.Snap)
+            .addItem(CmdIdSnap)
             topMenu.addPopup("Edit", editMenu)
         }
 
         with let imageMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdId.CopyAsImage)
+            .addItem(CmdIdCopyAsImage)
             .addSeparator()
-            .addItem(CmdId.RestoreOrg)
+            .addItem(CmdIdRestoreOrg)
             .addSeparator()
-            .addItem(CmdId.ResizeImage)
-            .addItem(CmdId.ExpandImage)
-            .addItem(CmdId.ExpandCapture)
-            .addItem(CmdId.TrimCapture)
+            .addItem(CmdIdResizeImage)
+            .addItem(CmdIdExpandImage)
+            .addItem(CmdIdExpandCapture)
+            .addItem(CmdIdTrimCapture)
             .addSeparator()
-            .addItem(CmdId.FlattenAll)
+            .addItem(CmdIdFlattenAll)
             .addSeparator()
-            .addItem(CmdId.FlipImage)
-            .addItem(CmdId.MirrorImage)
-            .addItem(CmdId.RotateImageRight)
-            .addItem(CmdId.RotateImageLeft)
+            .addItem(CmdIdFlipImage)
+            .addItem(CmdIdMirrorImage)
+            .addItem(CmdIdRotateImageRight)
+            .addItem(CmdIdRotateImageLeft)
             topMenu.addPopup("Image", imageMenu)
         }
 
         with let viewMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdId.ZoomIn)
-            .addItem(CmdId.ZoomOut)
+            .addItem(CmdIdZoomIn)
+            .addItem(CmdIdZoomOut)
             .addSeparator()
-            .addItem(CmdId.Zoom1)
-            .addItem(CmdId.ZoomFit)
+            .addItem(CmdIdZoom1)
+            .addItem(CmdIdZoomFit)
             .addSeparator()
-            .addItem(CmdId.ViewClip)
+            .addItem(CmdIdViewClip)
             topMenu.addPopup("View", viewMenu)
         }
 
         with let helpMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdId.Options)
-            .addItem(CmdId.About)
+            .addItem(CmdIdOptions)
+            .addItem(ActionAbout.About)
             topMenu.addPopup("Help", helpMenu)
         }
     }
@@ -612,21 +612,21 @@ impl MainWnd
             .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         }
 
-        me.createBtn(CmdId.ModeFavorites)
-        me.createBtn(CmdId.ModeSelection)
-        me.createBtn(CmdId.ModeShape)
-        me.createBtn(CmdId.ModeArrow)
-        me.createBtn(CmdId.ModeLine)
-        me.createBtn(CmdId.ModePolygon)
-        me.createBtn(CmdId.ModeText)
-        me.createBtn(CmdId.ModeDraw)
-        me.createBtn(CmdId.ModeHighlight)
-        me.createBtn(CmdId.ModeStep)
-        me.createBtn(CmdId.ModeImage)
-        me.createBtn(CmdId.ModePixSel)
+        me.createBtn(CmdIdModeFavorites)
+        me.createBtn(CmdIdModeSelection)
+        me.createBtn(CmdIdModeShape)
+        me.createBtn(CmdIdModeArrow)
+        me.createBtn(CmdIdModeLine)
+        me.createBtn(CmdIdModePolygon)
+        me.createBtn(CmdIdModeText)
+        me.createBtn(CmdIdModeDraw)
+        me.createBtn(CmdIdModeHighlight)
+        me.createBtn(CmdIdModeStep)
+        me.createBtn(CmdIdModeImage)
+        me.createBtn(CmdIdModePixSel)
 
-        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: CmdId.Capture)
-        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: CmdId.Library)
+        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: CmdIdCapture)
+        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
     }
 
     mtd setTopBarHeight()
@@ -722,9 +722,9 @@ impl MainWnd
             .setIconBarFlags(.Vertical)
             .dockStyle   = .Left
             .iconPadding = 0
-            .addItem({}, CmdId.RecentSmall, .Checkable)
-            .addItem({}, CmdId.RecentMedium, .Checkable)
-            .addItem({}, CmdId.RecentBig, .Checkable)
+            .addItem({}, CmdIdRecentSmall, .Checkable)
+            .addItem({}, CmdIdRecentMedium, .Checkable)
+            .addItem({}, CmdIdRecentBig, .Checkable)
         }
 
         // Recent
@@ -778,8 +778,8 @@ impl MainWnd
                 var pos  = btn.getSurfaceRect()
                 var menu = MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags |= .NoKeyShortcuts
-                menu.addItem(CmdId.Zoom1)
-                menu.addItem(CmdId.ZoomFit)
+                menu.addItem(CmdIdZoom1)
+                menu.addItem(CmdIdZoomFit)
                 discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }
@@ -794,9 +794,9 @@ impl MainWnd
                 var pos  = btn.getSurfaceRect()
                 var menu = MenuCtrl.createPopup(res)
                 menu.menuCtrlFlags.add(.NoKeyShortcuts)
-                menu.addItem(CmdId.ResizeImage)
-                menu.addItem(CmdId.ExpandImage)
-                menu.addItem(CmdId.ExpandCapture)
+                menu.addItem(CmdIdResizeImage)
+                menu.addItem(CmdIdExpandImage)
+                menu.addItem(CmdIdExpandCapture)
                 discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
             }
         }

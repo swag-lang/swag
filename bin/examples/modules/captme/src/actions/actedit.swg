@@ -1,7 +1,7 @@
 using Gui
 
-newCmdId("EditText")
-newCmdId("ClearImageInside")
+const CmdIdEditText = "CmdIdEditText"
+const CmdIdClearImageInside = "CmdIdClearImageInside"
 
 struct ActionEdit {}
 impl IActionUI for ActionEdit
@@ -10,7 +10,7 @@ impl IActionUI for ActionEdit
     {
         switch cxt.id
         {
-        case CmdId.EditText, CmdId.ClearImageInside:
+        case CmdIdEditText, CmdIdClearImageInside:
             return true
         }
 
@@ -35,12 +35,12 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case CmdId.EditText:
+        case CmdIdEditText:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
             evt.name     = "Edit"
 
-        case CmdId.ClearImageInside:
+        case CmdIdClearImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
             evt.disabled, evt.hidden = true
             evt.name = "Clear Inside Image"
@@ -75,12 +75,12 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case CmdId.EditText:
+        case CmdIdEditText:
             let lastSel = cast(*FormText) @dataof(capture.forms[capture.selection.back()])
             discard PropWnd.editText(main, lastSel.text)
             capture.selectionHasChanged()
 
-        case CmdId.ClearImageInside:
+        case CmdIdClearImageInside:
             capture.clearImageInside()
         }
 

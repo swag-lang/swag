@@ -6,14 +6,14 @@ const BtnStyleHeight = 68.0
 const CapSize  = 8.0
 const DashSize = 8.0
 
-newCmdId("TextHLeft")
-newCmdId("TextHCenter")
-newCmdId("TextHRight")
-newCmdId("TextVTop")
-newCmdId("TextVCenter")
-newCmdId("TextVBottom")
-newCmdId("TextBold")
-newCmdId("TextItalic")
+const CmdIdTextHLeft = "CmdIdTextHLeft"
+const CmdIdTextHCenter = "CmdIdTextHCenter"
+const CmdIdTextHRight = "CmdIdTextHRight"
+const CmdIdTextVTop = "CmdIdTextVTop"
+const CmdIdTextVCenter = "CmdIdTextVCenter"
+const CmdIdTextVBottom = "CmdIdTextVBottom"
+const CmdIdTextBold = "CmdIdTextBold"
+const CmdIdTextItalic = "CmdIdTextItalic"
 
 struct PropWnd
 {
@@ -813,8 +813,8 @@ impl PropWnd
         let stack2 = StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 30})
         with let bar2 = IconBar.create(stack2, 24)
         {
-            .addCheckableToggleItem(Icon.from(&me.main.icons24, 16), CmdId.TextBold)
-            .addCheckableToggleItem(Icon.from(&me.main.icons24, 17), CmdId.TextItalic)
+            .addCheckableToggleItem(Icon.from(&me.main.icons24, 16), CmdIdTextBold)
+            .addCheckableToggleItem(Icon.from(&me.main.icons24, 17), CmdIdTextItalic)
 
             .sigUpdateState += mtd||(evt)
             {
@@ -824,9 +824,9 @@ impl PropWnd
 
                 switch evt.id
                 {
-                case CmdId.TextBold:
+                case CmdIdTextBold:
                     evt.checked = curSel.fontStyle == .Bold or curSel.fontStyle == .BoldItalic
-                case CmdId.TextItalic:
+                case CmdIdTextItalic:
                     evt.checked = curSel.fontStyle == .Italic or curSel.fontStyle == .BoldItalic
                 }
             }
@@ -838,7 +838,7 @@ impl PropWnd
                 var fstyle  = curSel.fontStyle
                 switch btn.id
                 {
-                case CmdId.TextBold:
+                case CmdIdTextBold:
                     if btn.isChecked and fstyle == .Regular:
                         fstyle = .Bold
                     elif btn.isChecked and fstyle == .Italic:
@@ -848,7 +848,7 @@ impl PropWnd
                     elif !btn.isChecked and fstyle == .BoldItalic:
                         fstyle = .Italic
 
-                case CmdId.TextItalic:
+                case CmdIdTextItalic:
                     if btn.isChecked and fstyle == .Regular:
                         fstyle = .Italic
                     elif btn.isChecked and fstyle == .Bold:
@@ -871,12 +871,12 @@ impl PropWnd
         let stack1 = StackLayoutCtrl.create(stack, .HorzCenter, {0, 0, 0, 40})
         with let bar = IconBar.create(stack1, 24)
         {
-            .addCheckableItem(Icon.from(&me.main.icons24, 8), CmdId.TextHLeft)
-            .addCheckableItem(Icon.from(&me.main.icons24, 9), CmdId.TextHCenter)
-            .addCheckableItem(Icon.from(&me.main.icons24, 10), CmdId.TextHRight)
-            .addCheckableItem(Icon.from(&me.main.icons24, 11), CmdId.TextVTop)
-            .addCheckableItem(Icon.from(&me.main.icons24, 12), CmdId.TextVCenter)
-            .addCheckableItem(Icon.from(&me.main.icons24, 13), CmdId.TextVBottom)
+            .addCheckableItem(Icon.from(&me.main.icons24, 8), CmdIdTextHLeft)
+            .addCheckableItem(Icon.from(&me.main.icons24, 9), CmdIdTextHCenter)
+            .addCheckableItem(Icon.from(&me.main.icons24, 10), CmdIdTextHRight)
+            .addCheckableItem(Icon.from(&me.main.icons24, 11), CmdIdTextVTop)
+            .addCheckableItem(Icon.from(&me.main.icons24, 12), CmdIdTextVCenter)
+            .addCheckableItem(Icon.from(&me.main.icons24, 13), CmdIdTextVBottom)
 
             .sigUpdateState += mtd||(evt)
             {
@@ -886,17 +886,17 @@ impl PropWnd
 
                 switch evt.id
                 {
-                case CmdId.TextHLeft:
+                case CmdIdTextHLeft:
                     evt.checked = curSel.alignHorz == .LeftTop
-                case CmdId.TextHCenter:
+                case CmdIdTextHCenter:
                     evt.checked = curSel.alignHorz == .Center
-                case CmdId.TextHRight:
+                case CmdIdTextHRight:
                     evt.checked = curSel.alignHorz == .RightBottom
-                case CmdId.TextVTop:
+                case CmdIdTextVTop:
                     evt.checked = curSel.alignVert == .LeftTop
-                case CmdId.TextVCenter:
+                case CmdIdTextVCenter:
                     evt.checked = curSel.alignVert == .Center
-                case CmdId.TextVBottom:
+                case CmdIdTextVBottom:
                     evt.checked = curSel.alignVert == .RightBottom
                 }
             }
@@ -906,17 +906,17 @@ impl PropWnd
                 var capture = me.main.getCapture()
                 switch btn.id
                 {
-                case CmdId.TextHLeft:
+                case CmdIdTextHLeft:
                     me.pushTypedValue(cast(u32) FormTextAlign.LeftTop, FormText, #nameof(FormText.alignHorz), true)
-                case CmdId.TextHCenter:
+                case CmdIdTextHCenter:
                     me.pushTypedValue(cast(u32) FormTextAlign.Center, FormText, #nameof(FormText.alignHorz), true)
-                case CmdId.TextHRight:
+                case CmdIdTextHRight:
                     me.pushTypedValue(cast(u32) FormTextAlign.RightBottom, FormText, #nameof(FormText.alignHorz), true)
-                case CmdId.TextVTop:
+                case CmdIdTextVTop:
                     me.pushTypedValue(cast(u32) FormTextAlign.LeftTop, FormText, #nameof(FormText.alignVert), true)
-                case CmdId.TextVCenter:
+                case CmdIdTextVCenter:
                     me.pushTypedValue(cast(u32) FormTextAlign.Center, FormText, #nameof(FormText.alignVert), true)
-                case CmdId.TextVBottom:
+                case CmdIdTextVBottom:
                     me.pushTypedValue(cast(u32) FormTextAlign.RightBottom, FormText, #nameof(FormText.alignVert), true)
                 }
             }
@@ -1317,10 +1317,10 @@ impl PropWnd
         if curSel.subKind != .PixSel:
             return
 
-        discard PushButton.create(me.mainLayout, "", id: CmdId.PixSelFill)
-        discard PushButton.create(me.mainLayout, "", id: CmdId.PixSelSmartFill)
-        discard PushButton.create(me.mainLayout, "", id: CmdId.PixSelClear)
-        discard PushButton.create(me.mainLayout, "", id: CmdId.PixSelSmartMove)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelFill)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelSmartFill)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelClear)
+        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelSmartMove)
     }
 
     mtd propSep()

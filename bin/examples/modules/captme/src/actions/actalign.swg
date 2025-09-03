@@ -1,15 +1,15 @@
 using Gui
 
-newCmdId("AlignLeft")
-newCmdId("AlignCenter")
-newCmdId("AlignRight")
-newCmdId("AlignTop")
-newCmdId("AlignMiddle")
-newCmdId("AlignBottom")
-newCmdId("SendToFront")
-newCmdId("SendToBack")
-newCmdId("MoveForward")
-newCmdId("MoveBackward")
+const CmdIdAlignLeft = "CmdIdAlignLeft"
+const CmdIdAlignCenter = "CmdIdAlignCenter"
+const CmdIdAlignRight = "CmdIdAlignRight"
+const CmdIdAlignTop = "CmdIdAlignTop"
+const CmdIdAlignMiddle = "CmdIdAlignMiddle"
+const CmdIdAlignBottom = "CmdIdAlignBottom"
+const CmdIdSendToFront = "CmdIdSendToFront"
+const CmdIdSendToBack = "CmdIdSendToBack"
+const CmdIdMoveForward = "CmdIdMoveForward"
+const CmdIdMoveBackward = "CmdIdMoveBackward"
 
 struct ActionMoveSel {}
 impl IActionUI for ActionMoveSel
@@ -18,9 +18,9 @@ impl IActionUI for ActionMoveSel
     {
         switch cxt.id
         {
-        case CmdId.AlignLeft, CmdId.AlignCenter, CmdId.AlignRight,
-             CmdId.AlignTop, CmdId.AlignMiddle, CmdId.AlignBottom,
-             CmdId.SendToFront, CmdId.SendToBack, CmdId.MoveForward, CmdId.MoveBackward:
+        case CmdIdAlignLeft, CmdIdAlignCenter, CmdIdAlignRight,
+             CmdIdAlignTop, CmdIdAlignMiddle, CmdIdAlignBottom,
+             CmdIdSendToFront, CmdIdSendToBack, CmdIdMoveForward, CmdIdMoveBackward:
             return true
         }
 
@@ -37,55 +37,55 @@ impl IActionUI for ActionMoveSel
 
         switch cxt.id
         {
-        case CmdId.AlignLeft:
+        case CmdIdAlignLeft:
             evt.setFlags |= .Disabled | .Name
             evt.name     = "Left"
             evt.disabled = !hasSel or hasSingleSel
 
-        case CmdId.AlignCenter:
+        case CmdIdAlignCenter:
             evt.setFlags |= .Disabled | .Name
             evt.name     = "Center"
             evt.disabled = !hasSel or hasSingleSel
 
-        case CmdId.AlignRight:
+        case CmdIdAlignRight:
             evt.setFlags |= .Disabled | .Name
             evt.name     = "Right"
             evt.disabled = !hasSel or hasSingleSel
 
-        case CmdId.AlignTop:
+        case CmdIdAlignTop:
             evt.setFlags |= .Disabled | .Name
             evt.name     = "Top"
             evt.disabled = !hasSel or hasSingleSel
 
-        case CmdId.AlignMiddle:
+        case CmdIdAlignMiddle:
             evt.setFlags |= .Disabled | .Name
             evt.name     = "Middle"
             evt.disabled = !hasSel or hasSingleSel
 
-        case CmdId.AlignBottom:
+        case CmdIdAlignBottom:
             evt.setFlags |= .Disabled | .Name
             evt.name     = "Bottom"
             evt.disabled = !hasSel or hasSingleSel
 
-        case CmdId.SendToFront:
+        case CmdIdSendToFront:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name     = "Send To Front"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon     = main.getTheme().getIcon24(.BringToFront)
 
-        case CmdId.SendToBack:
+        case CmdIdSendToBack:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name     = "Send To Back"
             evt.disabled = !hasSel or capture.selection.contains(0)
             evt.icon     = main.getTheme().getIcon24(.SendToBack)
 
-        case CmdId.MoveForward:
+        case CmdIdMoveForward:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name     = "Move Forward"
             evt.disabled = !hasSel or capture.selection.contains(capture.forms.count - 1)
             evt.icon     = main.getTheme().getIcon24(.BringForward)
 
-        case CmdId.MoveBackward:
+        case CmdIdMoveBackward:
             evt.setFlags |= .Disabled | .Icon | .Name
             evt.name     = "Move Backward"
             evt.disabled = !hasSel or capture.selection.contains(0)
@@ -103,25 +103,25 @@ impl IActionUI for ActionMoveSel
         var undo: *Undo
         switch cxt.id
         {
-        case CmdId.AlignLeft:
+        case CmdIdAlignLeft:
             undo = capture.newUndo(.AlignLeft)
-        case CmdId.AlignCenter:
+        case CmdIdAlignCenter:
             undo = capture.newUndo(.AlignCenter)
-        case CmdId.AlignRight:
+        case CmdIdAlignRight:
             undo = capture.newUndo(.AlignRight)
-        case CmdId.AlignTop:
+        case CmdIdAlignTop:
             undo = capture.newUndo(.AlignTop)
-        case CmdId.AlignMiddle:
+        case CmdIdAlignMiddle:
             undo = capture.newUndo(.AlignMiddle)
-        case CmdId.AlignBottom:
+        case CmdIdAlignBottom:
             undo = capture.newUndo(.AlignBottom)
-        case CmdId.SendToFront:
+        case CmdIdSendToFront:
             undo = capture.newUndo(.MoveToFront)
-        case CmdId.SendToBack:
+        case CmdIdSendToBack:
             undo = capture.newUndo(.MoveToBack)
-        case CmdId.MoveForward:
+        case CmdIdMoveForward:
             undo = capture.newUndo(.MoveForward)
-        case CmdId.MoveBackward:
+        case CmdIdMoveBackward:
             undo = capture.newUndo(.MoveBackward)
         }
 

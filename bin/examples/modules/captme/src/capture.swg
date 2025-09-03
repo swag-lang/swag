@@ -913,56 +913,56 @@ impl Capture
                 switch t
                 {
                 case FormText:
-                    .addItem(CmdId.EditText)
+                    .addItem(CmdIdEditText)
                     .addSeparator()
                 }
             }
 
-            .addItem(CmdId.Copy)
-            .addItem(CmdId.Cut)
-            .addItem(CmdId.Paste)
+            .addItem(CmdIdCopy)
+            .addItem(CmdIdCut)
+            .addItem(CmdIdPaste)
             .addSeparator()
-            .addItem(CmdId.CopyAsImage)
+            .addItem(CmdIdCopyAsImage)
             .addSeparator()
-            .addItem(CmdId.PasteImageInside)
-            .addItem(CmdId.ClearImageInside)
+            .addItem(CmdIdPasteImageInside)
+            .addItem(CmdIdClearImageInside)
             .addSeparator()
-            .addItem(CmdId.DeleteSelection)
+            .addItem(CmdIdDeleteSelection)
             .addSeparator()
         }
 
         with let popup0 = MenuCtrl.createPopup(view)
         {
-            .addItem(CmdId.AlignLeft)
-            .addItem(CmdId.AlignCenter)
-            .addItem(CmdId.AlignRight)
+            .addItem(CmdIdAlignLeft)
+            .addItem(CmdIdAlignCenter)
+            .addItem(CmdIdAlignRight)
             .addSeparator()
-            .addItem(CmdId.AlignTop)
-            .addItem(CmdId.AlignMiddle)
-            .addItem(CmdId.AlignBottom)
+            .addItem(CmdIdAlignTop)
+            .addItem(CmdIdAlignMiddle)
+            .addItem(CmdIdAlignBottom)
             menu.addPopup("Align", popup0)
         }
 
         with let popup1 = MenuCtrl.createPopup(view)
         {
-            .addItem(CmdId.SendToFront)
-            .addItem(CmdId.SendToBack)
-            .addItem(CmdId.MoveForward)
-            .addItem(CmdId.MoveBackward)
+            .addItem(CmdIdSendToFront)
+            .addItem(CmdIdSendToBack)
+            .addItem(CmdIdMoveForward)
+            .addItem(CmdIdMoveBackward)
             menu.addPopup("Arrange", popup1)
         }
 
         with menu
         {
             .addSeparator()
-            .addItem(CmdId.SelectAll)
-            .addItem(CmdId.SelectSameAll)
-            .addItem(CmdId.DeSelectAll)
+            .addItem(CmdIdSelectAll)
+            .addItem(CmdIdSelectSameAll)
+            .addItem(CmdIdDeSelectAll)
             .addSeparator()
-            .addItem(CmdId.Flatten)
-            .addItem(CmdId.FlattenAll)
+            .addItem(CmdIdFlatten)
+            .addItem(CmdIdFlattenAll)
             .addSeparator()
-            .addItem(CmdId.Snap)
+            .addItem(CmdIdSnap)
         }
 
         discard menu.doModal(pos)

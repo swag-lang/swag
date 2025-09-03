@@ -1,11 +1,11 @@
 using Gui
 
-newCmdId("LibMoveSelLeft")
-newCmdId("LibMoveSelRight")
-newCmdId("LibMoveSelUp")
-newCmdId("LibMoveSelDown")
-newCmdId("LibMoveSelHome")
-newCmdId("LibMoveSelEnd")
+const CmdIdLibMoveSelLeft = "CmdIdLibMoveSelLeft"
+const CmdIdLibMoveSelRight = "CmdIdLibMoveSelRight"
+const CmdIdLibMoveSelUp = "CmdIdLibMoveSelUp"
+const CmdIdLibMoveSelDown = "CmdIdLibMoveSelDown"
+const CmdIdLibMoveSelHome = "CmdIdLibMoveSelHome"
+const CmdIdLibMoveSelEnd = "CmdIdLibMoveSelEnd"
 
 struct ActionLibSel {}
 impl IActionUI for ActionLibSel
@@ -14,8 +14,8 @@ impl IActionUI for ActionLibSel
     {
         switch cxt.id
         {
-        case CmdId.LibMoveSelLeft, CmdId.LibMoveSelUp, CmdId.LibMoveSelRight, CmdId.LibMoveSelDown,
-             CmdId.LibMoveSelHome, CmdId.LibMoveSelEnd:
+        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelUp, CmdIdLibMoveSelRight, CmdIdLibMoveSelDown,
+             CmdIdLibMoveSelHome, CmdIdLibMoveSelEnd:
             return true
         }
 
@@ -29,8 +29,8 @@ impl IActionUI for ActionLibSel
 
         switch cxt.id
         {
-        case CmdId.LibMoveSelLeft, CmdId.LibMoveSelUp, CmdId.LibMoveSelRight, CmdId.LibMoveSelDown,
-             CmdId.LibMoveSelHome, CmdId.LibMoveSelEnd:
+        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelUp, CmdIdLibMoveSelRight, CmdIdLibMoveSelDown,
+             CmdIdLibMoveSelHome, CmdIdLibMoveSelEnd:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
         }
@@ -44,17 +44,17 @@ impl IActionUI for ActionLibSel
 
         switch cxt.id
         {
-        case CmdId.LibMoveSelLeft:
+        case CmdIdLibMoveSelLeft:
             libWnd.moveSelLeft()
-        case CmdId.LibMoveSelUp:
+        case CmdIdLibMoveSelUp:
             libWnd.moveSelTop()
-        case CmdId.LibMoveSelRight:
+        case CmdIdLibMoveSelRight:
             libWnd.moveSelRight()
-        case CmdId.LibMoveSelDown:
+        case CmdIdLibMoveSelDown:
             libWnd.moveSelBottom()
-        case CmdId.LibMoveSelHome:
+        case CmdIdLibMoveSelHome:
             libWnd.moveSelHome()
-        case CmdId.LibMoveSelEnd:
+        case CmdIdLibMoveSelEnd:
             libWnd.moveSelEnd()
         }
 

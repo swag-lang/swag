@@ -1,9 +1,9 @@
 using Gui
 
-newCmdId("Zoom1")
-newCmdId("ZoomFit")
-newCmdId("ZoomIn")
-newCmdId("ZoomOut")
+const CmdIdZoom1 = "CmdIdZoom1"
+const CmdIdZoomFit = "CmdIdZoomFit"
+const CmdIdZoomIn = "CmdIdZoomIn"
+const CmdIdZoomOut = "CmdIdZoomOut"
 
 struct ActionZoom {}
 impl IActionUI for ActionZoom
@@ -12,7 +12,7 @@ impl IActionUI for ActionZoom
     {
         switch cxt.id
         {
-        case CmdId.Zoom1, CmdId.ZoomFit, CmdId.ZoomIn, CmdId.ZoomOut:
+        case CmdIdZoom1, CmdIdZoomFit, CmdIdZoomIn, CmdIdZoomOut:
             return true
         }
 
@@ -26,23 +26,23 @@ impl IActionUI for ActionZoom
 
         switch cxt.id
         {
-        case CmdId.Zoom1:
+        case CmdIdZoom1:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Actual Size"
             evt.disabled = !capture
 
-        case CmdId.ZoomFit:
+        case CmdIdZoomFit:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Fit To View"
             evt.disabled = !capture
 
-        case CmdId.ZoomIn:
+        case CmdIdZoomIn:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom In"
             evt.disabled = !capture or !main.editWnd.editView.canZoomIn()
             evt.icon     = main.getTheme().getIcon24(.ZoomIn)
 
-        case CmdId.ZoomOut:
+        case CmdIdZoomOut:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom Out"
             evt.disabled = !capture or !main.editWnd.editView.canZoomOut()
@@ -59,16 +59,16 @@ impl IActionUI for ActionZoom
 
         switch cxt.id
         {
-        case CmdId.Zoom1:
+        case CmdIdZoom1:
             view.setZoom(1)
 
-        case CmdId.ZoomFit:
+        case CmdIdZoomFit:
             view.zoomToFit()
 
-        case CmdId.ZoomIn:
+        case CmdIdZoomIn:
             view.zoomIn()
 
-        case CmdId.ZoomOut:
+        case CmdIdZoomOut:
             view.zoomOut()
         }
 

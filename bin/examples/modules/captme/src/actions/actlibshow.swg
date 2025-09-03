@@ -1,9 +1,9 @@
 using Gui
 
-newCmdId("LibShowUpToDateLinkedImage")
-newCmdId("LibShowLinkedImage")
-newCmdId("LibShowUnSavedLinkedImage")
-newCmdId("LibShowUnLinkedImage")
+const CmdIdLibShowUpToDateLinkedImage = "CmdIdLibShowUpToDateLinkedImage"
+const CmdIdLibShowLinkedImage = "CmdIdLibShowLinkedImage"
+const CmdIdLibShowUnSavedLinkedImage = "CmdIdLibShowUnSavedLinkedImage"
+const CmdIdLibShowUnLinkedImage = "CmdIdLibShowUnLinkedImage"
 
 struct ActionLibFilter {}
 impl IActionUI for ActionLibFilter
@@ -12,7 +12,7 @@ impl IActionUI for ActionLibFilter
     {
         switch cxt.id
         {
-        case CmdId.LibShowUpToDateLinkedImage, CmdId.LibShowLinkedImage, CmdId.LibShowUnSavedLinkedImage, CmdId.LibShowUnLinkedImage:
+        case CmdIdLibShowUpToDateLinkedImage, CmdIdLibShowLinkedImage, CmdIdLibShowUnSavedLinkedImage, CmdIdLibShowUnLinkedImage:
             return true
         }
 
@@ -25,20 +25,20 @@ impl IActionUI for ActionLibFilter
 
         switch cxt.id
         {
-        case CmdId.LibShowUpToDateLinkedImage:
+        case CmdIdLibShowUpToDateLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Up To Date Linked Image"
             evt.checked = libWnd.showUpToDateLinkedImage
-        case CmdId.LibShowUnSavedLinkedImage:
+        case CmdIdLibShowUnSavedLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "UnSaved Linked Image"
             evt.checked = libWnd.showUnSavedLinkedImage
 
-        case CmdId.LibShowLinkedImage:
+        case CmdIdLibShowLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Has Linked Image"
             evt.checked = libWnd.showLinkedImage
-        case CmdId.LibShowUnLinkedImage:
+        case CmdIdLibShowUnLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Doesn't Have Linked Image"
             evt.checked = libWnd.showUnLinkedImage
@@ -53,16 +53,16 @@ impl IActionUI for ActionLibFilter
 
         switch cxt.id
         {
-        case CmdId.LibShowUpToDateLinkedImage:
+        case CmdIdLibShowUpToDateLinkedImage:
             libWnd.showUpToDateLinkedImage = !libWnd.showUpToDateLinkedImage
             libWnd.view.filter()
-        case CmdId.LibShowUnSavedLinkedImage:
+        case CmdIdLibShowUnSavedLinkedImage:
             libWnd.showUnSavedLinkedImage = !libWnd.showUnSavedLinkedImage
             libWnd.view.filter()
-        case CmdId.LibShowLinkedImage:
+        case CmdIdLibShowLinkedImage:
             libWnd.showLinkedImage = !libWnd.showLinkedImage
             libWnd.view.filter()
-        case CmdId.LibShowUnLinkedImage:
+        case CmdIdLibShowUnLinkedImage:
             libWnd.showUnLinkedImage = !libWnd.showUnLinkedImage
             libWnd.view.filter()
         }

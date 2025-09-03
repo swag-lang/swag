@@ -1,15 +1,19 @@
 using Gui
 
-newCmdId("About")
-
 struct ActionAbout {}
+
+impl ActionAbout
+{
+    newCmdId("About")
+}
+
 impl IActionUI for ActionAbout
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdId.About:
+        case ActionAbout.About:
             return true
         }
 
@@ -21,7 +25,7 @@ impl IActionUI for ActionAbout
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case CmdId.About:
+        case ActionAbout.About:
             evt.setFlags |= .Name | .Icon
             evt.name = "About..."
             evt.icon = main.getTheme().getIcon24(.About)

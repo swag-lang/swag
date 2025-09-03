@@ -1,13 +1,13 @@
 using Gui
 
-newCmdId("MoveSelLeft")
-newCmdId("MoveSelTop")
-newCmdId("MoveSelRight")
-newCmdId("MoveSelBottom")
-newCmdId("MoveSelLeft1")
-newCmdId("MoveSelTop1")
-newCmdId("MoveSelRight1")
-newCmdId("MoveSelBottom1")
+const CmdIdMoveSelLeft = "CmdIdMoveSelLeft"
+const CmdIdMoveSelTop = "CmdIdMoveSelTop"
+const CmdIdMoveSelRight = "CmdIdMoveSelRight"
+const CmdIdMoveSelBottom = "CmdIdMoveSelBottom"
+const CmdIdMoveSelLeft1 = "CmdIdMoveSelLeft1"
+const CmdIdMoveSelTop1 = "CmdIdMoveSelTop1"
+const CmdIdMoveSelRight1 = "CmdIdMoveSelRight1"
+const CmdIdMoveSelBottom1 = "CmdIdMoveSelBottom1"
 
 struct ActionAlign {}
 impl IActionUI for ActionAlign
@@ -16,7 +16,7 @@ impl IActionUI for ActionAlign
     {
         switch cxt.id
         {
-        case CmdId.MoveSelLeft, CmdId.MoveSelTop, CmdId.MoveSelRight, CmdId.MoveSelBottom, CmdId.MoveSelLeft1, CmdId.MoveSelTop1, CmdId.MoveSelRight1, CmdId.MoveSelBottom1:
+        case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom, CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
             return true
         }
 
@@ -32,10 +32,10 @@ impl IActionUI for ActionAlign
 
         switch cxt.id
         {
-        case CmdId.MoveSelLeft, CmdId.MoveSelTop, CmdId.MoveSelRight, CmdId.MoveSelBottom:
+        case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
-        case CmdId.MoveSelLeft1, CmdId.MoveSelTop1, CmdId.MoveSelRight1, CmdId.MoveSelBottom1:
+        case CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
         }
@@ -51,28 +51,28 @@ impl IActionUI for ActionAlign
         var undo: *Undo
         switch cxt.id
         {
-        case CmdId.MoveSelLeft1:
+        case CmdIdMoveSelLeft1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = -1
-        case CmdId.MoveSelTop1:
+        case CmdIdMoveSelTop1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = -1
-        case CmdId.MoveSelRight1:
+        case CmdIdMoveSelRight1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = 1
-        case CmdId.MoveSelBottom1:
+        case CmdIdMoveSelBottom1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = 1
-        case CmdId.MoveSelLeft:
+        case CmdIdMoveSelLeft:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = -5
-        case CmdId.MoveSelTop:
+        case CmdIdMoveSelTop:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = -5
-        case CmdId.MoveSelRight:
+        case CmdIdMoveSelRight:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = 5
-        case CmdId.MoveSelBottom:
+        case CmdIdMoveSelBottom:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = 5
         }

@@ -1,12 +1,12 @@
-newCmdId("TrimCapture")
-newCmdId("ResizeImage")
-newCmdId("ExpandImage")
-newCmdId("ExpandCapture")
-newCmdId("RestoreOrg")
-newCmdId("FlipImage")
-newCmdId("MirrorImage")
-newCmdId("RotateImageRight")
-newCmdId("RotateImageLeft")
+const CmdIdTrimCapture = "CmdIdTrimCapture"
+const CmdIdResizeImage = "CmdIdResizeImage"
+const CmdIdExpandImage = "CmdIdExpandImage"
+const CmdIdExpandCapture = "CmdIdExpandCapture"
+const CmdIdRestoreOrg = "CmdIdRestoreOrg"
+const CmdIdFlipImage = "CmdIdFlipImage"
+const CmdIdMirrorImage = "CmdIdMirrorImage"
+const CmdIdRotateImageRight = "CmdIdRotateImageRight"
+const CmdIdRotateImageLeft = "CmdIdRotateImageLeft"
 
 struct ActionImage {}
 impl IActionUI for ActionImage
@@ -15,10 +15,10 @@ impl IActionUI for ActionImage
     {
         switch cxt.id
         {
-        case CmdId.TrimCapture, CmdId.ResizeImage, CmdId.ExpandImage,
-             CmdId.ExpandCapture, CmdId.RestoreOrg,
-             CmdId.FlipImage, CmdId.MirrorImage,
-             CmdId.RotateImageRight, CmdId.RotateImageLeft:
+        case CmdIdTrimCapture, CmdIdResizeImage, CmdIdExpandImage,
+             CmdIdExpandCapture, CmdIdRestoreOrg,
+             CmdIdFlipImage, CmdIdMirrorImage,
+             CmdIdRotateImageRight, CmdIdRotateImageLeft:
             return true
         }
 
@@ -32,47 +32,47 @@ impl IActionUI for ActionImage
 
         switch cxt.id
         {
-        case CmdId.ResizeImage:
+        case CmdIdResizeImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Resize Image..."
             evt.disabled = !capture
 
-        case CmdId.ExpandImage:
+        case CmdIdExpandImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Expand Image..."
             evt.disabled = !capture
 
-        case CmdId.ExpandCapture:
+        case CmdIdExpandCapture:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Expand Capture..."
             evt.disabled = !capture
 
-        case CmdId.TrimCapture:
+        case CmdIdTrimCapture:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Trim Capture"
             evt.disabled = !capture
 
-        case CmdId.RestoreOrg:
+        case CmdIdRestoreOrg:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Restore to Original"
             evt.disabled = !capture or !capture.backImgOriginal.isValid()
 
-        case CmdId.FlipImage:
+        case CmdIdFlipImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Flip Image"
             evt.disabled = !capture
 
-        case CmdId.MirrorImage:
+        case CmdIdMirrorImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Mirror Image"
             evt.disabled = !capture
 
-        case CmdId.RotateImageRight:
+        case CmdIdRotateImageRight:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Rotate Image Right"
             evt.disabled = !capture
 
-        case CmdId.RotateImageLeft:
+        case CmdIdRotateImageLeft:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Rotate Image Left"
             evt.disabled = !capture
@@ -91,27 +91,27 @@ impl IActionUI for ActionImage
 
         switch cxt.id
         {
-        case CmdId.ResizeImage:
+        case CmdIdResizeImage:
             main.resizeImage()
-        case CmdId.ExpandImage:
+        case CmdIdExpandImage:
             main.expandImage()
 
-        case CmdId.FlipImage:
-            main.doProcessImage(CmdId.FlipImage)
-        case CmdId.MirrorImage:
-            main.doProcessImage(CmdId.MirrorImage)
+        case CmdIdFlipImage:
+            main.doProcessImage(CmdIdFlipImage)
+        case CmdIdMirrorImage:
+            main.doProcessImage(CmdIdMirrorImage)
 
-        case CmdId.RotateImageRight:
-            main.doProcessImage(CmdId.RotateImageRight)
-        case CmdId.RotateImageLeft:
-            main.doProcessImage(CmdId.RotateImageLeft)
+        case CmdIdRotateImageRight:
+            main.doProcessImage(CmdIdRotateImageRight)
+        case CmdIdRotateImageLeft:
+            main.doProcessImage(CmdIdRotateImageLeft)
 
-        case CmdId.ExpandCapture:
+        case CmdIdExpandCapture:
             main.expandCapture()
-        case CmdId.TrimCapture:
+        case CmdIdTrimCapture:
             main.trimCapture()
 
-        case CmdId.RestoreOrg:
+        case CmdIdRestoreOrg:
             let undo = capture.newUndo(.RestoreOrg)
             capture.pushUndo(undo)
             main.invalidate()
@@ -136,17 +136,17 @@ impl MainWnd
 
         switch cmdId
         {
-        case CmdId.ResizeImage:
+        case CmdIdResizeImage:
             img.resize(w, h, .Bilinear)
-        case CmdId.ExpandImage:
+        case CmdIdExpandImage:
             img.expand(l, t, r, b)
-        case CmdId.FlipImage:
+        case CmdIdFlipImage:
             img.flip()
-        case CmdId.MirrorImage:
+        case CmdIdMirrorImage:
             img.mirror()
-        case CmdId.RotateImageRight:
+        case CmdIdRotateImageRight:
             img.turn(.T90)
-        case CmdId.RotateImageLeft:
+        case CmdIdRotateImageLeft:
             img.turn(.T270)
         }
 
@@ -156,14 +156,14 @@ impl MainWnd
 
         switch cmdId
         {
-        case CmdId.ResizeImage:
+        case CmdIdResizeImage:
             let undo2 = capture.newUndo(.MoveCapture, serial)
             undo2.newImg   = img
             undo2.newSizeX = w - capture.width
             undo2.newSizeY = h - capture.height
             capture.pushUndo(undo2)
 
-        case CmdId.RotateImageRight, CmdId.RotateImageLeft:
+        case CmdIdRotateImageRight, CmdIdRotateImageLeft:
             let undo2 = capture.newUndo(.MoveCapture, serial)
             undo2.newImg   = img
             undo2.newSizeX = img.width - oldW
@@ -223,7 +223,7 @@ impl MainWnd
         if w == capture.width and h == capture.height:
             return
 
-        me.doProcessImage(CmdId.ResizeImage, w: w, h: h)
+        me.doProcessImage(CmdIdResizeImage, w: w, h: h)
     }
 
     mtd expandImage()
@@ -350,7 +350,7 @@ impl MainWnd
             t += ch
         }
 
-        me.doProcessImage(CmdId.ExpandImage, l, t, r, b)
+        me.doProcessImage(CmdIdExpandImage, l, t, r, b)
     }
 
     mtd expandCapture()
