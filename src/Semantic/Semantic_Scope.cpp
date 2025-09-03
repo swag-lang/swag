@@ -279,13 +279,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
         if (!identifierRef->previousNode && identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
         if (!identifierRef->previousNode)
-        {
-            if (job->hasFlag(JOB_NO_PENDING_META_CHANGE))
-                return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
-            job->addFlag(JOB_PENDING_META_CHANGE);
-            job->setPending(JobWaitKind::UnknownSymbol, nullptr, identifier, nullptr);
-            return true;
-        }
+            return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
 
         identifier->addSemFlag(SEMFLAG_FORCE_UFCS);
     }
@@ -329,14 +323,7 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, VectorNative<One
     // Error, no symbol!
     if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
         return true;
-
-    if (job->hasFlag(JOB_NO_PENDING_META_CHANGE))
-        return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
-
-    identifier->removeSemFlag(SEMFLAG_FORCE_UFCS);
-    job->addFlag(JOB_PENDING_META_CHANGE);
-    job->setPending(JobWaitKind::UnknownSymbol, nullptr, identifier, nullptr);
-    return true;
+    return SemanticError::unknownIdentifierError(context, identifierRef, identifier);
 }
 
 void Semantic::collectAlternativeScopes(const AstNode* startNode, VectorNative<CollectedScope>& scopes)

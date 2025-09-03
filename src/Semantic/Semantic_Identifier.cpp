@@ -984,10 +984,8 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     {
         if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
             return true;
-
         if (identifier->hasSemFlag(SEMFLAG_FORCE_UFCS))
             return SemanticError::unknownIdentifierError(context, identifierRef, castAst<AstIdentifier>(identifier, AstNodeKind::Identifier));
-
         return false;
     }
 

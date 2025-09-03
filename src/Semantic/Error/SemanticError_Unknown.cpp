@@ -151,6 +151,15 @@ namespace
 
 bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
+    const auto job = context->baseJob;
+    if (!job->hasFlag(JOB_NO_PENDING_META_CHANGE))
+    {
+        identifier->removeSemFlag(SEMFLAG_FORCE_UFCS);
+        job->addFlag(JOB_PENDING_META_CHANGE);
+        job->setPending(JobWaitKind::UnknownSymbol, nullptr, identifier, nullptr);
+        return true;
+    }
+    
     // What kind of thing to we search for?
     const auto pr1       = identifier->getParent(1);
     const auto pr2       = identifier->getParent(2);
