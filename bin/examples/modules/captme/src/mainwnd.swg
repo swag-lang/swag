@@ -428,7 +428,7 @@ impl MainWnd
             .registerKeyShortcut(.Zero, .Up, ActionAlign.Top)
             .registerKeyShortcut(.Zero, .Right, ActionAlign.Right)
             .registerKeyShortcut(.Zero, .Down, ActionAlign.Bottom)
-            .registerKeyShortcut(.CtrlAlt, .O, CmdIdOptions)
+            .registerKeyShortcut(.CtrlAlt, .O, ActionOptions.Options)
             .registerKeyShortcut(.Zero, .F2, ActionEdit.Text)
         }
 
@@ -583,7 +583,7 @@ impl MainWnd
 
         with let helpMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdIdOptions)
+            .addItem(ActionOptions.Options)
             .addItem(ActionAbout.About)
             topMenu.addPopup("Help", helpMenu)
         }

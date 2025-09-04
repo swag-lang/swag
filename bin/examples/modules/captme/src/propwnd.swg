@@ -1317,10 +1317,10 @@ impl PropWnd
         if curSel.subKind != .PixSel:
             return
 
-        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelFill)
-        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelSmartFill)
-        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelClear)
-        discard PushButton.create(me.mainLayout, "", id: CmdIdPixSelSmartMove)
+        discard PushButton.create(me.mainLayout, "", id: ActionPixSel.Fill)
+        discard PushButton.create(me.mainLayout, "", id: ActionPixSel.SmartFill)
+        discard PushButton.create(me.mainLayout, "", id: ActionPixSel.Clear)
+        discard PushButton.create(me.mainLayout, "", id: ActionPixSel.SmartMove)
     }
 
     mtd propSep()

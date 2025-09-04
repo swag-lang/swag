@@ -1,15 +1,19 @@
 using Gui
 
-const CmdIdOptions = "CmdIdOptions"
-
 struct ActionOptions {}
+
+impl ActionOptions
+{
+    newCmdId("Options")
+}
+
 impl IActionUI for ActionOptions
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdOptions:
+        case ActionOptions.Options:
             return true
         }
 
@@ -22,7 +26,7 @@ impl IActionUI for ActionOptions
 
         switch cxt.id
         {
-        case CmdIdOptions:
+        case ActionOptions.Options:
             evt.setFlags |= .Name | .Icon
             evt.name = "Options..."
             evt.icon = main.getTheme().getIcon24(.Options)

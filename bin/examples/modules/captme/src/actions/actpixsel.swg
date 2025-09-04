@@ -1,16 +1,20 @@
-const CmdIdPixSelClear = "CmdIdPixSelClear"
-const CmdIdPixSelFill = "CmdIdPixSelFill"
-const CmdIdPixSelSmartFill = "CmdIdPixSelSmartFill"
-const CmdIdPixSelSmartMove = "CmdIdPixSelSmartMove"
-
 struct ActionPixSel {}
+
+impl ActionPixSel
+{
+    newCmdId("Clear")
+    newCmdId("Fill")
+    newCmdId("SmartFill")
+    newCmdId("SmartMove")
+}
+
 impl IActionUI for ActionPixSel
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdPixSelClear, CmdIdPixSelFill, CmdIdPixSelSmartFill, CmdIdPixSelSmartMove:
+        case ActionPixSel.Clear, ActionPixSel.Fill, ActionPixSel.SmartFill, ActionPixSel.SmartMove:
             return true
         }
 
@@ -37,25 +41,25 @@ impl IActionUI for ActionPixSel
 
         switch cxt.id
         {
-        case CmdIdPixSelClear:
+        case ActionPixSel.Clear:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Clear"
             evt.disabled = !capture or !hasPixSel
             evt.hidden   = evt.disabled
 
-        case CmdIdPixSelFill:
+        case ActionPixSel.Fill:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Fill"
             evt.disabled = !capture or !hasPixSel
             evt.hidden   = evt.disabled
 
-        case CmdIdPixSelSmartFill:
+        case ActionPixSel.SmartFill:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Smart Fill"
             evt.disabled = !capture or !hasPixSel
             evt.hidden   = evt.disabled
 
-        case CmdIdPixSelSmartMove:
+        case ActionPixSel.SmartMove:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Smart Move"
             evt.disabled = !capture or !hasPixSel
@@ -71,13 +75,13 @@ impl IActionUI for ActionPixSel
 
         switch cxt.id
         {
-        case CmdIdPixSelClear:
+        case ActionPixSel.Clear:
             main.pixSelClear()
-        case CmdIdPixSelFill:
+        case ActionPixSel.Fill:
             main.pixSelFill()
-        case CmdIdPixSelSmartFill:
+        case ActionPixSel.SmartFill:
             main.pixSelSmartFill()
-        case CmdIdPixSelSmartMove:
+        case ActionPixSel.SmartMove:
             main.pixSelSmartMove()
         }
 
