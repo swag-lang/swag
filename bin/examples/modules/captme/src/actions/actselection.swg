@@ -30,31 +30,30 @@ impl IActionUI for ActionSelection
     mtd impl update(cxt: ActionContext, evt: *CommandStateEvent)->bool
     {
         let main    = cast(*MainWnd) cxt.wnd
-        var capture = main.getCapture()
+        let capture = main.getCapture()
         let hasSel  = capture and capture.selection.count
-        if main.libraryMode:
-            capture = null
+        let isLib   = main.libraryMode
 
         switch cxt.id
         {
         case ActionSelection.SelectAll:
             evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or !capture.forms.count
+            evt.disabled = !capture or !capture.forms.count or isLib
             evt.name     = "Select All Objects"
 
         case ActionSelection.SelectSameAll:
             evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or !capture.forms.count or !hasSel
+            evt.disabled = !capture or !capture.forms.count or !hasSel or isLib
             evt.name     = "Select Similar Objects"
 
         case ActionSelection.DeSelectAll:
             evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture or !hasSel
+            evt.disabled = !capture or !hasSel or isLib
             evt.name     = "Deselect All Objects"
 
         case ActionSelection.InvertSelection:
             evt.setFlags |= .Disabled | .Name
-            evt.disabled = !capture
+            evt.disabled = !capture or isLib
             evt.name     = "Invert Selection"
 
         case ActionSelection.DeleteSelection:
@@ -86,17 +85,17 @@ impl IActionUI for ActionSelection
         {
         case ActionSelection.SelectAll:
             capture.selection.clear()
-            for capture.forms:
-                capture.selection.add(@index)
+            for i in capture.forms:
+                capture.selection.add(i)
             capture.selectionHasChanged()
 
         case ActionSelection.SelectSameAll:
             let firstType = capture.getSelectedFormType()
             capture.selection.clear()
-            foreach form in capture.forms
+            foreach form, i in capture.forms
             {
                 if @kindof(form) == firstType:
-                    capture.selection.add(@index)
+                    capture.selection.add(i)
             }
 
             capture.selectionHasChanged()
@@ -119,10 +118,7 @@ impl IActionUI for ActionSelection
             main.snap = !main.snap
 
         case ActionSelection.Freeze:
-            if main.freezeSel:
-                main.freezeSelection(false)
-            else:
-                main.freezeSelection(true)
+            main.freezeSelection(!main.freezeSel)
         }
 
         return true

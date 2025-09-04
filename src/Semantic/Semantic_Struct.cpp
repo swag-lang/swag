@@ -209,8 +209,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
             if (itfSymbol)
             {
                 Diagnostic err{childFct, childFct->tokenName, formErr(Err0434, childFct->token.text.cstr(), typeInterface->name.cstr())};
-                err.hint = "consider adding [[impl]] before if this is intentional";
-                err.addNote("a standard function in an [[impl]] block cannot overshadow a function from the corresponding interface");
+                err.addNote("functions in an [[impl]] block cannot shadow interface functions");
                 return context->report(err);
             }
 
