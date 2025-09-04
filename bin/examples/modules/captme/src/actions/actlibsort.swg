@@ -1,18 +1,22 @@
 using Gui
 
-const CmdIdLibSortRecent = "CmdIdLibSortRecent"
-const CmdIdLibSortFileSize = "CmdIdLibSortFileSize"
-const CmdIdLibSortSimilar = "CmdIdLibSortSimilar"
-const CmdIdLibSortInvert = "CmdIdLibSortInvert"
-
 struct ActionLibSort {}
+
+impl ActionLibSort
+{
+    newCmdId("Recent")
+    newCmdId("FileSize")
+    newCmdId("Similar")
+    newCmdId("Invert")
+}
+
 impl IActionUI for ActionLibSort
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdLibSortRecent, CmdIdLibSortFileSize, CmdIdLibSortInvert, CmdIdLibSortSimilar:
+        case ActionLibSort.Recent, ActionLibSort.FileSize, ActionLibSort.Invert, ActionLibSort.Similar:
             return true
         }
 
@@ -25,25 +29,25 @@ impl IActionUI for ActionLibSort
 
         switch cxt.id
         {
-        case CmdIdLibSortRecent:
+        case ActionLibSort.Recent:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Write Time"
             evt.checked       = libWnd.sortMethod == .Recent
 
-        case CmdIdLibSortFileSize:
+        case ActionLibSort.FileSize:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "File Size"
             evt.checked       = libWnd.sortMethod == .FileSize
 
-        case CmdIdLibSortSimilar:
+        case ActionLibSort.Similar:
             evt.setFlags |= .Name | .Checked | .RenderingHint
             evt.renderingHint = .ExclusiveGroup
             evt.name          = "Similarity"
             evt.checked       = libWnd.sortMethod == .Similar
 
-        case CmdIdLibSortInvert:
+        case ActionLibSort.Invert:
             evt.setFlags |= .Name | .Checked
             if libWnd.sortMethod == .Recent:
                 evt.name = "Oldest First"
@@ -68,14 +72,14 @@ impl IActionUI for ActionLibSort
 
         switch cxt.id
         {
-        case CmdIdLibSortRecent:
+        case ActionLibSort.Recent:
             libWnd.setSortMethod(.Recent)
-        case CmdIdLibSortFileSize:
+        case ActionLibSort.FileSize:
             libWnd.setSortMethod(.FileSize)
-        case CmdIdLibSortSimilar:
+        case ActionLibSort.Similar:
             libWnd.setSortMethod(.Similar)
 
-        case CmdIdLibSortInvert:
+        case ActionLibSort.Invert:
             libWnd.setSortOrder(!libWnd.invertSort)
         }
 

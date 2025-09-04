@@ -384,11 +384,11 @@ impl LibraryWnd
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
-                    .addItem(CmdIdLibSortRecent)
-                    .addItem(CmdIdLibSortFileSize)
-                    .addItem(CmdIdLibSortSimilar)
+                    .addItem(ActionLibSort.Recent)
+                    .addItem(ActionLibSort.FileSize)
+                    .addItem(ActionLibSort.Similar)
                     .addSeparator()
-                    .addItem(CmdIdLibSortInvert)
+                    .addItem(ActionLibSort.Invert)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }
@@ -407,11 +407,11 @@ impl LibraryWnd
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
-                    .addItem(CmdIdLibShowUpToDateLinkedImage)
-                    .addItem(CmdIdLibShowUnSavedLinkedImage)
+                    .addItem(ActionLibFilter.UpToDateLinkedImage)
+                    .addItem(ActionLibFilter.UnSavedLinkedImage)
                     .addSeparator()
-                    .addItem(CmdIdLibShowLinkedImage)
-                    .addItem(CmdIdLibShowUnLinkedImage)
+                    .addItem(ActionLibFilter.LinkedImage)
+                    .addItem(ActionLibFilter.UnLinkedImage)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }

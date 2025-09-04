@@ -1,18 +1,22 @@
 using Gui
 
-const CmdIdLibShowUpToDateLinkedImage = "CmdIdLibShowUpToDateLinkedImage"
-const CmdIdLibShowLinkedImage = "CmdIdLibShowLinkedImage"
-const CmdIdLibShowUnSavedLinkedImage = "CmdIdLibShowUnSavedLinkedImage"
-const CmdIdLibShowUnLinkedImage = "CmdIdLibShowUnLinkedImage"
-
 struct ActionLibFilter {}
+
+impl ActionLibFilter
+{
+    newCmdId("UpToDateLinkedImage")
+    newCmdId("LinkedImage")
+    newCmdId("UnSavedLinkedImage")
+    newCmdId("UnLinkedImage")
+}
+
 impl IActionUI for ActionLibFilter
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdLibShowUpToDateLinkedImage, CmdIdLibShowLinkedImage, CmdIdLibShowUnSavedLinkedImage, CmdIdLibShowUnLinkedImage:
+        case ActionLibFilter.UpToDateLinkedImage, ActionLibFilter.LinkedImage, ActionLibFilter.UnSavedLinkedImage, ActionLibFilter.UnLinkedImage:
             return true
         }
 
@@ -25,20 +29,20 @@ impl IActionUI for ActionLibFilter
 
         switch cxt.id
         {
-        case CmdIdLibShowUpToDateLinkedImage:
+        case ActionLibFilter.UpToDateLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Up To Date Linked Image"
             evt.checked = libWnd.showUpToDateLinkedImage
-        case CmdIdLibShowUnSavedLinkedImage:
+        case ActionLibFilter.UnSavedLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "UnSaved Linked Image"
             evt.checked = libWnd.showUnSavedLinkedImage
 
-        case CmdIdLibShowLinkedImage:
+        case ActionLibFilter.LinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Has Linked Image"
             evt.checked = libWnd.showLinkedImage
-        case CmdIdLibShowUnLinkedImage:
+        case ActionLibFilter.UnLinkedImage:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Doesn't Have Linked Image"
             evt.checked = libWnd.showUnLinkedImage
@@ -53,16 +57,16 @@ impl IActionUI for ActionLibFilter
 
         switch cxt.id
         {
-        case CmdIdLibShowUpToDateLinkedImage:
+        case ActionLibFilter.UpToDateLinkedImage:
             libWnd.showUpToDateLinkedImage = !libWnd.showUpToDateLinkedImage
             libWnd.view.filter()
-        case CmdIdLibShowUnSavedLinkedImage:
+        case ActionLibFilter.UnSavedLinkedImage:
             libWnd.showUnSavedLinkedImage = !libWnd.showUnSavedLinkedImage
             libWnd.view.filter()
-        case CmdIdLibShowLinkedImage:
+        case ActionLibFilter.LinkedImage:
             libWnd.showLinkedImage = !libWnd.showLinkedImage
             libWnd.view.filter()
-        case CmdIdLibShowUnLinkedImage:
+        case ActionLibFilter.UnLinkedImage:
             libWnd.showUnLinkedImage = !libWnd.showUnLinkedImage
             libWnd.view.filter()
         }

@@ -1,22 +1,26 @@
 using Gui
 
-const CmdIdMoveSelLeft = "CmdIdMoveSelLeft"
-const CmdIdMoveSelTop = "CmdIdMoveSelTop"
-const CmdIdMoveSelRight = "CmdIdMoveSelRight"
-const CmdIdMoveSelBottom = "CmdIdMoveSelBottom"
-const CmdIdMoveSelLeft1 = "CmdIdMoveSelLeft1"
-const CmdIdMoveSelTop1 = "CmdIdMoveSelTop1"
-const CmdIdMoveSelRight1 = "CmdIdMoveSelRight1"
-const CmdIdMoveSelBottom1 = "CmdIdMoveSelBottom1"
-
 struct ActionAlign {}
+
+impl ActionAlign
+{
+    newCmdId("Left")
+    newCmdId("Top")
+    newCmdId("Right")
+    newCmdId("Bottom")
+    newCmdId("Left1")
+    newCmdId("Top1")
+    newCmdId("Right1")
+    newCmdId("Bottom1")
+}
+
 impl IActionUI for ActionAlign
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom, CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
+        case ActionAlign.Left, ActionAlign.Top, ActionAlign.Right, ActionAlign.Bottom, ActionAlign.Left1, ActionAlign.Top1, ActionAlign.Right1, ActionAlign.Bottom1:
             return true
         }
 
@@ -32,10 +36,10 @@ impl IActionUI for ActionAlign
 
         switch cxt.id
         {
-        case CmdIdMoveSelLeft, CmdIdMoveSelTop, CmdIdMoveSelRight, CmdIdMoveSelBottom:
+        case ActionAlign.Left, ActionAlign.Top, ActionAlign.Right, ActionAlign.Bottom:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
-        case CmdIdMoveSelLeft1, CmdIdMoveSelTop1, CmdIdMoveSelRight1, CmdIdMoveSelBottom1:
+        case ActionAlign.Left1, ActionAlign.Top1, ActionAlign.Right1, ActionAlign.Bottom1:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
         }
@@ -51,28 +55,28 @@ impl IActionUI for ActionAlign
         var undo: *Undo
         switch cxt.id
         {
-        case CmdIdMoveSelLeft1:
+        case ActionAlign.Left1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = -1
-        case CmdIdMoveSelTop1:
+        case ActionAlign.Top1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = -1
-        case CmdIdMoveSelRight1:
+        case ActionAlign.Right1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = 1
-        case CmdIdMoveSelBottom1:
+        case ActionAlign.Bottom1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = 1
-        case CmdIdMoveSelLeft:
+        case ActionAlign.Left:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = -5
-        case CmdIdMoveSelTop:
+        case ActionAlign.Top:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = -5
-        case CmdIdMoveSelRight:
+        case ActionAlign.Right:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = 5
-        case CmdIdMoveSelBottom:
+        case ActionAlign.Bottom:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = 5
         }
