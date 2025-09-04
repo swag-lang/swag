@@ -274,12 +274,12 @@ impl LibraryWnd
             .registerAction'ActionLibFilter()
             .registerAction'ActionLibSel()
 
-            .registerKeyShortcut(.Zero, .Left, CmdIdLibMoveSelLeft)
-            .registerKeyShortcut(.Zero, .Right, CmdIdLibMoveSelRight)
-            .registerKeyShortcut(.Zero, .Up, CmdIdLibMoveSelUp)
-            .registerKeyShortcut(.Zero, .Down, CmdIdLibMoveSelDown)
-            .registerKeyShortcut(.Zero, .Home, CmdIdLibMoveSelHome)
-            .registerKeyShortcut(.Zero, .End, CmdIdLibMoveSelEnd)
+            .registerKeyShortcut(.Zero, .Left, ActionLibSel.Left)
+            .registerKeyShortcut(.Zero, .Right, ActionLibSel.Right)
+            .registerKeyShortcut(.Zero, .Up, ActionLibSel.Up)
+            .registerKeyShortcut(.Zero, .Down, ActionLibSel.Down)
+            .registerKeyShortcut(.Zero, .Home, ActionLibSel.Home)
+            .registerKeyShortcut(.Zero, .End, ActionLibSel.End)
         }
     }
 

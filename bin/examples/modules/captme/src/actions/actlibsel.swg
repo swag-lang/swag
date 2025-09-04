@@ -1,21 +1,25 @@
 using Gui
 
-const CmdIdLibMoveSelLeft = "CmdIdLibMoveSelLeft"
-const CmdIdLibMoveSelRight = "CmdIdLibMoveSelRight"
-const CmdIdLibMoveSelUp = "CmdIdLibMoveSelUp"
-const CmdIdLibMoveSelDown = "CmdIdLibMoveSelDown"
-const CmdIdLibMoveSelHome = "CmdIdLibMoveSelHome"
-const CmdIdLibMoveSelEnd = "CmdIdLibMoveSelEnd"
-
 struct ActionLibSel {}
+
+impl ActionLibSel
+{
+    newCmdId("Left")
+    newCmdId("Right")
+    newCmdId("Up")
+    newCmdId("Down")
+    newCmdId("Home")
+    newCmdId("End")
+}
+
 impl IActionUI for ActionLibSel
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelUp, CmdIdLibMoveSelRight, CmdIdLibMoveSelDown,
-             CmdIdLibMoveSelHome, CmdIdLibMoveSelEnd:
+        case ActionLibSel.Left, ActionLibSel.Up, ActionLibSel.Right, ActionLibSel.Down,
+             ActionLibSel.Home, ActionLibSel.End:
             return true
         }
 
@@ -29,8 +33,8 @@ impl IActionUI for ActionLibSel
 
         switch cxt.id
         {
-        case CmdIdLibMoveSelLeft, CmdIdLibMoveSelUp, CmdIdLibMoveSelRight, CmdIdLibMoveSelDown,
-             CmdIdLibMoveSelHome, CmdIdLibMoveSelEnd:
+        case ActionLibSel.Left, ActionLibSel.Up, ActionLibSel.Right, ActionLibSel.Down,
+             ActionLibSel.Home, ActionLibSel.End:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
         }
@@ -44,17 +48,17 @@ impl IActionUI for ActionLibSel
 
         switch cxt.id
         {
-        case CmdIdLibMoveSelLeft:
+        case ActionLibSel.Left:
             libWnd.moveSelLeft()
-        case CmdIdLibMoveSelUp:
+        case ActionLibSel.Up:
             libWnd.moveSelTop()
-        case CmdIdLibMoveSelRight:
+        case ActionLibSel.Right:
             libWnd.moveSelRight()
-        case CmdIdLibMoveSelDown:
+        case ActionLibSel.Down:
             libWnd.moveSelBottom()
-        case CmdIdLibMoveSelHome:
+        case ActionLibSel.Home:
             libWnd.moveSelHome()
-        case CmdIdLibMoveSelEnd:
+        case ActionLibSel.End:
             libWnd.moveSelEnd()
         }
 
