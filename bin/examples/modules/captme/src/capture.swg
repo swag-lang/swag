@@ -959,8 +959,8 @@ impl Capture
             .addItem(CmdIdSelectSameAll)
             .addItem(CmdIdDeSelectAll)
             .addSeparator()
-            .addItem(CmdIdFlatten)
-            .addItem(CmdIdFlattenAll)
+            .addItem(ActionFlatten.Flatten)
+            .addItem(ActionFlatten.FlattenAll)
             .addSeparator()
             .addItem(CmdIdSnap)
         }

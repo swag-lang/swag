@@ -87,14 +87,14 @@ impl IWnd for MainWnd
         let sf = catch me.surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
         with let menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
-            .addItem(CmdIdShowEditor)
+            .addItem(ActionGlobal.ShowEditor)
             .addSeparator()
             .addItem(ActionCapture.Area)
             .addItem(ActionCapture.LastArea)
             .addItem(ActionCapture.FullScreen)
             .addItem(ActionCapture.ActiveWnd)
             .addSeparator()
-            .addItem(CmdIdExit)
+            .addItem(ActionGlobal.Exit)
 
             .owner        = me
             .paintByFrame = true
@@ -156,7 +156,7 @@ impl IWnd for MainWnd
             if me.editorOptions.hideOnClose:
                 me.surface.hide()
             else:
-                me.postCommandEvent(CmdIdExit)
+                me.postCommandEvent(ActionGlobal.Exit)
         }
     }
 
@@ -411,15 +411,15 @@ impl MainWnd
             .registerKeyShortcut(.Control, .Add, ActionZoom.ZoomIn)
             .registerKeyShortcut(.Control, .Subtract, ActionZoom.ZoomOut)
             .registerKeyShortcut(.Control, .NumPad0, ActionZoom.Zoom1)
-            .registerKeyShortcut(.CtrlShift, .D, CmdIdDupCapture)
+            .registerKeyShortcut(.CtrlShift, .D, ActionFile.DupCapture)
             .registerKeyShortcut(.CtrlShift, .I, CmdIdInvertSelection)
-            .registerKeyShortcut(.CtrlShift, .T, CmdIdFlattenAll)
-            .registerKeyShortcut(.Alt, .F4, CmdIdExit)
-            .registerKeyShortcut(.Control, .N, CmdIdNewImage)
-            .registerKeyShortcut(.CtrlShift, .N, CmdIdNewFromClipboard)
-            .registerKeyShortcut(.CtrlShift, .S, CmdIdSaveAsImage)
-            .registerKeyShortcut(.Control, .S, CmdIdUpdateLinkedImage)
-            .registerKeyShortcut(.Control, .O, CmdIdOpenImage)
+            .registerKeyShortcut(.CtrlShift, .T, ActionFlatten.FlattenAll)
+            .registerKeyShortcut(.Alt, .F4, ActionGlobal.Exit)
+            .registerKeyShortcut(.Control, .N, ActionFile.NewImage)
+            .registerKeyShortcut(.CtrlShift, .N, ActionFile.NewFromClipboard)
+            .registerKeyShortcut(.CtrlShift, .S, ActionFile.SaveAsImage)
+            .registerKeyShortcut(.Control, .S, ActionFile.UpdateLinkedImage)
+            .registerKeyShortcut(.Control, .O, ActionFile.OpenImage)
             .registerKeyShortcut(.Shift, .Left, CmdIdMoveSelLeft1)
             .registerKeyShortcut(.Shift, .Up, CmdIdMoveSelTop1)
             .registerKeyShortcut(.Shift, .Right, CmdIdMoveSelRight1)
@@ -469,19 +469,19 @@ impl MainWnd
 
         with let fileMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(CmdIdNewImage)
-            .addItem(CmdIdNewFromClipboard)
+            .addItem(ActionFile.NewImage)
+            .addItem(ActionFile.NewFromClipboard)
             .addSeparator()
-            .addItem(CmdIdOpenImage)
-            .addItem(CmdIdSaveAsImage)
+            .addItem(ActionFile.OpenImage)
+            .addItem(ActionFile.SaveAsImage)
             .addSeparator()
-            .addItem(CmdIdSaveAsLinkedImage)
-            .addItem(CmdIdUpdateLinkedImage)
-            .addItem(CmdIdUnlinkImage)
+            .addItem(ActionFile.SaveAsLinkedImage)
+            .addItem(ActionFile.UpdateLinkedImage)
+            .addItem(ActionFile.UnlinkImage)
             .addSeparator()
-            .addItem(CmdIdFileDetails)
+            .addItem(ActionFile.FileDetails)
             .addSeparator()
-            .addItem(CmdIdExit)
+            .addItem(ActionGlobal.Exit)
             topMenu.addPopup("File", fileMenu)
         }
 
@@ -560,7 +560,7 @@ impl MainWnd
             .addItem(CmdIdExpandCapture)
             .addItem(CmdIdTrimCapture)
             .addSeparator()
-            .addItem(CmdIdFlattenAll)
+            .addItem(ActionFlatten.FlattenAll)
             .addSeparator()
             .addItem(CmdIdFlipImage)
             .addItem(CmdIdMirrorImage)
@@ -626,7 +626,7 @@ impl MainWnd
         me.createBtn(ActionToolMode.PixSel)
 
         me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.Capture)
-        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: CmdIdLibrary)
+        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.Library)
     }
 
     mtd setTopBarHeight()

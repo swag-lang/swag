@@ -109,12 +109,12 @@ impl IWnd for LibraryView
         {
             with let menu = MenuCtrl.createPopup(me)
             {
-                .addItem(CmdIdDeleteCapture)
+                .addItem(ActionFile.DeleteCapture)
                 .addSeparator()
-                .addItem(CmdIdCaptureFileLocation)
-                .addItem(CmdIdLinkedFileLocation)
+                .addItem(ActionFile.CaptureFileLocation)
+                .addItem(ActionFile.LinkedFileLocation)
                 .addSeparator()
-                .addItem(CmdIdFileDetails)
+                .addItem(ActionFile.FileDetails)
             }
 
             discard menu.doModal(evt.surfacePos, autoDestroy: true)

@@ -1,17 +1,21 @@
 using Gui
 
-const CmdIdLibrary = "CmdIdLibrary"
-const CmdIdExit = "CmdIdExit"
-const CmdIdShowEditor = "CmdIdShowEditor"
-
 struct ActionGlobal {}
+
+impl ActionGlobal
+{
+    newCmdId("Library")
+    newCmdId("Exit")
+    newCmdId("ShowEditor")
+}
+
 impl IActionUI for ActionGlobal
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdLibrary, CmdIdExit, CmdIdShowEditor:
+        case ActionGlobal.Library, ActionGlobal.Exit, ActionGlobal.ShowEditor:
             return true
         }
 
@@ -24,16 +28,16 @@ impl IActionUI for ActionGlobal
 
         switch cxt.id
         {
-        case CmdIdShowEditor:
+        case ActionGlobal.ShowEditor:
             evt.setFlags |= .Name
             evt.name = "Show Editor"
 
-        case CmdIdExit:
+        case ActionGlobal.Exit:
             evt.setFlags |= .Name | .Icon
             evt.name = "Quit"
             evt.icon = main.getTheme().getIcon24(.Quit)
 
-        case CmdIdLibrary:
+        case ActionGlobal.Library:
             evt.setFlags |= .Name | .ToolTip | .Checked
             evt.name    = "Library"
             evt.toolTip = "Display captures library"
@@ -49,16 +53,16 @@ impl IActionUI for ActionGlobal
 
         switch cxt.id
         {
-        case CmdIdShowEditor:
+        case ActionGlobal.ShowEditor:
             main.surface.show()
             main.surface.bringToTop()
 
-        case CmdIdExit:
+        case ActionGlobal.Exit:
             if main.libWnd:
                 main.libWnd.requestClose()
             main.postQuitEvent()
 
-        case CmdIdLibrary:
+        case ActionGlobal.Library:
             main.swapLibraryMode()
         }
 
