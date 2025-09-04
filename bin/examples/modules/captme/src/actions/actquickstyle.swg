@@ -1,15 +1,19 @@
 using Gui
 
-const CmdIdResetQuickStyle = "CmdIdResetQuickStyle"
-
 struct ActionQuickStyle {}
+
+impl ActionQuickStyle
+{
+    newCmdId("Reset")
+}
+
 impl IActionUI for ActionQuickStyle
 {
     mtd impl accept(cxt: ActionContext)->bool
     {
         switch cxt.id
         {
-        case CmdIdResetQuickStyle:
+        case ActionQuickStyle.Reset:
             return true
         }
 
@@ -20,7 +24,7 @@ impl IActionUI for ActionQuickStyle
     {
         switch cxt.id
         {
-        case CmdIdResetQuickStyle:
+        case ActionQuickStyle.Reset:
             evt.setFlags |= .Name
             evt.name = "Restore Default Styles"
         }
@@ -34,7 +38,7 @@ impl IActionUI for ActionQuickStyle
 
         switch cxt.id
         {
-        case CmdIdResetQuickStyle:
+        case ActionQuickStyle.Reset:
             main.quickWnd.resetQuickStyles()
         }
 

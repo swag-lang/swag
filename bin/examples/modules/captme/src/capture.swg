@@ -927,7 +927,7 @@ impl Capture
             .addItem(ActionCopyPaste.PasteImageInside)
             .addItem(ActionEdit.ClearImageInside)
             .addSeparator()
-            .addItem(CmdIdDeleteSelection)
+            .addItem(ActionSelection.DeleteSelection)
             .addSeparator()
         }
 
@@ -955,14 +955,14 @@ impl Capture
         with menu
         {
             .addSeparator()
-            .addItem(CmdIdSelectAll)
-            .addItem(CmdIdSelectSameAll)
-            .addItem(CmdIdDeSelectAll)
+            .addItem(ActionSelection.SelectAll)
+            .addItem(ActionSelection.SelectSameAll)
+            .addItem(ActionSelection.DeSelectAll)
             .addSeparator()
             .addItem(ActionFlatten.Flatten)
             .addItem(ActionFlatten.FlattenAll)
             .addSeparator()
-            .addItem(CmdIdSnap)
+            .addItem(ActionSelection.Snap)
         }
 
         discard menu.doModal(pos)

@@ -364,9 +364,9 @@ impl LibraryWnd
                 with var menu = MenuCtrl.createPopup(res)
                 {
                     .menuCtrlFlags |= .NoKeyShortcuts
-                    .addItem(CmdIdLibSmall)
-                    .addItem(CmdIdLibMedium)
-                    .addItem(CmdIdLibBig)
+                    .addItem(ActionRecentSize.LibSmall)
+                    .addItem(ActionRecentSize.LibMedium)
+                    .addItem(ActionRecentSize.LibBig)
                 }
                 discard menu.doModal({pos.horzCenter(), pos.bottom()}, .AnchorTopCenter, autoDestroy: true)
             }
