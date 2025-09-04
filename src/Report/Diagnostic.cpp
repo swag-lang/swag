@@ -1027,7 +1027,7 @@ void Diagnostic::printRanges(Log* log)
         const bool enoughRoomLeft     = mid - 2 - unFormatLen >= 0;
 
         // Can we stick the hint before the line reference? (must be the last one)
-        if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft)
+        if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft && tokens.size() == 1)
         {
             alignRangeColumn(log, curColumn, r.mid - 2 - unFormatLen);
             setColorRanges(log, r.errorLevel, HintPart::Text);
