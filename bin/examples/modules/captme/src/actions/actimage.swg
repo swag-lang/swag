@@ -1,7 +1,8 @@
 struct ActionImage {}
 
-var g_KeepRatio: bool = true
+var g_KeepRatio:  bool = true
 var g_ResizeMode: u64 = 5
+var g_Width, g_Height: s32
 
 impl ActionImage
 {
@@ -266,45 +267,52 @@ impl MainWnd
         createBtn(dlg, {X + S + O + S + O, Y + S + O + S + O, S, S}, 9)
     }
 
-    mtd expandImage()
+    mtd createExpandDialog(title: string, w, h: s32)->WndId
     {
-        let capture = assume me.getCapture()
-        let ratio   = cast(f32) capture.width / capture.height
-
-        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Expand Image")
+        let dlg = Dialog.createDialog(me.surface, 350, 265, title: title)
         dlg.addButton("Resize", Dialog.BtnOk, true)
         dlg.addButton("Cancel", Dialog.BtnCancel)
-        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.backImg.width), {30, 15}, flags: .RightAlign)
-        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.backImg.height), {30, 50}, flags: .RightAlign)
+
+        let ratio = cast(f32) w / h
+
+        g_Width  = w
+        g_Height = h
+        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", w), {30, 15}, flags: .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", h), {30, 50}, flags: .RightAlign)
         edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
         edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+
+        edit0.edit.sigChanged += func|ratio, edit1|(edt)
+        {
+            g_Width = trycatch StrConv.toS32(edt.text)
+            if g_KeepRatio
+            {
+                g_Height = Math.max(1, cast(s32) (g_Width / ratio))
+                edit1.edit.setTextSilent(Format.toString("%", g_Height))
+            }
+        }
+
+        edit1.edit.sigChanged += func|ratio, edit0|(edt)
+        {
+            g_Height = trycatch StrConv.toS32(edt.text)
+            if g_KeepRatio
+            {
+                g_Width = Math.max(1, cast(s32) (g_Height * ratio))
+                edit0.edit.setTextSilent(Format.toString("%", g_Width))
+            }
+        }
+
         let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
         btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
-
-        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
+        btnRatio.sigChanged += func||(btn)
         {
-            if btnRatio.checked == .Checked
-            {
-                let w = trycatch StrConv.toS32(edt.text)
-                let h = Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.setTextSilent(Format.toString("%", h))
-            }
-        }
-        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
-        {
-            if btnRatio.checked == .Checked
-            {
-                let h = trycatch StrConv.toS32(edt.text)
-                let w = Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.setTextSilent(Format.toString("%", w))
-            }
+            g_KeepRatio = btn.isChecked()
         }
 
-        createBtnGrid(dlg)
+        dlg.createBtnGrid()
 
         let res = dlg.doModal()
 
-        g_KeepRatio = btnRatio.checked == .Checked
         foreach c in dlg.childs
         {
             if c.userData
@@ -318,13 +326,20 @@ impl MainWnd
             }
         }
 
+        return res
+    }
+
+    mtd expandImage()
+    {
+        let capture = assume me.getCapture()
+        let res     = me.createExpandDialog("Expand Image", capture.backImg.width, capture.backImg.height)
         if res != Dialog.BtnOk:
             return
 
-        let w = trycatch StrConv.toS32(edit0.edit.text)
+        let w = g_Width
         if w < Capture.MinSize or w > Capture.MaxSize:
             return
-        let h = trycatch StrConv.toS32(edit1.edit.text)
+        let h = g_Height
         if h < Capture.MinSize or h > Capture.MaxSize:
             return
         if w == capture.backImg.width and h == capture.backImg.height:
@@ -360,62 +375,14 @@ impl MainWnd
     mtd expandCapture()
     {
         let capture = assume me.getCapture()
-        let ratio   = cast(f32) capture.width / capture.height
-
-        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Expand Capture")
-        dlg.addButton("Resize", Dialog.BtnOk, true)
-        dlg.addButton("Cancel", Dialog.BtnCancel)
-        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.width), {30, 15}, flags: .RightAlign)
-        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.height), {30, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
-        edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
-        let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
-        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
-
-        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
-        {
-            if btnRatio.checked == .Checked
-            {
-                let w = trycatch StrConv.toS32(edt.text)
-                let h = Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.setTextSilent(Format.toString("%", h))
-            }
-        }
-        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
-        {
-            if btnRatio.checked == .Checked
-            {
-                let h = trycatch StrConv.toS32(edt.text)
-                let w = Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.setTextSilent(Format.toString("%", w))
-            }
-        }
-
-        createBtnGrid(dlg)
-
-        let res = dlg.doModal()
-
-        g_KeepRatio = btnRatio.checked == .Checked
-        foreach c in dlg.childs
-        {
-            if c.userData
-            {
-                let btnc = cast(*CheckButton) c
-                if btnc.checked != .UnChecked
-                {
-                    g_ResizeMode = cast(u64) btnc.userData
-                    break
-                }
-            }
-        }
-
+        let res     = me.createExpandDialog("Expand Capture", capture.width, capture.height)
         if res != Dialog.BtnOk:
             return
 
-        let w = trycatch StrConv.toS32(edit0.edit.text)
+        let w = g_Width
         if w < Capture.MinSize or w > Capture.MaxSize:
             return
-        let h = trycatch StrConv.toS32(edit1.edit.text)
+        let h = g_Height
         if h < Capture.MinSize or h > Capture.MaxSize:
             return
         if w == capture.width and h == capture.height:
@@ -549,13 +516,15 @@ impl MainWnd
         // Resize capture
         if minX or minY or maxX != capture.width or maxY != capture.height
         {
-            let undo = capture.newUndo(.MoveCapture, serial)
-            undo.newPosX -= cast(s32) minX
-            undo.newSizeX -= cast(s32) minX
-            undo.newPosY -= cast(s32) minY
-            undo.newSizeY -= cast(s32) minY
-            undo.newSizeX -= cast(s32) (capture.width - maxX)
-            undo.newSizeY -= cast(s32) (capture.height - maxY)
+            with let undo = capture.newUndo(.MoveCapture, serial)
+            {
+                .newPosX -= cast(s32) minX
+                .newSizeX -= cast(s32) minX
+                .newPosY -= cast(s32) minY
+                .newSizeY -= cast(s32) minY
+                .newSizeX -= cast(s32) (capture.width - maxX)
+                .newSizeY -= cast(s32) (capture.height - maxY)
+            }
             capture.pushUndo(undo)
         }
 
@@ -573,14 +542,15 @@ impl MainWnd
            capture.backImagePos.y + capture.backImg.height > capture.height
         {
             var cropRect = Math.Rectangle{0, 0, capture.backImg.width, capture.backImg.height}
-            if capture.backImagePos.x < 0:
-                cropRect.moveLeft(-capture.backImagePos.x)
-            if capture.backImagePos.y < 0:
-                cropRect.moveTop(-capture.backImagePos.y)
-            if capture.backImagePos.x + capture.backImg.width > capture.width:
-                cropRect.width -= (capture.backImagePos.x + capture.backImg.width) - capture.width
-            if capture.backImagePos.y + capture.backImg.height > capture.height:
-                cropRect.height -= (capture.backImagePos.y + capture.backImg.height) - capture.height
+
+            let dx = Math.max(0, -capture.backImagePos.x)
+            let dy = Math.max(0, -capture.backImagePos.y)
+            let dw = Math.max(0, (capture.backImagePos.x + capture.backImg.width) - capture.width)
+            let dh = Math.max(0, (capture.backImagePos.y + capture.backImg.height) - capture.height)
+            cropRect.moveLeft(dx)
+            cropRect.moveTop(dy)
+            cropRect.width  -= dw
+            cropRect.height -= dh
 
             let undo = capture.newUndo(.SetImage, serial)
             undo.newImg = capture.backImg.toCrop(cropRect)
