@@ -14,7 +14,7 @@ impl IActionUI for ActionFlatten
     {
         switch cxt.id
         {
-        case ActionFlatten.Flatten, ActionFlatten.FlattenAll:
+        case Flatten, FlattenAll:
             return true
         }
 
@@ -29,12 +29,12 @@ impl IActionUI for ActionFlatten
 
         switch cxt.id
         {
-        case ActionFlatten.Flatten:
+        case Flatten:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Flatten"
             evt.disabled = !capture or !hasSel
 
-        case ActionFlatten.FlattenAll:
+        case FlattenAll:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Flatten All"
             evt.disabled = !capture or !capture.forms.count
@@ -51,9 +51,9 @@ impl IActionUI for ActionFlatten
         var undo: *Undo
         switch cxt.id
         {
-        case ActionFlatten.Flatten:
+        case Flatten:
             undo = capture.newUndo(.Flatten)
-        case ActionFlatten.FlattenAll:
+        case FlattenAll:
             undo = capture.newUndo(.FlattenAll)
         }
 

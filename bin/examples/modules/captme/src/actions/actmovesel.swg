@@ -20,7 +20,7 @@ impl IActionUI for ActionAlign
     {
         switch cxt.id
         {
-        case ActionAlign.Left, ActionAlign.Top, ActionAlign.Right, ActionAlign.Bottom, ActionAlign.Left1, ActionAlign.Top1, ActionAlign.Right1, ActionAlign.Bottom1:
+        case Left, Top, Right, Bottom, Left1, Top1, Right1, Bottom1:
             return true
         }
 
@@ -36,10 +36,10 @@ impl IActionUI for ActionAlign
 
         switch cxt.id
         {
-        case ActionAlign.Left, ActionAlign.Top, ActionAlign.Right, ActionAlign.Bottom:
+        case Left, Top, Right, Bottom:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
-        case ActionAlign.Left1, ActionAlign.Top1, ActionAlign.Right1, ActionAlign.Bottom1:
+        case Left1, Top1, Right1, Bottom1:
             evt.setFlags |= .Disabled
             evt.disabled = !hasSel
         }
@@ -55,28 +55,28 @@ impl IActionUI for ActionAlign
         var undo: *Undo
         switch cxt.id
         {
-        case ActionAlign.Left1:
+        case Left1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = -1
-        case ActionAlign.Top1:
+        case Top1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = -1
-        case ActionAlign.Right1:
+        case Right1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = 1
-        case ActionAlign.Bottom1:
+        case Bottom1:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = 1
-        case ActionAlign.Left:
+        case Left:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = -5
-        case ActionAlign.Top:
+        case Top:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = -5
-        case ActionAlign.Right:
+        case Right:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosX = 5
-        case ActionAlign.Bottom:
+        case Bottom:
             undo         = capture.newUndo(.OffsetSelection)
             undo.newPosY = 5
         }

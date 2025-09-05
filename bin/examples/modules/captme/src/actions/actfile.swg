@@ -24,9 +24,9 @@ impl IActionUI for ActionFile
     {
         switch cxt.id
         {
-        case ActionFile.SaveAsImage, ActionFile.SaveAsLinkedImage, ActionFile.OpenImage, ActionFile.FileDetails,
-             ActionFile.UpdateLinkedImage, ActionFile.UnlinkImage, ActionFile.DupCapture, ActionFile.DeleteCapture,
-             ActionFile.CaptureFileLocation, ActionFile.LinkedFileLocation, ActionFile.NewImage, ActionFile.NewFromClipboard:
+        case SaveAsImage, SaveAsLinkedImage, OpenImage, FileDetails,
+             UpdateLinkedImage, UnlinkImage, DupCapture, DeleteCapture,
+             CaptureFileLocation, LinkedFileLocation, NewImage, NewFromClipboard:
             return true
         }
 
@@ -40,44 +40,44 @@ impl IActionUI for ActionFile
 
         switch cxt.id
         {
-        case ActionFile.NewImage:
+        case NewImage:
             evt.setFlags |= .Name
             evt.name = "New Image"
 
-        case ActionFile.NewFromClipboard:
+        case NewFromClipboard:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "New From Clipboard"
             evt.disabled = !Clipboard.hasImage()
 
-        case ActionFile.SaveAsImage:
+        case SaveAsImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Save As Image..."
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.SaveAs)
 
-        case ActionFile.SaveAsLinkedImage:
+        case SaveAsLinkedImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Save As Linked Image..."
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Export)
 
-        case ActionFile.OpenImage:
+        case OpenImage:
             evt.setFlags |= .Name | .Icon
             evt.name = "Open Image..."
             evt.icon = main.getTheme().getIcon24(.OpenFile)
 
-        case ActionFile.UpdateLinkedImage:
+        case UpdateLinkedImage:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Update Linked Image"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Update)
 
-        case ActionFile.UnlinkImage:
+        case UnlinkImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Unlink Image"
             evt.disabled = !capture or capture.linkedImage.length == 0
 
-        case ActionFile.DeleteCapture:
+        case DeleteCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name = "Delete"
             if main.libraryMode:
@@ -86,25 +86,25 @@ impl IActionUI for ActionFile
                 evt.disabled = !capture
             evt.icon = main.getTheme().getIcon24(.Remove)
 
-        case ActionFile.DupCapture:
+        case DupCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Duplicate"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.Duplicate)
 
-        case ActionFile.CaptureFileLocation:
+        case CaptureFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Locate Capture File"
             evt.disabled = !capture
             evt.icon     = main.getTheme().getIcon24(.OpenFile)
 
-        case ActionFile.LinkedFileLocation:
+        case LinkedFileLocation:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Locate Linked Image"
             evt.disabled = !capture or capture.linkedImage.isEmpty()
             evt.icon     = main.getTheme().getIcon24(.Link)
 
-        case ActionFile.FileDetails:
+        case FileDetails:
             evt.setFlags |= .Name | .Disabled
             evt.name = "File Details"
             if main.libraryMode:
@@ -123,22 +123,22 @@ impl IActionUI for ActionFile
 
         switch cxt.id
         {
-        case ActionFile.NewImage:
+        case NewImage:
             main.newImage()
 
-        case ActionFile.NewFromClipboard:
+        case NewFromClipboard:
             main.newCapture(Clipboard.getImage())
 
-        case ActionFile.SaveAsImage:
+        case SaveAsImage:
             main.saveAsImage()
 
-        case ActionFile.SaveAsLinkedImage:
+        case SaveAsLinkedImage:
             main.saveAsImage(linked: true)
 
-        case ActionFile.OpenImage:
+        case OpenImage:
             main.openImage()
 
-        case ActionFile.UnlinkImage:
+        case UnlinkImage:
             let res = MessageDlg.confirm(main.surface, "This will remove the image association.")
             if res == MessageDlg.BtnYes
             {
@@ -149,7 +149,7 @@ impl IActionUI for ActionFile
                 main.recentWnd.updateRecent()
             }
 
-        case ActionFile.UpdateLinkedImage:
+        case UpdateLinkedImage:
             if capture.linkedImage.length == 0
             {
                 main.saveAsImage(linked: true)
@@ -183,7 +183,7 @@ impl IActionUI for ActionFile
             var img = capture.toImage()
             main.doSaveImage(capture, &img, capture.linkedImage)
 
-        case ActionFile.DeleteCapture:
+        case DeleteCapture:
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")
             if res == MessageDlg.BtnYes
             {
@@ -193,7 +193,7 @@ impl IActionUI for ActionFile
                     main.recentWnd.removeRecent()
             }
 
-        case ActionFile.DupCapture:
+        case DupCapture:
             Cursor.wait()
             catch capture.save()
 
@@ -211,13 +211,13 @@ impl IActionUI for ActionFile
             let dupCapture = trycatch main.recentWnd.addRecent(file, true, true)
             Memory.delete(dupCapture)
 
-        case ActionFile.CaptureFileLocation:
+        case CaptureFileLocation:
             Env.locateInExplorer(capture.file)
 
-        case ActionFile.LinkedFileLocation:
+        case LinkedFileLocation:
             Env.locateInExplorer(capture.linkedImage)
 
-        case ActionFile.FileDetails:
+        case FileDetails:
 
             func addLine(lt: *Wnd, title, val: string)
             {

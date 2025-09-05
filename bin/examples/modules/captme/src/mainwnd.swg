@@ -397,8 +397,8 @@ impl MainWnd
             .registerKeyShortcut(.Control, .V, ActionCopyPaste.Paste)
             .registerKeyShortcut(.Control, .Insert, ActionCopyPaste.Copy)
             .registerKeyShortcut(.Shift, .Insert, ActionCopyPaste.Paste)
-            .registerKeyShortcut(.Control, .Z, ActionUndo.Undo)
-            .registerKeyShortcut(.Control, .Y, ActionUndo.Redo)
+            .registerKeyShortcut(.Control, .Z, ActionUndo.DoUndo)
+            .registerKeyShortcut(.Control, .Y, ActionUndo.DoRedo)
             .registerKeyShortcut(.Zero, .Home, ActionMoveSel.SendToFront)
             .registerKeyShortcut(.Zero, .End, ActionMoveSel.SendToBack)
             .registerKeyShortcut(.Zero, .PageUp, ActionMoveSel.MoveForward)
@@ -531,8 +531,8 @@ impl MainWnd
 
         with let editMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(ActionUndo.Undo)
-            .addItem(ActionUndo.Redo)
+            .addItem(ActionUndo.DoUndo)
+            .addItem(ActionUndo.DoRedo)
             .addSeparator()
             .addItem(ActionCopyPaste.Copy)
             .addItem(ActionCopyPaste.Cut)
@@ -617,16 +617,16 @@ impl MainWnd
         me.createBtn(ActionToolMode.Shape)
         me.createBtn(ActionToolMode.Arrow)
         me.createBtn(ActionToolMode.Line)
-        me.createBtn(ActionToolMode.Polygon)
+        me.createBtn(ActionToolMode.Poly)
         me.createBtn(ActionToolMode.Text)
         me.createBtn(ActionToolMode.Draw)
         me.createBtn(ActionToolMode.Highlight)
         me.createBtn(ActionToolMode.Step)
-        me.createBtn(ActionToolMode.Image)
+        me.createBtn(ActionToolMode.Img)
         me.createBtn(ActionToolMode.PixSel)
 
         me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
-        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.Library)
+        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
     }
 
     mtd setTopBarHeight()

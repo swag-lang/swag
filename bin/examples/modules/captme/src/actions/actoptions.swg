@@ -13,7 +13,7 @@ impl IActionUI for ActionOptions
     {
         switch cxt.id
         {
-        case ActionOptions.Options:
+        case Options:
             return true
         }
 
@@ -26,7 +26,7 @@ impl IActionUI for ActionOptions
 
         switch cxt.id
         {
-        case ActionOptions.Options:
+        case Options:
             evt.setFlags |= .Name | .Icon
             evt.name = "Options..."
             evt.icon = main.getTheme().getIcon24(.Options)

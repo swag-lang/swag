@@ -19,10 +19,10 @@ impl IActionUI for ActionImage
     {
         switch cxt.id
         {
-        case ActionImage.TrimCapture, ActionImage.ResizeImage, ActionImage.ExpandImage,
-             ActionImage.ExpandCapture, ActionImage.RestoreOrg,
-             ActionImage.FlipImage, ActionImage.MirrorImage,
-             ActionImage.RotateImageRight, ActionImage.RotateImageLeft:
+        case TrimCapture, ResizeImage, ExpandImage,
+             ExpandCapture, RestoreOrg,
+             FlipImage, MirrorImage,
+             RotateImageRight, RotateImageLeft:
             return true
         }
 
@@ -36,47 +36,47 @@ impl IActionUI for ActionImage
 
         switch cxt.id
         {
-        case ActionImage.ResizeImage:
+        case ResizeImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Resize Image..."
             evt.disabled = !capture
 
-        case ActionImage.ExpandImage:
+        case ExpandImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Expand Image..."
             evt.disabled = !capture
 
-        case ActionImage.ExpandCapture:
+        case ExpandCapture:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Expand Capture..."
             evt.disabled = !capture
 
-        case ActionImage.TrimCapture:
+        case TrimCapture:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Trim Capture"
             evt.disabled = !capture
 
-        case ActionImage.RestoreOrg:
+        case RestoreOrg:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Restore to Original"
             evt.disabled = !capture or !capture.backImgOriginal.isValid()
 
-        case ActionImage.FlipImage:
+        case FlipImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Flip Image"
             evt.disabled = !capture
 
-        case ActionImage.MirrorImage:
+        case MirrorImage:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Mirror Image"
             evt.disabled = !capture
 
-        case ActionImage.RotateImageRight:
+        case RotateImageRight:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Rotate Image Right"
             evt.disabled = !capture
 
-        case ActionImage.RotateImageLeft:
+        case RotateImageLeft:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Rotate Image Left"
             evt.disabled = !capture
@@ -95,27 +95,27 @@ impl IActionUI for ActionImage
 
         switch cxt.id
         {
-        case ActionImage.ResizeImage:
+        case ResizeImage:
             main.resizeImage()
-        case ActionImage.ExpandImage:
+        case ExpandImage:
             main.expandImage()
 
-        case ActionImage.FlipImage:
-            main.doProcessImage(ActionImage.FlipImage)
-        case ActionImage.MirrorImage:
-            main.doProcessImage(ActionImage.MirrorImage)
+        case FlipImage:
+            main.doProcessImage(FlipImage)
+        case MirrorImage:
+            main.doProcessImage(MirrorImage)
 
-        case ActionImage.RotateImageRight:
-            main.doProcessImage(ActionImage.RotateImageRight)
-        case ActionImage.RotateImageLeft:
-            main.doProcessImage(ActionImage.RotateImageLeft)
+        case RotateImageRight:
+            main.doProcessImage(RotateImageRight)
+        case RotateImageLeft:
+            main.doProcessImage(RotateImageLeft)
 
-        case ActionImage.ExpandCapture:
+        case ExpandCapture:
             main.expandCapture()
-        case ActionImage.TrimCapture:
+        case TrimCapture:
             main.trimCapture()
 
-        case ActionImage.RestoreOrg:
+        case RestoreOrg:
             let undo = capture.newUndo(.RestoreOrg)
             capture.pushUndo(undo)
             main.invalidate()

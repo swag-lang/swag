@@ -4,8 +4,8 @@ struct ActionUndo {}
 
 impl ActionUndo
 {
-    newCmdId("Undo")
-    newCmdId("Redo")
+    newCmdId("DoUndo")
+    newCmdId("DoRedo")
 }
 
 impl IActionUI for ActionUndo
@@ -14,7 +14,7 @@ impl IActionUI for ActionUndo
     {
         switch cxt.id
         {
-        case ActionUndo.Undo, ActionUndo.Redo:
+        case DoUndo, DoRedo:
             return true
         }
 
@@ -28,13 +28,13 @@ impl IActionUI for ActionUndo
 
         switch cxt.id
         {
-        case ActionUndo.Undo:
+        case DoUndo:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.name     = "Undo"
             evt.disabled = !capture or !capture.canUndo()
             evt.icon     = main.getTheme().getIcon24(.Undo)
 
-        case ActionUndo.Redo:
+        case DoRedo:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.name     = "Redo"
             evt.disabled = !capture or !capture.canRedo()
@@ -51,9 +51,9 @@ impl IActionUI for ActionUndo
 
         switch cxt.id
         {
-        case ActionUndo.Undo:
+        case DoUndo:
             capture.undo()
-        case ActionUndo.Redo:
+        case DoRedo:
             capture.redo()
         }
 

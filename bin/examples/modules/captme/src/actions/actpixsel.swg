@@ -14,7 +14,7 @@ impl IActionUI for ActionPixSel
     {
         switch cxt.id
         {
-        case ActionPixSel.Clear, ActionPixSel.Fill, ActionPixSel.SmartFill, ActionPixSel.SmartMove:
+        case Clear, Fill, SmartFill, SmartMove:
             return true
         }
 
@@ -41,25 +41,25 @@ impl IActionUI for ActionPixSel
 
         switch cxt.id
         {
-        case ActionPixSel.Clear:
+        case Clear:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Clear"
             evt.disabled = !capture or !hasPixSel
             evt.hidden   = evt.disabled
 
-        case ActionPixSel.Fill:
+        case Fill:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Fill"
             evt.disabled = !capture or !hasPixSel
             evt.hidden   = evt.disabled
 
-        case ActionPixSel.SmartFill:
+        case SmartFill:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Smart Fill"
             evt.disabled = !capture or !hasPixSel
             evt.hidden   = evt.disabled
 
-        case ActionPixSel.SmartMove:
+        case SmartMove:
             evt.setFlags |= .Name | .Disabled | .Hidden
             evt.name     = "Smart Move"
             evt.disabled = !capture or !hasPixSel
@@ -75,13 +75,13 @@ impl IActionUI for ActionPixSel
 
         switch cxt.id
         {
-        case ActionPixSel.Clear:
+        case Clear:
             main.pixSelClear()
-        case ActionPixSel.Fill:
+        case Fill:
             main.pixSelFill()
-        case ActionPixSel.SmartFill:
+        case SmartFill:
             main.pixSelSmartFill()
-        case ActionPixSel.SmartMove:
+        case SmartMove:
             main.pixSelSmartMove()
         }
 

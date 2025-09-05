@@ -16,7 +16,7 @@ impl IActionUI for ActionZoom
     {
         switch cxt.id
         {
-        case ActionZoom.Zoom1, ActionZoom.ZoomFit, ActionZoom.ZoomIn, ActionZoom.ZoomOut:
+        case Zoom1, ZoomFit, ZoomIn, ZoomOut:
             return true
         }
 
@@ -30,23 +30,23 @@ impl IActionUI for ActionZoom
 
         switch cxt.id
         {
-        case ActionZoom.Zoom1:
+        case Zoom1:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Actual Size"
             evt.disabled = !capture
 
-        case ActionZoom.ZoomFit:
+        case ZoomFit:
             evt.setFlags |= .Name | .Disabled
             evt.name     = "Fit To View"
             evt.disabled = !capture
 
-        case ActionZoom.ZoomIn:
+        case ZoomIn:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom In"
             evt.disabled = !capture or !main.editWnd.editView.canZoomIn()
             evt.icon     = main.getTheme().getIcon24(.ZoomIn)
 
-        case ActionZoom.ZoomOut:
+        case ZoomOut:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name     = "Zoom Out"
             evt.disabled = !capture or !main.editWnd.editView.canZoomOut()
@@ -63,16 +63,16 @@ impl IActionUI for ActionZoom
 
         switch cxt.id
         {
-        case ActionZoom.Zoom1:
+        case Zoom1:
             view.setZoom(1)
 
-        case ActionZoom.ZoomFit:
+        case ZoomFit:
             view.zoomToFit()
 
-        case ActionZoom.ZoomIn:
+        case ZoomIn:
             view.zoomIn()
 
-        case ActionZoom.ZoomOut:
+        case ZoomOut:
             view.zoomOut()
         }
 
