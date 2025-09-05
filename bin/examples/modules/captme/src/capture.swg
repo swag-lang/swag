@@ -913,7 +913,7 @@ impl Capture
                 switch t
                 {
                 case FormText:
-                    .addItem(ActionEdit.Text)
+                    .addItem(ActionEdit.EditText)
                     .addSeparator()
                 }
             }

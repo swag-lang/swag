@@ -4,7 +4,7 @@ struct ActionEdit {}
 
 impl ActionEdit
 {
-    newCmdId("Text")
+    newCmdId("EditText")
     newCmdId("ClearImageInside")
 }
 
@@ -14,7 +14,7 @@ impl IActionUI for ActionEdit
     {
         switch cxt.id
         {
-        case Text, ClearImageInside:
+        case EditText, ClearImageInside:
             return true
         }
 
@@ -39,7 +39,7 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case Text:
+        case EditText:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
             evt.name     = "Edit"
@@ -79,7 +79,7 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case Text:
+        case EditText:
             let lastSel = cast(*FormText) @dataof(capture.forms[capture.selection.back()])
             discard PropWnd.editText(main, lastSel.text)
             capture.selectionHasChanged()

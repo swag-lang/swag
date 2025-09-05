@@ -429,7 +429,7 @@ impl MainWnd
             .registerKeyShortcut(.Zero, .Right, ActionAlign.Right)
             .registerKeyShortcut(.Zero, .Down, ActionAlign.Bottom)
             .registerKeyShortcut(.CtrlAlt, .O, ActionOptions.Options)
-            .registerKeyShortcut(.Zero, .F2, ActionEdit.Text)
+            .registerKeyShortcut(.Zero, .F2, ActionEdit.EditText)
         }
 
         var errorReg = false
