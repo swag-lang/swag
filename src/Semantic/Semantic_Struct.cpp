@@ -120,6 +120,7 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     return true;
 }
 
+#pragma optimize("", off)
 bool Semantic::resolveImplFor(SemanticContext* context)
 {
     const auto node = castAst<AstImpl>(context->node, AstNodeKind::Impl);
@@ -260,21 +261,22 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         BadSignatureInfos bi;
         const auto        typeLambda = castTypeInfo<TypeInfoFuncAttr>(itfSymbol->typeInfo, TypeInfoKind::LambdaClosure);
         const auto        typeFunc   = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
+        const auto        nodeLambda = castAst<AstTypeExpression>(typeLambda->declNode, AstNodeKind::TypeLambda);
         if (!typeLambda->isSame(typeFunc, CAST_FLAG_EXACT | CAST_FLAG_INTERFACE, bi))
         {
             switch (bi.matchResult)
             {
                 case MatchResult::BadSignature:
                 {
-                    Diagnostic err{childFct, childFct->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{childFct, childFct->getTokenName(), formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
                     err.addNote(childFct->parameters->children[bi.badSignatureNum2], form("parameter mismatch (type is [[%s]])", childFct->parameters->children[bi.badSignatureNum2]->typeInfo->getDisplayNameC()));
-                    err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, form("the parameter should conform to the type [[%s]]", typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
+                    err.addNote(typeLambda->parameters[bi.badSignatureNum1]->declNode, form("the parameter should have type [[%s]]", typeLambda->parameters[bi.badSignatureNum1]->typeInfo->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::MissingReturnType:
                 {
-                    Diagnostic err{child, child->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{child, child->getTokenName(), formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
                     err.hint = "a return type is missing";
                     err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, form("the interface declaration returns type [[%s]]", typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
@@ -282,22 +284,21 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
                 case MatchResult::NoReturnType:
                 {
-                    Diagnostic err{childFct->returnType, formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{childFct->returnType, formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
                     err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, "the interface declaration yields no return");
                     return context->report(err);
                 }
 
                 case MatchResult::MismatchReturnType:
                 {
-                    Diagnostic err{childFct->returnType, formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
-                    err.hint = Diagnostic::isType(childFct->returnType->typeInfo);
-                    err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, form("the interface declaration returns type [[%s]]", typeLambda->returnType->getDisplayNameC()));
+                    Diagnostic err{childFct->returnType, formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
+                    err.addNote(nodeLambda->returnType, form("the expected return type is [[%s]]", typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
                 }
 
                 case MatchResult::MismatchThrow:
                 {
-                    Diagnostic err{child, child->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{child, child->getTokenName(), formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
                     err.hint          = "one function declares [[throw]], while the other does not";
                     const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), "this is the expected signature");
                     note->canBeMerged = false;
@@ -307,7 +308,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
 
                 default:
                 {
-                    Diagnostic err{child, child->getTokenName(), formErr(Err0299, child->token.cstr(), typeBaseInterface->name.cstr())};
+                    Diagnostic err{child, child->getTokenName(), formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
                     const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), "this is the expected signature");
                     note->canBeMerged = false;
                     err.addNote(note);
@@ -321,7 +322,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
         mapItIdxToFunc[itfSymbol->index] = castAst<AstFuncDecl>(child);
     }
 
-    // If structure is generic, then do nothing, we cannot solve
+    // If the structure is generic, then do nothing; we cannot solve
     if (typeInfo->isGeneric())
     {
         decreaseInterfaceCount(typeStruct);

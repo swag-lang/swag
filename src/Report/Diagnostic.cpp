@@ -10,6 +10,7 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 #include <winternl.h>
+#pragma optimize("", off)
 
 constexpr int MAX_INDENT_BLANKS = 10;
 
@@ -1052,8 +1053,9 @@ void Diagnostic::printRanges(Log* log)
                 curColumn = minBlanks;
             }
 
-            if (mid - 2 - unFormatLen > -4)
-                alignRangeColumn(log, curColumn, curColumn + 4);
+            const int dec = (mid + 4) - (curColumn + unFormatLen);
+            if (dec > 0)
+                alignRangeColumn(log, curColumn, curColumn + dec);
 
             printLastRangeHint(log, curColumn);
         }
