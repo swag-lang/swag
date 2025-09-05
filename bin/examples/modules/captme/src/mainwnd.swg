@@ -612,18 +612,21 @@ impl MainWnd
             .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
         }
 
-        me.createBtn(ActionToolMode.Favorites)
-        me.createBtn(ActionToolMode.Selection)
-        me.createBtn(ActionToolMode.Shape)
-        me.createBtn(ActionToolMode.Arrow)
-        me.createBtn(ActionToolMode.Line)
-        me.createBtn(ActionToolMode.Poly)
-        me.createBtn(ActionToolMode.Text)
-        me.createBtn(ActionToolMode.Draw)
-        me.createBtn(ActionToolMode.Highlight)
-        me.createBtn(ActionToolMode.Step)
-        me.createBtn(ActionToolMode.Img)
-        me.createBtn(ActionToolMode.PixSel)
+        with me
+        {
+            .createBtn(ActionToolMode.Favorites)
+            .createBtn(ActionToolMode.Selection)
+            .createBtn(ActionToolMode.Shape)
+            .createBtn(ActionToolMode.Arrow)
+            .createBtn(ActionToolMode.Line)
+            .createBtn(ActionToolMode.Poly)
+            .createBtn(ActionToolMode.Text)
+            .createBtn(ActionToolMode.Draw)
+            .createBtn(ActionToolMode.Highlight)
+            .createBtn(ActionToolMode.Step)
+            .createBtn(ActionToolMode.Img)
+            .createBtn(ActionToolMode.PixSel)
+        }
 
         me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
         me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
@@ -751,12 +754,16 @@ impl MainWnd
             .main = res
         }
 
-        var item = res.quickStyleBar.addPane(res.quickWnd, title: true)
-        item.tryPreserveSize = true
-        item.label.setText("Quick Styles")
+        with let quickPane = res.quickStyleBar.addPane(res.quickWnd, title: true)
+        {
+            .tryPreserveSize = true
+            .label.setText("Quick Styles")
+        }
 
-        item = res.quickStyleBar.addPane(res.propWnd, title: true)
-        item.label.setText("Tool Properties")
+        with let quickStyle = res.quickStyleBar.addPane(res.propWnd, title: true)
+        {
+            .label.setText("Tool Properties")
+        }
 
         res.quickStyleBar.setPaneSize(0, 300)
 
