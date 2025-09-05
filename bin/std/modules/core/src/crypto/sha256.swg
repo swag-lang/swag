@@ -51,14 +51,17 @@ impl Sha256
             i += 1
         }
 
-        var a = me.state[0]
-        var b = me.state[1]
-        var c = me.state[2]
-        var d = me.state[3]
-        var e = me.state[4]
-        var f = me.state[5]
-        var g = me.state[6]
-        var h = me.state[7]
+        with me
+        {
+            var a = .state[0]
+            var b = .state[1]
+            var c = .state[2]
+            var d = .state[3]
+            var e = .state[4]
+            var f = .state[5]
+            var g = .state[6]
+            var h = .state[7]
+        }
 
         i = 0
         while i < 64
@@ -76,14 +79,17 @@ impl Sha256
             i += 1
         }
 
-        me.state[0] += a
-        me.state[1] += b
-        me.state[2] += c
-        me.state[3] += d
-        me.state[4] += e
-        me.state[5] += f
-        me.state[6] += g
-        me.state[7] += h
+        with me
+        {
+            .state[0] += a
+            .state[1] += b
+            .state[2] += c
+            .state[3] += d
+            .state[4] += e
+            .state[5] += f
+            .state[6] += g
+            .state[7] += h
+        }
     }
 }
 
@@ -118,16 +124,19 @@ public impl Sha256
             me.transform(me.data)
         }
 
-        me.bitlen += me.datalen * 8
-        me.data[63] = cast #bit (u8) me.bitlen
-        me.data[62] = cast #bit (u8) (me.bitlen >> 8)
-        me.data[61] = cast #bit (u8) (me.bitlen >> 16)
-        me.data[60] = cast #bit (u8) (me.bitlen >> 24)
-        me.data[59] = cast #bit (u8) (me.bitlen >> 32)
-        me.data[58] = cast #bit (u8) (me.bitlen >> 40)
-        me.data[57] = cast #bit (u8) (me.bitlen >> 48)
-        me.data[56] = cast #bit (u8) (me.bitlen >> 56)
-        me.transform(me.data)
+        with me
+        {
+            .bitlen += .datalen * 8
+            .data[63] = cast #bit (u8) .bitlen
+            .data[62] = cast #bit (u8) (.bitlen >> 8)
+            .data[61] = cast #bit (u8) (.bitlen >> 16)
+            .data[60] = cast #bit (u8) (.bitlen >> 24)
+            .data[59] = cast #bit (u8) (.bitlen >> 32)
+            .data[58] = cast #bit (u8) (.bitlen >> 40)
+            .data[57] = cast #bit (u8) (.bitlen >> 48)
+            .data[56] = cast #bit (u8) (.bitlen >> 56)
+            .transform(.data)
+        }
 
         Memory.copy(result, &me.state[0], #sizeof(me.state))
     }
@@ -136,14 +145,17 @@ public impl Sha256
     mtd init()
     {
         @init(me, 1)
-        me.state[0] = 0x6a09e667
-        me.state[1] = 0xbb67ae85
-        me.state[2] = 0x3c6ef372
-        me.state[3] = 0xa54ff53a
-        me.state[4] = 0x510e527f
-        me.state[5] = 0x9b05688c
-        me.state[6] = 0x1f83d9ab
-        me.state[7] = 0x5be0cd19
+        with me
+        {
+            .state[0] = 0x6a09e667
+            .state[1] = 0xbb67ae85
+            .state[2] = 0x3c6ef372
+            .state[3] = 0xa54ff53a
+            .state[4] = 0x510e527f
+            .state[5] = 0x9b05688c
+            .state[6] = 0x1f83d9ab
+            .state[7] = 0x5be0cd19
+        }
     }
 
     // Update the hash value with 'buffer' content
