@@ -1,5 +1,8 @@
 struct ActionImage {}
 
+var g_KeepRatio: bool = true
+var g_ResizeMode: u64 = 5
+
 impl ActionImage
 {
     newCmdId("TrimCapture")
@@ -178,9 +181,6 @@ impl MainWnd
 
     mtd resizeImage()
     {
-        #[Swag.Global]
-        var g_KeepRatio: bool = true
-
         let capture = assume me.getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
@@ -230,45 +230,8 @@ impl MainWnd
         me.doProcessImage(ActionImage.ResizeImage, w: w, h: h)
     }
 
-    mtd expandImage()
+    func createBtnGrid(dlg: *Wnd)
     {
-        #[Swag.Global]
-        var g_KeepRatio: bool = true
-        #[Swag.Global]
-        var g_ResizeMode: u64 = 5
-
-        let capture = assume me.getCapture()
-        let ratio   = cast(f32) capture.width / capture.height
-
-        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Expand Image")
-        dlg.addButton("Resize", Dialog.BtnOk, true)
-        dlg.addButton("Cancel", Dialog.BtnCancel)
-        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.backImg.width), {30, 15}, flags: .RightAlign)
-        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.backImg.height), {30, 50}, flags: .RightAlign)
-        edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
-        edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
-        let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
-        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
-
-        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
-        {
-            if btnRatio.checked == .Checked
-            {
-                let w = trycatch StrConv.toS32(edt.text)
-                let h = Math.max(1, cast(s32) (w / ratio))
-                edit1.edit.setTextSilent(Format.toString("%", h))
-            }
-        }
-        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
-        {
-            if btnRatio.checked == .Checked
-            {
-                let h = trycatch StrConv.toS32(edt.text)
-                let w = Math.max(1, cast(s32) (h * ratio))
-                edit0.edit.setTextSilent(Format.toString("%", w))
-            }
-        }
-
         func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
         {
             let btn = CheckButton.create(dlg, " ", pos)
@@ -301,6 +264,43 @@ impl MainWnd
         createBtn(dlg, {X, Y + S + O + S + O, S, S}, 7)
         createBtn(dlg, {X + S + O, Y + S + O + S + O, S, S}, 8)
         createBtn(dlg, {X + S + O + S + O, Y + S + O + S + O, S, S}, 9)
+    }
+
+    mtd expandImage()
+    {
+        let capture = assume me.getCapture()
+        let ratio   = cast(f32) capture.width / capture.height
+
+        let dlg = Dialog.createDialog(me.surface, 350, 265, title: "Expand Image")
+        dlg.addButton("Resize", Dialog.BtnOk, true)
+        dlg.addButton("Cancel", Dialog.BtnCancel)
+        let edit0 = EditCtrl.create(dlg, "Width", Format.toString("%", capture.backImg.width), {30, 15}, flags: .RightAlign)
+        let edit1 = EditCtrl.create(dlg, "Height", Format.toString("%", capture.backImg.height), {30, 50}, flags: .RightAlign)
+        edit0.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+        edit1.edit.setInputU64(cast() Capture.MinSize, cast() Capture.MaxSize)
+        let btnRatio = CheckButton.create(dlg, "Keep Ratio", {70, 85})
+        btnRatio.checked = g_KeepRatio ? .Checked : .UnChecked
+
+        edit0.edit.sigChanged += func|ratio, btnRatio, edit1|(edt)
+        {
+            if btnRatio.checked == .Checked
+            {
+                let w = trycatch StrConv.toS32(edt.text)
+                let h = Math.max(1, cast(s32) (w / ratio))
+                edit1.edit.setTextSilent(Format.toString("%", h))
+            }
+        }
+        edit1.edit.sigChanged += func|ratio, btnRatio, edit0|(edt)
+        {
+            if btnRatio.checked == .Checked
+            {
+                let h = trycatch StrConv.toS32(edt.text)
+                let w = Math.max(1, cast(s32) (h * ratio))
+                edit0.edit.setTextSilent(Format.toString("%", w))
+            }
+        }
+
+        createBtnGrid(dlg)
 
         let res = dlg.doModal()
 
@@ -359,11 +359,6 @@ impl MainWnd
 
     mtd expandCapture()
     {
-        #[Swag.Global]
-        var g_KeepRatio: bool = true
-        #[Swag.Global]
-        var g_ResizeMode: u64 = 5
-
         let capture = assume me.getCapture()
         let ratio   = cast(f32) capture.width / capture.height
 
@@ -396,38 +391,7 @@ impl MainWnd
             }
         }
 
-        func createBtn(dlg: *Wnd, pos: Math.Rectangle, id: u64)
-        {
-            let btn = CheckButton.create(dlg, " ", pos)
-            btn.checked  = g_ResizeMode == id ? .Undefined : .UnChecked
-            btn.userData = cast(*void) id
-            btn.sigChanged += func(btn)
-            {
-                foreach c in btn.parent.childs
-                {
-                    if c.userData
-                    {
-                        let btnc = cast(*CheckButton) c
-                        btnc.checked = c != btn ? .UnChecked : .Undefined
-                        btnc.invalidate()
-                    }
-                }
-            }
-        }
-
-        const X = 175
-        const Y = 15
-        const S = 20
-        const O = 4
-        createBtn(dlg, {X, Y, S, S}, 1)
-        createBtn(dlg, {X + S + O, Y, S, S}, 2)
-        createBtn(dlg, {X + S + O + S + O, Y, S, S}, 3)
-        createBtn(dlg, {X, Y + S + O, S, S}, 4)
-        createBtn(dlg, {X + S + O, Y + S + O, S, S}, 5)
-        createBtn(dlg, {X + S + O + S + O, Y + S + O, S, S}, 6)
-        createBtn(dlg, {X, Y + S + O + S + O, S, S}, 7)
-        createBtn(dlg, {X + S + O, Y + S + O + S + O, S, S}, 8)
-        createBtn(dlg, {X + S + O + S + O, Y + S + O + S + O, S, S}, 9)
+        createBtnGrid(dlg)
 
         let res = dlg.doModal()
 
