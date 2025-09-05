@@ -406,6 +406,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("#module", TokenId::CompilerModule);
     keywords.add("#file", TokenId::CompilerFile);
     keywords.add("#line", TokenId::CompilerLine);
+    keywords.add("#scopename", TokenId::CompilerScopeName);
     keywords.add("#curlocation", TokenId::CompilerCurLocation);
     keywords.add("#callerlocation", TokenId::CompilerCallerLocation);
     keywords.add("#callerfunction", TokenId::CompilerCallerFunction);

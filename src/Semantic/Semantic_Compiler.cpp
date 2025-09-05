@@ -359,7 +359,7 @@ bool Semantic::resolveCompilerAstExpression(SemanticContext* context)
             child->setOwnerAttrUseFrom(node);
             job->nodes.push_back(child);
         }
-        
+
         job->nodes.push_back(node);
     }
 
@@ -1315,5 +1315,14 @@ bool Semantic::resolveCompilerOffsetOf(SemanticContext* context)
         node->typeInfo = g_TypeMgr->typeInfoU64;
     else
         node->typeInfo = g_TypeMgr->typeInfoUntypedInt;
+    return true;
+}
+
+bool Semantic::resolveCompilerScopeName(SemanticContext* context)
+{
+    const auto node = context->node;
+    node->setFlagsValueIsComputed();
+    node->computedValue()->text = node->ownerScope->getFullName();
+    node->typeInfo              = g_TypeMgr->typeInfoString;
     return true;
 }

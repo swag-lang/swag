@@ -317,6 +317,7 @@ namespace Semantic
     bool resolveCompilerSizeOf(SemanticContext* context);
     bool resolveCompilerAlignOf(SemanticContext* context);
     bool resolveCompilerOffsetOf(SemanticContext* context);
+    bool resolveCompilerScopeName(SemanticContext* context);
     bool resolveWhereVerifyConstraint(SemanticContext* context);
     bool resolveConditionalOp(SemanticContext* context);
     bool resolveContinue(SemanticContext* context);

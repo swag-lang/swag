@@ -257,6 +257,15 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             SWAG_CHECK(doParenthesisExpression(parent, exprFlags, result));
             break;
 
+        case TokenId::CompilerScopeName:
+        {
+            const auto node   = Ast::newNode<AstNode>(AstNodeKind::CompilerScopeName, nullptr, parent);
+            node->semanticFct = Semantic::resolveCompilerScopeName;
+            *result           = node;
+            SWAG_CHECK(eatToken());
+            break;
+        }
+
         case TokenId::KwdTrue:
         case TokenId::KwdFalse:
         case TokenId::KwdNull:

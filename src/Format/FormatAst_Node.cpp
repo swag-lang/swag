@@ -55,6 +55,10 @@ bool FormatAst::outputNode(FormatContext& context, AstNode* node)
             forceEOL = true;
             break;
 
+        case AstNodeKind::CompilerScopeName:
+            concat->addString("#scopename");
+            break;
+            
         case AstNodeKind::CompilerInclude:
         case AstNodeKind::CompilerDefined:
         case AstNodeKind::CompilerLocation:
