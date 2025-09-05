@@ -855,7 +855,8 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
                 err.addNote(form("consider removing [[%s]], or replacing it with the scope [[%s]]", prev->token.cstr(), identifierRef->previousScope->name.cstr()));
             }
 
-            return context->report(err, Diagnostic::hereIs(funcDecl));
+            err.addNote(Diagnostic::hereIs(funcDecl));
+            return context->report(err);
         }
     }
 
