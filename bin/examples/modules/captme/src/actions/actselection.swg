@@ -19,8 +19,7 @@ impl IActionUI for ActionSelection
     {
         switch cxt.id
         {
-        case ActionSelection.SelectAll, ActionSelection.SelectSameAll, ActionSelection.DeSelectAll,
-             ActionSelection.InvertSelection, ActionSelection.DeleteSelection, ActionSelection.Snap, ActionSelection.Freeze:
+        case SelectAll, SelectSameAll, DeSelectAll, InvertSelection, DeleteSelection, Snap, Freeze:
             return true
         }
 
@@ -36,38 +35,38 @@ impl IActionUI for ActionSelection
 
         switch cxt.id
         {
-        case ActionSelection.SelectAll:
+        case SelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count or isLib
             evt.name     = "Select All Objects"
 
-        case ActionSelection.SelectSameAll:
+        case SelectSameAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !capture.forms.count or !hasSel or isLib
             evt.name     = "Select Similar Objects"
 
-        case ActionSelection.DeSelectAll:
+        case DeSelectAll:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or !hasSel or isLib
             evt.name     = "Deselect All Objects"
 
-        case ActionSelection.InvertSelection:
+        case InvertSelection:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !capture or isLib
             evt.name     = "Invert Selection"
 
-        case ActionSelection.DeleteSelection:
+        case DeleteSelection:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Delete"
             evt.icon     = main.getTheme().getIcon24(.Remove)
 
-        case ActionSelection.Snap:
+        case Snap:
             evt.setFlags |= .Name | .Checked
             evt.name    = "Snap To Forms"
             evt.checked = main.snap
 
-        case ActionSelection.Freeze:
+        case Freeze:
             evt.setFlags |= .Name | .Checked | .Name
             evt.name    = "Freeze Selection"
             evt.checked = main.freezeSel
@@ -83,13 +82,13 @@ impl IActionUI for ActionSelection
 
         switch cxt.id
         {
-        case ActionSelection.SelectAll:
+        case SelectAll:
             capture.selection.clear()
             for i in capture.forms:
                 capture.selection.add(i)
             capture.selectionHasChanged()
 
-        case ActionSelection.SelectSameAll:
+        case SelectSameAll:
             let firstType = capture.getSelectedFormType()
             capture.selection.clear()
             foreach form, i in capture.forms
@@ -100,24 +99,24 @@ impl IActionUI for ActionSelection
 
             capture.selectionHasChanged()
 
-        case ActionSelection.DeSelectAll:
+        case DeSelectAll:
             capture.selection.clear()
             capture.selectionHasChanged()
 
-        case ActionSelection.InvertSelection:
+        case InvertSelection:
             var newSel: Array'u64
             for i in capture.forms where !capture.selection.contains(i):
                 newSel.add(i)
             capture.selection = newSel
             capture.selectionHasChanged()
 
-        case ActionSelection.DeleteSelection:
+        case DeleteSelection:
             capture.pushUndo(capture.newUndo(.DeleteSelection))
 
-        case ActionSelection.Snap:
+        case Snap:
             main.snap = !main.snap
 
-        case ActionSelection.Freeze:
+        case Freeze:
             main.freezeSelection(!main.freezeSel)
         }
 

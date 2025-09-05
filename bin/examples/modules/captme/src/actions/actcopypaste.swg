@@ -17,8 +17,8 @@ impl IActionUI for ActionCopyPaste
     {
         switch cxt.id
         {
-        case ActionCopyPaste.Copy, ActionCopyPaste.Cut, ActionCopyPaste.Paste, ActionCopyPaste.PasteImageInside,
-             ActionCopyPaste.CopyAsImage:
+        case Copy, Cut, Paste, PasteImageInside,
+             CopyAsImage:
             return true
         }
 
@@ -33,19 +33,19 @@ impl IActionUI for ActionCopyPaste
 
         switch cxt.id
         {
-        case ActionCopyPaste.Copy:
+        case Copy:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Copy"
             evt.icon     = main.getTheme().getIcon24(.Copy)
 
-        case ActionCopyPaste.Cut:
+        case Cut:
             evt.setFlags |= .Disabled | .Name | .Icon
             evt.disabled = !hasSel
             evt.name     = "Cut"
             evt.icon     = main.getTheme().getIcon24(.Cut)
 
-        case ActionCopyPaste.Paste:
+        case Paste:
             evt.setFlags |= .Disabled | .Name | .Icon
             if !capture:
                 evt.disabled = true
@@ -54,7 +54,7 @@ impl IActionUI for ActionCopyPaste
             evt.name = "Paste"
             evt.icon = main.getTheme().getIcon24(.Paste)
 
-        case ActionCopyPaste.PasteImageInside:
+        case PasteImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
             evt.disabled, evt.hidden = true
             evt.name = "Paste Inside Image"
@@ -79,7 +79,7 @@ impl IActionUI for ActionCopyPaste
                 }
             }
 
-        case ActionCopyPaste.CopyAsImage:
+        case CopyAsImage:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = capture == null
             evt.name     = "Copy Image to Clipboard"
@@ -95,15 +95,15 @@ impl IActionUI for ActionCopyPaste
 
         switch cxt.id
         {
-        case ActionCopyPaste.Copy:
+        case Copy:
             capture.copy()
-        case ActionCopyPaste.Cut:
+        case Cut:
             capture.cut()
-        case ActionCopyPaste.Paste:
+        case Paste:
             capture.paste()
-        case ActionCopyPaste.PasteImageInside:
+        case PasteImageInside:
             capture.pasteImageInside()
-        case ActionCopyPaste.CopyAsImage:
+        case CopyAsImage:
             capture.copyAll()
         }
 

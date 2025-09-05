@@ -25,7 +25,7 @@ impl IActionUI for ActionAbout
         let main = cast(*MainWnd) cxt.wnd
         switch cxt.id
         {
-        case ActionAbout.About:
+        case About:
             evt.setFlags |= .Name | .Icon
             evt.name = "About..."
             evt.icon = main.getTheme().getIcon24(.About)

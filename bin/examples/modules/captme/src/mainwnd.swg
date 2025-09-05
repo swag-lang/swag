@@ -625,7 +625,7 @@ impl MainWnd
         me.createBtn(ActionToolMode.Image)
         me.createBtn(ActionToolMode.PixSel)
 
-        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.Capture)
+        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
         me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.Library)
     }
 
