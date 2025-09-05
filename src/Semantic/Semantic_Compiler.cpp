@@ -1318,6 +1318,7 @@ bool Semantic::resolveCompilerOffsetOf(SemanticContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool Semantic::resolveCompilerScopeName(SemanticContext* context)
 {
     const auto node = context->node;
