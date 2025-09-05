@@ -14,7 +14,7 @@ impl IActionUI for ActionEdit
     {
         switch cxt.id
         {
-        case ActionEdit.Text, ActionEdit.ClearImageInside:
+        case Text, ClearImageInside:
             return true
         }
 
@@ -39,12 +39,12 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case ActionEdit.Text:
+        case Text:
             evt.setFlags |= .Disabled | .Name
             evt.disabled = !hasSel or !lastSelType or lastSelType != FormText
             evt.name     = "Edit"
 
-        case ActionEdit.ClearImageInside:
+        case ClearImageInside:
             evt.setFlags |= .Disabled | .Name | .Hidden
             evt.disabled, evt.hidden = true
             evt.name = "Clear Inside Image"
@@ -79,12 +79,12 @@ impl IActionUI for ActionEdit
 
         switch cxt.id
         {
-        case ActionEdit.Text:
+        case Text:
             let lastSel = cast(*FormText) @dataof(capture.forms[capture.selection.back()])
             discard PropWnd.editText(main, lastSel.text)
             capture.selectionHasChanged()
 
-        case ActionEdit.ClearImageInside:
+        case ClearImageInside:
             capture.clearImageInside()
         }
 
