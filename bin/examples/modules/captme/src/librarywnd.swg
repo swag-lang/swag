@@ -314,6 +314,13 @@ impl LibraryWnd
         scrollWnd.setView(view)
         res.view = view
 
+        // Top bar list
+        with let barList = StackLayoutCtrl.create(rightBar, .HorzCenter, {0, 0, 300, 32})
+        {
+            .dockStyle       = .Top
+            .backgroundStyle = .Window
+        }
+
         with let list = ListCtrl.createMultiColumns(rightBar)
         {
             .addColumn("name", 200)

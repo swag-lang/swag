@@ -132,25 +132,26 @@ impl IWnd for CaptureRectWnd
 
         let painter = evt.bc.painter
 
-        // Draw the desktop back ima
+        // Draw the desktop back image
         painter.setInterpolationMode(.Linear)
         painter.drawTexture(me.position, g_DesktopTexture)
 
         // Draw the normal desktop image inside the grab rectangle
-        let col: Color = {0, 0, 0, 100}
+        let bkCol: Color = {0, 0, 0, 100}
         if !grabRect.isEmpty()
         {
-            painter.fillRect(0, 0, grabRect.x, me.position.height, col)
-            painter.fillRect(grabRect.x, 0, grabRect.width, grabRect.y, col)
-            painter.fillRect(grabRect.right(), 0, me.position.width - grabRect.right(), me.position.bottom(), col)
-            painter.fillRect(grabRect.x, grabRect.bottom(), grabRect.width, me.position.bottom() - grabRect.bottom(), col)
+            painter.fillRect(0, 0, grabRect.x, me.position.height, bkCol)
+            painter.fillRect(grabRect.x, 0, grabRect.width, grabRect.y, bkCol)
+            painter.fillRect(grabRect.right(), 0, me.position.width - grabRect.right(), me.position.bottom(), bkCol)
+            painter.fillRect(grabRect.x, grabRect.bottom(), grabRect.width, me.position.bottom() - grabRect.bottom(), bkCol)
         }
         else
         {
-            painter.fillRect(me.position, col)
+            painter.fillRect(me.position, bkCol)
         }
 
-        painter.drawRect(grabRect, Argb.White)
+        let col = me.getThemeColors().hilight
+        painter.drawRect(grabRect, col, 2)
 
         // Rectangles
         if me.main.captureOptions.drawCross and !me.autoGrab
@@ -164,13 +165,16 @@ impl IWnd for CaptureRectWnd
         {
             let fontR = me.getFont().regular
             let str   = Format.toString("% x %", grabRect.width, grabRect.height)
-            var xx    = grabRect.x
-            var yy    = grabRect.y - fontR.height
+            var xx    = grabRect.x + 4
+            var yy    = grabRect.y - fontR.height - 8
             if xx < 0 or yy < 0
             {
                 xx = grabRect.x + 5
                 yy = grabRect.y + 5
             }
+
+            let m = Painter.measureString(str, fontR)
+            painter.fillRoundRect({xx - 4, yy - 4, m.width + 8, fontR.height + 8}, 2, 2, col)
 
             painter.drawString(xx, yy, str, fontR, Argb.White)
         }

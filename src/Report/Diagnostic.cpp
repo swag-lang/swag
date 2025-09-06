@@ -536,7 +536,7 @@ void Diagnostic::printPreRemarks(Log* log) const
             continue;
 
         Vector<Utf8> lines;
-        wordWrap(r, lines, g_CommandLine.errorRightColumn);
+        wordWrap(r, lines, 100000);
 
         for (const auto& line : lines)
         {
