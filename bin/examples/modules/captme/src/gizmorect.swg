@@ -197,8 +197,10 @@ impl GizmoRect
 
         if !hot
         {
-            if me.paintSimpleBorder:
+            if me.paintSimpleBorder
+            {
                 painter.drawRect(me.rect, color, 2)
+            }
             elif me.paintBigBorder
             {
                 painter.drawRect(me.rect, Argb.DarkGray, 4)
@@ -232,8 +234,8 @@ impl GizmoRect
             }
             else
             {
-                painter.fillRect(c, color)
-                painter.drawRect(c, Argb.Black, anchorSize2 * 0.3)
+                painter.fillRect(c, Argb.White)
+                painter.drawRect(c, color, 3)
             }
         }
     }

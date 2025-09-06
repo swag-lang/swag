@@ -73,7 +73,7 @@ impl IWnd for EditView
         painter.pushTransform()
         painter.translateTransform(captureRect.x, captureRect.y)
         me.capture.gizmo.rect = Math.Rectangle{0, 0, captureRect.width, captureRect.height}
-        me.capture.gizmo.paint(painter, false)
+        me.capture.gizmo.paint(painter, false, me.getThemeColors().hilight)
         painter.popTransform()
     }
 }
