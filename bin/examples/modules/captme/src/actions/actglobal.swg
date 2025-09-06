@@ -6,6 +6,7 @@ impl ActionGlobal
 {
     newCmdId("ShowLibrary")
     newCmdId("Exit")
+    newCmdId("Minimize")
     newCmdId("ShowEditor")
 }
 
@@ -15,7 +16,7 @@ impl IActionUI for ActionGlobal
     {
         switch cxt.id
         {
-        case ShowEditor, ShowLibrary, Exit:
+        case ShowEditor, ShowLibrary, Exit, Minimize:
             return true
         }
 
@@ -42,6 +43,11 @@ impl IActionUI for ActionGlobal
             evt.setFlags |= .Name | .Icon
             evt.name = "Quit"
             evt.icon = main.getTheme().getIcon24(.Quit)
+
+        case Minimize:
+            evt.setFlags |= .Name | .Icon
+            evt.name = "Minimize"
+            evt.icon = main.getTheme().getIcon24(.Minimize)
         }
 
         return true
@@ -64,6 +70,9 @@ impl IActionUI for ActionGlobal
             if main.libWnd:
                 main.libWnd.requestClose()
             main.postQuitEvent()
+
+        case Minimize:
+            main.surface.hide()
         }
 
         return true
@@ -74,19 +83,22 @@ impl MainWnd
 {
     mtd swapLibraryMode()
     {
-        me.libraryMode = !me.libraryMode
+        with me
+        {
+            .libraryMode = !.libraryMode
 
-        me.editWnd.show(!me.libraryMode)
-        me.quickStyleBar.show(!me.libraryMode)
-        me.recentBar.show(!me.libraryMode)
-        me.editZoomBar.show(!me.libraryMode)
-        me.editToolBar.show(!me.libraryMode)
+            .editWnd.show(!.libraryMode)
+            .quickStyleBar.show(!.libraryMode)
+            .recentBar.show(!.libraryMode)
+            .editZoomBar.show(!.libraryMode)
+            .editToolBar.show(!.libraryMode)
 
-        me.libWnd.show(me.libraryMode)
+            .libWnd.show(.libraryMode)
 
-        if me.libraryMode:
-            me.libWnd.fill()
+            if .libraryMode:
+                .libWnd.fill()
 
-        me.applyLayout()
+            .applyLayout()
+        }
     }
 }

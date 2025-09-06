@@ -128,8 +128,8 @@ func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
     {
     case .FullScreen:
         g_StartGrabX, g_StartGrabY = 0
-        g_EndGrabX = g_ScreenWidth
-        g_EndGrabY = g_ScreenHeight
+        g_EndGrabX = g_ScreenWidth * Env.getDPIScale()
+        g_EndGrabY = g_ScreenHeight * Env.getDPIScale()
 
     case .ActiveWindow:
         let r = getBackgroundWndRect()

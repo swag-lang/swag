@@ -93,6 +93,20 @@ impl IWnd for MainWnd
             .addItem(ActionCapture.LastArea)
             .addItem(ActionCapture.FullScreen)
             .addItem(ActionCapture.ActiveWnd)
+            for idx in me.monitors
+            {
+                switch idx
+                {
+                case 0:
+                    .addItem(ActionCapture.Screen0)
+                case 1:
+                    .addItem(ActionCapture.Screen1)
+                case 2:
+                    .addItem(ActionCapture.Screen2)
+                case 3:
+                    .addItem(ActionCapture.Screen3)
+                }
+            }
             .addSeparator()
             .addItem(ActionGlobal.Exit)
 
@@ -481,6 +495,7 @@ impl MainWnd
             .addSeparator()
             .addItem(ActionFile.FileDetails)
             .addSeparator()
+            .addItem(ActionGlobal.Minimize)
             .addItem(ActionGlobal.Exit)
             topMenu.addPopup("File", fileMenu)
         }
