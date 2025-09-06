@@ -53,6 +53,64 @@ struct Monitor
     workReal:     Math.Rectangle     // The real monitor work rect, without scaling
 }
 
+// Returns the monitor that contains 'pt'
+// Returns the nearest one if none contain it.
+func getMonitorForPoint(pt: Math.Point)->Env.Monitor
+{
+    let monitors = Env.getMonitors()
+
+    // First pass: exact containment
+    foreach m in monitors
+    {
+        let r = m.rect
+        if pt.x >= r.x and pt.x <= r.right() and pt.y >= r.y and pt.y <= r.bottom():
+            return m
+    }
+
+    // Second pass: nearest (min distance from point to monitor rect)
+    var bestM   : retval
+    var bestD2  = Swag.F32.Inf
+    foreach m in monitors
+    {
+        let r = m.rect
+        let cx = Math.clamp(pt.x, r.x, r.right())
+        let cy = Math.clamp(pt.y, r.y, r.bottom())
+        let dx = pt.x - cx
+        let dy = pt.y - cy
+        let d2 = dx*dx + dy*dy
+        if d2 < bestD2
+        {
+            bestD2 = d2
+            bestM  = m
+        }
+    }
+
+    return bestM
+}
+
+// Returns the monitor corresponding to the surface position
+func getMonitorForRect(rect: Math.Rectangle)->Env.Monitor
+{
+    var result:  retval
+    var bestSurf = 0'f32
+    let monitors = Env.getMonitors()
+    foreach m in monitors
+    {
+        var r1 = rect
+        r1.intersect(m.rect)
+        let surf = r1.width * r1.height
+        if surf > bestSurf
+        {
+            bestSurf = surf
+            result   = m
+        }
+    }
+
+    if bestSurf == 0:
+        result = monitors[0]
+    return result
+}
+
 internal var g_CmdLineArgs: const [..] string
 
 enum Metrics

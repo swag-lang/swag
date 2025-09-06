@@ -183,36 +183,13 @@ impl Surface
         me.setPosition(pos)
     }
 
-    // Returns the monitor corresponding to the surface position
-    mtd getBestMonitor()->Env.Monitor
-    {
-        var result:  retval
-        var bestSurf = 0'f32
-        let monitors = Env.getMonitors()
-        foreach m in monitors
-        {
-            var r1 = me.position
-            r1.intersect(m.rect)
-            let surf = r1.width * r1.height
-            if surf > bestSurf
-            {
-                bestSurf = surf
-                result   = m
-            }
-        }
-
-        if bestSurf == 0:
-            result = monitors[0]
-        return result
-    }
-
     // Constraint a window position to be inside the closest monitor
     mtd constaintPositionToScreen(topLeft, bottomRight = true, margin = 0'f32)
     {
         if me.isMaximized or me.isMinimized:
             return
 
-        let monitor = me.getBestMonitor()
+        let monitor = Env.getMonitorForPoint({me.position.x, me.position.y})
         var np      = me.position
 
         if topLeft
