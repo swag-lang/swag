@@ -1,12 +1,15 @@
 #global namespace Hash
 #global #[Swag.CanOverflow(true)]
 
+// A SHA-1 cryptographic hash function implementation.
+// Provides methods to compute 160-bit SHA-1 hash values from arbitrary data streams.
+// Supports incremental hashing through 'init', 'update', and 'final' operations.
 public struct Sha1
 {
-    data:        [64] u8
-    state:       [5] u32
-    datalen:     u32
-    bitlen:      u64
+    data:        [64] u8  // Internal data buffer for processing 512-bit blocks
+    state:       [5] u32  // Five 32-bit hash state values (A, B, C, D, E)
+    datalen:     u32      // Current number of bytes in the data buffer
+    bitlen:      u64      // Total number of bits processed so far
 }
 
 impl Sha1
@@ -20,6 +23,8 @@ impl Sha1
         func f4(x, y, z: u32)   => (x ^ y ^ z)
     }
 
+    // Process a single 512-bit block of data.
+    // Performs the main SHA-1 compression function on the provided 'buf'.
     mtd transform(buf: const ^u8)
     {
         var w: [80] u32
@@ -94,9 +99,10 @@ impl Sha1
 
 public impl Sha1
 {
-    alias Digest = [5] u32
+    alias Digest = [5] u32  // SHA-1 digest result as five 32-bit words
 
-    // Finalize the computation
+    // Finalize the computation and produce the final hash digest.
+    // Applies padding and length encoding, then stores the result in 'result'.
     mtd final(result: Digest)
     {
         var i = me.datalen
@@ -147,7 +153,8 @@ public impl Sha1
         Memory.copy(result, &me.state[0], #sizeof(me.state))
     }
 
-    // Initialize the hashing sequence
+    // Initialize the hashing sequence with standard SHA-1 constants.
+    // Sets up the initial state values and resets all counters to zero.
     mtd init()
     {
         @init(me, 1)
@@ -161,7 +168,8 @@ public impl Sha1
         }
     }
 
-    // Update the hash value with 'buffer' content
+    // Update the hash value with 'buffer' content.
+    // Processes the input data in 512-bit blocks, buffering incomplete blocks for later processing.
     mtd update(buffer: const [..] u8)
     {
         Debug.assert(@countof(buffer) <= Swag.U32.Max)
@@ -181,7 +189,8 @@ public impl Sha1
         }
     }
 
-    // Returns the sha1 value for the given buffer
+    // Returns the SHA-1 hash value for the given buffer.
+    // Convenience function that performs the complete hash operation in a single call.
     func compute(buffer: const [..] u8)->Digest
     {
         var v: Sha1
