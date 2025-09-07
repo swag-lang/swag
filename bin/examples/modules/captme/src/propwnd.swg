@@ -6,14 +6,14 @@ const BtnStyleHeight = 68.0
 const CapSize  = 8.0
 const DashSize = 8.0
 
-const CmdIdTextHLeft = "CmdIdTextHLeft"
+const CmdIdTextHLeft   = "CmdIdTextHLeft"
 const CmdIdTextHCenter = "CmdIdTextHCenter"
-const CmdIdTextHRight = "CmdIdTextHRight"
-const CmdIdTextVTop = "CmdIdTextVTop"
+const CmdIdTextHRight  = "CmdIdTextHRight"
+const CmdIdTextVTop    = "CmdIdTextVTop"
 const CmdIdTextVCenter = "CmdIdTextVCenter"
 const CmdIdTextVBottom = "CmdIdTextVBottom"
-const CmdIdTextBold = "CmdIdTextBold"
-const CmdIdTextItalic = "CmdIdTextItalic"
+const CmdIdTextBold    = "CmdIdTextBold"
+const CmdIdTextItalic  = "CmdIdTextItalic"
 
 struct PropWnd
 {
@@ -94,18 +94,6 @@ impl PropWnd
         {
             .setMinMaxS64(minv, maxv)
             .dockStyle = .Top
-            .setValue(val)
-        }
-
-        return ctrl
-    }
-
-    #[Swag.Overload]
-    mtd createRotate(val: f32)->*Circular
-    {
-        with let ctrl = Circular.create(me.mainLayout)
-        {
-            .setMinMax(0, 360)
             .setValue(val)
         }
 
@@ -601,10 +589,10 @@ impl PropWnd
             return
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
-        btn.name         = "Start"
+        btn.name = "Start"
+
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
-            bc.painter.setParams(.Antialiased)
             var curSel = cast(*FormLine) me.getSelectedBaseForm()
             var rect   = pos
             rect.inflate(-9, -9)
@@ -613,6 +601,8 @@ impl PropWnd
             pen.endCapStyle = .None
             var (w0, l0) = Painter.capStyleExtent(curSel.beginCap, CapSize, pen.capBegScaleX)
             rect.moveLeft(l0)
+
+            bc.painter.setParams(.Antialiased)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
@@ -633,7 +623,6 @@ impl PropWnd
         btn.name         = "End"
         btn.sigPaintIcon = func|me|(btn, bc, pos)
         {
-            bc.painter.setParams(.Antialiased)
             let curSel = cast(*FormLine) me.getSelectedBaseForm()
             var rect   = pos
             rect.inflate(-9, -9)
@@ -642,6 +631,8 @@ impl PropWnd
             pen.endCapStyle = curSel.endCap
             let (w0, l0) = Painter.capStyleExtent(curSel.endCap, CapSize, pen.capEndScaleX)
             rect.moveRight(-l0)
+
+            bc.painter.setParams(.Antialiased)
             bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
         }
 
@@ -1120,30 +1111,15 @@ impl PropWnd
         if curSel.subKind == .Highlight or curSel.subKind == .PixSel:
             return
 
-        let ctrl  = me.createRotate(cast() curSel.rotate)
-        let ctrl1 = me.createSlider("Rotate", 0, 360, cast() curSel.rotate)
-        ctrl1.edit.unit = "°"
-
-        ctrl.sigStartChange += mtd|ctrl1|(rotate)
-        {
-            me.pushTypedValue(cast #bit (u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
-            ctrl1.setValueNoChange(rotate.getValue())
-        }
-        ctrl.sigChanged += mtd|ctrl1|(rotate)
-        {
-            me.pushTypedValue(cast #bit (u32) rotate.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
-            ctrl1.setValueNoChange(rotate.getValue())
-        }
-
-        ctrl1.slider.sigStartChange += mtd|ctrl|(slider)
+        let ctrl = me.createSlider("Rotate", 0, 360, cast() curSel.rotate)
+        ctrl.edit.unit = "°"
+        ctrl.slider.sigStartChange += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), true, true)
-            ctrl.setValueNoChange(slider.getValue())
         }
-        ctrl1.slider.sigChanged += mtd|ctrl|(slider)
+        ctrl.slider.sigChanged += mtd||(slider)
         {
             me.pushTypedValue(cast #bit (u32) slider.getValue(), BaseForm, #nameof(BaseForm.rotate), false, true)
-            ctrl.setValueNoChange(slider.getValue())
         }
     }
 
