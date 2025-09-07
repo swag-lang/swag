@@ -244,6 +244,7 @@ struct ThemeColors
     menuBar_Bk:                           Color
     menuBar_Border:                       Color
     menuBar_SelectedBk:                   Color
+    menuBar_SelectedText:                 Color
 
     popupItem_Text:                       Color
     popupItem_RightText:                  Color

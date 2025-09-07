@@ -89,9 +89,9 @@ impl EmbInfoCtrl
 
         with let btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
-            .margin       = 5
-            .dockStyle    = .Right
-            .forceFgColor = ctrl.label.textColor
+            .margin    = 5
+            .dockStyle = .Right
+            .iconColor = ctrl.label.textColor
             .sigPressed += func|ctrl|(btn)
             {
                 ctrl.sigOnClose.call(ctrl)

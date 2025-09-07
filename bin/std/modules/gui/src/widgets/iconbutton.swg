@@ -57,7 +57,8 @@ struct IconButton
     checkedForm          = IconButtonCheckedForm.Full
     arrowPos             = IconButtonArrowPos.None
     textPos              = IconButtonTextPos.Bottom
-    forceFgColor:        Color
+    iconColor:           Color
+    textColor:           Color
 
     sigHidePopup:        SigArray'func||(*IconButton)
     sigShowPopup:        SigArray'func||(*IconButton)
@@ -172,11 +173,10 @@ impl IWnd for IconButton
             colorChecked = colors.btnIcon_CheckedMark
         }
 
-        if me.forceFgColor.a
-        {
-            colorIcon = me.forceFgColor
-            colorText = me.forceFgColor
-        }
+        if me.iconColor.a:
+            colorIcon = me.iconColor
+        if me.textColor.a:
+            colorText = me.textColor
 
         // Background
         var clientRect = me.getClientRect()

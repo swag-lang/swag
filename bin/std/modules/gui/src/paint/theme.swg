@@ -70,6 +70,7 @@ impl Theme
     {
         me.intialized = true
         me.setLight()
+        //me.setDark()
 
         with me.res
         {
@@ -366,13 +367,14 @@ impl Theme
             .tabView_FlatBk                   = Gray6
             .tabView_RoundBk                  = Gray6
 
-            .menuPopup_Bk        = Gray6
-            .menuPopup_Border    = Color.getLighter(Color.fromArgb(Gray6), 0.2)
-            .menuPopup_Shadow    = 0xFF000000
-            .menuPopup_Separator = Color.getLighter(Color.fromArgb(Gray6), 0.2)
-            .menuBar_Bk          = Gray4
-            .menuBar_Border      = 0
-            .menuBar_SelectedBk  = 0x1F000000
+            .menuPopup_Bk         = Gray6
+            .menuPopup_Border     = Color.getLighter(Color.fromArgb(Gray6), 0.2)
+            .menuPopup_Shadow     = 0xFF000000
+            .menuPopup_Separator  = Color.getLighter(Color.fromArgb(Gray6), 0.2)
+            .menuBar_Bk           = Gray4
+            .menuBar_Border       = 0
+            .menuBar_SelectedBk   = 0x1F000000
+            .menuBar_SelectedText = Gray1
 
             .popupItem_Text         = Gray1
             .popupItem_RightText    = Gray2
@@ -460,9 +462,9 @@ impl Theme
 
             .imageRect_Fg = White
 
-            .embInfo_CriticalBk      = 0xFF8F0000
+            .embInfo_CriticalBk      = 0xFF9F1010
             .embInfo_CriticalText    = White
-            .embInfo_InformationBk   = 0xFF303050
+            .embInfo_InformationBk   = 0xFF404060
             .embInfo_InformationText = White
             .embInfo_MessageBk       = 0xFFAD8F1B
             .embInfo_MessageText     = Gray5
@@ -490,8 +492,8 @@ impl Theme
         const LighterBig     = 0x30000000
         const LighterVeryBig = 0x40000000
         const White          = 0xFFFFFFFF
-        const Gray1          = 0xFF303030     // primary text
-        const Gray2          = 0xFF404040     // secondary text
+        const Gray1          = 0xFF404040     // primary text
+        const Gray2          = 0xFF505050     // secondary text
         const Gray3          = 0xFF606060     // muted text / strong borders
         const Gray4          = 0xFF808080     // subtle icons / secondary borders
         const Gray5          = 0xFFA0A0A0     // disabled-ish strokes
@@ -735,13 +737,14 @@ impl Theme
             .tabView_FlatBk                   = Gray8
             .tabView_RoundBk                  = Gray8
 
-            .menuPopup_Bk        = White
-            .menuPopup_Border    = Gray7
-            .menuPopup_Shadow    = 0x33000000
-            .menuPopup_Separator = Gray7
-            .menuBar_Bk          = Gray7
-            .menuBar_Border      = 0
-            .menuBar_SelectedBk  = 0x10000000
+            .menuPopup_Bk         = White
+            .menuPopup_Border     = Gray7
+            .menuPopup_Shadow     = 0x33000000
+            .menuPopup_Separator  = Gray7
+            .menuBar_Bk           = Gray7
+            .menuBar_Border       = 0
+            .menuBar_SelectedBk   = 0x10000000
+            .menuBar_SelectedText = Gray1
 
             .popupItem_Text         = Gray1
             .popupItem_RightText    = Gray3
@@ -829,12 +832,12 @@ impl Theme
 
             .imageRect_Fg = Gray1
 
-            .embInfo_CriticalBk      = 0xFFFFE5E5
-            .embInfo_CriticalText    = 0xFF8F0000
-            .embInfo_InformationBk   = 0xFFE8F0FF
-            .embInfo_InformationText = 0xFF003A8C
-            .embInfo_MessageBk       = 0xFFFFF6DD
-            .embInfo_MessageText     = Gray1
+            .embInfo_CriticalBk      = 0xFF9F1010
+            .embInfo_CriticalText    = White
+            .embInfo_InformationBk   = 0xFF404060
+            .embInfo_InformationText = White
+            .embInfo_MessageBk       = 0xFFAD8F1B
+            .embInfo_MessageText     = Gray5
 
             .prop_FocusBk     = Color.getDarker(Color.fromArgb(Gray8), 0.04)
             .prop_FocusBorder = Gray6

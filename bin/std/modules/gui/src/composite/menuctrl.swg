@@ -26,10 +26,6 @@ public struct PopupMenuItem
     disabled:         bool
     checked:          bool
     hidden:           bool
-
-    aniSel:           BlendColor{speed: 50}
-    aniText:          BlendColor{speed: 50}
-    aniRightText:     BlendColor{speed: 50}
 }
 
 public struct MenuCtrl
@@ -101,27 +97,24 @@ public impl IWnd for MenuCtrl
             if !i.disabled and (me.hotIdx == idx or me.selectedIdx == idx)
             {
                 colorSel       = colors.menuBar_SelectedBk
-                colorText      = colors.popupItem_HotText
+                colorText      = colors.menuBar_SelectedText
                 colorRightText = colors.popupItem_HotRightText
             }
-
-            i.aniSel.apply(me, colorSel)
-            i.aniText.apply(me, colorText)
 
             var backPos = labelPos
             backPos.x -= metrics.menuBar_SpaceBetween * 0.5
             backPos.width += metrics.menuBar_SpaceBetween
-            theme.drawSubRect(painter, backPos, &rects.menuBar_SelectedBk, i.aniSel.cur())
+            theme.drawSubRect(painter, backPos, &rects.menuBar_SelectedBk, colorSel)
 
             // Icon
             if i.icon.isValid()
             {
                 i.icon.sizeX, i.icon.sizeY = i.size - 4
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             }
 
             // Text
-            theme.setTextColors(&format, i.aniText.cur())
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
@@ -191,15 +184,11 @@ public impl IWnd for MenuCtrl
                 colorRightText = colors.popupItem_HotRightText
             }
 
-            i.aniSel.apply(me, colorSel)
-            i.aniText.apply(me, colorText)
-            i.aniRightText.apply(me, colorRightText)
-
             var backPos = labelPos
             backPos.y -= metrics.menuPopup_SpaceLines * 0.5
             backPos.height += metrics.menuPopup_SpaceLines
             backPos.inflate(me.paddingSel, 0)
-            theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, i.aniSel.cur())
+            theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colorSel)
 
             // Icon
             var iconPos = labelPos
@@ -212,17 +201,17 @@ public impl IWnd for MenuCtrl
 
                 if i.rg == .ExclusiveGroup
                 {
-                    theme.drawSubRect(painter, checkPos, &rects.btnRadio_CheckedBorder, i.aniText.cur())
+                    theme.drawSubRect(painter, checkPos, &rects.btnRadio_CheckedBorder, colorText)
                     if i.checked:
-                        theme.drawSubRect(painter, checkPos, &rects.btnRadio_CheckedMark, i.aniText.cur())
+                        theme.drawSubRect(painter, checkPos, &rects.btnRadio_CheckedMark, colorText)
                 }
                 else:
-                    theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, i.aniText.cur())
+                    theme.drawSubRect(painter, checkPos, &rects.btnCheck_CheckedMark, colorText)
             }
             elif i.icon.isValid()
             {
                 i.icon.sizeX, i.icon.sizeY = i.size - 4
-                i.icon.paint(painter, iconPos.x, iconPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
+                i.icon.paint(painter, iconPos.x, iconPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             }
 
             labelPos.moveLeft(metrics.menuPopup_IconTextMargin + i.size)
@@ -230,7 +219,7 @@ public impl IWnd for MenuCtrl
 
             // Text
             var format: RichStringFormat
-            theme.setTextColors(&format, i.aniText.cur())
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
@@ -240,7 +229,7 @@ public impl IWnd for MenuCtrl
             // Text right
             if !me.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
-                format.palette[0]    = i.aniRightText.cur()
+                format.palette[0]    = colorRightText
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags         = .Clip
@@ -402,16 +391,6 @@ impl MenuCtrl
         me.timer = null
     }
 
-    mtd resetAnim()
-    {
-        foreach i in me.items
-        {
-            i.aniSel.reset()
-            i.aniText.reset()
-            i.aniRightText.reset()
-        }
-    }
-
     public mtd updateState()
     {
         foreach i in me.items
@@ -445,7 +424,6 @@ impl MenuCtrl
             .bringToTop()
             .show()
             .captureMouse()
-            .resetAnim()
             .hotIdx      = Swag.U32.Max
             .selectedIdx = Swag.U32.Max
             .subVisible  = null
@@ -632,7 +610,7 @@ impl MenuCtrl
             if !me.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 fake.drawRichString({0, 0, 512, 0}, &i.rightName, rsf)
-                w += i.rightName.boundRect.width + rsf.font.regular.height
+                w += i.rightName.boundRect.width + rsf.font.regular.height * 3
             }
 
             me.position.width = Math.max(me.position.width, w)
