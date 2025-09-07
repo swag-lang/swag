@@ -635,22 +635,29 @@ impl Painter
         // Calculate skip distance
         switch capStyle
         {
-        case ArrowAnchor, ArrowAnchor2:
+        case ArrowAnchor:
             let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
             info.distance = cxt.pen.size * 0.5 * scale
+
+        case ArrowAnchor2:
+            let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
+            info.distance = cxt.pen.size * 0.7 * scale
 
         case SquareAnchor:
             let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
             info.distance = cxt.pen.size * 0.5 * scale
+            info.distance -= 1
 
         case RoundAnchor:
             let scale = start ? cxt.pen.capBegScaleX : cxt.pen.capEndScaleX
             info.distance = cxt.pen.size * 0.5 * scale
+            info.distance -= Math.max(1, info.distance * 0.2)
 
         default:
             info.distance = 0
             return info
         }
+
 
         // If no skip distance needed, return early
         if info.distance <= 0:
