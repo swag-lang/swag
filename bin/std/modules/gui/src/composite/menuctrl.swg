@@ -252,7 +252,7 @@ public impl IWnd for MenuCtrl
             if i.popup
             {
                 var icon = theme.getIcon24(ThemeIcons24.RightPopupArrow)
-                icon.paint(painter, labelPos.right(), labelPos.vertCenter() - icon.sizeY * 0.5, colors.popupItem_Text)
+                icon.paint(painter, labelPos.right(), labelPos.vertCenter() - icon.sizeY * 0.5, colorText)
             }
         }
     }
