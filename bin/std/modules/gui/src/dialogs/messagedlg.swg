@@ -11,6 +11,7 @@ public struct MessageDlg
 public struct MessageDlgOptions
 {
     icon:                 Icon
+    iconColor:            Color
     horzAlignmentText     = StringHorzAlignment.Center
     vertAlignmentText     = StringVertAlignment.Center
     sigCreate:            func||(*MessageDlg)
@@ -41,6 +42,7 @@ public impl MessageDlg
             options.sigCreate(dlg)
 
         dlg.setIcon(options.icon)
+        dlg.setIconColor(options.iconColor)
         dlg.sendResizeEvent()
         return dlg
     }
@@ -173,8 +175,11 @@ public impl MessageDlg
     func yesNo(from: *Surface, message: string, title: string = null, defaultId = Dialog.BtnNo, options: MessageDlgOptions = {})->WndId
     {
         var opt = options
-        if !opt.icon.isValid():
+        if !opt.icon.isValid()
+        {
             opt.icon = from.app.theme.getIcon64(ThemeIcons64.Question)
+            opt.iconColor = Argb.White
+        }
 
         with let dlg = create(from, message, opt)
         {
@@ -190,8 +195,11 @@ public impl MessageDlg
     func yesNoCancel(from: *Surface, message: string, defaultId = Dialog.BtnCancel, options: MessageDlgOptions = {})->WndId
     {
         var opt = options
-        if !opt.icon.isValid():
+        if !opt.icon.isValid()
+        {
             opt.icon = from.app.theme.getIcon64(ThemeIcons64.Question)
+            opt.iconColor = Argb.White
+        }
 
         with let dlg = create(from, message, opt)
         {
@@ -234,8 +242,11 @@ public impl MessageDlg
         }
 
         var opt = options
-        if !opt.icon.isValid():
+        if !opt.icon.isValid()
+        {
             opt.icon = from.app.theme.getIcon64(.Critical)
+            opt.iconColor = Argb.White
+        }
 
         with let dlg = create(from, txt.toString(), opt)
         {

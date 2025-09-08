@@ -247,7 +247,7 @@ impl IWnd for EditBox
         // Caret
         if me.visibleCaret and me.hasFocus()
         {
-            painter.fillRect(caretPos, Argb.White)
+            painter.fillRect(caretPos, colors.edit_Text)
         }
 
         painter.popClippingRect()
