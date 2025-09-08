@@ -46,6 +46,7 @@ struct Application
     maxRunFrame:            u32
     configPath:             String
     hotKeys:                Array'KeyShortcut
+    dirtyTheme:             u32
 }
 
 internal impl Application
@@ -616,6 +617,23 @@ impl Application
     mtd setAppIcon(img: Pixel.Image)
     {
         me.appIcon = img
+    }
+
+    // Call it when the theme has changed
+    mtd themeHasChanged()
+    {
+        func updateTheme(wnd: *Wnd)
+        {
+            wnd.style.dirty = true
+            wnd.computeStyle()
+            wnd.invalidate()
+            foreach c in wnd.childs:
+                updateTheme(c)
+        }
+
+        me.dirtyTheme += 1
+        foreach s in me.surfaces:
+            s.wnd.updateTheme()
     }
 
     internal mtd serializeState(ser: *Serializer) throw

@@ -218,6 +218,7 @@ impl IWnd for MainWnd
 
         if evt.ser.isReading()
         {
+            me.setTheme()
             me.quickStyleBar.sendResizeEvent()
             me.setBottomSize(me.bottomSize)
             me.setTopBarHeight()
@@ -647,6 +648,15 @@ impl MainWnd
         me.captureBtn.iconColor = Argb.White
 
         me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
+    }
+
+    mtd setTheme()
+    {
+        if me.editorOptions.theme == .Dark:
+            me.getApp().theme.setDark()
+        else:
+            me.getApp().theme.setLight()
+        me.getApp().themeHasChanged()
     }
 
     mtd setTopBarHeight()

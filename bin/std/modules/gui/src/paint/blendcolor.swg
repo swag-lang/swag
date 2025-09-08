@@ -8,8 +8,8 @@ struct BlendColor
     startVec4:     Math.Vector4
     destVec4:      Math.Vector4
     factor:        f32
-    start:         bool = true
     speed:         f32 = 8
+    themeCrc:      u32 = Swag.U32.Max
 }
 
 impl BlendColor
@@ -17,10 +17,11 @@ impl BlendColor
     // Apply the color lerp to reach 'target'
     mtd apply(wnd: *Wnd, target: Color)
     {
-        if me.start
+        if wnd.getApp().dirtyTheme != me.themeCrc
         {
-            me.start = false
+            me.themeCrc = wnd.getApp().dirtyTheme
             me.curVec4, me.startVec4, me.destVec4 = target.toVector4()
+            me.factor = 1.0
             return
         }
 
@@ -61,7 +62,7 @@ impl BlendColor
     // Reset the blend
     mtd reset()
     {
-        me.start = true
+        me.themeCrc = Swag.U32.Max
     }
 
     // Get the current color

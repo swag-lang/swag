@@ -52,6 +52,7 @@ impl IActionUI for ActionOptions
 
         opt.prop.sigChanged += func|main|(opt, item)
         {
+            main.setTheme()
             main.setTopBarHeight()
             main.invalidate()
         }

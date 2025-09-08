@@ -23,6 +23,12 @@ struct CaptureOptions
     delay = 0
 }
 
+enum EditorTheme
+{
+    Dark
+    White
+}
+
 #[Swag.Using(Properties)]
 struct EditorOptions
 {
@@ -38,6 +44,11 @@ struct EditorOptions
     #[Description("Minimize the editor instead of closing it")]
     hideOnClose = true
 
+    #[Description("Captme theme")]
+    theme: EditorTheme = Dark
+
     #[Description("Specify the background color of the capture editing window"), Opaque]
     editBackColor: Color = 0xFF2E2E2E
 }
+
+
