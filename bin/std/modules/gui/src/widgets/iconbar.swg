@@ -67,6 +67,7 @@ impl IconBar
     {
         var iconT = icon
         iconT.sizeX, iconT.sizeY = me.iconSize
+
         let size = me.iconSize + 2 * me.iconPadding
         let b    = IconButton.create(me, iconT, {0, 0, size, size})
         b.iconBtnFlags.set(iconBtnFlags)

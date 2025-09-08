@@ -612,8 +612,14 @@ impl MainWnd
             with let b = IconButton.create(me.editToolBar, {}, position: {0, 0, 60, 64})
             {
                 .id = id
-                .style.addStyleSheetColors("btnIcon_CheckedBk    $btnIcon_HotBk")
-                .style.addStyleSheetColors("btnIcon_CheckedHotBk $btnIcon_HotBk")
+                .style.addStyleSheetColors("btnIcon_CheckedBk           $btnIcon_HotBk")
+                .style.addStyleSheetColors("btnIcon_CheckedHotBk        $btnIcon_HotBk")
+                .style.addStyleSheetColors("btnIcon_CheckedHotIcon      $btnIcon_Text")
+                .style.addStyleSheetColors("btnIcon_CheckedHotText      $btnIcon_Text")
+                .style.addStyleSheetColors("btnIcon_CheckedIcon         $btnIcon_Text")
+                .style.addStyleSheetColors("btnIcon_CheckedText         $btnIcon_Text")
+                .style.addStyleSheetColors("btnIcon_CheckedPressedIcon  $btnIcon_Text")
+                .style.addStyleSheetColors("btnIcon_CheckedPressedText  $btnIcon_Text")
                 if canCheck:
                     .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
@@ -653,9 +659,9 @@ impl MainWnd
     mtd setTheme()
     {
         if me.editorOptions.theme == .Dark:
-            me.getApp().theme.setDark()
+            me.getApp().theme.colors.setDark()
         else:
-            me.getApp().theme.setLight()
+            me.getApp().theme.colors.setLight()
         me.getApp().themeHasChanged()
     }
 
