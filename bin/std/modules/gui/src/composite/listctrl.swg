@@ -615,7 +615,7 @@ internal impl ListView
         case bc.isDisabled:
             colorText, colorExpand = colors.listItem_DisabledText
         case isSelected:
-            colorText, colorExpand = colors.listItem_SelectedText
+            colorText, colorExpand = me.hasFocus() ? colors.listItem_FocusSelectedText : colors.listItem_SelectedText
         case line.colorFg.a:
             colorText   = line.colorFg
             colorExpand = colors.listItem_Text

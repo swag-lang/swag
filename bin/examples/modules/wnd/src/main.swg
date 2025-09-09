@@ -64,5 +64,6 @@ const MAX_PAGES = 8
     //var surface1 = try app.createSurface(100+W+10, 100, W, H, SurfaceFlags.Secondary | SurfaceFlags.SmallCaption | SurfaceFlags.CloseBtn)
     //surface1.show()
 
+    app.theme.colors.setLight()
     app.run()
 }

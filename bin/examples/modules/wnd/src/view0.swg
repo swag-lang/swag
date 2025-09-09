@@ -364,6 +364,14 @@ func createView0(tabView: *Tab, view: *Wnd)
         tab.addItem("titilafoule", app.theme.getIcon24(ThemeIcons24.Search, 16))
     }
 
+    {
+        let tab = Tab.create(view, {600, 800, 400, 100})
+        tab.setForm(.PushButton)
+        tab.addItem("toto", app.theme.getIcon24(ThemeIcons24.Search, 16))
+        tab.addItem("tata", app.theme.getIcon24(ThemeIcons24.Search, 16))
+        tab.addItem("titilafoule", app.theme.getIcon24(ThemeIcons24.Search, 16))
+    }
+
     // MenuCtrl
     {
         let menu = MenuCtrl.createBar(view, {600, 280, 400})

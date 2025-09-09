@@ -219,7 +219,8 @@ struct ThemeColors
 
     tabItem_DisabledText:                 Color
     tabItem_SelectedText:                 Color
-    tabItem_UnSelectedText:               Color
+    tabItem_HotText:                      Color
+    tabItem_Text:                         Color
     tabItem_FlatSelected:                 Color
     tabItem_FlatHot:                      Color
     tabItem_RoundSelected:                Color
@@ -227,11 +228,14 @@ struct ThemeColors
     tabItem_ButtonSelected:               Color
     tabItem_ButtonHot:                    Color
     tabItem_PushButtonSelected:           Color
+    tabItem_PushButtonSelectedText:       Color
     tabItem_PushButtonSelectedBorder:     Color
     tabItem_PushButtonHot:                Color
+    tabItem_PushButtonHotText:            Color
     tabItem_PushButtonHotBorder:          Color
+    tabItem_PushButtonText:               Color
     tabItem_PushButtonBk:                 Color
-    tabItem_PushButtonBkBorder:           Color
+    tabItem_PushButtonBorder:             Color
     tabBar_FlatBk:                        Color
     tabBar_RoundBk:                       Color
     tabView_FlatBk:                       Color
@@ -295,10 +299,11 @@ struct ThemeColors
     frameWnd_FocusBk:                     Color
 
     listItem_FocusSelectedBk:             Color
+    listItem_FocusSelectedText:           Color
     listItem_SelectedBk:                  Color
+    listItem_SelectedText:                Color
     listItem_HotBk:                       Color
     listItem_DisabledText:                Color
-    listItem_SelectedText:                Color
     listItem_Text:                        Color
     listItem_Separator:                   Color
     listItem_AlternateBk:                 Color
@@ -590,7 +595,8 @@ impl ThemeColors
 
             .tabItem_DisabledText             = Gray4
             .tabItem_SelectedText             = White
-            .tabItem_UnSelectedText           = Color.getDarker(Color.fromArgb(White), 0.3)
+            .tabItem_HotText                  = White
+            .tabItem_Text                     = Color.getDarker(Color.fromArgb(White), 0.3)
             .tabItem_FlatSelected             = Blue
             .tabItem_FlatHot                  = White
             .tabItem_RoundSelected            = Gray6
@@ -598,11 +604,14 @@ impl ThemeColors
             .tabItem_ButtonSelected           = Gray4
             .tabItem_ButtonHot                = Gray5
             .tabItem_PushButtonSelected       = Blue
+            .tabItem_PushButtonSelectedText   = White
             .tabItem_PushButtonSelectedBorder = White
-            .tabItem_PushButtonHot            = Gray5
-            .tabItem_PushButtonHotBorder      = Gray2
+            .tabItem_PushButtonHot            = Gray1
+            .tabItem_PushButtonHotText        = Gray5
+            .tabItem_PushButtonHotBorder      = Gray5
+            .tabItem_PushButtonText           = Gray1
             .tabItem_PushButtonBk             = Gray6
-            .tabItem_PushButtonBkBorder       = Gray3
+            .tabItem_PushButtonBorder         = Gray1
             .tabBar_FlatBk                    = Gray4
             .tabBar_RoundBk                   = Gray6
             .tabView_FlatBk                   = Gray6
@@ -665,15 +674,16 @@ impl ThemeColors
             .frameWnd_DisabledBk     = Gray5
             .frameWnd_FocusBk        = Gray6
 
-            .listItem_FocusSelectedBk = Blue
-            .listItem_SelectedBk      = Gray5
-            .listItem_HotBk           = Gray5
-            .listItem_DisabledText    = Gray3
-            .listItem_SelectedText    = White
-            .listItem_Text            = White
-            .listItem_Separator       = Color.getDarker(Color.fromArgb(White), 0.3)
-            .listItem_AlternateBk     = 0x08FFFFFF
-            .listItem_Line            = Gray4
+            .listItem_FocusSelectedBk   = Blue
+            .listItem_FocusSelectedText = White
+            .listItem_SelectedBk        = Gray5
+            .listItem_SelectedText      = Gray1
+            .listItem_HotBk             = Gray5
+            .listItem_DisabledText      = Gray3
+            .listItem_Text              = White
+            .listItem_Separator         = Color.getDarker(Color.fromArgb(White), 0.3)
+            .listItem_AlternateBk       = 0x08FFFFFF
+            .listItem_Line              = Gray4
 
             .headerItem_DisabledText = Gray4
             .headerItem_HotText      = White
@@ -960,7 +970,8 @@ impl ThemeColors
 
             .tabItem_DisabledText             = Gray5
             .tabItem_SelectedText             = Gray1
-            .tabItem_UnSelectedText           = Color.getDarker(Color.fromArgb(Gray1), 0.3)
+            .tabItem_HotText                  = Gray1
+            .tabItem_Text                     = Color.getDarker(Color.fromArgb(Gray1), 0.3)
             .tabItem_FlatSelected             = Blue
             .tabItem_FlatHot                  = Gray1
             .tabItem_RoundSelected            = Gray8
@@ -968,11 +979,14 @@ impl ThemeColors
             .tabItem_ButtonSelected           = Gray8
             .tabItem_ButtonHot                = Gray7
             .tabItem_PushButtonSelected       = Blue
+            .tabItem_PushButtonSelectedText   = White
             .tabItem_PushButtonSelectedBorder = White
             .tabItem_PushButtonHot            = Gray7
-            .tabItem_PushButtonHotBorder      = Gray6
+            .tabItem_PushButtonHotText        = Gray2
+            .tabItem_PushButtonHotBorder      = Gray2
+            .tabItem_PushButtonText           = Gray1
             .tabItem_PushButtonBk             = Gray8
-            .tabItem_PushButtonBkBorder       = Gray7
+            .tabItem_PushButtonBorder         = Gray1
             .tabBar_FlatBk                    = Gray7
             .tabBar_RoundBk                   = Gray8
             .tabView_FlatBk                   = Gray8
@@ -1035,15 +1049,16 @@ impl ThemeColors
             .frameWnd_DisabledBk     = Gray8
             .frameWnd_FocusBk        = Gray8
 
-            .listItem_FocusSelectedBk = Blue
-            .listItem_SelectedBk      = Color.getDarker(Color.fromArgb(Gray8), 0.06)
-            .listItem_HotBk           = Color.getDarker(Color.fromArgb(Gray8), 0.04)
-            .listItem_DisabledText    = Gray5
-            .listItem_SelectedText    = Gray1
-            .listItem_Text            = Gray1
-            .listItem_Separator       = Color.getDarker(Color.fromArgb(Gray8), 0.12)
-            .listItem_AlternateBk     = 0x08000000
-            .listItem_Line            = Gray7
+            .listItem_FocusSelectedBk   = Blue
+            .listItem_FocusSelectedText = White
+            .listItem_SelectedBk        = Color.getDarker(Color.fromArgb(Gray8), 0.06)
+            .listItem_SelectedText      = Gray1
+            .listItem_HotBk             = Color.getDarker(Color.fromArgb(Gray8), 0.04)
+            .listItem_DisabledText      = Gray5
+            .listItem_Text              = Gray1
+            .listItem_Separator         = Color.getDarker(Color.fromArgb(Gray8), 0.12)
+            .listItem_AlternateBk       = 0x08000000
+            .listItem_Line              = Gray7
 
             .headerItem_DisabledText = Gray5
             .headerItem_HotText      = Gray1
@@ -1071,7 +1086,7 @@ impl ThemeColors
             .colorPicker_BackAlpha = Gray7
             .colorPicker_Mark      = Gray3
 
-            .imageRect_Fg = Gray1
+            .imageRect_Fg = White
 
             .embInfo_CriticalBk      = 0xFF9F1010
             .embInfo_CriticalText    = White

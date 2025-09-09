@@ -80,7 +80,7 @@ impl IWnd for Tab
     mtd paintItem(painter: *Painter, v: *TabItem, idx: u32)
     {
         var clientRect = me.getClientRect()
-        clientRect.height = me.barHeight
+        clientRect.height = Math.min(me.barHeight, clientRect.height)
 
         var labelPos = clientRect
         labelPos.width = v.width
@@ -112,11 +112,11 @@ impl IWnd for Tab
             {
                 subRect   = &rects.tabItem_FlatSelected
                 colorImg  = colors.tabItem_FlatHot
-                colorText = colors.tabItem_SelectedText
+                colorText = colors.tabItem_HotText
             }
             else
             {
-                colorText = colors.tabItem_UnSelectedText
+                colorText = colors.tabItem_Text
             }
 
         case Round:
@@ -130,11 +130,11 @@ impl IWnd for Tab
             {
                 subRect   = &rects.tabItem_RoundHot
                 colorImg  = colors.tabItem_RoundHot
-                colorText = colors.tabItem_SelectedText
+                colorText = colors.tabItem_HotText
             }
             else
             {
-                colorText = colors.tabItem_UnSelectedText
+                colorText = colors.tabItem_Text
             }
 
         case Button:
@@ -148,11 +148,11 @@ impl IWnd for Tab
             {
                 subRect   = &rects.tabItem_ButtonHot
                 colorImg  = colors.tabItem_ButtonHot
-                colorText = colors.tabItem_SelectedText
+                colorText = colors.tabItem_HotText
             }
             else
             {
-                colorText = colors.tabItem_UnSelectedText
+                colorText = colors.tabItem_Text
             }
 
         case PushButton:
@@ -161,7 +161,7 @@ impl IWnd for Tab
                 subRect       = &rects.tabItem_PushButtonSelected
                 subRectBorder = &rects.tabItem_PushButtonBorder
                 colorImg      = colors.tabItem_PushButtonSelected
-                colorText     = colors.tabItem_SelectedText
+                colorText     = colors.tabItem_PushButtonSelectedText
                 colorBorder   = colors.tabItem_PushButtonSelectedBorder
             }
             elif idx == me.hotIdx
@@ -169,7 +169,7 @@ impl IWnd for Tab
                 subRect       = &rects.tabItem_PushButtonHot
                 subRectBorder = &rects.tabItem_PushButtonBorder
                 colorImg      = colors.tabItem_PushButtonHot
-                colorText     = colors.tabItem_SelectedText
+                colorText     = colors.tabItem_PushButtonHotText
                 colorBorder   = colors.tabItem_PushButtonHotBorder
             }
             else
@@ -177,8 +177,8 @@ impl IWnd for Tab
                 subRect       = &rects.tabItem_PushButtonBk
                 subRectBorder = &rects.tabItem_PushButtonBorder
                 colorImg      = colors.tabItem_PushButtonBk
-                colorText     = colors.tabItem_UnSelectedText
-                colorBorder   = colors.tabItem_PushButtonBkBorder
+                colorText     = colors.tabItem_PushButtonText
+                colorBorder   = colors.tabItem_PushButtonBorder
             }
 
         case Transparent:
