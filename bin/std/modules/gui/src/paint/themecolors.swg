@@ -1085,7 +1085,7 @@ impl ThemeColors
 
             .imageRect_Fg = White
 
-            .embInfo_CriticalBk      = 0xFF9F1010
+            .embInfo_CriticalBk      = 0xFF9F6060
             .embInfo_CriticalText    = White
             .embInfo_InformationBk   = 0xFF404060
             .embInfo_InformationText = White

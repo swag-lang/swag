@@ -458,7 +458,7 @@ impl MainWnd
                 if !errorReg
                 {
                     var msg = Format.toString("Cannot register global shortcut '%'. ", Input.getKeyName(mdf, key))
-                    msg += "Another running application is probably already using it !"
+                    msg += "Another running application is probably already using it!"
                     discard EmbInfoCtrl.create(me.editWnd, msg, .Critical)
                 }
 

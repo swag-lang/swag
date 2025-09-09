@@ -21,9 +21,11 @@ struct EmbInfoCtrl
 {
     using frameWnd:     FrameWnd
     label:              *Label
+    iconBtn:            *IconButton
     ctrlFlags:          EmbInfoCtrlFlags = .Zero
     sigOnClose:         SigArray'func||(*EmbInfoCtrl)
     timer:              *Timer
+    kind:               EmbInfoCtrlKind
 }
 
 impl IWnd for EmbInfoCtrl
@@ -39,28 +41,28 @@ impl IWnd for EmbInfoCtrl
         if me.timer:
             me.getApp().deleteTimer(me.timer)
     }
+
+    mtd impl onNotifyEvent(evt: *NotifyEvent)
+    {
+        if evt.ntfyKind == .ThemeChanged
+        {
+            me.setColors()
+        }
+    }
 }
 
 impl EmbInfoCtrl
 {
-    // Create the popup list, but do not display it
-    func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, flags = EmbInfoCtrlFlags.Top, height = 40)->*EmbInfoCtrl
+    mtd setColors()
     {
-        let theme  = parent.getTheme()
-        let colors = parent.getThemeColors()
+        let theme  = me.getTheme()
+        let colors = me.getThemeColors()
 
-        with let ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
+        with me.label
         {
-            .wndFlags.add(.NoScroll)
-            .dockStyle = flags.has(.Top) ? .Top : .Bottom
-            .label     = Label.create(ctrl, name, {})
-            .ctrlFlags = flags
-        }
-
-        with ctrl.label
-        {
+            .style.clearStyleSheetColors()
             .backgroundStyle = .Window
-            switch kind
+            switch me.kind
             {
             case Critical:
                 .icon = theme.getIcon64(.Critical, 28)
@@ -78,7 +80,28 @@ impl EmbInfoCtrl
                 .iconColor = Argb.White
                 .textColor = colors.embInfo_MessageText.argb
             }
+        }
 
+        me.iconBtn.iconColor = me.label.textColor
+    }
+
+    // Create the popup list, but do not display it
+    func create(parent: *Wnd, name: string, kind: EmbInfoCtrlKind, flags = EmbInfoCtrlFlags.Top, height = 40)->*EmbInfoCtrl
+    {
+        let theme  = parent.getTheme()
+        let colors = parent.getThemeColors()
+
+        with let ctrl = Wnd.create'EmbInfoCtrl(parent, {0, 0, 0, height})
+        {
+            .wndFlags.add(.NoScroll)
+            .dockStyle = flags.has(.Top) ? .Top : .Bottom
+            .label     = Label.create(ctrl, name, {})
+            .ctrlFlags = flags
+            .kind      = kind
+        }
+
+        with ctrl.label
+        {
             .horzAlignmentText = .Left
             .horzAlignmentIcon = .Left
             .paddingIcon.x     = 10
@@ -87,11 +110,10 @@ impl EmbInfoCtrl
             .dockStyle         = .Center
         }
 
-        with let btn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
+        with ctrl.iconBtn = IconButton.create(ctrl.label, theme.getIcon24(.WndClose, 18), {0, 0, 32, 32})
         {
-            .margin    = 5
-            .dockStyle = .Right
-            .iconColor = ctrl.label.textColor
+            .margin      = 5
+            .dockStyle   = .Right
             .sigPressed += func|ctrl|(btn)
             {
                 ctrl.sigOnClose.call(ctrl)
@@ -101,6 +123,8 @@ impl EmbInfoCtrl
 
         if flags.has(.AutoHide):
             ctrl.timer = ctrl.addTimer(4's)
+
+        ctrl.setColors()
 
         parent.applyLayout()
         return ctrl
