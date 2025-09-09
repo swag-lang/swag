@@ -93,21 +93,6 @@ impl IRichEditLexer for RichEditLexerSwag
         me.mapStyles[State.Attribute]         = Preprocessor
         me.mapStyles[State.Error]             = Error
 
-        ed.styles[Comment].colFg      = 0xFF6A9955
-        ed.styles[Keyword].colFg      = 0xFF569cd6
-        ed.styles[Control].colFg      = 0xFFD8A0DF
-        ed.styles[Intrinsic].colFg    = 0xFFDCDCAA
-        ed.styles[Buildin].colFg      = 0xFFF67F56
-        ed.styles[Function].colFg     = 0xFFFF7411
-        ed.styles[Preprocessor].colFg = 0xFFAAAAAA
-        ed.styles[CharEscape].colFg   = 0xFFD7BA7D
-        ed.styles[Type].colFg         = 0xFFF6CC86
-        ed.styles[Class].colFg        = 0xFF4EC9B0
-        ed.styles[String].colFg       = 0xFFCE9178
-        ed.styles[Character].colFg    = 0xFFCE9178
-        ed.styles[Numeric].colFg      = 0xFFB5CEA8
-        ed.styles[Error].colFg        = 0xFFF44747
-
         me.mapWords.add("if", State.Control)
         me.mapWords.add("else", State.Control)
         me.mapWords.add("elif", State.Control)
@@ -398,6 +383,25 @@ impl IRichEditLexer for RichEditLexerSwag
         me.mapWords.add("#ref", State.Modifier)
         me.mapWords.add("#constref", State.Modifier)
         me.mapWords.add("#null", State.Modifier)
+    }
+
+    mtd impl setupTheme(ed: *RichEditCtrl)
+    {
+        using RichEditLexerSwag.Style
+        ed.styles[Comment].colFg      = 0xFF6A9955
+        ed.styles[Keyword].colFg      = 0xFF569cd6
+        ed.styles[Control].colFg      = 0xFFD8A0DF
+        ed.styles[Intrinsic].colFg    = 0xFFDCDCAA
+        ed.styles[Buildin].colFg      = 0xFFF67F56
+        ed.styles[Function].colFg     = 0xFFFF7411
+        ed.styles[Preprocessor].colFg = 0xFFAAAAAA
+        ed.styles[CharEscape].colFg   = 0xFFD7BA7D
+        ed.styles[Type].colFg         = 0xFFF6CC86
+        ed.styles[Class].colFg        = 0xFF4EC9B0
+        ed.styles[String].colFg       = 0xFFCE9178
+        ed.styles[Character].colFg    = 0xFFCE9178
+        ed.styles[Numeric].colFg      = 0xFFB5CEA8
+        ed.styles[Error].colFg        = 0xFFF44747
     }
 
     mtd impl insertRune(ed: *RichEditCtrl, ch: rune)->bool

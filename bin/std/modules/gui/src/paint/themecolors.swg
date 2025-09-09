@@ -156,7 +156,6 @@ struct ThemeColors
     edit_Text:                            Color
     edit_TextUnit:                        Color
     edit_DisabledText:                    Color
-    edit_SelectedText:                    Color
     edit_SelectedBk:                      Color
     edit_ErrorBorder:                     Color
 
@@ -532,7 +531,6 @@ impl ThemeColors
             .edit_Text           = White
             .edit_TextUnit       = Disabled
             .edit_DisabledText   = Disabled
-            .edit_SelectedText   = White
             .edit_SelectedBk     = Blue
             .edit_ErrorBorder    = 0xFFFF0000
 
@@ -907,8 +905,7 @@ impl ThemeColors
             .edit_Text           = Gray1
             .edit_TextUnit       = Gray4
             .edit_DisabledText   = Gray5
-            .edit_SelectedText   = White
-            .edit_SelectedBk     = Blue
+            .edit_SelectedBk     = Color.getLighter(Color.fromArgb(Blue), 0.5)
             .edit_ErrorBorder    = 0xFFFF0000
 
             .richEdit_Bk             = Gray8
@@ -974,9 +971,9 @@ impl ThemeColors
             .tabItem_Text                     = Color.getDarker(Color.fromArgb(Gray1), 0.3)
             .tabItem_FlatSelected             = Blue
             .tabItem_FlatHot                  = Gray1
-            .tabItem_RoundSelected            = Gray8
+            .tabItem_RoundSelected            = Gray7
             .tabItem_RoundHot                 = Gray7
-            .tabItem_ButtonSelected           = Gray8
+            .tabItem_ButtonSelected           = Gray7
             .tabItem_ButtonHot                = Gray7
             .tabItem_PushButtonSelected       = Blue
             .tabItem_PushButtonSelectedText   = White
@@ -987,10 +984,10 @@ impl ThemeColors
             .tabItem_PushButtonText           = Gray1
             .tabItem_PushButtonBk             = Gray8
             .tabItem_PushButtonBorder         = Gray1
-            .tabBar_FlatBk                    = Gray7
+            .tabBar_FlatBk                    = Gray8
             .tabBar_RoundBk                   = Gray8
-            .tabView_FlatBk                   = Gray8
-            .tabView_RoundBk                  = Gray8
+            .tabView_FlatBk                   = Gray7
+            .tabView_RoundBk                  = Gray7
 
             .menuPopup_Bk         = White
             .menuPopup_Border     = Gray7

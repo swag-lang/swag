@@ -317,6 +317,7 @@ struct NotifyEvent
     enum Kind
     {
         ChildFocusChanged
+        ThemeChanged
     }
 
     ntfyKind:     Kind = undefined

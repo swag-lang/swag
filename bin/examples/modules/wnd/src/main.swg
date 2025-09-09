@@ -65,5 +65,8 @@ const MAX_PAGES = 8
     //surface1.show()
 
     app.theme.colors.setLight()
+    //app.theme.colors.setDark()
+    app.themeHasChanged()
+
     app.run()
 }

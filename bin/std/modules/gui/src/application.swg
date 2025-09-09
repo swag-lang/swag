@@ -629,6 +629,11 @@ impl Application
             wnd.invalidate()
             foreach c in wnd.childs:
                 updateTheme(c)
+
+            var evt = NotifyEvent{}
+            evt.accepted = false
+            evt.ntfyKind = .ThemeChanged
+            wnd.sendEvent(&evt)
         }
 
         me.dirtyTheme += 1

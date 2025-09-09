@@ -75,6 +75,19 @@ struct RichEditCtrl
     selBegUndo:                  RichEditCursor
 }
 
+internal impl IWnd for RichEditCtrl
+{
+    mtd impl onNotifyEvent(evt: *NotifyEvent)
+    {
+        if evt.ntfyKind == .ThemeChanged
+        {
+            me.setDefaultStyles()
+            if me.lexer:
+                me.lexer.setupTheme(me)
+        }
+    }
+}
+
 internal impl RichEditCtrl
 {
     mtd getMarginLeft()->f32
@@ -323,7 +336,7 @@ impl RichEditCtrl
             me.frameWnd.style.addStyleSheetColors(Format.toString("frameWnd_Bk %", mdlBk))
             me.scrollWnd.style.addStyleSheetColors(Format.toString("scrollBar_Bk %", mdlBk))
 
-            me.stylesSelect[0].colFg = colors.edit_SelectedText
+            me.stylesSelect[0].colFg = colors.edit_Text
             me.stylesSelect[0].colBk = colors.edit_SelectedBk
             me.stylesSelect[1].colFg = 0
             me.stylesSelect[1].colBk = 0
@@ -388,6 +401,7 @@ impl RichEditCtrl
     {
         me.lexer = lex
         me.lexer.setup(me)
+        me.lexer.setupTheme(me)
     }
 
     // Lex the full text

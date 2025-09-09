@@ -1,6 +1,7 @@
 public interface IRichEditLexer
 {
-    func setup(me, ed: *RichEditCtrl);
-    func insertRune(me, ed: *RichEditCtrl, ch: rune)->bool;
-    func compute(me, linePrev: #null *RichEditLine, line: *RichEditLine, lineNext: #null *RichEditLine);
+    mtd setup(ed: *RichEditCtrl);
+    mtd setupTheme(ed: *RichEditCtrl);
+    mtd insertRune(ed: *RichEditCtrl, ch: rune)->bool;
+    mtd compute(linePrev: #null *RichEditLine, line: *RichEditLine, lineNext: #null *RichEditLine);
 }
