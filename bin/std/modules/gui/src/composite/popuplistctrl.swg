@@ -5,10 +5,6 @@ struct PopupListCtrlItem
 {
     using base:      Item
     isSeparator:     bool
-
-    aniSel:          BlendColor{speed: 10}
-    aniText:         BlendColor{speed: 10}
-    aniCheck:        BlendColor{speed: 10}
 }
 
 struct PopupListCtrl
@@ -168,16 +164,12 @@ impl IWnd for PopupListView
                 colorCheck = colors.popupList_HotCheckMark
             }
 
-            i.aniSel.apply(me, colorSel)
-            i.aniText.apply(me, colorText)
-            i.aniCheck.apply(me, colorCheck)
-
-            theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, i.aniSel.cur())
+            theme.drawSubRect(painter, labelPos, &rects.selectionBox_Bk, colorSel)
             labelPos.moveLeft(metrics.popupList_Padding)
 
             // Icon
             if i.icon.isValid():
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, i.aniText.cur())
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
             if me.list.maxIconSize:
                 labelPos.moveLeft(me.list.maxIconSize + metrics.popupList_IconTextMargin)
 
@@ -186,7 +178,7 @@ impl IWnd for PopupListView
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
             // Text
-            theme.setTextColors(&format, i.aniText.cur())
+            theme.setTextColors(&format, colorText)
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
@@ -200,7 +192,7 @@ impl IWnd for PopupListView
                 labelPos.y      = labelPos.vertCenter() - (fntHeight * 0.5)
                 labelPos.width  = fntHeight
                 labelPos.height = fntHeight
-                theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, i.aniCheck.cur())
+                theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, colorCheck)
             }
 
             y += me.list.heightItem
