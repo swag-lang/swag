@@ -7,7 +7,6 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
-#pragma optimize("", off)
 
 bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
@@ -43,9 +42,6 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
-    if (node->token.text == "x")
-        int a = 0;
-    
     // Debug
     context->bc->localVars.push_back(context->node);
 
