@@ -43,7 +43,7 @@ impl Properties
             }
         }
 
-        btn.sigPaintIcon = func|color|(btn, bc, pos)
+        btn.sigPaintIcon = func|color|(btn, bc, pos, paintFlags)
         {
             bc.painter.setParams(.Antialiased)
             if !color.isOpaque():

@@ -105,9 +105,12 @@ impl PropWnd
         with let btn = IconButton.create(stack, {}, {0, 0, w, h})
         {
             .setForm(.RoundSquare)
-            .style.addStyleSheetColors("btnIcon_Bk        $lighterMedium")
-            .style.addStyleSheetColors("btnIcon_HotBk     $lighterBig")
-            .style.addStyleSheetColors("btnIcon_PressedBk $lighterVeryBig")
+            .style.addStyleSheetColors("btnIcon_Bk                  $lighterMedium")
+            .style.addStyleSheetColors("btnIcon_HotBk               $lighterBig")
+            .style.addStyleSheetColors("btnIcon_PressedBk           $lighterVeryBig")
+            .style.addStyleSheetColors("btnIcon_CheckedPressedIcon  $btnIcon_Text")
+            .style.addStyleSheetColors("btnIcon_CheckedPressedText  $btnIcon_Text")
+
             .iconBtnFlags.add(.Popup | .CheckableToggle)
             .arrowPos    = .Bottom
             .textPos     = .Top
@@ -163,7 +166,7 @@ impl PropWnd
             if curSel.kind == i:
                 btn0.isChecked = true
 
-            btn0.sigPaintIcon = func|me|(btn, bc, pos)
+            btn0.sigPaintIcon = func|me|(btn, bc, pos, flags)
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
@@ -171,7 +174,7 @@ impl PropWnd
                 rect.inflate(-9, -9)
                 rect.x     = rect.horzCenter() - rect.height * 0.5
                 rect.width = rect.height
-                var color = btn.getThemeColors().btnIcon_Icon
+                let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
 
                 #[Swag.Complete]
                 switch cast(FormShapeKind) cast(u64) btn.userData
@@ -209,7 +212,7 @@ impl PropWnd
             let btn0 = IconButton.create(frame.view, {})
             btn0.userData = cast(*void) cast(u64) i
             btn0.setForm(.RoundSquare)
-            btn0.sigPaintIcon = func|me|(btn, bc, pos)
+            btn0.sigPaintIcon = func|me|(btn, bc, pos, flags)
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormStep) me.getSelectedBaseForm()
@@ -268,14 +271,15 @@ impl PropWnd
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.beginCap == i
 
-            btn0.sigPaintIcon = func|me|(btn, bc, pos)
+            btn0.sigPaintIcon = func|me|(btn, bc, pos, flags)
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
                 var rect   = pos
                 rect.inflate(-9, -9)
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
-                var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
+                let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
+                var pen = Pen.createSolid(color, CapSize)
                 pen.begCapStyle = cap
                 pen.endCapStyle = .None
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capBegScaleX)
@@ -320,14 +324,15 @@ impl PropWnd
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.endCap == i
 
-            btn0.sigPaintIcon = func|me|(btn, bc, pos)
+            btn0.sigPaintIcon = func|me|(btn, bc, pos, flags)
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
                 var rect   = pos
                 rect.inflate(-9, -9)
                 var cap = cast(LineCapStyle) cast(u64) btn.userData
-                var pen = Pen.createSolid(btn.getThemeColors().btnIcon_Icon, CapSize)
+                let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
+                var pen = Pen.createSolid(color, CapSize)
                 pen.begCapStyle = .None
                 pen.endCapStyle = cap
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capEndScaleX)
@@ -375,14 +380,15 @@ impl PropWnd
             btn0.setForm(.RoundSquare)
             btn0.isChecked = curSel.dashStyle == i
 
-            btn0.sigPaintIcon = func|me|(btn, bc, pos)
+            btn0.sigPaintIcon = func|me|(btn, bc, pos, flags)
             {
                 bc.painter.setParams(.Antialiased)
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
                 var rect   = pos
                 rect.inflate(-9, -9)
                 var dash = cast(DashStyle) cast(u64) btn.userData
-                var pen  = Pen.createDash(dash, btn.getThemeColors().btnIcon_Icon, DashSize)
+                let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
+                var pen  = Pen.createDash(dash, color, DashSize)
                 pen.dashBlankScale = 0.25
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }
@@ -417,7 +423,7 @@ impl PropWnd
             btn.name = "Outline"
         }
 
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             bc.painter.setParams(.Antialiased)
             let curSel = me.getSelectedBaseForm()
@@ -464,7 +470,7 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name         = "Fill"
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             bc.painter.setParams(.Antialiased)
             var curSel = me.getSelectedBaseForm()
@@ -514,7 +520,7 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name         = "Shape"
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             bc.painter.setParams(.Antialiased)
             var curSel = cast(*FormShape) me.getSelectedBaseForm()
@@ -552,7 +558,7 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnColorWidth, BtnColorHeight)
         btn.name         = "Shape"
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             bc.painter.setParams(.Antialiased)
             var curSel = cast(*FormStep) me.getSelectedBaseForm()
@@ -591,7 +597,7 @@ impl PropWnd
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name = "Start"
 
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             var curSel = cast(*FormLine) me.getSelectedBaseForm()
             var rect   = pos
@@ -621,7 +627,7 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name         = "End"
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             let curSel = cast(*FormLine) me.getSelectedBaseForm()
             var rect   = pos
@@ -655,7 +661,7 @@ impl PropWnd
 
         let btn = createArrowButton(stack, BtnStyleWidth, BtnStyleHeight)
         btn.name         = "Dash"
-        btn.sigPaintIcon = func|me|(btn, bc, pos)
+        btn.sigPaintIcon = func|me|(btn, bc, pos, flags)
         {
             bc.painter.setParams(.Antialiased)
             var curSel = me.getSelectedBaseForm()

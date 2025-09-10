@@ -63,7 +63,7 @@ struct IconButton
     sigHidePopup:        SigArray'func||(*IconButton)
     sigShowPopup:        SigArray'func||(*IconButton)
     sigCheckChanged:     SigArray'func||(*IconButton)
-    sigPaintIcon:        func||(*IconButton, *PaintContext, Math.Rectangle)
+    sigPaintIcon:        func||(*IconButton, *PaintContext, Math.Rectangle, PaintItemFlags)
 
     aniBk:               BlendColor
     isChecked:           bool
@@ -149,6 +149,7 @@ impl IWnd for IconButton
             subRectBk = &rects.btnIcon_RoundSquareBk
         }
 
+        var paintFlags: PaintItemFlags = .Zero
         switch
         {
         case bc.isDisabled:
@@ -172,6 +173,15 @@ impl IWnd for IconButton
             colorText    = me.isChecked ? colors.btnIcon_CheckedText : colors.btnIcon_Text
             colorChecked = colors.btnIcon_CheckedMark
         }
+
+        if bc.isDisabled:
+            paintFlags.add(.Disabled)
+        if me.isChecked:
+            paintFlags.add(.Checked)
+        if me.isHot:
+            paintFlags.add(.Hot)
+        if me.isPressed:
+            paintFlags.add(.Pressed)
 
         if me.iconColor.a:
             colorIcon = me.iconColor
@@ -415,7 +425,7 @@ impl IWnd for IconButton
         // Icon
         if me.sigPaintIcon
         {
-            me.sigPaintIcon(me, bc, pos)
+            me.sigPaintIcon(me, bc, pos, paintFlags)
         }
         elif me.name.isEmpty() or me.iconBtnFlags.has(.HideName)
         {

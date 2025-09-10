@@ -124,7 +124,7 @@ impl InPlaceEditWnd
 
             let btnColor = .editBar.addItem({}, "color")
             btnColor.iconBtnFlags.add(.Popup)
-            btnColor.sigPaintIcon = func|frame|(btn, bc, pos)
+            btnColor.sigPaintIcon = func|frame|(btn, bc, pos, flags)
             {
                 bc.painter.setParams(.Antialiased)
                 var rect = pos
