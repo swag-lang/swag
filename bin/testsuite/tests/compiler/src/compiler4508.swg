@@ -11,7 +11,7 @@ func toto(t: T)->T
 //#[Swag.Optimize("", false)]
 #test
 {
-    var x = toto({1, 2})
+    let x = toto({1, 2})
     @assert(x.a == 1)
     @assert(x.b == 2)
 }

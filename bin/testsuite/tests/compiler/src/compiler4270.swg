@@ -6,7 +6,7 @@ struct V {}
 func toto(x: V)
     where
     {
-        var y = x
+        let y = x
         @print(y)
         return false
     }

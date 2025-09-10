@@ -1,5 +1,3 @@
-
-
 enum TOTO : string
 {
 	R = "str100"

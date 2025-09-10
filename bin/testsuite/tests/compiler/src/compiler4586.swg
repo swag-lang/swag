@@ -20,6 +20,6 @@ func toto()->String
 
 #test
 {
-    var a = toto()
+    let a = toto()
     @assert(a.val == "toto")
 }

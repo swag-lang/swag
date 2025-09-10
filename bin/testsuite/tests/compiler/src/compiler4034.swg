@@ -3,6 +3,6 @@
 //#[Swag.PrintBc]
 #test
 {
-	var a = dref #typeof(s32)
+	let a = dref #typeof(s32)
     @assert(a.name == "s32")
 }

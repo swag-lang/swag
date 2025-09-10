@@ -12,7 +12,7 @@ struct BB
     switch v
     {
     case BB.x:
-        var vv = cast(BB.x) v
+        let vv = cast(BB.x) v
         @assert(vv.item0 == 5)
     default:
         @assert(false)
@@ -23,7 +23,7 @@ struct BB
     switch v
     {
     case BB.y:
-        var vv = cast(BB.y) v
+        let vv = cast(BB.y) v
         @assert(vv.item0 == 5)
         @assert(vv.item1 == 10)
     default:

@@ -18,7 +18,7 @@ impl Point
 {
     var p1 = Point{x: 5's32, y: 10.4'f32}
     var p2 = Point{x: "Hello", y: 'c''rune}
-    var p3 = p1.mixup'(string, rune)(p2)
+    let p3 = p1.mixup'(string, rune)(p2)
 
     @assert(#typeof(p3.x) == s32)
     @assert(#typeof(p3.y) == rune)

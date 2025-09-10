@@ -7,7 +7,7 @@ struct A
 //#[Swag.PrintBc]
 func toto(x: any)
 {
-    var v = cast(A) x
+    let v = cast(A) x
     @assert(v.a == 665)
     @assert(v.b == 666)
 }

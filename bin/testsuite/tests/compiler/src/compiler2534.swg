@@ -19,7 +19,7 @@ func titi()->AA throw
 //#[Swag.PrintBc]
 #test
 {
-    var v = catch titi()
+    let v = catch titi()
     @assert(v.x == 1)
     @assert(v.y == 1)
 }

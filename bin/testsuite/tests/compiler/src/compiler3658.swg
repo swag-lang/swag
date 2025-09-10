@@ -12,6 +12,6 @@ impl A
 {
     const C: A = {1}
     const D: s32 = 2
-    var v = C - D
+    let v = C - D
     @assert(v.x == 2)
 }

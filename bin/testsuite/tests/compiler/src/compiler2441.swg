@@ -26,12 +26,12 @@ impl A
     var y: B
 
     {
-        var res = y + x
+        let res = y + x
         @assert(res.v == 15)
     }
 
     {
-        var res = y * x
+        let res = y * x
         @assert(res.v == 50)
     }
 }

@@ -145,7 +145,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         if (overload->hasFlag(OVERLOAD_RETVAL))
             continue;
 
-        // Check that variable has been changed
+        // Check that the variable has been changed
         if (sym->hasFlag(SYMBOL_USED) &&
             !overload->hasFlag(OVERLOAD_VAR_IS_LET) &&
             !overload->hasFlag(OVERLOAD_HAS_AFFECT) &&

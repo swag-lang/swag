@@ -13,7 +13,7 @@ alias myStruct = TT
 func C(x: any)
 {
     //@print(cast(s64) x.value)
-    var val = cast(myStruct) x
+    let val = cast(myStruct) x
     @assert(val.value == 456)
 }
 

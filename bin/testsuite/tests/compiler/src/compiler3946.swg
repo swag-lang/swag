@@ -12,7 +12,7 @@ func toto()->const &V
 //#[Swag.PrintBc]
 #test
 {
-    var x: V = toto()
+    let x: V = toto()
     @assert(x.x == 1)
     @assert(x.y == 10)
     G.x = 4

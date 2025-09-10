@@ -15,7 +15,7 @@ func toto()->Point
 //#[Swag.PrintBc]
 #test
 {
-	var cpt : Point = toto()
+	let cpt : Point = toto()
 	@assert(cpt.x == 10)
 	@assert(cpt.y == 20)
 }

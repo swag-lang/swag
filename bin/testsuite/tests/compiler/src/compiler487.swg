@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 #test
 {
-	var res = T()
-	var res1 = res
+	let res = T()
+	let res1 = res
 	@assert(res1.item0 == true)
 	@assert(res1.item1 == 2)
 	@assert(res1.item2 == false)

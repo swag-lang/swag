@@ -10,7 +10,7 @@ func(T) RR()->{a: Point, err: bool}
 
 #test
 {
-    var res = RR'f32()
+    let res = RR'f32()
     @assert(#typeof(res.item0.x) == f32)
     @assert(res.item0.x == 1)
     @assert(res.item0.y == 2)

@@ -3,7 +3,7 @@ func new() => {1, 2}
 //#[Swag.PrintBc]
 #test
 {
-    var a = new()
+    let a = new()
     @assert(a.item0 == 1)
     @assert(a.item1 == 2)
 

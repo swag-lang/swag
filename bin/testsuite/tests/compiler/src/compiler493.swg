@@ -5,7 +5,7 @@
 	var a = 10
 	var c = 20
 	var res = {&a, &c}
-	var res1 = res
+	let res1 = res
 	@assert(dref res1.item0 == 10)
 	@assert(dref res1.item1 == 20)
 }

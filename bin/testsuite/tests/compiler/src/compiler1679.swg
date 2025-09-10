@@ -16,7 +16,7 @@ func D(x: ...)
 //#[Swag.PrintBc]
 func E(x: any)
 {
-    var ptr = cast(TT) x
+    let ptr = cast(TT) x
     //C(cast(TT) x)
     C(ptr)
 }

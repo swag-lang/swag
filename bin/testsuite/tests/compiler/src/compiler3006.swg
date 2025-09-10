@@ -28,7 +28,7 @@ func toto()->Vector2
 
 #test
 {
-    var tt = toto()
+    let tt = toto()
     @assert(tt.x == 10)
     @assert(tt.y == 15)
 }

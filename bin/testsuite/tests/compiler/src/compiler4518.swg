@@ -9,7 +9,7 @@ func toto()->AL
 }
 #test
 {
-    var x = toto()
+    let x = toto()
     //@print(#typeof(x).name)
     @assert(x.g == 2)
 }

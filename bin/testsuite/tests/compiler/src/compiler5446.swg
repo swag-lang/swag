@@ -16,7 +16,7 @@ impl Vector2
 func toto(other: Vector2)
 {
     let v = Vector2{}
-    var p = v - other
+    let p = v - other
     @assert(p.x == -1)
 }
 

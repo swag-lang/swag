@@ -11,6 +11,6 @@ impl A
 #test
 {
     const C: A = {1}
-    var v = C << 2
+    let v = C << 2
     @assert(v.x == 2)
 }

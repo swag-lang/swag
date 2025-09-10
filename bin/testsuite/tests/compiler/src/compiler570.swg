@@ -7,7 +7,7 @@ func toto()->ret
 
 #test
 {
-	var a = toto()
+	let a = toto()
 	@assert(a.item0 == 1)
 	@assert(a.item1 == 2)
 }

@@ -4,7 +4,7 @@
 //#[Swag.PrintBc]
 #test
 {
-	var res = T(0)
+	let res = T(0)
 	@assert(res.item0 == 1)
 	@assert(res.item1 == 2)
 	@assert(res.item2 == 3)

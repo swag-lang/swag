@@ -77,7 +77,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         }
     }
 
-    // Check that left type is mutable
+    // Check that the left type is mutable
     bool isConst = false;
     if (left->hasAstFlag(AST_CONST_EXPR) ||
         left->hasAstFlag(AST_CONST) ||
@@ -90,6 +90,17 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (!isConst)
     {
+        if (left->is(AstNodeKind::IdentifierRef))
+        {
+            for (const auto& c : left->children)
+            {
+                if (c == left)
+                    break;
+                if (c->resolvedSymbolOverload())
+                    c->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_AFFECT);
+            }
+        }
+
         if (left->resolvedSymbolOverload())
             left->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_AFFECT);
         return true;

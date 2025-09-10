@@ -14,13 +14,13 @@ impl Pt
 //#[Swag.PrintBc]
 func toto(v: s64)->Pt
 {
-    var result: retval = v
+    let result: retval = v
     return result
 }
 
 //#[Swag.PrintBc]
 #test
 {
-    var res = toto(6)
+    let res = toto(6)
     @assert(res.x == 6)
 }

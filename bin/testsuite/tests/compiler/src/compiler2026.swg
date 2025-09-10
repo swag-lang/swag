@@ -5,7 +5,7 @@ struct AA
 
 func inc(x: AA)->AA
 {
-    var y: AA = x
+    let y: AA = x
     return y
 }
 

@@ -13,7 +13,7 @@ func toto()->{a,b: s64}
 
 #test
 {
-    var x = toto()
+    let x = toto()
     @assert(x.item0 == 4)
     @assert(x.item1 == 5)
 }

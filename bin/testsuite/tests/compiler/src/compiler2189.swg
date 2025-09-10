@@ -12,7 +12,7 @@ impl P
     }
 
     #[Swag.Inline]
-    func toFloat(me) -> {a: f32}
+    func toFloat(const me) -> {a: f32}
     {
         var result: retval = undefined
         result.a = me.a / 255'f32
@@ -24,7 +24,7 @@ impl P
 //#[Swag.nooptim]
 #test
 {
-    var x: P = 255'u8
-    var v = x.toFloat()
+    let x: P = 255'u8
+    let v = x.toFloat()
     @assert(v.a == 1)
 }

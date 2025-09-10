@@ -14,6 +14,6 @@ impl AA
 #test
 {
     var x: AA's64
-    var v = x.toto()
+    let v = x.toto()
     @assert(v.item0 == 5)
 }

@@ -6,7 +6,7 @@ struct AA
 //#[Swag.PrintBc]
 func inc(x: AA)->AA
 {
-    var y = x
+    let y = x
     return y
 }
 

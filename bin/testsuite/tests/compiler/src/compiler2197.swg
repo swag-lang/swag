@@ -31,6 +31,6 @@ func cstr(x: string)->CStr
 
 #test
 {
-    var v = cstr("toto")
+    let v = cstr("toto")
     @assert(@mkstring(v.buffer, cast(u64) v.length) == "toto")
 }

@@ -32,6 +32,6 @@ func toto()->{x: AA}
 //#[Swag.PrintBc]
 #test
 {
-    var x = toto()
+    let x = toto()
     @assert(x.x.x == 666)
 }

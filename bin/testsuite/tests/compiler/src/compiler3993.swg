@@ -10,6 +10,6 @@ impl V
 //#[Swag.PrintBc]
 func toto(a, b: const &V)
 {
-    var c = a - b
+    let c = a - b
     #assert(#typeof(c) == V)
 }

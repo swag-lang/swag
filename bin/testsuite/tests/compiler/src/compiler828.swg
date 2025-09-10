@@ -31,7 +31,7 @@ impl Utf8
 //#[Swag.PrintBc]
 #test
 {
-	var str: Utf8 = "toto"
+	let str: Utf8 = "toto"
 	@assert(str.length == 4)
 	@assert(str.size == 5)
 }

@@ -6,7 +6,7 @@ func toto() -> {x: s32, y: s32}
 //#[Swag.PrintBc]
 #test
 {
-	var res = toto()
+	let res = toto()
 	@assert(res.x == 1)
 	@assert(res.y == 2)
 }

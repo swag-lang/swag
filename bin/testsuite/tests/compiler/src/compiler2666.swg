@@ -20,7 +20,7 @@ impl AA
     #[Swag.Inline]
     func titi()->AA
     {
-        var result: retval = 5
+        let result: retval = 5
         return result
     }
 }

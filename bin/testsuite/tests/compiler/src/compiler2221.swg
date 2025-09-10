@@ -13,7 +13,7 @@ func toto1()->A
 
 #test
 {
-    var res = toto1()
+    let res = toto1()
     @assert(res.x == 444)
     @assert(res.y == 555)
 }

@@ -16,7 +16,7 @@ func play(game: *Game)
 func update(game: Game)->Game
 {
     @assert(game.answer == 666)
-    var result: retval = game
+    let result: retval = game
     @assert(game.answer == 666)
     return result
 }

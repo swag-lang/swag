@@ -14,6 +14,6 @@ func toto()->ST
 //#[Swag.PrintBc]
 #test
 {
-    var v = toto()
+    let v = toto()
     @assert(v.x == 20)
 }

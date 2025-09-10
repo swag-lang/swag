@@ -30,42 +30,42 @@ impl A
     var x: A
 
     {
-        var res = 1 + x
+        let res = 1 + x
         @assert(res.v == 11)
     }
 
     {
-        var res = x * 2
+        let res = x * 2
         @assert(res.v == 20)
     }
 
     {
-        var res = 2 * x
+        let res = 2 * x
         @assert(res.v == 20)
     }
 
     {
-        var res = x / 2
+        let res = x / 2
         @assert(res.v == 5)
     }
 
     {
-        var res = x % 3
+        let res = x % 3
         @assert(res.v == 1)
     }
 
     {
-        var res = x | 1
+        let res = x | 1
         @assert(res.v == 11)
     }
 
     {
-        var res = x & 1
+        let res = x & 1
         @assert(res.v == 0)
     }
 
     {
-        var res = x ^ 1
+        let res = x ^ 1
         @assert(res.v == 11)
     }
 }

@@ -200,7 +200,7 @@ func atoF64(s: string)-> { value: f64, eat: u32 } throw
 		return val, n, nil
 	}*/
 
-	var read = try readF64(s)
+	let read = try readF64(s)
     result.eat = read.eat
 
     if !read.trunc
@@ -1050,7 +1050,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 #test
 {
 	{
-		var x = assume readF64("1.0")
+		let x = assume readF64("1.0")
 		@assert(x.mantissa == 10)
 		@assert(x.exp == -1)
 		@assert(x.neg == false)
@@ -1058,7 +1058,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 	}
 
 	{
-		var x = assume readF64("-11.1")
+		let x = assume readF64("-11.1")
 		@assert(x.mantissa == 111)
 		@assert(x.exp == -1)
 		@assert(x.neg == true)
@@ -1066,7 +1066,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 	}
 
 	{
-		var x = assume readF64("66e-1")
+		let x = assume readF64("66e-1")
 		@assert(x.mantissa == 66)
 		@assert(x.exp == -1)
 		@assert(x.neg == false)
@@ -1077,7 +1077,7 @@ func mulU64(x, y: u64) -> {hi: u64, lo: u64}
 #test
 {
     {
-        var x = assume atoF64("1.0")
+        let x = assume atoF64("1.0")
         @assert(x.value == 1.0)
         @assert(x.eat == 3)
     }
