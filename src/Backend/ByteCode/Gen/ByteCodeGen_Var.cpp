@@ -7,6 +7,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Wmf/Module.h"
+#pragma optimize("", off)
 
 bool ByteCodeGen::emitLocalVarDeclBefore(ByteCodeGenContext* context)
 {
@@ -42,6 +43,9 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
 {
     const auto node = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
 
+    if (node->token.text == "x")
+        int a = 0;
+    
     // Debug
     context->bc->localVars.push_back(context->node);
 
@@ -105,18 +109,18 @@ bool ByteCodeGen::emitLocalVarDecl(ByteCodeGenContext* context)
         }
     }
 
-    // User specific initialization with a right side
+    // User-specific initialization with a right side
     if (node->assignment && !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
         // @DirectInlineLocalVar
         // The local variable is using the storage from the inline call.
         // No need to make a copy
-        if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE))
+        if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_INLINE_STORAGE) && !node->assignment->hasComputedValue())
         {
             freeRegisterRC(context, node->assignment);
         }
         // @ForceNoAffect
-        else if (node->assignment->resultRegisterRc.size())
+        else if (!node->assignment->resultRegisterRc.empty())
         {
             if (!node->hasSemFlag(SEMFLAG_PRE_CAST))
             {
