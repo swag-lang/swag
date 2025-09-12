@@ -186,8 +186,19 @@ namespace
                 const auto srcAddr     = reinterpret_cast<SwagSlice*>(srcSegment->address(srcOffset));
                 const auto typeValue   = reinterpret_cast<ExportedTypeValue*>(srcAddr);
                 const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(dstSegment, typeValue->pointedType);
-                if (newTypeInfo->isString())
+                if (newTypeInfo->isString() && typeValue->value)
                 {
+                    const auto dstAddr      = reinterpret_cast<SwagSlice*>(dstSegment->address(dstOffset + c->offset));
+                    const auto dstTypeValue = reinterpret_cast<ExportedTypeValue*>(dstAddr);
+                    const auto offsetSlice  = dstSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&dstTypeValue->value));
+                    const auto dstSlice     = static_cast<SwagSlice*>(dstTypeValue->value);
+                    dstSegment->addInitPtr(dstOffset + c->offset, offsetSlice);
+
+                    const auto srcSlice = static_cast<SwagSlice*>(typeValue->value);
+                    dstSlice->count     = srcSlice->count;
+                    const Utf8     str{*srcSlice};
+                    const uint32_t offsetStr = dstSegment->addString(str, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
+                    dstSegment->addInitPtr(offsetSlice, offsetStr);
                 }
             }
         }
