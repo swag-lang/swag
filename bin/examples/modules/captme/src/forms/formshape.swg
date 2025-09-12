@@ -194,7 +194,7 @@ impl IForm for FormShape
             }
 
             bk.a           = 5
-            me.borderColor = Argb.White
+            me.borderColor = g_App.theme.colors.btnIcon_Icon
             painter.setAntialiased(false)
         }
 

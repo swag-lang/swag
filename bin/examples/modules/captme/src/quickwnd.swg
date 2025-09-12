@@ -673,8 +673,11 @@ impl QuickWnd
             btnp.formItf.setBaseForm(cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
             Capture.paintForm(painter, {}, {0, 0, 64, 64}, btnp.formItf, zoom: 1, quickMode: true)
 
-            if @countof(title):
-                painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, Argb.White)
+            if @countof(title)
+            {
+                let textColor = g_App.theme.colors.btnIcon_Text
+                painter.drawStringCenter(rect.horzCenter(), rect.bottom(), title, btnp.getFont().regular, textColor)
+            }
         }
 
         let edMode = me.main.editMode == .Selection ? me.main.getEditMode() : me.main.editMode

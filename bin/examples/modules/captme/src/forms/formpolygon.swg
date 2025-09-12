@@ -209,7 +209,7 @@ impl IForm for FormPolygon
             }
 
             bk.a           = 5
-            me.borderColor = Argb.White
+            me.borderColor = g_App.theme.colors.btnIcon_Icon
             painter.removeParams(.Antialiased)
         }
 

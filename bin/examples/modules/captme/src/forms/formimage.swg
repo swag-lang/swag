@@ -388,6 +388,8 @@ impl IForm for FormImage
             }
         }
 
+        let iconColor = g_App.theme.colors.btnIcon_Icon
+
         if me.borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
             painter.fillRect(pp, me.borderColor)
         else
@@ -413,7 +415,7 @@ impl IForm for FormImage
                 }
 
                 icon.sizeX, icon.sizeY = 32
-                icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, Argb.White)
+                icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, iconColor)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }
@@ -425,7 +427,7 @@ impl IForm for FormImage
             {
                 painter.fillRect(pp, me.backColor)
                 var icon = Icon.from(&g_Main.icons48, 13)
-                icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, Argb.White)
+                icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, iconColor)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }

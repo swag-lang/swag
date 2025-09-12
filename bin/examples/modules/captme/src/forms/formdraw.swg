@@ -206,7 +206,7 @@ impl IForm for FormDraw
                 dash  = .Dash
             }
 
-            me.borderColor = Argb.White
+            me.borderColor = g_App.theme.colors.btnIcon_Icon
             painter.removeParams(.Antialiased)
             me.backColor.a = 5
             painter.fillPath(&pl, me.backColor)
