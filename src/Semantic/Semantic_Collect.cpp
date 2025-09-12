@@ -888,13 +888,19 @@ bool Semantic::copyStructSegSeg(SemanticContext* context, DataSegment* dstSegmen
                 dstSegment->addInitPtr(fieldDstOffset, offsetSlice);
                 dstSlice->count = srcSlice->count;
 
-                const auto typeSlice = castTypeInfo<TypeInfoSlice>(resolvedType, TypeInfoKind::Slice);
-                if (typeSlice->pointedType->isString())
-                    return Report::internalError(context->node, "TypeValue slice of string");
-
-                const uint32_t bufDstOffset = dstSegment->reserve(static_cast<uint32_t>(srcSlice->count) * typeSlice->pointedType->sizeOf, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
+                const auto     typeSlice    = castTypeInfo<TypeInfoSlice>(resolvedType, TypeInfoKind::Slice);
+                const auto     sizeOf       = static_cast<uint32_t>(srcSlice->count) * typeSlice->pointedType->sizeOf;
+                const uint32_t bufDstOffset = dstSegment->reserve(sizeOf, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
                 dstSegment->addInitPtr(offsetSlice, bufDstOffset);
-                std::copy_n(static_cast<uint8_t*>(srcSlice->buffer), srcSlice->count * typeSlice->pointedType->sizeOf, static_cast<uint8_t*>(dstSlice->buffer));
+                std::copy_n(static_cast<uint8_t*>(srcSlice->buffer), sizeOf, static_cast<uint8_t*>(dstSlice->buffer));
+            }
+            else if (resolvedType->isArray())
+            {
+                const auto     typeArray    = castTypeInfo<TypeInfoArray>(resolvedType, TypeInfoKind::Array);
+                const auto     sizeOf       = typeArray->count * typeArray->pointedType->sizeOf;
+                const uint32_t bufDstOffset = dstSegment->reserve(sizeOf, reinterpret_cast<uint8_t**>(&dstTypeValue->value));
+                dstSegment->addInitPtr(fieldDstOffset, bufDstOffset);
+                std::copy_n(static_cast<uint8_t*>(srcTypeValue->value), sizeOf, static_cast<uint8_t*>(dstTypeValue->value));
             }
         }
     }
