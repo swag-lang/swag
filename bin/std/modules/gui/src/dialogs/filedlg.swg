@@ -100,9 +100,10 @@ internal impl FileDlg
 
             me.comboPathStr.add(str)
 
-            let one = all[i]
-            var ic  = me.getApp().getDirectoryIcon(one)
-            me.comboPath.addItem(one, icon: ic)
+            let one  = all[i]
+            var icon = me.getApp().getDirectoryIcon(one)
+            icon.color = Pixel.Argb.White
+            me.comboPath.addItem(one, icon: icon)
         }
 
         me.comboPath.selectItem(0)
@@ -115,9 +116,10 @@ internal impl FileDlg
 
         foreach v in me.dlgOptions.shortcuts
         {
-            var c  = Env.getSpecialDirectory(v.item0)
-            var ic = me.getApp().getSpecialDirectoryIcon(v.item0, true)
-            l                = me.treeCtrl.createLine(v.item1, icon: ic)
+            var c    = Env.getSpecialDirectory(v.item0)
+            var icon = me.getApp().getSpecialDirectoryIcon(v.item0, true)
+            icon.color       = Pixel.Argb.White
+            l                = me.treeCtrl.createLine(v.item1, icon)
             l.userData0      = cast(*void) me.treePathStr.count
             l.leftTextMargin = 10
             me.treePathStr.add(c)
@@ -130,8 +132,9 @@ internal impl FileDlg
         foreach v in volumes
         {
             v.removeBack()
-            var ic = me.getApp().getDirectoryIcon(v, true)
-            l                = me.treeCtrl.createLine(v.toString(), icon: ic)
+            var icon = me.getApp().getDirectoryIcon(v, true)
+            icon.color       = Pixel.Argb.White
+            l                = me.treeCtrl.createLine(v.toString(), icon)
             l.userData0      = cast(*void) me.treePathStr.count
             l.leftTextMargin = 10
             me.treePathStr.add(v)
@@ -189,6 +192,7 @@ internal impl FileDlg
 
             // Content
             var icon = me.getApp().getFileDirectoryIcon(fname, fi.isDirectory())
+            icon.color = Pixel.Argb.White
             let line = me.listCtrl.createLine(fname, icon)
             line.userData0 = fi
             line.setItem(1, fi.lastWriteTime.toString(.DateTimeIso))

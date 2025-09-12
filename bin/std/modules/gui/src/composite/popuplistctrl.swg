@@ -168,8 +168,12 @@ impl IWnd for PopupListView
             labelPos.moveLeft(metrics.popupList_Padding)
 
             // Icon
-            if i.icon.isValid():
-                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, colorText)
+            if i.icon.isValid()
+            {
+                let iconColor = i.icon.color.a ? i.icon.color : colorText
+                i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, iconColor)
+            }
+
             if me.list.maxIconSize:
                 labelPos.moveLeft(me.list.maxIconSize + metrics.popupList_IconTextMargin)
 

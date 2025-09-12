@@ -105,8 +105,12 @@ impl IWnd for ComboBox
             itemRect.width -= metrics.comboBox_RightMargin
             itemRect.moveLeft(metrics.comboBox_Padding)
 
-            if item.icon.isValid():
-                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, me.aniText.cur())
+            if item.icon.isValid()
+            {
+                let iconColor = item.icon.color.a ? item.icon.color : me.aniText.cur()
+                item.icon.paint(painter, itemRect.x, itemRect.vertCenter() - item.icon.sizeY * 0.5, iconColor)
+            }
+
             if me.maxIconSize:
                 itemRect.moveLeft(me.maxIconSize + metrics.comboBox_IconTextMargin)
 

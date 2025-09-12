@@ -113,12 +113,13 @@ impl Theme
             return
 
         var pos = position
+        let iconColor = icon.color.a ? icon.color : stringFormat.palette[0]
 
         // Icon alone
         if count == 0
         {
             pos.x = pos.horzCenter() - icon.sizeX * 0.5
-            icon.paint(painter, pos.x, pos.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
+            icon.paint(painter, pos.x, pos.vertCenter() - (icon.sizeY * 0.5), iconColor)
             return
         }
 
@@ -131,7 +132,7 @@ impl Theme
 
         // Icon
         if icon.isValid():
-            icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), stringFormat.palette[0])
+            icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), iconColor)
     }
 
     mtd setTextColors(fmt: *RichStringFormat, mainColor: Color)

@@ -7,6 +7,7 @@ struct Icon
     index:         s32
     sizeX:         f32 = 24
     sizeY:         f32 = 24
+    color:         Color
 }
 
 impl Icon

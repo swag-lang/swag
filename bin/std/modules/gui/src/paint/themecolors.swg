@@ -736,10 +736,10 @@ impl ThemeColors
         const Blue           = 0xFF1473E6
         const LightBlue      = 0xFF2483F6
         const Disabled       = 0x5F000000
-        const LighterSmall   = 0x10000000
-        const LighterMedium  = 0x20000000
-        const LighterBig     = 0x30000000
-        const LighterVeryBig = 0x40000000
+        const LighterSmall   = 0x10888888
+        const LighterMedium  = 0x20888888
+        const LighterBig     = 0x30888888
+        const LighterVeryBig = 0x40888888
         const White          = 0xFFFFFFFF
         const Gray1          = 0xFF505050     // primary text
         const Gray2          = 0xFF606060     // secondary text
@@ -779,7 +779,7 @@ impl ThemeColors
 
             .view_Bk = White
 
-            .dlg_Bk       = Gray8
+            .dlg_Bk       = Gray7
             .dlg_BtnBarBk = Gray7
 
             .btnPush_StrongText   = Gray1
@@ -1053,7 +1053,7 @@ impl ThemeColors
             .listItem_HotBk             = Color.getDarker(Color.fromArgb(Gray8), 0.04)
             .listItem_DisabledText      = Gray5
             .listItem_Text              = Gray1
-            .listItem_Separator         = Color.getDarker(Color.fromArgb(Gray8), 0.12)
+            .listItem_Separator         = Color.getLighter(Color.fromArgb(Gray1), 0.12)
             .listItem_AlternateBk       = 0x08000000
             .listItem_Line              = Gray7
 
