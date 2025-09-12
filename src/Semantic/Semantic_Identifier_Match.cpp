@@ -187,6 +187,7 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     context->baseJob->jobsToAdd.push_back(funcDecl->pendingLambdaJob);
 }
 
+#pragma optimize("", off)
 bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier)
 {
     if (!identifier->callParameters)
@@ -255,11 +256,19 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
             // The UFCS parameter is a value, and we want a reference.
             // Mark the symbol with OVERLOAD_HAS_MAKE_POINTER because it will avoid warning of non-usage.
-            if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
+            if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF | CAST_RESULT_FORCE_POINTER))
             {
                 const auto idRef    = identifier->identifierRef();
-                const auto id       = idRef->children[idRef->childCount() - 2];
-                const auto overload = id->resolvedSymbolOverload();
+                auto       id       = idRef->children[idRef->childCount() - 2];
+                auto       overload = id->resolvedSymbolOverload();
+                
+                if (overload && overload->symbol->is(SymbolKind::Struct))
+                {
+                    SWAG_ASSERT(idRef->childCount() >= 3);
+                    id       = idRef->children[idRef->childCount() - 3];
+                    overload = id->resolvedSymbolOverload();
+                }
+
                 if (overload)
                 {
                     const auto     declParam = oneMatch.solvedParameters[i]->declNode;
@@ -333,10 +342,9 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             }
             else if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF))
             {
-                const auto front = nodeCall->firstChild();
-
                 // We have a value, and we need a reference.
                 // Force to keep the address
+                const auto front = nodeCall->firstChild();
                 if (front->is(AstNodeKind::IdentifierRef))
                 {
                     front->lastChild()->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
@@ -2183,4 +2191,3 @@ bool Semantic::matchRetval(SemanticContext* context, VectorNative<OneSymbolMatch
     addSymbolMatch(symbolsMatch, typeFct->returnType->declNode->resolvedSymbolName(), nullptr, 0);
     return true;
 }
-

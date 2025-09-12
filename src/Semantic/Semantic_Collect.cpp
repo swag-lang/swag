@@ -825,7 +825,6 @@ bool Semantic::derefConstant(SemanticContext* context, uint8_t* ptr, const Symbo
 }
 
 // When we copy a struct content from one segment to another, we must also initialize initPtr.
-#pragma optimize("", off)
 bool Semantic::copyStructSegSeg(SemanticContext* context, DataSegment* dstSegment, uint32_t dstOffset, DataSegment* srcSegment, uint32_t srcOffset, TypeInfo* typeInfo)
 {
     // Check if this is a TypeValue struct

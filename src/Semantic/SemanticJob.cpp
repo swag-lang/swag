@@ -49,7 +49,6 @@ void SemanticJob::spawnJob(AstNode* node)
     nodes.pop_back();
 }
 
-#pragma optimize("", off)
 bool SemanticJob::spawnJob()
 {
     const auto node = context.node;

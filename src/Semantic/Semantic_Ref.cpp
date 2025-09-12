@@ -782,7 +782,6 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 if (arrayNode->structFlatParams.empty())
                 {
                     arrayNode->structFlatParams.push_back(arrayNode->access);
-
                     AstNode* child = arrayNode->array;
                     while (child && child->is(AstNodeKind::ArrayPointerIndex))
                     {

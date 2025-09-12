@@ -2983,7 +2983,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
 
     const auto toTypePointer = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
 
-    // Pointer to struct to pointer to struct. Take care of using
+    // Pointer to struct to a pointer to struct. Take care of using
     if (fromType->isPointer() && toTypePointer->pointedType->isStruct())
     {
         const auto fromTypePointer = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer);
@@ -3002,7 +3002,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Struct to pointer to struct
+    // Struct to a pointer to struct
     // Accept only if this is UFCS, to simulate calling a method of a base 'class'
     if (castFlags.has(CAST_FLAG_UFCS) && fromType->isStruct() && toTypePointer->pointedType->isStruct())
     {
@@ -3014,6 +3014,8 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         {
             if (!fromStruct->isSame(toStruct, castFlags.with(CAST_FLAG_CAST)))
                 context->castFlagsResult.add(CAST_RESULT_STRUCT_CONVERT);
+            if (!toTypePointer->isConst())
+                context->castFlagsResult.add(CAST_RESULT_FORCE_POINTER);
             return true;
         }
     }
@@ -3057,7 +3059,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
 
         // @PointerArithmetic
-        // Cannot cast from non arithmetic to arithmetic
+        // Cannot cast from non-arithmetic to arithmetic
         if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
         {
             // Fine to compare pointers for examples, but not to affect them.
@@ -3067,7 +3069,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Array to pointer of the same type
+    // Array to a pointer of the same type
     if (fromType->isArray())
     {
         const auto fromTypeArray = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
@@ -3085,7 +3087,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Slice to pointer of the same type
+    // Slice to a pointer of the same type
     if (fromType->isSlice())
     {
         const auto fromTypeSlice = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Slice);
@@ -3103,7 +3105,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Struct/Interface to pointer
+    // Struct/Interface to a pointer
     if (fromType->isStruct() || fromType->isInterface())
     {
         if (castFlags.has(CAST_FLAG_EXPLICIT) || toTypePointer->isMe() || toTypePointer->isConst() || castFlags.has(CAST_FLAG_UFCS))
@@ -3124,7 +3126,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Interface back to struct pointer
+    // Interface back to struct a pointer
     if (fromType->isInterface() && toTypePointer->isPointerTo(TypeInfoKind::Struct))
     {
         if (castFlags.has(CAST_FLAG_EXPLICIT))
@@ -3144,7 +3146,7 @@ bool TypeManager::castToPointer(SemanticContext* context, TypeInfo* toType, Type
         }
     }
 
-    // Struct pointer to interface pointer
+    // Struct pointer to an interface pointer
     if (fromType->isPointerTo(TypeInfoKind::Struct) && toType->isPointerTo(TypeInfoKind::Interface))
         return castError(context, toType, fromType, fromNode, castFlags);
 

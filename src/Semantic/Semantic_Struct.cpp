@@ -120,7 +120,6 @@ bool Semantic::resolveImplForType(SemanticContext* context)
     return true;
 }
 
-#pragma optimize("", off)
 bool Semantic::resolveImplFor(SemanticContext* context)
 {
     const auto node = castAst<AstImpl>(context->node, AstNodeKind::Impl);
