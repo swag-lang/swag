@@ -158,6 +158,7 @@ namespace Semantic
     bool           deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* nodeParam, bool& lambdaExpr, bool& genericType);
     bool           derefConstant(SemanticContext* context, uint8_t* ptr, const SymbolOverload* overload, DataSegment* storageSegment);
     bool           derefConstantValue(SemanticContext* context, AstNode* node, TypeInfo* typeInfo, DataSegment* storageSegment, uint8_t* ptr);
+    bool           copyStructSegSeg(SemanticContext* context, DataSegment* dstSegment, uint32_t dstOffset, DataSegment* srcSegment, uint32_t srcOffset, TypeInfo* typeInfo);
     bool           doExecuteCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);

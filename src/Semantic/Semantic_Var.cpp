@@ -2,6 +2,7 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Report/Report.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
@@ -152,62 +153,6 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
     return true;
 }
 
-#pragma optimize("", off)
-namespace
-{
-    // When we copy a struct content from one segment to another, we must also initialize initPtr.
-    void copyStructSegSeg(SemanticContext* context, DataSegment* dstSegment, uint32_t dstOffset, DataSegment* srcSegment, uint32_t srcOffset, TypeInfo* typeInfo)
-    {
-        // Check if this is a TypeValue struct
-        const bool isTypeValue = (typeInfo->name == g_LangSpec->name_TypeValue && typeInfo->getConstAlias()->hasFlag(TYPEINFO_STRUCT_TYPE_VALUE));
-
-        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-
-        for (const auto& field : typeStruct->fields)
-        {
-            const uint32_t fieldDstOffset = dstOffset + field->offset;
-            const uint32_t fieldSrcOffset = srcOffset + field->offset;
-
-            if (field->typeInfo->isStruct())
-            {
-                // Recursively copy nested struct
-                copyStructSegSeg(context, dstSegment, fieldDstOffset, srcSegment, fieldSrcOffset, field->typeInfo);
-            }
-            else if (field->typeInfo->isString())
-            {
-                const auto srcSlice = reinterpret_cast<SwagSlice*>(srcSegment->address(fieldSrcOffset));
-                if (srcSlice->buffer)
-                {
-                    const auto     dstSlice = reinterpret_cast<SwagSlice*>(dstSegment->address(fieldDstOffset));
-                    Utf8           srcString{*srcSlice};
-                    const uint32_t stringDstOffset = dstSegment->addString(srcString, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
-                    dstSegment->addInitPtr(fieldDstOffset, stringDstOffset);
-                }
-            }
-            else if (isTypeValue && field->name == "value")
-            {
-                const auto srcTypeValue = reinterpret_cast<ExportedTypeValue*>(srcSegment->address(srcOffset));
-                if (!srcTypeValue->value)
-                    continue;
-                const auto resolvedType = context->sourceFile->module->typeGen.getRealType(dstSegment, srcTypeValue->pointedType);
-                if (resolvedType->isString())
-                {
-                    const auto dstTypeValue = reinterpret_cast<ExportedTypeValue*>(dstSegment->address(srcOffset));
-                    const auto offsetSlice  = dstSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&dstTypeValue->value));
-                    const auto dstSlice     = static_cast<SwagSlice*>(dstTypeValue->value);
-                    dstSegment->addInitPtr(fieldDstOffset, offsetSlice);
-
-                    const auto srcSlice = static_cast<SwagSlice*>(srcTypeValue->value);
-                    dstSlice->count     = srcSlice->count;
-                    const Utf8     str{*srcSlice};
-                    const uint32_t offsetStr = dstSegment->addString(str, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
-                    dstSegment->addInitPtr(offsetSlice, offsetStr);
-                }
-            }
-        }
-    }
-}
-
 bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
     const auto node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
@@ -262,7 +207,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
             uint8_t*   addrDst;
             const auto destStorageOffset = destStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
             std::copy_n(static_cast<uint8_t*>(addrSrc), node->typeInfo->sizeOf, addrDst);
-            copyStructSegSeg(context, destStorageSegment, destStorageOffset, node->computedValue()->storageSegment, node->computedValue()->storageOffset, node->typeInfo);
+            SWAG_CHECK(copyStructSegSeg(context, destStorageSegment, destStorageOffset, node->computedValue()->storageSegment, node->computedValue()->storageOffset, node->typeInfo));
             node->computedValue()->storageSegment = destStorageSegment;
             node->computedValue()->storageOffset  = destStorageOffset;
         }

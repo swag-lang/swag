@@ -6,6 +6,7 @@
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
+#include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
 bool Semantic::reserveAndStoreToSegment(JobContext* context, DataSegment* storageSegment, uint32_t& storageOffset, ComputedValue* value, TypeInfo* typeInfo, AstNode* assignment)
@@ -821,4 +822,82 @@ bool Semantic::derefConstant(SemanticContext* context, uint8_t* ptr, const Symbo
     node->typeInfo          = overload->typeInfo;
     const auto concreteType = TypeManager::concreteType(overload->typeInfo);
     return derefConstantValue(context, node, concreteType, storageSegment, ptr);
+}
+
+// When we copy a struct content from one segment to another, we must also initialize initPtr.
+#pragma optimize("", off)
+bool Semantic::copyStructSegSeg(SemanticContext* context, DataSegment* dstSegment, uint32_t dstOffset, DataSegment* srcSegment, uint32_t srcOffset, TypeInfo* typeInfo)
+{
+    // Check if this is a TypeValue struct
+    const ExportedTypeValue* srcTypeValue = nullptr;
+    ExportedTypeValue*       dstTypeValue = nullptr;
+    const bool               isTypeValue  = (typeInfo->name == g_LangSpec->name_TypeValue && typeInfo->getConstAlias()->hasFlag(TYPEINFO_STRUCT_TYPE_VALUE));
+    if (isTypeValue)
+    {
+        srcTypeValue = reinterpret_cast<ExportedTypeValue*>(srcSegment->address(srcOffset));
+        dstTypeValue = reinterpret_cast<ExportedTypeValue*>(dstSegment->address(dstOffset));
+    }
+
+    const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+
+    for (const auto& field : typeStruct->fields)
+    {
+        const uint32_t fieldDstOffset = dstOffset + field->offset;
+        const uint32_t fieldSrcOffset = srcOffset + field->offset;
+
+        if (field->typeInfo->isStruct())
+        {
+            // Recursively copy nested struct
+            SWAG_CHECK(copyStructSegSeg(context, dstSegment, fieldDstOffset, srcSegment, fieldSrcOffset, field->typeInfo));
+        }
+        else if (field->typeInfo->isString())
+        {
+            const auto srcSlice = reinterpret_cast<SwagSlice*>(srcSegment->address(fieldSrcOffset));
+            if (srcSlice->buffer)
+            {
+                const auto     dstSlice = reinterpret_cast<SwagSlice*>(dstSegment->address(fieldDstOffset));
+                Utf8           srcString{*srcSlice};
+                const uint32_t stringDstOffset = dstSegment->addString(srcString, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
+                dstSegment->addInitPtr(fieldDstOffset, stringDstOffset);
+            }
+        }
+        else if (isTypeValue && field->name == "value")
+        {
+            if (!srcTypeValue->value)
+                continue;
+            const auto resolvedType = context->sourceFile->module->typeGen.getRealType(dstSegment, srcTypeValue->pointedType);
+            if (!resolvedType)
+                continue;
+            if (resolvedType->isString())
+            {
+                const auto offsetSlice = dstSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&dstTypeValue->value));
+                const auto srcSlice    = static_cast<SwagSlice*>(srcTypeValue->value);
+                const auto dstSlice    = static_cast<SwagSlice*>(dstTypeValue->value);
+                dstSegment->addInitPtr(fieldDstOffset, offsetSlice);
+                dstSlice->count = srcSlice->count;
+
+                const Utf8     str{*srcSlice};
+                const uint32_t offsetStr = dstSegment->addString(str, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
+                dstSegment->addInitPtr(offsetSlice, offsetStr);
+            }
+            else if (resolvedType->isSlice())
+            {
+                const auto offsetSlice = dstSegment->reserve(sizeof(SwagSlice), reinterpret_cast<uint8_t**>(&dstTypeValue->value));
+                const auto srcSlice    = static_cast<SwagSlice*>(srcTypeValue->value);
+                const auto dstSlice    = static_cast<SwagSlice*>(dstTypeValue->value);
+                dstSegment->addInitPtr(fieldDstOffset, offsetSlice);
+                dstSlice->count = srcSlice->count;
+
+                const auto typeSlice = castTypeInfo<TypeInfoSlice>(resolvedType, TypeInfoKind::Slice);
+                if (typeSlice->pointedType->isString())
+                    return Report::internalError(context->node, "TypeValue slice of string");
+
+                const uint32_t bufDstOffset = dstSegment->reserve(static_cast<uint32_t>(srcSlice->count) * typeSlice->pointedType->sizeOf, reinterpret_cast<uint8_t**>(&dstSlice->buffer));
+                dstSegment->addInitPtr(offsetSlice, bufDstOffset);
+                std::copy_n(static_cast<uint8_t*>(srcSlice->buffer), srcSlice->count * typeSlice->pointedType->sizeOf, static_cast<uint8_t*>(dstSlice->buffer));
+            }
+        }
+    }
+
+    return true;
 }
