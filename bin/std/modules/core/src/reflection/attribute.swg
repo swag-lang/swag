@@ -4,7 +4,7 @@ using Swag
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func getAttributeValue(type: const *Swag.TypedValue, attribute: typeinfo, value: string)->#null any
+func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->#null any
 {
     let attrib = getAttribute(type, attribute)
     if !attrib:
@@ -14,7 +14,7 @@ func getAttributeValue(type: const *Swag.TypedValue, attribute: typeinfo, value:
 
 // Returns the given attribute value, or null
 #[Overload, ConstExpr]
-func(T) getAttributeValue(type: const *Swag.TypedValue, attribute: typeinfo, value: string, def: T)->T
+func(T) getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string, def: T)->T
 {
     let attrib = getAttribute(type, attribute)
     if !attrib:
@@ -46,7 +46,7 @@ func getAttributeValue(attribute: const *Swag.Attribute, value: string)->#null a
 
 // Returns the given associated attributes to 'value'
 #[Overload, ConstExpr]
-func getAttributes(value: const *Swag.TypedValue, attribute: typeinfo)->Array'(const *Swag.Attribute)
+func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(const *Swag.Attribute)
 {
     var result: retval
     foreach it in value.attributes where attribute == it.type:
@@ -56,7 +56,7 @@ func getAttributes(value: const *Swag.TypedValue, attribute: typeinfo)->Array'(c
 
 // Returns the given associated 'attribute' to 'value' or null
 #[Overload, ConstExpr]
-func getAttribute(value: const *Swag.TypedValue, attribute: typeinfo)->#null const *Swag.Attribute
+func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->#null const *Swag.Attribute
 {
     foreach it in value.attributes where attribute == it.type:
         return it
@@ -65,7 +65,7 @@ func getAttribute(value: const *Swag.TypedValue, attribute: typeinfo)->#null con
 
 // Returns true if the given 'value' has the associated 'attribute'
 #[Overload, ConstExpr]
-func hasAttribute(value: const *Swag.TypedValue, attribute: typeinfo)->bool
+func hasAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->bool
 {
     return getAttribute(value, attribute) != null
 }

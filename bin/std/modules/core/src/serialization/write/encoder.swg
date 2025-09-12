@@ -16,8 +16,8 @@ interface IEncoder
     mtd start(result: *ConcatBuffer) throw;
     mtd end() throw;
 
-    mtd beginField(val: Swag.TypedValue) throw;
-    mtd endField(val: Swag.TypedValue) throw;
+    mtd beginField(val: Swag.TypeValue) throw;
+    mtd endField(val: Swag.TypeValue) throw;
     mtd beginSection(kind: SectionKind) throw;
     mtd endSection() throw;
 
@@ -84,8 +84,8 @@ impl Encoder
         me.serializer.endRoot()
     }
 
-    // Write a given Swag.TypedValue.
-    mtd writeTypeValue(typeVal: TypedValue, data: const ^void) throw
+    // Write a given Swag.TypeValue.
+    mtd writeTypeValue(typeVal: TypeValue, data: const ^void) throw
     {
         me.serializer.beginElement(typeVal)
         me.writeValue(data, typeVal.pointedType)
@@ -155,7 +155,7 @@ impl Encoder
                 itfType = itf.itable[cast #bit (u64) -2's64]
             }
 
-            var typeVal: TypedValue
+            var typeVal: TypeValue
             typeVal.pointedType = typeinfo
             me.writeTypeValue(typeVal, &objType)
 
@@ -293,13 +293,13 @@ impl IEncoder for Encoder
         me.serializer.endRoot()
     }
 
-    mtd impl beginField(val: Swag.TypedValue) throw
+    mtd impl beginField(val: Swag.TypeValue) throw
     {
         me.serializer.beginElement(val)
         me.serializer.beginValue()
     }
 
-    mtd impl endField(val: Swag.TypedValue) throw
+    mtd impl endField(val: Swag.TypeValue) throw
     {
         me.serializer.endValue()
         me.serializer.endElement(val)

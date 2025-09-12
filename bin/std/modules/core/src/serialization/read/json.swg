@@ -120,7 +120,7 @@ public impl JSon
         me.endSection()
     }
 
-    mtd beginElement(val: TypedValue)->bool throw
+    mtd beginElement(val: TypeValue)->bool throw
     {
         me.zapBlanks()
         var c = me.stream.readU8()
@@ -150,7 +150,7 @@ public impl JSon
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd endElement(_val: TypedValue) throw
+    mtd endElement(_val: TypeValue) throw
     {
     }
 

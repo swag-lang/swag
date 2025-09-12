@@ -136,7 +136,7 @@ impl Properties
         me.hasChanged(item)
     }
 
-    mtd constructEnumFlags(value: Swag.TypedValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
+    mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
         let item = me.addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
@@ -206,7 +206,7 @@ impl Properties
         }
     }
 
-    mtd constructEnum(value: Swag.TypedValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
+    mtd constructEnum(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {

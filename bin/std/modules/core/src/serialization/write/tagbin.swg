@@ -199,7 +199,7 @@ impl TagBin
     }
 
     // Begins a new element inside the current section and records its metadata
-    mtd beginElement(val: TypedValue)
+    mtd beginElement(val: TypeValue)
     {
         Debug.assert(me.sections.count != 0, "Missing a previous 'beginSection' call")
 
@@ -244,7 +244,7 @@ impl TagBin
 
     // Ends the current element (stubbed out)
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd endElement(val: TypedValue)
+    mtd endElement(val: TypeValue)
     {
         // If section is raw, then we just have values without versioning
         let sec = me.sections.back()

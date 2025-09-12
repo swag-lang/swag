@@ -20,7 +20,7 @@ struct Point
 
 	for t.fields
 	{
-		let p = cast(const *TypedValue) t.fields[@index]
+		let p = cast(const *TypeValue) t.fields[@index]
 		@assert(p.name == (@index == 0 ? "x" : "y"))
 		@assert(@countof(p.attributes) == 1)
 		@assert(p.attributes[0].type == #typeof(NC1))

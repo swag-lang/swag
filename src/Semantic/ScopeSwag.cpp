@@ -37,13 +37,6 @@ void ScopeSwag::registerType(TypeInfo* typeInfo)
         regTypeInfoStruct->addFlag(TYPEINFO_STRUCT_TYPEINFO);
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeInfoStruct));
     }
-    else if (typeInfo->name == g_LangSpec->name_TypeInfoParam)
-    {
-        SWAG_ASSERT(!regTypeInfoParam);
-        regTypeInfoParam = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
-        regTypeInfoParam->addFlag(TYPEINFO_STRUCT_TYPEINFO);
-        SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeValue));
-    }
     else if (typeInfo->name == g_LangSpec->name_TypeInfoFunc)
     {
         SWAG_ASSERT(!regTypeInfoFunc);
@@ -107,6 +100,13 @@ void ScopeSwag::registerType(TypeInfo* typeInfo)
         regTypeInfoNamespace->addFlag(TYPEINFO_STRUCT_TYPEINFO);
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeInfoNamespace));
     }
+    else if (typeInfo->name == g_LangSpec->name_TypeValue)
+    {
+        SWAG_ASSERT(!regTypeValue);
+        regTypeValue = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        regTypeValue->addFlag(TYPEINFO_STRUCT_TYPE_VALUE);
+        SWAG_ASSERT(typeInfo->sizeOf == sizeof(ExportedTypeValue));
+    }    
     else if (typeInfo->name == g_LangSpec->name_SourceCodeLocation)
     {
         SWAG_ASSERT(!regTypeInfoSourceLoc);

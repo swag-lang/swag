@@ -491,6 +491,8 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context, AstNode* node, const 
     if (typeInfo->isStruct() || typeInfo->isListTuple() || typeInfo->isListArray())
     {
         emitMakeSegPointer(context, node->computedValue()->storageSegment, node->computedValue()->storageOffset, regList[0]);
+        if (identifierRef)
+            identifierRef->resultRegisterRc = regList;
         return true;
     }
 

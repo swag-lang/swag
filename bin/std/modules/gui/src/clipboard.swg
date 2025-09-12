@@ -75,5 +75,5 @@ public func getTypedValue(value: *void, type: typeinfo)->bool
 
 #init
 {
-    g_ValueFormat = catch registerFormat("Swag.Clipboard.TypedValue")
+    g_ValueFormat = catch registerFormat("Swag.Clipboard.TypeValue")
 }

@@ -560,7 +560,7 @@ namespace Swag
     }
 
     // Represents a value, like a function parameter or an enum value
-    struct TypedValue
+    struct TypeValue
     {
         name:            string                   // Name of the value
         pointedType:     const *TypeInfo          // Type of the value
@@ -617,19 +617,19 @@ namespace Swag
         opPostMove:      func(*void)               // Pointer to the function to call after a move
         structName:      string                    // User name of the struct
         fromGeneric:     const *TypeInfo           // If it comes from a generic instantiation, this is the original generic struct
-        generics:        const [..] TypedValue     // Generic parameters
-        fields:          const [..] TypedValue     // All the fields
-        usingFields:     const [..] TypedValue     // All the fields marked with 'using'
-        methods:         const [..] TypedValue     // All the methods, if exported
-        interfaces:      const [..] TypedValue     // All the interfaces
+        generics:        const [..] TypeValue     // Generic parameters
+        fields:          const [..] TypeValue     // All the fields
+        usingFields:     const [..] TypeValue     // All the fields marked with 'using'
+        methods:         const [..] TypeValue     // All the methods, if exported
+        interfaces:      const [..] TypeValue     // All the interfaces
         attributes:      const [..] Attribute      // All the attributes
     }
 
     struct TypeInfoFunc
     {
         using base:     TypeInfo
-        generics:       const [..] TypedValue     // Generic parameters
-        parameters:     const [..] TypedValue     // Parameters
+        generics:       const [..] TypeValue     // Generic parameters
+        parameters:     const [..] TypeValue     // Parameters
         returnType:     const *TypeInfo           // The return type, or 'null'
         attributes:     const [..] Attribute      // All the attributes
     }
@@ -637,7 +637,7 @@ namespace Swag
     struct TypeInfoEnum
     {
         using base:     TypeInfo
-        values:         const [..] TypedValue     // All the values
+        values:         const [..] TypeValue     // All the values
         rawType:        const *TypeInfo           // The underlying enum type
         attributes:     const [..] Attribute      // All the attributes
     }

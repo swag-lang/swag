@@ -152,6 +152,48 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
     return true;
 }
 
+#pragma optimize("", off)
+namespace
+{
+    // When we copy a struct content from one segment to another, we must also initialize initPtr.
+    void copyStructSegSeg(SemanticContext* context, DataSegment* dstSegment, uint32_t dstOffset, DataSegment* srcSegment, uint32_t srcOffset, TypeInfo* typeInfo)
+    {
+        bool isTypeValue = false;
+        if (typeInfo->name == g_LangSpec->name_TypeValue &&
+            typeInfo->getConstAlias()->hasFlag(TYPEINFO_STRUCT_TYPE_VALUE))
+            isTypeValue = true;
+
+        const auto typeStruct = castTypeInfo<TypeInfoStruct>(typeInfo, TypeInfoKind::Struct);
+        for (const auto& c : typeStruct->fields)
+        {
+            if (c->typeInfo->isStruct())
+            {
+                copyStructSegSeg(context, dstSegment, dstOffset + c->offset, srcSegment, srcOffset + c->offset, c->typeInfo);
+            }
+            else if (c->typeInfo->isString())
+            {
+                const auto srcAddr = reinterpret_cast<SwagSlice*>(srcSegment->address(srcOffset + c->offset));
+                if (srcAddr->buffer)
+                {
+                    const auto     dstAddr = reinterpret_cast<SwagSlice*>(dstSegment->address(dstOffset + c->offset));
+                    Utf8           srcSrc{*srcAddr};
+                    const uint32_t offsetStr = dstSegment->addString(srcSrc, reinterpret_cast<uint8_t**>(&dstAddr->buffer));
+                    dstSegment->addInitPtr(dstOffset + c->offset, offsetStr);
+                }
+            }
+            else if (isTypeValue && c->name == "value")
+            {
+                const auto srcAddr     = reinterpret_cast<SwagSlice*>(srcSegment->address(srcOffset));
+                const auto typeValue   = reinterpret_cast<ExportedTypeValue*>(srcAddr);
+                const auto newTypeInfo = context->sourceFile->module->typeGen.getRealType(dstSegment, typeValue->pointedType);
+                if (newTypeInfo->isString())
+                {
+                }
+            }
+        }
+    }
+}
+
 bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 {
     const auto node     = castAst<AstVarDecl>(context->node, AstNodeKind::VarDecl, AstNodeKind::ConstDecl);
@@ -197,17 +239,18 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
         SWAG_ASSERT(node->computedValue()->storageSegment);
         SWAG_ASSERT(node->computedValue()->storageOffset != UINT32_MAX);
 
-        const auto wantStorageSegment = getConstantSegFromContext(node);
+        const auto destStorageSegment = getConstantSegFromContext(node);
 
         // Copy value from compiler segment to real requested segment
-        if (node->computedValue()->storageSegment != wantStorageSegment)
+        if (node->computedValue()->storageSegment != destStorageSegment)
         {
             const auto addrSrc = node->computedValue()->getStorageAddr();
             uint8_t*   addrDst;
-            const auto storageOffset              = wantStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
-            node->computedValue()->storageSegment = wantStorageSegment;
-            node->computedValue()->storageOffset  = storageOffset;
+            const auto destStorageOffset = destStorageSegment->reserve(node->typeInfo->sizeOf, &addrDst);
             std::copy_n(static_cast<uint8_t*>(addrSrc), node->typeInfo->sizeOf, addrDst);
+            copyStructSegSeg(context, destStorageSegment, destStorageOffset, node->computedValue()->storageSegment, node->computedValue()->storageOffset, node->typeInfo);
+            node->computedValue()->storageSegment = destStorageSegment;
+            node->computedValue()->storageOffset  = destStorageOffset;
         }
 
         // Will remove the incomplete flag, and finish the resolve
@@ -338,7 +381,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
             Ast::addChildBack(identifier, child);
             continue;
         }
-        
+
         const auto param = Ast::newFuncCallParam(nullptr, identifier->callParameters);
         Ast::removeFromParent(child);
         Ast::addChildBack(param, child);

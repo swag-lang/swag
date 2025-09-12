@@ -28,7 +28,7 @@ using TypeInfoFlagsV = uint64_t;
 using TypeInfoFlags  = AtomicFlags<TypeInfoFlagsV>;
 using TypeParamFlags = Flags<uint32_t>;
 
-constexpr TypeInfoFlagsV TYPEINFO_IS_ME                  = 0x00000000'00000001;
+constexpr TypeInfoFlagsV TYPEINFO_IS_ME                    = 0x00000000'00000001;
 constexpr TypeInfoFlagsV TYPEINFO_UNTYPED_BIN_HEX          = 0x00000000'00000002;
 constexpr TypeInfoFlagsV TYPEINFO_INTEGER                  = 0x00000000'00000004;
 constexpr TypeInfoFlagsV TYPEINFO_FLOAT                    = 0x00000000'00000008;
@@ -83,6 +83,7 @@ constexpr TypeInfoFlagsV TYPEINFO_GHOST_TUPLE              = 0x00080000'00000000
 constexpr TypeInfoFlagsV TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_WAS_UNTYPED              = 0x00200000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_NULLABLE                 = 0x00400000'00000000;
+constexpr TypeInfoFlagsV TYPEINFO_STRUCT_TYPE_VALUE        = 0x00800000'00000000;
 
 constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;

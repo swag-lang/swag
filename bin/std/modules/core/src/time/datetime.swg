@@ -352,12 +352,12 @@ impl Serialization.ISerialize for DateTime
         return false
     }
 
-    mtd impl readElement(type: Swag.TypedValue, data: *void, decoder: Serialization.IDecoder)->bool throw
+    mtd impl readElement(type: Swag.TypeValue, data: *void, decoder: Serialization.IDecoder)->bool throw
     {
         return false
     }
 
-    mtd impl writeElement(type: Swag.TypedValue, data: const *void, decoder: Serialization.IEncoder)->bool throw
+    mtd impl writeElement(type: Swag.TypeValue, data: const *void, decoder: Serialization.IEncoder)->bool throw
     {
         return false
     }

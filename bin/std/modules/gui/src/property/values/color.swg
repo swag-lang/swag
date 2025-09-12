@@ -2,7 +2,7 @@ using Core, Pixel
 
 impl Properties
 {
-    mtd constructColor(value: Swag.TypedValue, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
+    mtd constructColor(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
         let item  = me.addItem(value, data, parentItem)
         let color = cast(*Color) data
@@ -100,7 +100,7 @@ impl Properties
 
 public impl IPropertyValue for Color
 {
-    mtd impl construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructColor(value, data, parent)
     }

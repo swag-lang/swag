@@ -2,7 +2,7 @@ using Core, Core.Math, Pixel
 
 impl Properties
 {
-    mtd constructVector(value: Swag.TypedValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
+    mtd constructVector(value: Swag.TypeValue, typeStruct: const *Swag.TypeInfoStruct, data: ^u8, parentItem: *PropertiesItem)->*PropertiesItem
     {
         let item = me.addItem(value, data, parentItem)
         let line = Wnd.create'Wnd(item.line, {0, 0, me.position.width, me.getThemeMetrics().editBox_Height})
@@ -41,7 +41,7 @@ impl Properties
 
 public impl IPropertyValue for Math.Vector2
 {
-    mtd impl construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector2, data, parent)
     }
@@ -49,7 +49,7 @@ public impl IPropertyValue for Math.Vector2
 
 public impl IPropertyValue for Math.Vector3
 {
-    mtd impl construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector3, data, parent)
     }
@@ -57,7 +57,7 @@ public impl IPropertyValue for Math.Vector3
 
 public impl IPropertyValue for Math.Vector4
 {
-    mtd impl construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Vector4, data, parent)
     }
@@ -65,7 +65,7 @@ public impl IPropertyValue for Math.Vector4
 
 public impl IPropertyValue for Math.Point
 {
-    mtd impl construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Point, data, parent)
     }
@@ -73,7 +73,7 @@ public impl IPropertyValue for Math.Point
 
 public impl IPropertyValue for Math.Rectangle
 {
-    mtd impl construct(list: *Properties, value: Swag.TypedValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
+    mtd impl construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem
     {
         return list.constructVector(value, Math.Rectangle, data, parent)
     }

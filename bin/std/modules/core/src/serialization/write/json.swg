@@ -125,7 +125,7 @@ impl JSon
     }
 
     // Begins a named JSON element (a key-value pair).
-    mtd beginElement(val: TypedValue)
+    mtd beginElement(val: TypeValue)
     {
         me.output.addNative('"''u8)
         me.output.addBytes(val.name)
@@ -136,7 +136,7 @@ impl JSon
 
     // Ends a named JSON element (no-op).
     #[Warning("Wrn0006", WarningLevel.Disable)]
-    mtd endElement(val: TypedValue) {}
+    mtd endElement(val: TypeValue) {}
 
     // Begins a JSON value (no-op).
     #[Warning("Wrn0006", WarningLevel.Disable)]

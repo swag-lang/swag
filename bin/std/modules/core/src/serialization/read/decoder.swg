@@ -10,8 +10,8 @@ interface IDecoder
     mtd start(input: const [..] u8) throw;
     mtd end() throw;
 
-    mtd beginField(val: Swag.TypedValue)->bool throw;
-    mtd endField(val: Swag.TypedValue) throw;
+    mtd beginField(val: Swag.TypeValue)->bool throw;
+    mtd endField(val: Swag.TypeValue) throw;
     mtd beginSection(kind: SectionKind) throw;
     mtd endSection() throw;
 
@@ -57,7 +57,7 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd readTypeValue(typedVal: TypedValue, data: ^void) throw
+    mtd readTypeValue(typedVal: TypeValue, data: ^void) throw
     {
         discard me.serializer.beginElement(typedVal)
         me.readTypedContent(data, typedVal.pointedType)
@@ -121,7 +121,7 @@ impl Decoder
             defer #noerr me.serializer.endSection()
 
             var objType, itfType: typeinfo
-            var typeVal: TypedValue
+            var typeVal: TypeValue
             typeVal.pointedType = typeinfo
 
             me.readTypeValue(typeVal, &objType)
@@ -279,7 +279,7 @@ impl IDecoder for Decoder
         me.serializer.endRoot()
     }
 
-    mtd impl beginField(val: Swag.TypedValue)->bool throw
+    mtd impl beginField(val: Swag.TypeValue)->bool throw
     {
         if !me.serializer.beginElement(val):
             return false
@@ -287,7 +287,7 @@ impl IDecoder for Decoder
         return true
     }
 
-    mtd impl endField(val: Swag.TypedValue) throw
+    mtd impl endField(val: Swag.TypeValue) throw
     {
         me.serializer.endValue()
         me.serializer.endElement(val)

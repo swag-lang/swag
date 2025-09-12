@@ -15,7 +15,7 @@ enum A
 	@assert(@countof(ptr.values) == 1)
 	@assert(@countof(ptr.attributes) == 0)
 
-	let ptr1 = cast(const *TypedValue) ptr.values[0]
+	let ptr1 = cast(const *TypeValue) ptr.values[0]
 	@assert(@countof(ptr1.attributes) == 1)
 	@assert(ptr1.attributes[0].type == #typeof(NC1))
 	@assert(ptr1.attributes[0].params[0].name == "x")

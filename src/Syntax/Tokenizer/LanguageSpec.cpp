@@ -112,7 +112,6 @@ void LanguageSpec::setupNames()
     name_TypeInfoNative    = "TypeInfoNative";
     name_TypeInfoPointer   = "TypeInfoPointer";
     name_TypeInfoStruct    = "TypeInfoStruct";
-    name_TypeInfoParam     = "TypeInfoParam";
     name_TypeInfoFunc      = "TypeInfoFunc";
     name_TypeInfoEnum      = "TypeInfoEnum";
     name_TypeInfoVariadic  = "TypeInfoVariadic";
@@ -122,6 +121,7 @@ void LanguageSpec::setupNames()
     name_TypeInfoCodeBlock = "TypeInfoCodeBlock";
     name_TypeInfoAlias     = "TypeInfoAlias";
     name_TypeInfoNamespace = "TypeInfoNamespace";
+    name_TypeValue         = "TypeValue";
 
     name_SystemAllocator      = "SystemAllocator";
     name_DebugAllocator       = "DebugAllocator";

@@ -386,7 +386,7 @@ impl TagBin
 
     // Begin reading a field element identified by 'val'.
     // Returns true if the element exists in the stream and should be processed, false to skip it.
-    mtd beginElement(val: TypedValue)->bool throw
+    mtd beginElement(val: TypeValue)->bool throw
     {
         Debug.assert(me.sections.count != 0, "Missing a previous 'beginSection' call")
 
@@ -514,7 +514,7 @@ impl TagBin
 
     // Finish reading the current field element.
     // Clears any pending native type conversion state.
-    mtd endElement(_val: TypedValue) throw
+    mtd endElement(_val: TypeValue) throw
     {
         me.convertNextNative = null
 

@@ -122,7 +122,7 @@ public impl Xml
         me.readEndTag()
     }
 
-    mtd beginElement(val: TypedValue)->bool throw
+    mtd beginElement(val: TypeValue)->bool throw
     {
         let tag = me.readStartTag()
         if tag != val.name:
@@ -130,7 +130,7 @@ public impl Xml
         return true
     }
 
-    mtd endElement(_val: TypedValue) throw
+    mtd endElement(_val: TypeValue) throw
     {
         me.readEndTag()
     }

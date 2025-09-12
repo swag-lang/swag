@@ -50,8 +50,8 @@ impl TweakFile
         struct Ref
         {
             folder:     *Folder         // Folder where the reference is defined
-            src:        *TypedValue     // Source field that is being referenced
-            dst:        *TypedValue     // Destination field to copy to
+            src:        *TypeValue     // Source field that is being referenced
+            dst:        *TypeValue     // Destination field to copy to
         }
 
         var refs:          Array'Ref     // Pending references to resolve

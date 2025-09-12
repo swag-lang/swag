@@ -140,7 +140,6 @@ struct LanguageSpec
     Utf8 name_TypeInfoNative;
     Utf8 name_TypeInfoPointer;
     Utf8 name_TypeInfoStruct;
-    Utf8 name_TypeInfoParam;
     Utf8 name_TypeInfoFunc;
     Utf8 name_TypeInfoEnum;
     Utf8 name_TypeInfoVariadic;
@@ -150,6 +149,7 @@ struct LanguageSpec
     Utf8 name_TypeInfoCodeBlock;
     Utf8 name_TypeInfoAlias;
     Utf8 name_TypeInfoNamespace;
+    Utf8 name_TypeValue;
 
     Utf8 name_SourceCodeLocation;
     Utf8 name_SystemAllocator;
