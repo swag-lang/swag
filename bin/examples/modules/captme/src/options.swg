@@ -26,7 +26,7 @@ struct CaptureOptions
 enum EditorTheme
 {
     Dark
-    White
+    Light
 }
 
 #[Swag.Using(Properties)]
