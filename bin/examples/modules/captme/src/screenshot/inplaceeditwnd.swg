@@ -55,6 +55,7 @@ impl InPlaceEditWnd
             }
 
             .actionBar = IconBar.create(.editWnd.editView, 24, {})
+            .actionBar.backgroundStyle = .Window
 
             .actionBar.addItem(theme.getIcon24(ThemeIcons24.Save), "save").toolTip      = "Save capture as image file"
             .actionBar.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy").toolTip      = "Copy image to clipboard"
@@ -89,6 +90,7 @@ impl InPlaceEditWnd
             }
 
             .editBar = IconBar.create(.editWnd.editView, 24, {})
+            .editBar.backgroundStyle = .Window
 
             .editBar.addCheckableItem(Icon.from(&main.icons48, 7), "draw").toolTip    = "Free draw tool"
             .editBar.addCheckableItem(Icon.from(&main.icons48, 1), "line").toolTip    = "Draw straight line"
@@ -147,8 +149,6 @@ impl InPlaceEditWnd
                     btn.invalidate()
                 }
             }
-
-            .actionBar.padding = 5
         }
 
         capture.gizmo.sigHasChanged = func|frame|()
