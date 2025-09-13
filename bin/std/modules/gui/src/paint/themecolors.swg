@@ -9,6 +9,10 @@ struct ThemeColors
 
     surfaceDisabled:                      Color
 
+    bk:                                   Color
+    border:                               Color
+    text:                                 Color
+
     hilight:                              Color
     hilightLight:                         Color
     hilightDark:                          Color
@@ -396,6 +400,10 @@ impl ThemeColors
             .lighterBig     = LighterBig
             .lighterVeryBig = LighterVeryBig
 
+            .bk     = Gray8
+            .border = Gray1
+            .text   = Gray1
+
             .wnd_Bk                      = Gray5
             .wnd_CaptionBk               = Gray4
             .wnd_CaptionBkNotActived     = Gray4
@@ -771,6 +779,10 @@ impl ThemeColors
             .lighterMedium  = LighterMedium
             .lighterBig     = LighterBig
             .lighterVeryBig = LighterVeryBig
+
+            .bk     = Gray8
+            .border = Gray1
+            .text   = Gray1
 
             .wnd_Bk                      = Gray8
             .wnd_CaptionBk               = Gray8

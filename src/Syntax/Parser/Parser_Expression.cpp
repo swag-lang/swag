@@ -1498,6 +1498,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             const AstWith* withNode    = nullptr;
             AstNode*       exprNode    = nullptr;
             bool           prependWith = withNode != nullptr;
+            TokenParse     tokenStart  = tokenParse;
             while (true)
             {
                 if (tokenParse.is(TokenId::SymDot))
@@ -1547,12 +1548,12 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     multi = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifier, this, parent);
                     Ast::addChildBack(multi, exprNode);
-                    FormatAst::inheritFormatBefore(this, multi, exprNode);
                 }
             }
 
             Ast::removeFromParent(multi);
             *result = multi ? multi : exprNode;
+            FormatAst::inheritFormatBefore(this, *result, &tokenStart);
             break;
         }
 
