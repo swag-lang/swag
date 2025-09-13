@@ -20,8 +20,8 @@ struct ThemeColors
     lighterVeryBig:                       Color
 
     wnd_Bk:                               Color
-    wnd_Caption:                          Color
-    wnd_CaptionNotActived:                Color
+    wnd_CaptionBk:                        Color
+    wnd_CaptionBkNotActived:              Color
     wnd_CaptionText:                      Color
     wnd_CaptionNotActivatedText:          Color
     wnd_BtnCloseBk:                       Color
@@ -395,8 +395,8 @@ impl ThemeColors
             .lighterVeryBig = LighterVeryBig
 
             .wnd_Bk                      = Gray5
-            .wnd_Caption                 = Gray4
-            .wnd_CaptionNotActived       = Gray4
+            .wnd_CaptionBk               = Gray4
+            .wnd_CaptionBkNotActived     = Gray4
             .wnd_CaptionText             = White
             .wnd_CaptionNotActivatedText = White
             .wnd_BtnCloseBk              = 0xFFD61425
@@ -769,8 +769,8 @@ impl ThemeColors
             .lighterVeryBig = LighterVeryBig
 
             .wnd_Bk                      = Gray8
-            .wnd_Caption                 = Gray7
-            .wnd_CaptionNotActived       = Gray7
+            .wnd_CaptionBk               = Gray8
+            .wnd_CaptionBkNotActived     = Gray8
             .wnd_CaptionText             = Gray1
             .wnd_CaptionNotActivatedText = Gray2
             .wnd_BtnCloseBk              = 0xFFD61425

@@ -227,15 +227,15 @@ impl IWnd for SurfaceWnd
         if me.surface.flags.has(.Border)
         {
             let subRect = &rects.wnd_Border
-            theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_Caption, center: false)
+            theme.drawSubRect(bc.painter, clientRect, subRect, colors.wnd_CaptionBk, center: false)
         }
 
         var posCaption = clientRect
         if me.surface.flags.has(.BigCaption)
         {
             posCaption.height = me.surface.wnd.padding.y
-            let subRect = &rects.wnd_Caption
-            let colorBk = me.surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
+            let subRect = &rects.wnd_CaptionBk
+            let colorBk = me.surface.app.isActivated ? colors.wnd_CaptionBk : colors.wnd_CaptionBkNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 
@@ -243,7 +243,7 @@ impl IWnd for SurfaceWnd
         {
             posCaption.height = me.surface.wnd.padding.y
             let subRect = &rects.wnd_CaptionSmall
-            let colorBk = me.surface.app.isActivated ? colors.wnd_Caption : colors.wnd_CaptionNotActived
+            let colorBk = me.surface.app.isActivated ? colors.wnd_CaptionBk : colors.wnd_CaptionBkNotActived
             theme.drawSubRect(bc.painter, posCaption, subRect, colorBk)
         }
 

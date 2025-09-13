@@ -56,6 +56,7 @@ impl IActionUI for ActionAbout
         params.iconTitle = Icon.from(&main.icons48, 11)
         params.bigIcon   = Icon.from(&main.appIcon, 0)
         params.bigIcon.sizeX, params.bigIcon.sizeY = 96
+        params.bigIcon.color = Argb.White
 
         let dlg = AboutDlg.create(view.surface, params, height: 330)
         dlg.labelMessage.sigUrlClicked += func(lbl, txt)

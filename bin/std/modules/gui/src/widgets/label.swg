@@ -111,6 +111,8 @@ impl IWnd for Label
             // Icon
             var color = me.iconColor
             if !color.a:
+                color = me.icon.color
+            if !color.a:
                 color = (me.wndFlags & .Disabled) ? theme.colors.label_DisabledIcon : theme.colors.label_Icon
             me.icon.paint(painter, posIcon.x, posIcon.y, color)
         }

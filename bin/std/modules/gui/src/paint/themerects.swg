@@ -13,7 +13,7 @@ struct ThemeImageRects
     surfaceWnd_Shadow:              ThemeImageRect = {{189, 1, 66, 66}, 24}
 
     wnd_Border:                     ThemeImageRect = {{130, 1, 27, 27}, 3}
-    wnd_Caption:                    ThemeImageRect = {{57, 1, 72, 27}, 12}
+    wnd_CaptionBk:                    ThemeImageRect = {{57, 1, 72, 27}, 12}
     wnd_CaptionSmall:               ThemeImageRect = {{57, 1, 72, 27}, 1}
 
     dlg_BtnBar:                     ThemeImageRect = {{29, 29, 27, 27}, 2}

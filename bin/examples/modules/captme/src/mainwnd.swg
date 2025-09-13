@@ -631,7 +631,7 @@ impl MainWnd
         {
             .dockStyle       = .Top
             .backgroundStyle = .Window
-            .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+            .style.addStyleSheetColors("wnd_Bk $wnd_CaptionBk")
         }
 
         with me
@@ -732,7 +732,7 @@ impl MainWnd
         {
             .dockStyle       = .Top
             .backgroundStyle = .Window
-            .style.addStyleSheetColors("wnd_Bk $wnd_Caption")
+            .style.addStyleSheetColors("wnd_Bk $wnd_CaptionBk")
         }
 
         res.createToolbar()

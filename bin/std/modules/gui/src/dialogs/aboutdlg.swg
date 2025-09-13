@@ -55,7 +55,7 @@ public impl AboutDlg
         if params.iconTitle.isValid()
         {
             var cpyIcon = params.iconTitle
-            cpyIcon.sizeX, cpyIcon.sizeY = dlg.getThemeMetrics().wnd_BigCaptionCY * 0.8
+            cpyIcon.sizeX, cpyIcon.sizeY = dlg.getThemeMetrics().wnd_BigCaptionCY * 0.7
             srf.setIcon(cpyIcon)
         }
 
