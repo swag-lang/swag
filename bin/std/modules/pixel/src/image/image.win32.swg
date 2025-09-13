@@ -23,7 +23,6 @@ impl Image
 
         var ii: ICONINFO
         ii.fIcon    = TRUE
-        ii.hbmMask  = hbmp
         ii.hbmColor = hbmp
         return CreateIconIndirect(&ii)
     }
@@ -72,7 +71,7 @@ impl Image
         infos.bmiHeader.biSize        = #sizeof(BITMAPINFOHEADER)
         infos.bmiHeader.biWidth       = bitmap.bmWidth
         infos.bmiHeader.biHeight      = bitmap.bmHeight
-        infos.bmiHeader.biPlanes      = bitmap.bmPlanes
+        infos.bmiHeader.biPlanes      = 1
         infos.bmiHeader.biBitCount    = bitmap.bmBitsPixel
         infos.bmiHeader.biCompression = BI_RGB
         GetDIBits(dc, hbitmap, 0, cast() bitmap.bmHeight, result.pixels.buffer, &infos, cast() DIB_RGB_COLORS)

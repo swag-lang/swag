@@ -333,6 +333,25 @@ struct PROCESS_INFORMATION
     dwThreadId:      DWORD
 }
 
+enum FINDEX_INFO_LEVELS
+{
+    FindExInfoStandard
+    FindExInfoBasic
+    FindExInfoMaxInfoLevel
+}
+
+enum FINDEX_SEARCH_OPS
+{
+    FindExSearchNameMatch
+    FindExSearchLimitToDirectories
+    FindExSearchLimitToDevices
+    FindExSearchMaxSearchOp
+}
+
+const FIND_FIRST_EX_CASE_SENSITIVE       = 1
+const FIND_FIRST_EX_LARGE_FETCH          = 2
+const FIND_FIRST_EX_ON_DISK_ENTRIES_ONLY = 4
+
 #[Foreign("kernel32"), Discardable]
 {
     func SwitchToThread()->BOOL;
@@ -446,6 +465,8 @@ private namespace Win32Priv
 
         func FindFirstFileA(lpFileName: LPCSTR, lpFindFileData: *WIN32_FIND_DATAA)->HANDLE;
         func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE;
+        func FindFirstFileExA(lpFileName: LPCSTR, fInfoLevelId: FINDEX_INFO_LEVELS, lpFindFileData: LPVOID, fSearchOp: FINDEX_SEARCH_OPS, lpSearchFilter: LPVOID, dwAdditionalFlags: DWORD)->HANDLE;
+        func FindFirstFileExW(lpFileName: LPCWSTR, fInfoLevelId: FINDEX_INFO_LEVELS, lpFindFileData: LPVOID, fSearchOp: FINDEX_SEARCH_OPS, lpSearchFilter: LPVOID, dwAdditionalFlags: DWORD)->HANDLE;
         func FindNextFileA(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAA)->BOOL;
         func FindNextFileW(hFindFile: HANDLE, lpFindFileData: *WIN32_FIND_DATAW)->BOOL;
         func FindClose(hFindFile: HANDLE)->BOOL;
@@ -741,6 +762,22 @@ private namespace Win32Priv
     func FindFirstFileW(lpFileName: LPCWSTR, lpFindFileData: *WIN32_FIND_DATAW)->HANDLE throw
     {
         let res = Win32Priv.FindFirstFileW(lpFileName, lpFindFileData)
+        if res == INVALID_HANDLE_VALUE and GetLastError() != ERROR_FILE_NOT_FOUND:
+            throwWinError(GetLastError())
+        return res
+    }
+
+    func FindFirstFileExA(lpFileName: LPCSTR, fInfoLevelId: FINDEX_INFO_LEVELS, lpFindFileData: LPVOID, fSearchOp: FINDEX_SEARCH_OPS, lpSearchFilter: LPVOID, dwAdditionalFlags: DWORD)->HANDLE throw
+    {
+        let res = Win32Priv.FindFirstFileExA(lpFileName, fInfoLevelId, lpFindFileData, fSearchOp, lpSearchFilter, dwAdditionalFlags)
+        if res == INVALID_HANDLE_VALUE and GetLastError() != ERROR_FILE_NOT_FOUND:
+            throwWinError(GetLastError())
+        return res
+    }
+
+    func FindFirstFileExW(lpFileName: LPCWSTR, fInfoLevelId: FINDEX_INFO_LEVELS, lpFindFileData: LPVOID, fSearchOp: FINDEX_SEARCH_OPS, lpSearchFilter: LPVOID, dwAdditionalFlags: DWORD)->HANDLE throw
+    {
+        let res = Win32Priv.FindFirstFileExW(lpFileName, fInfoLevelId, lpFindFileData, fSearchOp, lpSearchFilter, dwAdditionalFlags)
         if res == INVALID_HANDLE_VALUE and GetLastError() != ERROR_FILE_NOT_FOUND:
             throwWinError(GetLastError())
         return res

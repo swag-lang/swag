@@ -40,6 +40,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 
     let dataof = cast(const ^u16) @dataof(findfile.cFileName)
 
+    result.reserve(1024)
     stackPath.add(String.from(dirName))
     while !stackPath.isEmpty()
     {
@@ -49,7 +50,7 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
         var searchPath = Path.combine(toScan.toString(), "*")
 
         var winPath = Utf16.toZeroTerminated(searchPath)
-        let h       = try FindFirstFileW(@dataof(winPath), &findfile)
+        let h       = try FindFirstFileExW(@dataof(winPath), .FindExInfoBasic, &findfile, .FindExSearchNameMatch, null, FIND_FIRST_EX_LARGE_FETCH)
         if h == INVALID_HANDLE_VALUE:
             continue
 

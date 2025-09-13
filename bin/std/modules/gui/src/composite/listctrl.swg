@@ -941,7 +941,7 @@ impl ListCtrl
     // Get the height of one line
     mtd getLineHeight()->f32
     {
-        return me.lineHeight orelse me.getFont().regular.height + 2
+        return me.lineHeight orelse me.getFont().regular.height + 8
     }
 
     // Get a line by index
