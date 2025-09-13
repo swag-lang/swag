@@ -123,15 +123,18 @@ impl PropWnd
     public func createColorPicker(btn: *IconButton, color: Color)->*ColorPickerCtrl
     {
         let frame = btn.createAnchorPopup(356, 382)
-        var pal:  Array'Color
-        pal.add(Argb.White)
-        pal.add(Argb.Gray)
-        pal.add(Argb.Black)
-        pal.add(ColorRed)
-        pal.add(ColorGreen)
-        pal.add(ColorBlue)
-        pal.add(ColorYellow)
-        pal.add(Argb.Purple)
+        with var pal: Array'Color
+        {
+            .add(Argb.White)
+            .add(Argb.Gray)
+            .add(Argb.Black)
+            .add(ColorRed)
+            .add(ColorGreen)
+            .add(ColorBlue)
+            .add(ColorYellow)
+            .add(Argb.Purple)
+        }
+
         let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal)
         picker.setColor(color)
         return picker
@@ -277,9 +280,9 @@ impl PropWnd
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
                 var rect   = pos
                 rect.inflate(-9, -9)
-                var cap = cast(LineCapStyle) cast(u64) btn.userData
+                var cap   = cast(LineCapStyle) cast(u64) btn.userData
                 let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
-                var pen = Pen.createSolid(color, CapSize)
+                var pen   = Pen.createSolid(color, CapSize)
                 pen.begCapStyle = cap
                 pen.endCapStyle = .None
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capBegScaleX)
@@ -330,9 +333,9 @@ impl PropWnd
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
                 var rect   = pos
                 rect.inflate(-9, -9)
-                var cap = cast(LineCapStyle) cast(u64) btn.userData
+                var cap   = cast(LineCapStyle) cast(u64) btn.userData
                 let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
-                var pen = Pen.createSolid(color, CapSize)
+                var pen   = Pen.createSolid(color, CapSize)
                 pen.begCapStyle = .None
                 pen.endCapStyle = cap
                 var (w0, l0) = Painter.capStyleExtent(cap, CapSize, pen.capEndScaleX)
@@ -386,9 +389,9 @@ impl PropWnd
                 var curSel = cast(*FormShape) me.getSelectedBaseForm()
                 var rect   = pos
                 rect.inflate(-9, -9)
-                var dash = cast(DashStyle) cast(u64) btn.userData
+                var dash  = cast(DashStyle) cast(u64) btn.userData
                 let color = flags & .Checked ? btn.getThemeColors().btnIcon_CheckedIcon : btn.getThemeColors().btnIcon_Icon
-                var pen  = Pen.createDash(dash, color, DashSize)
+                var pen   = Pen.createDash(dash, color, DashSize)
                 pen.dashBlankScale = 0.25
                 bc.painter.drawLine(rect.x, rect.vertCenter(), rect.right(), rect.vertCenter(), pen)
             }

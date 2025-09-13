@@ -600,6 +600,7 @@ impl MainWnd
         with let helpMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionOptions.Options)
+            .addSeparator()
             .addItem(ActionAbout.About)
             topMenu.addPopup("Help", helpMenu)
         }
@@ -613,13 +614,13 @@ impl MainWnd
             {
                 .id = id
                 .style.addStyleSheetColors("btnIcon_CheckedBk           $btnIcon_HotBk")
+                .style.addStyleSheetColors("btnIcon_CheckedIcon         $btnIcon_CheckedMark")
+                .style.addStyleSheetColors("btnIcon_CheckedText         $btnIcon_CheckedMark")
                 .style.addStyleSheetColors("btnIcon_CheckedHotBk        $btnIcon_HotBk")
-                .style.addStyleSheetColors("btnIcon_CheckedHotIcon      $btnIcon_Text")
-                .style.addStyleSheetColors("btnIcon_CheckedHotText      $btnIcon_Text")
-                .style.addStyleSheetColors("btnIcon_CheckedIcon         $btnIcon_Text")
-                .style.addStyleSheetColors("btnIcon_CheckedText         $btnIcon_Text")
-                .style.addStyleSheetColors("btnIcon_CheckedPressedIcon  $btnIcon_Text")
-                .style.addStyleSheetColors("btnIcon_CheckedPressedText  $btnIcon_Text")
+                .style.addStyleSheetColors("btnIcon_CheckedHotIcon      $btnIcon_CheckedHotMark")
+                .style.addStyleSheetColors("btnIcon_CheckedHotText      $btnIcon_CheckedHotMark")
+                .style.addStyleSheetColors("btnIcon_CheckedPressedIcon  $btnIcon_CheckedMark")
+                .style.addStyleSheetColors("btnIcon_CheckedPressedText  $btnIcon_CheckedMark")
                 if canCheck:
                     .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
