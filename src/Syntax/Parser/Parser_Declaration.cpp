@@ -605,7 +605,7 @@ void Parser::registerSubDecl(AstNode* subDecl)
     }
 }
 
-bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode)
+bool Parser::doLeftInstruction(AstNode* parent, AstNode** result)
 {
     switch (tokenParse.token.id)
     {
@@ -657,10 +657,11 @@ bool Parser::doLeftInstruction(AstNode* parent, AstNode** result, const AstWith*
 
         case TokenId::CompilerUp:
         case TokenId::Identifier:
+        case TokenId::SymDot:
         case TokenId::SymLeftParen:
         case TokenId::KwdDeRef:
         case TokenId::KwdMoveRef:
-            SWAG_CHECK(doAffectExpression(parent, result, withNode));
+            SWAG_CHECK(doAffectExpression(parent, result));
             break;
 
         case TokenId::IntrinsicGetContext:
@@ -718,7 +719,8 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
 
         case TokenId::CompilerUp:
         case TokenId::SymLeftParen:
-
+        case TokenId::SymDot:
+            
         case TokenId::IntrinsicAtomicAdd:
         case TokenId::IntrinsicAtomicAnd:
         case TokenId::IntrinsicAtomicCmpXchg:
@@ -853,18 +855,6 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::KwdInternal:
         case TokenId::KwdPrivate:
             return error(tokenParse, formErr(Err0359, tokenParse.cstr()));
-
-        case TokenId::SymDot:
-        {
-            const auto withNode = parent->findParent(AstNodeKind::With);
-            SWAG_VERIFY(withNode, error(tokenParse, toErr(Err0404)));
-            auto tokenDot = tokenParse;
-            eatToken();
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0141)));
-            SWAG_CHECK(doLeftInstruction(parent, result, castAst<AstWith>(withNode, AstNodeKind::With)));
-            FormatAst::inheritFormatBefore(this, *result, &tokenDot);
-            return true;
-        }
 
         case TokenId::NativeType:
         {

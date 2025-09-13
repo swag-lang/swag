@@ -178,7 +178,7 @@ struct Parser
     bool doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDecl, AstNode* params);
     bool doDefer(AstNode* parent, AstNode** result);
     bool doVarDeclExpression(AstNode* parent, AstNode* leftNode, AstNode* type, AstNode* assign, const TokenParse& assignToken, AstNodeKind kind, AstNode** result, VarDeclFlags varDeclFlags = VAR_DECL_FLAG_ZERO);
-    bool doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
+    bool doAffectExpression(AstNode* parent, AstNode** result);
     bool doIdentifier(AstNode* parent, IdentifierFlags identifierFlags = 0);
     bool doTopLevelIdentifierRef(AstNode* parent);
     bool doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0);
@@ -253,10 +253,10 @@ struct Parser
     bool doUnreachable(AstNode* parent, AstNode** result);
     bool doContinue(AstNode* parent, AstNode** result);
     bool doArrayPointerIndex(AstNode** exprNode);
-    bool doLeftInstruction(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
+    bool doLeftInstruction(AstNode* parent, AstNode** result);
     bool doAttrStart(AstNode* parent, AstNode** result);
-    bool doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0, VarDeclFlags varDeclFlags = 0, const AstWith* withNode = nullptr);
-    bool doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode = nullptr);
+    bool doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0, VarDeclFlags varDeclFlags = 0);
+    bool doLeftExpressionAffect(AstNode* parent, AstNode** result);
     bool doMultiIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken);
     bool doTupleUnpacking(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, TokenParse& savedToken);
     bool doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode* leftNode, SpecFlags opFlags, const AttributeFlags& opAttrFlags, const TokenParse& savedToken);

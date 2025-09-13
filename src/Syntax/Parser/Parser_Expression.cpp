@@ -1429,7 +1429,7 @@ void Parser::setForceTakeAddress(AstNode* node)
     }
 }
 
-bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags, const AstWith* withNode)
+bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags)
 {
     switch (tokenParse.token.id)
     {
@@ -1453,9 +1453,11 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             break;
         }
 
+        case TokenId::SymDot:
         case TokenId::Identifier:
         case TokenId::CompilerUp:
         {
+            AstWith* withNode    = nullptr;
             AstNode* exprNode    = nullptr;
             AstNode* multi       = nullptr;
             bool     prependWith = withNode != nullptr;
@@ -1463,7 +1465,13 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             {
                 if (tokenParse.is(TokenId::SymDot))
                 {
-                    SWAG_VERIFY(withNode, error(tokenParse, toErr(Err0404)));
+                    if (!withNode)
+                    {
+                        const auto parentWithNode = parent->findParent(AstNodeKind::With);
+                        SWAG_VERIFY(parentWithNode, error(tokenParse, toErr(Err0404)));
+                        withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
+                    }
+
                     prependWith = true;
                     eatToken();
                 }
@@ -1518,7 +1526,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
     return true;
 }
 
-bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const AstWith* withNode)
+bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result)
 {
     switch (tokenParse.token.id)
     {
@@ -1530,8 +1538,9 @@ bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result, const Ast
             return true;
         case TokenId::SymLeftParen:
         case TokenId::Identifier:
+        case TokenId::SymDot:
         case TokenId::CompilerUp:
-            SWAG_CHECK(doLeftExpressionVar(parent, result, IDENTIFIER_ZERO, VAR_DECL_FLAG_ZERO, withNode));
+            SWAG_CHECK(doLeftExpressionVar(parent, result, IDENTIFIER_ZERO, VAR_DECL_FLAG_ZERO));
             Ast::removeFromParent(*result);
             return true;
 
@@ -1704,11 +1713,11 @@ bool Parser::doSingleIdentifierAffect(AstNode* parent, AstNode** result, AstNode
     return true;
 }
 
-bool Parser::doAffectExpression(AstNode* parent, AstNode** result, const AstWith* withNode)
+bool Parser::doAffectExpression(AstNode* parent, AstNode** result)
 {
     bool     leftAlone = false;
     AstNode* leftNode;
-    SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode, withNode));
+    SWAG_CHECK(doLeftExpressionAffect(parent, &leftNode));
     Ast::removeFromParent(leftNode);
 
     // Affect operator
