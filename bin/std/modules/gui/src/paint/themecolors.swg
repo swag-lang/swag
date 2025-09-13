@@ -1065,7 +1065,7 @@ impl ThemeColors
             .headerItem_Separator    = Color.getLighter(Color.fromArgb(Gray7), 0.2)
             .header_Bk               = Gray7
 
-            .splitView_TitleBk = Gray8
+            .splitView_TitleBk = Gray6
             .splitView_Bar     = Gray7
             .splitView_BarHot  = Blue
 

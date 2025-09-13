@@ -777,15 +777,8 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        with res.quickWnd = QuickWnd.create(res.quickStyleBar)
-        {
-            .main = res
-        }
-
-        with res.propWnd = PropWnd.create(res.quickStyleBar)
-        {
-            .main = res
-        }
+        res.quickWnd = QuickWnd.create(res.quickStyleBar, res)
+        res.propWnd = PropWnd.create(res.quickStyleBar, res)
 
         with let quickPane = res.quickStyleBar.addPane(res.quickWnd, title: true)
         {

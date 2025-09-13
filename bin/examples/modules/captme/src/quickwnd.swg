@@ -150,7 +150,7 @@ impl QuickWnd
         }
     }
 
-    func create(parent: *Wnd)->*QuickWnd
+    func create(parent: *Wnd, main: *MainWnd)->*QuickWnd
     {
         with let quick = Wnd.create'QuickWnd(parent, {0, 0, 0, 300})
         {
@@ -161,6 +161,8 @@ impl QuickWnd
             .layout.padding = 6
             .layout.spacing = 6
             .setView(quick.layout)
+
+            .main = main
         }
 
         return quick

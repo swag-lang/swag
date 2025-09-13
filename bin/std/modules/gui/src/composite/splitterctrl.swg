@@ -431,7 +431,7 @@ impl SplitterCtrl
             with let label = Label.create(me, "")
             {
                 .backgroundStyle = .Window
-                .style.addStyleSheetColors("wnd_Bk $dlg_BtnBarBk")
+                .style.addStyleSheetColors("wnd_Bk $splitView_TitleBk")
             }
 
             item.label = label

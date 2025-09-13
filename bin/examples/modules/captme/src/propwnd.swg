@@ -1374,7 +1374,7 @@ impl PropWnd
             capture.editView.setFocus()
     }
 
-    func create(parent: *Wnd)->*PropWnd
+    func create(parent: *Wnd, main: *MainWnd)->*PropWnd
     {
         with let prop = Wnd.create'PropWnd(parent, {0, 0, 0, 300})
         {
@@ -1387,6 +1387,8 @@ impl PropWnd
             .mainLayout.padding.y  = 16
 
             .setView(.mainLayout)
+
+            .main = main
         }
 
         return prop
