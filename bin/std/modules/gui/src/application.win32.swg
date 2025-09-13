@@ -158,10 +158,6 @@ impl Application
         nimage.mix(img, sizeIcon * index, 0)
         dref curImg = nimage
 
-        catch curImg.save("c:/temp/a.png")
-        catch nimage.save("c:/temp/b.png")
-        catch img.save("c:/temp/c.png")
-
         if curImgList.texture.isValid():
             me.renderer.removeTexture(&curImgList.texture)
         curImgList.set(me.renderer.addImage(curImg), sizeIcon, sizeIcon)

@@ -11,8 +11,11 @@ enum FileDlgMode
 
 struct FileDlgState
 {
-    position:      Math.Rectangle
-    curFolder:     String
+    position:                Math.Rectangle
+    curFolder:               String
+    folderHistory:           Array'String
+    columnWidthName:         s32 = 200
+    columnWidthModified:     s32 = 150
 }
 
 struct FileDlgOptions
@@ -53,8 +56,10 @@ impl IWnd for FileDlg
         {
             with me.dlgOptions.state
             {
-                .position  = me.surface.position
-                .curFolder = me.curFolder
+                .position            = me.surface.position
+                .curFolder           = me.curFolder
+                .columnWidthName     = cast() me.listCtrl.header.getItemWidthByCol(0)
+                .columnWidthModified = cast() me.listCtrl.header.getItemWidthByCol(1)
             }
         }
     }
@@ -79,7 +84,7 @@ internal impl FileDlg
         if me.curFolder.back() == '/':
             me.curFolder.removeBack()
 
-        me.fillList()
+        me.fillFileList()
         me.fillComboPath()
     }
 
@@ -109,7 +114,7 @@ internal impl FileDlg
         me.comboPath.selectItem(0)
     }
 
-    mtd fillListFolders()
+    mtd fillFileListFolders()
     {
         var l = me.treeCtrl.createLine("Shortcuts")
         l.separator = true
@@ -150,7 +155,7 @@ internal impl FileDlg
         }
     }
 
-    mtd fillList()
+    mtd fillFileList()
     {
         me.listCtrl.clear()
 
@@ -200,6 +205,167 @@ internal impl FileDlg
 
         me.listCtrl.computeLayout()
         me.listCtrl.sort()
+    }
+
+    mtd createFileList(view: *Wnd)
+    {
+        with me.listCtrl = ListCtrl.createMultiColumns(view)
+        {
+            .selectionMode = me.dlgOptions.mode == .SelectMultiFiles ? .Multi : .Single
+            .dockStyle     = .Center
+            .margin.z      = 10
+            .listFlags |= .HotTrack
+            .backgroundStyle = .View
+            .addColumn("Name", me.dlgOptions.state ? me.dlgOptions.state.columnWidthName : 200)
+            .addColumn("Modified", me.dlgOptions.state ? me.dlgOptions.state.columnWidthModified : 150)
+            .header.form = .Transparent
+            .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
+            .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
+            .sigKeyPressed += mtd||(list, evt)
+            {
+                switch evt.key
+                {
+                case Back:
+                    me.folderUp()
+
+                case Enter:
+                    let l = list.getFocusLine()
+                    if !l:
+                        break
+                    let fi = cast(const *FileInfo) l.userData0
+                    if fi.isDirectory()
+                    {
+                        me.setCurFolder(fi.fullname)
+                    }
+                    elif me.dlgOptions.mode != .SelectFolder
+                    {
+                        me.validateId(Dialog.BtnOk)
+                        list.setFocus()
+                    }
+                }
+            }
+            .sigLeftDoubleClick += mtd||(list, pt)
+            {
+                var l = list.getSelectedLine()
+                if !l:
+                    return
+                var fi = cast(const *FileInfo) l.userData0
+                if fi.isDirectory()
+                {
+                    me.setCurFolder(fi.fullname)
+                }
+                elif me.dlgOptions.mode != .SelectFolder
+                {
+                    me.validateId(Dialog.BtnOk)
+                    list.setFocus()
+                }
+            }
+            .sigSelChanged += mtd||(list)
+            {
+                var sel  = list.getSelectedLines()
+                var txt: String
+                foreach l in sel
+                {
+                    let fi = cast(const *FileInfo) l.userData0
+                    if fi.isDirectory()
+                    {
+                        if me.dlgOptions.mode != .SelectFolder:
+                            continue
+                    }
+                    else
+                    {
+                        if me.dlgOptions.mode == .SelectFolder:
+                            continue
+                    }
+
+                    if !txt.isEmpty():
+                        txt += ";"
+                    txt += Path.getFileName(fi.fullname)
+                }
+
+                if !txt.isEmpty():
+                    me.editFile.setText(txt)
+            }
+            .sigSort = func(l1, l2, col, down)
+            {
+                var fi1 = cast(*FileInfo) l1.userData0
+                var fi2 = cast(*FileInfo) l2.userData0
+                if fi1.isDirectory() and !fi2.isDirectory():
+                    return -1
+                if !fi1.isDirectory() and fi2.isDirectory():
+                    return 1
+                switch col
+                {
+                case 0:
+                    return (fi1.fullname <=> fi2.fullname) * (down ? -1 : 1)
+                case 1:
+                    return (fi1.lastWriteTime <=> fi2.lastWriteTime) * (down ? -1 : 1)
+                }
+
+                return 0
+            }
+        }
+    }
+
+    mtd onNewFolder()
+    {
+        var folderName: String = "New Folder"
+
+        with let dlg = EditDlg.createSingleLine(me.surface)
+        {
+            .edit.setText(folderName)
+            .edit.selectAll()
+            .edit.setNote("Folder name")
+            .surface.setTitle("Folder Name")
+            .surface.center(me.surface)
+        }
+
+        dlg.sigPressedButton = mtd|dlg|(fdlg, btnid)
+        {
+            if btnid != Dialog.BtnOk:
+                return true
+
+            var folderName = dlg.edit.text
+            folderName.trim()
+            if folderName.isEmpty()
+            {
+                dlg.edit.selectAll()
+                dlg.edit.setFocus()
+                return false
+            }
+
+            if !Path.isValidFileName(folderName)
+            {
+                MessageDlg.error(dlg.surface, "Invalid folder name")
+                dlg.edit.selectAll()
+                dlg.edit.setFocus()
+                return false
+            }
+
+            var path = Path.combine(me.curFolder, folderName.toString())
+            if Directory.exists(path)
+            {
+                MessageDlg.error(dlg.surface, "Folder already exists")
+                dlg.edit.selectAll()
+                dlg.edit.setFocus()
+                return false
+            }
+
+            return true
+        }
+
+        if dlg.doModal() != Dialog.BtnOk:
+            return
+
+        var path = Path.combine(me.curFolder, dlg.edit.text.toString())
+        catch Directory.create(path)
+        if @err != null
+        {
+            MessageDlg.error(me.surface, "Cannot create folder")
+            return
+        }
+
+        me.fillFileList()
     }
 }
 
@@ -263,11 +429,11 @@ impl FileDlg
             return true
         }
 
-        // Panes
-        ////////////////////////
-
         let view = Wnd.create'Wnd(dlg)
         view.dockStyle = .Center
+
+        // Panes
+        ////////////////////////
 
         if opt.drivePane
         {
@@ -279,120 +445,24 @@ impl FileDlg
                 .leftTextMargin  = 8
                 .backgroundStyle = .Dialog
                 .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
-                dlg.fillListFolders()
+                dlg.fillFileListFolders()
             }
         }
 
-        with dlg.listCtrl = ListCtrl.createMultiColumns(view)
-        {
-            .selectionMode = opt.mode == .SelectMultiFiles ? .Multi : .Single
-            .dockStyle     = .Center
-            .margin.z      = 10
-            .listFlags |= .HotTrack
-            .backgroundStyle = .View
-            .addColumn("Name", 200)
-            .addColumn("Modified", 150)
-            .header.form = .Transparent
-            .header.style.addStyleSheetColors("headerItem_Separator $lighterMedium")
-            .scrollWnd.style.addStyleSheetColors("scrollBar_Bk $view_Bk")
-
-            .sigKeyPressed += func|dlg|(list, evt)
-            {
-                switch evt.key
-                {
-                case Back:
-                    dlg.folderUp()
-
-                case Enter:
-                    let l = list.getFocusLine()
-                    if !l:
-                        break
-                    let fi = cast(const *FileInfo) l.userData0
-                    if fi.isDirectory()
-                    {
-                        dlg.setCurFolder(fi.fullname)
-                    }
-                    elif dlg.dlgOptions.mode != .SelectFolder
-                    {
-                        dlg.validateId(Dialog.BtnOk)
-                        list.setFocus()
-                    }
-                }
-            }
-
-            .sigLeftDoubleClick += func|dlg|(list, pt)
-            {
-                var l = list.getSelectedLine()
-                if !l:
-                    return
-                var fi = cast(const *FileInfo) l.userData0
-                if fi.isDirectory()
-                {
-                    dlg.setCurFolder(fi.fullname)
-                }
-                elif dlg.dlgOptions.mode != .SelectFolder
-                {
-                    dlg.validateId(Dialog.BtnOk)
-                    list.setFocus()
-                }
-            }
-
-            .sigSelChanged += func|dlg|(list)
-            {
-                var sel  = list.getSelectedLines()
-                var txt: String
-                foreach l in sel
-                {
-                    let fi = cast(const *FileInfo) l.userData0
-                    if fi.isDirectory()
-                    {
-                        if dlg.dlgOptions.mode != .SelectFolder:
-                            continue
-                    }
-                    else
-                    {
-                        if dlg.dlgOptions.mode == .SelectFolder:
-                            continue
-                    }
-
-                    if !txt.isEmpty():
-                        txt += ";"
-                    txt += Path.getFileName(fi.fullname)
-                }
-
-                if !txt.isEmpty():
-                    dlg.editFile.setText(txt)
-            }
-
-            .sigSort = func(l1, l2, col, down)
-            {
-                var fi1 = cast(*FileInfo) l1.userData0
-                var fi2 = cast(*FileInfo) l2.userData0
-                if fi1.isDirectory() and !fi2.isDirectory():
-                    return -1
-                if !fi1.isDirectory() and fi2.isDirectory():
-                    return 1
-                switch col
-                {
-                case 0:
-                    return (fi1.fullname <=> fi2.fullname) * (down ? -1 : 1)
-                case 1:
-                    return (fi1.lastWriteTime <=> fi2.lastWriteTime) * (down ? -1 : 1)
-                }
-
-                return 0
-            }
-        }
+        dlg.createFileList(view)
 
         // Top
         ////////////////////////
-        let viewTop = Wnd.create'Wnd(view, {0, 0, 0, 50})
-        viewTop.dockStyle       = .Top
-        viewTop.backgroundStyle = .Window
-        viewTop.padding.x       = 10
-        viewTop.padding.z       = 10
-        viewTop.padding.y       = 8
-        viewTop.padding.w       = 8
+        with let viewTop = Wnd.create'Wnd(view, {0, 0, 0, 50})
+        {
+            .dockStyle       = .Top
+            .backgroundStyle = .Window
+            .padding.x       = 10
+            .padding.z       = 10
+            .padding.y       = 8
+            .padding.w       = 8
+        }
+
         dlg.applyLayout()
 
         if opt.mode == .CreateFile or opt.mode == .SelectFolder
@@ -438,11 +508,10 @@ impl FileDlg
             else:
                 foreach f, idx in opt.filters:
                     .addItem(f.item0, userData0: cast(*void) idx)
-
             .selectItem(0)
             .sigChanged += func|dlg|(c, idx)
             {
-                dlg.fillList()
+                dlg.fillFileList()
             }
         }
 
@@ -461,7 +530,6 @@ impl FileDlg
             elif opt.state:
                 .setCurFolder(opt.state.curFolder)
             .listCtrl.sort(0)
-
             .editFile.setText(opt.editName)
             if opt.mode == .CreateFile
             {
@@ -541,66 +609,5 @@ impl FileDlg
         }
 
         return result
-    }
-
-    internal mtd onNewFolder()
-    {
-        var folderName: String = "New Folder"
-
-        with let dlg = EditDlg.createSingleLine(me.surface)
-        {
-            .edit.setText(folderName)
-            .edit.selectAll()
-            .edit.setNote("Folder name")
-            .surface.setTitle("Folder Name")
-            .surface.center(me.surface)
-        }
-
-        dlg.sigPressedButton = mtd|dlg|(fdlg, btnid)
-        {
-            if btnid != Dialog.BtnOk:
-                return true
-
-            var folderName = dlg.edit.text
-            folderName.trim()
-            if folderName.isEmpty()
-            {
-                dlg.edit.selectAll()
-                dlg.edit.setFocus()
-                return false
-            }
-
-            if !Path.isValidFileName(folderName)
-            {
-                MessageDlg.error(dlg.surface, "Invalid folder name")
-                dlg.edit.selectAll()
-                dlg.edit.setFocus()
-                return false
-            }
-
-            var path = Path.combine(me.curFolder, folderName.toString())
-            if Directory.exists(path)
-            {
-                MessageDlg.error(dlg.surface, "Folder already exists")
-                dlg.edit.selectAll()
-                dlg.edit.setFocus()
-                return false
-            }
-
-            return true
-        }
-
-        if dlg.doModal() != Dialog.BtnOk:
-            return
-
-        var path = Path.combine(me.curFolder, dlg.edit.text.toString())
-        catch Directory.create(path)
-        if @err != null
-        {
-            MessageDlg.error(me.surface, "Cannot create folder")
-            return
-        }
-
-        me.fillList()
     }
 }
