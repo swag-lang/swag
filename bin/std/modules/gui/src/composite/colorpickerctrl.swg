@@ -142,8 +142,7 @@ impl ColorPickerCtrl
         if pos.height == 0:
             pos.height = 330
 
-        let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
-        with v
+        with let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
         {
             .pickerFlags = flags
 
@@ -152,7 +151,9 @@ impl ColorPickerCtrl
             .pickAlpha = ColorPicker.create(v, {10, 240, 220, 16})
 
             .staticRes = Wnd.create'Wnd(v, "", {245, 215, 40, 40})
-            let picker = IconButton.create(v, v.getTheme().getIcon24(.Picker), {245, 215, 40, 40})
+            var icon = v.getTheme().getIcon24(.Picker)
+            icon.color = Argb.White
+            let picker = IconButton.create(v, icon, {245, 215, 40, 40})
 
             .editA = EditBox.create(v, "", {10, 265, 50})
             .editR = EditBox.create(v, "", {70, 265, 50})
@@ -337,15 +338,15 @@ impl ColorPickerCtrl
             .radioR.sigChanged += func|v|(bt) { v.setMode(.GreenBlue); v.updateAll(); }
             .radioG.sigChanged += func|v|(bt) { v.setMode(.RedBlue); v.updateAll(); }
             .radioB.sigChanged += func|v|(bt) { v.setMode(.RedGreen); v.updateAll(); }
-        }
 
-        if !v.pickerFlags.has(.Alpha)
-        {
-            v.editA.enable(false)
-            v.pickAlpha.hide()
-            v.pickBar.position.height = 40
-            v.editH.setInputX64(0, 0x00FFFFFF)
-            v.editH.maxLength = 6
+            if !.pickerFlags.has(.Alpha)
+            {
+                .editA.enable(false)
+                .pickAlpha.hide()
+                .pickBar.position.height = 40
+                .editH.setInputX64(0, 0x00FFFFFF)
+                .editH.maxLength = 6
+            }
         }
 
         v.setMode(v.mode)

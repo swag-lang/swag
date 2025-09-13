@@ -183,6 +183,8 @@ impl IWnd for IconButton
         if me.isPressed:
             paintFlags.add(.Pressed)
 
+        if me.icon.color.a:
+            colorIcon = me.icon.color
         if me.iconColor.a:
             colorIcon = me.iconColor
         if me.textColor.a:

@@ -1,6 +1,8 @@
 #global public
 using Core, Pixel
 
+// Enumeration of different color picker display modes.
+// Defines how color components are mapped to the 2D picker area or 1D sliders.
 enum ColorPickerMode
 {
     SaturationLightness
@@ -33,11 +35,14 @@ struct ColorPicker
     mode               = ColorPickerMode.SaturationLightness
     sigChanged:        SigArray'func||(*ColorPicker)
 
-    dirty:             bool = true
-    isMoving:          bool
-    img:               Image
-    texture:           Texture
-    xCur, yCur:        s32
+    private
+    {
+        dirty:             bool = true
+        isMoving:          bool
+        img:               Image
+        texture:           Texture
+        xCur, yCur:        s32
+    }
 }
 
 impl IWnd for ColorPicker
