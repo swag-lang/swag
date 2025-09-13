@@ -1310,7 +1310,7 @@ impl PropWnd
         let sep = Wnd.create'Wnd(me.mainLayout, {0, 0, 0, 1})
         sep.margin.y        = 15
         sep.margin.w        = 8
-        sep.backgroundStyle = .View
+        sep.backgroundStyle = .Dialog
     }
 
     mtd selectionHasChanged()
