@@ -26,19 +26,17 @@ impl Image
                 var pixDst = dstImage.pixels.buffer + x * image.bpp8
                 pixDst += cast(u64) (y * (image.width * image.bpp8))
 
-                let ny = image.height - y
-
-                if x < params.x or
-                   ny < params.y or
+                // fast path: outside blit rect, keep pixel as-is
+                if x < params.x or y < params.y or
                    x >= params.x + srcImage.width or
-                   ny >= params.y + srcImage.height
+                   y >= params.y + srcImage.height
                 {
-                    copyPixelDirect'BPP(pixDst, pix)
+                    copyPixelDirect'BPP(pixDst, pix) // copy current dst pixel back (no change)
                 }
                 else
                 {
                     let x1     = x - params.x
-                    let y1     = srcImage.height - (ny - params.y)
+                    let y1     = y - params.y
                     var pixSrc = srcImage.pixels.buffer + x1 * srcImage.bpp8
                     pixSrc += cast(u64) (y1 * (srcImage.width * srcImage.bpp8))
 
@@ -49,11 +47,16 @@ impl Image
                         copyPixelDirect'BPP(pixDst, pixSrc)
 
                     case AlphaBlend:
-                        let bf = pixSrc[3] / 255.0
-                        pixDst[0] = cast(u8) Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf)
-                        pixDst[1] = cast(u8) Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf)
-                        pixDst[2] = cast(u8) Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf)
-                        pixDst[3] = pix[3]
+                        if BPP != 32:
+                            copyPixelDirect'BPP(pixDst, pixSrc)
+                        else
+                        {
+                            let bf = pixSrc[3] / 255.0
+                            pixDst[0] = cast(u8) Math.lerp(cast(f32) pix[0], cast(f32) pixSrc[0], bf)
+                            pixDst[1] = cast(u8) Math.lerp(cast(f32) pix[1], cast(f32) pixSrc[1], bf)
+                            pixDst[2] = cast(u8) Math.lerp(cast(f32) pix[2], cast(f32) pixSrc[2], bf)
+                            pixDst[3] = pix[3]
+                        }
                     }
                 }
             }
