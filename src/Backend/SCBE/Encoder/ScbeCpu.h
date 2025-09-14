@@ -248,6 +248,13 @@ struct ScbeCpu : BackendEncoder
     bool acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg);
     bool acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg);
 
+    static uint32_t getNumBits(OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero)
+    {
+        if (emitFlags.has(EMIT_B64))
+            return 64;
+        return BackendEncoder::getNumBits(opBits);
+    }
+
     virtual RegisterSet getReadRegisters(ScbeMicroInstruction* inst);
     virtual RegisterSet getWriteRegisters(ScbeMicroInstruction* inst);
     RegisterSet         getReadWriteRegisters(ScbeMicroInstruction* inst);

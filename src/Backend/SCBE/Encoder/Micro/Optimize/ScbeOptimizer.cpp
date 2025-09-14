@@ -566,7 +566,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("pixel"))
+    //if (!out.cpuFct->bc->getPrintName().containsNoCase("getRuneOutline"))
     //    return;
 
     bool globalChanged = true;

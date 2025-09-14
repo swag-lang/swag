@@ -315,8 +315,8 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastU32F32:
-                pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-                pp.emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegI0, CpuOp::CVTI2F, OpBits::B32);
+                pp.emitLoadZeroExtendRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64, OpBits::B32);
+                pp.emitOpBinaryRegReg(cc->computeRegF0, cc->computeRegI0, CpuOp::CVTI2F, OpBits::B32, EMIT_B64);
                 pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegF0, OpBits::B32);
                 break;
             case ByteCodeOp::CastU64F32:

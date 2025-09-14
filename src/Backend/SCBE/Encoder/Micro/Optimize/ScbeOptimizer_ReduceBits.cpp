@@ -16,7 +16,7 @@ void ScbeOptimizer::optimizePassReduceBits(const ScbeMicro& out)
                 if (readRegs.contains(cxtIn.startInst->regA))
                 {
                     const auto opBits = cxtIn.curInst->getOpBitsReadReg();
-                    if (BackendEncoder::getNumBits(opBits) > BackendEncoder::getNumBits(cxtIn.startInst->opBitsB))
+                    if (ScbeCpu::getNumBits(opBits, cxtIn.curInst->emitFlags) > ScbeCpu::getNumBits(cxtIn.startInst->opBitsB, cxtIn.startInst->emitFlags))
                     {
                         keep = true;
                         return ScbeExploreReturn::Stop;
