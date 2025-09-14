@@ -45,7 +45,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
     case PaintEvent as paintEvt:
         let painter = paintEvt.bc.painter
-        var rect    = wnd.getClientRect()
+        let rect    = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
 

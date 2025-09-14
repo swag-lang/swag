@@ -32,7 +32,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     switch evt
     {
     case CreateEvent:
-        var rect = wnd.getClientRect()
+        let rect = wnd.getClientRect()
         cx = rect.width / 3
         cy = 50
         start()

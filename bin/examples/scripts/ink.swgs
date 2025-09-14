@@ -70,7 +70,7 @@ impl Drop
         let otherr = other.r * other.r
         foreach v in me.lp.polygon.points
         {
-            var p    = v - other.center
+            let p    = v - other.center
             let root = sqrt(1 + (otherr / p.lengthSquared()))
             v = (p * root) + other.center
         }

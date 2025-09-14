@@ -32,7 +32,7 @@ var g_Score:    s32
 const RoundCorners = 8.0
 func paintGrid(wnd: *Wnd, painter: *Painter)
 {
-    var rect = wnd.getClientRect()
+    let rect = wnd.getClientRect()
 
     var rectGrid: Math.Rectangle
 
@@ -92,7 +92,7 @@ func paintGrid(wnd: *Wnd, painter: *Painter)
             continue
 
         // Paint cell value
-        var str  = Format.toString("%", c.val)
+        let str  = Format.toString("%", c.val)
         var zoom = c.z
         zoom -= (cast(f32) str.length * 0.08)
         painter.drawStringCenter(xi + (CellSizeW * 0.5), yi + (CellSizeW * 0.5), str, g_Font, Argb.Black, zoom: zoom)
@@ -289,12 +289,12 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
     case PaintEvent as paintEvt:
         let painter = paintEvt.bc.painter
-        var rect    = wnd.getClientRect()
+        let rect    = wnd.getClientRect()
 
         painter.fillRect(rect, Color.fromRgb(43, 43, 43))
 
         painter.drawStringCenter(rect.horzCenter(), 20, "score", wnd.getTheme().createDefaultFont(25), Argb.White)
-        var str = Format.toString("%", g_Score)
+        let str = Format.toString("%", g_Score)
         painter.drawStringCenter(rect.horzCenter(), 60, str, g_Font, Argb.White)
 
         keyboard(wnd)

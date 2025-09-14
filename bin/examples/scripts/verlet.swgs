@@ -21,7 +21,7 @@ impl Verlet
 {
     mtd updatePosition(dt: f32)
     {
-        var velocity = me.positionCurrent - me.positionOld
+        let velocity = me.positionCurrent - me.positionOld
         me.positionOld     = me.positionCurrent
         me.positionCurrent = me.positionCurrent + velocity + (me.acceleration * dt * dt)
         me.acceleration.setZero()
@@ -34,11 +34,11 @@ impl Verlet
 
     mtd applyConstraint()
     {
-        var toObj = me.positionCurrent - PositionC
+        let toObj = me.positionCurrent - PositionC
         let dist  = toObj.length()
         if dist > RadC - me.radius
         {
-            var n = toObj / dist
+            let n = toObj / dist
             me.positionCurrent = PositionC + (n * (RadC - me.radius))
         }
     }

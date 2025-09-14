@@ -529,7 +529,7 @@ impl Ghost
     {
         var target: Dest = {g_PacMan.getX(), g_PacMan.getY()}
         // Default target for RED and (sometimes) YELLOW
-        var currentPos: Dest = {me.getX(), me.getY()}
+        let currentPos: Dest = {me.getX(), me.getY()}
         var dx, dy: s32
 
         // Determine ghost chasing behaviour based on their colour

@@ -259,7 +259,7 @@ func paint(painter: *Painter)
         painter.pushState()
         defer painter.popState()
 
-        var trf = painter.getTransform()
+        let trf = painter.getTransform()
 
         painter.resetTransform()
         let speed = Math.clamp(g_Bird.speed.y, -200, 200)
@@ -308,7 +308,7 @@ func paint(painter: *Painter)
     if g_GameOver
     {
         // This is another way of initializing a struct variable or constant.
-        var pt = Math.Point{g_Rect.horzCenter() - g_OverTexture.width / 2, g_Rect.vertCenter() - g_OverTexture.height / 2}
+        let pt = Math.Point{g_Rect.horzCenter() - g_OverTexture.width / 2, g_Rect.vertCenter() - g_OverTexture.height / 2}
 
         painter.drawTexture(pt.x, pt.y, g_OverTexture)
     }

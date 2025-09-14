@@ -77,16 +77,16 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
     case PaintEvent as paintEvt:
         let painter = paintEvt.bc.painter
-        var rect    = wnd.getClientRect()
+        let rect    = wnd.getClientRect()
 
         painter.fillRect(rect, Argb.Black)
 
         foreach &p in g_Points
         {
             p.update(wnd)
-            var v = p.target - p.pos
+            let v = p.target - p.pos
             let d = map(Math.min(v.length(), 100), 0, 100, 0, 1)
-            var c = Color.getBlend(Argb.White, Argb.Black, d)
+            let c = Color.getBlend(Argb.White, Argb.Black, d)
             painter.fillCircle(p.pos.x, p.pos.y, 4, c)
         }
 

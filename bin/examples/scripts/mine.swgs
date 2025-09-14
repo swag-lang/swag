@@ -68,7 +68,7 @@ func floodFill(x, y: s32)
 
     while arr.count
     {
-        var pt = arr.popBack()
+        let pt = arr.popBack()
         if !g_Grid[pt.x, pt.y].show
         {
             g_Grid[pt.x, pt.y].show = true
@@ -129,7 +129,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         setup()
 
     case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
-        var pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
+        let pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
         var x   = cast(s32) (pos.x / CellSize)
         var y   = cast(s32) (pos.y / CellSize)
         x, y -= 1
@@ -159,7 +159,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         let painter = paintEvt.bc.painter
 
         painter.fillRect(wnd.getClientRect(), wnd.getThemeColors().wnd_Bk)
-        var bk = Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}
+        let bk = Math.Rectangle{CellSize, CellSize, GridSize * CellSize, GridSize * CellSize}
         painter.fillRect(bk, Argb.White)
 
         // Paint grid
@@ -193,7 +193,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
                 }
                 elif g_Grid[i, j].score
                 {
-                    var str = Format.toString("%", g_Grid[i, j].score)
+                    let str = Format.toString("%", g_Grid[i, j].score)
 
                     var rs:  RichString
                     var rsf: RichStringFormat

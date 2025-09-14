@@ -153,7 +153,7 @@ func loadImg()
     // Load image
     var ti: Time.Stopwatch
     ti.start()
-    var data = imagePath(imgName)
+    let data = imagePath(imgName)
     g_MyImage = assume Image.load(data)
     ti.stop()
     //Console.printf("%: img: % (% x % %) load: %ms ", g_EffectIdx, imgName, g_MyImage.width, g_MyImage.height, g_MyImage.pf, ti.elapsedMilliseconds())

@@ -139,7 +139,7 @@ func paintBadge(dc: *Painter, x, y: f32, m: bool)
         color   = Argb.Pink
     }
 
-    var rectSolo = Math.Rectangle{x, y, BADGE_SIZE, BADGE_SIZE}
+    let rectSolo = Math.Rectangle{x, y, BADGE_SIZE, BADGE_SIZE}
 
     dc.fillCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE * 0.5, color)
     var rectIcon = rectSolo
@@ -156,15 +156,15 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         g_InitDone = true
     }
 
-    var rect = Math.Rectangle{x, y, CARD_WIDTH, CARD_HEIGHT}
+    let rect = Math.Rectangle{x, y, CARD_WIDTH, CARD_HEIGHT}
 
     {
-        var rectBorder = rect
+        let rectBorder = rect
         dc.fillRoundRect(rectBorder, CARD_ROUND * 2.0, CARD_ROUND * 2.0, Argb.Black)
     }
 
     {
-        var rectOutside = rect
+        let rectOutside = rect
         dc.drawRoundRect(rectOutside, CARD_ROUND * 2.5, CARD_ROUND * 2.5, Argb.White, 3)
     }
 
@@ -198,7 +198,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         cropRect.height = rectImage.height
         img.crop(cropRect)
 
-        var texture = app.renderer.addImage(img)
+        let texture = app.renderer.addImage(img)
         dc.drawTexture(rectImage, texture)
     }
 
@@ -320,7 +320,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         rect1.width -= BORDER_SIZE
 
         var rs: RichString
-        var num = Format.toString("%", g_Id)
+        let num = Format.toString("%", g_Id)
         rs.set(num)
 
         var rsf: RichStringFormat
@@ -350,11 +350,11 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards")
 
-    var pathImg = Path.combine(dataPath, "img")
-    var lines   = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
+    let pathImg = Path.combine(dataPath, "img")
+    let lines   = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
     foreach l in lines
     {
-        var tokens  = Tokenize.split(l, ';''rune, removeEmpty: false)
+        let tokens  = Tokenize.split(l, ';''rune, removeEmpty: false)
         var fi:     ImageInfo
         var folders = Tokenize.split(tokens[0], '/''rune)
 
@@ -377,7 +377,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     #[Swag.Mixin]
     func flushPage()
     {
-        var fileN = Format.toString("%.jpg", pageNum)
+        let fileN = Format.toString("%.jpg", pageNum)
         let pOut  = Path.combine(dataPath, "out")
         if !Directory.exists(pOut):
             assume Directory.create(pOut)
@@ -391,7 +391,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     {
         g_File = f
 
-        var img = pt.draw(func(app, dc)
+        let img = pt.draw(func(app, dc)
         {
             dc.setColorMaskFull()
             dc.clear(Argb.White)

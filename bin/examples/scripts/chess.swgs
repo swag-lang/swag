@@ -517,7 +517,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
         if mouseEvt.button == .Left
         {
-            var pos  = wnd.surfaceToLocal(mouseEvt.surfacePos)
+            let pos  = wnd.surfaceToLocal(mouseEvt.surfacePos)
             var cell = pickCell(pos)
 
             if g_Game.selectedCell != -1 and moveIsPossible(g_Game.selectedCell, cell)
@@ -570,7 +570,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     dataPath = Path.combine(dataPath, "datas")
     dataPath = Path.combine(dataPath, "chess")
     dataPath = Path.combine(dataPath, "pieces.png")
-    var img = assume Image.load(dataPath)
+    let img = assume Image.load(dataPath)
 
     let rdr = surface.app.getRenderer()
     var y   = 0
