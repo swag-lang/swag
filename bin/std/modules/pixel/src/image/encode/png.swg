@@ -308,7 +308,7 @@ impl Encoder
     mtd finishIDat() throw
     {
         var zlib: Compress.ZLib
-        var cmp   = zlib.compress(me.bufferToCompress.toSlice(), me.userOptions.compressionLevel)
+        let cmp   = zlib.compress(me.bufferToCompress.toSlice(), me.userOptions.compressionLevel)
 
         me.writePtr = me.writeHeader(TypeIDat, cmp.count)
         Memory.copy(me.writePtr, cmp.buffer, cmp.count)

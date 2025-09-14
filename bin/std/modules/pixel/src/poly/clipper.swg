@@ -394,8 +394,8 @@ impl Transform
     {
         if me.useFullRange
         {
-            var v1 = Math.Int128.mul(e1.top.y - e1.bot.y, e2.top.x - e2.bot.x)
-            var v2 = Math.Int128.mul(e1.top.x - e1.bot.x, e2.top.y - e2.bot.y)
+            let v1 = Math.Int128.mul(e1.top.y - e1.bot.y, e2.top.x - e2.bot.x)
+            let v2 = Math.Int128.mul(e1.top.x - e1.bot.x, e2.top.y - e2.bot.y)
             return v1 == v2
         }
 
@@ -407,8 +407,8 @@ impl Transform
     {
         if me.useFullRange
         {
-            var v1 = Math.Int128.mul(pt1.y - pt2.y, pt2.x - pt3.x)
-            var v2 = Math.Int128.mul(pt1.x - pt2.x, pt2.y - pt3.y)
+            let v1 = Math.Int128.mul(pt1.y - pt2.y, pt2.x - pt3.x)
+            let v2 = Math.Int128.mul(pt1.x - pt2.x, pt2.y - pt3.y)
             return v1 == v2
         }
 
@@ -420,8 +420,8 @@ impl Transform
     {
         if me.useFullRange
         {
-            var v1 = Math.Int128.mul(pt1.y - pt2.y, pt3.x - pt4.x)
-            var v2 = Math.Int128.mul(pt1.x - pt2.x, pt3.y - pt4.y)
+            let v1 = Math.Int128.mul(pt1.y - pt2.y, pt3.x - pt4.x)
+            let v2 = Math.Int128.mul(pt1.x - pt2.x, pt3.y - pt4.y)
             return v1 == v2
         }
 
@@ -519,7 +519,7 @@ impl Transform
                 else:
                     e = result.prev
 
-                var locMin = LocalMinimum{y: e.bot.y, rightBound: e}
+                let locMin = LocalMinimum{y: e.bot.y, rightBound: e}
                 e.windDelta = 0
                 result      = me.processBound(e, nextIsForward)
                 me.minimaList.add(locMin)

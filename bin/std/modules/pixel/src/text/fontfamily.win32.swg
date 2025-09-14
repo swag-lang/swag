@@ -20,7 +20,7 @@ impl FontFamily
         let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
         if !len:
             return TRUE
-        var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
+        let x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
         let ret = cast(*FontFamilyEnumerate) cast(u64) lParam
         var idx = cast(u64) FontFamilyStyle.Regular
@@ -47,7 +47,7 @@ impl FontFamily
             let len = Utf16.lengthZeroTerminated(&fa.lfFaceName[0])
             if !len:
                 return TRUE
-            var x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
+            let x = Utf8.fromUtf16(@mkslice(&fa.lfFaceName[0], len))
 
             // ???
             if x[0] == '@':

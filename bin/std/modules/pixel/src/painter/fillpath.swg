@@ -116,7 +116,7 @@ public impl Painter
             // vertices
             else
             {
-                var center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
+                let center = Vector2{path.bvMin.x + (path.bvMax.x - path.bvMin.x) * 0.5, path.bvMin.y + (path.bvMax.y - path.bvMin.y) * 0.5}
                 for i in count
                 {
                     let v0   = polygon.getPoint(i)
@@ -240,7 +240,7 @@ public impl Painter
         else
         {
             path.polygon.isClockwise = true
-            var res = path.polygon.getClean()
+            let res = path.polygon.getClean()
             foreach p in res.paths:
                 me.fillPath(p, brush)
         }

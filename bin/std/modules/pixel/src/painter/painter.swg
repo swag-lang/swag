@@ -499,7 +499,7 @@ impl Painter
     // Restore the last paint state
     mtd popState()
     {
-        var state = me.stackState.popBack()
+        let state = me.stackState.popBack()
         me.setState(state)
     }
 
@@ -545,7 +545,7 @@ impl Painter
     {
         if isZeroEpsilon(x) and isZeroEpsilon(y):
             return
-        var tr = Transform2.createTranslation(x, y)
+        let tr = Transform2.createTranslation(x, y)
         me.curState.transform.multiply(tr)
         me.setTransform(me.curState.transform)
     }
@@ -556,7 +556,7 @@ impl Painter
     {
         if isZeroEpsilon(angle.rad):
             return
-        var tr = Transform2.createRotation(angle.rad, 0, 0)
+        let tr = Transform2.createRotation(angle.rad, 0, 0)
         me.curState.transform.multiply(tr)
         me.setTransform(me.curState.transform)
     }
@@ -567,7 +567,7 @@ impl Painter
     {
         if isZeroEpsilon(angle.rad):
             return
-        var tr = Transform2.createRotation(angle.rad, centerX, centerY)
+        let tr = Transform2.createRotation(angle.rad, centerX, centerY)
         me.curState.transform.multiply(tr)
         me.setTransform(me.curState.transform)
     }
@@ -578,7 +578,7 @@ impl Painter
     {
         if isZeroEpsilon(angle.rad):
             return
-        var tr = Transform2.createRotation(angle.rad, me.curState.transform.tx, me.curState.transform.ty)
+        let tr = Transform2.createRotation(angle.rad, me.curState.transform.tx, me.curState.transform.ty)
         me.curState.transform.multiply(tr)
         me.setTransform(me.curState.transform)
     }
@@ -588,7 +588,7 @@ impl Painter
     {
         if isZeroEpsilon(x) and isZeroEpsilon(y):
             return
-        var tr = Transform2.createScale(x, y, 0, 0)
+        let tr = Transform2.createScale(x, y, 0, 0)
         me.curState.transform.multiply(tr)
         me.setTransform(me.curState.transform)
     }
@@ -699,7 +699,7 @@ impl Painter
         }
         else
         {
-            var clipRect = me.curState.stackClipRect.popBack()
+            let clipRect = me.curState.stackClipRect.popBack()
             me.setClippingRect(clipRect)
         }
     }

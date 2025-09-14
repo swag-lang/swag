@@ -453,7 +453,7 @@ impl MainWnd
                 continue
             for y in capture.backImg.height
             {
-                var col = capture.backImg.getPixelColor(x, y)
+                let col = capture.backImg.getPixelColor(x, y)
                 if col.a
                 {
                     minX = Math.min(minX, x + capture.backImagePos.x)
@@ -469,7 +469,7 @@ impl MainWnd
                 continue
             for y in capture.backImg.height
             {
-                var col = capture.backImg.getPixelColor(x, y)
+                let col = capture.backImg.getPixelColor(x, y)
                 if col.a
                 {
                     maxX = Math.max(maxX, x + capture.backImagePos.x + 1)
@@ -485,7 +485,7 @@ impl MainWnd
                 continue
             for x in capture.backImg.width
             {
-                var col = capture.backImg.getPixelColor(x, y)
+                let col = capture.backImg.getPixelColor(x, y)
                 if col.a
                 {
                     minY = Math.min(minY, y + capture.backImagePos.y)
@@ -501,7 +501,7 @@ impl MainWnd
                 continue
             for x in capture.backImg.width
             {
-                var col = capture.backImg.getPixelColor(x, y)
+                let col = capture.backImg.getPixelColor(x, y)
                 if col.a
                 {
                     maxY = Math.max(maxY, y + capture.backImagePos.y + 1)

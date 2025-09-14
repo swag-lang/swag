@@ -309,7 +309,7 @@ impl MainWnd
 
     mtd pixSelSmartMove()
     {
-        var forms = me.getPixSels()
+        let forms = me.getPixSels()
         if forms.count == 0:
             return
 

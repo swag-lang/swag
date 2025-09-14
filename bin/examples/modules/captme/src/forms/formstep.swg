@@ -200,7 +200,7 @@ impl IForm for FormStep
         if cxt.quickMode and me.alpha != 100:
             bk.a = cast(u8) Math.map(cast(f32) me.alpha, 0, 100, 0, 255)
 
-        var pp = me.boundRect() * z
+        let pp = me.boundRect() * z
 
         #[Swag.Complete]
         switch me.kind

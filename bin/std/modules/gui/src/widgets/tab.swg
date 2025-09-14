@@ -370,7 +370,7 @@ internal impl Tab
 
     mtd computeTabLayout()
     {
-        var rect = me.getBarRectItems()
+        let rect = me.getBarRectItems()
 
         me.mostRightPos = rect.x
         switch me.barLayout
@@ -395,7 +395,7 @@ internal impl Tab
         case Auto:
             foreach v in me.views
             {
-                var mes = Painter.measureString(v.item.name.raw, me.getFont().regular)
+                let mes = Painter.measureString(v.item.name.raw, me.getFont().regular)
 
                 // Text
                 v.width = mes.width

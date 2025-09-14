@@ -580,9 +580,9 @@ impl FileDlg
         var result: retval
 
         let item = me.comboType.getSelectedItem()
-        var fi   = me.dlgOptions.filters[cast(u64) item.userData0]
+        let fi   = me.dlgOptions.filters[cast(u64) item.userData0]
 
-        var tokens = Tokenize.split(me.editFile.text, ';''rune)
+        let tokens = Tokenize.split(me.editFile.text, ';''rune)
         foreach t in tokens
         {
             // Be sure this is a valid file/folder name

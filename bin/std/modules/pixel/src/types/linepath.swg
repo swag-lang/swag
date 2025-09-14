@@ -69,7 +69,7 @@ public impl LinePath
     // Add a line from the previous point to 'pt'
     mtd lineTo(x, y: f32)
     {
-        var newEndPoint = Vector2{x, y}
+        let newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(me.endPoint):
             return
 
@@ -84,7 +84,7 @@ public impl LinePath
     // Add a curve from the previous point to 'pt'
     mtd curveTo(x, y: f32)
     {
-        var newEndPoint = Vector2{x, y}
+        let newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(me.endPoint):
             return
 
@@ -100,7 +100,7 @@ public impl LinePath
     #[Swag.Overload]
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
-        var newEndPoint = Vector2{x, y}
+        let newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(me.endPoint):
             return
 
@@ -117,7 +117,7 @@ public impl LinePath
     #[Swag.Overload]
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
-        var newEndPoint = Vector2{x, y}
+        let newEndPoint = Vector2{x, y}
         if newEndPoint.isEqualEpsilon(me.endPoint):
             return
 
@@ -143,7 +143,7 @@ public impl LinePath
         while ma < ia:
             ma += Math.ConstF32.TwoPi
 
-        var newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
+        let newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
         if newEndPoint.isEqualEpsilon(me.endPoint):
             return
 
@@ -169,7 +169,7 @@ public impl LinePath
         if me.isClosed or !me.elements.count:
             return
 
-        var v = me.endPoint - me.startPoint
+        let v = me.endPoint - me.startPoint
         if v.lengthSquared() >= 0.5 * 0.5
         {
             if me.elements.backPtr().type == .Curve:
@@ -336,7 +336,7 @@ public impl LinePath
 
         foreach elem, i in me.elements
         {
-            var pos = elem.position
+            let pos = elem.position
 
             #[Swag.Complete]
             switch elem.type

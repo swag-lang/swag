@@ -103,7 +103,7 @@ impl Painter
     #[Swag.Overload]
     func measureString(text: string, font: *Font)->StringMetrics
     {
-        var arr = getGlyphs(text, font)
+        let arr = getGlyphs(text, font)
         return measureString(arr)
     }
 
@@ -128,7 +128,7 @@ impl Painter
     // Draw a simple string (centered)
     mtd drawStringCenter(x, y: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
-        var ms = measureString(text, font)
+        let ms = measureString(text, font)
         var yr = y - (ms.height * 0.5 * zoom)
         yr -= (font.ascent - ms.ascent) * zoom
         me.drawString(x - (ms.width * 0.5 * zoom), yr, text, font, color, under, zoom)
@@ -154,7 +154,7 @@ impl Painter
         if me.fake:
             return
 
-        var arr = getGlyphs(text, font)
+        let arr = getGlyphs(text, font)
         if arr.isEmpty():
             return
 
@@ -285,7 +285,7 @@ impl Painter
             c.font = format.font.getFont(fs)
 
             // Measure
-            var ms = measureString(c.slice, c.font)
+            let ms = measureString(c.slice, c.font)
             c.boundRect = {0, 0, ms.width, ms.height}
 
             // User eol

@@ -146,7 +146,7 @@ impl IWnd for RecentView
 
         if linked != null
         {
-            var backColor = linkedUpToDate ? colors.bk : ColorYellow
+            let backColor = linkedUpToDate ? colors.bk : ColorYellow
             var icon11 = Icon.from(&g_Main.icons48, 21)
             icon11.sizeX, icon11.sizeY = 24
             icon11.paint(painter, rect.x + 4, rect.y + 4, backColor)

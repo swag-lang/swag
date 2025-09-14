@@ -113,7 +113,7 @@ impl Capture
     {
         var result: retval
 
-        var rect     = Math.Rectangle{width: me.width * zoom, height: me.height * zoom}
+        let rect     = Math.Rectangle{width: me.width * zoom, height: me.height * zoom}
         var painter: Pixel.Painter
 
         let render = g_App.getRenderer()
@@ -314,7 +314,7 @@ impl Capture
         foreach &itf, idx in res
         {
             itf.setup(me)
-            var bound = itf.boundRect()
+            let bound = itf.boundRect()
             if idx == 0:
                 boundRect = bound
             else:
@@ -368,14 +368,14 @@ impl Capture
         var clipOffset: Math.Vector2
         with let base = cast(*BaseForm) @dataof(f)
         {
-            var savePaintPos = .paintPos
+            let savePaintPos = .paintPos
 
             .paintPos.x      = rect.x + (boundRect.x * zoom)
             .paintPos.y      = rect.y + (boundRect.y * zoom)
             .paintPos.width  = boundRect.width * zoom
             .paintPos.height = boundRect.height * zoom
 
-            var saveNoClipPos = .paintPos
+            let saveNoClipPos = .paintPos
 
             if !quickMode and !clip.isEmpty()
             {
@@ -434,7 +434,7 @@ impl Capture
             rt2 = render.getRenderTarget(wt, ht)
 
             // Draw the image with a margin around
-            var srcRect = Math.Rectangle{0, 0, wt2, ht2}
+            let srcRect = Math.Rectangle{0, 0, wt2, ht2}
             var dstRect = Math.Rectangle{Margin, Margin, wt2, ht2}
             with painter
             {
@@ -517,7 +517,7 @@ impl Capture
         else:
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
-        var srcRect = Math.Rectangle{0, 0, wt, ht}
+        let srcRect = Math.Rectangle{0, 0, wt, ht}
 
         var paintRect: Math.Rectangle
         paintRect.x      = base.paintPos.x + clipOffset.x
@@ -783,7 +783,7 @@ impl Capture
         var nx = x ? dref x : 0
         var ny = y ? dref y : 0
 
-        var bound = me.getSelectionBoundRect(editForm)
+        let bound = me.getSelectionBoundRect(editForm)
 
         var arrX: Array's32
         var arrY: Array's32

@@ -127,7 +127,7 @@ impl IWnd for LibraryView
             me.imgSpin.hide()
 
         let painter    = evt.bc.painter
-        var clientRect = me.getClientRectPadding()
+        let clientRect = me.getClientRectPadding()
 
         var x = clientRect.x
         var y = clientRect.y

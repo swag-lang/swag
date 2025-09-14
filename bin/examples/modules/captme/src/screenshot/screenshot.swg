@@ -81,7 +81,7 @@ func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *C
     if !surface:
         return null
 
-    var grabRect = getGrabRect()
+    let grabRect = getGrabRect()
     with let capture = Memory.new'Capture()
     {
         .width          = cast(s32) grabRect.width

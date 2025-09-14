@@ -24,7 +24,7 @@ impl Image
         if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
             return
 
-        var hsl    = color.toHsl()
+        let hsl    = color.toHsl()
         var swapRB = me.pf == .RGB8 or me.pf == .RGBA8
 
         #[Swag.Complete]

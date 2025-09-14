@@ -139,7 +139,7 @@ impl Decoder
 
     mtd readHeader(ch: ChunkHeader) throw
     {
-        var chunk = me.readChunk(ch)
+        let chunk = me.readChunk(ch)
         me.header        = dref cast(const *Header) @dataof(chunk.datas)
         me.header.width  = Math.bigEndianToNative(me.header.width)
         me.header.height = Math.bigEndianToNative(me.header.height)
@@ -518,7 +518,7 @@ impl Decoder
                     throw InvalidFormatError{"invalid IDAT chunk"}
                 while ch.type == IDAT
                 {
-                    var chunk = me.readChunk(ch)
+                    let chunk = me.readChunk(ch)
                     iDataBuf.add(chunk.datas)
                     me.stream.peek32Be(cast(^u8) &ch.length)
                     me.stream.peek32(cast(^u8) &ch.type)
@@ -531,7 +531,7 @@ impl Decoder
             case PLTE:
                 if seenIDAT:
                     throw InvalidFormatError{"invalid PLTE chunk"}
-                var chunk = me.readChunk(ch)
+                let chunk = me.readChunk(ch)
                 let len   = @countof(chunk.datas)
                 if len % 3 != 0 or len > 768:
                     throw InvalidFormatError{"invalid PLTE chunk"}
@@ -545,7 +545,7 @@ impl Decoder
                 me.paletteCount = cast(u32) (len / 3)
 
             case TEXt:
-                var chunk = me.readChunk(ch)
+                let chunk = me.readChunk(ch)
                 if me.decOptions.decodeMetaDatas
                 {
                     let len = @strlen(chunk.datas)

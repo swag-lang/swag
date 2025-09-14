@@ -236,7 +236,7 @@ impl Encoder
         }
 
         me.imageX = cast(u16) xDiv8
-        var tmpline = Array.createBuffer(cast(u64) me.imageX * #sizeof(ColorRGB))
+        let tmpline = Array.createBuffer(cast(u64) me.imageX * #sizeof(ColorRGB))
 
         // Reorder in memory the inversed bitmap
         var nrLineUp = cast(u32) me.imageY - 1
@@ -635,8 +635,8 @@ impl Encoder
 
     mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: *s16, hTDC, hTAC: ^BitString)
     {
-        var eob       = hTAC[0x00]
-        var m16Zeroes = hTAC[0xF0]
+        let eob       = hTAC[0x00]
+        let m16Zeroes = hTAC[0xF0]
 
         quantization(componentDU, fdtbl, me.duDct)
 
@@ -708,7 +708,7 @@ public impl IImageEncoder for Encoder
 {
     mtd impl canEncode(fileName: string)->bool
     {
-        var ext = Path.getExtensionLowerCase(fileName)
+        let ext = Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 

@@ -199,7 +199,7 @@ impl IForm for FormShape
         }
 
         let z   = cxt.z
-        var pp  = me.boundRect() * z
+        let pp  = me.boundRect() * z
         var pen = Pen.createDash(dash, me.borderColor, bSize)
         pen.borderPos = .Inside
         var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)

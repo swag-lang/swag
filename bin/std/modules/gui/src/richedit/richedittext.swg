@@ -421,7 +421,7 @@ public impl RichEditCtrl
         me.moveCursorStartFile(&sel0)
         me.moveCursorEndFile(&sel1)
         var res = me.getTextPrivate(sel0, sel1)
-        var txt = Utf8.fromUnicode(res.text.toSlice())
+        let txt = Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
 
@@ -614,7 +614,7 @@ public impl RichEditCtrl
         // Do action
         if me.hasSelRect
         {
-            var sb = me.getBegSelection()
+            let sb = me.getBegSelection()
             var se = me.getEndSelection()
             for caretI in sb.lineIndex to se.lineIndex
             {

@@ -299,7 +299,7 @@ impl IForm for FormImage
         let z     = cxt.z
         let bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
         var pp    = me.boundRect() * z
-        var pen   = Pen.createSolid(me.borderColor, bSize)
+        let pen   = Pen.createSolid(me.borderColor, bSize)
 
         if !cxt.quickMode
         {

@@ -122,7 +122,7 @@ public impl TypeFace
         // If file does not exist, try the system folder
         if !File.exists(fullname)
         {
-            var p = Path.combine(Env.getSpecialDirectory(.Font), fullname)
+            let p = Path.combine(Env.getSpecialDirectory(.Font), fullname)
             tf.buffer = File.readAllBytes(p)
         }
         else

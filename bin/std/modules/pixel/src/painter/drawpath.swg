@@ -432,7 +432,7 @@ impl Painter
     mtd drawLineInternal(cxt: *Context, pos: Math.Vector2)
     {
         // Compute line (half width on each side)
-        var newPos = pos
+        let newPos = pos
         var n      = newPos - cxt.prev
 
         // If previous and next point are too close, we will take
@@ -462,10 +462,10 @@ impl Painter
             me.drawJoin(cxt, cxt.prev, cxt.normalPrev, cxt.normal)
 
         // Draw quad
-        var v0 = cxt.prev - cxt.normal
-        var v1 = newPos - cxt.normal
-        var v3 = cxt.prev + cxt.normal
-        var v2 = newPos + cxt.normal
+        let v0 = cxt.prev - cxt.normal
+        let v1 = newPos - cxt.normal
+        let v3 = cxt.prev + cxt.normal
+        let v2 = newPos + cxt.normal
         cxt.prim1 = me.pushTriangle(v0, v1, v3, cxt.pen.brush.color)
         cxt.prim2 = me.pushTriangle(v1, v3, v2, cxt.pen.brush.color)
 
@@ -580,7 +580,7 @@ impl Painter
             // current pattern, and change the pattern to be the next
             if remainingSegLen > lengthInPattern
             {
-                var nextp = cxt.prev + (v * lengthInPattern)
+                let nextp = cxt.prev + (v * lengthInPattern)
                 if blankPatternIdx
                 {
                     me.drawDashEndCap(cxt, cxt.prev, cxt.normal)
@@ -775,8 +775,8 @@ impl Painter
             // Draw begin cap
             if cxt.pen.begCapStyle != .None
             {
-                var v1 = cxt.path.polygon.getPoint(0, cxt.offsetPath)
-                var v2 = beginSkipInfo.hasAdjustment ? actualStartPoint : cxt.path.polygon.getPoint(1, cxt.offsetPath)
+                let v1 = cxt.path.polygon.getPoint(0, cxt.offsetPath)
+                let v2 = beginSkipInfo.hasAdjustment ? actualStartPoint : cxt.path.polygon.getPoint(1, cxt.offsetPath)
                 var n  = v2 - v1
                 n.normalizeSafe()
                 var c = n.cross(1)
@@ -787,8 +787,8 @@ impl Painter
             // Draw end cap
             if cxt.pen.endCapStyle != .None
             {
-                var v1 = cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 1, cxt.offsetPath)
-                var v2 = endSkipInfo.hasAdjustment ? actualEndPoint : cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 2, cxt.offsetPath)
+                let v1 = cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 1, cxt.offsetPath)
+                let v2 = endSkipInfo.hasAdjustment ? actualEndPoint : cxt.path.polygon.getPoint(cxt.path.polygon.points.count - 2, cxt.offsetPath)
                 var n  = v1 - v2
                 n.normalizeSafe()
                 var c = n.cross(1)
@@ -816,7 +816,7 @@ impl Painter
                 {
                     if i < cxt.path.polygon.points.count
                     {
-                        var p = cxt.path.polygon.getPoint(i, cxt.offsetPath)
+                        let p = cxt.path.polygon.getPoint(i, cxt.offsetPath)
                         me.drawLine(cxt, p)
                     }
                 }

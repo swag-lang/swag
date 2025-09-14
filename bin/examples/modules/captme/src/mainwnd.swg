@@ -118,7 +118,7 @@ impl IWnd for MainWnd
             .computeLayoutPopup()
         }
 
-        var pt = Input.getMousePos()
+        let pt = Input.getMousePos()
         menu.position.width += 2 * me.getThemeMetrics().surfaceWnd_ShadowSize
         menu.position.height += 2 * me.getThemeMetrics().surfaceWnd_ShadowSize
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
@@ -711,9 +711,9 @@ impl MainWnd
     {
         parent.surface.minSize = {1024, 512}
 
-        var img24  = assume Image.decode(".png", Icons24)
-        var img48  = assume Image.decode(".png", Icons48)
-        var imgApp = assume Image.decode(".png", AppIcon)
+        let img24  = assume Image.decode(".png", Icons24)
+        let img48  = assume Image.decode(".png", Icons48)
+        let imgApp = assume Image.decode(".png", AppIcon)
 
         let renderer = parent.getApp().getRenderer()
 
@@ -801,7 +801,7 @@ impl MainWnd
             .backgroundStyle = .Window
         }
 
-        var ic = res.getTheme().getIcon24(.Search, 20)
+        let ic = res.getTheme().getIcon24(.Search, 20)
         with res.zoomBtn = IconButton.create(res.editZoomBar, ic, {0, 0, 120, 32})
         {
             .iconBtnFlags.add(.Center)

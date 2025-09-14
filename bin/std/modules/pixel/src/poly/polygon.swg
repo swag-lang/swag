@@ -84,7 +84,7 @@ impl Polygon
                 v /= cast(f32) (divide + 1)
                 while divide > 0
                 {
-                    var np = me.points[i] + v
+                    let np = me.points[i] + v
                     me.points.insertAt(i + 1, np)
                     divide -= 1
                     i += 1
@@ -135,12 +135,12 @@ impl Polygon
 
         foreach pt in res
         {
-            var vec = Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
+            let vec = Math.Vector2{cast(f32) (pt.x / ClipperScaleCoords), cast(f32) (pt.y / ClipperScaleCoords)}
             me.add(vec)
         }
 
         // Closed path needs last point to be the same as the first one
-        var v0 = me.getPoint(0)
+        let v0 = me.getPoint(0)
         me.add(v0)
 
         me.compute()

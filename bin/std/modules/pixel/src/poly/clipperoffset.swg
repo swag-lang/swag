@@ -74,7 +74,7 @@ impl Offset
             {
                 j += 1
                 newNode.contour.add(path.buffer[i])
-                var kC = newNode.contour[k]
+                let kC = newNode.contour[k]
                 if path[i].y > kC.y or (path[i].y == kC.y and path[i].x < kC.x):
                     k = j
             }
@@ -92,7 +92,7 @@ impl Offset
             me.lowest = IntPoint{me.polyNodes.childs.count - 1, k}
         else
         {
-            var ip = me.polyNodes.childs[cast(s32) me.lowest.x].contour[cast(s32) me.lowest.y]
+            let ip = me.polyNodes.childs[cast(s32) me.lowest.x].contour[cast(s32) me.lowest.y]
             if newNode.contour[k].y > ip.y or (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x):
                 me.lowest = IntPoint{me.polyNodes.childs.count - 1, k}
         }
@@ -116,7 +116,7 @@ impl Offset
         }
         else
         {
-            var r      = clpr.getBounds()
+            let r      = clpr.getBounds()
             var outer: ClipperPath
             outer.add(IntPoint{r.left - 10, r.bottom + 10})
             outer.add(IntPoint{r.right + 10, r.bottom + 10})
@@ -144,7 +144,7 @@ impl Offset
         var pJ = poly[j]
         for i in size
         {
-            var pI = poly[i]
+            let pI = poly[i]
             a += (cast(f64) pJ.x + pI.x) * (cast(f64) pJ.y - pI.y)
             j  = i
             pJ = pI
@@ -304,9 +304,9 @@ impl Offset
     {
         let k = dref ptrk
 
-        var kN = me.normals[k]
-        var jN = me.normals[j]
-        var jP = me.srcPoly[j]
+        let kN = me.normals[k]
+        let jN = me.normals[j]
+        let jP = me.srcPoly[j]
 
         me.sinaVal = (kN.x * jN.y - jN.x * kN.y)
         if Math.abs(me.sinaVal * me.deltaVal) < 1.0
@@ -391,9 +391,9 @@ impl Offset
     // Connects offset edges with line segments that approximate the curve.
     mtd doRound(j, k: s32)
     {
-        var kN = me.normals[k]
-        var jN = me.normals[j]
-        var jP = me.srcPoly[j]
+        let kN = me.normals[k]
+        let jN = me.normals[j]
+        let jP = me.srcPoly[j]
 
         let a     = Math.atan2(me.sinaVal, kN.x * jN.x + kN.y * jN.y)
         let steps = Math.max(cast(s32) cround(me.stepsPerRad * Math.abs(a)), 1)

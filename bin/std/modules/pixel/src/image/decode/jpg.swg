@@ -2104,7 +2104,7 @@ public impl IImageDecoder for Decoder
 {
     mtd impl canDecode(fileName: string)->bool
     {
-        var ext = Path.getExtensionLowerCase(fileName)
+        let ext = Path.getExtensionLowerCase(fileName)
         return ext == ".jpg" or ext == ".jpeg"
     }
 

@@ -86,7 +86,7 @@ public impl Font
         Debug.assert(typeFace != null)
         Debug.assert(size > 0)
 
-        var str = Format.toString("%_%_%_%", typeFace.fullname, size, forceBold, forceItalic)
+        let str = Format.toString("%_%_%_%", typeFace.fullname, size, forceBold, forceItalic)
 
         Sync.scopedLock(&lock)
 
