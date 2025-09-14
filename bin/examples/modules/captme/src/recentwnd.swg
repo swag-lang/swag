@@ -146,18 +146,18 @@ impl IWnd for RecentView
 
         if linked != null
         {
+            var backColor = linkedUpToDate ? colors.bk : ColorYellow
             var icon11 = Icon.from(&g_Main.icons48, 21)
             icon11.sizeX, icon11.sizeY = 24
-            icon11.paint(painter, rect.x + 4, rect.y + 4, colors.bk)
+            icon11.paint(painter, rect.x + 4, rect.y + 4, backColor)
 
             var icon12 = Icon.from(&g_Main.icons48, 22)
             icon12.sizeX, icon12.sizeY = 24
-            icon12.paint(painter, rect.x + 4, rect.y + 4, colors.border)
+            icon12.paint(painter, rect.x + 4, rect.y + 4, backColor.getContrasting())
 
-            var color: Color = linkedUpToDate ? colors.text : ColorYellow
             var icon = parent.getTheme().getIcon24(.Link)
             icon.sizeX, icon.sizeY = 16
-            icon.paint(painter, rect.x + 8, rect.y + 8, color)
+            icon.paint(painter, rect.x + 8, rect.y + 8, backColor.getContrasting())
         }
 
         if hot:

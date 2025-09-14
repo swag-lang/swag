@@ -379,7 +379,7 @@ impl Color
 
     // Get a contrasting color (black or white) for text readability.
     #[Inline, ConstExpr]
-    mtd const getContrastingColor()->Color
+    mtd const getContrasting()->Color
     {
         return me.isDark() ? Color.fromArgb(Argb.White) : Color.fromArgb(Argb.Black)
     }
