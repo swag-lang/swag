@@ -521,7 +521,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 
     optimizePassImmediate(out);
     optimizePassReduce(out);
-    //optimizePassStore(out);
+    optimizePassStore(out);
     optimizePassDeadHdwReg(out);
     optimizePassDeadHdwRegBeforeLeave(out);
     optimizePassAliasLoadRM(out);
@@ -554,7 +554,7 @@ void ScbeOptimizer::optimizeStep3(const ScbeMicro& out)
     solveLabels(out);
 
     optimizePassParamsKeepHwdReg(out);
-    //optimizePassStackToHwdRegGlobal(out);
+    optimizePassStackToHwdRegGlobal(out);
     optimizePassDeadHdwReg2(out);
     optimizePassMakeHwdRegVolatile(out);
     optimizePassDeadCode(out);
@@ -566,7 +566,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("day2B1"))
+    //if (!out.cpuFct->bc->getPrintName().containsNoCase("pixel"))
     //    return;
 
     bool globalChanged = true;
