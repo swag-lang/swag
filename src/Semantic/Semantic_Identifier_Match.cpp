@@ -187,7 +187,6 @@ void Semantic::resolvePendingLambdaTyping(const SemanticContext* context, AstNod
     context->baseJob->jobsToAdd.push_back(funcDecl->pendingLambdaJob);
 }
 
-#pragma optimize("", off)
 bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch& oneMatch, AstIdentifier* identifier)
 {
     if (!identifier->callParameters)

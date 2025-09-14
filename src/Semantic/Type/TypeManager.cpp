@@ -103,7 +103,7 @@ void TypeManager::setup()
     typeInfoSliceRunes->addFlag(TYPEINFO_CONST);
     typeInfoSliceRunes->computeName();
 
-    memset(g_LiteralTypeToType, 0, sizeof(g_LiteralTypeToType));
+    memset(&g_LiteralTypeToType[0], 0, sizeof(g_LiteralTypeToType));
     g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned8)]             = typeInfoU8;
     g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned16)]            = typeInfoU16;
     g_LiteralTypeToType[static_cast<int>(LiteralType::TypeUnsigned32)]            = typeInfoU32;
@@ -211,7 +211,7 @@ void TypeManager::convertStructParamToRef(AstNode* node, TypeInfo* typeInfo)
     SWAG_ASSERT(node->is(AstNodeKind::FuncDeclParam));
 
     // A struct/interface is forced to be a const reference
-    if (!node->typeInfo->isGeneric() && typeInfo->isStruct())
+    if (typeInfo->isStruct())
     {
         const auto typeRef   = makeType<TypeInfoPointer>();
         typeInfo             = typeInfo->getConstAlias();

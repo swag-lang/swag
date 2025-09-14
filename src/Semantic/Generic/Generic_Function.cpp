@@ -89,7 +89,10 @@ bool Generic::instantiateFunction(SemanticContext* context, AstNode* genericPara
                     if (match.solvedParameters[idx]->typeInfo->kind != TypeInfoKind::Generic)
                     {
                         PushErrCxtStep ec(context, typeFunc->declNode, ErrCxtStepKind::HereIs, nullptr);
-                        const auto     typeDest = castTypeInfo<TypeInfoStruct>(match.solvedParameters[idx]->typeInfo, TypeInfoKind::Struct);
+                        auto solvedType = match.solvedParameters[idx]->typeInfo;
+                        if (solvedType->isAutoConstPointerRef())
+                            solvedType = TypeManager::concretePtrRef(solvedType); 
+                        const auto     typeDest = castTypeInfo<TypeInfoStruct>(solvedType, TypeInfoKind::Struct);
                         SWAG_CHECK(Ast::convertLiteralTupleToStructType(context, match.solvedParameters[idx]->declNode, typeDest, p));
                         SWAG_ASSERT(context->result != ContextResult::Done);
                         return true;
