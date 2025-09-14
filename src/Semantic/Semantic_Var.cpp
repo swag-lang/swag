@@ -2,7 +2,6 @@
 #include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
-#include "Report/Report.h"
 #include "Semantic/Semantic.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
@@ -1386,7 +1385,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         SWAG_CHECK(resolveLocalVar(context, node, overFlags, typeInfo, storageOffset));
         YIELD();
     }
-    else if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM))
+    else if (overFlags.has(OVERLOAD_VAR_FUNC_PARAM) && !node->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_TYPE))
     {
         const auto typeInfo = TypeManager::concreteType(node->typeInfo);
         node->addAstFlag(AST_R_VALUE);
