@@ -191,7 +191,7 @@ impl IWnd for IconButton
             colorText = me.textColor
 
         // Background
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         me.aniBk.apply(me, colorBk)
         theme.drawSubRect(bc.painter, clientRect, subRectBk, me.aniBk.cur())
 
@@ -246,7 +246,7 @@ impl IWnd for IconButton
             }
 
             let fontR = me.getFont().regular
-            var sm    = Painter.measureString(me.name.raw.toString(), fontR)
+            let sm    = Painter.measureString(me.name.raw.toString(), fontR)
             nw += sm.width
             nh += fontR.height
 
@@ -536,12 +536,12 @@ impl IconButton
     // Creates a popup window linked to the button position.
     mtd createAnchorPopup(w, h: f32)->*FrameWnd
     {
-        var pos     = me.getSurfaceRect()
+        let pos     = me.getSurfaceRect()
         let topView = me.getTopView()
         var pt      = topView.surfaceToLocal({pos.x, pos.bottom()})
         pt.y += me.getThemeMetrics().frameWnd_AnchorHeight
 
-        var sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
+        let sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
 
         with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
         {

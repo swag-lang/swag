@@ -348,7 +348,7 @@ impl IWnd for ListView
                 }
                 elif evt.kind == .MouseReleased
                 {
-                    var pt = me.surfaceToLocal(evt.surfacePos)
+                    let pt = me.surfaceToLocal(evt.surfacePos)
                     me.list.sigRightClick.call(me.list, pt)
                 }
             }
@@ -428,7 +428,7 @@ impl IWnd for ListView
         {
             if idx != Swag.U32.Max:
                 me.list.toggleExpand(me.list.lines[idx])
-            var pt = me.surfaceToLocal(evt.surfacePos)
+            let pt = me.surfaceToLocal(evt.surfacePos)
             me.list.sigLeftDoubleClick.call(me.list, pt)
             return
         }
@@ -663,7 +663,7 @@ internal impl ListView
                 {
                     if canExpand
                     {
-                        var expand = theme.getIcon24(line.expanded ? .Expanded : .Collapsed)
+                        let expand = theme.getIcon24(line.expanded ? .Expanded : .Collapsed)
                         expand.paint(painter, labelPos.x, labelPos.vertCenter() - expand.sizeY * 0.5, colorExpand)
                     }
 
@@ -691,8 +691,8 @@ internal impl ListView
                 let idxLine = me.list.isVirtual ? idx : line.index
                 let checked = me.list.checkModel.isSelected(idxLine)
 
-                var colorBorder = colorFg
-                var colorMark   = colorFg
+                let colorBorder = colorFg
+                let colorMark   = colorFg
 
                 if checked
                 {
@@ -924,7 +924,7 @@ impl ListCtrl
     // Compute global layout, once all lines have been added
     mtd computeLayout()
     {
-        var clientRect = me.scrollWnd.getClientRectPadding()
+        let clientRect = me.scrollWnd.getClientRectPadding()
 
         var scrollWidth: f32 = undefined
         if me.horizontalExtent > 0:

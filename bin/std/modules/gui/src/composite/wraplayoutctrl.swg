@@ -21,7 +21,7 @@ impl IWnd for WrapLayoutCtrl
             return
         }
 
-        var client = me.getClientRectPadding()
+        let client = me.getClientRectPadding()
 
         var x = me.padding.x
         var y = me.padding.y
@@ -30,7 +30,7 @@ impl IWnd for WrapLayoutCtrl
             if c.wndFlags & .Hidden:
                 continue
             me.resultHeight = y + me.wrapHeight
-            var rect = Math.Rectangle{x, y, me.wrapWidth, me.wrapHeight}
+            let rect = Math.Rectangle{x, y, me.wrapWidth, me.wrapHeight}
             c.setPosition(rect)
             x += me.wrapWidth + me.spacing
             if x + me.wrapWidth > client.right()

@@ -35,7 +35,7 @@ impl IWnd for Label
 {
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = me.surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseWheel:
@@ -82,7 +82,7 @@ impl IWnd for Label
         let theme   = me.getTheme()
         let painter = evt.bc.painter
 
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         var pos        = clientRect
         pos.applyPadding(me.padding)
 
@@ -123,7 +123,7 @@ impl IWnd for Label
             var posText = pos
             posText.applyPadding(me.paddingText)
 
-            var sf = me.getStringFormat(bc.isDisabled)
+            let sf = me.getStringFormat(bc.isDisabled)
             painter.drawRichString(posText, &me.name, sf)
         }
     }
@@ -212,7 +212,7 @@ impl Label
     {
         if me.labelFlags.has(.AutoHeight)
         {
-            var sf = me.getStringFormat(false)
+            let sf = me.getStringFormat(false)
             me.name.compute()
             Painter.computeLayout(me.position, &me.name, sf)
             me.position.height = me.name.boundRect.height

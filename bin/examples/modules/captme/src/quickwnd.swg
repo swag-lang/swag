@@ -640,7 +640,7 @@ impl QuickWnd
             painter.setParams(.Antialiased)
             let sel  = cast(*BaseForm) @dataof(btnp.formItf)
             let s    = cast(s32) BaseForm.adaptSize(sel.borderSize / 2, MinBorderSize, MaxBorderSize, cxt)
-            var rect = Math.Rectangle{8 + s, 8 + s, 48 - 2 * s, 48 - 2 * s}
+            let rect = Math.Rectangle{8 + s, 8 + s, 48 - 2 * s, 48 - 2 * s}
 
             var title = ""
 

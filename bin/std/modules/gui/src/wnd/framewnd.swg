@@ -98,7 +98,7 @@ impl IWnd for FrameWnd
             colorBk = colors.frameWnd_Bk
         }
 
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
         me.usedColorBk = colorBk
     }

@@ -483,7 +483,7 @@ impl Wnd
         }
 
         painter.translateTransform(me.position.x, me.position.y)
-        var curTrs = painter.getTransform()
+        let curTrs = painter.getTransform()
         var evt    = PaintEvent{}
         evt.bc = bc
 
@@ -596,7 +596,7 @@ impl Wnd
     // Convert a surface coordinate to a local coordinate (relative to me)
     mtd const surfaceToLocal(pos: Math.Point)->Math.Point
     {
-        var r = me.getSurfaceRect()
+        let r = me.getSurfaceRect()
         return {pos.x - r.x, pos.y - r.y}
     }
 
@@ -604,7 +604,7 @@ impl Wnd
     #[Swag.Overload]
     mtd const localToSurface(pos: Math.Point)->Math.Point
     {
-        var r = me.getSurfaceRect()
+        let r = me.getSurfaceRect()
         return {pos.x + r.x, pos.y + r.y}
     }
 
@@ -612,7 +612,7 @@ impl Wnd
     #[Swag.Overload]
     mtd const localToSurface(pos: Math.Rectangle)->Math.Rectangle
     {
-        var r = me.getSurfaceRect()
+        let r = me.getSurfaceRect()
         return {pos.x + r.x, pos.y + r.y, pos.width, pos.height}
     }
 

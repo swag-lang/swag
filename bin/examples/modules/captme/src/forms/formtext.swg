@@ -204,7 +204,7 @@ impl IForm for FormText
                 me.typeFace = null
             else
             {
-                var en = FontFamily.getFromOs(me.fontName)
+                let en = FontFamily.getFromOs(me.fontName)
                 me.typeFace = catch FontFamily.createTypeFace(en, me.fontStyle)
             }
         }

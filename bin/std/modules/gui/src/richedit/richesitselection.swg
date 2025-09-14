@@ -62,7 +62,7 @@ internal impl RichEditCtrl
         if !me.hasSelRect:
             return
 
-        var size = me.getXExtent()
+        let size = me.getXExtent()
 
         var ptBeg = me.getCursorDisplayPos(beg)
         var ptEnd = me.getCursorDisplayPos(end)
@@ -184,7 +184,7 @@ impl RichEditCtrl
             return
 
         me.pushUndo()
-        var cp = me.getBegSelection()
+        let cp = me.getBegSelection()
         me.deleteSelectionPrivate(cp, me.getEndSelection(), me.hasSelRect)
         me.computeScrollY()
 
@@ -267,19 +267,19 @@ impl RichEditCtrl
     {
         if me.isSelectionEmpty():
             return
-        var res = me.getTextPrivate(me.getBegSelection(), me.getEndSelection())
+        let res = me.getTextPrivate(me.getBegSelection(), me.getEndSelection())
 
         me.registerClipboardFormat()
         if me.clipFormat:
             Clipboard.addTypedData(me.clipFormat, null, res.styles.toSlice())
 
-        var txt = Utf8.fromUnicode(res.text.toSlice())
+        let txt = Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
     }
 
     mtd pasteFromClipboard()
     {
-        var txt = Clipboard.getString()
+        let txt = Clipboard.getString()
         me.registerClipboardFormat()
 
         me.pushUndo()
@@ -287,7 +287,7 @@ impl RichEditCtrl
 
         if me.clipFormat and Clipboard.hasFormat(me.clipFormat)
         {
-            var st = Clipboard.getTypedData(me.clipFormat, null)
+            let st = Clipboard.getTypedData(me.clipFormat, null)
             me.insertText(txt, st)
         }
         else:
@@ -371,8 +371,8 @@ impl RichEditCtrl
 
     mtd scrollLineUp()
     {
-        var pt   = me.scrollWnd.getScrollPos()
-        var size = me.getXExtent()
+        let pt   = me.scrollWnd.getScrollPos()
+        let size = me.getXExtent()
 
         var sy = (pt.y / size.y) * size.y
         sy -= size.y
@@ -380,7 +380,7 @@ impl RichEditCtrl
         me.scrollWnd.setScrollPos(pt.x, sy)
         sy = me.scrollWnd.getScrollPos().y
 
-        var clientRect = me.edView.getClientRect()
+        let clientRect = me.edView.getClientRect()
         var pos        = me.getCaretPos(me.cursorPos)
         while pos.bottom() > sy + clientRect.height
         {
@@ -393,8 +393,8 @@ impl RichEditCtrl
 
     mtd scrollLineDown()
     {
-        var pt   = me.scrollWnd.getScrollPos()
-        var size = me.getXExtent()
+        let pt   = me.scrollWnd.getScrollPos()
+        let size = me.getXExtent()
 
         var sy = (pt.y / size.y) * size.y
         sy += size.y

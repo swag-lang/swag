@@ -22,7 +22,7 @@ using Core
 func day9A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "9.txt")
-    var line     = assume File.readAllText(dataPath)
+    let line     = assume File.readAllText(dataPath)
 
     var decode: String
 

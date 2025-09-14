@@ -39,7 +39,7 @@ impl RichEditCtrl
         result.x = me.getMarginLeft()
         for i in Math.min(cp.charPosInLine, line.length())
         {
-            var size = me.getRuneSize(line, i, result.x)
+            let size = me.getRuneSize(line, i, result.x)
             result.x += size.x
         }
 
@@ -50,7 +50,7 @@ impl RichEditCtrl
     {
         let of        = cast(s32) (x - me.getMarginLeft())
         let fontR     = me.getFont().getFont(me.styles[0].fontMode)
-        var sizeBlank = Painter.measureRune(' ', fontR)
+        let sizeBlank = Painter.measureRune(' ', fontR)
         let sx        = cast(s32) (sizeBlank.x * me.tabSize)
 
         var tab = (of / sx) * sx
@@ -99,12 +99,12 @@ impl RichEditCtrl
 
     mtd ensureCursorIsVisible(cp: RichEditCursor, center: bool)
     {
-        var size   = me.getXExtent()
+        let size   = me.getXExtent()
         let decalx = size.x * 10
 
-        var clientRect = me.edView.getClientRect()
+        let clientRect = me.edView.getClientRect()
 
-        var pos = me.getCursorDisplayPos(cp)
+        let pos = me.getCursorDisplayPos(cp)
         var sx  = me.edView.scrollPos.x
         var sy  = me.edView.scrollPos.y
 
@@ -170,7 +170,7 @@ impl RichEditCtrl
                 {
                     for j in count
                     {
-                        var size = me.getRuneSize(line, j, rect.x)
+                        let size = me.getRuneSize(line, j, rect.x)
                         rect.width = size.x
                         if rect.contains(pt)
                         {
@@ -265,7 +265,7 @@ impl RichEditCtrl
     #[Swag.Discardable, Swag.Overload]
     mtd moveCursorUp(cp: *RichEditCursor)->bool
     {
-        var pt = me.getCursorDisplayPos(cp)
+        let pt = me.getCursorDisplayPos(cp)
         return me.moveCursorUp(cp, pt)
     }
 
@@ -307,7 +307,7 @@ impl RichEditCtrl
     #[Swag.Discardable, Swag.Overload]
     mtd moveCursorDown(cp: *RichEditCursor)->bool
     {
-        var pt = me.getCursorDisplayPos(cp)
+        let pt = me.getCursorDisplayPos(cp)
         return me.moveCursorDown(cp, pt)
     }
 
@@ -399,7 +399,7 @@ impl RichEditCtrl
 
     mtd moveCursorPageUp(cp: *RichEditCursor)
     {
-        var client = me.edView.getClientRect()
+        let client = me.edView.getClientRect()
         var count  = cast(s64) (client.height / me.getXExtent().y)
         while count
         {
@@ -412,7 +412,7 @@ impl RichEditCtrl
 
     mtd moveCursorPageDown(cp: *RichEditCursor)
     {
-        var client = me.edView.getClientRect()
+        let client = me.edView.getClientRect()
         var count  = cast(s64) (client.height / me.getXExtent().y)
         while count
         {

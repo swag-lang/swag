@@ -197,7 +197,7 @@ impl IWnd for EditBox
 
         // Compute scroll position
         let fontR     = me.getFont().regular
-        var caretPos  = me.getCaretPos()
+        let caretPos  = me.getCaretPos()
         let decalX    = Math.min(Painter.measureString("X", fontR).width * 10, clientRect.width * 0.5)
         let sizeX     = Painter.measureString(me.text, fontR).width
         let maxDecalX = sizeX - decalX
@@ -257,7 +257,7 @@ impl IWnd for EditBox
     // Processes mouse interaction with the EditBox (clicks, drags, hover, wheel).
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = me.surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseWheel:
@@ -388,7 +388,7 @@ internal impl EditBox
             }
             elif shift and !ctrl
             {
-                var str = Clipboard.getString()
+                let str = Clipboard.getString()
                 me.insertString(str.toString())
                 return true
             }
@@ -411,7 +411,7 @@ internal impl EditBox
         case V:
             if ctrl
             {
-                var str = Clipboard.getString()
+                let str = Clipboard.getString()
                 me.insertString(str.toString())
                 return true
             }
@@ -520,25 +520,25 @@ internal impl EditBox
             switch me.inputMode
             {
             case S64:
-                var val = catch StrConv.parseS64(me.text)
+                let val = catch StrConv.parseS64(me.text)
                 eat = val.eat
                 if @err == null and eat == me.text.length and (val.value < me.minMaxS64.min or val.value > me.minMaxS64.max):
                     res = .InvalidShow
 
             case U64:
-                var val = catch StrConv.parseU64(me.text)
+                let val = catch StrConv.parseU64(me.text)
                 eat = val.eat
                 if @err == null and eat == me.text.length and (val.value < me.minMaxU64.min or val.value > me.minMaxU64.max):
                     res = .InvalidShow
 
             case X64:
-                var val = catch StrConv.parseX64(me.text)
+                let val = catch StrConv.parseX64(me.text)
                 eat = val.eat
                 if @err == null and eat == me.text.length and (val.value < me.minMaxU64.min or val.value > me.minMaxU64.max):
                     res = .InvalidShow
 
             case F64:
-                var val = catch StrConv.parseF64(me.text)
+                let val = catch StrConv.parseF64(me.text)
                 eat = val.eat
                 if @err == null and eat == me.text.length and (val.value < me.minMaxF64.min or val.value > me.minMaxF64.max):
                     res = .InvalidShow
@@ -585,7 +585,7 @@ internal impl EditBox
             return
         }
 
-        var saveText   = me.text
+        let saveText   = me.text
         let saveSelBeg = me.selBeg
         let saveSelEnd = me.selEnd
         me.insertUtf8(@mkstring(&utf8[0], cpt))

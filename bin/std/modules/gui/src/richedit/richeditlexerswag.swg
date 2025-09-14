@@ -409,7 +409,7 @@ impl IRichEditLexer for RichEditLexerSwag
         // Smart return
         if ch == '\n'
         {
-            var cp   = ed.getBegSelection()
+            let cp   = ed.getBegSelection()
             let line = ed.lines[cp.lineIndex]
             var str: String = "\n"
 

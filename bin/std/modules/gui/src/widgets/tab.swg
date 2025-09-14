@@ -351,11 +351,11 @@ internal impl Tab
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        var pos = me.surfaceToLocal(surfacePos)
+        let pos = me.surfaceToLocal(surfacePos)
         if pos.y >= me.barHeight:
             return Swag.U32.Max
 
-        var rect = me.getBarRectItems()
+        let rect = me.getBarRectItems()
         for idx in me.firstVisibleIdx until cast(u32) me.views.count
         {
             let v = me.views[idx]
@@ -424,7 +424,7 @@ internal impl Tab
 
     mtd createDestroyButtonPopup()
     {
-        var barRect = me.getClientRectPadding()
+        let barRect = me.getClientRectPadding()
         if me.mostRightPos > barRect.right()
         {
             // Create a button if there are too many items for the given size
@@ -453,7 +453,7 @@ internal impl Tab
 
     mtd ensureVisible(idx: u32)
     {
-        var rect = me.getBarRectItems()
+        let rect = me.getBarRectItems()
         if idx < me.firstVisibleIdx or me.views[idx].pos + me.views[idx].width >= rect.right()
         {
             me.firstVisibleIdx = idx

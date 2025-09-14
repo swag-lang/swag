@@ -151,13 +151,13 @@ func day4B1()
     assume
     {
         using Parser
-        var byr_r = RegExp.create("19[2-9][0-9]|200[0-2]")
-        var iyr_r = RegExp.create("201[0-9]|2020")
-        var eyr_r = RegExp.create("202[0-9]|2030")
-        var hgt_r = RegExp.create("((1[5678][0-9])|(19[0-3]))cm|(59|6[0-9]|7[0-6])in")
-        var hcl_r = RegExp.create("#([a-f0-9]){6}")
-        var ecl_r = RegExp.create("amb|blu|brn|gry|grn|hzl|oth")
-        var pid_r = RegExp.create("[0-9]{9}")
+        let byr_r = RegExp.create("19[2-9][0-9]|200[0-2]")
+        let iyr_r = RegExp.create("201[0-9]|2020")
+        let eyr_r = RegExp.create("202[0-9]|2030")
+        let hgt_r = RegExp.create("((1[5678][0-9])|(19[0-3]))cm|(59|6[0-9]|7[0-6])in")
+        let hcl_r = RegExp.create("#([a-f0-9]){6}")
+        let ecl_r = RegExp.create("amb|blu|brn|gry|grn|hzl|oth")
+        let pid_r = RegExp.create("[0-9]{9}")
     }
 
     var map: HashTable'(string, { r: Parser.RegExp, b: u32 })

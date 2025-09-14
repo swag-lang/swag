@@ -10,22 +10,22 @@ impl Library
 {
     func init() throw
     {
-        var str = getFolder()
+        let str = getFolder()
         if !Directory.exists(str):
             Directory.create(str)
     }
 
     func getFolder()->String
     {
-        var str = Env.getSpecialDirectory(.UserDocuments)
+        let str = Env.getSpecialDirectory(.UserDocuments)
         Debug.assert(!str.isEmpty())
         return Path.combine(str, "captMe")
     }
 
     func newFileName()->String
     {
-        var t        = Time.DateTime.now()
-        var fileName = Format.toString("%_%_%_%_%_%.captme", t.month, t.day, t.year, t.hour, t.minute, t.second)
+        let t        = Time.DateTime.now()
+        let fileName = Format.toString("%_%_%_%_%_%.captme", t.month, t.day, t.year, t.hour, t.minute, t.second)
         return Path.combine(getFolder(), fileName.toString())
     }
 
@@ -54,7 +54,7 @@ impl Library
 
     mtd addFile(name: string)
     {
-        var file = catch File.getFileInfo(name)
+        let file = catch File.getFileInfo(name)
         if @err != null:
             return
         me.files.add(file)

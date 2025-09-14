@@ -54,7 +54,7 @@ using Core
 func day6A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "6.txt")
-    var lines    = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     var coords: Array'{ x, y: s32 }
     foreach l in lines

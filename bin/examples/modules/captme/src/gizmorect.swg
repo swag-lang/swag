@@ -190,7 +190,7 @@ impl GizmoRect
     {
         let anchorSize2 = me.anchorSize * 0.5
 
-        var color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
+        let color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
 
         if me.moving and !me.trackChange:
             painter.drawRect(me.movingRect, Pen.createDash(.Dot, color, 2))

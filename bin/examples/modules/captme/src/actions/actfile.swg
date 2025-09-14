@@ -315,7 +315,7 @@ impl MainWnd
         if me.recentWnd:
             me.recentWnd.updateRecent()
 
-        var txt = Format.toString("Image <url>%</url> has been saved", nameFile)
+        let txt = Format.toString("Image <url>%</url> has been saved", nameFile)
         let emb = EmbInfoCtrl.create(me.editWnd.view, txt, .Information, flags: .Bottom | .AutoHide)
         emb.label.sigUrlClicked += func(lbl, msg)
         {

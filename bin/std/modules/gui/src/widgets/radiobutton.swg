@@ -76,7 +76,7 @@ impl IWnd for RadioButton
         }
 
         // Box
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         var posBox     = clientRect
         posBox.height = metrics.btnCheck_Size
         posBox.y      = clientRect.vertCenter() - (posBox.height * 0.5)

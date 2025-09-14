@@ -168,7 +168,7 @@ impl Color
     #[Inline, Overload, ConstExpr]
     func fromArgb(argb: Argb)->Color
     {
-        var result: retval = argb
+        let result: retval = argb
         return result
     }
 
@@ -185,7 +185,7 @@ impl Color
     #[Inline, Overload, ConstExpr]
     func fromArgb(argb: u32)->Color
     {
-        var result: retval = argb
+        let result: retval = argb
         return result
     }
 

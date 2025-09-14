@@ -45,7 +45,7 @@ func displayPage0(painter: *Pixel.Painter)
     if g_Pattern:
         pen.dashStyle = .Dot
 
-    var trs = painter.getTransform()
+    let trs = painter.getTransform()
 
     //////////////////////////////////////
     {
@@ -216,7 +216,7 @@ func displayPage1(painter: *Pixel.Painter)
     var brush: Brush
     brush.color = Argb.Black
 
-    var trs = painter.getTransform()
+    let trs = painter.getTransform()
     painter.translateTransform(50, 50)
     painter.setAntialiased(false)
 
@@ -244,7 +244,7 @@ func displayPage1(painter: *Pixel.Painter)
 
 func displayPage2(painter: *Pixel.Painter)
 {
-    var trs = painter.getTransform()
+    let trs = painter.getTransform()
 
     painter.drawTexture(200, 0, Res.image1)
 
@@ -257,7 +257,7 @@ func displayPage2(painter: *Pixel.Painter)
     painter.drawTexture(50, 250, 96, 96, Res.image0)
 
     painter.setTransform(trs)
-    var pen = Pen.createHatch(.SolidDiamond, Argb.Black, 20)
+    let pen = Pen.createHatch(.SolidDiamond, Argb.Black, 20)
     painter.drawRoundRect(400, 700, 200, 200, 10, 10, pen)
 
     painter.drawTexture(50, 500, 150, 150, {228, 103, 206, 167}, Res.image1)
@@ -267,9 +267,9 @@ func displayPage2(painter: *Pixel.Painter)
 
 func displayPage3(painter: *Pixel.Painter)
 {
-    var trs = painter.getTransform()
+    let trs = painter.getTransform()
 
-    var brush = Brush.createHatch(.SolidDiamond, Argb.Black)
+    let brush = Brush.createHatch(.SolidDiamond, Argb.Black)
     painter.pushClippingRect({0, 0, 100, 100})
     painter.fillCircle(100, 100, 100, brush)
     painter.drawCircle(100, 100, 100, Argb.Red, 4)
@@ -358,10 +358,10 @@ func displayPage3(painter: *Pixel.Painter)
 
 func displayPage4(painter: *Pixel.Painter)
 {
-    var trs = painter.getTransform()
+    let trs = painter.getTransform()
 
     {
-        var rect: Rectangle{350, 50, 100, 100}
+        let rect: Rectangle{350, 50, 100, 100}
         painter.fillRect(rect, Color.fromArgb(0x1F, Argb.Blue))
 
         var rs: RichString = "on multiple lines\nthis is\na text\non multiple lines"
@@ -375,7 +375,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        var rect: Rectangle{500, 50, 100, 100}
+        let rect: Rectangle{500, 50, 100, 100}
         painter.fillRect(rect, Color.fromArgb(0x1F, Argb.Blue))
 
         var rs: RichString = "<u>on multiple lines this is a text on multiple lines<u>"
@@ -388,7 +388,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        var rect = Rectangle{650, 50, 200, 700}
+        let rect = Rectangle{650, 50, 200, 700}
         painter.fillRect(rect.x, rect.y, rect.width, rect.height, Argb.White)
 
         var sf = RichStringFormat{flags: StringFormatFlags.WordWrap}
@@ -402,7 +402,7 @@ func displayPage4(painter: *Pixel.Painter)
     }
 
     {
-        var rect = Rectangle{100, 225, 200, 700}
+        let rect = Rectangle{100, 225, 200, 700}
         var sf   = RichStringFormat{flags: StringFormatFlags.WordWrap}
         sf.horzAlignment = .Center
         sf.font.regular  = Res.fontDefault
@@ -424,8 +424,8 @@ func displayPage4(painter: *Pixel.Painter)
     const str = "abcdefghijklmnopqrstuvwxyz"
 
     {
-        var brush   = Brush.createTexture(Res.image1)
-        var measure = Painter.measureString(str, Res.font40)
+        let brush   = Brush.createTexture(Res.image1)
+        let measure = Painter.measureString(str, Res.font40)
         let off     = Res.font40.height - measure.height
         painter.fillRect(100, 300 + off, measure.width, measure.height, Color.fromArgb(0x1F, Argb.Blue))
         painter.fillRect(100, 300 + off, measure.width, measure.ascent, Color.fromArgb(0x1F, Argb.Red))
@@ -497,7 +497,7 @@ func displayPage4(painter: *Pixel.Painter)
 
 func displayPage5(painter: *Pixel.Painter)
 {
-    var trs = painter.getTransform()
+    let trs = painter.getTransform()
 
     {
         painter.setTransform(trs)
@@ -761,7 +761,7 @@ impl IWnd for MyView
     assume
     {
         let rdr  = surface.app.getRenderer()
-        var img0 = Image.load(imagePath("basn0g01.png"))
+        let img0 = Image.load(imagePath("basn0g01.png"))
         var img1 = Image.load(imagePath("test.gif"))
         Res.image0 = rdr.addImage(img0)
         Res.image1 = rdr.addImage(img1)

@@ -23,7 +23,7 @@ using Core, Libc
     }
 
     {
-        var str: String = "666"
+        let str: String = "666"
         let x    = atoi(str)
         @assert(x == 666)
     }

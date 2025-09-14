@@ -426,7 +426,7 @@ impl IForm for FormImage
             elif me.kind == .Image and !me.image.isValid()
             {
                 painter.fillRect(pp, me.backColor)
-                var icon = Icon.from(&g_Main.icons48, 13)
+                let icon = Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, iconColor)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)

@@ -291,7 +291,7 @@ impl Capture
         var res: Array'IForm
         if !Clipboard.getTypedValue(&res, #typeof(res))
         {
-            var img = Clipboard.getImage()
+            let img = Clipboard.getImage()
             if img.isValid()
             {
                 let formImg = Memory.new'FormImage()
@@ -435,7 +435,7 @@ impl Capture
 
             // Draw the image with a margin around
             let srcRect = Math.Rectangle{0, 0, wt2, ht2}
-            var dstRect = Math.Rectangle{Margin, Margin, wt2, ht2}
+            let dstRect = Math.Rectangle{Margin, Margin, wt2, ht2}
             with painter
             {
                 .bindRenderTarget(rt1)

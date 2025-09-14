@@ -154,7 +154,7 @@ impl IWnd for Circular
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = me.surfaceToLocal(evt.surfacePos)
         me.updateGeometry()
 
         switch evt.kind
@@ -246,7 +246,7 @@ internal impl Circular
 {
     mtd updateGeometry()
     {
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         me.centerX = clientRect.x + clientRect.width * 0.5
         me.centerY = clientRect.y + clientRect.height * 0.5
         me.radius  = Math.min(clientRect.width, clientRect.height) * 0.5
@@ -497,7 +497,7 @@ internal impl Circular
 
     mtd hitTest(surfacePos: Math.Point)
     {
-        var pos = me.surfaceToLocal(surfacePos)
+        let pos = me.surfaceToLocal(surfacePos)
         me.updateGeometry()
 
         if me.isHot1 or me.isHot2
@@ -509,7 +509,7 @@ internal impl Circular
         // Check value2 first if range mode (like in horizontal slider)
         if me.circularFlags.has(.Range)
         {
-            var rect = me.getPosBox2()
+            let rect = me.getPosBox2()
             if rect.contains(pos)
             {
                 me.isHot2 = true
@@ -519,7 +519,7 @@ internal impl Circular
         }
 
         // Check value1
-        var rect = me.getPosBox1()
+        let rect = me.getPosBox1()
         if rect.contains(pos)
         {
             me.isHot1 = true
@@ -532,7 +532,7 @@ internal impl Circular
         me.updateGeometry()
 
         let angle   = me.valueToAngle(val)
-        var pos     = me.getPositionFromAngle(angle)
+        let pos     = me.getPositionFromAngle(angle)
         var result: retval
         result.x      = pos.x - size
         result.y      = pos.y - size

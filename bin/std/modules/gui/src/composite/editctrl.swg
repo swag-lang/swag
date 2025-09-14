@@ -18,7 +18,7 @@ impl IWnd for EditCtrl
         if !me.label:
             return
 
-        var rect    = me.getClientRect()
+        let rect    = me.getClientRect()
         let metrics = me.getThemeMetrics()
 
         let y = rect.vertCenter() - metrics.editBox_Height / 2

@@ -39,7 +39,7 @@ impl IWnd for SplitterCtrl
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         evt.accepted = true
-        var local = me.surfaceToLocal(evt.surfacePos)
+        let local = me.surfaceToLocal(evt.surfacePos)
 
         switch evt.kind
         {
@@ -53,7 +53,7 @@ impl IWnd for SplitterCtrl
         case MouseMove:
             if me.moving
             {
-                var rect = me.getBarRect(me.hotIdx)
+                let rect = me.getBarRect(me.hotIdx)
                 if me.isVertical()
                 {
                     let diff = local.y - (rect.y + me.correctMoving)
@@ -78,7 +78,7 @@ impl IWnd for SplitterCtrl
         case MousePressed:
             if evt.button == .Left and me.hotIdx != Swag.U32.Max
             {
-                var rect = me.getBarRect(me.hotIdx)
+                let rect = me.getBarRect(me.hotIdx)
                 me.moving = true
                 me.surface.app.captureMouse(me)
                 if me.isVertical():
@@ -105,7 +105,7 @@ impl IWnd for SplitterCtrl
     {
         me.computeLayout()
 
-        var client  = me.getClientRectPadding()
+        let client  = me.getClientRectPadding()
         var x       = client.x
         var y       = client.y
         let barSize = me.getThemeMetrics().splitView_BarSize
@@ -169,11 +169,11 @@ impl IWnd for SplitterCtrl
             if !me.items[idx].visible:
                 continue
 
-            var rect  = me.getBarRect(cast(u32) idx)
+            let rect  = me.getBarRect(cast(u32) idx)
             let isHot = me.hotIdx == idx
             if isHot or !me.splitterFlags.has(.HideBars)
             {
-                var colorBar = isHot ? colors.splitView_BarHot : colors.splitView_Bar
+                let colorBar = isHot ? colors.splitView_BarHot : colors.splitView_Bar
                 me.items[idx].aniBar.apply(me, colorBar)
                 if me.isVertical()
                 {
@@ -196,7 +196,7 @@ internal impl SplitterCtrl
 {
     mtd computeLayout()
     {
-        var rect = me.getClientRectPadding()
+        let rect = me.getClientRectPadding()
         if rect.width <= me.items.count or rect.height <= me.items.count:
             return
 
@@ -286,8 +286,8 @@ internal impl SplitterCtrl
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        var client = me.getClientRectPadding()
-        var local  = me.surfaceToLocal(surfacePos)
+        let client = me.getClientRectPadding()
+        let local  = me.surfaceToLocal(surfacePos)
 
         var x       = client.x
         var y       = client.y
@@ -405,7 +405,7 @@ impl SplitterCtrl
     {
         Debug.assert(parent != null)
 
-        var pos = position
+        let pos = position
         let res = Wnd.create'SplitterCtrl(parent, null, pos, id)
         res.focusStrategy = .None
         res.wndFlags |= .PostChildsPaint
@@ -441,7 +441,7 @@ impl SplitterCtrl
 
         if me.items.count == 1
         {
-            var rect = me.getClientRectPadding()
+            let rect = me.getClientRectPadding()
             if me.isVertical():
                 item.size = rect.height
             else:

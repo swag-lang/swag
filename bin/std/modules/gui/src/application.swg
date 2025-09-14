@@ -110,7 +110,7 @@ internal impl Application
     {
         me.mouse.update()
 
-        var mousePos = me.mouse.getPosition()
+        let mousePos = me.mouse.getPosition()
 
         // Wnd that will receive the message
         var targetWnd: *Wnd
@@ -178,7 +178,7 @@ internal impl Application
         // Move
         if targetWnd
         {
-            var move = me.mouse.getMove()
+            let move = me.mouse.getMove()
             evt.surfacePos = targetWnd.screenToSurface(mousePos)
             evt.kind       = .MouseMove
             evt.move       = move
@@ -234,7 +234,7 @@ internal impl Application
             return
 
         var evt      = MouseEvent{kind: .MouseWheel}
-        var mousePos = me.mouse.getPosition()
+        let mousePos = me.mouse.getPosition()
         evt.surfacePos = targetWnd.screenToSurface(mousePos)
         evt.move.y     = z
         evt.modifiers  = me.keyb.getPressedModifiers()
@@ -301,7 +301,7 @@ internal impl Application
     {
         // Need to make a copy, in case the posted event triggers a modal for
         me.mutexPostedEvents.lock()
-        var copy = me.postedEvents
+        let copy = me.postedEvents
         me.postedEvents.clear()
         me.mutexPostedEvents.unlock()
 
@@ -656,7 +656,7 @@ impl Application
             return
 
         var buf:  ConcatBuffer
-        var save: Encoder'Write.TagBin
+        let save: Encoder'Write.TagBin
         var ser:  Serializer
         ser.startWrite(save, &buf)
         me.serializeState(&ser)
@@ -673,7 +673,7 @@ impl Application
 
         var buf = File.readAllBytes(me.configPath)
 
-        var load: Decoder'Read.TagBin
+        let load: Decoder'Read.TagBin
         var ser:  Serializer
         ser.startRead(load, buf.toSlice())
         me.serializeState(&ser)

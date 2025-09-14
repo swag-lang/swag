@@ -58,7 +58,7 @@ impl IWnd for ToggleButton
         me.aniMark.apply(me, colorMark)
 
         // Box
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         theme.drawSubRect(bc.painter, clientRect, subRectBk, me.aniBk.cur())
         theme.drawSubRect(bc.painter, clientRect, subRectBorder, me.aniBorder.cur())
 

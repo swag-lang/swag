@@ -205,7 +205,7 @@ impl MainWnd
         {
             var i: Info
 
-            var br = f.boundRect()
+            let br = f.boundRect()
             i.boundRect = br
 
             if masks
@@ -323,7 +323,7 @@ impl MainWnd
         let startCount = capture.forms.count - forms.count
         foreach f in forms
         {
-            var br = f.boundRect()
+            let br = f.boundRect()
 
             with let nf = Memory.new'FormImage()
             {

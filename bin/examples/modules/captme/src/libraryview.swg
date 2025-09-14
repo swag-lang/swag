@@ -168,8 +168,8 @@ impl IWnd for LibraryView
             // Waiting for texture
             if !it.texture.isValid()
             {
-                var icon  = me.getTheme().getIcon64(.HourGlass, 48)
-                var color = Color.fromArgb(50, Argb.White)
+                let icon  = me.getTheme().getIcon64(.HourGlass, 48)
+                let color = Color.fromArgb(50, Argb.White)
                 icon.paint(painter, it.rect.horzCenter() - icon.sizeX * 0.5, it.rect.vertCenter() - icon.sizeY * 0.5, color)
             }
 
@@ -191,7 +191,7 @@ impl LibraryView
     mtd const numImagesPerLine()->u32
     {
         let (w, ?) = me.getPreviewSize()
-        var clientRect = me.getClientRectPadding()
+        let clientRect = me.getClientRectPadding()
         let n          = clientRect.width / (w + ItemMargin)
         return cast(u32) n
     }

@@ -184,7 +184,7 @@ impl IWnd for SurfaceWnd
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
 
         var pos = clientRect
         pos.width  = me.surface.wnd.padding.y * 1.5
@@ -222,7 +222,7 @@ impl IWnd for SurfaceWnd
         let colors = me.getThemeColors()
         let rects  = me.getThemeRects()
 
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
 
         if me.surface.flags.has(.Border)
         {

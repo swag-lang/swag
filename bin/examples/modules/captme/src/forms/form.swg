@@ -89,7 +89,7 @@ impl BaseForm
 
         painter.end()
 
-        var pos = Math.Vector2{pt.x, pt.y}
+        let pos = Math.Vector2{pt.x, pt.y}
         foreach cmd in painter.commandBuffer
         {
             if cmd.id != .DrawTriangles:

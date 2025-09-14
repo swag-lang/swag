@@ -135,7 +135,7 @@ func day10AB()
     //Time.Stopwatch.scopeMeasure()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
-    var lines    = assume File.readAllLines(dataPath)
+    let lines    = assume File.readAllLines(dataPath)
 
     assume r0.compile(#"value (\d+) goes to bot (\d+)"#)
     assume r1.compile(#"bot (\d+) gives low to (\w+) (\d+) and high to (\w+) (\d+)"#)

@@ -28,7 +28,7 @@ func day5B()
 func day5B0()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    var read     = assume File.readAllText(dataPath)
+    let read     = assume File.readAllText(dataPath)
 
     var best = Swag.U64.Max
     for x in 26
@@ -71,7 +71,7 @@ func day5B0()
 func day5B1()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
-    var read     = assume File.readAllText(dataPath)
+    let read     = assume File.readAllText(dataPath)
 
     var best = Swag.U64.Max
     foreach x in "abcdefghijklmnopqrstuvwxyz"

@@ -65,7 +65,7 @@ public impl IWnd for MenuCtrl
         }
 
         // Back
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         if me.backgroundStyle != .Transparent
         {
             theme.drawSubRect(painter, clientRect, &rects.menuBar_Bk, colors.menuBar_Bk)
@@ -240,7 +240,7 @@ public impl IWnd for MenuCtrl
             // Right icon
             if i.popup
             {
-                var icon = theme.getIcon24(ThemeIcons24.RightPopupArrow)
+                let icon = theme.getIcon24(ThemeIcons24.RightPopupArrow)
                 icon.paint(painter, labelPos.right(), labelPos.vertCenter() - icon.sizeY * 0.5, colorText)
             }
         }
@@ -395,7 +395,7 @@ impl MenuCtrl
     {
         foreach i in me.items
         {
-            var evt = me.sendComputeCommandStateEvent(i.id)
+            let evt = me.sendComputeCommandStateEvent(i.id)
             if evt.setFlags & .Disabled:
                 i.disabled = evt.disabled
             if evt.setFlags & .Hidden:
@@ -419,7 +419,7 @@ impl MenuCtrl
     {
         with me.subVisible
         {
-            var pt = .parent.surfaceToLocal(ptSurface)
+            let pt = .parent.surfaceToLocal(ptSurface)
             .setPosition({pt.x, pt.y, .position.width, .position.height})
             .bringToTop()
             .show()
@@ -450,7 +450,7 @@ impl MenuCtrl
         me.subVisible.computeLayoutPopup()
         let topView = me.getTopView()
         var pt      = topView.surfaceToLocal({pos.x, pos.y})
-        var subPos  = me.subVisible.position
+        let subPos  = me.subVisible.position
         if pt.x + subPos.width > topView.position.width:
             pt.x = topView.position.width - subPos.width
         if pt.y + subPos.height > topView.position.height:
@@ -467,7 +467,7 @@ impl MenuCtrl
 
         var pos         = me.getSurfaceRect()
         let sdw         = me.getThemeMetrics().menuPopup_ShadowSize
-        var surfaceRect = pos
+        let surfaceRect = pos
         pos.x = pos.right() - sdw
         pos.y += hotItem.pos
         pos.y -= me.padding.y
@@ -479,7 +479,7 @@ impl MenuCtrl
         let topView = me.getTopView()
         var pt      = topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
-        var subPos = me.subVisible.position
+        let subPos = me.subVisible.position
         if pt.x + subPos.width > topView.position.width:
             pt.x = surfaceRect.x - subPos.width
         if pt.y + subPos.height > topView.position.height:
@@ -505,13 +505,13 @@ impl MenuCtrl
 
     mtd hitTestBar(surfacePos: Math.Point)->u32
     {
-        var pos        = me.surfaceToLocal(surfacePos)
+        let pos        = me.surfaceToLocal(surfacePos)
         let metrics    = me.getThemeMetrics()
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         let sl         = metrics.menuBar_SpaceBetween
         foreach i, idx in me.items
         {
-            var rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
+            let rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
             if rect.contains(pos):
                 return cast(u32) idx
         }
@@ -521,13 +521,13 @@ impl MenuCtrl
 
     mtd hitTestPopup(surfacePos: Math.Point)->u32
     {
-        var pos        = me.surfaceToLocal(surfacePos)
+        let pos        = me.surfaceToLocal(surfacePos)
         let metrics    = me.getThemeMetrics()
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         let sl         = metrics.menuPopup_SpaceLines
         foreach i, idx in me.items
         {
-            var rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
+            let rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
             if rect.contains(pos):
                 return cast(u32) idx
         }
@@ -543,7 +543,7 @@ impl MenuCtrl
     mtd computeLayoutBar()
     {
         let metrics    = me.getThemeMetrics()
-        var clientRect = me.getClientRectPadding()
+        let clientRect = me.getClientRectPadding()
 
         var x = clientRect.x
 

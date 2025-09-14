@@ -188,7 +188,7 @@ impl LibraryWnd
         var lastLineMonth: *ListLine
         var lastLineDay:   *ListLine
 
-        var icon1 = Icon.from(&me.main.icons24, 3)
+        let icon1 = Icon.from(&me.main.icons24, 3)
 
         var cptYear, cptMonth, cptDay = 0
 

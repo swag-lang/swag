@@ -169,14 +169,14 @@ impl IWnd for RecentView
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter    = evt.bc.painter
-        var clientRect = me.getClientRectPadding()
+        let clientRect = me.getClientRectPadding()
 
         var x = clientRect.x
         foreach item, idx in me.items
         {
             let w = clientRect.height * 4.0 / 3
 
-            var rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
+            let rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             item.rect = rect
             paintRecent(me, painter, item.preview, rect, idx == me.hotItem, idx == me.selected, item.linkedUpToDate, item.linked)
             x = rect.right() + RecentPadding

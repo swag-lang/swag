@@ -77,8 +77,8 @@ public impl IWnd for ScrollWnd
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var clientRect = me.getClientRect()
-        var pos        = me.surfaceToLocal(evt.surfacePos)
+        let clientRect = me.getClientRect()
+        let pos        = me.surfaceToLocal(evt.surfacePos)
 
         switch evt.kind
         {
@@ -95,8 +95,8 @@ public impl IWnd for ScrollWnd
         case MouseMove:
             if me.isGrabbing
             {
-                var move   = evt.surfacePos - me.grabbingPos
-                var scroll = me.scrollRequestPos - move
+                let move   = evt.surfacePos - me.grabbingPos
+                let scroll = me.scrollRequestPos - move
                 me.scrollRequestPos = me.getScrollPosPrivate(scroll.x, scroll.y)
                 me.smoothScroll     = true
                 me.grabbingPos      = evt.surfacePos
@@ -313,7 +313,7 @@ impl ScrollWnd
 {
     mtd hitTest(surfacePos: Math.Point)
     {
-        var pos = me.surfaceToLocal(surfacePos)
+        let pos = me.surfaceToLocal(surfacePos)
         if me.isHotV or me.isHotH or me.isHotBarV or me.isHotBarH
         {
             me.invalidate()
@@ -385,7 +385,7 @@ impl ScrollWnd
     {
         if me.position.width == 0 or me.position.height == 0:
             return
-        var clientRect = me.getClientRectPadding()
+        let clientRect = me.getClientRectPadding()
         var sx         = Math.max(me.scrollSize.x, clientRect.width)
         var sy         = Math.max(me.scrollSize.y, clientRect.height)
         sx = Math.max(sx, 1)
@@ -468,7 +468,7 @@ public impl ScrollWnd
     {
         var newSP: Math.Point = undefined
 
-        var clientRect = me.view.getClientRect()
+        let clientRect = me.view.getClientRect()
         newSP.x = Math.max(x, 0)
         newSP.y = Math.max(y, 0)
         newSP.x = Math.min(newSP.x, me.scrollSize.x - clientRect.width)
@@ -483,10 +483,10 @@ public impl ScrollWnd
 
     internal mtd setScrollPosPrivate(x, y: f32)->Math.Point
     {
-        var newSP = me.getScrollPosPrivate(x, y)
+        let newSP = me.getScrollPosPrivate(x, y)
         if newSP == me.view.scrollPos:
             return newSP
-        var oldPos = me.view.scrollPos
+        let oldPos = me.view.scrollPos
         me.view.scrollPos = newSP
         me.sigScrollPosChanged.call(me, oldPos, newSP)
         me.computeLayout()
@@ -503,7 +503,7 @@ public impl ScrollWnd
     #[Swag.Overload]
     mtd setScrollPos(x, y: f32)
     {
-        var newSP = me.setScrollPosPrivate(x, y)
+        let newSP = me.setScrollPosPrivate(x, y)
         me.scrollRequestPos = newSP
         me.smoothScroll     = false
     }
@@ -514,7 +514,7 @@ public impl ScrollWnd
         if me.scrollSize.x == x and me.scrollSize.y == y:
             return
 
-        var oldScrollSize = me.scrollSize
+        let oldScrollSize = me.scrollSize
         me.scrollSize = {x, y}
         me.setScrollPos(me.view.scrollPos.x, me.view.scrollPos.y)
         me.sigScrollSizeChanged.call(me, oldScrollSize, me.scrollSize)

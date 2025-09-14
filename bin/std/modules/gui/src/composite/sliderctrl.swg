@@ -20,7 +20,7 @@ impl IWnd for SliderCtrl
     {
         if !me.label:
             return
-        var rect    = me.getClientRect()
+        let rect    = me.getClientRect()
         let metrics = me.getThemeMetrics()
 
         me.label.setPosition(0, 0, me.labelSize, rect.height)

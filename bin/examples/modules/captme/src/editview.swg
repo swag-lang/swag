@@ -88,7 +88,7 @@ impl EditView
     mtd getCaptureRect()->Math.Rectangle
     {
         var captureRect: retval
-        var rect         = me.scroll.getClientScrollRect()
+        let rect         = me.scroll.getClientScrollRect()
         captureRect.width  = me.capture.width * me.zoom
         captureRect.height = me.capture.height * me.zoom
         if me.inPlaceEdit
@@ -122,7 +122,7 @@ impl EditView
         }
 
         me.zoom = Math.clamp(z, MinZoom, MaxZoom)
-        var captureRect = me.getCaptureRect()
+        let captureRect = me.getCaptureRect()
         me.scroll.setScrollSize(captureRect.width + (2 * me.viewMargin), captureRect.height + (2 * me.viewMargin))
 
         if mouseCenter

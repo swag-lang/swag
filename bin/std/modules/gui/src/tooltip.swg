@@ -30,7 +30,7 @@ func update(dt: f32)
     if g_Pending.delay < 0
     {
         // Make a copy because g_Pending will be destroy by 'show'
-        var copy = dref g_Pending
+        let copy = dref g_Pending
         show(copy.owner, copy.surfacePos, copy.str, 0's)
     }
 }
@@ -87,7 +87,7 @@ public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.D
         return
     }
 
-    var copy: String = str
+    let copy: String = str
     hide()
 
     let top = owner.surface.wnd

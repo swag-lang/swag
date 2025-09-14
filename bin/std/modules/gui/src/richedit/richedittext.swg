@@ -322,7 +322,7 @@ impl RichEditCtrl
 
         if !selRect
         {
-            var ps = posStart
+            let ps = posStart
             var pe = posEnd
 
             // Remove inside lines
@@ -408,8 +408,8 @@ public impl RichEditCtrl
     // Get the selected text
     mtd getSelectedText()->String
     {
-        var res = me.getTextPrivate(me.getBegSelection(), me.getEndSelection())
-        var txt = Utf8.fromUnicode(res.text.toSlice())
+        let res = me.getTextPrivate(me.getBegSelection(), me.getEndSelection())
+        let txt = Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
 
@@ -420,7 +420,7 @@ public impl RichEditCtrl
         var sel1: RichEditCursor
         me.moveCursorStartFile(&sel0)
         me.moveCursorEndFile(&sel1)
-        var res = me.getTextPrivate(sel0, sel1)
+        let res = me.getTextPrivate(sel0, sel1)
         let txt = Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
@@ -588,7 +588,7 @@ public impl RichEditCtrl
             {
                 if me.cursorPos.charPosInLine != me.lines[me.cursorPos.lineIndex].length()
                 {
-                    var r = me.getRune(me.cursorPos)
+                    let r = me.getRune(me.cursorPos)
                     pundo.runes.add(r.char)
                     pundo.styles.add(r.style)
                     discard me.moveCursorRight(&pundo.selBeg)
@@ -615,7 +615,7 @@ public impl RichEditCtrl
         if me.hasSelRect
         {
             let sb = me.getBegSelection()
-            var se = me.getEndSelection()
+            let se = me.getEndSelection()
             for caretI in sb.lineIndex to se.lineIndex
             {
                 var cp = se
@@ -645,7 +645,7 @@ public impl RichEditCtrl
         var first = true
 
         var beg = me.getBegSelection()
-        var end = me.getEndSelection()
+        let end = me.getEndSelection()
 
         var savepos0 = me.selBeg
         var savepos1 = me.cursorPos
@@ -699,7 +699,7 @@ public impl RichEditCtrl
         var first  = true
         let lenTxt = arrR.count
         var beg    = me.getBegSelection()
-        var end    = me.getEndSelection()
+        let end    = me.getEndSelection()
 
         if !lastLine
         {
@@ -712,7 +712,7 @@ public impl RichEditCtrl
         }
 
         let multiline = beg.lineIndex == end.lineIndex ? false : true
-        var size      = me.getXExtent()
+        let size      = me.getXExtent()
         var savepos0  = me.selBeg
         var savepos1  = me.cursorPos
 
@@ -803,7 +803,7 @@ public impl RichEditCtrl
     {
         var result: retval
 
-        var x = me.getXExtent()
+        let x = me.getXExtent()
 
         result.h = cast(f32) (me.lines.count * x.y)
         result.h += cast(f32) ((me.lines.count - 1) * me.lineSpacing)

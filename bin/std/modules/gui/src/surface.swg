@@ -228,7 +228,7 @@ impl Surface
 
         if !me.isDirty:
             return
-        var clipRect = me.dirtyRect
+        let clipRect = me.dirtyRect
         me.dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
         me.isDirty   = false
 
@@ -297,7 +297,7 @@ impl Surface
             me.colorDisabled = Argb.White
         }
 
-        var dstRect = Math.Rectangle{0, 0, cast(f32) me.rc.width, cast(f32) me.rc.height}
+        let dstRect = Math.Rectangle{0, 0, cast(f32) me.rc.width, cast(f32) me.rc.height}
         me.painter.drawTexture(dstRect, dstRect, me.rt.colorBuffer, color)
         me.painter.end()
 

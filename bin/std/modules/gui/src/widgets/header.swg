@@ -54,7 +54,7 @@ impl IWnd for Header
     {
         let painter = bc.painter
 
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         var labelPos   = clientRect
         labelPos.x     = x
         labelPos.width = item.width

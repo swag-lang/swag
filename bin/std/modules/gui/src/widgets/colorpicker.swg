@@ -49,7 +49,7 @@ impl IWnd for ColorPicker
 {
     mtd computeXY()
     {
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
 
         with me
         {
@@ -127,7 +127,7 @@ impl IWnd for ColorPicker
     {
         let bc         = evt.bc
         let painter    = bc.painter
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         let theme      = me.getTheme()
         let rects      = me.getThemeRects()
         let colors     = me.getThemeColors()
@@ -143,7 +143,7 @@ impl IWnd for ColorPicker
 
             if me.mode == .AlphaHorz
             {
-                var c  = Color.fromHsl(me.hue, me.sat, me.lum)
+                let c  = Color.fromHsl(me.hue, me.sat, me.lum)
                 var c1 = c
                 c1.a = 0
                 var c2 = c
@@ -152,7 +152,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .AlphaVert
             {
-                var c  = Color.fromHsl(me.hue, me.sat, me.lum)
+                let c  = Color.fromHsl(me.hue, me.sat, me.lum)
                 var c1 = c
                 c1.a = 255
                 var c2 = c
@@ -161,7 +161,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .RedHorz
             {
-                var c  = Color.fromRgbf(me.r, me.g, me.b)
+                let c  = Color.fromRgbf(me.r, me.g, me.b)
                 var c1 = c
                 c1.r = 0
                 var c2 = c
@@ -170,7 +170,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .RedVert
             {
-                var c  = Color.fromRgbf(me.r, me.g, me.b)
+                let c  = Color.fromRgbf(me.r, me.g, me.b)
                 var c1 = c
                 c1.r = 255
                 var c2 = c
@@ -179,7 +179,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .GreenHorz
             {
-                var c  = Color.fromRgbf(me.r, me.g, me.b)
+                let c  = Color.fromRgbf(me.r, me.g, me.b)
                 var c1 = c
                 c1.g = 0
                 var c2 = c
@@ -188,7 +188,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .GreenVert
             {
-                var c  = Color.fromRgbf(me.r, me.g, me.b)
+                let c  = Color.fromRgbf(me.r, me.g, me.b)
                 var c1 = c
                 c1.g = 255
                 var c2 = c
@@ -197,7 +197,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .BlueHorz
             {
-                var c  = Color.fromRgbf(me.r, me.g, me.b)
+                let c  = Color.fromRgbf(me.r, me.g, me.b)
                 var c1 = c
                 c1.b = 0
                 var c2 = c
@@ -206,7 +206,7 @@ impl IWnd for ColorPicker
             }
             elif me.mode == .BlueVert
             {
-                var c  = Color.fromRgbf(me.r, me.g, me.b)
+                let c  = Color.fromRgbf(me.r, me.g, me.b)
                 var c1 = c
                 c1.b = 255
                 var c2 = c
@@ -270,13 +270,13 @@ impl IWnd for ColorPicker
 
     internal mtd computeRGB()
     {
-        var c = Color.fromHsl(me.hue, me.sat, me.lum)
+        let c = Color.fromHsl(me.hue, me.sat, me.lum)
         (me.r, me.g, me.b) = c.toRgbf()
     }
 
     internal mtd computeHsl()
     {
-        var c = Color.fromRgbf(me.r, me.g, me.b)
+        let c = Color.fromRgbf(me.r, me.g, me.b)
         (me.hue, me.sat, me.lum) = c.toHsl()
     }
 
@@ -286,7 +286,7 @@ impl IWnd for ColorPicker
         let painter    = bc.painter
         let theme      = me.getTheme()
         let rects      = me.getThemeRects()
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         let metrics    = me.getThemeMetrics()
         let colors     = me.getThemeColors()
 
@@ -295,17 +295,17 @@ impl IWnd for ColorPicker
         {
         case SaturationLightness, HueSaturation, HueLightness, GreenBlue, RedBlue, RedGreen:
             let size = metrics.colorPicker_RoundPick
-            var rect = Math.Rectangle{me.xCur - size, me.yCur - size, 2 * size, 2 * size}
+            let rect = Math.Rectangle{me.xCur - size, me.yCur - size, 2 * size, 2 * size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_RoundPick, colors.colorPicker_Mark)
 
         case RedVert, GreenVert, BlueVert, AlphaVert, HueVert, LightnessVert, SaturationVert:
             let size = metrics.colorPicker_SquarePick
-            var rect = Math.Rectangle{clientRect.horzCenter() - size, me.yCur - size, 2 * size, 2 * size}
+            let rect = Math.Rectangle{clientRect.horzCenter() - size, me.yCur - size, 2 * size, 2 * size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
 
         case RedHorz, GreenHorz, BlueHorz, AlphaHorz, HueHorz, LightnessHorz, SaturationHorz:
             let size = metrics.colorPicker_SquarePick
-            var rect = Math.Rectangle{me.xCur - size, clientRect.vertCenter() - size, 2 * size, 2 * size}
+            let rect = Math.Rectangle{me.xCur - size, clientRect.vertCenter() - size, 2 * size, 2 * size}
             theme.drawSubRect(painter, rect, &rects.colorPicker_SquarePick, colors.colorPicker_Mark)
         }
     }
@@ -313,7 +313,7 @@ impl IWnd for ColorPicker
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
         var pos        = me.surfaceToLocal(evt.surfacePos)
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         pos.x = Math.clamp(pos.x, 0, clientRect.width)
         pos.y = Math.clamp(pos.y, 0, clientRect.height)
 

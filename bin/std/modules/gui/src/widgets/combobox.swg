@@ -92,7 +92,7 @@ impl IWnd for ComboBox
         me.aniBorder.apply(me, colorBorder)
         me.aniText.apply(me, colorText)
 
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, me.aniBk.cur())
         theme.drawSubRect(painter, clientRect, subRectBorder, me.aniBorder.cur())
 
@@ -122,7 +122,7 @@ impl IWnd for ComboBox
             painter.drawRichString(itemRect, &item.name, format)
         }
 
-        var icon = theme.getIcon24(ThemeIcons24.BottomPopupArrow)
+        let icon = theme.getIcon24(ThemeIcons24.BottomPopupArrow)
         icon.paint(painter, clientRect.right() - metrics.comboBox_RightMargin, clientRect.vertCenter() - icon.sizeY * 0.5, colorText)
     }
 
@@ -178,7 +178,7 @@ internal impl ComboBox
             me.hidePopup()
         }
 
-        var rect = me.getSurfaceRect()
+        let rect = me.getSurfaceRect()
         me.popup.show(rect.x, rect.bottom(), rect.width)
     }
 

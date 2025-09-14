@@ -48,7 +48,7 @@ impl IWnd for ProgressBar
         let subRectMark   = &rects.progressBar_Mark
 
         // Bk
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
 
         painter.startClippingRegion()

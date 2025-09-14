@@ -93,7 +93,7 @@ internal impl FileDlg
         me.comboPath.clear()
         me.comboPathStr.clear()
 
-        var all = Tokenize.split(me.curFolder.toString(), '/''rune)
+        let all = Tokenize.split(me.curFolder.toString(), '/''rune)
         for #reverse i in all
         {
             var str: String
@@ -121,7 +121,7 @@ internal impl FileDlg
 
         foreach v in me.dlgOptions.shortcuts
         {
-            var c    = Env.getSpecialDirectory(v.item0)
+            let c    = Env.getSpecialDirectory(v.item0)
             var icon = me.getApp().getSpecialDirectoryIcon(v.item0, true)
             icon.color       = Pixel.Argb.White
             l                = me.treeCtrl.createLine(v.item1, icon)
@@ -133,7 +133,7 @@ internal impl FileDlg
         l           = me.treeCtrl.createLine("Drives")
         l.separator = true
 
-        var volumes = catch Directory.getDrives()
+        let volumes = catch Directory.getDrives()
         foreach v in volumes
         {
             v.removeBack()
@@ -170,8 +170,8 @@ internal impl FileDlg
         me.curList = catch Directory.enumerate(me.curFolder, options)
 
         let item   = me.comboType.getSelectedItem()
-        var filter = me.dlgOptions.filters[cast(u64) item.userData0]
-        var tokens = Tokenize.split(filter.item1, ';''rune)
+        let filter = me.dlgOptions.filters[cast(u64) item.userData0]
+        let tokens = Tokenize.split(filter.item1, ';''rune)
 
         foreach &fi in me.curList
         {
@@ -309,7 +309,7 @@ internal impl FileDlg
 
     mtd onNewFolder()
     {
-        var folderName: String = "New Folder"
+        let folderName: String = "New Folder"
 
         with let dlg = EditDlg.createSingleLine(me.surface)
         {
@@ -357,7 +357,7 @@ internal impl FileDlg
         if dlg.doModal() != Dialog.BtnOk:
             return
 
-        var path = Path.combine(me.curFolder, dlg.edit.text.toString())
+        let path = Path.combine(me.curFolder, dlg.edit.text.toString())
         catch Directory.create(path)
         if @err != null
         {
@@ -411,7 +411,7 @@ impl FileDlg
         {
             if id == Dialog.BtnOk
             {
-                var selName = dlg.getSelectedName()
+                let selName = dlg.getSelectedName()
                 if selName == null
                 {
                     dlg.editFile.selectAll()
@@ -601,7 +601,7 @@ impl FileDlg
             // Append extension if not done by the user
             if me.dlgOptions.mode != .SelectFolder and !Path.isExtension(val, fi.item1)
             {
-                var exts = Tokenize.split(fi.item1, ';''rune)
+                let exts = Tokenize.split(fi.item1, ';''rune)
                 val += exts[0]
             }
 

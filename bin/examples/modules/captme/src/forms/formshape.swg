@@ -158,9 +158,9 @@ impl IForm for FormShape
         switch me.kind
         {
         case Ellipse:
-            var br  = me.boundRect()
-            var pos = Math.Vector2{pt.x, pt.y}
-            var cen = Math.Vector2{br.horzCenter(), br.vertCenter()}
+            let br  = me.boundRect()
+            let pos = Math.Vector2{pt.x, pt.y}
+            let cen = Math.Vector2{br.horzCenter(), br.vertCenter()}
             return Math.Geometry.isInEllipse(pos, cen, br.width * 0.5, br.height * 0.5)
         default:
             return true
@@ -202,7 +202,7 @@ impl IForm for FormShape
         let pp  = me.boundRect() * z
         var pen = Pen.createDash(dash, me.borderColor, bSize)
         pen.borderPos = .Inside
-        var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        let backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         if cxt.quickMode and me.alpha != 100 and me.subKind == .Highlight:
             bk.a = cast(u8) Math.map(cast(f32) me.alpha, 0, 100, 0, 255)

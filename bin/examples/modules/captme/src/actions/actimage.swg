@@ -426,7 +426,7 @@ impl MainWnd
 
         foreach f, idx in capture.forms
         {
-            var r = f.boundRect()
+            let r = f.boundRect()
             if r.x > 0:
                 minX = Math.min(minX, r.x)
             if r.y > 0:

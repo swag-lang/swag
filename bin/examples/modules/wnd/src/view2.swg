@@ -13,13 +13,13 @@ func createTreeSimple(view: *Wnd, maxItems = 50)->*ListCtrl
     for i in maxItems
     {
         Format.replaceString(&str, "item %", i)
-        var icon = app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
+        let icon = app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
         let line = tree.createLine(str, icon)
 
         for j in maxItems / 2
         {
             Format.replaceString(&str, "sub item %", j)
-            var icon1 = app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
+            let icon1 = app.theme.getIcon24(cast(ThemeIcons24) rng.nextU32(0, cast(u32) @countof(ThemeIcons24)))
             let line1 = tree.createLine(str, icon1, parentLine: line)
 
             for k in maxItems / 3

@@ -120,7 +120,7 @@ impl IWnd for Properties
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        var colorBar = me.cursorSet ? me.getThemeColors().splitView_BarHot : me.getThemeColors().prop_GridColumn
+        let colorBar = me.cursorSet ? me.getThemeColors().splitView_BarHot : me.getThemeColors().prop_GridColumn
         me.aniBar.apply(me, colorBar)
     }
 }
@@ -134,7 +134,7 @@ internal impl Properties
 
     mtd hitTest(ptLoc: Math.Point)->#null *PropertiesItem
     {
-        var pt = ptLoc + me.scrollWnd.getScrollPos()
+        let pt = ptLoc + me.scrollWnd.getScrollPos()
         foreach item in me.items
         {
             if !item.line.isVisible():
@@ -233,7 +233,7 @@ internal impl Properties
                 focusEvt.canChangeFocus = false
 
         case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
-            var pt = prop.surfaceToLocal(mouseEvt.surfacePos)
+            let pt = prop.surfaceToLocal(mouseEvt.surfacePos)
 
             prop.selItem = prop.hitTest(pt)
             wnd.invalidate()
@@ -404,7 +404,7 @@ internal impl Properties
         // Expand/Collapse icon
         if me.kind == .Grid and item.numChilds
         {
-            var expand = me.getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
+            let expand = me.getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
             expand.paint(painter, r.x + 2, r.vertCenter() - expand.sizeY * 0.5, Argb.White)
         }
     }
@@ -690,7 +690,7 @@ internal impl Properties
             let subCateg = Reflection.getAttributeValue(value, Properties.Category, "name")
             if subCateg != null
             {
-                var v:   Swag.TypeValue{name: cast(string) subCateg}
+                let v:   Swag.TypeValue{name: cast(string) subCateg}
                 let item = me.addItem(v, null, parentItem)
                 item.label.style.setFont(&me.fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
@@ -777,7 +777,7 @@ impl Properties
         // Section
         if section != null
         {
-            var v: Swag.TypeValue{name: section}
+            let v: Swag.TypeValue{name: section}
             item = me.addItem(v, null, null)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
             item.label.style.setFont(&me.fontSection)
@@ -788,7 +788,7 @@ impl Properties
         // Creates an empty parent item
         else
         {
-            var v: Swag.TypeValue
+            let v: Swag.TypeValue
             item = me.addItem(v, null, null, 0, .Zero)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
         }

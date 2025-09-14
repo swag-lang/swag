@@ -25,9 +25,9 @@ impl IWnd for ImageRect
         }
 
         let painter = evt.bc.painter
-        var rect    = me.getClientRectPadding()
+        let rect    = me.getClientRectPadding()
 
-        var color = me.getThemeColors().imageRect_Fg
+        let color = me.getThemeColors().imageRect_Fg
 
         #[Swag.Complete]
         switch me.movie.source
@@ -35,7 +35,7 @@ impl IWnd for ImageRect
         case None:
             break
         case SpriteSheet:
-            var icon = Icon.from(&me.movie.imgList, me.movie.frameIndex, rect.width, rect.height)
+            let icon = Icon.from(&me.movie.imgList, me.movie.frameIndex, rect.width, rect.height)
             icon.paint(painter, rect.x, rect.y, color)
         case Gif:
             painter.drawTexture(rect, me.textureFrame, color)

@@ -93,8 +93,8 @@ impl IWnd for Slider
         }
 
         // Pos box
-        var posBox1 = me.getPosBox1()
-        var posBox2 = me.getPosBox2()
+        let posBox1 = me.getPosBox1()
+        let posBox2 = me.getPosBox2()
 
         var clientRect = me.getClientRect()
 
@@ -173,7 +173,7 @@ impl IWnd for Slider
 
             for var x = 0'f32; x < 1 + me.steps; x += me.steps
             {
-                var posStep = me.getPosBoxAt(x, metrics.slider_StepSize)
+                let posStep = me.getPosBoxAt(x, metrics.slider_StepSize)
 
                 var colorStep: Color = undefined
                 if x <= me.value1 and me.sliderFlags.has(.HilightBar):
@@ -200,7 +200,7 @@ impl IWnd for Slider
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos        = me.surfaceToLocal(evt.surfacePos)
+        let pos        = me.surfaceToLocal(evt.surfacePos)
         let isVertical = me.sliderFlags.has(.Vertical)
 
         switch evt.kind
@@ -220,7 +220,7 @@ impl IWnd for Slider
                 break
             }
 
-            var clientRect = me.getOffsetedClientRect()
+            let clientRect = me.getOffsetedClientRect()
             var f:         f32
             if isVertical
             {
@@ -247,7 +247,7 @@ impl IWnd for Slider
                 if me.isHot1
                 {
                     me.isPressed1 = true
-                    var posBox = me.getPosBox1()
+                    let posBox = me.getPosBox1()
                     if isVertical:
                         me.correcMoving = pos.y - posBox.vertCenter()
                     else:
@@ -256,7 +256,7 @@ impl IWnd for Slider
                 elif me.isHot2
                 {
                     me.isPressed2 = true
-                    var posBox = me.getPosBox2()
+                    let posBox = me.getPosBox2()
                     if isVertical:
                         me.correcMoving = pos.y - posBox.vertCenter()
                     else:
@@ -266,7 +266,7 @@ impl IWnd for Slider
                 {
                     me.correcMoving = 0
                     me.isPressed1   = true
-                    var clientRect = me.getOffsetedClientRect()
+                    let clientRect = me.getOffsetedClientRect()
                     if isVertical
                     {
                         let diff = pos.y - clientRect.y
@@ -281,7 +281,7 @@ impl IWnd for Slider
                 else
                 {
                     me.correcMoving = 0
-                    var clientRect = me.getOffsetedClientRect()
+                    let clientRect = me.getOffsetedClientRect()
                     var f:         f32
                     if isVertical
                     {
@@ -371,7 +371,7 @@ internal impl Slider
 
     mtd hitTest(surfacePos: Math.Point)
     {
-        var pos = me.surfaceToLocal(surfacePos)
+        let pos = me.surfaceToLocal(surfacePos)
         if me.isHot1 or me.isHot2
         {
             me.invalidate()
@@ -380,7 +380,7 @@ internal impl Slider
 
         if me.sliderFlags.has(.Range)
         {
-            var rect = me.getPosBox2()
+            let rect = me.getPosBox2()
             if rect.contains(pos)
             {
                 me.isHot2 = true
@@ -389,7 +389,7 @@ internal impl Slider
             }
         }
 
-        var rect = me.getPosBox1()
+        let rect = me.getPosBox1()
         if rect.contains(pos)
         {
             me.isHot1 = true

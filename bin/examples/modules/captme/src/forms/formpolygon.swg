@@ -100,7 +100,7 @@ impl IForm for FormPolygon
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        var rect = me.boundRect()
+        let rect = me.boundRect()
         let fx   = newSizeX / rect.width
         let fy   = newSizeY / rect.height
 
@@ -190,7 +190,7 @@ impl IForm for FormPolygon
         var bSize = cxt.hitTest ? Math.max(me.borderSize, 5) : me.borderSize
         bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
 
-        var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        let backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk        = me.backColor
         if cxt.quickMode and me.alpha != 100 and me.subKind == .Highlight:
             bk.a = cast(u8) Math.map(cast(f32) me.alpha, 0, 100, 0, 255)

@@ -25,7 +25,7 @@ impl BlendColor
             return
         }
 
-        var vec4 = target.toVector4()
+        let vec4 = target.toVector4()
         if me.destVec4 != vec4
         {
             me.startVec4 = me.curVec4

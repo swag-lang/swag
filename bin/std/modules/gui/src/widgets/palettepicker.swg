@@ -23,7 +23,7 @@ impl IWnd for PalettePicker
 
         var colorBorder: Color = undefined
 
-        var clientRect = me.getClientRectPadding()
+        let clientRect = me.getClientRectPadding()
         me.palPos.resize(me.pal.count)
 
         var x = clientRect.x
@@ -57,7 +57,7 @@ impl IWnd for PalettePicker
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        var pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = me.surfaceToLocal(evt.surfacePos)
         evt.accepted = false
 
         // Hit test

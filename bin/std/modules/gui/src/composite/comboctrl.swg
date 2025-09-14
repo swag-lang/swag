@@ -18,7 +18,7 @@ impl IWnd for ComboCtrl
         if !me.label:
             return
 
-        var rect    = me.getClientRect()
+        let rect    = me.getClientRect()
         let metrics = me.getThemeMetrics()
 
         me.label.setPosition(0, 0, me.labelSize, metrics.comboBox_Height)

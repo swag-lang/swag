@@ -37,8 +37,8 @@ impl IWnd for RichEditView
             if evt.button == .Left
             {
                 evt.accepted = true
-                var pt = me.surfaceToLocal(evt.surfacePos) + me.scrollPos
-                var cp = me.ed.getCursorPosFromPoint(pt)
+                let pt = me.surfaceToLocal(evt.surfacePos) + me.scrollPos
+                let cp = me.ed.getCursorPosFromPoint(pt)
                 me.firstLineSelMode = cp.lineIndex
                 me.ed.setCursorPos(cp)
                 if !(evt.modifiers & .Shift):
@@ -61,8 +61,8 @@ impl IWnd for RichEditView
             if me.selMode
             {
                 evt.accepted = true
-                var pt = me.surfaceToLocal(evt.surfacePos) + me.scrollPos
-                var cp = me.ed.getCursorPosFromPoint(pt)
+                let pt = me.surfaceToLocal(evt.surfacePos) + me.scrollPos
+                let cp = me.ed.getCursorPosFromPoint(pt)
                 if me.ed.cursorPos.lineIndex != cp.lineIndex or me.ed.cursorPos.charPosInLine != cp.charPosInLine
                 {
                     if me.ed.hasSelRect
@@ -140,7 +140,7 @@ impl IWnd for RichEditView
         let marginLeft = me.ed.getMarginLeft()
         var x          = 0'f32
         var y          = 0'f32
-        var size       = me.ed.getXExtent()
+        let size       = me.ed.getXExtent()
 
         // Force visible caret
         if me.ed.forceCaretVisible:
@@ -163,7 +163,7 @@ impl IWnd for RichEditView
             me.ed.countVisibleLines = 0
         me.ed.dirtyFirstLineView = false
 
-        var clientRect  = me.getClientRect()
+        let clientRect  = me.getClientRect()
         let firstHidden = true
         var maxx        = 0'f32
 
@@ -234,11 +234,11 @@ impl IWnd for RichEditView
         // Caret
         if me.visibleCaret
         {
-            var colorCaret = me.getThemeColors().richEdit_Caret
+            let colorCaret = me.getThemeColors().richEdit_Caret
             if me.ed.hasSelRect
             {
-                var selBeg = me.ed.getBegSelection()
-                var selEnd = me.ed.getEndSelection()
+                let selBeg = me.ed.getBegSelection()
+                let selEnd = me.ed.getEndSelection()
                 for caretI in selBeg.lineIndex to selEnd.lineIndex
                 {
                     var cp = me.ed.cursorPos
@@ -268,7 +268,7 @@ impl IWnd for RichEditView
             maxx = me.ed.scrollWnd.scrollSize.x
         else
         {
-            var posCaret = me.ed.getCaretPos(me.ed.cursorPos)
+            let posCaret = me.ed.getCaretPos(me.ed.cursorPos)
             maxx += posCaret.width + 32
         }
 
@@ -346,9 +346,9 @@ impl RichEditView
         oldStyle = me.ed.styles[0]
         var x = me.ed.getMarginLeft() - me.scrollPos.x
 
-        var sel0 = me.ed.getBegSelection()
-        var sel1 = me.ed.getEndSelection()
-        var size = me.ed.getXExtent()
+        let sel0 = me.ed.getBegSelection()
+        let sel1 = me.ed.getEndSelection()
+        let size = me.ed.getXExtent()
 
         var i = 0
         while i < count

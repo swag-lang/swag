@@ -55,7 +55,7 @@ impl IWnd for PopupListView
         var surfaceRect = me.getSurfaceRect()
         var mouseInRect = surfaceRect.contains(evt.surfacePos)
 
-        var pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = me.surfaceToLocal(evt.surfacePos)
         if evt.kind == .MouseLeave or !mouseInRect:
             hit = Swag.U32.Max
         else
@@ -231,13 +231,13 @@ impl PopupListCtrl
     {
         me.scrollWnd.setScrollSize(0, cast(f32) me.items.count * me.heightItem)
 
-        var pt  = me.parent.surfaceToLocal({x, y})
+        let pt  = me.parent.surfaceToLocal({x, y})
         var pos = Math.Rectangle{pt.x, pt.y, 0, 0}
         pos.width  = Math.max(width, me.minWidthPopup)
         pos.height = Math.min(me.scrollWnd.scrollSize.y, me.maxHeightPopup)
         pos.height += me.padding.y + me.padding.w
         me.setPosition(pos)
-        var sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
+        let sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
         me.fitPosInParent(sdw.z, sdw.w, me.simFitX, me.simFitY)
         me.scrollWnd.view.captureMouse()
     }

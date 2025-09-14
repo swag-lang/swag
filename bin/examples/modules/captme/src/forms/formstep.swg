@@ -162,7 +162,7 @@ impl IForm for FormStep
         let z     = cxt.z
         var fSize = Math.min(me.w, me.h) * 0.6
         fSize = Math.max(fSize, 8)
-        var backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
+        let backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
 
         let face = g_App.theme.res.defaultTypeFaceR
 

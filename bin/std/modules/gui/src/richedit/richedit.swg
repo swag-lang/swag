@@ -110,7 +110,7 @@ internal impl RichEditCtrl
 
     mtd computeScrollY()
     {
-        var size = me.getXExtent()
+        let size = me.getXExtent()
         if !me.recomputeScroll:
             return
 

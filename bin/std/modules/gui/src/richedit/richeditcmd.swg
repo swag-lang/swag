@@ -154,7 +154,7 @@ impl RichEditCtrl
         case CursorUp:
             if !me.isSelectionEmpty()
             {
-                var pt = me.getCursorDisplayPos(me.cursorPos)
+                let pt = me.getCursorDisplayPos(me.cursorPos)
                 me.setCursorPos(me.getBegSelection())
                 me.moveCursorUp(&me.cursorPos, pt)
             }
@@ -165,7 +165,7 @@ impl RichEditCtrl
         case CursorDown:
             if !me.isSelectionEmpty()
             {
-                var pt = me.getCursorDisplayPos(me.cursorPos)
+                let pt = me.getCursorDisplayPos(me.cursorPos)
                 me.setCursorPos(me.getEndSelection())
                 me.moveCursorDown(&me.cursorPos, pt)
             }

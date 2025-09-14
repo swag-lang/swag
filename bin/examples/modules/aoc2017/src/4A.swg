@@ -23,7 +23,7 @@ func day4A()
     foreach l in lines
     {
         let s    = Tokenize.split(l, " ")
-        var set: HashSet'string = s[..]
+        let set: HashSet'string = s[..]
         total += cast(s32) (set.count == s.count)
     }
 

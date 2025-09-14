@@ -254,7 +254,7 @@ impl InPlaceEditWnd
 
     mtd moveButtons()
     {
-        var rect: Math.Rectangle{-me.capture.backImagePos.x, -me.capture.backImagePos.y, me.capture.width, me.capture.height}
+        let rect: Math.Rectangle{-me.capture.backImagePos.x, -me.capture.backImagePos.y, me.capture.width, me.capture.height}
 
         {
             const H = 40.0

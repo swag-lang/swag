@@ -47,7 +47,7 @@ impl GizmoPoints
         case MouseMove:
             if me.moving
             {
-                var diff = pos - me.movingStart
+                let diff = pos - me.movingStart
                 if me.firstMoving and me.sigChanged:
                     me.sigChanged(diff, me.hotAnchor, true)
                 me.firstMoving = false

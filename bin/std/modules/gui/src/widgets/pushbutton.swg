@@ -141,7 +141,7 @@ impl IWnd for PushButton
         }
 
         // Background
-        var clientRect = me.getClientRect()
+        let clientRect = me.getClientRect()
         me.aniBk.apply(me, colorBk)
         theme.drawSubRect(bc.painter, clientRect, subRectBk, me.aniBk.cur())
 

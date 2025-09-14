@@ -46,7 +46,7 @@ impl Button
 {
     mtd processMouseEvent(evt: *MouseEvent)->bool
     {
-        var pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = me.surfaceToLocal(evt.surfacePos)
         switch evt.kind
         {
         case MouseWheel:
@@ -63,7 +63,7 @@ impl Button
         case MouseMove:
             if !me.isPressing:
                 break
-            var rect = me.getClientRect()
+            let rect = me.getClientRect()
             if !rect.contains(pos)
             {
                 me.isPressed, me.isIn = false

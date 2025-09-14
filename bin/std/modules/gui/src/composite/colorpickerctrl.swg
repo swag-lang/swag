@@ -56,7 +56,7 @@ impl IWnd for ColorPickerCtrl
         var rect    = me.staticRes.position
         let painter = evt.bc.painter
 
-        var brush = Brush.createHatch(.CheckBoardLarge, me.getThemeColors().colorPicker_BackAlpha)
+        let brush = Brush.createHatch(.CheckBoardLarge, me.getThemeColors().colorPicker_BackAlpha)
 
         if me.oldColor.a != 255:
             painter.fillRect(rect, brush)
@@ -214,16 +214,16 @@ impl ColorPickerCtrl
                 switch v.mode
                 {
                 case SaturationLightness:
-                    var c = Color.fromHsl(v.pickBar.hue, cb.sat, cb.lum)
+                    let c = Color.fromHsl(v.pickBar.hue, cb.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickAlpha.change(s: cb.sat, l: cb.lum)
                 case HueSaturation:
-                    var c = Color.fromHsl(cb.hue, cb.sat, v.pickBar.lum)
+                    let c = Color.fromHsl(cb.hue, cb.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBar.change(h: cb.hue, s: cb.sat)
                     v.pickAlpha.change(h: cb.hue, s: cb.sat)
                 case HueLightness:
-                    var c = Color.fromHsl(cb.hue, v.pickBar.sat, cb.lum)
+                    let c = Color.fromHsl(cb.hue, v.pickBar.sat, cb.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBar.change(h: cb.hue, l: cb.lum)
                     v.pickAlpha.change(h: cb.hue, l: cb.lum)
@@ -249,17 +249,17 @@ impl ColorPickerCtrl
                 switch v.mode
                 {
                 case SaturationLightness:
-                    var c = Color.fromHsl(v.pickBar.hue, v.pickBox.sat, v.pickBox.lum)
+                    let c = Color.fromHsl(v.pickBar.hue, v.pickBox.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(h: cb.hue)
                     v.pickAlpha.change(h: cb.hue)
                 case HueSaturation:
-                    var c = Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickBar.lum)
+                    let c = Color.fromHsl(v.pickBox.hue, v.pickBox.sat, v.pickBar.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(l: cb.lum)
                     v.pickAlpha.change(l: cb.lum)
                 case HueLightness:
-                    var c = Color.fromHsl(v.pickBox.hue, v.pickBar.sat, v.pickBox.lum)
+                    let c = Color.fromHsl(v.pickBox.hue, v.pickBar.sat, v.pickBox.lum)
                     v.color.setArgb(v.color.a, c.r, c.g, c.b)
                     v.pickBox.change(s: cb.sat)
                     v.pickAlpha.change(s: cb.sat)
