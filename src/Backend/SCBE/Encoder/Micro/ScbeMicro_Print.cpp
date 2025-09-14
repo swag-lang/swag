@@ -653,7 +653,10 @@ void ScbeMicro::print() const
                 break;
             case ScbeMicroOp::OpBinaryRR:
                 line.name = cpuOpName(inst->cpuOp);
-                line.args += form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
+                if (inst->emitFlags.has(EMIT_B64))
+                    line.args += form("%s, %s", regName(inst->regA, OpBits::B64), regName(inst->regB, OpBits::B64));
+                else
+                    line.args += form("%s, %s", regName(inst->regA, inst->opBitsA), regName(inst->regB, inst->opBitsA));
                 break;
             case ScbeMicroOp::OpBinaryMR:
                 line.name = cpuOpName(inst->cpuOp);
