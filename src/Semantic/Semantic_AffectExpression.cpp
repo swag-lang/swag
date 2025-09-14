@@ -209,8 +209,16 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     if (left->hasAstFlag(AST_L_VALUE))
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
+        
+        if (left->is(AstNodeKind::IdentifierRef) && left->childCount() > 1)
+        {
+            if (!left->typeInfo->isStruct())
+                left = left->children[left->childCount() - 2];
+        }
+
         if (hint.empty())
             hint = Diagnostic::isType(left);
+        
         err.addNote(left, hint);
         err.addNote(note);
         return context->report(err);
