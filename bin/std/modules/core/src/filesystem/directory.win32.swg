@@ -40,7 +40,6 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
 
     let dataof = cast(const ^u16) @dataof(findfile.cFileName)
 
-    result.reserve(1024)
     stackPath.add(String.from(dirName))
     while !stackPath.isEmpty()
     {

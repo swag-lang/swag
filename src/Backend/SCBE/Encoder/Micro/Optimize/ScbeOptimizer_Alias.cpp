@@ -147,7 +147,7 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
                     }
                     else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
                              !prev->hasOpFlag(MOF_OPBITS_A) ||
-                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                             ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) <= ScbeCpu::getNumBits(prev->opBitsA, prev->emitFlags))
                     {
                         setRegA(out, inst, prev->regB);
                     }
@@ -168,7 +168,7 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
                     }
                     else if (!inst->hasOpFlag(MOF_OPBITS_A) ||
                              !prev->hasOpFlag(MOF_OPBITS_A) ||
-                             ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                             ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) <= ScbeCpu::getNumBits(prev->opBitsA, prev->emitFlags))
                     {
                         setRegB(out, inst, prev->regB);
                     }
@@ -185,7 +185,7 @@ void ScbeOptimizer::optimizePassAliasLoadRR(const ScbeMicro& out)
                 {
                     if (!inst->hasOpFlag(MOF_OPBITS_A) ||
                         !prev->hasOpFlag(MOF_OPBITS_A) ||
-                        ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(prev->opBitsA))
+                        ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) <= ScbeCpu::getNumBits(prev->opBitsA, prev->emitFlags))
                     {
                         setRegC(out, inst, prev->regB);
                     }

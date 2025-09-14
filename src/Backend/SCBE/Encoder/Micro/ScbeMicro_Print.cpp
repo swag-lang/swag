@@ -206,7 +206,7 @@ namespace
         {"bpl", "bp", "ebp", "rbp", "..."},
         };
 
-        const auto numBytes = static_cast<int>(std::log2(ScbeCpu::getNumBits(opBits) / 8));
+        const auto numBytes = static_cast<int>(std::log2(BackendEncoder::getNumBits(opBits) / 8));
         return GENERAL_REGS[static_cast<int>(reg)][numBytes];
     }
 

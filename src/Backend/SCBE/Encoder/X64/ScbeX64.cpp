@@ -2192,7 +2192,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xC1, opBits);
             emitModRM(concat, MODRM_REG_4, reg);
-            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         }
     }
 
@@ -2215,7 +2215,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xC1, opBits);
             emitModRM(concat, MODRM_REG_5, reg);
-            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         }
     }
 
@@ -2238,7 +2238,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryRegImm(CpuReg reg, uint64_t value, CpuOp 
             emitREX(concat, opBits, REX_REG_NONE, reg);
             emitSpecCPUOp(concat, 0xC1, opBits);
             emitModRM(concat, MODRM_REG_7, reg);
-            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         }
     }
 
@@ -2302,7 +2302,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitSpecCPUOp(concat, 0xC1, opBits);
             emitModRM(concat, memOffset, MODRM_REG_7, memReg);
-            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         }
     }
 
@@ -2325,7 +2325,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitSpecCPUOp(concat, 0xC1, opBits);
             emitModRM(concat, memOffset, MODRM_REG_5, memReg);
-            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         }
     }
 
@@ -2348,7 +2348,7 @@ CpuEncodeResult ScbeX64::encodeOpBinaryMemImm(CpuReg memReg, uint64_t memOffset,
             emitREX(concat, opBits, REX_REG_NONE, memReg);
             emitSpecCPUOp(concat, 0xC1, opBits);
             emitModRM(concat, memOffset, MODRM_REG_4, memReg);
-            emitValue(concat, std::min(static_cast<uint32_t>(value), getNumBits(opBits) - 1), OpBits::B8);
+            emitValue(concat, std::min(static_cast<uint32_t>(value), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         }
     }
 

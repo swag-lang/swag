@@ -1626,7 +1626,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                 opBits = ScbeCpu::getOpBits(ip->op);
                 pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
                 pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B64);
-                emitCopyMem(pp, cc->computeRegI0, cc->computeRegI1, ScbeCpu::getNumBits(opBits) / 8);
+                emitCopyMem(pp, cc->computeRegI0, cc->computeRegI1, BackendEncoder::getNumBits(opBits) / 8);
                 break;
 
             /////////////////////////////////////
@@ -2138,7 +2138,7 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                     case TokenId::IntrinsicAbs:
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         pp.emitLoadRegReg(cc->computeRegI1, cc->computeRegI0, opBits);
-                        pp.emitOpBinaryRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, CpuOp::SAR, opBits);
+                        pp.emitOpBinaryRegImm(cc->computeRegI1, BackendEncoder::getNumBits(opBits) - 1, CpuOp::SAR, opBits);
                         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::XOR, opBits);
                         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::SUB, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
@@ -2151,16 +2151,16 @@ bool Scbe::emitFunctionBodyPass0(BackendFunctionBodyJob* ownerJob, const BuildPa
                     case TokenId::IntrinsicBitCountTz:
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSF, opBits);
-                        pp.emitLoadRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits), opBits);
+                        pp.emitLoadRegImm(cc->computeRegI1, BackendEncoder::getNumBits(opBits), opBits);
                         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicBitCountLz:
                         emitIMMB(pp, cc->computeRegI0, opBits);
                         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI0, CpuOp::BSR, opBits);
-                        pp.emitLoadRegImm(cc->computeRegI1, (ScbeCpu::getNumBits(opBits) * 2) - 1, opBits);
+                        pp.emitLoadRegImm(cc->computeRegI1, (BackendEncoder::getNumBits(opBits) * 2) - 1, opBits);
                         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI1, CpuCond::E, opBits);
-                        pp.emitOpBinaryRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, CpuOp::XOR, opBits);
+                        pp.emitOpBinaryRegImm(cc->computeRegI0, BackendEncoder::getNumBits(opBits) - 1, CpuOp::XOR, opBits);
                         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), cc->computeRegI0, opBits);
                         break;
                     case TokenId::IntrinsicByteSwap:

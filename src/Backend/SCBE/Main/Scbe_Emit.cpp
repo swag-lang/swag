@@ -91,15 +91,15 @@ void Scbe::emitShiftRightArithmetic(ScbeCpu& pp)
     }
     else if (ip->hasFlag(BCI_IMM_B))
     {
-        pp.emitLoadRegImm(cc->computeRegI1, std::min(static_cast<uint32_t>(ip->b.u8), ScbeCpu::getNumBits(opBits) - 1), OpBits::B8);
+        pp.emitLoadRegImm(cc->computeRegI1, std::min(static_cast<uint32_t>(ip->b.u8), BackendEncoder::getNumBits(opBits) - 1), OpBits::B8);
         emitIMMA(pp, cc->computeRegI0, opBits);
         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
     }
     else
     {
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-        pp.emitLoadRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitLoadRegImm(cc->computeRegI0, BackendEncoder::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmpRegImm(cc->computeRegI1, BackendEncoder::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitLoadCondRegReg(cc->computeRegI1, cc->computeRegI0, CpuCond::G, opBits);
         emitIMMA(pp, cc->computeRegI0, opBits);
         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, CpuOp::SAR, opBits);
@@ -121,8 +121,8 @@ void Scbe::emitShiftRightEqArithmetic(ScbeCpu& pp)
     else
     {
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-        pp.emitLoadRegImm(cc->computeRegI0, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
-        pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitLoadRegImm(cc->computeRegI0, BackendEncoder::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmpRegImm(cc->computeRegI1, BackendEncoder::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitLoadCondRegReg(cc->computeRegI1, cc->computeRegI0, CpuCond::G, opBits);
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitOpBinaryMemReg(cc->computeRegI0, 0, cc->computeRegI1, CpuOp::SAR, opBits);
@@ -134,7 +134,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
     const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= BackendEncoder::getNumBits(opBits))
     {
         pp.emitLoadMemImm(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), 0, opBits);
     }
@@ -150,7 +150,7 @@ void Scbe::emitShiftLogical(ScbeCpu& pp, CpuOp op)
         emitIMMB(pp, cc->computeRegI1, OpBits::B32);
         pp.emitOpBinaryRegReg(cc->computeRegI0, cc->computeRegI1, op, opBits);
         pp.emitClearReg(cc->computeRegI2, opBits);
-        pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits) - 1, OpBits::B32);
+        pp.emitCmpRegImm(cc->computeRegI1, BackendEncoder::getNumBits(opBits) - 1, OpBits::B32);
         pp.emitLoadCondRegReg(cc->computeRegI0, cc->computeRegI2, CpuCond::G, opBits);
         pp.emitLoadMemReg(CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->c.u32), cc->computeRegI0, opBits);
     }
@@ -161,7 +161,7 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
     const auto cc     = pp.cpuFct->cc;
     const auto ip     = pp.ip;
     const auto opBits = ScbeCpu::getOpBits(ip->op);
-    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= ScbeCpu::getNumBits(opBits))
+    if (ip->hasFlag(BCI_IMM_B) && ip->b.u32 >= BackendEncoder::getNumBits(opBits))
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitLoadMemImm(cc->computeRegI0, 0, 0, opBits);
@@ -175,7 +175,7 @@ void Scbe::emitShiftEqLogical(ScbeCpu& pp, CpuOp op)
     {
         pp.emitLoadRegMem(cc->computeRegI0, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->a.u32), OpBits::B64);
         pp.emitLoadRegMem(cc->computeRegI1, CpuReg::Rsp, pp.cpuFct->getStackOffsetReg(ip->b.u32), OpBits::B32);
-        pp.emitCmpRegImm(cc->computeRegI1, ScbeCpu::getNumBits(opBits), OpBits::B32);
+        pp.emitCmpRegImm(cc->computeRegI1, BackendEncoder::getNumBits(opBits), OpBits::B32);
         CpuJump jump;
         pp.emitJump(jump, CpuCondJump::JL, OpBits::B8);
         pp.emitClearReg(cc->computeRegI1, opBits);

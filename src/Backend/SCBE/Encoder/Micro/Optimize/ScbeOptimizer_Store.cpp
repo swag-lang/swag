@@ -73,7 +73,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 if (mapValReg.contains(stackOffset) &&
                     mapRegVal.contains(mapValReg[stackOffset].first) &&
                     ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(mapValReg[stackOffset].first) &&
-                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second) &&
+                    ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) <= BackendEncoder::getNumBits(mapValReg[stackOffset].second) &&
                     mapRegVal[mapValReg[stackOffset].first] == stackOffset)
                 {
                     if (mapValReg[stackOffset].first == inst->regA)
@@ -117,7 +117,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 if (mapValReg.contains(stackOffset) &&
                     mapRegVal[mapValReg[stackOffset].first] == stackOffset &&
                     ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(mapValReg[stackOffset].first) &&
-                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second))
+                    ScbeCpu::getNumBits(inst->opBitsA,inst->emitFlags) <= BackendEncoder::getNumBits(mapValReg[stackOffset].second))
                 {
                     setOp(out, inst, ScbeMicroOp::CmpRR);
                     setRegA(out, inst, mapValReg[stackOffset].first);
@@ -130,7 +130,7 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                 if (mapValReg.contains(stackOffset) &&
                     mapRegVal[mapValReg[stackOffset].first] == stackOffset &&
                     ScbeCpu::isInt(mapValReg[stackOffset].first) &&
-                    ScbeCpu::getNumBits(inst->opBitsA) <= ScbeCpu::getNumBits(mapValReg[stackOffset].second) &&
+                    ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) <= BackendEncoder::getNumBits(mapValReg[stackOffset].second) &&
                     out.cpu->encodeCmpRegImm(mapValReg[stackOffset].first, inst->valueB, inst->opBitsA, EMIT_CanEncode) == CpuEncodeResult::Zero)
                 {
                     setOp(out, inst, ScbeMicroOp::CmpRI);

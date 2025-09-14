@@ -248,7 +248,7 @@ struct ScbeCpu : BackendEncoder
     bool acceptsRegB(const ScbeMicroInstruction* inst, CpuReg reg);
     bool acceptsRegC(const ScbeMicroInstruction* inst, CpuReg reg);
 
-    static uint32_t getNumBits(OpBits opBits, CpuEmitFlags emitFlags = EMIT_Zero)
+    static uint32_t getNumBits(OpBits opBits, CpuEmitFlags emitFlags)
     {
         if (emitFlags.has(EMIT_B64))
             return 64;

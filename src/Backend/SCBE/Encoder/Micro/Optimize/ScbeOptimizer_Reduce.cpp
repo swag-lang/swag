@@ -811,7 +811,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 inst->regA != inst->regB &&
                 inst->regA == next->regA &&
                 ScbeCpu::isInt(inst->regA) &&
-                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsA, next->emitFlags)) &&
                 !nextWriteRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegA(next, inst->regB))
             {
@@ -824,7 +824,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 inst->regA != inst->regB &&
                 inst->regA == next->regB &&
                 ScbeCpu::isInt(inst->regA) &&
-                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsA, next->emitFlags)) &&
                 !nextWriteRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegB(next, inst->regB))
             {
@@ -836,7 +836,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 inst->regA != inst->regB &&
                 inst->regA == next->regC &&
                 ScbeCpu::isInt(inst->regA) &&
-                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsB, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsA, next->emitFlags)) &&
                 !nextWriteRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegC(next, inst->regC))
             {
@@ -850,7 +850,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 !next->hasWriteRegA() &&
                 inst->regA == next->regA &&
                 ScbeCpu::isInt(inst->regA) &&
-                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsA, next->emitFlags)) &&
                 !nextWriteRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegA(next, inst->regB))
             {
@@ -862,7 +862,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 !next->hasWriteRegB() &&
                 inst->regA == next->regB &&
                 ScbeCpu::isInt(inst->regA) &&
-                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsA, next->emitFlags)) &&
                 !nextWriteRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegB(next, inst->regB))
             {
@@ -873,7 +873,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
             if (next->hasReadRegC() &&
                 inst->regA == next->regC &&
                 ScbeCpu::isInt(inst->regA) &&
-                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsA)) &&
+                (!next->hasOpFlag(MOF_OPBITS_A) || ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsA, next->emitFlags)) &&
                 !nextWriteRegs.contains(inst->regB) &&
                 out.cpu->acceptsRegC(next, inst->regC))
             {
@@ -1001,7 +1001,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
 
         case ScbeMicroOp::LoadMR:
             if (next->op == ScbeMicroOp::LoadRM &&
-                ScbeCpu::getNumBits(next->opBitsA) <= ScbeCpu::getNumBits(inst->opBitsA) &&
+                ScbeCpu::getNumBits(next->opBitsA, next->emitFlags) <= ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA)
             {
@@ -1021,7 +1021,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA &&
-                ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB))
+                ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsB, next->emitFlags))
             {
                 setOp(out, next, ScbeMicroOp::LoadSignedExtRR);
                 setRegB(out, next, inst->regB);
@@ -1032,7 +1032,7 @@ void ScbeOptimizer::reduceNext(const ScbeMicro& out, ScbeMicroInstruction* inst,
                 ScbeCpu::isInt(inst->regB) == ScbeCpu::isInt(next->regA) &&
                 next->regB == inst->regA &&
                 next->valueA == inst->valueA &&
-                ScbeCpu::getNumBits(inst->opBitsA) >= ScbeCpu::getNumBits(next->opBitsB) &&
+                ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) >= ScbeCpu::getNumBits(next->opBitsB, next->emitFlags) &&
                 out.cpu->encodeLoadZeroExtendRegReg(next->regA, inst->regB, next->opBitsA, next->opBitsB, EMIT_CanEncode) == CpuEncodeResult::Zero)
             {
                 setOp(out, next, ScbeMicroOp::LoadZeroExtRR);
