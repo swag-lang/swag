@@ -3,9 +3,9 @@ using Core, Core.Time
 //#[Swag.PrintBc]
 #test
 {
-    var x    = DateTime.now()
-    var stra = Format.toString("%{a}", x)
-    var strb = Format.toString("%{b}", x)
-    var strc = Format.toString("%{c}", x)
-    var strd = Format.toString("%{d}", x)
+    let x    = DateTime.now()
+    let stra = Format.toString("%{a}", x)
+    let strb = Format.toString("%{b}", x)
+    let strc = Format.toString("%{c}", x)
+    let strd = Format.toString("%{d}", x)
 }

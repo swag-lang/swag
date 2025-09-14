@@ -124,7 +124,7 @@ the struct.
         return {1.0, 2.0}                          // Returns a struct with two float values
     }
 
-    var result = myFunction()                      // Stores the result in a variable
+    let result = myFunction()                      // Stores the result in a variable
     @assert(result.item0 == 1.0)                   // Asserts the first item
     @assert(result.item1 == 2.0)                   // Asserts the second item
 

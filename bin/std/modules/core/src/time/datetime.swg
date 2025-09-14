@@ -292,7 +292,7 @@ impl DateTime
     }
 
     // Converts the DateTime to a string using the given format
-    mtd toString(fmt = DateTimeFormat.DateTime)->String
+    mtd const toString(fmt = DateTimeFormat.DateTime)->String
     {
         #[Swag.Complete]
         switch fmt

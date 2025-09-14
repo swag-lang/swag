@@ -2,7 +2,7 @@ using Core, Core.Utf8
 
 #test
 {
-    var x: String = "this is a string"
+    let x: String = "this is a string"
     @assert(Utf8.startsWith(x.toString(), "this"))
 
     @assert(!Utf8.startsWith(x.toString(), "This"))
@@ -13,6 +13,6 @@ using Core, Core.Utf8
     @assert(Utf8.startsWith(x.toString(), "this is a string"))
     @assert(Utf8.endsWith(x.toString(), "this is a string"))
 
-    var y: String = "string"
+    let y: String = "string"
     @assert(Utf8.endsWith(x.toString(), y.toString()))
 }

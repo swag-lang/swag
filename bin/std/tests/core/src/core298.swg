@@ -19,7 +19,7 @@ func parse(st: *TT, args: const [..] string)->Defined
 
     for var itp = 0; itp < @countof(args); itp += 2
     {
-        var typeField = typeof.fields[0]
+        let typeField = typeof.fields[0]
         switch typeField.pointedType
         {
         case s32:

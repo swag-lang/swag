@@ -6,7 +6,7 @@ using Core
     @assert(Path.getExtension("loc.fileName") == ".fileName")
     @assert(Path.getFileName("/") == null)
 
-    var loc = #curlocation
+    let loc = #curlocation
     @assert(File.exists(loc.fileName))
     @assert(Path.getExtension(loc.fileName) == ".swg")
     @assert(Path.hasExtension(loc.fileName))
@@ -15,10 +15,10 @@ using Core
     //Console.print("%\n", Path.getFileNameWithoutExtension(loc.fileName))
     @assert(Path.getFileNameWithoutExtension(loc.fileName) == "core160")
 
-    var ext: String = Path.getExtension(loc.fileName)
+    let ext: String = Path.getExtension(loc.fileName)
     @assert(Utf8.compare(ext.toString(), ".SWG", Utf8.ComparisonType.Latin1NoCase) == 0)
 
-    var res = catch File.readAllText(loc.fileName)
+    let res = catch File.readAllText(loc.fileName)
     @assert(res.length > 0)
     //Console.print("%", res.item0)
 }

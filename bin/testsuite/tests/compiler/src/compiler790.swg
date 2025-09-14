@@ -6,6 +6,7 @@ enum TOTO : string
 }
 
 //#[Swag.PrintBc]
+#[Swag.Warning("Wrn0003", .Disable)]
 #test
 {
 	using Swag

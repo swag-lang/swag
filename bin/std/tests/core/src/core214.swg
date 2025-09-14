@@ -50,11 +50,11 @@ var g: Array'OneFunc
 
     let itf = @compiler
 
-    var strVars = builderVars.toString()
+    let strVars = builderVars.toString()
     //Console.print("%\n", strVars)
     itf.compileString(strVars.toString())
 
-    var strFunc = builderFct.toString()
+    let strFunc = builderFct.toString()
     //Console.print("%\n", strFunc)
     itf.compileString(strFunc.toString())
 }

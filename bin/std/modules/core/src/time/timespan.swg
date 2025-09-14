@@ -40,7 +40,7 @@ impl TimeSpan
     }
 
     // Converts the TimeSpan to a DateTime
-    mtd toDateTime()->DateTime
+    mtd const toDateTime()->DateTime
     {
         var dateTime: retval = undefined
         (dateTime.year, dateTime.month, dateTime.day) = ticksToDate(me.ticks)

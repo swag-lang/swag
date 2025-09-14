@@ -39,6 +39,7 @@ func titi()->A
 
 //#[Swag.PrintBc]
 #[Swag.Optimize("", true)]
+#[Swag.Warning("Wrn0003", .Disable)]
 #test
 {
     {

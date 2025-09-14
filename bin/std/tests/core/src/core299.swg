@@ -10,7 +10,7 @@ using Core
     }
 
     var x: TT
-    var a  = try CommandLine.parse(&x, ["-value", "1", "-diff", "3.14"])
+    let a  = try CommandLine.parse(&x, ["-value", "1", "-diff", "3.14"])
 
     @assert(a.isSet.value)
     @assert(a.isSet.diff)

@@ -11,7 +11,7 @@ using Core.Input
     while false
     {
         k.update()
-        var mv = k.getMove()
+        let mv = k.getMove()
         if mv.x > 0
         {
             //@print(cast(s64) mv.y)

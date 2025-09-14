@@ -13,10 +13,10 @@ using Core
     }
 
     {
-        var cur = catch Directory.getCurrent()
+        let cur = catch Directory.getCurrent()
         @assert(@err == null)
 
-        var full = catch Path.getAbsolute("..")
+        let full = catch Path.getAbsolute("..")
         @assert(@err == null)
 
         //Console.print("%\n%\n", Path.getDirectoryName(cur), @countof(full))

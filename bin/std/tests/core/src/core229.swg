@@ -15,7 +15,7 @@ var t: [] struct
 {
     foreach &p in t
     {
-        var r = fromUnicode(p.inT)
+        let r = fromUnicode(p.inT)
         @assert(r.count == @countof(p.outT))
         @assert(@memcmp(r.buffer, p.outT, @countof(p.outT) * 2) == 0)
     }

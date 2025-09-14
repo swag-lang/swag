@@ -46,7 +46,7 @@ impl NumericArray
     }
 
     #[Overload]
-    func(op: string) opAssign(me, value: T)
+    mtd(op: string) opAssign(value: T)
     {
         for i in NumericArray.N
         {

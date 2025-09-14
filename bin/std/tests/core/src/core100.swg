@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var str: String = "toto"
+    let str: String = "toto"
     var u    = Utf16.fromUtf8(str)
 
     let v = 0

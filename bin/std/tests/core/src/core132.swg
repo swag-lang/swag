@@ -7,10 +7,10 @@ using Core.StrConv
     builder.appendFormat("%", 444)
     builder.appendAny('假''rune)
 
-    var str: String = "mystring"
+    let str: String = "mystring"
     builder.appendString(str)
 
-    var s = builder.toString()
+    let s = builder.toString()
     //Console.write("%\n", s)
     @assert(s == "toto444假mystring")
 }

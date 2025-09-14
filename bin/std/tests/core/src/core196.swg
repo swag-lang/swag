@@ -21,7 +21,7 @@ impl IAllocator for My
     Memory.pushAllocator(v)
     {
         const value = "this is a string this is a string this is a string"
-        var s:      String = value
+        let s:      String = value
         @assert(s == value)
     }
 

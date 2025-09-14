@@ -40,6 +40,7 @@ func titi()->A
 
 //#[Swag.PrintBc]
 #[Swag.Optimize("", true)]
+#[Swag.Warning("Wrn0003", .Disable)]
 #test
 {
     if @bytecode and @compiler.getBuildCfg().byteCodeOptimizeLevel > Swag.BuildCfgByteCodeOptim.O1

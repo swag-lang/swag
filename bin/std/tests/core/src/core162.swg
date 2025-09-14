@@ -6,14 +6,14 @@ using Core.File
 #test
 {
     var reader: TextReader
-    var loc     = #curlocation
+    let loc     = #curlocation
 
     {
         catch reader.open(loc.fileName)
         @assert(@err == null)
         defer reader.close()
 
-        var res = reader.readToEnd()
+        let res = reader.readToEnd()
         @assert(res.length > 10)
         @assert(res[0] == 'u''u8)
         @assert(res[1] == 's''u8)

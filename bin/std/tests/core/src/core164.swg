@@ -3,7 +3,7 @@ using Core.File
 //#[Swag.PrintBc]
 #test
 {
-    var loc = #curlocation
+    let loc = #curlocation
     let res = Path.getDirectoryName(loc.fileName)
     @assert(@countof(res) != 0)
     //Console.print("%\n", res)
@@ -15,6 +15,6 @@ using Core.File
     @assert(Path.isRooted("c:/"))
     @assert(Path.isRooted(loc.fileName))
 
-    var t: String = loc.fileName
+    let t: String = loc.fileName
     @assert(Path.hasExtension(t.toString()))
 }

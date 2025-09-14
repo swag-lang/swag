@@ -31,7 +31,7 @@ impl Struct
 #test
 {
     // Initialize 'v' and invoke `opAffect(s32)` with the value '4'
-    var v: Struct = 4's32
+    let v: Struct = 4's32
     @assert(v.x == 4) // 'x' is set to 4
     @assert(v.y == 4) // 'y' is set to 4
     @assert(v.z == 666) // 'z' remains at its default value since `opAffect` doesn't modify it
@@ -76,7 +76,7 @@ This optimization leads to more efficient code by reducing unnecessary initializ
 */
 #test
 {
-    var v: Struct = 2'u64
+    let v: Struct = 2'u64
     @assert(v.x == 2) // 'x' is directly set to 2
     @assert(v.y == 2) // 'y' is directly set to 2
     @assert(v.z == 2) // 'z' is directly set to 2

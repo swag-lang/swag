@@ -17,7 +17,7 @@ var t: [] struct
 {
     foreach &p in t
     {
-        var res = decodeRune(p.r)
+        let res = decodeRune(p.r)
         @assert(res.c == p.w)
     }
 }

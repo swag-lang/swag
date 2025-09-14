@@ -81,13 +81,13 @@ const tests: [] Test = [
         switch c.base
         {
         case 2:
-            var value = Format.toString("%{B}", c.inT)
+            let value = Format.toString("%{B}", c.inT)
             @assert(value == c.out)
         case 10:
-            var value = Format.toString("%", c.inT)
+            let value = Format.toString("%", c.inT)
             @assert(value == c.out)
         case 16:
-            var value = Format.toString("%{X}", c.inT)
+            let value = Format.toString("%{X}", c.inT)
             @assert(value == c.out)
         }
     }

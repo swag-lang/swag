@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var loc  = #curlocation
+    let loc  = #curlocation
     var info = catch File.getInfo(loc.fileName)
     /*Console.print("size: %\n", info.size)
     Console.print("attr: %\n", info.attributes)

@@ -14,7 +14,7 @@ using Core.Hash
     let v1 = hash32("this is a string")
     @assert(v1 != 0)
 
-    var x: String = "this is a string"
+    let x: String = "this is a string"
     let v2 = hash32(x)
 
     @assert(v1 == v2)

@@ -9,7 +9,7 @@ using Core.Math
         @assert(a.intersectWith(b))
         @assert(b.intersectWith(a))
 
-        var c = Rectangle.intersect(a, b)
+        let c = Rectangle.intersect(a, b)
         @assert(c.x == 5)
         @assert(c.y == 5)
         @assert(c.width == 5)

@@ -3,10 +3,10 @@ using Core, Core.Utf8, Core.Tokenize
 //#[Swag.PrintBc]
 #test
 {
-    var x: String = "This is a list of words, with: a bit of punctuation\tand a tab character."
+    let x: String = "This is a list of words, with: a bit of punctuation\tand a tab character."
 
     var sep = [' ''rune, ",", ".", ":", "\t"]
-    var arr = x.splitAny(sep)
+    let arr = x.splitAny(sep)
 
     foreach v in arr
     {
@@ -21,8 +21,8 @@ using Core, Core.Utf8, Core.Tokenize
 
 #test
 {
-    var x:  String = "This is a list of words"
-    var arr = x.splitAny([' ''rune], 1)
+    let x:  String = "This is a list of words"
+    let arr = x.splitAny([' ''rune], 1)
     @assert(arr.count == 2)
     @assert(arr[0] == "This")
     @assert(arr[1] == "is a list of words")
