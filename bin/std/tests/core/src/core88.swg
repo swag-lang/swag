@@ -4,7 +4,7 @@ using Core
 {
     var buf: ConcatBuffer
     Format.append(&buf, "%", -3)
-    var str = buf.toString()
+    let str = buf.toString()
     //@print(cast(string) str)
     @assert(str == "-3")
 }

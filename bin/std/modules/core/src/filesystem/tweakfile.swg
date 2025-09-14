@@ -29,7 +29,7 @@ impl TweakFile
     mtd parseFile(fileName: string) throw
     {
         var buf   = try File.readAllBytes(fileName)
-        var lines = Tokenize.splitLines(cast(string) buf.toSlice())
+        let lines = Tokenize.splitLines(cast(string) buf.toSlice())
         try me.parse(lines)
     }
 
@@ -37,7 +37,7 @@ impl TweakFile
     #[Overload]
     mtd parse(content: string) throw
     {
-        var lines = Tokenize.splitLines(content)
+        let lines = Tokenize.splitLines(content)
         try me.parse(lines)
     }
 
@@ -114,7 +114,7 @@ impl TweakFile
                     throw SyntaxError{Errors.mkString(Format.toString("reference [[%]] not found in folder [[%]]", one, currentFolder.type.name)), line: idx + 1}
                 if field.pointedType != otherField.pointedType:
                     throw SyntaxError{Errors.mkString(Format.toString("reference [[%]] type mismatch", one)), line: idx + 1}
-                var refr: Ref{currentFolder, otherField, field}
+                let refr: Ref{currentFolder, otherField, field}
                 refs.add(refr)
                 continue
             }
@@ -145,7 +145,7 @@ impl TweakFile
                 {
                     if j == toDo:
                         continue
-                    var ref1 = refs[j]
+                    let ref1 = refs[j]
                     if refr.src.name == ref1.dst.name
                     {
                         if j == 0:

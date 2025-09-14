@@ -224,7 +224,7 @@ internal impl TagBin
             elif fromStruct and !Reflection.isStructArray(fromStruct)
             {
                 // Alias
-                var aliases = Reflection.getAttributes(toType, Serialization.Alias)
+                let aliases = Reflection.getAttributes(toType, Serialization.Alias)
                 foreach al in aliases
                 {
                     let value = Reflection.getAttributeValue(al, "name")
@@ -417,7 +417,7 @@ impl TagBin
             if !ent
             {
                 // So check for aliases
-                var aliases = Reflection.getAttributes(val, Serialization.Alias)
+                let aliases = Reflection.getAttributes(val, Serialization.Alias)
                 foreach al in aliases
                 {
                     let value = Reflection.getAttributeValue(al, "name")

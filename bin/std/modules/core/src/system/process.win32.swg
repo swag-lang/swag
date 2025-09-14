@@ -28,7 +28,7 @@ func startProcess(info: StartInfo)->Process throw
     }
 
     builder.zeroTerminate()
-    var str = builder.toString()
+    let str = builder.toString()
 
     // Launch
     try CreateProcessA(null, @dataof(str), null, null, FALSE, 0, null, null, &si, &pi)

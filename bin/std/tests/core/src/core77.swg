@@ -3,7 +3,7 @@ using Core, Core.Utf8
 //#[Swag.PrintBc]
 #test
 {
-    var str: String = "A⻨C"
+    let str: String = "A⻨C"
     @assert(str.indexOf('A''rune) == 0)
     @assert(str.indexOf('⻨''rune) == 1)
     @assert(str.indexOf('C''rune) == 4)

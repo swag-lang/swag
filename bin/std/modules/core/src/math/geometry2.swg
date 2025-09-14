@@ -227,7 +227,7 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
     var result: retval
     result.a = p0 + s * p1p0
     result.b = q0 + t * q1q0
-    var diff = result.a - result.b
+    let diff = result.a - result.b
     result.dist = diff.length()
     return result
 }

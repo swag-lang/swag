@@ -153,7 +153,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
             !overload->hasFlag(OVERLOAD_NOT_INITIALIZED) &&
             overload->hasFlag(OVERLOAD_VAR_LOCAL))
         {
-            if (!overload->typeInfo->isStruct() && !overload->typeInfo->isArray())
+            if (/*!overload->typeInfo->isStruct() &&*/ !overload->typeInfo->isArray())
             {
                 if (!overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN))
                 {

@@ -5,8 +5,8 @@ using Core
 {
     var h: HashTable'(GUID128, string)
 
-    var v1 = GUID128.getRandom()
-    var v2 = GUID128.getRandom()
+    let v1 = GUID128.getRandom()
+    let v2 = GUID128.getRandom()
 
     h.add(v1, "toto")
     h.add(v2, "titi")

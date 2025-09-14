@@ -9,7 +9,7 @@ func getInfo(fullname: string)->FileInfo throw
     var result:    retval
     var attrDatas: WIN32_FILE_ATTRIBUTE_DATA
 
-    var winPath = Utf16.toZeroTerminated(fullname)
+    let winPath = Utf16.toZeroTerminated(fullname)
     try GetFileAttributesExW(@dataof(winPath), GET_FILEEX_INFO_LEVELS.GetFileExInfoStandard, &attrDatas)
 
     result.fullname   = fullname

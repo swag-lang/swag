@@ -44,7 +44,7 @@ func years_employed(employee: Employee)->u32 => DateTime.now().year - employee.d
     var alice  = Employee{String.from("Alice"), Time.DateTime{2000, 1, 1}}
     var alice2 = alice
     alice2.date = Time.DateTime{2010, 1, 1}
-    var alice3 = alice2
+    let alice3 = alice2
 
     @assert(alice.years_employed() >= 22)
     @assert(alice != alice2)

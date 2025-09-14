@@ -316,7 +316,7 @@ func caseChangeTo(wCase: WantedCase, r: rune, caseRange: const [..] CaseRange)->
     while lo < hi
     {
         let m  = lo + (hi - lo) / 2
-        var cr = caseRange[m]
+        let cr = caseRange[m]
         if cr.lo <= r and r <= cr.hi
         {
             let delta = cr.delta[wCase]

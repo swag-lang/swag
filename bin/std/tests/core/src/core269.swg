@@ -4,6 +4,6 @@ using Core.Math
 #test
 {
     var pt: Vector2{1, 2}
-    var pt1 = pt.toNormalized()
+    let pt1 = pt.toNormalized()
     @assert(isEqualEpsilon(pt1.length(), 1))
 }

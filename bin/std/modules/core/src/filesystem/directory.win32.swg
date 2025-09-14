@@ -5,7 +5,7 @@ using Win32
 
 func create(dirname: string) throw
 {
-    var winPath = Utf16.toZeroTerminated(dirname)
+    let winPath = Utf16.toZeroTerminated(dirname)
     CreateDirectoryW(@dataof(winPath), null)
 }
 
@@ -14,7 +14,7 @@ func exists(dirName: string)->bool
 {
     if @countof(dirName) == 0:
         return false
-    var winPath    = Utf16.toZeroTerminated(dirName)
+    let winPath    = Utf16.toZeroTerminated(dirName)
     let attributes = catch GetFileAttributesW(@dataof(winPath))
     if @err != null:
         return false
@@ -46,16 +46,16 @@ func enumerate(dirName: string, options: EnumerationOptions)->Array'(File.FileIn
         var toScan = stackPath.popBack()
         if toScan.back() == Path.VolumeSeparatorChar:
             toScan += Path.DirectorySeparatorChar
-        var searchPath = Path.combine(toScan.toString(), "*")
+        let searchPath = Path.combine(toScan.toString(), "*")
 
-        var winPath = Utf16.toZeroTerminated(searchPath)
+        let winPath = Utf16.toZeroTerminated(searchPath)
         let h       = try FindFirstFileExW(@dataof(winPath), .FindExInfoBasic, &findfile, .FindExSearchNameMatch, null, FIND_FIRST_EX_LARGE_FETCH)
         if h == INVALID_HANDLE_VALUE:
             continue
 
         for
         {
-            var filename = Utf8.fromUtf16(@mkslice(dataof, Utf16.lengthZeroTerminated(dataof)))
+            let filename = Utf8.fromUtf16(@mkslice(dataof, Utf16.lengthZeroTerminated(dataof)))
 
             // Filter by file/folder
             var mustAdd = false
@@ -141,7 +141,7 @@ func getCurrent()->String throw
 // Set the current directory
 func setCurrent(dirName: string) throw
 {
-    var winPath = Utf16.toZeroTerminated(dirName)
+    let winPath = Utf16.toZeroTerminated(dirName)
     catch SetCurrentDirectoryW(@dataof(winPath))
     Errors.transformWinErrors(dirName)
 }

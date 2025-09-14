@@ -586,7 +586,7 @@ impl RegExp
         var here = node.transitions.tryFind(c)
         if !here
         {
-            var toT: Array'(*NfaNode)
+            let toT: Array'(*NfaNode)
             here = node.transitions.add(c, toT)
         }
 

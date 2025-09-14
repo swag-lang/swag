@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    var x:  Array's32 = [1, 2, 3, 4]
+    let x:  Array's32 = [1, 2, 3, 4]
     var cpt = 0
     foreach #reverse v in x
     {

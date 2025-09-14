@@ -20,9 +20,9 @@ func attach() throw
     builder.appendString("-p ")
     builder.appendAny(GetCurrentProcessId())
     builder.zeroTerminate()
-    var arguments = builder.toString()
+    let arguments = builder.toString()
 
-    var proc = try Env.startProcess("vsjitdebugger.exe", arguments.toString())
+    let proc = try Env.startProcess("vsjitdebugger.exe", arguments.toString())
     CloseHandle(proc)
 
     while !IsDebuggerPresent():

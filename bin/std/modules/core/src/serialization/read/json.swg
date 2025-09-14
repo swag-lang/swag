@@ -176,67 +176,67 @@ public impl JSon
         me.zapBlanks()
         #if NT == bool
         {
-            var val = StrConv.parseBool(me.stream.remainReadToString())
+            let val = StrConv.parseBool(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f32
         {
-            var val = StrConv.parseF32(me.stream.remainReadToString())
+            let val = StrConv.parseF32(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f64
         {
-            var val = StrConv.parseF64(me.stream.remainReadToString())
+            let val = StrConv.parseF64(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s8
         {
-            var val = StrConv.parseS8(me.stream.remainReadToString())
+            let val = StrConv.parseS8(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s16
         {
-            var val = StrConv.parseS16(me.stream.remainReadToString())
+            let val = StrConv.parseS16(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s32
         {
-            var val = StrConv.parseS32(me.stream.remainReadToString())
+            let val = StrConv.parseS32(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s64
         {
-            var val = StrConv.parseS64(me.stream.remainReadToString())
+            let val = StrConv.parseS64(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u8
         {
-            var val = StrConv.parseU8(me.stream.remainReadToString())
+            let val = StrConv.parseU8(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u16
         {
-            var val = StrConv.parseU16(me.stream.remainReadToString())
+            let val = StrConv.parseU16(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u32
         {
-            var val = StrConv.parseU32(me.stream.remainReadToString())
+            let val = StrConv.parseU32(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u64
         {
-            var val = StrConv.parseU64(me.stream.remainReadToString())
+            let val = StrConv.parseU64(me.stream.remainReadToString())
             me.stream.moveSeek(val.eat)
             return val.value
         }

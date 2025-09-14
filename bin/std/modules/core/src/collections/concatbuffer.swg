@@ -453,7 +453,7 @@ impl ConcatBuffer
             return me.toString(me.allocator)
 
         // Otherwise we can just eat the buffer
-        var eat = me.eatBuffer()
+        let eat = me.eatBuffer()
         with var result: retval
         {
             .allocator = me.allocator

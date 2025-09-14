@@ -196,7 +196,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
     // An enum value
     if Reflection.isEnum(type)
     {
-        var enumName = Reflection.getEnumName(type, valueData)
+        let enumName = Reflection.getEnumName(type, valueData)
         if !enumName.isEmpty():
             buf.addBytes(@mkslice(enumName.buffer, cast(u64) enumName.length))
         else:

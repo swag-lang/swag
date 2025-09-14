@@ -7,7 +7,7 @@ using Core
     for i in 50:
         h.add(i, String.from("s"))
 
-    var h1 = h
+    let h1 = h
 
     foreach k, v in h:
         @assert(v[0] == 's''u8)

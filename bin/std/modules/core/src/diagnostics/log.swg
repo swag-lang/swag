@@ -148,7 +148,7 @@ impl Log
         }
 
         // Otherwise call all writers
-        var str = me.buf.toString()
+        let str = me.buf.toString()
         foreach w in me.writers
         {
             w.print(str)

@@ -18,14 +18,14 @@ impl TimeSpan
     // Returns the current time as a TimeSpan
     func now()->TimeSpan
     {
-        var result: retval = from(DateTime.now())
+        let result: retval = from(DateTime.now())
         return result
     }
 
     // Sets the TimeSpan to the current time
     mtd setNow()
     {
-        var dateTime = DateTime.now()
+        let dateTime = DateTime.now()
         me.ticks = dateToTicks(dateTime.year, dateTime.month, dateTime.day)
         me.ticks += timeToTicks(dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond)
     }

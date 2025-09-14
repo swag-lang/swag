@@ -44,7 +44,7 @@ func silent(value: bool)
 func print(params: ...)
 {
     var buf:     ConcatBuffer
-    var convFmt: StrConv.ConvertFormat
+    let convFmt: StrConv.ConvertFormat
 
     foreach v in params:
         StrConv.convertAny(&buf, v, convFmt, null)

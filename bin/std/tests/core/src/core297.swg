@@ -9,7 +9,7 @@ using Core
     @assert(h.contains(String.from("toto")))
     @assert(!h.contains(String.from("tata")))
 
-    var h1 = h
+    let h1 = h
     @assert(h1.contains(String.from("titi")))
     @assert(h1.contains(String.from("toto")))
     @assert(!h1.contains(String.from("tata")))

@@ -148,7 +148,7 @@ impl TagBin
         if sec.kind == .Unordered
         {
             // Patch fat table seek and count
-            var curSeek = me.output.getSeek()
+            let curSeek = me.output.getSeek()
             me.output.setSeek(sec.startSeek)
             me.output.addNative(ConcatBuffer.getOffset(curSeek))
             me.output.addNative(sec.mapSeek.count)

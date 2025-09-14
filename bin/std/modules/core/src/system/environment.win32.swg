@@ -159,7 +159,7 @@ public func registerApplication(appName, appFriendly: string)
     let regAppKey = Format.toString("Software\\RegisteredApplications")
     if RegCreateKeyExA(HKEY_CURRENT_USER, @dataof(regAppKey), 0, null, 0, KEY_SET_VALUE, null, &hKey, null) == ERROR_SUCCESS
     {
-        var capabilitiesPath = Format.toString("Software\\Classes\\Applications\\%\\Capabilities", appName)
+        let capabilitiesPath = Format.toString("Software\\Classes\\Applications\\%\\Capabilities", appName)
         RegSetValueExA(hKey, @dataof(appFriendly), 0, REG_SZ, capabilitiesPath.buffer, cast(u32) (capabilitiesPath.length + 1))
         RegCloseKey(hKey)
     }

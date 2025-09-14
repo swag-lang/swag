@@ -3,7 +3,7 @@ using Core
 #test
 {
     var x: BitArray = [true, false, true, false]
-    var y: BitArray = [false, true, false, true]
+    let y: BitArray = [false, true, false, true]
 
     @assert(x[0] == true)
     @assert(x[1] == false)

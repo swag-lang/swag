@@ -9,7 +9,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     if cptPercent != @countof(values)
     {
         #[Match("where", false)]
-        var str = toString("bad number of arguments to [[%]] ([[%]] requested, [[%]] provided)", fct, cptPercent, @countof(values))
+        let str = toString("bad number of arguments to [[%]] ([[%]] requested, [[%]] provided)", fct, cptPercent, @countof(values))
         @compilererror(str, #location(values))
     }
 }
@@ -126,7 +126,7 @@ func append(buf: *ConcatBuffer, fmt: string, values: ...)
     var paramIdx  = 0'u32
     let numParams = @countof(values)
 
-    var convFmt: StrConv.ConvertFormat
+    let convFmt: StrConv.ConvertFormat
 
     while nextIdx < cpt
     {

@@ -190,7 +190,7 @@ func decodeRune(buffer: const [..] u8)->{ c: rune, eat: u32 }
         return result
     }
 
-    var accept = AcceptRanges[x >> 4]
+    let accept = AcceptRanges[x >> 4]
 
     // Length == 2
     let b1 = dataof[1]
@@ -546,7 +546,7 @@ func indexOfAny(src: const [..] u8, what: const [..] rune, startByteIndex = 0'u6
     var remain = length - startByteIndex
     while remain
     {
-        var res = Utf8.decodeRune(@mkslice(scan, remain))
+        let res = Utf8.decodeRune(@mkslice(scan, remain))
         if !res.eat:
             break
         if Slice.contains(what, res.c):
@@ -863,7 +863,7 @@ func isValid(buffer: const [..] u8)->bool
         if countof < sz:
             return false
 
-        var accept = AcceptRanges[x >> 4]
+        let accept = AcceptRanges[x >> 4]
 
         let b1 = p[1]
         if !(accept.lo <= b1 and b1 <= accept.hi):

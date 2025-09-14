@@ -4,7 +4,7 @@ using Core, Core.Format
 {
     var buf: ConcatBuffer
     Format.append(&buf, "titi%%")
-    var str = buf.toString()
+    let str = buf.toString()
     //@print(cast(string) str)
     @assert(str == "titi%")
 }
@@ -13,7 +13,7 @@ using Core, Core.Format
 {
     var buf: ConcatBuffer
     Format.append(&buf, "titi %", 666)
-    var str = buf.toString()
+    let str = buf.toString()
     //@print(cast(string) str)
     @assert(str == "titi 666")
 }

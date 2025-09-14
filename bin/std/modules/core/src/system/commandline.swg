@@ -58,7 +58,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
             continue
         }
 
-        var split = Tokenize.splitAny(oneArg, [':''rune, '=''rune], 1)
+        let split = Tokenize.splitAny(oneArg, [':''rune, '=''rune], 1)
         if split.count == 2
         {
             allArgs.add(split[0])
@@ -105,7 +105,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     var result: retval
 
     // First pass
-    var allArgs = splitArguments(args, options)
+    let allArgs = splitArguments(args, options)
 
     // Parse all
     let typeof = #typeof(T)
