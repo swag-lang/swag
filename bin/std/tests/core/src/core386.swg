@@ -12,7 +12,7 @@ struct A
     var enc: Encoder'TagBin
     var buf: ConcatBuffer
     enc.errorIfUnknown = true
-    var v: A
+    let v: A
     catch enc.writeAll(&buf, v)
     @assert(@err != null)
 }

@@ -19,7 +19,7 @@ using Core.Hash
 
     @assert(v1 == v2)
 
-    var y: String
+    let y: String
     let v3 = hash32(y)
     @assert(v3 == 0)
 

@@ -11,7 +11,7 @@ struct A
 #[Swag.Optimize("", false)]
 #test
 {
-    var x : A
+    let x : A
     #[Swag.Safety("", true)]
     var ptr = x.x[1]
 }

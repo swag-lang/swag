@@ -12,6 +12,6 @@ struct BB
 
 #test
 {
-    var x: BB
-    var y = x
+    let x: BB
+    let y = x
 }

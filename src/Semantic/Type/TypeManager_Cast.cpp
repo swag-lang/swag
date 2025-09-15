@@ -2842,6 +2842,7 @@ bool TypeManager::castToInterface(SemanticContext* context, TypeInfo* toType, Ty
                 fromNode->addExtraPointer(ExtraPointerKind::CastItf, itfRef.itf);
                 fromNode->typeInfoCast = fromType;
                 fromNode->typeInfo     = toTypeItf;
+                context->castFlagsResult.add(CAST_RESULT_FORCE_ITF);
             }
 
             return true;

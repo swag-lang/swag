@@ -13,7 +13,7 @@ struct TT
 //#[Swag.PrintBc]
 func parse(st: *TT, args: const [..] string)->Defined
 {
-    var x: Defined
+    let x: Defined
 
     let typeof = #typeof(TT)
 

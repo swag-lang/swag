@@ -155,7 +155,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
         {
             if (!overload->typeInfo->isArray())
             {
-                if (!overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN))
+                if (!overload->hasFlag(OVERLOAD_VAR_HAS_ASSIGN) && !overload->typeInfo->isStruct())
                 {
                     Diagnostic err{front, front->token, formErr(Wrn0004, sym->name.cstr()), DiagnosticLevel::Warning};
                     isOk = isOk && context->report(err);

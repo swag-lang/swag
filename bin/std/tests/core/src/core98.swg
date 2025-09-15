@@ -18,7 +18,7 @@ impl IConvert for TOTO
 {
     var buf: ConcatBuffer
 
-    var x: TOTO
+    let x: TOTO
     Format.append(&buf, "%{ABC}toto", x)
     @assert(cast(string) buf.toString() == "toto")
 

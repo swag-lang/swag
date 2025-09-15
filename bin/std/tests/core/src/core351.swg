@@ -10,7 +10,7 @@ struct Toto
     var buf: ConcatBuffer
     var wri: Encoder'Write.JSon
 
-    var toto: Toto
+    let toto: Toto
     toto.arr.add(String.from("toto"))
     toto.arr.add(String.from("titi"))
     toto.arr.add(String.from("tata"))

@@ -13,6 +13,6 @@ func toto(x: A)
 
 #test
 {
-    var a: A
+    let a: A
     toto(a)
 }

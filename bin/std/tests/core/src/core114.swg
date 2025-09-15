@@ -15,6 +15,6 @@ impl Hash.IHash32 for Pt
     arr.add(Pt{3, 3})
     @assert(arr.count == 3)
 
-    var pt: Pt
+    let pt: Pt
     @assert(Hash.hash32(pt) == 555)
 }

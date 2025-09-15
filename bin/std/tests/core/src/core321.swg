@@ -25,7 +25,7 @@ impl SoaTest
 {
     struct Test { x, y, z: f32 }
 
-    var v: SoaTest'Test
+    let v: SoaTest'Test
     v.x.reserve(10)
     v.y.reserve(10)
     v.z.reserve(10)

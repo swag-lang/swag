@@ -7,6 +7,6 @@ interface I
 
 func toto()
 {
-    var arr: Array'I
+    let arr: Array'I
     arr[0].x()
 }

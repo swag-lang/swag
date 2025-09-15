@@ -21,7 +21,7 @@ struct Toto2
 {
     var enc: Encoder'Write.TagBin
 
-    var x:   Toto1
+    let x:   Toto1
     var buf: ConcatBuffer
     try enc.writeAll(&buf, x)
     buf.makeLinear()

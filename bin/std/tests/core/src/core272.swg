@@ -2,8 +2,8 @@ using Core.Math
 
 #test
 {
-    var x: Vector2{1, 1}
-    var y: Vector2{1, 2}
+    let x: Vector2{1, 1}
+    let y: Vector2{1, 2}
     var z  = x + y
     @assert(z.x == 2)
     @assert(z.y == 3)

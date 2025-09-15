@@ -779,6 +779,10 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     SWAG_CHECK(TypeManager::makeCompatibles(context, castTo, nullptr, exprNode, castFlags));
     YIELD();
 
+    const auto exprOver = exprNode->resolvedSymbolOverload();
+    if (exprOver && context->castFlagsResult.has(CAST_RESULT_FORCE_POINTER | CAST_RESULT_FORCE_REF | CAST_RESULT_FORCE_ITF))
+        exprOver->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+
     node->typeInfo       = castTo;
     node->toCastTypeInfo = castTo;
 

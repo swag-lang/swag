@@ -92,17 +92,22 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         if (left->is(AstNodeKind::IdentifierRef))
         {
-            for (const auto& c : left->children)
+            for (uint32_t i = left->childCount() - 1; i != UINT32_MAX; i--)
             {
-                if (c == left)
+                const auto c    = left->children[i];
+                const auto over = c->resolvedSymbolOverload();
+                if (!over)
+                    continue;
+                if (over->symbol->is(SymbolKind::Function))
                     break;
-                if (c->resolvedSymbolOverload())
-                    c->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_AFFECT);
+                over->flags.add(OVERLOAD_HAS_AFFECT);
             }
         }
-
-        if (left->resolvedSymbolOverload())
+        else if (left->resolvedSymbolOverload())
+        {
             left->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_AFFECT);
+        }
+        
         return true;
     }
 
@@ -209,7 +214,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     if (left->hasAstFlag(AST_L_VALUE))
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
-        
+
         if (left->is(AstNodeKind::IdentifierRef) && left->childCount() > 1)
         {
             if (!left->typeInfo->isStruct())
@@ -218,7 +223,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
         if (hint.empty())
             hint = Diagnostic::isType(left);
-        
+
         err.addNote(left, hint);
         err.addNote(note);
         return context->report(err);

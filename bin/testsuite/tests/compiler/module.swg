@@ -9,6 +9,5 @@
         cfg.moduleBuildNum      = 0
         cfg.backendKind         = .Executable
         cfg.warnDefaultDisabled = true
-        cfg.warnAsWarning       = "Wrn0003"
     }
 }

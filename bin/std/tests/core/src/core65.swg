@@ -22,7 +22,7 @@ impl BOUBOU
     G = 0
     {
         var arr:   Array'BOUBOU
-        var value: BOUBOU
+        let value: BOUBOU
         arr.add(value)
     }
     @assert(G == 2)

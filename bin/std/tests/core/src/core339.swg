@@ -7,7 +7,7 @@ struct S
 
 #test
 {
-    var allFiles: Array'S
+    let allFiles: Array'S
     var allLines: Array'string
     foreach fff in allFiles:
         allLines.add(cast(string) fff.fullname)

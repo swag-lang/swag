@@ -11,7 +11,7 @@ struct TOTO
 {
     var buf: ConcatBuffer
 
-    var x: TOTO
+    let x: TOTO
     Format.append(&buf, "%", x)
     //@print(cast(string) buf.toString())
     @assert(buf.toString() == "{x = 555, y = 666}")

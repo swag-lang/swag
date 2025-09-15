@@ -6,6 +6,6 @@ struct AA
 
 public func toto3115()->AA
 {
-    var result: retval
+    let result: retval
     return result
 }

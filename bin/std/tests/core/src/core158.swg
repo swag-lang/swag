@@ -4,8 +4,8 @@ using Core.Math
 #test
 {
     {
-        var a = Rectangle{0, 0, 10, 8}
-        var b = Rectangle{5, 5, 15, 15}
+        let a = Rectangle{0, 0, 10, 8}
+        let b = Rectangle{5, 5, 15, 15}
         @assert(a.intersectWith(b))
         @assert(b.intersectWith(a))
 
@@ -18,7 +18,7 @@ using Core.Math
 
     {
         var a = Rectangle{0, 0, 10, 8}
-        var b = Rectangle{5, 5, 15, 15}
+        let b = Rectangle{5, 5, 15, 15}
         a.intersect(b)
         @assert(a.x == 5)
         @assert(a.y == 5)

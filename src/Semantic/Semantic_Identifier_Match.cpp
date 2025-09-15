@@ -277,6 +277,12 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                     overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
                 }
             }
+            else if (context->castFlagsResult.has(CAST_RESULT_FORCE_ITF))
+            {
+                const auto overload = nodeCall->resolvedSymbolOverload();
+                if (overload)
+                    overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+            }
 
             const auto typeCall = TypeManager::concreteType(nodeCall->typeInfo, CONCRETE_FUNC | CONCRETE_ALIAS);
             if (!toType->isPointerRef() && typeCall->isPointerRef())

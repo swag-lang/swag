@@ -8,6 +8,6 @@ struct AA
 
 #test
 {
-    var x: AA
-    var y = x
+    let x: AA
+    let y = x
 }

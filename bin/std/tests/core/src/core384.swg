@@ -3,7 +3,7 @@ using Core, Core.Time
 //#[Swag.PrintBc]
 #test
 {
-    var x: DateTime{year: 1971, month: 9, day: 5, hour: 12, minute: 24, second: 8, millisecond: 666}
+    let x: DateTime{year: 1971, month: 9, day: 5, hour: 12, minute: 24, second: 8, millisecond: 666}
 
     {
         let str = x.toString(.DateTimeIso)

@@ -3,7 +3,7 @@ struct(N: s32) Vector
 {
     #ast
     {
-        var sb = StrConv.StringBuilder{}
+        let sb = StrConv.StringBuilder{}
         return sb.toString()
     }
 }

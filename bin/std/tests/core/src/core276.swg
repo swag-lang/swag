@@ -19,11 +19,11 @@ struct(N: s32) Vector
 //#[Swag.PrintBc]
 #test
 {
-    var x = Vector'3{}
+    let x = Vector'3{}
     @assert(x.a == 0)
     @assert(x.b == 0)
     @assert(x.c == 0)
 
-    var x1 = Vector'4{}
+    let x1 = Vector'4{}
     @assert(x1.d == 0)
 }
