@@ -796,8 +796,8 @@ bool Semantic::resolveExplicitCast(SemanticContext* context)
     if (userOp)
         node->addExtraPointer(ExtraPointerKind::UserOp, userOp);
 
-    // Revert the implicit cast information
-    // Requested type will be stored in typeInfo of node, and previous type will be stored in typeInfo of exprNode
+    // Revert the implicit cast information.
+    // The requested type will be stored in typeInfo of node, and the previous type will be stored in typeInfo of exprNode
     // (we cannot use typeInfoCast from node, because an explicit cast result could be cast itself with an implicit cast)
     if (exprNode->typeInfoCast)
     {
