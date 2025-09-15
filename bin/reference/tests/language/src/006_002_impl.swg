@@ -105,7 +105,7 @@ but with this annotation, they can be accessed programmatically.
     }
 
     // The function pointers 'fnX', 'fnY', and 'fnZ' are now callable
-    var v: MyStruct
+    let v: MyStruct
     @assert(fnX(v) == 5)   // Calling the function pointer 'fnX', expected to return 5
     @assert(fnY(v) == 10)  // Calling the function pointer 'fnY', expected to return 10
     @assert(fnZ(v) == 20)  // Calling the function pointer 'fnZ', expected to return 20

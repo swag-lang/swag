@@ -43,7 +43,7 @@ The `#ast` block can be used to dynamically generate the content of complex type
         }
     }
 
-    var v: MyStruct
+    let v: MyStruct
     @assert(v.x == 666)         // Asserts that the generated field 'x' is correctly initialized to 666.
     @assert(v.y == 666)         // Asserts that the generated field 'y' is correctly initialized to 666.
 }
@@ -64,12 +64,12 @@ The `#ast` block can be effectively used with generics, allowing for flexible an
         z: string          // Additional static declaration that adds a field 'z' of type string.
     }
 
-    var v: MyStruct'bool
+    let v: MyStruct'bool
     #assert(#typeof(v.x) == bool)     // Asserts that the generated field 'x' is of type 'bool'.
     #assert(#typeof(v.y) == bool)     // Asserts that the generated field 'y' is of type 'bool'.
     #assert(#typeof(v.z) == string)   // Asserts that the static field 'z' is of type 'string'.
 
-    var v1: MyStruct'f64
+    let v1: MyStruct'f64
     #assert(#typeof(v1.x) == f64)     // Asserts that the generated field 'x' is of type 'f64'.
     #assert(#typeof(v1.y) == f64)     // Asserts that the generated field 'y' is of type 'f64'.
     #assert(#typeof(v1.z) == string)  // Asserts that the static field 'z' is of type 'string'.
@@ -105,7 +105,7 @@ The `#ast` block requires a *string-like* value to be returned, which can be dyn
         }
     }
 
-    var v: Vector3
+    let v: Vector3
     @assert(v.x == 1)           // Asserts that the generated field 'x' is initialized to 1.
     @assert(v.y == 2)           // Asserts that the generated field 'y' is initialized to 2.
     @assert(v.z == 3)           // Asserts that the generated field 'z' is initialized to 3.

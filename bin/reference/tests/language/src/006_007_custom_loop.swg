@@ -11,7 +11,7 @@ impl MyStruct
 {
     // Define 'opCount' to return the number of iterations for loops involving this struct.
     // Returns 4 as the count value, meaning any loop over this struct will run 4 times.
-    mtd opCount() => 4'u64  
+    mtd opCount() => 4'u64
 }
 
 /**
@@ -21,7 +21,7 @@ This allows you to use the struct in a loop context, where the loop will execute
 
 #test
 {
-    var v = MyStruct{}
+    let v = MyStruct{}
 
     // '@countof' utilizes 'opCount' to determine the number of elements (iterations)
     @assert(@countof(v) == 4)  // Verifies that the struct is considered to have 4 elements

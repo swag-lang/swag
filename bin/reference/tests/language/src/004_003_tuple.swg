@@ -78,14 +78,14 @@ Swag allows tuples to be unpacked, meaning their individual elements can be extr
 */
 #test
 {
-    var tuple1 = {x: 1.0, y: 2.0}          // A tuple with fields 'x' and 'y'.
+    let tuple1 = {x: 1.0, y: 2.0}          // A tuple with fields 'x' and 'y'.
 
     // Unpacking the tuple: 'value0' gets the value of 'x', and 'value1' gets the value of 'y'.
     let (value0, value1) = tuple1
     @assert(value0 == 1.0)
     @assert(value1 == 2.0)
 
-    var tuple2 = {"name", true}            // A tuple containing a string and a boolean.
+    let tuple2 = {"name", true}            // A tuple containing a string and a boolean.
     let (name, value) = tuple2             // Unpacking into 'name' and 'value'.
     @assert(name == "name")
     @assert(value == true)
@@ -98,7 +98,7 @@ When unpacking a tuple, you can choose to ignore specific fields using the `?` p
 */
 #test
 {
-    var tuple1 = {x: 1.0, y: 2.0}          // A tuple with fields 'x' and 'y'.
+    let tuple1 = {x: 1.0, y: 2.0}          // A tuple with fields 'x' and 'y'.
     let (x, ?) = tuple1                    // Unpacks 'x' and ignores the second field.
     @assert(x == 1.0)
     let (?, y) = tuple1                    // Ignores the first field and unpacks 'y'.

@@ -77,7 +77,7 @@ ensure fields are set to a known state.
         y: string = "454"    // Field 'y' initialized with default value "454"
     }
 
-    var v = MyStruct{}       // Initializing struct with default values
+    let v = MyStruct{}       // Initializing struct with default values
     @assert(v.x == 666)      // Asserting 'x' has the default value 666
     @assert(v.y == "454")    // Asserting 'y' has the default value "454"
 }
@@ -97,22 +97,22 @@ your structs.
     }
 
     // Without parameters, all fields take their default values as defined in the struct
-    var v0: MyStruct         // Struct with default initialization
+    let v0: MyStruct         // Struct with default initialization
     @assert(v0.x == 1)       // Asserting 'x' is 1
     @assert(v0.y == 1)       // Asserting 'y' is 1
 
     // Initializing with parameters within {..}, in the order of field declarations
-    var v1: MyStruct{10, 20}  // Initializing 'x' with 10 and 'y' with 20
+    let v1: MyStruct{10, 20}  // Initializing 'x' with 10 and 'y' with 20
     @assert(v1.x == 10)       // Asserting 'x' is 10
     @assert(v1.y == 20)       // Asserting 'y' is 20
 
     // Named initialization of fields, allowing omission of some fields
-    var v2 = MyStruct{y: 20}  // 'x' takes the default value, 'y' initialized to 20
+    let v2 = MyStruct{y: 20}  // 'x' takes the default value, 'y' initialized to 20
     @assert(v2.x == 1)        // Asserting 'x' is the default value 1
     @assert(v2.y == 20)       // Asserting 'y' is 20
 
     // Initializing using a tuple, as long as types match
-    var v3: MyStruct = {10, 20}  // Initializing using a tuple
+    let v3: MyStruct = {10, 20}  // Initializing using a tuple
     @assert(v3.x == 10)          // Asserting 'x' is 10
     @assert(v3.y == 20)          // Asserting 'y' is 20
 }
