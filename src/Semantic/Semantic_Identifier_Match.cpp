@@ -258,13 +258,14 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF | CAST_RESULT_FORCE_POINTER))
             {
                 const auto idRef    = identifier->identifierRef();
-                auto       id       = idRef->children[idRef->childCount() - 2];
+                const auto childId  = identifier->parent == idRef ? identifier->childParentIdx() : identifier->parent->childParentIdx();
+                auto       id       = idRef->children[childId - 1];
                 auto       overload = id->resolvedSymbolOverload();
-                
+
                 if (overload && overload->symbol->is(SymbolKind::Struct))
                 {
-                    SWAG_ASSERT(idRef->childCount() >= 3);
-                    id       = idRef->children[idRef->childCount() - 3];
+                    SWAG_ASSERT(childId >= 2);
+                    id       = idRef->children[childId - 2];
                     overload = id->resolvedSymbolOverload();
                 }
 
