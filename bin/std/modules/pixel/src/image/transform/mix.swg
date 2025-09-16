@@ -12,12 +12,13 @@ impl Image
     {
         Debug.assert(srcImage.pf.hasAlpha() or mode != .AlphaBlend)
 
+        let mec = cast #unconst (*Image) me
         var f = {dstImage, srcImage: &srcImage, x, y, mode}
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            me.visitPixels(&f)
+            mec.visitPixels(&f)
             {
                 let params   = cast(*#decltype(f)) userData
                 let dstImage = cast(*Image) params.dstImage

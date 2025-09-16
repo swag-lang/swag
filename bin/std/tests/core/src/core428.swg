@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    var str: String = "ABC"
+    let str: String = "ABC"
     var cpt  = 0
     foreach #Bytes #reverse v in str
     {

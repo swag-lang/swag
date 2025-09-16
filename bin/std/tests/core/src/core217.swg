@@ -3,7 +3,7 @@ using Core
 
 #test
 {
-    var str: String = "toto"
+    let str: String = "toto"
 
     var cpt = 0
     foreach #Runes str

@@ -4,8 +4,9 @@ impl Image
 {
     mtd const doFlip(dstImage: *Image)
     {
+        let mec = cast #unconst (*Image) me
         let f = dstImage
-        me.visitPixels(f, stride: me.width)
+        mec.visitPixels(f, stride: me.width)
         {
             let dstImage = cast(*Image) userData
             let w8       = image.width * image.bpp8

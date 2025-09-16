@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var str: String = "ABC"
+    let str: String = "ABC"
     foreach #Bytes c, i in str
     {
         switch i

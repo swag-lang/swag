@@ -11,7 +11,7 @@ struct Toto1
     //Time.Stopwatch.scopeMeasure()
     var enc: Encoder'Write.TagBin
 
-    let x: Toto1
+    var x: Toto1
     for 1000:
         x.x.add({1, 2, 3, 4})
     var buf: ConcatBuffer

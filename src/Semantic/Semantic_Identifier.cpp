@@ -168,10 +168,19 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
+#pragma optimize("", off) 
 void Semantic::setConst(AstNode* node)
 {
+    if (node->token.text == "a")
+        int a = 0;
+    
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
+    {
         node->addAstFlag(AST_CONST);
+        if (node->typeInfo && node->typeInfo->isStruct())
+            node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
+    }
+    
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_CONST_ASSIGN);

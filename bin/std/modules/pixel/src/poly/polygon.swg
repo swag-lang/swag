@@ -33,7 +33,7 @@ impl Polygon
 
     // Get the given point, with an optional offset
     #[Swag.Overload]
-    mtd getPoint(i: u64, offset: f32)->Vector2
+    mtd const getPoint(i: u64, offset: f32)->Vector2
     {
         if Math.isZeroEpsilon(offset):
             return me.points.buffer[i]

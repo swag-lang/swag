@@ -15,7 +15,7 @@ struct Toto2
 {
     var enc: Encoder'Write.TagBin
 
-    let x:   Toto2
+    var x:   Toto2
     var buf: ConcatBuffer
     x.x.add(1)
     x.x.add(9)

@@ -4,13 +4,15 @@ impl Image
 {
     mtd const doRGB8(dstImage: *Image)
     {
+        let mec = cast #unconst (*Image) me
+
         #[Swag.Complete]
         switch me.pf
         {
         case RGB8:
             break
         case RGBA8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -19,7 +21,7 @@ impl Image
                 pixDst[2] = pix[2]
             }
         case BGR8, BGRA8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -32,13 +34,15 @@ impl Image
 
     mtd const doRGBA8(dstImage: *Image)
     {
+        let mec = cast #unconst (*Image) me
+
         #[Swag.Complete]
         switch me.pf
         {
         case RGBA8:
             break
         case BGRA8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -48,7 +52,7 @@ impl Image
                 pixDst[3] = pix[3]
             }
         case RGB8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -58,7 +62,7 @@ impl Image
                 pixDst[3] = 255
             }
         case BGR8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -72,13 +76,15 @@ impl Image
 
     mtd const doBGR8(dstImage: *Image)
     {
+        let mec = cast #unconst (*Image) me
+
         #[Swag.Complete]
         switch me.pf
         {
         case BGR8:
             break
         case BGRA8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -87,7 +93,7 @@ impl Image
                 pixDst[2] = pix[2]
             }
         case RGB8, RGBA8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -100,13 +106,15 @@ impl Image
 
     mtd const doBGRA8(dstImage: *Image)
     {
+        let mec = cast #unconst (*Image) me
+
         #[Swag.Complete]
         switch me.pf
         {
         case BGRA8:
             break
         case BGR8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -116,7 +124,7 @@ impl Image
                 pixDst[3] = 255
             }
         case RGB8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8
@@ -126,7 +134,7 @@ impl Image
                 pixDst[3] = 255
             }
         case RGBA8:
-            me.visitPixels(dstImage)
+            mec.visitPixels(dstImage)
             {
                 let dstImage = cast(*Image) userData
                 let pixDst   = dstImage.pixels.buffer + x * dstImage.bpp8 + y * dstImage.width8

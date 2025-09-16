@@ -568,7 +568,7 @@ impl FileDlg
     // Get the first selection
     mtd getSelectedName()->String
     {
-        var sel = me.getSelectedNames()
+        let sel = me.getSelectedNames()
         if sel.count == 0:
             return String.from("")
         return sel.front()

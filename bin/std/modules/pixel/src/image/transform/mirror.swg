@@ -4,12 +4,13 @@ impl Image
 {
     mtd const doMirror(dstImage: *Image)
     {
+        let mec = cast #unconst (*Image) me
         let f = dstImage
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()
         {
-            me.visitPixels(f)
+            mec.visitPixels(f)
             {
                 let dstImage = cast(*Image) userData
                 var pixDst   = dstImage.pixels.buffer + (image.width - x - 1) * image.bpp8

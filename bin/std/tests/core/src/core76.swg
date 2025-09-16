@@ -3,7 +3,7 @@ using Core
 //#[Swag.PrintBc]
 #test
 {
-    var str: String = "A⻨C"
+    let str: String = "A⻨C"
     foreach #Runes c, ir, i in str
     {
         switch i

@@ -692,7 +692,7 @@ impl Array
 
     // Returns a copy of the first element of the array.
     // Asserts if the array is empty.
-    mtd front()->T
+    mtd const front()->T
     {
         Debug.assert(me.count > 0, "array is empty")
         let result: retval = me.buffer[0]
@@ -709,7 +709,7 @@ impl Array
 
     // Returns a copy of the last element of the array.
     // Asserts if the array is empty.
-    mtd back()->T
+    mtd const back()->T
     {
         Debug.assert(me.count > 0, "array is empty")
         let result: retval = me.buffer[me.count - 1]

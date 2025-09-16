@@ -148,7 +148,7 @@ impl Image
     // | y         | the pixel y coordinates
     // | userData  | as passed to the macro
     #[Swag.Macro]
-    mtd const visitPixels(userData: *void = null, stride: s32 = 1, stmt: #code void)
+    mtd visitPixels(userData: *void = null, stride: s32 = 1, stmt: #code void)
     {
         Debug.assert(stride > 0)
 

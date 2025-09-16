@@ -81,7 +81,7 @@ impl LinePathList
         if Math.isZeroEpsilon(value):
             return
 
-        let newList: LinePathList
+        var newList: LinePathList
 
         foreach p in me.paths
         {
@@ -101,7 +101,7 @@ impl LinePathList
     // They must before be flattened
     mtd clean()
     {
-        let newList: LinePathList
+        var newList: LinePathList
 
         foreach p in me.paths
         {

@@ -8,7 +8,7 @@ struct SelModel
 
 impl SelModel
 {
-    mtd getSelectedRangeIndex(idx: u32)->u32
+    mtd const getSelectedRangeIndex(idx: u32)->u32
     {
         foreach &r, i in me.selection
         {
@@ -21,8 +21,8 @@ impl SelModel
 
     #[Swag.Inline]
     {
-        mtd isEmpty()            => me.selection.isEmpty()
-        mtd isSelected(idx: u32) => me.getSelectedRangeIndex(idx) != Swag.U32.Max
+        mtd const isEmpty()            => me.selection.isEmpty()
+        mtd const isSelected(idx: u32) => me.getSelectedRangeIndex(idx) != Swag.U32.Max
     }
 
     // Unselect all
@@ -96,7 +96,7 @@ impl SelModel
     }
 
     #[Swag.Macro]
-    mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
+    mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
         #scope(Up)
         foreach &r in me.selection

@@ -2,7 +2,7 @@ using Core
 
 #test
 {
-    var s:  String = "abcd"
+    let s:  String = "abcd"
     var s1: String
     foreach s
     {

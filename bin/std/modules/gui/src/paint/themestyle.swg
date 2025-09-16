@@ -144,7 +144,7 @@ impl ThemeStyle
         me.dirty = true
     }
 
-    mtd getFont()->FontFamily
+    mtd const getFont()->FontFamily
     {
         var result: retval
         let df      = &me.refr.theme.res.fontDefault

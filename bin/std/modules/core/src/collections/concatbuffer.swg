@@ -70,7 +70,7 @@ impl ConcatBuffer
     }
 
     // Returns the total number of bytes currently stored in the buffer.
-    mtd count()->u64
+    mtd const count()->u64
     {
         return me.lastBucket ? me.lastBucket.countBefore + me.lastBucket.count : 0
     }
@@ -408,7 +408,7 @@ impl ConcatBuffer
     // Converts the buffer to a 'String' by copying all its content.
     // The buffer remains valid after this call.
     // See [[moveToString]] for a more efficient version that avoids copying when possible.
-    mtd toString(alloc: Swag.IAllocator = null)->String
+    mtd const toString(alloc: Swag.IAllocator = null)->String
     {
         var result: retval
         if !me.firstBucket:

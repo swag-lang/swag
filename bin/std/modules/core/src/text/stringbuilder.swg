@@ -70,7 +70,7 @@ impl StringBuilder
     }
 
     // Return the content as a string by eating the content of the string builder (if possible)
-    mtd const moveToString()->String
+    mtd moveToString()->String
     {
         return me.buffer.moveToString()
     }
