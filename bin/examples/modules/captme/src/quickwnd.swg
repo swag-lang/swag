@@ -807,6 +807,7 @@ impl QuickWnd
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
             btn1.style.addStyleSheetColors("btnIcon_PressedBk   $hilightDark")
+            btn1.style.addStyleSheetColors("btnIcon_Icon        $hilightLightContrast")
             btn1.setForm(.Round)
 
             me.layout.sendResizeEvent()

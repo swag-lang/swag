@@ -16,6 +16,7 @@ struct ThemeColors
     hilight:                              Color
     hilightLight:                         Color
     hilightDark:                          Color
+    hilightLightContrast:                 Color
     disabled:                             Color
     transparent:                          Color
     lighterSmall:                         Color
@@ -390,15 +391,16 @@ impl ThemeColors
 
             .surfaceDisabled = Color.fromArgb(0xFFBBBBBB)
 
-            .hilight        = Blue
-            .hilightLight   = Color.getLighter(Color.fromArgb(Blue), 0.2)
-            .hilightDark    = Color.getDarker(Color.fromArgb(Blue), 0.2)
-            .disabled       = Disabled
-            .transparent    = Transparent
-            .lighterSmall   = LighterSmall
-            .lighterMedium  = LighterMedium
-            .lighterBig     = LighterBig
-            .lighterVeryBig = LighterVeryBig
+            .hilight              = Blue
+            .hilightLight         = Color.getLighter(Color.fromArgb(Blue), 0.2)
+            .hilightDark          = Color.getDarker(Color.fromArgb(Blue), 0.2)
+            .hilightLightContrast = Color.getContrasting(Color.fromArgb(Blue))
+            .disabled             = Disabled
+            .transparent          = Transparent
+            .lighterSmall         = LighterSmall
+            .lighterMedium        = LighterMedium
+            .lighterBig           = LighterBig
+            .lighterVeryBig       = LighterVeryBig
 
             .bk     = Gray8
             .border = Gray1
@@ -770,15 +772,16 @@ impl ThemeColors
 
             .surfaceDisabled = Color.fromArgb(0xFFEEEEEE)
 
-            .hilight        = Blue
-            .hilightLight   = Color.getLighter(Color.fromArgb(Blue), 0.2)
-            .hilightDark    = Color.getDarker(Color.fromArgb(Blue), 0.2)
-            .disabled       = Disabled
-            .transparent    = Transparent
-            .lighterSmall   = LighterSmall
-            .lighterMedium  = LighterMedium
-            .lighterBig     = LighterBig
-            .lighterVeryBig = LighterVeryBig
+            .hilight              = Blue
+            .hilightLight         = Color.getLighter(Color.fromArgb(Blue), 0.2)
+            .hilightDark          = Color.getDarker(Color.fromArgb(Blue), 0.2)
+            .hilightLightContrast = Color.getContrasting(Color.fromArgb(Blue))
+            .disabled             = Disabled
+            .transparent          = Transparent
+            .lighterSmall         = LighterSmall
+            .lighterMedium        = LighterMedium
+            .lighterBig           = LighterBig
+            .lighterVeryBig       = LighterVeryBig
 
             .bk     = Gray8
             .border = Gray1

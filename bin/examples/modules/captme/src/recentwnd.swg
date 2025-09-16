@@ -12,6 +12,14 @@ struct RecentItem
     zoom:               f32
 }
 
+struct RecentInfos
+{
+    hot:                bool
+    selected:           bool
+    linkedUpToDate:     bool
+    linked:             String
+}
+
 struct RecentView
 {
     using wnd:     Wnd
@@ -116,7 +124,7 @@ impl IWnd for RecentView
         }
     }
 
-    func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, hot, selected, linkedUpToDate: bool, linked: String)
+    func paintRecent(parent: *Wnd, painter: *Painter, texture: Texture, rect: Math.Rectangle, infos: RecentInfos)
     {
         let colors = parent.getThemeColors()
 
@@ -144,10 +152,10 @@ impl IWnd for RecentView
             }
         }
 
-        if linked != null
+        if infos.linked != null
         {
-            let backColor = linkedUpToDate ? colors.bk : ColorYellow
-            var icon11 = Icon.from(&g_Main.icons48, 21)
+            let backColor = infos.linkedUpToDate ? colors.bk : ColorYellow
+            var icon11    = Icon.from(&g_Main.icons48, 21)
             icon11.sizeX, icon11.sizeY = 24
             icon11.paint(painter, rect.x + 4, rect.y + 4, backColor)
 
@@ -160,9 +168,9 @@ impl IWnd for RecentView
             icon.paint(painter, rect.x + 8, rect.y + 8, backColor.getContrasting())
         }
 
-        if hot:
+        if infos.hot:
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
-        if selected:
+        if infos.selected:
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
     }
 
@@ -178,7 +186,16 @@ impl IWnd for RecentView
 
             let rect = Math.Rectangle{x, clientRect.y, w, clientRect.height}
             item.rect = rect
-            paintRecent(me, painter, item.preview, rect, idx == me.hotItem, idx == me.selected, item.linkedUpToDate, item.linked)
+
+            with var infos: RecentInfos
+            {
+                .hot = idx == me.hotItem
+                .selected = idx == me.selected
+                .linkedUpToDate = item.linkedUpToDate
+                .linked = item.linked
+            }
+
+            paintRecent(me, painter, item.preview, rect, infos)
             x = rect.right() + RecentPadding
         }
 

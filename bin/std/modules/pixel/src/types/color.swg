@@ -393,7 +393,7 @@ impl Color
 
     // Convert to grayscale color preserving alpha.
     #[Inline, ConstExpr]
-    mtd const toGrayscale()->Color
+    mtd const getGrayscale()->Color
     {
         let gray = cast(u8) me.getGrayScalef() * 255
         return Color.fromArgb(me.a, gray, gray, gray)
