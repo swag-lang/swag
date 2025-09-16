@@ -40,16 +40,12 @@ impl LibraryWnd
     mtd setPreviewSize(size: PreviewSize)
     {
         me.previewSize = size
-        let sizeName = Reflection.getEnumName(PreviewSize, &me.previewSize, false)
-        me.zoomBtn.name.set(sizeName)
         me.invalidate()
     }
 
     mtd setSortMethod(method: SortMethod)
     {
         me.sortMethod = method
-        let sortName = Reflection.getEnumName(SortMethod, &me.sortMethod, false)
-        me.sortBtn.name.set(sortName)
         me.view.sort()
         me.invalidate()
     }
@@ -362,6 +358,7 @@ impl LibraryWnd
         // Image Size
         with res.zoomBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Search), {0, 0, 120, 32})
         {
+            .name.set("Size")
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
             .arrowPos = .RightDown
@@ -382,6 +379,7 @@ impl LibraryWnd
         // Sort
         with res.sortBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Sort), {0, 0, 120, 32})
         {
+            .name.set("Sort")
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
             .arrowPos = .RightDown
@@ -404,7 +402,7 @@ impl LibraryWnd
         // Filter
         with res.filterBtn = IconButton.create(res.editZoomBar, res.getTheme().getIcon24(.Filter), {0, 0, 120, 32})
         {
-            .name.set("Show")
+            .name.set("Filter")
             .iconBtnFlags.add(.Center)
             .textPos  = .Right
             .arrowPos = .RightDown
