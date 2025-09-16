@@ -69,7 +69,7 @@ impl Theme
     internal mtd setupDefault(renderer: *RenderOgl)
     {
         me.intialized = true
-        me.colors.setLight()
+        me.colors.setDark()
 
         with me.res
         {
