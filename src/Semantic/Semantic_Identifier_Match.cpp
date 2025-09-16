@@ -258,7 +258,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
             if (context->castFlagsResult.has(CAST_RESULT_FORCE_REF | CAST_RESULT_FORCE_POINTER))
             {
                 const auto idRef    = identifier->identifierRef();
-                const auto childId  = identifier->parent == idRef ? identifier->childParentIdx() : identifier->parent->childParentIdx();
+                auto       childId  = identifier->parent == idRef ? identifier->childParentIdx() : identifier->parent->childParentIdx();
                 auto       id       = idRef->children[childId - 1];
                 auto       overload = id->resolvedSymbolOverload();
 
@@ -275,6 +275,14 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                     PushErrCxtStep ec0(context, declParam, ErrCxtStepKind::Note, [id, declParam] { return form("occurred while trying to convert [[%s]] to a function call argument of type [[%s]]", id->token.cstr(), declParam->typeInfo->getDisplayNameC()); });
                     SWAG_CHECK(checkCanTakeAddress(context, id));
                     overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+
+                    while (childId != 0)
+                    {
+                        id       = idRef->children[--childId];
+                        overload = id->resolvedSymbolOverload();
+                        if (overload)
+                            overload->flags.add(OVERLOAD_HAS_MAKE_POINTER);
+                    }
                 }
             }
             else if (context->castFlagsResult.has(CAST_RESULT_FORCE_ITF))
