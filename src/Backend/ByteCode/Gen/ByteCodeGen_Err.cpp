@@ -335,13 +335,15 @@ bool ByteCodeGen::emitCatch(ByteCodeGenContext* context)
     return true;
 }
 
+// ReSharper disable once CppParameterMayBeConstPtrOrRef
 bool ByteCodeGen::emitAssumeNotNull(ByteCodeGenContext* context)
 {
     if (!context->sourceFile->module->buildCfg.byteCodeEmitAssume)
         return true;
 
     const auto node = context->node;
-    emitSafetyNullCheck(context, node->resultRegisterRc);
+    EMIT_INST1(context, ByteCodeOp::JumpIfNotZero64, node->resultRegisterRc)->b.s32 = 1;
+    EMIT_INST0(context, ByteCodeOp::InternalPanic)->d.pointer = const_cast<uint8_t*>(reinterpret_cast<const uint8_t*>("assume failed"));
     return true;
 }
 

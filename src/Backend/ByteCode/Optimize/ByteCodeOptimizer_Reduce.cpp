@@ -532,6 +532,12 @@ void ByteCodeOptimizer::reduceErr(ByteCodeOptContext* context, ByteCodeInstructi
                 break;
             }
 
+            if (ip[1].op == ByteCodeOp::Ret)
+            {
+                setNop(context, ip);
+                break;
+            }
+
             break;
     }
 }
