@@ -1080,6 +1080,7 @@ impl Capture
                     }
                     elif !evt.modifiers.has(.Control) and !here and me.selection.count
                     {
+                        me.updateModelFromSelection()
                         me.selection.clear()
                         me.selectionHasChanged()
                         me.lastSelectHit = 0
