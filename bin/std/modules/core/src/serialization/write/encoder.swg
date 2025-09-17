@@ -21,8 +21,8 @@ interface IEncoder
     mtd beginSection(kind: SectionKind) throw;
     mtd endSection() throw;
 
-    mtd write(data: const ^void, type: typeinfo) throw;
-    mtd writeBufferU8(data: const ^u8, count: u64) throw;
+    mtd write(data: const [*] void, type: typeinfo) throw;
+    mtd writeBufferU8(data: const [*] u8, count: u64) throw;
 
     mtd writeBool(value: bool);
     mtd writeS8(value: s8);
@@ -85,7 +85,7 @@ impl Encoder
     }
 
     // Write a given Swag.TypeValue.
-    mtd writeTypeValue(typeVal: TypeValue, data: const ^void) throw
+    mtd writeTypeValue(typeVal: TypeValue, data: const [*] void) throw
     {
         me.serializer.beginElement(typeVal)
         me.writeValue(data, typeVal.pointedType)
@@ -93,7 +93,7 @@ impl Encoder
     }
 
     // Write a given value with a given type.
-    mtd writeValue(data: const ^void, dataType: typeinfo) throw
+    mtd writeValue(data: const [*] void, dataType: typeinfo) throw
     {
         var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -196,7 +196,7 @@ impl Encoder
 
                 if !treated
                 {
-                    var bufArr = cast(const ^u8) ptrArr.buffer
+                    var bufArr = cast(const [*] u8) ptrArr.buffer
                     for i in ptrArr.count
                     {
                         me.writeValue(bufArr, valueType)
@@ -230,9 +230,9 @@ impl Encoder
                 if Reflection.hasAttribute(field.pointedType, NoSerialize):
                     continue
 
-                if !itf or !itf.writeElement(field, cast(const ^u8) data + field.offset, cast(IEncoder) me)
+                if !itf or !itf.writeElement(field, cast(const [*] u8) data + field.offset, cast(IEncoder) me)
                 {
-                    me.writeTypeValue(field, cast(const ^u8) data + field.offset)
+                    me.writeTypeValue(field, cast(const [*] u8) data + field.offset)
                 }
             }
 
@@ -248,7 +248,7 @@ impl Encoder
             if treated:
                 return
 
-            var bufArr = cast(const ^u8) data
+            var bufArr = cast(const [*] u8) data
             for typeArr.count
             {
                 me.writeValue(bufArr, typeArr.pointedType)
@@ -315,12 +315,12 @@ impl IEncoder for Encoder
         me.serializer.endSection()
     }
 
-    mtd impl write(data: const ^void, type: typeinfo) throw
+    mtd impl write(data: const [*] void, type: typeinfo) throw
     {
         me.writeValue(data, type)
     }
 
-    mtd impl writeBufferU8(data: const ^u8, count: u64) throw
+    mtd impl writeBufferU8(data: const [*] u8, count: u64) throw
     {
         let treated = me.serializer.beginSequence(u8, data, count)
         defer #noerr me.serializer.endSequence()

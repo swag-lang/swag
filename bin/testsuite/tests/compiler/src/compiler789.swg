@@ -2,7 +2,7 @@
 #test
 {
 	var pt = ["A"]
-	let slice: [..] ^string = [&pt[0]]
+	let slice: [..] [*] string = [&pt[0]]
 
 	let str = slice[0, 0]
 	@assert(str == "A")

@@ -178,7 +178,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
     {
         if type.flags & TypeInfoFlags.CString
         {
-            let ptr = dref cast(const ^^u8) valueData
+            let ptr = dref cast(const [*] [*] u8) valueData
             let len = @strlen(ptr)
             buf.addBytes(@mkslice(ptr, len))
             return
@@ -236,7 +236,7 @@ func convertAny(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strForma
     if Reflection.isStaticArray(type)
     {
         let ptrArr = cast(const *TypeInfoArray) type
-        var bufArr = cast(const ^u8) valueData
+        var bufArr = cast(const [*] u8) valueData
 
         buf.addBytes("[")
         for ptrArr.count
@@ -301,7 +301,7 @@ func convertStruct(buf: *ConcatBuffer, value: any, convFmt: ConvertFormat, strFo
 {
     let kindof = cast(const *Swag.TypeInfoStruct) @kindof(value)
     Debug.assert(kindof.kind == TypeInfoKind.Struct, "this is not a structure")
-    let ptr = cast(const ^u8) @dataof(value)
+    let ptr = cast(const [*] u8) @dataof(value)
 
     // Core.String
     if kindof == String

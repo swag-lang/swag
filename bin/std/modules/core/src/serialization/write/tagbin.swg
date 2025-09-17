@@ -329,7 +329,7 @@ impl TagBin
             if raw
             {
                 me.output.addNative(TagBinSignatures.Raw)
-                me.output.addBytes(@mkslice(cast(const ^u8) data, countElem * sizeof))
+                me.output.addBytes(@mkslice(cast(const [*] u8) data, countElem * sizeof))
                 return true
             }
             else

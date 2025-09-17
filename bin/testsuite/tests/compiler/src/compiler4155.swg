@@ -6,7 +6,7 @@
 func toto()->*s32
 {
     var a = 0
-    var ptr = cast(^s32) &a
+    var ptr = cast([*] s32) &a
     ptr += 1
     return ptr
 }

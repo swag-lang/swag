@@ -67,5 +67,5 @@ func mkString(str: #null string)->#null string
     let count = @countof(str)
     let ptr   = @getcontext().errorAllocator.alloc(count)
     @memcpy(ptr, @dataof(str), count)
-    return @mkstring(cast(const ^u8) ptr, count)
+    return @mkstring(cast(const [*] u8) ptr, count)
 }

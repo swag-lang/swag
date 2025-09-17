@@ -2,7 +2,7 @@
 #test
 {
 	var cst =  0x01_02_03_04
-	let slice : [..] u8 = @mkslice(cast(^u8)&cst, 4)
+	let slice : [..] u8 = @mkslice(cast([*] u8)&cst, 4)
 	len(slice)
 }
 

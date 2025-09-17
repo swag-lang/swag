@@ -2,7 +2,7 @@ using Swag
 
 struct(T) X
 {
-    buffer: ^T
+    buffer: [*] T
 }
 
 /*impl X
@@ -31,7 +31,7 @@ impl Y
 {
     var y: Y
     var x: X'Y
-    x.buffer = cast(^Y) &y
+    x.buffer = cast([*] Y) &y
     //x.buffer[0].toto()
     Y.toto(x.buffer[0])
     //x.titi()

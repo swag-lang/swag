@@ -35,7 +35,7 @@ public func parseValue(addr: *void, type: typeinfo, buf: string)->string throw
     if Reflection.isStaticArray(type)
     {
         let arrayType = cast(const *TypeInfoArray) type
-        var addrVal   = cast(^u8) addr
+        var addrVal   = cast([*] u8) addr
         var cpt       = 0
         while @countof(one) and one[0] != '#'
         {

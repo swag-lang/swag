@@ -254,7 +254,7 @@ void TypeInfoPointer::computeWhateverName(Utf8& resName, ComputeNameKind nameKin
         else if (isPointerRef())
             resName += "&";
         else if (hasFlag(TYPEINFO_POINTER_ARITHMETIC))
-            resName += "^";
+            resName += "[*] ";
         else
             resName += "*";
     }

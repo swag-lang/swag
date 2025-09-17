@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto(x: const &const [..] s32)
 {
-    let ptr = cast(const ^s32) @dataof(x)
+    let ptr = cast(const [*] s32) @dataof(x)
     @assert(ptr[0] == 4)
     @assert(ptr[1] == 2)
 }

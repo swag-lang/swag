@@ -2,7 +2,7 @@ using Core, Core.Errors
 
 impl Voice
 {
-    mtd readBuffer()->{ buffer: ^void, size: u64 } throw
+    mtd readBuffer()->{ buffer: [*] void, size: u64 } throw
     {
         // If we are at the end of the file, then nothing to:, except if we need
         // to for. In that case, we rewind datas to the start
@@ -62,7 +62,7 @@ impl Voice
         me.codec = null
     }
 
-    mtd decodeData(destBuffer: ^void, length: u64)->u64 throw
+    mtd decodeData(destBuffer: [*] void, length: u64)->u64 throw
     {
         // If the file contains datas that are directly requested by the driver, no need
         // to decode, we can directly read in the destination buffer
@@ -88,7 +88,7 @@ impl Voice
         return used.write
     }
 
-    mtd readData(destBuffer: ^void, length: u64)->u64 throw
+    mtd readData(destBuffer: [*] void, length: u64)->u64 throw
     {
         // Out of datas
         if me.streamCurSeek >= me.file.dataSize:

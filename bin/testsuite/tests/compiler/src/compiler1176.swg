@@ -12,7 +12,7 @@ func fromName(name: string)->TOTO
     {
         if (t.values[@index].name == name)
         {
-            let ptr = cast(const ^TOTO) t.values[@index].value
+            let ptr = cast(const [*] TOTO) t.values[@index].value
             return ptr[0]
         }
     }

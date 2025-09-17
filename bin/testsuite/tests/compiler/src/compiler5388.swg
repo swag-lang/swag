@@ -5,7 +5,7 @@ interface I
 
 struct(T) A
 {
-    buffer: ^T
+    buffer: [*] T
 }
 
 var G: I

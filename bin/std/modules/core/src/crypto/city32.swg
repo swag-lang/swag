@@ -16,7 +16,7 @@ impl City32
 {
     const C1 = 0xcc9e2d51
     const C2 = 0x1b873593
-    func fetch(buf: const ^u8) => Math.littleEndianToNative(dref cast(const ^u32) buf)
+    func fetch(buf: const [*] u8) => Math.littleEndianToNative(dref cast(const [*] u32) buf)
 
     #[Swag.Safety("overflow", false)]
     mtd len0to4(data: const [..] u8)

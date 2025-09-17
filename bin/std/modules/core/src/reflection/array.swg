@@ -93,7 +93,7 @@ func appendValueStructArray(arrayPtr: *void, valueType: typeinfo)->*void
     if arr.count >= arr.capacity
     {
         let newCapacity = Math.max(arr.count + 1, arr.capacity * 2)
-        let newBuffer   = cast(^u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
+        let newBuffer   = cast([*] u8) Memory.alloc(newCapacity * sizeValue, arr.allocator)
         Memory.clear(newBuffer, newCapacity * sizeValue)
         arr.capacity = newCapacity
 

@@ -166,7 +166,7 @@ impl Md5
         dref a += b
     }
 
-    func transform(state: [4] u32, block: const ^u8)
+    func transform(state: [4] u32, block: const [*] u8)
     {
         var a  = state[0]
         var b  = state[1]
@@ -255,7 +255,7 @@ impl Md5
         state[3] += d
     }
 
-    func encode(output: ^u8, input: ^u32, len: u32)
+    func encode(output: [*] u8, input: [*] u32, len: u32)
     {
         var i, j = 0
         while j < len
@@ -269,7 +269,7 @@ impl Md5
         }
     }
 
-    func decode(output: ^u32, input: const ^u8, len: u32)
+    func decode(output: [*] u32, input: const [*] u8, len: u32)
     {
         var i, j = 0
         while j < len

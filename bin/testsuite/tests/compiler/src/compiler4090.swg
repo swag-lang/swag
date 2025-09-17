@@ -3,6 +3,6 @@ using Swag
 
 #test
 {
-    var x: ^void
+    var x: [*] void
     x += 1
 }

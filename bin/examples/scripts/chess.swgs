@@ -122,7 +122,7 @@ func initCells()
     computeMoves()
 }
 
-func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
+func getCellWithOffset(board: [*] Cell, source, offset: s8)->s8
 {
     let result = source + offset
     if result < 0 or result >= 96 or board[result].content == .Invalid:
@@ -130,14 +130,14 @@ func getCellWithOffset(board: ^Cell, source, offset: s8)->s8
     return result
 }
 
-func getKingCell(board: ^Cell, color: ContentEnum)->s8
+func getKingCell(board: [*] Cell, color: ContentEnum)->s8
 {
     for i in 96's8 where board[i].content == color and board[i].piece == .King:
         return i
     return -1
 }
 
-func isCheck(board: ^Cell, white: bool)->bool
+func isCheck(board: [*] Cell, white: bool)->bool
 {
     let kingCell = getKingCell(board, white ? .White : .Black)
     if kingCell == -1:
@@ -231,7 +231,7 @@ func computeMoves()
         g_Game.gameStatus = Format.toString("% player wins", !g_Game.whiteTurn ? "White" : "Black")
 }
 
-func getPawnMoves(board: ^Cell, fromP: s8, moves: *Array's8)
+func getPawnMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
     let isWhite = board[fromP].content == .White
     let offset  = isWhite ? 12's8 : -12's8
@@ -248,7 +248,7 @@ func getPawnMoves(board: ^Cell, fromP: s8, moves: *Array's8)
     }
 }
 
-func getPawnAttacks(board: ^Cell, fromP: s8, moves: *Array's8)
+func getPawnAttacks(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
     let isWhite       = board[fromP].content == .White
     let targetContent = isWhite ? ContentEnum.Black : ContentEnum.White
@@ -261,7 +261,7 @@ func getPawnAttacks(board: ^Cell, fromP: s8, moves: *Array's8)
         moves.add(target)
 }
 
-func getPieceMove(board: ^Cell, fromP, offset: s8, moves: *Array's8)->bool
+func getPieceMove(board: [*] Cell, fromP, offset: s8, moves: *Array's8)->bool
 {
     let target = getCellWithOffset(board, fromP, offset)
     if target == -1:
@@ -275,21 +275,21 @@ func getPieceMove(board: ^Cell, fromP, offset: s8, moves: *Array's8)->bool
 }
 
 const KnightMovesDeltas = [10's8, 23, 25, 14, -10, -23, -25, -14]
-func getKnightMoves(board: ^Cell, fromP: s8, moves: *Array's8)
+func getKnightMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
     foreach delta in KnightMovesDeltas:
         discard getPieceMove(board, fromP, delta, moves)
 }
 
 const KingMovesDeltas = [11's8, 12, 13, 1, -11, -12, -13, -1]
-func getKingMoves(board: ^Cell, fromP: s8, moves: *Array's8)
+func getKingMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
     foreach delta in KingMovesDeltas:
         discard getPieceMove(board, fromP, delta, moves)
 }
 
 const BishopMovesDeltas = [11's8, 13, -11, -13]
-func getBishopMoves(board: ^Cell, fromP: s8, moves: *Array's8)
+func getBishopMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
     foreach delta in BishopMovesDeltas
     {
@@ -300,7 +300,7 @@ func getBishopMoves(board: ^Cell, fromP: s8, moves: *Array's8)
 }
 
 const RookMovesDeltas = [12's8, 1, -12, -1]
-func getRookMoves(board: ^Cell, fromP: s8, moves: *Array's8)
+func getRookMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
     foreach delta in RookMovesDeltas
     {
@@ -352,7 +352,7 @@ func doMove(fromP, toP: s8)
 }
 
 #[Swag.Overload]
-func doMove(board: ^Cell, fromP, toP: s8)->[96] Cell
+func doMove(board: [*] Cell, fromP, toP: s8)->[96] Cell
 {
     var result: [96] Cell
 

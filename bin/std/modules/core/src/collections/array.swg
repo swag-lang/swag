@@ -6,7 +6,7 @@ using Swag
 struct(T) Array
 {
     allocator:     IAllocator     // The allocator used for memory operations.
-    buffer:        ^T             // Pointer to the contiguous memory block holding the elements.
+    buffer:        [*] T             // Pointer to the contiguous memory block holding the elements.
     count:         u64            // The number of valid elements currently in the array.
     capacity:      u64            // The total number of elements that can be stored in the allocated me.buffer.
 }
@@ -206,7 +206,7 @@ impl Array
             return
         }
 
-        let newBuffer = cast(^T) Memory.realloc(me.buffer, newCapacity * #sizeof(T), me.capacity * #sizeof(T), me.allocator)
+        let newBuffer = cast([*] T) Memory.realloc(me.buffer, newCapacity * #sizeof(T), me.capacity * #sizeof(T), me.allocator)
 
         // Need to call opPostMove on every existing element if the me.buffer has not been reallocated
         // in place
@@ -391,7 +391,7 @@ impl Array
 
     // Reserves space for 'num' elements at the end of the array and returns a pointer to the start of the new space.
     // The new memory is not initialized.
-    mtd emplaceAddress(num: u32 = 1)->^T
+    mtd emplaceAddress(num: u32 = 1)->[*] T
     {
         me.grow(me.count + num)
         me.count += num
@@ -400,7 +400,7 @@ impl Array
 
     // Reserves space for 'num' elements at the end of the array and returns a pointer to the start of the new space.
     // The new memory is default-initialized.
-    mtd emplaceInitAddress(num: u32 = 1)->^T
+    mtd emplaceInitAddress(num: u32 = 1)->[*] T
     {
         me.grow(me.count + num)
         me.count += num

@@ -626,7 +626,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
 
         firstAliasVar = 2;
         content += "{ ";
-        content += form(R"(let __addr%u = cast(%s ^%s) __tmp%u; )", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.cstr(), id);
+        content += form(R"(let __addr%u = cast(%s [*] %s) __tmp%u; )", id, typeArray->isConst() ? "const" : "", typeArray->finalType->name.cstr(), id);
         content += form(R"(for %s %u { )", visitBack.cstr(), typeArray->totalCount);
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {

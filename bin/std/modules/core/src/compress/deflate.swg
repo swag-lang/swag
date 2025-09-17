@@ -114,10 +114,10 @@ private
         lookaheadPos:         u32
         lookaheadSize:        u32
         dictSize:             u32
-        lzCodeBufAddr:        ^u8
+        lzCodeBufAddr:        [*] u8
         lzFlags:              *u8
-        outputBufAddr:        ^u8
-        outputBufEndAddr:     ^u8
+        outputBufAddr:        [*] u8
+        outputBufEndAddr:     [*] u8
         numFlagsLeft:         u32
         totalLzBytes:         u32
         lzCodeBufDictPos:     u32
@@ -128,8 +128,8 @@ private
         savedLit:             u32
         outputFlushOfs:       u32
         blockIndex:           u32
-        inBuf:                const ^u8
-        inSrc:                const ^u8
+        inBuf:                const [*] u8
+        inSrc:                const [*] u8
         srcBufLeft:           u64
         outBufOfs:            u64
         dict:                 [LzDictSize + MaxMatchLen - 1] u8
@@ -337,7 +337,7 @@ impl Deflate
         }
     }
 
-    func radixSortSyms(numSyms: u32, sym0, sym1: ^SymFreq)->^SymFreq
+    func radixSortSyms(numSyms: u32, sym0, sym1: [*] SymFreq)->[*] SymFreq
     {
         var hist: [256 * 2] u32
         for i in numSyms
@@ -380,7 +380,7 @@ impl Deflate
         return curSym
     }
 
-    func calculateMinimumRedundancy(symFreq: ^SymFreq, n: u32)
+    func calculateMinimumRedundancy(symFreq: [*] SymFreq, n: u32)
     {
         if n == 0:
             return
@@ -451,7 +451,7 @@ impl Deflate
         }
     }
 
-    func huffmanEnforceMaxCodeSize(numCodes: ^s32, codeListLen, maxCodeSize: u32)
+    func huffmanEnforceMaxCodeSize(numCodes: [*] s32, codeListLen, maxCodeSize: u32)
     {
         if codeListLen <= 1:
             return
@@ -846,7 +846,7 @@ impl Deflate
         var compBlockSucceeded = false
         let useRawBlock        = ((d.compressFlags & ForceAllRawBlocks) != 0) and (d.lookaheadPos - d.lzCodeBufDictPos) <= d.dictSize
 
-        var outputBufStart: ^u8
+        var outputBufStart: [*] u8
         if d.result.capacity - d.result.count >= OutBufSize:
             outputBufStart = d.result.buffer + d.outBufOfs
         else:

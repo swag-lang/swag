@@ -510,10 +510,18 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     if (tokenParse.is(TokenId::SymLeftSquare))
     {
         const auto leftSquareToken = tokenParse;
-
         SWAG_CHECK(eatToken());
+        
         while (true)
         {
+            // Pointer to block
+            if (tokenParse.is(TokenId::SymAsterisk))
+            {
+                node->typeFlags.add(TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_PTR_ARITHMETIC);
+                SWAG_CHECK(eatToken());
+                break;
+            }
+            
             // Slice
             if (tokenParse.is(TokenId::SymDotDot))
             {
@@ -558,11 +566,9 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
     }
 
     // Pointers
-    if (tokenParse.is(TokenId::SymAsterisk) || tokenParse.is(TokenId::SymCircumflex))
+    if (tokenParse.is(TokenId::SymAsterisk))
     {
         node->typeFlags.add(TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
-        if (tokenParse.is(TokenId::SymCircumflex))
-            node->typeFlags.add(TYPE_FLAG_IS_PTR_ARITHMETIC);
         SWAG_CHECK(eatToken());
         AstNode* subType;
         SWAG_CHECK(doSubTypeExpression(node, exprFlags, &subType));

@@ -422,7 +422,6 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::KwdUnion:
         case TokenId::NativeType:
         case TokenId::SymAsterisk:
-        case TokenId::SymCircumflex:
         case TokenId::SymAmpersand:
         case TokenId::CompilerCode:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))
@@ -438,8 +437,12 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             break;
 
         case TokenId::SymLeftSquare:
-            if (exprFlags.has(EXPR_FLAG_ALIAS))
+        {
+            const auto nextToken = getNextToken();
+            if (exprFlags.has(EXPR_FLAG_ALIAS) || nextToken.is(TokenId::SymDotDot) || nextToken.is(TokenId::SymAsterisk))
+            {
                 SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
+            }
             else if (exprFlags.has(EXPR_FLAG_TYPEOF | EXPR_FLAG_PARAMETER))
             {
                 tokenizer.saveState(tokenParse);
@@ -455,8 +458,9 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
             {
                 SWAG_CHECK(doExpressionListArray(parent, result));
             }
+        }
 
-            break;
+        break;
 
         case TokenId::KwdMethod:
             if (exprFlags.has(EXPR_FLAG_SIMPLE))

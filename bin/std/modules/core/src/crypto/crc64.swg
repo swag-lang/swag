@@ -91,13 +91,13 @@ impl Crc64
         if length == 0:
             return
 
-        let bytes = cast(const ^u8) @dataof(data)
+        let bytes = cast(const [*] u8) @dataof(data)
         var cur   = ~me.crc
 
         // Process 8 bytes at a time for better cache utilization
         let blocks = length >> 3
 
-        var table: ^u64
+        var table: [*] u64
         #[Swag.Complete]
         switch kind
         {

@@ -205,6 +205,6 @@ impl Hash.IHash32 for GUID64
     // Uses CRC32 algorithm on the 8-byte GUID data for consistent hashing.
     mtd const impl compute()->u32
     {
-        return Hash.Crc32.compute(@mkslice(cast(const ^u8) &me.guid, #sizeof(u64)))
+        return Hash.Crc32.compute(@mkslice(cast(const [*] u8) &me.guid, #sizeof(u64)))
     }
 }

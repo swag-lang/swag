@@ -4,7 +4,7 @@ using Core, Pixel
 // To specialize the edition of a given struct.
 interface IPropertyValue
 {
-    mtd construct(list: *Properties, value: Swag.TypeValue, data: ^u8, parent: *PropertiesItem)->*PropertiesItem;
+    mtd construct(list: *Properties, value: Swag.TypeValue, data: [*] u8, parent: *PropertiesItem)->*PropertiesItem;
 }
 
 // To notify a struct about properties changes
@@ -607,7 +607,7 @@ internal impl Properties
         return item
     }
 
-    mtd addValue(value: Swag.TypeValue, data: ^u8, parentItem: *PropertiesItem)
+    mtd addValue(value: Swag.TypeValue, data: [*] u8, parentItem: *PropertiesItem)
     {
         // Value
         switch
@@ -675,7 +675,7 @@ internal impl Properties
         }
     }
 
-    mtd addStructInternal(typeStruct: const *Swag.TypeInfoStruct, addr: ^u8, parentItem: *PropertiesItem)
+    mtd addStructInternal(typeStruct: const *Swag.TypeInfoStruct, addr: [*] u8, parentItem: *PropertiesItem)
     {
         var newParent = parentItem
 

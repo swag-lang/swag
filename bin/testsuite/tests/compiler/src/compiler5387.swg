@@ -1,6 +1,6 @@
 struct(T) A
 {
-    buffer: ^T
+    buffer: [*] T
 }
 
 impl A

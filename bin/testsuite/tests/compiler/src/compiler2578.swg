@@ -1,6 +1,6 @@
 struct(T) AA
 {
-    ptr: ^T
+    ptr: [*] T
 }
 
 impl AA

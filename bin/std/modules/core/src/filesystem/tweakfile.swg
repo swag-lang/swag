@@ -6,7 +6,7 @@ using Swag, Core.Errors
 struct Folder
 {
     type:     typeinfo     // Type information of the structure
-    data:     ^void        // Pointer to the actual structure instance
+    data:     [*] void        // Pointer to the actual structure instance
 }
 
 // Represents a tweak file parser that can load configuration into registered folders
@@ -120,7 +120,7 @@ impl TweakFile
             }
 
             // Parse and assign value to field
-            one = catch StrConv.parseValue(cast(^u8) currentFolder.data + field.offset, field.pointedType, one)
+            one = catch StrConv.parseValue(cast([*] u8) currentFolder.data + field.offset, field.pointedType, one)
             if @err != null:
                 throw SyntaxError{"invalid value", line: idx + 1}
 
@@ -161,8 +161,8 @@ impl TweakFile
                     break
             }
 
-            let ptrDst = cast(^u8) refr.folder.data + refr.dst.offset
-            let ptrSrc = cast(^u8) refr.folder.data + refr.src.offset
+            let ptrDst = cast([*] u8) refr.folder.data + refr.dst.offset
+            let ptrSrc = cast([*] u8) refr.folder.data + refr.src.offset
             Reflection.copy(ptrDst, ptrSrc, refr.dst.pointedType)
 
             refs.removeAt(toDo)

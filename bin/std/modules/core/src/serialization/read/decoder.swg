@@ -57,14 +57,14 @@ struct(T) Decoder
 
 impl Decoder
 {
-    mtd readTypeValue(typedVal: TypeValue, data: ^void) throw
+    mtd readTypeValue(typedVal: TypeValue, data: [*] void) throw
     {
         discard me.serializer.beginElement(typedVal)
         me.readTypedContent(data, typedVal.pointedType)
         me.serializer.endElement(typedVal)
     }
 
-    mtd readTypedContent(data: ^void, dataType: typeinfo) throw
+    mtd readTypedContent(data: [*] void, dataType: typeinfo) throw
     {
         var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
@@ -192,7 +192,7 @@ impl Decoder
                 if Reflection.hasAttribute(field, NoSerialize) or Reflection.hasAttribute(field.pointedType, NoSerialize):
                     continue
 
-                if !itf or !itf.readElement(field, cast(^u8) data + field.offset, idecoder)
+                if !itf or !itf.readElement(field, cast([*] u8) data + field.offset, idecoder)
                 {
                     let doIt = catch me.serializer.beginElement(field)
                     defer #noerr me.serializer.endElement(field)
@@ -202,7 +202,7 @@ impl Decoder
                     if !doIt:
                         continue
 
-                    catch me.readTypedContent(cast(^u8) data + field.offset, field.pointedType)
+                    catch me.readTypedContent(cast([*] u8) data + field.offset, field.pointedType)
                     if @err != null and !(me.flags & .IgnoreStructFieldError):
                         throw @err
                 }
@@ -225,7 +225,7 @@ impl Decoder
             if treated:
                 return
 
-            var bufArr = cast(^u8) data
+            var bufArr = cast([*] u8) data
             for count
             {
                 me.readTypedContent(bufArr, typeArr.pointedType)
@@ -320,7 +320,7 @@ impl IDecoder for Decoder
 
     mtd impl readBufferU8(count: u64)->*u8 throw
     {
-        let data = cast(^u8) Memory.alloc(count)
+        let data = cast([*] u8) Memory.alloc(count)
 
         var cpt     = count
         let treated = me.serializer.beginSequence(u8, data, &cpt)

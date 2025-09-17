@@ -1,6 +1,6 @@
 struct A
 {
-    x: const ^u8
+    x: const [*] u8
 }
 
 impl A

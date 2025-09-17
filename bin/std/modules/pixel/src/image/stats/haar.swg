@@ -1,7 +1,7 @@
 #global namespace ImageStatistics
 using Core, Core.Math
 
-func haarTransform2D(data: ^f32, size: u32, output: ^f32)
+func haarTransform2D(data: [*] f32, size: u32, output: [*] f32)
 {
     Memory.copy(output, data, size * size * #sizeof(f32))
 
@@ -18,7 +18,7 @@ func haarTransform2D(data: ^f32, size: u32, output: ^f32)
 }
 
 // 1D Haar transform on a row
-func haarTransform1D(data: ^f32, offset: s32, length: s32)
+func haarTransform1D(data: [*] f32, offset: s32, length: s32)
 {
     if length <= 1:
         return
@@ -38,7 +38,7 @@ func haarTransform1D(data: ^f32, offset: s32, length: s32)
 }
 
 // 1D Haar transform on a column
-func haarTransform1DVertical(data: ^f32, col: s32, length: s32, stride: s32)
+func haarTransform1DVertical(data: [*] f32, col: s32, length: s32, stride: s32)
 {
     if length <= 1:
         return
@@ -57,7 +57,7 @@ func haarTransform1DVertical(data: ^f32, col: s32, length: s32, stride: s32)
         data[col + i * stride] = temp[i]
 }
 
-func resampleToGrayscale(image: Image, targetWidth, targetHeight: s32, output: ^f32)
+func resampleToGrayscale(image: Image, targetWidth, targetHeight: s32, output: [*] f32)
 {
     Debug.assert(targetWidth > 0 and targetHeight > 0, "Target dimensions must be positive")
 

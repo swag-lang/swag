@@ -18,7 +18,7 @@ impl Image
         let f = &convArr[0]
         me.visitPixels(f)
         {
-            let arr = cast(^u8) userData
+            let arr = cast([*] u8) userData
             pix[0] = arr[pix[0]]
             pix[1] = arr[pix[1]]
             pix[2] = arr[pix[2]]

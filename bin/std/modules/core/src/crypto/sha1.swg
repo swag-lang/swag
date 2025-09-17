@@ -25,7 +25,7 @@ impl Sha1
 
     // Process a single 512-bit block of data.
     // Performs the main SHA-1 compression function on the provided 'buf'.
-    mtd transform(buf: const ^u8)
+    mtd transform(buf: const [*] u8)
     {
         var w: [80] u32
 

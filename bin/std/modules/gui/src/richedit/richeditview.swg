@@ -334,8 +334,8 @@ impl RichEditView
         var pStyle     = line.styles.buffer
         if !count
         {
-            pChar  = cast(^rune) &dummyChar
-            pStyle = cast(^u8) &dummyStyle
+            pChar  = cast([*] rune) &dummyChar
+            pStyle = cast([*] u8) &dummyStyle
             count  = 1
         }
 

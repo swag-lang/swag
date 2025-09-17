@@ -1,7 +1,7 @@
 //#global skip
 struct(T) Array
 {
-    buf: ^T
+    buf: [*] T
 }
 
 impl Array

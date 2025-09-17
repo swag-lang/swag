@@ -365,7 +365,7 @@ namespace Swag
     struct ScratchAllocator
     {
         allocator:     IAllocator
-        block:         ^u8
+        block:         [*] u8
         capacity:      u64
         used:          u64
         maxUsed:       u64
@@ -535,8 +535,8 @@ namespace Swag
 
     struct Interface
     {
-        obj:        *void            // Pointer to the associated struct instance
-        itable:     const ^^void     // Pointer to the virtual table
+        obj:        *void                // Pointer to the associated struct instance
+        itable:     const [*][*]void     // Pointer to the virtual table
     }
 
     struct AttributeParam
@@ -611,18 +611,18 @@ namespace Swag
     struct TypeInfoStruct
     {
         using base:      TypeInfo
-        opInit:          func(*void)               // Pointer to the function to initialize an instance of that struct
-        opDrop:          func(*void)               // Pointer to the function to drop an instance of that struct
-        opPostCopy:      func(*void)               // Pointer to the function to call after a copy
-        opPostMove:      func(*void)               // Pointer to the function to call after a move
-        structName:      string                    // User name of the struct
-        fromGeneric:     const *TypeInfo           // If it comes from a generic instantiation, this is the original generic struct
+        opInit:          func(*void)              // Pointer to the function to initialize an instance of that struct
+        opDrop:          func(*void)              // Pointer to the function to drop an instance of that struct
+        opPostCopy:      func(*void)              // Pointer to the function to call after a copy
+        opPostMove:      func(*void)              // Pointer to the function to call after a move
+        structName:      string                   // User name of the struct
+        fromGeneric:     const *TypeInfo          // If it comes from a generic instantiation, this is the original generic struct
         generics:        const [..] TypeValue     // Generic parameters
         fields:          const [..] TypeValue     // All the fields
         usingFields:     const [..] TypeValue     // All the fields marked with 'using'
         methods:         const [..] TypeValue     // All the methods, if exported
         interfaces:      const [..] TypeValue     // All the interfaces
-        attributes:      const [..] Attribute      // All the attributes
+        attributes:      const [..] Attribute     // All the attributes
     }
 
     struct TypeInfoFunc
@@ -630,16 +630,16 @@ namespace Swag
         using base:     TypeInfo
         generics:       const [..] TypeValue     // Generic parameters
         parameters:     const [..] TypeValue     // Parameters
-        returnType:     const *TypeInfo           // The return type, or 'null'
-        attributes:     const [..] Attribute      // All the attributes
+        returnType:     const *TypeInfo          // The return type, or 'null'
+        attributes:     const [..] Attribute     // All the attributes
     }
 
     struct TypeInfoEnum
     {
         using base:     TypeInfo
         values:         const [..] TypeValue     // All the values
-        rawType:        const *TypeInfo           // The underlying enum type
-        attributes:     const [..] Attribute      // All the attributes
+        rawType:        const *TypeInfo          // The underlying enum type
+        attributes:     const [..] Attribute     // All the attributes
     }
 
     struct TypeInfoArray
@@ -965,25 +965,25 @@ func @compiler()->Swag.ICompiler;
 // Returns a system allocated memory block of 'size' bytes.
 //
 // Use [[@free]] to release the allocated memory.
-func @alloc(size: u64)->^void;
+func @alloc(size: u64)->[*]void;
 
 // Realloc a system memory block allocated with [[@alloc]]
-func @realloc(ptr: ^void, size: u64)->^void;
+func @realloc(ptr: [*]void, size: u64)->[*]void;
 
 // Free a system memory block allocated with [[@alloc]]
-func @free(ptr: ^void);
+func @free(ptr: [*]void);
 
 // Set all bytes of a given memory block to 'value'
-func @memset(dst: ^void, value: u8, size: u64);
+func @memset(dst: [*]void, value: u8, size: u64);
 
 // Copy one memory block to another address.
-func @memcpy(dst: ^void, src: const ^void, size: u64);
+func @memcpy(dst: [*]void, src: const [*]void, size: u64);
 
 // Move one memory block to another address.
-func @memmove(dst: ^void, src: const ^void, size: u64);
+func @memmove(dst: [*]void, src: const [*]void, size: u64);
 
 // Compare two memory blocks, and returns -1, 0 if equal, or 1.
-func @memcmp(dst, src: const ^void, size: u64)->s32;
+func @memcmp(dst, src: const [*]void, size: u64)->s32;
 
 // Returns the length of the given 0 terminated string.
 func @strlen(str: cstring)->u64;

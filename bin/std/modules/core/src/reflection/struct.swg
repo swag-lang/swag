@@ -45,7 +45,7 @@ func getField(type: typeinfo, name: string)->#null const *TypeValue
 #[ConstExpr]
 func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bool = false)
 {
-    let patch = cast(^u8) src + type.offset
+    let patch = cast([*] u8) src + type.offset
     switch type.pointedType
     {
     case s8, u8, bool:
@@ -81,7 +81,7 @@ func getFieldValue(dest: *void, type: const *TypeValue, src: *void, hardCast: bo
 #[ConstExpr]
 func setFieldValue(dest: *void, type: const *TypeValue, src: const *void, hardCast: bool = false)
 {
-    var patch = cast(^u8) dest + type.offset
+    var patch = cast([*] u8) dest + type.offset
     switch type.pointedType
     {
     case s8, u8, bool:

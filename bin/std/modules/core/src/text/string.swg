@@ -12,7 +12,7 @@ enum CharacterSet
 
 struct String
 {
-    buffer:        ^u8
+    buffer:        [*] u8
     length:        u64
     capacity:      u64
     allocator:     IAllocator
@@ -28,7 +28,7 @@ impl String
     }
 
     #[Inline]
-    mtd const opData()->const ^u8
+    mtd const opData()->const [*] u8
     {
         return me.buffer
     }

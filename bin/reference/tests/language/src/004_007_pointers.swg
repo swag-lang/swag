@@ -76,7 +76,7 @@ For cases where you need **pointer arithmetic** and want a pointer to **multiple
 #[Swag.Sanity(false)]
 #test
 {
-    var ptr: ^u8                        // Declaring a pointer to a memory block of 'u8' values
+    var ptr: [*] u8                        // Declaring a pointer to a memory block of 'u8' values
 
     // Pointer arithmetic allows you to navigate through the memory block by modifying the pointer's address
     ptr = ptr - 1                       // Move the pointer back by one 'u8'
@@ -94,7 +94,7 @@ When you take the address of an array element, the resulting pointer is treated 
 
     // Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values
     ptr = ptr - 1                       // Move the pointer back to the first element
-    #assert(#typeof(ptr) == ^s32)        // The type of 'ptr' is now a pointer to multiple 's32' values
+    #assert(#typeof(ptr) == [*] s32)        // The type of 'ptr' is now a pointer to multiple 's32' values
 }
 
 /**
@@ -106,7 +106,7 @@ When pointer arithmetic is enabled, you can dereference the pointer using an ind
 {
     var arr = [1, 2, 3, 4]             // Declare and initialize an array of 's32' elements
     let ptr = &arr[0]                  // Take the address of the first element
-    @assert(#typeof(ptr) == ^s32)      // The pointer type allows pointer arithmetic
+    @assert(#typeof(ptr) == [*] s32)      // The pointer type allows pointer arithmetic
 
     // Dereferencing by index to access the elements
     let value1 = ptr[0]                // Access the first element

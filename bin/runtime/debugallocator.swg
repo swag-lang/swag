@@ -4,7 +4,7 @@
 struct DebugAllocatorHeader
 {
     loc:            SourceCodeLocation
-    allocAddr:      ^void
+    allocAddr:      [*] void
     allocSize:      u64
     userSize:       u64
     hint:           string
@@ -89,9 +89,9 @@ impl DebugAllocator
         return (value + toAlign) & ~toAlign
     }
 
-    mtd checkIsFreed(ptrHeader: ^DebugAllocatorHeader)
+    mtd checkIsFreed(ptrHeader: [*] DebugAllocatorHeader)
     {
-        let ptrEnd    = cast(^u8) (ptrHeader + 1)
+        let ptrEnd    = cast([*] u8) (ptrHeader + 1)
         let ptrFooter = cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
 
         if (ptrHeader.magic != MagicFree or ptrFooter.magic != MagicFree)
@@ -112,9 +112,9 @@ impl DebugAllocator
         }
     }
 
-    mtd checkIsAllocated(ptrHeader: ^DebugAllocatorHeader, callerLoc = #callerlocation)
+    mtd checkIsAllocated(ptrHeader: [*] DebugAllocatorHeader, callerLoc = #callerlocation)
     {
-        let ptrEnd    = cast(^u8) (ptrHeader + 1)
+        let ptrEnd    = cast([*] u8) (ptrHeader + 1)
         let ptrFooter = cast(*DebugAllocatorFooter) (ptrEnd + ptrHeader.userSize)
 
         if (ptrHeader.magic != MagicAlloc and ptrHeader.magic != MagicFree) or
@@ -230,7 +230,7 @@ impl DebugAllocator
     {
         if !addr:
             return
-        let ptrHeader = cast(*DebugAllocatorHeader) (cast(^u8) addr - #sizeof(DebugAllocatorHeader))
+        let ptrHeader = cast(*DebugAllocatorHeader) (cast([*] u8) addr - #sizeof(DebugAllocatorHeader))
         me.checkIsAllocated(ptrHeader, callerLoc)
     }
 
@@ -262,7 +262,7 @@ impl IAllocator for DebugAllocator
 
         me.assertIsAllocated(request.address, request.callerLoc)
 
-        let userAddr  = cast(^u8) request.address
+        let userAddr  = cast([*] u8) request.address
         let ptrHeader = cast(*DebugAllocatorHeader) (userAddr - #sizeof(DebugAllocatorHeader))
         let ptrFooter = cast(*DebugAllocatorFooter) (userAddr + ptrHeader.userSize)
 
@@ -340,7 +340,7 @@ impl IAllocator for DebugAllocator
         let freeSize = ptrHeader.allocSize
 
         // Fill header/footer with garbage
-        let ptrFooter = cast(*DebugAllocatorFooter) (cast(^u8) ptrHeader.allocAddr + ptrHeader.userSize + #sizeof(DebugAllocatorHeader))
+        let ptrFooter = cast(*DebugAllocatorFooter) (cast([*] u8) ptrHeader.allocAddr + ptrHeader.userSize + #sizeof(DebugAllocatorHeader))
         @memset(ptrHeader, FreeByte, #sizeof(DebugAllocatorHeader))
         @memset(ptrFooter, FreeByte, #sizeof(DebugAllocatorFooter))
 
@@ -367,7 +367,7 @@ impl IAllocator for DebugAllocator
         // This will be used to fill with garbage the difference
         var copyReq    = dref request
         var prevSize   = 0'u64
-        var prevHeader = cast(^DebugAllocatorHeader) request.address
+        var prevHeader = cast([*] DebugAllocatorHeader) request.address
         if request.mode == .Realloc and request.address
         {
             prevHeader -= 1
@@ -397,7 +397,7 @@ impl IAllocator for DebugAllocator
         me.allocator.req(&copyReq)
 
         // This is the aligned returned user address
-        var userAddr = cast(^u8) copyReq.address
+        var userAddr = cast([*] u8) copyReq.address
         userAddr += toAddAlign
 
         // Setup header

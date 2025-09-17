@@ -22,7 +22,7 @@ enum TOTO : const [2] s32
 	let ptr1 = ptr.values[1]
 	@assert(ptr1.name == "G")
 
-	let ptrVal = cast(const ^s32) ptr1.value;
+	let ptrVal = cast(const [*] s32) ptr1.value;
     @assert(ptrVal[0] == 3)
 	@assert(ptrVal[1] == 4)
 }

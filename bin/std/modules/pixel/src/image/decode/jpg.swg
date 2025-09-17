@@ -125,9 +125,9 @@ private
 #[Opaque]
 public struct Decoder
 {
-    stream:                       const ^u8
-    inBufOfs:                     ^u8
-    pSampleBuf:                   ^u8
+    stream:                       const [*] u8
+    inBufOfs:                     [*] u8
+    pSampleBuf:                   [*] u8
 
     imageSizeX:                   s32
     imageSizeY:                   s32
@@ -175,7 +175,7 @@ public struct Decoder
     compQuant:                    [MaxComponents] u32
     compIdent:                    [MaxComponents] s32
     blockMaxZagSet:               [MaxBlocksPerRow] s32
-    blockSeg:                     [MaxBlocksPerRow] ^s16
+    blockSeg:                     [MaxBlocksPerRow] [*] s16
     compList:                     [MaxCompsInScan] u32
     compDcTab:                    [MaxComponents] s32
     compAcTab:                    [MaxComponents] s32
@@ -235,7 +235,7 @@ impl Decoder
             me.initSequential()
     }
 
-    mtd doit(buf: ^u8) throw
+    mtd doit(buf: [*] u8) throw
     {
         var scanLineOfs: *void
         var scanLineLen: u32
@@ -251,7 +251,7 @@ impl Decoder
                     break
 
                 var pdest1 = pdest
-                var psrc   = cast(^u8) scanLineOfs
+                var psrc   = cast([*] u8) scanLineOfs
                 for me.imageSizeX
                 {
                     pdest1[0] = dref psrc
@@ -280,11 +280,11 @@ impl Decoder
         }
     }
 
-    func coeffBufGetp(cb: CoeffBuf, blkX, blkY: s32)->^s16
+    func coeffBufGetp(cb: CoeffBuf, blkX, blkY: s32)->[*] s16
     {
         Debug.assert(blkX < cb.blockNumX)
         Debug.assert(blkY < cb.blockNumY)
-        return cast(^s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
+        return cast([*] s16) (cb.pdata.buffer + blkX * cb.blockSize + blkY * (cb.blockSize * cb.blockNumX))
     }
 
     mtd loadNextRow() throw
@@ -525,7 +525,7 @@ impl Decoder
         }
     }
 
-    func idct(data: ^s16, buf: ^u8)
+    func idct(data: [*] s16, buf: [*] u8)
     {
         var pdstPtr = buf
         var dataPtr = data
@@ -534,7 +534,7 @@ impl Decoder
         {
             // Original code:
             // if (dataPtr[1] | dataPtr[2] | dataPtr[3] | dataPtr[4] | dataPtr[5] | dataPtr[6] | dataPtr[7]) == 0
-            let dataPtr64 = cast(^u64) dataPtr
+            let dataPtr64 = cast([*] u64) dataPtr
             let tst       = (dataPtr64[0] & 0xFFFFFFFF_FFFF0000) | dataPtr64[1]
             if tst == 0
             {
@@ -842,7 +842,7 @@ impl Decoder
         var d0  = me.scanLine0.buffer
         var d1  = me.scanLine1.buffer
 
-        var y: ^u8 = undefined
+        var y: [*] u8 = undefined
         if row < 8:
             y = me.pSampleBuf + row * 8
         else:
@@ -924,7 +924,7 @@ impl Decoder
         var d0  = me.scanLine0.buffer
         var d1  = me.scanLine1.buffer
 
-        var y: ^u8 = undefined
+        var y: [*] u8 = undefined
         if row < 8:
             y = me.pSampleBuf + row * 8
         else:
@@ -1049,7 +1049,7 @@ impl Decoder
         me.quantBuf.resize(cast(u64) me.maxBlocksPerRow * 64 * #sizeof(s16) + 8)
         for i in me.maxBlocksPerRow
         {
-            me.blockSeg[i]       = cast(^s16) (me.quantBuf.buffer + i * 64 * #sizeof(s16))
+            me.blockSeg[i]       = cast([*] s16) (me.quantBuf.buffer + i * 64 * #sizeof(s16))
             me.blockMaxZagSet[i] = 64
         }
 
@@ -2061,9 +2061,9 @@ impl Decoder
         }
     }
 
-    func memset16(p: ^void, c: u16, n: u32)
+    func memset16(p: [*] void, c: u16, n: u32)
     {
-        var ps = cast(^u16) p
+        var ps = cast([*] u16) p
         for n
         {
             dref ps = c

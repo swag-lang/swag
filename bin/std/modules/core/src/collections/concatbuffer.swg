@@ -3,7 +3,7 @@
 // Represents a single memory block (a bucket) within a ConcatBuffer.
 struct ConcatBufferBucket
 {
-    datas:           ^u8                     // Pointer to the raw memory of the bucket.
+    datas:           [*] u8                     // Pointer to the raw memory of the bucket.
     next:            *ConcatBufferBucket     // Pointer to the next bucket in the chain.
     count:           u64                     // Number of bytes used in this bucket.
     size:            u64                     // Total allocated size of this bucket in bytes.
@@ -15,7 +15,7 @@ struct ConcatBufferBucket
 struct ConcatBufferSeek
 {
     bucket:     *ConcatBufferBucket     // The bucket where the position is located.
-    sp:         ^u8                     // The exact memory address of the position.
+    sp:         [*] u8                     // The exact memory address of the position.
 }
 
 // Represents a growable buffer that is divided into buckets (chunks of memory).
@@ -28,7 +28,7 @@ struct ConcatBuffer
     firstBucket:         *ConcatBufferBucket     // The first bucket in the chain.
     curBucket:           *ConcatBufferBucket     // The bucket where the current seek pointer is located.
     lastBucket:          *ConcatBufferBucket     // The last bucket in the chain.
-    currentSP:           ^u8                     // The current read/write pointer in the `curBucket`.
+    currentSP:           [*] u8                     // The current read/write pointer in the `curBucket`.
     granularity:         u64 = 1024              // The default size for newly allocated buckets.
     isAtEnd:             bool = true             // 'true' if the seek pointer is at the very end of the buffer.
     viewFirstBucket:     ConcatBufferBucket      // A pre-allocated bucket used for views, to avoid a separate allocation.
@@ -187,7 +187,7 @@ impl ConcatBuffer
                me.currentSP > me.curBucket.datas + me.curBucket.count - #sizeof(T)
             {
                 var v = val
-                me.addBytes(@mkslice(cast(^u8) &v, #sizeof(T)), false)
+                me.addBytes(@mkslice(cast([*] u8) &v, #sizeof(T)), false)
                 return
             }
 
@@ -207,7 +207,7 @@ impl ConcatBuffer
     #[Swag.Inline]
     mtd(T) addStruct(val: T)
     {
-        me.addBytes(@mkslice(cast(const ^u8) &val, #sizeof(T)))
+        me.addBytes(@mkslice(cast(const [*] u8) &val, #sizeof(T)))
     }
 
     // Appends a slice of bytes to the buffer.
@@ -427,7 +427,7 @@ impl ConcatBuffer
         return result
     }
 
-    internal mtd eatBuffer()->{ data: ^u8, size: u64, capacity: u64 }
+    internal mtd eatBuffer()->{ data: [*] u8, size: u64, capacity: u64 }
     {
         // Must be linear ?
         Debug.assert(me.lastBucket == me.firstBucket)
@@ -474,7 +474,7 @@ impl ConcatBuffer
             return
 
         let total    = me.count()
-        let newDatas = cast(^u8) Memory.alloc(total, me.allocator)
+        let newDatas = cast([*] u8) Memory.alloc(total, me.allocator)
 
         var curPtr = newDatas
         foreach b in dref me

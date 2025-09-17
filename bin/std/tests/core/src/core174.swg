@@ -14,7 +14,7 @@ struct ST
     y[0] = 'A''u8
     y[1] = 'B''u8
     y[2] = 0
-    let dataof = cast(const ^u8) y
+    let dataof = cast(const [*] u8) y
 
     for 20
     {

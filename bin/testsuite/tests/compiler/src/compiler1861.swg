@@ -1,4 +1,4 @@
-func toto(ptr: const ^u8)
+func toto(ptr: const [*] u8)
 {
     let x = @mkstring(ptr, 4)
     //@print(#typeof(x).name)
@@ -8,7 +8,7 @@ func toto(ptr: const ^u8)
 
 #test
 {
-    toto(cast(const ^u8) "toto")
+    toto(cast(const [*] u8) "toto")
 }
 
 /*#foreignlib("user32")

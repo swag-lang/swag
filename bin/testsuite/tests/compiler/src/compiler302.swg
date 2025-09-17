@@ -2,7 +2,7 @@
 #test
 {
 	let str = "ABCD";
-	let p: const ^u8 = @dataof(str);
+	let p: const [*] u8 = @dataof(str);
 	@assert(p[0] == cast(u8) ('A''rune));
 	@assert(p[1] == cast(u8) ('B''rune));
 	@assert(p[2] == cast(u8) ('C''rune));

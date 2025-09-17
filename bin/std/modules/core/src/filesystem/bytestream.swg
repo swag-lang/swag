@@ -46,7 +46,7 @@ public impl ByteStream
     }
 
     // Returns a pointer to the underlying read or write buffer
-    mtd readData()->const ^u8
+    mtd readData()->const [*] u8
     {
         return me.writeBuffer ? me.writeBuffer.buffer : @dataof(me.readBuffer)
     }

@@ -121,7 +121,7 @@ impl BitStream
     }
 
     // Peeks 'width' bytes into 'dest', consuming bits after each byte
-    mtd peekBytes(width: u8, dest: ^u8)
+    mtd peekBytes(width: u8, dest: [*] u8)
     {
         // Could be optimized further
         for i in width
@@ -132,7 +132,7 @@ impl BitStream
     }
 
     // Peeks 4 bytes (little-endian) into 'dest'
-    mtd peek32(dest: ^u8)
+    mtd peek32(dest: [*] u8)
     {
         dest[0] = cast(u8) me.peekBits(8)
         me.consumeBits(8)
@@ -145,7 +145,7 @@ impl BitStream
     }
 
     // Peeks 4 bytes (big-endian) into 'dest', auto-switches based on platform
-    mtd peek32Be(dest: ^u8)
+    mtd peek32Be(dest: [*] u8)
     {
         #if BIG_ENDIAN:
             peek32(dest) // Already big-endian

@@ -127,19 +127,19 @@ public struct Encoder
     ihdr:                    Ihdr
     currentChunk:            Chunk
     tmpBuf:                  [256] u8
-    writePtr:                ^u8
+    writePtr:                [*] u8
     crc:                     Hash.Crc32
     subimage:                [7] SubImage
     widestPass:              s32
     lastPass:                s32
     bytesPerPixel:           u32
-    scanlineBuf:             ^u8
-    prevScanlineBuf:         ^u8
-    row_buf:                 ^u8
-    filteredScanlineBuf:     ^u8
-    filteredScanline:        ^u8
-    scanline:                ^u8
-    prevScanline:            ^u8
+    scanlineBuf:             [*] u8
+    prevScanlineBuf:         [*] u8
+    row_buf:                 [*] u8
+    filteredScanlineBuf:     [*] u8
+    filteredScanline:        [*] u8
+    scanline:                [*] u8
+    prevScanline:            [*] u8
     encodeFlags:             EncodeFlags
     rowInfo:                 RowInfo
     pixelSize:               u32
@@ -157,7 +157,7 @@ impl Encoder
         dref cast(*u32) dst = v
     }
 
-    mtd writeData(buf: const ^u8, bytes: u32)
+    mtd writeData(buf: const [*] u8, bytes: u32)
     {
         me.stream.addBytes(@mkslice(buf, bytes))
     }
@@ -166,10 +166,10 @@ impl Encoder
     mtd writeU32(val: u32)
     {
         var v = Math.nativeToBigEndian(val)
-        me.stream.addBytes(@mkslice(cast(const ^u8) &v, 4))
+        me.stream.addBytes(@mkslice(cast(const [*] u8) &v, 4))
     }
 
-    mtd writeHeader(chunkType: const [4] u8, chunkLength: u64)->^u8
+    mtd writeHeader(chunkType: const [4] u8, chunkLength: u64)->[*] u8
     {
         let total = chunkLength + 8 + 4
         me.stream.grow(total)
@@ -317,12 +317,12 @@ impl Encoder
         me.finishChunk()
     }
 
-    mtd writeIDatBytes(sl: ^u8, len: u32) throw
+    mtd writeIDatBytes(sl: [*] u8, len: u32) throw
     {
         me.bufferToCompress.add(@mkslice(sl, len))
     }
 
-    mtd encodeRow(row: ^u8)->bool throw
+    mtd encodeRow(row: [*] u8)->bool throw
     {
         let pass = me.rowInfo.pass
 
@@ -470,7 +470,7 @@ impl Encoder
         return sum
     }
 
-    mtd filterScanline(filtered: ^u8, size: u32, filter: Filter)
+    mtd filterScanline(filtered: [*] u8, size: u32, filter: Filter)
     {
         for i in size
         {
@@ -507,7 +507,7 @@ impl Encoder
         }
     }
 
-    mtd encodeScanLine(sl: ^u8)->bool throw
+    mtd encodeScanLine(sl: [*] u8)->bool throw
     {
         let pass = me.rowInfo.pass
 

@@ -242,7 +242,7 @@ impl StaticArray
 
     // Makes room for 'num' elements at the end of the array and returns a pointer to the new space.
     // The new memory is not initialized. Asserts if the array does not have enough capacity.
-    mtd emplaceAddress(num: u32 = 1)->^T
+    mtd emplaceAddress(num: u32 = 1)->[*] T
     {
         Debug.assert(me.count + num <= N, "the array is full")
         me.count += num
@@ -251,7 +251,7 @@ impl StaticArray
 
     // Makes room for 'num' elements at the end of the array and returns a pointer to the new space.
     // The new memory is default-initialized. Asserts if the array does not have enough capacity.
-    mtd emplaceInitAddress(num: u32 = 1)->^T
+    mtd emplaceInitAddress(num: u32 = 1)->[*] T
     {
         Debug.assert(me.count + num <= N, "the array is full")
         me.count += num

@@ -1,4 +1,4 @@
-func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
+func getChar(buffer: const [*] u8)->{a:const [*] u8, b:rune}
 {
 	var ptr = buffer
 	var c = cast(rune) dref ptr
@@ -69,7 +69,7 @@ func getChar(buffer: const ^u8)->{a:const ^u8, b:rune}
 	const str = "⺁⺆⻇"
 
 	var c: rune
-	var ptr: const ^u8 = @dataof(str)
+	var ptr: const [*] u8 = @dataof(str)
 	var cpt = 0
 	for
 	{

@@ -29,12 +29,12 @@ impl ICodec for CodecPcmToPcm16
         return false
     }
 
-    mtd impl init(srcBuffer: ^void, srcLength: u64)->u64 throw
+    mtd impl init(srcBuffer: [*] void, srcLength: u64)->u64 throw
     {
         return 0
     }
 
-    mtd impl decode(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{ write, read: u64 } throw
+    mtd impl decode(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLength: u64)->{ write, read: u64 } throw
     {
         if me.srcEncoding == me.dstEncoding
         {
@@ -42,10 +42,10 @@ impl ICodec for CodecPcmToPcm16
             return {srcLength, srcLength}
         }
 
-        func(TS: s32, EN: SoundFileEncoding) doIt(destBuffer: ^void, destLength: u64, srcBuffer: ^void, srcLength: u64)->{ write, read: u64 }
+        func(TS: s32, EN: SoundFileEncoding) doIt(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLength: u64)->{ write, read: u64 }
         {
-            var dst = cast(^s16) destBuffer
-            var src = cast(^s8) srcBuffer
+            var dst = cast([*] s16) destBuffer
+            var src = cast([*] s8) srcBuffer
 
             var write, read = 0
             for i in srcLength / TS
@@ -68,12 +68,12 @@ impl ICodec for CodecPcmToPcm16
                 }
                 #elif EN == .Pcm32
                 {
-                    let input = cast(^s32) src
+                    let input = cast([*] s32) src
                     dst[0] = cast(s16) (input[0] >> 16)
                 }
                 #elif EN == .Float32
                 {
-                    let input  = cast(^f32) src
+                    let input  = cast([*] f32) src
                     let sample = input[0] * 32768.0
                     let intS   = Math.clamp(cast #wrap (s32) sample, -32768, 32767)
                     dst[0] = cast(s16) intS

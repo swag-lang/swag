@@ -90,7 +90,8 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
     if (node->typeFlags.has(TYPE_FLAG_IS_PTR) && node->typeFlags.has(TYPE_FLAG_IS_PTR_ARITHMETIC))
     {
-        concat->addChar('^');
+        concat->addString("[*]");
+        concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;
     }

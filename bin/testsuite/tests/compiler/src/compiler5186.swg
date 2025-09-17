@@ -1,5 +1,5 @@
 struct A {
-    buf: ^u8
+    buf: [*] u8
     len: u32 = 4
 }
 

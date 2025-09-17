@@ -70,7 +70,7 @@ namespace __Win32RT
         SizeOfStruct:     DWORD       // set to sizeof(IMAGEHLP_LINE64)
         Key:              *void       // internal
         LineNumber:       DWORD       // line number in file
-        FileName:         ^CHAR       // full filename
+        FileName:         [*] CHAR    // full filename
         Address:          ULONG64     // first instruction of line
     }
 
@@ -79,7 +79,7 @@ namespace __Win32RT
         SizeOfStruct:     DWORD       // set to sizeof(IMAGEHLP_LINEW64)
         Key:              *void       // internal
         LineNumber:       DWORD       // line number in file
-        FileName:         ^WCHAR      // full filename
+        FileName:         [*] WCHAR   // full filename
         Address:          ULONG64     // first instruction of line
     }
 
@@ -194,12 +194,12 @@ private
     func pow(val1, val2: f64)->f64;
     func atan2(val1, val2: f64)->f64;
 
-    func malloc(s: s64)->^void;
-    func realloc(ptr: ^void, s: s64)->^void;
-    func free(ptr: ^void);
+    func malloc(s: s64)->[*] void;
+    func realloc(ptr: [*] void, s: s64)->[*] void;
+    func free(ptr: [*] void);
 
-    func strlen(a: const ^u8)->s64;
-    func strcmp(a, b: const ^u8)->s32;
+    func strlen(a: const [*] u8)->s64;
+    func strcmp(a, b: const [*] u8)->s32;
 }
 
 #[Swag.NoDoc]
@@ -221,13 +221,13 @@ func memmove(dst: *void, src: const *void, size: u64)
 }
 
 #[Swag.NoDoc]
-func memcmp(dst, src: const ^void, size: u64)->s32
+func memcmp(dst, src: const [*] void, size: u64)->s32
 {
     let len = __Win32RT.RtlCompareMemory(dst, src, size)
     if len == size:
         return 0
-    let p1 = cast(const ^s8) dst
-    let p2 = cast(const ^s8) src
+    let p1 = cast(const [*] s8) dst
+    let p2 = cast(const [*] s8) src
     return cast(s32) p1[len] - cast(s32) p2[len]
 }
 
@@ -368,7 +368,7 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
 
         if hasSymbol
         {
-            let symName = @mkstring(cast(const ^u8) psym.Name, @strlen(psym.Name))
+            let symName = @mkstring(cast(const [*] u8) psym.Name, @strlen(psym.Name))
             @print(symName)
         }
 

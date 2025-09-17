@@ -102,7 +102,7 @@ public struct Decoder
     inChannels:        s32
     outChannels:       s32
     dcmpBuf:           Array'u8
-    dstPixels:         ^u8
+    dstPixels:         [*] u8
     dstPixelsSize:     u64
     chunkTRNS:         Chunk
     palette:           [256] u32
@@ -126,11 +126,11 @@ impl Decoder
         me.stream.curByte += ch.length
 
         var crc: Hash.Crc32
-        crc.update(@mkslice(cast(const ^u8) &ch.type, 4))
+        crc.update(@mkslice(cast(const [*] u8) &ch.type, 4))
         crc.update(result.datas)
 
         var vcrc: u32
-        me.stream.peek32Be(cast(^u8) &vcrc)
+        me.stream.peek32Be(cast([*] u8) &vcrc)
         if vcrc != crc.crc:
             throw InvalidFormatError{"invalid checksum"}
 
@@ -196,7 +196,7 @@ impl Decoder
     }
 
     // Expand 1, 2, 4 bits to 8 bits
-    mtd expand8(width, height: u32, output: ^u8)
+    mtd expand8(width, height: u32, output: [*] u8)
     {
         let rowStrideIn  = me.getStrideIn(width)
         let rowStrideOut = me.inChannels * width
@@ -316,7 +316,7 @@ impl Decoder
         return cast(u64) me.inChannels * width
     }
 
-    mtd defilter8(width, height: u32, input, output: ^u8)
+    mtd defilter8(width, height: u32, input, output: [*] u8)
     {
         let rowStrideIn  = me.getStrideIn(width)
         let rowStrideOut = cast(u64) me.inChannels * width
@@ -390,7 +390,7 @@ impl Decoder
     }
 
     #[Swag.Overload]
-    mtd defilter(width, height: u32, input, output: ^u8)
+    mtd defilter(width, height: u32, input, output: [*] u8)
     {
         if me.header.bitDepth < 8
         {
@@ -462,7 +462,7 @@ impl Decoder
         me.stream.init(buffer)
 
         var signature: u64 = undefined
-        me.stream.peekBytes(#sizeof(signature), cast(^u8) &signature)
+        me.stream.peekBytes(#sizeof(signature), cast([*] u8) &signature)
         if signature != 0x0a1a0a0d474e5089:
             throw InvalidFormatError{"not a png"}
 
@@ -480,8 +480,8 @@ impl Decoder
             // Peek a chunk header only if it's not already done
             if !chIsHere
             {
-                me.stream.peek32Be(cast(^u8) &ch.length)
-                me.stream.peek32(cast(^u8) &ch.type)
+                me.stream.peek32Be(cast([*] u8) &ch.length)
+                me.stream.peek32(cast([*] u8) &ch.type)
             }
 
             chIsHere = false
@@ -520,8 +520,8 @@ impl Decoder
                 {
                     let chunk = me.readChunk(ch)
                     iDataBuf.add(chunk.datas)
-                    me.stream.peek32Be(cast(^u8) &ch.length)
-                    me.stream.peek32(cast(^u8) &ch.type)
+                    me.stream.peek32Be(cast([*] u8) &ch.length)
+                    me.stream.peek32(cast([*] u8) &ch.type)
                     if me.stream.eof:
                         throw InvalidFormatError{"invalid chunk"}
                 }
@@ -647,7 +647,7 @@ impl Decoder
         {
             result.visitPixels(&me.dstPixels)
             {
-                var src = dref cast(^^u8) userData
+                var src = dref cast([*] [*] u8) userData
                 src += x + y * image.width
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -681,7 +681,7 @@ impl Decoder
         {
             result.visitPixels(&me.dstPixels)
             {
-                var src = dref cast(^^u8) userData
+                var src = dref cast([*] [*] u8) userData
                 src += (x * 2) + (y * image.width * 2)
                 pix[0] = src[0]
                 pix[1] = src[0]
@@ -694,7 +694,7 @@ impl Decoder
         // Color without alpha but transparency
         elif me.inChannels == 3 and me.seenTRSN
         {
-            let key  = cast(const ^u8) @dataof(me.chunkTRNS.datas)
+            let key  = cast(const [*] u8) @dataof(me.chunkTRNS.datas)
             let key0 = key[1]
             let key1 = key[3]
             let key2 = key[5]

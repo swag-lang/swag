@@ -30,7 +30,7 @@ public struct Decoder {}
 
 impl Decoder
 {
-    func uncompress(bpp: u8, dstBuffer: ^u8, srcBuffer, lastSrc: const ^u8, length: u64) throw
+    func uncompress(bpp: u8, dstBuffer: [*] u8, srcBuffer, lastSrc: const [*] u8, length: u64) throw
     {
         let lastDest = dstBuffer + length
         var dest     = dstBuffer

@@ -56,7 +56,7 @@ public struct Decoder
     fw:              u16
     fh:              u16
     bgIndex:         u8
-    canvas:          ^u8
+    canvas:          [*] u8
     frame:           Array'u8
     table:           Table
     animStart:       u64
@@ -64,8 +64,8 @@ public struct Decoder
     reachEnd:        bool
     initDone:        bool
 
-    streamStart:     const ^u8
-    stream:          const ^u8
+    streamStart:     const [*] u8
+    stream:          const [*] u8
     streamLen:       u64
 }
 
@@ -377,7 +377,7 @@ impl Decoder
         me.readImageData(interlace)
     }
 
-    mtd renderFrame(buffer: ^u8, pf: PixelFormat)
+    mtd renderFrame(buffer: [*] u8, pf: PixelFormat)
     {
         var i = cast(u32) me.fy * me.width + me.fx
 

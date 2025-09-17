@@ -4,7 +4,7 @@ using Swag
 
 // Copy one block of memory to a given address
 #[Inline]
-func copy(dest: ^void, src: const ^void, size: u64)
+func copy(dest: [*] void, src: const [*] void, size: u64)
 {
     if size:
         @memcpy(dest, src, size)
@@ -12,7 +12,7 @@ func copy(dest: ^void, src: const ^void, size: u64)
 
 // Move one block of memory to a given address
 #[Inline]
-func copyOver(dest: ^void, src: const ^void, size: u64)
+func copyOver(dest: [*] void, src: const [*] void, size: u64)
 {
     if size:
         @memmove(dest, src, size)
@@ -20,7 +20,7 @@ func copyOver(dest: ^void, src: const ^void, size: u64)
 
 // Compare two blocks of memory
 #[Inline]
-func compare(dest, src: const ^void, size: u64)->s32
+func compare(dest, src: const [*] void, size: u64)->s32
 {
     if !size:
         return 0
@@ -36,7 +36,7 @@ func(T) equals(dest, src: const *T)->bool
 
 // Clear one block of memory
 #[Inline]
-func clear(dest: ^void, size: u64)
+func clear(dest: [*] void, size: u64)
 {
     if size:
         @memset(dest, 0, size)
@@ -44,7 +44,7 @@ func clear(dest: ^void, size: u64)
 
 // Set the content of one block of memory to a specific byte value
 #[Inline]
-func set(dest: ^void, value: u8, size: u64)
+func set(dest: [*] void, value: u8, size: u64)
 {
     if size:
         @memset(dest, value, size)
@@ -60,7 +60,7 @@ func align(value: u64, alignment: u32)->u64
 
 // Align a pointer to the given amount
 #[Overload, Inline]
-func align(value: const ^void, alignment: u32)->const ^void
+func align(value: const [*] void, alignment: u32)->const [*] void
 {
     return cast() align(cast(u64) value, alignment)
 }

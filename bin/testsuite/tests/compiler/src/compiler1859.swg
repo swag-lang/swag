@@ -126,7 +126,7 @@ func aaa(ptr: *s64)
         }
         {
             var x, y = 0
-            let diff: s64 = cast(^u32) &y - cast(^u32) &x
+            let diff: s64 = cast([*] u32) &y - cast([*] u32) &x
             print(diff)
         }
 
@@ -1068,8 +1068,8 @@ func aaa(ptr: *s64)
         }
 
         {
-            let x: ^u8 = null
-            var y: ^u8 = null
+            let x: [*] u8 = null
+            var y: [*] u8 = null
             y += 1
             let z = x orelse y
             if z != null

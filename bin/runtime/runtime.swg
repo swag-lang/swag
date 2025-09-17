@@ -50,7 +50,7 @@ func @as(toType, fromType: const *TypeInfoStruct, ptr: *void)->#null *void
     let (offset, yes) = __is(toType, fromType)
     if !yes:
         return null
-    return cast(^u8) ptr + offset
+    return cast([*] u8) ptr + offset
 }
 
 func @is(toType, fromType: const *TypeInfoStruct)->bool
@@ -143,7 +143,7 @@ const __MAX_ARGUMENTS = 512
 var __argv:           [__MAX_ARGUMENTS] string
 var __argc            = 0'u32
 
-func __convertArgcArgv(args: const ^u8)
+func __convertArgcArgv(args: const [*] u8)
 {
     if args == null:
         return
@@ -236,7 +236,7 @@ func __dropGlobalVariables()
 {
     foreach g in @gvtd
     {
-        var ptr = cast(^u8) g.ptr
+        var ptr = cast([*] u8) g.ptr
         for x in g.count
         {
             g.opDrop(ptr)

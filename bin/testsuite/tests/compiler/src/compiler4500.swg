@@ -2,7 +2,7 @@ using Swag
 
 struct BitArray
 {
-    buffer:     ^u32
+    buffer:     [*] u32
     allocator:  IAllocator
     count:      u64
     capacity:   u64

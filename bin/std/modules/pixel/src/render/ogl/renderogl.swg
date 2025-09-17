@@ -295,7 +295,7 @@ impl RenderOgl
         glBindBuffer(GL_ARRAY_BUFFER, me.vertexbuffer)
 
         // Vertex buffer layout
-        var offset: const ^u8 = null
+        var offset: const [*] u8 = null
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, #sizeof(VertexLayout), offset)
         offset += #sizeof(Vector2)
         glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, #sizeof(VertexLayout), offset)

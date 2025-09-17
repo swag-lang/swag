@@ -1,4 +1,4 @@
 #test
 {
-    var x: ^u32
+    var x: [*] u32
 }

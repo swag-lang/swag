@@ -189,7 +189,7 @@ impl Image
 
     // Copy one pixel, depending on bpp
     #[Swag.Inline]
-    func(BPP: u8) copyPixelDirect(pixDst, pixSrc: ^u8)
+    func(BPP: u8) copyPixelDirect(pixDst, pixSrc: [*] u8)
     {
         #if BPP == 24
         {
@@ -208,7 +208,7 @@ impl Image
 
     // Set pixel values at 'pixDst' depending on pixel format
     // Destination is supped to be in RGBA8 format
-    func(PF: PixelFormat) convertToRGBA8(pixDst: ^u8, r, g, b, a: u8)
+    func(PF: PixelFormat) convertToRGBA8(pixDst: [*] u8, r, g, b, a: u8)
     {
         #if PF == .BGR8
         {

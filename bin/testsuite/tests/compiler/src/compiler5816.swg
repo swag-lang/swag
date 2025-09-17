@@ -1,4 +1,4 @@
-var a: ^bool
+var a: [*] bool
 
 //#[Swag.PrintBc]
 func toto(x: s32)->bool

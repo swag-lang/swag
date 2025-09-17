@@ -20,7 +20,7 @@ struct(K, V) HashTable
     const HASH_MASK        = 2'u32             // A mask to ensure that valid hashes are >= HASH_FIRST.
 
     allocator:             IAllocator          // The me.allocator used for memory operations.
-    table:                 ^HashTableEntry     // Pointer to the contiguous memory block for the hash me.table.
+    table:                 [*] HashTableEntry  // Pointer to the contiguous memory block for the hash me.table.
     count:                 u64                 // The number of valid key-value pairs currently in the me.table.
     capacity:              u64                 // The total number of slots in the hash me.table.
     deleted:               u64                 // The number of slots marked as me.deleted.
@@ -58,7 +58,7 @@ impl HashTable
         if me.allocator == null:
             me.allocator = @getcontext().allocator
 
-        let newTable = cast(^HashTableEntry) Memory.alloc(me.capacity * #sizeof(HashTableEntry), me.allocator)
+        let newTable = cast([*] HashTableEntry) Memory.alloc(me.capacity * #sizeof(HashTableEntry), me.allocator)
         #if Reflection.hasPostCopy(K) or Reflection.hasPostCopy(V)
         {
             for i in me.capacity

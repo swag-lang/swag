@@ -28,7 +28,7 @@ struct Context
     patternIndex:            s32
     error:                   f32
     divError:                f32
-    pattern:                 const ^f32
+    pattern:                 const [*] f32
     patternCount:            s32
 }
 

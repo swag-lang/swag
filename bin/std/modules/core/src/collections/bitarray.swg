@@ -6,7 +6,7 @@ using Swag
 // for storing a large number of boolean flags.
 public struct BitArray
 {
-    buffer:        ^u32           // Internal buffer storing the bits packed into 32-bit integers.
+    buffer:        [*] u32           // Internal buffer storing the bits packed into 32-bit integers.
     allocator:     IAllocator     // The allocator used for memory operations.
     count:         u64            // The number of bits in the array.
     capacity:      u64            // The total allocated capacity in bytes.

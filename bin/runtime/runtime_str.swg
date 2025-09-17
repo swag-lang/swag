@@ -4,7 +4,7 @@ using Swag
 
 #[Discardable, Safety("", false)]
 //#[Swag.PrintAsm]
-func __itoa(result: ^u8, value: s64)->^u8
+func __itoa(result: [*] u8, value: s64)->[*] u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
@@ -44,7 +44,7 @@ func __itoa(result: ^u8, value: s64)->^u8
 }
 
 #[Discardable, Safety("", false)]
-func __utoa(result: ^u8, value: u64)->^u8
+func __utoa(result: [*] u8, value: u64)->[*] u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
@@ -78,7 +78,7 @@ func __utoa(result: ^u8, value: u64)->^u8
 }
 
 #[Safety("", false)]
-func __ftoa(result: ^u8, value: f64)
+func __ftoa(result: [*] u8, value: f64)
 {
     var ipart = cast(s64) value
     var fpart = value - cast(f64) ipart
@@ -182,7 +182,7 @@ func @print(params: ...)
         if ko.flags & TypeInfoFlags.CString
         {
             #[Safety("dyncast", false)]
-            let ptr = cast(const ^u8) v
+            let ptr = cast(const [*] u8) v
             let len = @strlen(ptr)
             __printString(@mkstring(ptr, len))
             continue

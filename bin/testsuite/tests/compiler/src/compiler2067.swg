@@ -3,7 +3,7 @@ var g_Argc = 0'u32
 
 func init(x: string)
 {
-    var cmdLine = cast(const ^u8) @dataof(x)
+    var cmdLine = cast(const [*] u8) @dataof(x)
 
     g_Argc = 0
     while dref cmdLine

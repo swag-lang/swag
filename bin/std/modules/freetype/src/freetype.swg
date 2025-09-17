@@ -98,12 +98,12 @@ struct FT_FaceRec
     face_flags:              FT_Long
     style_flags:             FT_Long
     num_glyphs:              FT_Long
-    family_name:             ^FT_String
-    style_name:              ^FT_String
+    family_name:             [*] FT_String
+    style_name:              [*] FT_String
     num_fixed_sizes:         FT_Int
-    available_sizes:         ^FT_Bitmap_Size
+    available_sizes:         [*] FT_Bitmap_Size
     num_charmaps:            FT_Int
-    charmaps:                ^FT_CharMap
+    charmaps:                [*] FT_CharMap
     generic:                 FT_Generic
     bbox:                    FT_BBox
     units_per_EM:            FT_UShort
@@ -122,7 +122,7 @@ struct FT_FaceRec
     stream:                  FT_Stream
     sizes_list:              FT_ListRec
     autohint:                FT_Generic
-    extensions:              ^void
+    extensions:              [*] void
     finternal:               FT_Face_Internal
 }
 
@@ -207,20 +207,20 @@ struct FT_Bitmap
     rows:             u32
     width:            u32
     pitch:            s32
-    buffer:           ^u8
+    buffer:           [*] u8
     num_grays:        u16
     pixel_mode:       u8
     palette_mode:     u8
-    palette:          ^void
+    palette:          [*] void
 }
 
 struct FT_Outline
 {
     n_contours:     s16
     n_points:       s16
-    points:         ^FT_Vector
-    tags:           ^u8
-    contours:       ^s16
+    points:         [*] FT_Vector
+    tags:           [*] u8
+    contours:       [*] s16
     flags:          s32
 }
 

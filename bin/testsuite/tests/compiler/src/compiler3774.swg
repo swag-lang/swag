@@ -23,7 +23,7 @@ impl I for A
     struct TT
     {
         obj:    *void
-        itable: const ^^void
+        itable: const ^[*] void
     }
 
     let ptr = cast(*TT) &i

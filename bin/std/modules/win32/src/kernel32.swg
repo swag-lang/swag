@@ -2,8 +2,8 @@
 #foreignlib("kernel32")
 using Swag
 
-alias ATOM          = const ^void
-alias HANDLE        = const ^void
+alias ATOM          = const [*] void
+alias HANDLE        = const [*] void
 alias HGLOBAL       = HANDLE
 alias HLOCAL        = HANDLE
 alias HINSTANCE     = HANDLE
@@ -16,13 +16,13 @@ alias BYTE          = u8
 alias LPBYTE        = *BYTE
 alias LONG          = s32
 alias ULONG         = u32
-alias LPVOID        = ^void
-alias LPCVOID       = const ^void
-alias LPCSTR        = const ^u8
-alias PCSTR         = const ^u8
-alias LPCWSTR       = const ^u16
-alias PCWSTR        = const ^u16
-alias LPCTSTR       = const ^u16
+alias LPVOID        = [*] void
+alias LPCVOID       = const [*] void
+alias LPCSTR        = const [*] u8
+alias PCSTR         = const [*] u8
+alias LPCWSTR       = const [*] u16
+alias PCWSTR        = const [*] u16
+alias LPCTSTR       = const [*] u16
 alias LPDWORD       = *DWORD
 alias LPOVERLAPPED  = *DWORD
 alias DWORD_PTR     = u64
@@ -37,12 +37,12 @@ alias PLONG         = *LONG
 alias LONG_PTR      = *LONG
 alias CHAR          = u8
 alias WCHAR         = u16
-alias LPSTR         = ^CHAR
-alias LPWSTR        = ^WCHAR
-alias LPCH          = ^CHAR
-alias LPWCH         = ^WCHAR
+alias LPSTR         = [*] CHAR
+alias LPWSTR        = [*] WCHAR
+alias LPCH          = [*] CHAR
+alias LPWCH         = [*] WCHAR
 alias SIZE_T        = u64
-alias va_list       = ^u8
+alias va_list       = [*] u8
 
 alias LPTHREAD_START_ROUTINE = func(*void)->DWORD
 alias WAITORTIMERCALLBACK    = func(*void, BOOL)
@@ -366,8 +366,8 @@ const FIND_FIRST_EX_ON_DISK_ENTRIES_ONLY = 4
     func OutputDebugStringA(lpOutputString: LPCSTR);
     func OutputDebugStringW(lpOutputString: LPCWSTR);
     func DebugActiveProcess(procId: DWORD);
-    func GetCommandLineA()->const ^u8;
-    func GetCommandLineW()->const ^u16;
+    func GetCommandLineA()->const [*] u8;
+    func GetCommandLineW()->const [*] u16;
 
     func GetProcAddress(hModule: HMODULE, lpProcName: LPCSTR)->const *void;
     func GetCurrentProcess()->HANDLE;

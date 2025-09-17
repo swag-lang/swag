@@ -82,7 +82,7 @@ The `#ast` block requires a *string-like* value to be returned, which can be dyn
 #test
 {
     #[Swag.Compiler]
-    func append(buf: ^u8, val: string)
+    func append(buf: [*] u8, val: string)
     {
         var len = 0
         while buf[len]:

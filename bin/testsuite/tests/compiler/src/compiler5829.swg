@@ -1,6 +1,6 @@
 #[Swag.NoInline]
 //#[Swag.PrintAsm]
-func toto(ptr: ^s32, idx: u64, val: s32)
+func toto(ptr: [*] s32, idx: u64, val: s32)
 {
     ptr[idx] = val
 }

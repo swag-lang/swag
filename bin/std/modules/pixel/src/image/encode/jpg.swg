@@ -185,9 +185,9 @@ public struct Encoder
     du:                [64] s16
 
     categoryAlloc:     Array'u8
-    category:          ^u8
+    category:          [*] u8
     bitcodeAlloc:      Array'BitString
-    bitcode:           ^BitString
+    bitcode:           [*] BitString
 }
 
 impl Encoder
@@ -259,7 +259,7 @@ impl Encoder
         me.imageY = cast(u16) yDiv8
     }
 
-    mtd setQuantTable(basicTable: const ^u8, newTable: ^u8)
+    mtd setQuantTable(basicTable: const [*] u8, newTable: [*] u8)
     {
         for i in 64
         {
@@ -306,7 +306,7 @@ impl Encoder
             me.dhtInfo.valuesCbAC[i] = StdAcChrominanceValues[i]
     }
 
-    func computeHuffmanTable(nrCodes: const ^u8, stdTable: const ^u8, hT: ^BitString)
+    func computeHuffmanTable(nrCodes: const [*] u8, stdTable: const [*] u8, hT: [*] BitString)
     {
         var codevalue  = 0'u16
         var posInTable = 0
@@ -531,7 +531,7 @@ impl Encoder
         }
     }
 
-    func quantization(data: ^s8, fdtbl: ^f32, outData: ^s16)
+    func quantization(data: [*] s8, fdtbl: [*] f32, outData: [*] s16)
     {
         var dataFloat: [64] f32
         for i in 64:
@@ -633,7 +633,7 @@ impl Encoder
         }
     }
 
-    mtd processDU(componentDU: ^s8, fdtbl: ^f32, dC: *s16, hTDC, hTAC: ^BitString)
+    mtd processDU(componentDU: [*] s8, fdtbl: [*] f32, dC: *s16, hTDC, hTAC: [*] BitString)
     {
         let eob       = hTAC[0x00]
         let m16Zeroes = hTAC[0xF0]

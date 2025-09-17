@@ -110,7 +110,7 @@ impl IAllocator for ScratchAllocator
 
         // Otherwise we assume it's a leak. We unlink it, and free it with
         // the allocator
-        var leak = cast(^LeakHeader) request.address
+        var leak = cast([*] LeakHeader) request.address
         leak -= 1
         if !leak.prev:
             me.firstLeak = leak.next
@@ -151,8 +151,8 @@ impl IAllocator for ScratchAllocator
         // We prepend a LeakHeader to the user block, and linked it in
         // the chained list of leak allocations (at the first position)
         let totalSize = request.size + #sizeof(LeakHeader)
-        let ptr       = cast(^LeakHeader) me.alloc(totalSize, request.alignment)
-        let leak      = cast(^LeakHeader) me.firstLeak
+        let ptr       = cast([*] LeakHeader) me.alloc(totalSize, request.alignment)
+        let leak      = cast([*] LeakHeader) me.firstLeak
         if leak:
             leak.prev = ptr
         ptr.prev        = null
