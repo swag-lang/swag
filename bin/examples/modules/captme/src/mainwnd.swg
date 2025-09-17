@@ -1,22 +1,14 @@
+// Global variable
 var g_Main: *MainWnd
 
+// Constants
 const ClipboardFormat = "Swag.CaptMe"
+const Icons24         = #include("datas/icons24.png")
+const Icons48         = #include("datas/icons48.png")
+const AppIcon         = #include("datas/appicon.png")
 
-enum EditMode
-{
-    Shape
-    Arrow
-    Line
-    Polygon
-    Text
-    Favorites
-    Draw
-    Highlight
-    Selection
-    Step
-    Image
-    PixSel
-}
+// Enums
+enum EditMode { Shape, Arrow, Line, Polygon, Text, Favorites, Draw, Highlight, Selection, Step, Image, PixSel }
 
 enum BottomSize
 {
@@ -25,61 +17,47 @@ enum BottomSize
     Big
 }
 
+// Main structure
 struct MainWnd
 {
-    using wnd:               Wnd
+    using wnd:                                    Wnd
+    topBar, editToolBar, recentBar:               *Wnd
+    editWnd:                                      *EditWnd
+    quickWnd:                                     *QuickWnd
+    propWnd:                                      *PropWnd
+    libWnd:                                       *LibraryWnd
+    recentWnd:                                    *RecentWnd
+    recentSizeBar:                                *IconBar
+    quickStyleBar:                                *SplitterCtrl
+    editZoomBar:                                  *StackLayoutCtrl
+    captureBtn, libraryBtn, zoomBtn, sizeBtn:     *IconButton
+    embInfoFreeze:                                *EmbInfoCtrl
+    icons24, icons48, appIcon:                    ImageList
+    monitors:                                     Array'Env.Monitor
 
-    inPlaceEdit:             bool
-    icons24:                 ImageList
-    icons48:                 ImageList
-    appIcon:                 ImageList
-    topBar:                  *Wnd
-    editToolBar:             *Wnd
-    editWnd:                 *EditWnd
-    quickWnd:                *QuickWnd
-    propWnd:                 *PropWnd
-    libWnd:                  *LibraryWnd
-    captureBtn:              *IconButton
-    libraryBtn:              *IconButton
-    zoomBtn:                 *IconButton
-    sizeBtn:                 *IconButton
-    recentWnd:               *RecentWnd
-    recentBar:               *Wnd
-    recentSizeBar:           *IconBar
-    quickStyleBar:           *SplitterCtrl
-    editZoomBar:             *StackLayoutCtrl
-    monitors:                Array'Env.Monitor
-    pixSelFillCol:           Color = Argb.White
-    firstShow                = true
-    embInfoFreeze:           *EmbInfoCtrl
+    // State
+    editMode:                                      EditMode = .Shape
+    bottomSize:                                    BottomSize = Medium
+    pixSelFillCol:                                 Color = Argb.White
+    inPlaceEdit, snap, freezeSel, libraryMode:     bool
+    firstShow                                      = true
+    fileDlgState, fileDlgStateInPlace:             FileDlgState
+    captureOptions:                                CaptureOptions
+    editorOptions:                                 EditorOptions
 
-    editMode:                EditMode = .Shape
-    bottomSize:              BottomSize = Medium
-    snap:                    bool
-    freezeSel:               bool
-    libraryMode:             bool
-    fileDlgState:            FileDlgState
-    fileDlgStateInPlace:     FileDlgState
-    captureOptions:          CaptureOptions
-    editorOptions:           EditorOptions
-
-    mdlFormShape:            FormShape
-    mdlFormImage:            FormImage
-    mdlFormStep:             FormStep
-    mdlFormArrow:            FormArrow
-    mdlFormLine:             FormLine
-    mdlFormPolygon:          FormPolygon
-    mdlFormText:             FormText
-    mdlFormDraw:             FormDraw
-    mdlHighlight:            IForm
-    mdlPixSel:               IForm
-    mdlFavorite:             IForm
+    // Form models
+    mdlFormShape:                             FormShape
+    mdlFormImage:                             FormImage
+    mdlFormStep:                              FormStep
+    mdlFormArrow:                             FormArrow
+    mdlFormLine:                              FormLine
+    mdlFormPolygon:                           FormPolygon
+    mdlFormText:                              FormText
+    mdlFormDraw:                              FormDraw
+    mdlHighlight, mdlPixSel, mdlFavorite:     IForm
 }
 
-const Icons24 = #include("datas/icons24.png")
-const Icons48 = #include("datas/icons48.png")
-const AppIcon = #include("datas/appicon.png")
-
+// Interface implementation
 impl IWnd for MainWnd
 {
     mtd popupBar()
@@ -93,6 +71,7 @@ impl IWnd for MainWnd
             .addItem(ActionCapture.LastArea)
             .addItem(ActionCapture.FullScreen)
             .addItem(ActionCapture.ActiveWnd)
+
             for idx in me.monitors
             {
                 switch idx
@@ -107,9 +86,9 @@ impl IWnd for MainWnd
                     .addItem(ActionCapture.Screen3)
                 }
             }
+
             .addSeparator()
             .addItem(ActionGlobal.Exit)
-
             .owner        = me
             .paintByFrame = true
             .dockStyle    = .Center
@@ -118,9 +97,10 @@ impl IWnd for MainWnd
             .computeLayoutPopup()
         }
 
-        let pt = Input.getMousePos()
-        menu.position.width += 2 * me.getThemeMetrics().surfaceWnd_ShadowSize
-        menu.position.height += 2 * me.getThemeMetrics().surfaceWnd_ShadowSize
+        let pt         = Input.getMousePos()
+        let shadowSize = me.getThemeMetrics().surfaceWnd_ShadowSize
+        menu.position.width += 2 * shadowSize
+        menu.position.height += 2 * shadowSize
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
         sf.constaintPositionToScreen()
         sf.wnd.view.backgroundStyle = .Window
@@ -147,15 +127,12 @@ impl IWnd for MainWnd
                     me.surface.show()
                     me.surface.bringToTop()
                 }
-                elif evt.param1 == Win32.WM_RBUTTONDOWN
-                {
+                elif evt.param1 == Win32.WM_RBUTTONDOWN:
                     me.popupBar()
-                }
 
             case Win32.WM_USER + 1:
-                if !Clipboard.hasString():
-                    break
-                me.loadExternalImage(Clipboard.getString())
+                if Clipboard.hasString():
+                    me.loadExternalImage(Clipboard.getString())
             }
         }
     }
@@ -163,9 +140,8 @@ impl IWnd for MainWnd
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         evt.accepted = false
-        switch evt.kind
+        if evt.kind == .Close
         {
-        case Close:
             evt.accepted = true
             if me.editorOptions.hideOnClose:
                 me.surface.hide()
@@ -191,7 +167,6 @@ impl IWnd for MainWnd
                 me.surface.constaintPositionToScreen(topLeft: true, margin: 10)
                 me.recentWnd.loadRecent()
             }
-
             evt.accepted = true
         }
     }
@@ -200,6 +175,7 @@ impl IWnd for MainWnd
     {
         if me.inPlaceEdit:
             return
+
         catch
         {
             with evt.ser
@@ -228,13 +204,12 @@ impl IWnd for MainWnd
 
     mtd impl onFrameEvent(evt: *FrameEvent)
     {
-        if evt.firstFrame
-        {
+        if evt.firstFrame:
             me.quickWnd.setDefault()
-        }
     }
 }
 
+// Main implementation
 impl MainWnd
 {
     mtd loadExternalImage(arg: string)
@@ -242,8 +217,7 @@ impl MainWnd
         let imgToLoad = catch Image.load(arg)
         if @err != null
         {
-            let str = Format.toString("Failed to load file: %", arg)
-            MessageDlg.error(me.surface, str)
+            MessageDlg.error(me.surface, Format.toString("Failed to load file: %", arg))
             return
         }
 
@@ -259,10 +233,8 @@ impl MainWnd
             }
         }
 
-        if !done
-        {
+        if !done:
             me.newCapture(imgToLoad, arg)
-        }
 
         if me.libraryMode
         {
@@ -285,7 +257,6 @@ impl MainWnd
             let edMode = me.editMode
             me.editMode = .Selection
             return edMode
-
         case Favorites:
             return formToEditMode(me.mdlFavorite)
         case Highlight:
@@ -293,7 +264,6 @@ impl MainWnd
         case PixSel:
             return formToEditMode(me.mdlPixSel)
         }
-
         return me.editMode
     }
 
@@ -346,18 +316,15 @@ impl MainWnd
         }
     }
 
-    mtd updateRecent()
-    {
-        if !me.recentWnd:
-            return
-        me.recentWnd.updateRecent()
-    }
-
     mtd getCapture()->#null *Capture
     {
-        if me.libraryMode:
-            return me.libWnd.getCapture()
-        return me.editWnd.getCapture()
+        return me.libraryMode ? me.libWnd.getCapture() : me.editWnd.getCapture()
+    }
+
+    mtd updateRecent()
+    {
+        if me.recentWnd:
+            me.recentWnd.updateRecent()
     }
 
     mtd updateZoomDisplay()
@@ -405,6 +372,7 @@ impl MainWnd
 
     mtd registerShortcuts()
     {
+        // Standard shortcuts
         with me
         {
             .registerKeyShortcut(.Control, .C, ActionCopyPaste.Copy)
@@ -414,18 +382,11 @@ impl MainWnd
             .registerKeyShortcut(.Shift, .Insert, ActionCopyPaste.Paste)
             .registerKeyShortcut(.Control, .Z, ActionUndo.DoUndo)
             .registerKeyShortcut(.Control, .Y, ActionUndo.DoRedo)
-            .registerKeyShortcut(.Zero, .Home, ActionMoveSel.SendToFront)
-            .registerKeyShortcut(.Zero, .End, ActionMoveSel.SendToBack)
-            .registerKeyShortcut(.Zero, .PageUp, ActionMoveSel.MoveForward)
-            .registerKeyShortcut(.Zero, .PageDown, ActionMoveSel.MoveBackward)
             .registerKeyShortcut(.Zero, .Delete, ActionSelection.DeleteSelection)
             .registerKeyShortcut(.CtrlShift, .A, ActionCopyPaste.CopyAsImage)
             .registerKeyShortcut(.Control, .Space, ActionSelection.Freeze)
             .registerKeyShortcut(.Control, .A, ActionSelection.SelectAll)
             .registerKeyShortcut(.Control, .D, ActionSelection.DeSelectAll)
-            .registerKeyShortcut(.Control, .Add, ActionZoom.ZoomIn)
-            .registerKeyShortcut(.Control, .Subtract, ActionZoom.ZoomOut)
-            .registerKeyShortcut(.Control, .NumPad0, ActionZoom.Zoom1)
             .registerKeyShortcut(.CtrlShift, .D, ActionFile.DupCapture)
             .registerKeyShortcut(.CtrlShift, .I, ActionSelection.InvertSelection)
             .registerKeyShortcut(.CtrlShift, .T, ActionFlatten.FlattenAll)
@@ -435,6 +396,12 @@ impl MainWnd
             .registerKeyShortcut(.CtrlShift, .S, ActionFile.SaveAsImage)
             .registerKeyShortcut(.Control, .S, ActionFile.UpdateLinkedImage)
             .registerKeyShortcut(.Control, .O, ActionFile.OpenImage)
+            .registerKeyShortcut(.Zero, .F2, ActionEdit.EditText)
+            .registerKeyShortcut(.CtrlAlt, .O, ActionOptions.Options)
+            .registerKeyShortcut(.Zero, .Home, ActionMoveSel.SendToFront)
+            .registerKeyShortcut(.Zero, .End, ActionMoveSel.SendToBack)
+            .registerKeyShortcut(.Zero, .PageUp, ActionMoveSel.MoveForward)
+            .registerKeyShortcut(.Zero, .PageDown, ActionMoveSel.MoveBackward)
             .registerKeyShortcut(.Shift, .Left, ActionAlign.Left1)
             .registerKeyShortcut(.Shift, .Up, ActionAlign.Top1)
             .registerKeyShortcut(.Shift, .Right, ActionAlign.Right1)
@@ -443,12 +410,13 @@ impl MainWnd
             .registerKeyShortcut(.Zero, .Up, ActionAlign.Top)
             .registerKeyShortcut(.Zero, .Right, ActionAlign.Right)
             .registerKeyShortcut(.Zero, .Down, ActionAlign.Bottom)
-            .registerKeyShortcut(.CtrlAlt, .O, ActionOptions.Options)
-            .registerKeyShortcut(.Zero, .F2, ActionEdit.EditText)
+            .registerKeyShortcut(.Control, .Add, ActionZoom.ZoomIn)
+            .registerKeyShortcut(.Control, .Subtract, ActionZoom.ZoomOut)
+            .registerKeyShortcut(.Control, .NumPad0, ActionZoom.Zoom1)
         }
 
+        // Global hotkeys
         var errorReg = false
-
         #[Swag.Mixin]
         func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
@@ -461,7 +429,6 @@ impl MainWnd
                     msg += "Another running application is probably already using it!"
                     discard EmbInfoCtrl.create(me.editWnd, msg, .Critical)
                 }
-
                 errorReg = true
             }
         }
@@ -482,6 +449,7 @@ impl MainWnd
             .backgroundStyle = .Transparent
         }
 
+        // File menu
         with let fileMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionFile.NewImage)
@@ -501,6 +469,7 @@ impl MainWnd
             topMenu.addPopup("File", fileMenu)
         }
 
+        // Capture menu
         with let captureMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionCapture.Area)
@@ -538,13 +507,13 @@ impl MainWnd
             }
 
             topMenu.addPopup("Capture", captureMenu)
-
             .addSeparator()
             .addItem(ActionCapture.ToInPlace)
             .addItem(ActionCapture.ToEditor)
             .addItem(ActionCapture.ToClipboard)
         }
 
+        // Edit menu
         with let editMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionUndo.DoUndo)
@@ -565,6 +534,7 @@ impl MainWnd
             topMenu.addPopup("Edit", editMenu)
         }
 
+        // Image menu
         with let imageMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionCopyPaste.CopyAsImage)
@@ -585,6 +555,7 @@ impl MainWnd
             topMenu.addPopup("Image", imageMenu)
         }
 
+        // View menu
         with let viewMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionZoom.ZoomIn)
@@ -597,6 +568,7 @@ impl MainWnd
             topMenu.addPopup("View", viewMenu)
         }
 
+        // Help menu
         with let helpMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
             .addItem(ActionOptions.Options)
@@ -608,7 +580,20 @@ impl MainWnd
 
     mtd createToolbar()
     {
-        mtd createBtn(id: WndId)
+        with me.editToolBar = StackLayoutCtrl.create(me.topBar, .HorzCenter, {0, 0, 64, 64})
+        {
+            .dockStyle       = .Top
+            .backgroundStyle = .Window
+            .style.addStyleSheetColors("wnd_Bk $wnd_CaptionBk")
+        }
+
+        let toolButtons = [
+            ActionToolMode.Favorites, ActionToolMode.Selection, ActionToolMode.Shape,
+            ActionToolMode.Arrow, ActionToolMode.Line, ActionToolMode.Poly,
+            ActionToolMode.Text, ActionToolMode.Draw, ActionToolMode.Highlight,
+            ActionToolMode.Step, ActionToolMode.Img, ActionToolMode.PixSel]
+
+        foreach id in toolButtons
         {
             with let b = IconButton.create(me.editToolBar, {}, position: {0, 0, 60, 64})
             {
@@ -627,33 +612,9 @@ impl MainWnd
             }
         }
 
-        with me.editToolBar = StackLayoutCtrl.create(me.topBar, .HorzCenter, {0, 0, 64, 64})
-        {
-            .dockStyle       = .Top
-            .backgroundStyle = .Window
-            .style.addStyleSheetColors("wnd_Bk $wnd_CaptionBk")
-        }
-
-        with me
-        {
-            .createBtn(ActionToolMode.Favorites)
-            .createBtn(ActionToolMode.Selection)
-            .createBtn(ActionToolMode.Shape)
-            .createBtn(ActionToolMode.Arrow)
-            .createBtn(ActionToolMode.Line)
-            .createBtn(ActionToolMode.Poly)
-            .createBtn(ActionToolMode.Text)
-            .createBtn(ActionToolMode.Draw)
-            .createBtn(ActionToolMode.Highlight)
-            .createBtn(ActionToolMode.Step)
-            .createBtn(ActionToolMode.Img)
-            .createBtn(ActionToolMode.PixSel)
-        }
-
-        me.captureBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
+        me.captureBtn           = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
         me.captureBtn.iconColor = Argb.White
-
-        me.libraryBtn = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
+        me.libraryBtn           = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
     }
 
     mtd setTheme()
@@ -668,13 +629,11 @@ impl MainWnd
     mtd setTopBarHeight()
     {
         var icons: Array'(*IconButton)
-
         foreach c in me.topBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
-
         foreach c in me.editToolBar.childs
         {
             if c.type == IconButton:
@@ -710,10 +669,9 @@ impl MainWnd
     {
         parent.surface.minSize = {1024, 512}
 
-        let img24  = assume Image.decode(".png", Icons24)
-        let img48  = assume Image.decode(".png", Icons48)
-        let imgApp = assume Image.decode(".png", AppIcon)
-
+        let img24    = assume Image.decode(".png", Icons24)
+        let img48    = assume Image.decode(".png", Icons48)
+        let imgApp   = assume Image.decode(".png", AppIcon)
         let renderer = parent.getApp().getRenderer()
 
         with let res = Wnd.create'MainWnd(parent, "captme.mainwnd")
@@ -729,6 +687,7 @@ impl MainWnd
             .monitors        = Env.getMonitors()
         }
 
+        // Create top bar
         with res.topBar = Wnd.create'Wnd(res, {0, 0, 64, 68})
         {
             .dockStyle       = .Top
@@ -742,18 +701,15 @@ impl MainWnd
         with res.editWnd = EditWnd.create(res, res)
         {
             .dockStyle = .Center
-            .sigScrollSizeChanged += func|res|(scroll, old, new)
-            {
-                res.updateZoomDisplay()
-            }
+            .sigScrollSizeChanged += func|res|(scroll, old, new) { res.updateZoomDisplay(); }
         }
 
+        // Recent bar
         with res.recentBar = Wnd.create'Wnd(res, {0, 0, 0, 128})
         {
             .dockStyle = .Bottom
         }
 
-        // Recent left editToolBar
         with res.recentSizeBar = IconBar.create(res.recentBar, 20)
         {
             .setIconBarFlags(.Vertical)
@@ -764,7 +720,6 @@ impl MainWnd
             .addItem({}, ActionRecentSize.RecentBig, .Checkable)
         }
 
-        // Recent
         with res.recentWnd = RecentWnd.create(res.recentBar, res)
         {
             .dockStyle = .Center
@@ -779,7 +734,7 @@ impl MainWnd
         }
 
         res.quickWnd = QuickWnd.create(res.quickStyleBar, res)
-        res.propWnd = PropWnd.create(res.quickStyleBar, res)
+        res.propWnd  = PropWnd.create(res.quickStyleBar, res)
 
         with let quickPane = res.quickStyleBar.addPane(res.quickWnd, title: true)
         {
@@ -818,23 +773,7 @@ impl MainWnd
             }
         }
 
-        with res.sizeBtn = IconButton.create(res.editZoomBar, {}, {0, 0, 120, 32})
-        {
-            .iconBtnFlags.add(.Center)
-            .textPos  = .Right
-            .arrowPos = .RightUp
-            .sigPressed += func|res|(btn)
-            {
-                var pos  = btn.getSurfaceRect()
-                var menu = MenuCtrl.createPopup(res)
-                menu.menuCtrlFlags.add(.NoKeyShortcuts)
-                menu.addItem(ActionImage.ResizeImage)
-                menu.addItem(ActionImage.ExpandImage)
-                menu.addItem(ActionImage.ExpandCapture)
-                discard menu.doModal({pos.horzCenter(), pos.y}, .AnchorBottomCenter, autoDestroy: true)
-            }
-        }
-
+        // Initialize everything
         with res
         {
             .registerActions()
