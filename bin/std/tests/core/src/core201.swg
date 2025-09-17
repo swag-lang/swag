@@ -6,7 +6,7 @@ struct Utf8Map
     str:     string
 }
 
-var utf8Map: [] Utf8Map = [
+var utf8Map: [?] Utf8Map = [
     /*{0x0000, "\x00"},
 	{0x0001, "\x01"},
 	{0x007e, "\x7e"},

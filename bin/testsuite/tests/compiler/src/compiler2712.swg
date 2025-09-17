@@ -1,4 +1,4 @@
-#ast "const tt: [] s64 = [0, 1, 2, 3]"
+#ast "const tt: [?] s64 = [0, 1, 2, 3]"
 
 #test
 {

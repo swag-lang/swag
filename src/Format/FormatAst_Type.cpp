@@ -53,7 +53,7 @@ bool FormatAst::outputType(FormatContext& context, AstTypeExpression* node)
 
     if (node->arrayDim == UINT8_MAX)
     {
-        concat->addString("[]");
+        concat->addString("[?]");
         concat->addBlank();
         SWAG_CHECK(outputNode(context, node->firstChild()));
         return true;

@@ -8,7 +8,7 @@ struct Test
     out:      string
 }
 
-const tests: [] Test = [
+const tests: [?] Test = [
     {0, 10, "0"},
     {1, 10, "1"},
     {-1, 10, "-1"},

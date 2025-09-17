@@ -10,6 +10,6 @@ func(T) isSorted(values: const [..] T)
 
 #test
 {
-    var sl: [] s32 = [666]
+    var sl: [?] s32 = [666]
     isSorted(@mkslice(&sl[0], 1))
 }

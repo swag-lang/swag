@@ -172,7 +172,7 @@ For example, consider a struct with a slice:
 */
 struct SliceStruct
 {
-    buffer: [] s32 = [1, 2, 3, 4, 5]  // A dynamic array (slice) initialized with values
+    buffer: [?] s32 = [1, 2, 3, 4, 5]  // A dynamic array (slice) initialized with values
 }
 
 /**

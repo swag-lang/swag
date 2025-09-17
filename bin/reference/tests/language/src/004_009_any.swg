@@ -81,7 +81,7 @@ You can create arrays containing multiple types using `any`. This allows you to 
 
 #test
 {
-    var array: [] any = [true, 2, 3.0, "4"]  // An array containing different types
+    var array: [?] any = [true, 2, 3.0, "4"]  // An array containing different types
     @assert(@kindof(array[0]) == bool)       // The first element is a bool
     @assert(@kindof(array[1]) == s32)        // The second element is an s32
     @assert(@kindof(array[2]) == f32)        // The third element is an f32

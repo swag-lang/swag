@@ -81,7 +81,7 @@ internal
         hi:     u8
     }
 
-    const AcceptRanges: [] AcceptRange = [
+    const AcceptRanges: [?] AcceptRange = [
         {LoCB, HiCB},
         {0xA0, HiCB},
         {LoCB, 0x9F},

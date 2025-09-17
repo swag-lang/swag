@@ -20,7 +20,7 @@ func(T) isSorted(values: const [..] T)->bool
 
 #test
 {
-    var sl: [] s32 = [1,2,3,4,5]
+    var sl: [?] s32 = [1,2,3,4,5]
     isSorted(@mkslice(&sl[0], 5))
 }
 */

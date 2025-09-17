@@ -4,7 +4,7 @@ struct A
     name: string
 }
 
-const countries: [] A = [
+const countries: [?] A = [
     { name: "titi", x: 10 },
 ]
 

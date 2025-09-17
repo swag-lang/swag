@@ -1,7 +1,7 @@
 //#global #[Swag.PrintBc]
 //#global #[Swag.Safety("", false)]
 
-var t: [] struct {
+var t: [?] struct {
     inT:  const [..] rune
 } = [{[1'rune,2,3,4]}]
 

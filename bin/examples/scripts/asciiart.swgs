@@ -67,7 +67,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
         let painter = paintEvt.bc.painter
 
-        const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[]?-_+~<>i!lI;:,\"^`\'. "
+        const GrayRamp = "$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/|()1{}[?]?-_+~<>i!lI;:,\"^`\'. "
 
         let size = cast(f32) g_Font.size * 0.8
 

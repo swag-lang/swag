@@ -13,7 +13,7 @@ struct ValidTest
     inT:     string
 }
 
-const validTests: [] ValidTest = [
+const validTests: [?] ValidTest = [
     {0x00000001, ""},
     {0x00620062, "a"},
     {0x012600c4, "ab"},

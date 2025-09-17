@@ -1,6 +1,6 @@
 using Core.Utf16
 
-var t: [] struct
+var t: [?] struct
 {
     r:     [2] u16
     w:     rune

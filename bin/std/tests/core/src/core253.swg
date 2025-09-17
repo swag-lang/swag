@@ -9,7 +9,7 @@ struct atofTest
 }
 
 const nil      = false
-var atoftests: [] atofTest = [
+var atoftests: [?] atofTest = [
     {"1", "1", false},
     {"1e23", "1e+23", false},
     {"1E23", "1e+23", false},

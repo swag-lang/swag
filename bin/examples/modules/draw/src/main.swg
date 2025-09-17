@@ -503,7 +503,7 @@ func displayPage5(painter: *Pixel.Painter)
         painter.setTransform(trs)
         painter.translateTransform(100, 400)
 
-        var lp: [] Math.Vector2 = [{0, 0}, {40, 0}, {40, 40}]
+        var lp: [?] Math.Vector2 = [{0, 0}, {40, 0}, {40, 40}]
         painter.fillPolygon(lp, Brush.createSolid(Argb.Red))
     }
 

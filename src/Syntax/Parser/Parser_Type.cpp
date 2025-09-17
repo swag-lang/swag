@@ -530,15 +530,16 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
                 break;
             }
 
-            node->typeFlags.add(TYPE_FLAG_IS_ARRAY);
-
-            // The size of the array can be nothing
-            if (tokenParse.is(TokenId::SymRightSquare))
+            // Static array without a size (compiler will deduce it)
+            if (tokenParse.is(TokenId::SymQuestion))
             {
+                node->typeFlags.add(TYPE_FLAG_IS_ARRAY);
                 node->arrayDim = UINT8_MAX;
+                SWAG_CHECK(eatToken());
                 break;
             }
 
+            node->typeFlags.add(TYPE_FLAG_IS_ARRAY);
             if (node->arrayDim == 254)
                 return error(tokenParse, toErr(Err0497));
             node->arrayDim++;

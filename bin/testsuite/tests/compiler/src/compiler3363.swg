@@ -1,4 +1,4 @@
-var G: [] u8 = [1, 2, 3]
+var G: [?] u8 = [1, 2, 3]
 var G1 = 0
 
 func toto()->[..] u8

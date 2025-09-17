@@ -6,7 +6,7 @@ struct ValidTest
     outT:     rune
 }
 
-const validTests: [] ValidTest = [
+const validTests: [?] ValidTest = [
     {"", RuneError},
     {"a", 'a'},
     {"abc", 'c'},

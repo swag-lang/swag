@@ -1,6 +1,6 @@
 
 
-var x: [] any = [6]
+var x: [?] any = [6]
 
 //#[Swag.PrintBc]
 #test

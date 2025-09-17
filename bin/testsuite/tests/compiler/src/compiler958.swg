@@ -14,6 +14,6 @@ func toto(x: any)
 //#[Swag.PrintBc]
 #test
 {
-	var ptr : [] u8 = [125, 2, 4]
+	var ptr : [?] u8 = [125, 2, 4]
 	toto(ptr[0])
 }

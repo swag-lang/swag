@@ -1,4 +1,4 @@
-var spaceTest: []rune = [
+var spaceTest: [?] rune = [
 	0x09,
 	0x0a,
 	0x0b,

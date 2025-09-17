@@ -1,5 +1,5 @@
 /**
-![](imgs/flappy.png)
+![?](imgs/flappy.png)
 
 Here is a very simple script that implements the [Flappy Bird](https://en.wikipedia.org/wiki/Flappy_Bird) game. To have some fun and play with it, go to the `bin/examples/scripts` folder, and type :
 

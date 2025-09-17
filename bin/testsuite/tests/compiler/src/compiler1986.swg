@@ -8,6 +8,6 @@ func(T) sort(values: [..] T)
 
 #test
 {
-    var x: [] s32 = [1, 5, 2, 10]
+    var x: [?] s32 = [1, 5, 2, 10]
     sort(cast() x)
 }

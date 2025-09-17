@@ -2,7 +2,7 @@
 
 struct Array
 {
-	values: [] s32 = [1, 2, 3]
+	values: [?] s32 = [1, 2, 3]
 }
 
 //#[Swag.PrintBc]

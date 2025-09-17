@@ -5,7 +5,7 @@ struct Range16
     lo, hi, stride: u16
 }
 
-const _White_Space: [] Range16 =
+const _White_Space: [?] Range16 =
 [
     {0x0009, 0x000d, 1, 1},
     {0x0020, 0x0085, 101},

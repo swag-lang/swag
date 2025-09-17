@@ -72,7 +72,7 @@ impl Struct
     func(suffix: string) opAffectLiteral(me, value: AnotherType) {}
 
     // Assign a value to a specific index in the struct.
-    // Can be overloaded, used by '[] =' syntax.
+    // Can be overloaded, used by '[?] =' syntax.
     #[Swag.Overload]
     func opIndexAffect(me, index: OneType, value: OneType) {}
     #[Swag.Overload]

@@ -75,7 +75,7 @@ Swag can deduce the size of the array from the initialization expression, elimin
 #test
 {
     // Array dimension is deduced from the initialization with 2 elements
-    var array: [] s32 = [1, 2]
+    var array: [?] s32 = [1, 2]
     @assert(array[0] == 1)
     @assert(array[1] == 2)
     #assert(@countof(array) == 2)

@@ -345,7 +345,7 @@ void TypeInfoArray::computeWhateverName(Utf8& resName, ComputeNameKind nameKind)
 
     if (count == UINT32_MAX)
     {
-        resName += "[] ";
+        resName += "[?] ";
     }
     else
     {

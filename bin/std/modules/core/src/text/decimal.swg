@@ -34,7 +34,7 @@ struct LeftCheat
     cutoff:     string     // minus one digit if original < a.
 }
 
-var LeftCheats: [] LeftCheat = [
+var LeftCheats: [?] LeftCheat = [
     {0, ""},
     {1, "5"}, // * 2
     {1, "25"}, // * 4
@@ -489,7 +489,7 @@ impl Decimal
 
     mtd floatBits()->{ b: u64, overflow: bool }
     {
-        const PowTab: [] s64 = [1, 3, 6, 9, 13, 16, 19, 23, 26]
+        const PowTab: [?] s64 = [1, 3, 6, 9, 13, 16, 19, 23, 26]
         var mant:     u64
 
         // Zero is always a special case.

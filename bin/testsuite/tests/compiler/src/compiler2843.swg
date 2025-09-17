@@ -6,7 +6,7 @@ struct AA
 
 impl AA
 {
-    const uint64pow10: [] u64 = [1]
+    const uint64pow10: [?] u64 = [1]
 }
 
 func xxxxxxxxxxxxxx()

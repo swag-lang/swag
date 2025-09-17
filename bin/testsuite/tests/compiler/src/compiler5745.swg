@@ -26,7 +26,7 @@ impl Printable for Magazine {
     }
 }
 
-//const items: [] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
+//const items: [?] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
 const items: Printable = Book{title: "Swift Programming"}
 
 //#[Swag.PrintBc]

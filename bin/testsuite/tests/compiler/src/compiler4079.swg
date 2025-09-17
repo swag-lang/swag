@@ -6,6 +6,6 @@ struct A
     population: s32
 }
 
-const countries: [] A = [
+const countries: [?] A = [
     { "C", 1, 0 },
 ]

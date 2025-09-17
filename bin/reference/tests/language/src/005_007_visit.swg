@@ -167,7 +167,7 @@ This approach is efficient for conditionally applying logic to only the elements
 
 #test
 {
-    var array: [] s32 = [1, 2, 3, 4]                       // Define an array of integers
+    var array: [?] s32 = [1, 2, 3, 4]                       // Define an array of integers
     var result = 0
 
     // Process only even values using `where`.

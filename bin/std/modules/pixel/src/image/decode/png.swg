@@ -39,10 +39,10 @@ private
         CbGI = @byteswap('C''u32 << 24 | 'b''u32 << 16 | 'H''u32 << 8 | 'I''u32)
     }
 
-    const Adam7OrigX:    [] s64 = [0, 4, 0, 2, 0, 1, 0]
-    const Adam7OrigY:    [] s64 = [0, 0, 4, 0, 2, 0, 1]
-    const Adam7SpacingX: [] s64 = [8, 8, 4, 4, 2, 2, 1]
-    const Adam7SpacingY: [] s64 = [8, 8, 8, 4, 4, 2, 2]
+    const Adam7OrigX:    [?] s64 = [0, 4, 0, 2, 0, 1, 0]
+    const Adam7OrigY:    [?] s64 = [0, 0, 4, 0, 2, 0, 1]
+    const Adam7SpacingX: [?] s64 = [8, 8, 4, 4, 2, 2, 1]
+    const Adam7SpacingY: [?] s64 = [8, 8, 8, 4, 4, 2, 2]
 
     enum RowFilter: u8
     {

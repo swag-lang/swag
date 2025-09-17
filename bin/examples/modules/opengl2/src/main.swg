@@ -5,7 +5,7 @@ var g_HDC:          HDC
 var g_VertexBuffer: GLuint
 var g_ProgramID:    GLuint
 
-const VertexBufferData: [] GLfloat = [
+const VertexBufferData: [?] GLfloat = [
     -1.0, -1.0, 0.0,
     1.0, -1.0, 0.0,
     0.0, 1.0, 0.0]

@@ -64,7 +64,7 @@ public impl JSon
         me.zapBlanks()
         let c = me.stream.readU8()
         if c != '[':
-            throw me.getError("malformed array, missing opening [[[]]")
+            throw me.getError("malformed array, missing opening [[[?]]")
         return false
     }
 
@@ -73,7 +73,7 @@ public impl JSon
         me.zapBlanks()
         let c = me.stream.readU8()
         if c != ']':
-            throw me.getError("malformed array; missing closing [[]]]")
+            throw me.getError("malformed array; missing closing [[?]]]")
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool

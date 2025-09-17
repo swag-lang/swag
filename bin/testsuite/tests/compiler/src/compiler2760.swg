@@ -1,6 +1,6 @@
 #global testerror "Err0179"
 
-enum AA: const [] s32
+enum AA: const [?] s32
 {
     A = [1, 2]
     B = [10, 20, 30]

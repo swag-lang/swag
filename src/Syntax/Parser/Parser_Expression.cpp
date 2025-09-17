@@ -439,7 +439,10 @@ bool Parser::doSinglePrimaryExpression(AstNode* parent, ExprFlags exprFlags, Ast
         case TokenId::SymLeftSquare:
         {
             const auto nextToken = getNextToken();
-            if (exprFlags.has(EXPR_FLAG_ALIAS) || nextToken.is(TokenId::SymDotDot) || nextToken.is(TokenId::SymAsterisk))
+            if (exprFlags.has(EXPR_FLAG_ALIAS) ||
+                nextToken.is(TokenId::SymDotDot) ||
+                nextToken.is(TokenId::SymQuestion) ||
+                nextToken.is(TokenId::SymAsterisk))
             {
                 SWAG_CHECK(doTypeExpression(parent, EXPR_FLAG_NONE, result));
             }

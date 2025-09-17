@@ -31,7 +31,7 @@ private
         4, 4, 4, 4,
         5, 5, 5, 5, 0, 0, 0]
 
-    const LengthDezigzag: [] u8 = [
+    const LengthDezigzag: [?] u8 = [
         16, 17, 18, 0,
         8, 7, 9, 6, 10,
         5, 11, 4, 12, 3,

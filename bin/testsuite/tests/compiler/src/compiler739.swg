@@ -9,7 +9,7 @@ func(T) toto(x: [1] *T)
 
 #test
 {
-	var cpt: [] s32 = [10]
-	var ptr: [] *s32 = [&cpt]
+	var cpt: [?] s32 = [10]
+	var ptr: [?] *s32 = [&cpt]
 	toto(ptr)
 }

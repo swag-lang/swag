@@ -31,7 +31,7 @@ impl Printable for Magazine {
 //#[Swag.PrintBc]
 #test
 {
-    var items: [] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
+    var items: [?] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
 
     foreach item in items {
         item.printDetails()

@@ -6,7 +6,7 @@ struct Test
     result:       bool
 }
 
-const TestCases: [] Test = [
+const TestCases: [?] Test = [
     {"a?", "", true},
 
     {"ab|c", "c", true},

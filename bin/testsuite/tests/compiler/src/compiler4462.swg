@@ -12,7 +12,7 @@ struct Planet {
     mass: f64
 }
 
-const solar_bodies: [] Planet = [
+const solar_bodies: [?] Planet = [
     // Sun
     {
         0.0,

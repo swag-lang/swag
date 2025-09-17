@@ -1,5 +1,6 @@
 //#global testerror "Err0093"
 
+
 //#global skip
 interface Printable {
     mtd printDetails();
@@ -25,7 +26,7 @@ impl Printable for Magazine {
     }
 }
 
-//const items: [] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
+//const items: [?] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
 const items: Printable = Book{title: "Swift Programming"}
 
 const A: any = Book{title: "Swift Programming"}

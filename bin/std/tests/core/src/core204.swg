@@ -6,7 +6,7 @@ struct ValidTest
     outT:     bool
 }
 
-const validTests: [] ValidTest = [
+const validTests: [?] ValidTest = [
     {"", true},
     {"a", true},
     {"abc", true},
@@ -15,8 +15,8 @@ const validTests: [] ValidTest = [
     {"брэд-ЛГТМ", true},
     {"☺☻☹", true},
     {"aa\xe2", false},
-    //{string([]byte{66, 250}), false},
-    //{string([]byte{66, 250, 67}), false},
+    //{string([?]byte{66, 250}), false},
+    //{string([?]byte{66, 250, 67}), false},
     {"a\uFFFDb", true},
     {"\xF4\x8F\xBF\xBF", true},
     // U+10FFFF
