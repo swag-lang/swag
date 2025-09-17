@@ -608,7 +608,7 @@ impl MainWnd
 
     mtd createToolbar()
     {
-        mtd createBtn(id: WndId, canCheck = true)
+        mtd createBtn(id: WndId)
         {
             with let b = IconButton.create(me.editToolBar, {}, position: {0, 0, 60, 64})
             {
@@ -621,8 +621,7 @@ impl MainWnd
                 .style.addStyleSheetColors("btnIcon_CheckedHotText      $btnIcon_CheckedHotMark")
                 .style.addStyleSheetColors("btnIcon_CheckedPressedIcon  $btnIcon_CheckedMark")
                 .style.addStyleSheetColors("btnIcon_CheckedPressedText  $btnIcon_CheckedMark")
-                if canCheck:
-                    .iconBtnFlags.add(.Checkable)
+                .iconBtnFlags.add(.Checkable)
                 .checkedForm = .Bottom
                 .iconSizeX, .iconSizeY = 48
             }
@@ -719,6 +718,7 @@ impl MainWnd
 
         with let res = Wnd.create'MainWnd(parent, "captme.mainwnd")
         {
+            .surface.setView(res)
             .icons24.set(renderer.addImage(img24), 24, 24)
             .icons48.set(renderer.addImage(img48), 48, 48)
             .appIcon.set(renderer.addImage(imgApp))
@@ -844,6 +844,7 @@ impl MainWnd
             .setBottomSize(.Medium)
             .setTopBarHeight()
             .updateState()
+            .createTopMenu()
             .libWnd = LibraryWnd.create(res)
             .libWnd.hide()
         }

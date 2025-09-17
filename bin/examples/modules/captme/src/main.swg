@@ -17,8 +17,7 @@ var g_App: Application
     try Jobs.setNumWorkers()
     try Library.init()
 
-    var path = Library.getFolder()
-    path = Path.combine(path, "captme.cfg")
+    let path = Path.combine(Library.getFolder(), "captme.cfg")
     g_App.setConfigPath(path)
 
     var img = assume Image.decode(".png", Icons48)
@@ -28,8 +27,6 @@ var g_App: Application
 
     let surface = try g_App.createSurface(0, 0, 10, 10, SurfaceFlags.OverlappedWindow, surfaceID: "Captme")
     let mainWnd = MainWnd.create(surface.wnd)
-    surface.setView(mainWnd)
-    mainWnd.createTopMenu()
 
     if Env.hasArg("swag.test"):
         g_App.maxRunFrame = 100
