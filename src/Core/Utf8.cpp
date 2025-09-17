@@ -460,6 +460,7 @@ void Utf8::resize(uint32_t newSize)
 
 void Utf8::removeBack()
 {
+    makeLocal();
     SWAG_ASSERT(count);
     count--;
     buffer[count] = 0;
