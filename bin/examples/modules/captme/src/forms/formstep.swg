@@ -23,7 +23,7 @@ struct FormStep
     {
         ws, hs:            s32 = 48
         gizmo:             GizmoRect
-        isDirty:           bool
+        isDirty:           bool = true
         cachefSize:        f32
         cacheTypeIndex     = FormStepType.Number
         pathl:             LinePathList

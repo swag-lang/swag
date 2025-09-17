@@ -1227,9 +1227,12 @@ impl Capture
                 undo.oldForms.add(itf)
                 me.pushUndo(undo)
 
-                me.selection.clear()
-                me.selection.add(me.forms.count - 1)
-                me.selectionHasChanged()
+                if itf != FormStep
+                {
+                    me.selection.clear()
+                    me.selection.add(me.forms.count - 1)
+                    me.selectionHasChanged()
+                }
             }
 
             let f = me.forms.back()
