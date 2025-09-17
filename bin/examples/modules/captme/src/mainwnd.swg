@@ -452,119 +452,67 @@ impl MainWnd
         // File menu
         with let fileMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(ActionFile.NewImage)
-            .addItem(ActionFile.NewFromClipboard)
-            .addSeparator()
-            .addItem(ActionFile.OpenImage)
-            .addItem(ActionFile.SaveAsImage)
-            .addSeparator()
-            .addItem(ActionFile.SaveAsLinkedImage)
-            .addItem(ActionFile.UpdateLinkedImage)
-            .addItem(ActionFile.UnlinkImage)
-            .addSeparator()
-            .addItem(ActionFile.FileDetails)
-            .addSeparator()
-            .addItem(ActionGlobal.Minimize)
-            .addItem(ActionGlobal.Exit)
+            .addGroup([ActionFile.NewImage, ActionFile.NewFromClipboard])
+            .addGroup([ActionFile.OpenImage, ActionFile.SaveAsImage])
+            .addGroup([ActionFile.SaveAsLinkedImage, ActionFile.UpdateLinkedImage, ActionFile.UnlinkImage])
+            .addGroup([ActionFile.FileDetails])
+            .addItems([ActionGlobal.Minimize, ActionGlobal.Exit])
             topMenu.addPopup("File", fileMenu)
         }
 
         // Capture menu
         with let captureMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(ActionCapture.Area)
-            .addItem(ActionCapture.LastArea)
-            .addItem(ActionCapture.FullScreen)
-            .addItem(ActionCapture.ActiveWnd)
+            .addItems([ActionCapture.Area, ActionCapture.LastArea, ActionCapture.FullScreen, ActionCapture.ActiveWnd])
 
-            foreach m, idx in me.monitors
-            {
-                switch idx
-                {
-                case 0:
-                    .addItem(ActionCapture.Screen0)
-                case 1:
-                    .addItem(ActionCapture.Screen1)
-                case 2:
-                    .addItem(ActionCapture.Screen2)
-                case 3:
-                    .addItem(ActionCapture.Screen3)
-                }
-            }
+            let screenActions = [ActionCapture.Screen0, ActionCapture.Screen1, ActionCapture.Screen2, ActionCapture.Screen3]
+            foreach m, idx in me.monitors:
+                .addItem(screenActions[idx])
 
             .addSeparator()
             .addItem(ActionCapture.HideEditor)
 
             with let delayMenu = MenuCtrl.createPopup(captureMenu, owner: me)
             {
-                .addItem(ActionCaptureDelay.Delay0)
-                .addSeparator()
-                .addItem(ActionCaptureDelay.Delay1)
-                .addItem(ActionCaptureDelay.Delay2)
-                .addItem(ActionCaptureDelay.Delay5)
-                .addItem(ActionCaptureDelay.Delay9)
+                .addGroup([ActionCaptureDelay.Delay0])
+                .addItems([ActionCaptureDelay.Delay1, ActionCaptureDelay.Delay2, ActionCaptureDelay.Delay5, ActionCaptureDelay.Delay9])
                 captureMenu.addPopup(delayMenu, ActionCaptureDelay.Delay)
             }
 
             topMenu.addPopup("Capture", captureMenu)
+
             .addSeparator()
-            .addItem(ActionCapture.ToInPlace)
-            .addItem(ActionCapture.ToEditor)
-            .addItem(ActionCapture.ToClipboard)
+            .addItems([ActionCapture.ToInPlace, ActionCapture.ToEditor, ActionCapture.ToClipboard])
         }
 
         // Edit menu
         with let editMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(ActionUndo.DoUndo)
-            .addItem(ActionUndo.DoRedo)
-            .addSeparator()
-            .addItem(ActionCopyPaste.Copy)
-            .addItem(ActionCopyPaste.Cut)
-            .addItem(ActionCopyPaste.Paste)
-            .addSeparator()
-            .addItem(ActionSelection.SelectAll)
-            .addItem(ActionSelection.SelectSameAll)
-            .addItem(ActionSelection.DeSelectAll)
-            .addItem(ActionSelection.InvertSelection)
-            .addSeparator()
-            .addItem(ActionSelection.Freeze)
-            .addSeparator()
-            .addItem(ActionSelection.Snap)
+            .addGroup([ActionUndo.DoUndo, ActionUndo.DoRedo])
+            .addGroup([ActionCopyPaste.Copy, ActionCopyPaste.Cut, ActionCopyPaste.Paste])
+            .addGroup([ActionSelection.SelectAll, ActionSelection.SelectSameAll, ActionSelection.DeSelectAll, ActionSelection.InvertSelection])
+            .addGroup([ActionSelection.Freeze])
+            .addItems([ActionSelection.Snap])
             topMenu.addPopup("Edit", editMenu)
         }
 
         // Image menu
         with let imageMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(ActionCopyPaste.CopyAsImage)
-            .addSeparator()
-            .addItem(ActionImage.RestoreOrg)
-            .addSeparator()
-            .addItem(ActionImage.ResizeImage)
-            .addItem(ActionImage.ExpandImage)
-            .addItem(ActionImage.ExpandCapture)
-            .addItem(ActionImage.TrimCapture)
-            .addSeparator()
-            .addItem(ActionFlatten.FlattenAll)
-            .addSeparator()
-            .addItem(ActionImage.FlipImage)
-            .addItem(ActionImage.MirrorImage)
-            .addItem(ActionImage.RotateImageRight)
-            .addItem(ActionImage.RotateImageLeft)
+            .addGroup([ActionCopyPaste.CopyAsImage])
+            .addGroup([ActionImage.RestoreOrg])
+            .addGroup([ActionImage.ResizeImage, ActionImage.ExpandImage, ActionImage.ExpandCapture, ActionImage.TrimCapture])
+            .addGroup([ActionFlatten.FlattenAll])
+            .addItems([ActionImage.FlipImage, ActionImage.MirrorImage, ActionImage.RotateImageRight, ActionImage.RotateImageLeft])
             topMenu.addPopup("Image", imageMenu)
         }
 
         // View menu
         with let viewMenu = MenuCtrl.createPopup(me.parent, owner: me)
         {
-            .addItem(ActionZoom.ZoomIn)
-            .addItem(ActionZoom.ZoomOut)
-            .addSeparator()
-            .addItem(ActionZoom.Zoom1)
-            .addItem(ActionZoom.ZoomFit)
-            .addSeparator()
-            .addItem(ActionView.Clip)
+            .addGroup([ActionZoom.ZoomIn, ActionZoom.ZoomOut])
+            .addGroup([ActionZoom.Zoom1, ActionZoom.ZoomFit])
+            .addItems([ActionView.Clip])
             topMenu.addPopup("View", viewMenu)
         }
 

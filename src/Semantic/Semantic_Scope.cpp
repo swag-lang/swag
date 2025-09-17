@@ -67,12 +67,42 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         addCollectedScopeOnce(scopeHierarchy, typeEnum[0]->scope);
     }
 
-    // No match, we will try 'with'
+    // No match, we will try 'with' (or implicit 'me' if in a method)
     else
     {
         const auto withNodeP = identifier->findParent(AstNodeKind::With);
         if (!withNodeP)
         {
+            // NEW: implicit 'me' receiver inside a method body
+            // Rule: only kick in when there is a method/instance function receiver.
+            //       This keeps precedence as: innermost 'with' > method receiver.
+            if (identifier->ownerFct && identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+            {
+                // Prepend a generated 'me' identifier and re-evaluate
+                // NOTE: we reuse the same lowering approach as 'with' so the rest
+                //       of the pipeline doesn't need to know about leading-dot sugar.
+                const auto id = Ast::newIdentifier(identifierRef, "me", nullptr, identifierRef);
+                id->addAstFlag(AST_GENERATED);
+                id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH); // reuse existing path
+                id->allocateIdentifierExtension();
+                id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
+                id->identifierExtension->fromAlternateVar = nullptr; // not from a 'with' variable
+                id->inheritTokenLocation(identifierRef->token);
+
+                // Replace the trailing bare name with 'me' . name
+                identifierRef->children.pop_back();
+                Ast::addChildFront(identifierRef, id);
+
+                // Mark as coming from an implicit receiver scope.
+                // If you prefer, define a dedicated flag, e.g. SPEC_FLAG_IMPLICIT_RECEIVER.
+                identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
+
+                context->baseJob->nodes.push_back(id);
+                context->result = ContextResult::NewChildren;
+                return true;
+            }
+
+            // No 'with', not in a method: fall back to existing diagnostics
             if (!hasEnum.empty())
             {
                 Diagnostic err{identifier, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
@@ -117,6 +147,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
 
     return true;
 }
+
 
 bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
                                      VectorNative<CollectedScope>&    scopeHierarchy,

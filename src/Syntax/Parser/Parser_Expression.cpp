@@ -1438,6 +1438,56 @@ void Parser::setForceTakeAddress(AstNode* node)
 
 bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags)
 {
+    // Helper: after we parsed an IdentifierRef into exprNode and detected that a leading dot
+    // requires a receiver, prepend either the nearest 'with' identifier(s) or an implicit 'me'
+    // when inside a method. Resets the 'prepend' toggle for the caller.
+    auto prependReceiverIfNeeded = [&](AstNode*&       exprNode,
+                                       const AstWith*& withNode,
+                                       bool&           prepend,
+                                       const AstNode*  parentNode) -> bool {
+        if (!prepend)
+            return true;
+
+        prepend = false;
+        SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
+        exprNode->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE);
+
+        if (withNode)
+        {
+            // Prepend the 'with' identifier(s)
+            for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
+            {
+                const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);
+                id->addAstFlag(AST_GENERATED);
+                id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
+                id->allocateIdentifierExtension();
+                id->identifierExtension->fromAlternateVar = withNode->firstChild();
+                id->inheritTokenLocation(exprNode->token);
+                exprNode->children.pop_back();
+                Ast::addChildFront(exprNode, id);
+            }
+            return true;
+        }
+
+        // NEW: implicit 'me' when in a method body and no 'with' was found
+        if (parentNode->ownerFct && parentNode->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+        {
+            const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), "me", this, exprNode);
+            id->addAstFlag(AST_GENERATED);
+            // Reuse the same path/flags as 'with' so the rest of the pipeline remains unchanged
+            id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
+            id->allocateIdentifierExtension();
+            id->identifierExtension->fromAlternateVar = nullptr;
+            id->inheritTokenLocation(exprNode->token);
+            exprNode->children.pop_back();
+            Ast::addChildFront(exprNode, id);
+            return true;
+        }
+
+        // No 'with', not in a method: original error
+        return error(tokenParse, toErr(Err0404));
+    };
+
     switch (tokenParse.token.id)
     {
         case TokenId::SymLeftParen:
@@ -1446,9 +1496,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             *result             = multi;
             const auto startLoc = tokenParse.token.startLocation;
 
-            const AstWith* withNode    = nullptr;
-            AstNode*       exprNode    = nullptr;
-            bool           prependWith = withNode != nullptr;
+            const AstWith* withNode        = nullptr;
+            AstNode*       exprNode        = nullptr;
+            bool           prependReceiver = false;
+
             SWAG_CHECK(eatToken());
             while (true)
             {
@@ -1456,35 +1507,22 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     if (!withNode)
                     {
+                        // Try to bind to the nearest 'with' first
                         const auto parentWithNode = parent->findParent(AstNodeKind::With);
-                        SWAG_VERIFY(parentWithNode, error(tokenParse, toErr(Err0404)));
-                        withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
+                        if (parentWithNode)
+                            withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
                     }
 
-                    prependWith = true;
+                    prependReceiver = true;
                     eatToken();
                 }
 
                 SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::SymQuestion), error(tokenParse, toErr(Err0660)));
                 SWAG_CHECK(doIdentifierRef(multi, &exprNode, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
 
-                // Prepend the 'with' identifier
-                if (withNode && prependWith)
+                if (prependReceiver)
                 {
-                    prependWith = false;
-                    SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
-                    exprNode->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE);
-                    for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
-                    {
-                        const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);
-                        id->addAstFlag(AST_GENERATED);
-                        id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
-                        id->allocateIdentifierExtension();
-                        id->identifierExtension->fromAlternateVar = withNode->firstChild();
-                        id->inheritTokenLocation(exprNode->token);
-                        exprNode->children.pop_back();
-                        Ast::addChildFront(exprNode, id);
-                    }
+                    SWAG_CHECK(prependReceiverIfNeeded(exprNode, withNode, prependReceiver, parent));
                 }
 
                 if (tokenParse.is(TokenId::SymRightParen))
@@ -1501,23 +1539,25 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         case TokenId::Identifier:
         case TokenId::CompilerUp:
         {
-            AstNode*       multi       = nullptr;
-            const AstWith* withNode    = nullptr;
-            AstNode*       exprNode    = nullptr;
-            bool           prependWith = withNode != nullptr;
-            TokenParse     tokenStart  = tokenParse;
+            AstNode*       multi           = nullptr;
+            const AstWith* withNode        = nullptr;
+            AstNode*       exprNode        = nullptr;
+            bool           prependReceiver = false;
+            TokenParse     tokenStart      = tokenParse;
+
             while (true)
             {
                 if (tokenParse.is(TokenId::SymDot))
                 {
                     if (!withNode)
                     {
+                        // Try to bind to the nearest 'with' first; if none, implicit 'me'
                         const auto parentWithNode = parent->findParent(AstNodeKind::With);
-                        SWAG_VERIFY(parentWithNode, error(tokenParse, toErr(Err0404)));
-                        withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
+                        if (parentWithNode)
+                            withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
                     }
 
-                    prependWith = true;
+                    prependReceiver = true;
                     eatToken();
                 }
 
@@ -1525,23 +1565,9 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 if (multi == nullptr)
                     Ast::removeFromParent(exprNode);
 
-                // Prepend the 'with' identifier
-                if (withNode && prependWith)
+                if (prependReceiver)
                 {
-                    prependWith = false;
-                    SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
-                    exprNode->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE);
-                    for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
-                    {
-                        const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);
-                        id->addAstFlag(AST_GENERATED);
-                        id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
-                        id->allocateIdentifierExtension();
-                        id->identifierExtension->fromAlternateVar = withNode->firstChild();
-                        id->inheritTokenLocation(exprNode->token);
-                        exprNode->children.pop_back();
-                        Ast::addChildFront(exprNode, id);
-                    }
+                    SWAG_CHECK(prependReceiverIfNeeded(exprNode, withNode, prependReceiver, parent));
                 }
 
                 if (tokenParse.isNot(TokenId::SymComma))
@@ -1570,6 +1596,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
     return true;
 }
+
 
 bool Parser::doLeftExpressionAffect(AstNode* parent, AstNode** result)
 {

@@ -16,16 +16,16 @@ public enum MenuCtrlFlags
 
 public struct PopupMenuItem
 {
-    using item:       Item
-    rightName:        RichString
-    popup:            *MenuCtrl
-    pos:              f32
-    size:             f32
-    rg:               CommandStateEvent.RenderingHint
-    separator:        bool
-    disabled:         bool
-    checked:          bool
-    hidden:           bool
+    using item:     Item
+    rightName:      RichString
+    popup:          *MenuCtrl
+    pos:            f32
+    size:           f32
+    rg:             CommandStateEvent.RenderingHint
+    separator:      bool
+    disabled:       bool
+    checked:        bool
+    hidden:         bool
 }
 
 public struct MenuCtrl
@@ -396,21 +396,21 @@ impl MenuCtrl
         foreach i in me.items
         {
             let evt = me.sendComputeCommandStateEvent(i.id)
-            if evt.setFlags & .Disabled:
+            if evt.setFlags.has(.Disabled):
                 i.disabled = evt.disabled
-            if evt.setFlags & .Hidden:
+            if evt.setFlags.has(.Hidden):
                 i.hidden = evt.hidden
-            if evt.setFlags & .Icon:
+            if evt.setFlags.has(.Icon):
                 i.icon = evt.icon
-            if evt.setFlags & .LongName:
+            if evt.setFlags.has(.LongName):
                 i.name = evt.longName
-            elif evt.setFlags & .Name:
+            elif evt.setFlags.has(.Name):
                 i.name = evt.name
-            if evt.setFlags & .Shortcut:
+            if evt.setFlags.has(.Shortcut):
                 i.rightName.set(evt.shortcut)
-            if evt.setFlags & .Checked:
+            if evt.setFlags.has(.Checked):
                 i.checked = evt.checked
-            if evt.setFlags & .RenderingHint:
+            if evt.setFlags.has(.RenderingHint):
                 i.rg = evt.renderingHint
         }
     }
@@ -668,6 +668,22 @@ public impl MenuCtrl
     mtd addItem(id: WndId)
     {
         me.addItem(null, id)
+    }
+
+    // Add a list of items
+    #[Swag.Overload]
+    mtd addItems(ids: const [..] WndId)
+    {
+        foreach id in ids:
+            me.addItem(null, id)
+    }
+
+    // Add a list of items followed by a separator
+    #[Swag.Overload]
+    mtd addGroup(ids: const [..] WndId)
+    {
+        me.addItems(ids)
+        me.addSeparator()
     }
 
     // Add a new item
