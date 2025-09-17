@@ -318,7 +318,9 @@ impl MainWnd
 
     mtd getCapture()->#null *Capture
     {
-        return me.libraryMode ? me.libWnd.getCapture() : me.editWnd.getCapture()
+        if me.libraryMode:
+            return me.libWnd.getCapture()
+        return me.editWnd.getCapture()
     }
 
     mtd updateRecent()
