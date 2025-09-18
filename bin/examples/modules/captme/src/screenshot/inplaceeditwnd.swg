@@ -207,7 +207,7 @@ impl InPlaceEditWnd
             }
         }
 
-        with me.newMain
+        with .newMain
         {
             switch me.editMode
             {
@@ -254,31 +254,32 @@ impl InPlaceEditWnd
 
     mtd moveButtons()
     {
-        let rect: Math.Rectangle{-me.capture.backImagePos.x, -me.capture.backImagePos.y, me.capture.width, me.capture.height}
+        let rect: Math.Rectangle{-.capture.backImagePos.x, -.capture.backImagePos.y, .capture.width, .capture.height}
+        const Margin = 4
 
         {
             const H = 40.0
-            let w   = me.actionBar.position.width
+            let w   = .actionBar.position.width
 
             let x = Math.max(10, rect.right() - w)
-            if rect.bottom() < g_ScreenHeight - H:
-                me.actionBar.setPosition(x, rect.bottom(), w, H)
-            elif rect.y > H:
-                me.actionBar.setPosition(x, rect.y - H, w, H)
+            if rect.bottom() < g_ScreenHeight - H + Margin:
+                .actionBar.setPosition(x, rect.bottom() + Margin, w, H)
+            elif rect.y > H + Margin:
+                .actionBar.setPosition(x, rect.y - H - Margin, w, H)
             else:
-                me.actionBar.setPosition(x, rect.bottom() - H, w, H)
+                .actionBar.setPosition(x, rect.bottom() - H - Margin, w, H)
         }
 
         {
-            let h   = me.editBar.position.height
+            let h   = .editBar.position.height
             const W = 40.0
 
-            if rect.right() < g_ScreenWidth - W:
-                me.editBar.setPosition(rect.right(), rect.bottom() - h, W, h)
-            elif rect.x > W:
-                me.editBar.setPosition(rect.x - W, rect.bottom() - h, W, h)
+            if rect.right() < g_ScreenWidth - W + Margin:
+                .editBar.setPosition(rect.right() + Margin, rect.bottom() - h, W, h)
+            elif rect.x > W + Margin:
+                .editBar.setPosition(rect.x - W - Margin, rect.bottom() - h, W, h)
             else:
-                me.editBar.setPosition(rect.right() - W, rect.bottom() - h, W, h)
+                .editBar.setPosition(rect.right() - W - Margin, rect.bottom() - h - Margin, W, h)
         }
     }
 }
