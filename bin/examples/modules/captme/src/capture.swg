@@ -101,19 +101,19 @@ impl Capture
 
     mtd computePreview()
     {
-        if !me.editView:
+        if !.editView:
             return
-        let zoom = Math.min(PreviewWidth / me.width, PreviewHeight / me.height)
-        me.preview = me.toImage(zoom)
-        me.preview.applyKernel(.GaussianBlur3x3A)
-        me.changed = true
+        let zoom = Math.min(PreviewWidth / .width, PreviewHeight / .height)
+        .preview = .toImage(zoom)
+        .preview.applyKernel(.GaussianBlur3x3A)
+        .changed = true
     }
 
     mtd toImage(zoom: f32 = 1, onlySel = false)->Image
     {
         var result: retval
 
-        let rect     = Math.Rectangle{width: me.width * zoom, height: me.height * zoom}
+        let rect     = Math.Rectangle{width: .width * zoom, height: .height * zoom}
         var painter: Pixel.Painter
 
         let render = g_App.getRenderer()
@@ -975,14 +975,14 @@ impl Capture
 
         var localPos = view.surfaceToLocal(evt.surfacePos)
         localPos += view.scrollPos
-        localPos.x -= me.paintRect.x
-        localPos.y -= me.paintRect.y
+        localPos.x -= .paintRect.x
+        localPos.y -= .paintRect.y
 
-        if me.mouseMode == .None
+        if .mouseMode == .None
         {
             // Resize capture
-            me.snapX, me.snapY = -1
-            if me.gizmo.mouse(view, localPos, evt)
+            .snapX, .snapY = -1
+            if .gizmo.mouse(view, localPos, evt)
             {
                 view.invalidate()
                 evt.accepted = true
@@ -1009,33 +1009,33 @@ impl Capture
             // Popup
             if evt.kind == .MousePressed and evt.button == .Right
             {
-                me.popupMenu(view, evt.surfacePos)
+                .popupMenu(view, evt.surfacePos)
                 return true
             }
 
             if evt.kind == .MouseLeave
             {
-                me.hotForm = Swag.U64.Max
+                .hotForm = Swag.U64.Max
             }
             else
             {
                 var ht = me.hitTest(localPos)
                 if ht != Swag.U64.Max
                 {
-                    let p = cast(*BaseForm) @dataof(me.forms[ht])
+                    let p = cast(*BaseForm) @dataof(.forms[ht])
                     if view.main.freezeSel and p.freeze:
                         ht = Swag.U64.Max
                 }
 
-                if ht != me.hotForm
+                if ht != .hotForm
                 {
                     view.invalidate()
-                    me.hotForm = ht
+                    .hotForm = ht
                 }
             }
         }
 
-        if me.hotForm != Swag.U64.Max:
+        if .hotForm != Swag.U64.Max:
             app.setFrameCursor(Cursor.from(.SizeAll))
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
@@ -1043,69 +1043,68 @@ impl Capture
 
         // Start of mode
         ///////////////////////
-        if me.mouseMode == .None and evt.button == .Left
+        if .mouseMode == .None and evt.button == .Left
         {
             if evt.kind == .MousePressed or evt.kind == .MouseDoubleClick
             {
                 // Ctrl+Shift force the selection mode
                 if (shiftPressed and ctrlPressed) or view.main.editMode == .Selection
                 {
-                    me.mouseMode      = .Selecting
-                    me.firstMouseMove = true
-                    me.movingStart    = localPos
+                    .mouseMode      = .Selecting
+                    .firstMouseMove = true
+                    .movingStart    = localPos
                     view.captureMouse()
                     view.invalidate()
-                    me.drawSelRect = true
+                    .drawSelRect = true
                 }
                 else
                 {
-                    let hadSelection = me.selection.count != 0
-                    var here         = me.selection.contains(me.hotForm)
+                    var here = .selection.contains(.hotForm)
 
                     // Swap between objects at the same position if no mouse move
-                    if me.lastSelectPos.isEqualEpsilon(evt.surfacePos)
+                    if .lastSelectPos.isEqualEpsilon(evt.surfacePos)
                     {
-                        if !evt.modifiers.has(.Control) and me.selection.count
+                        if !evt.modifiers.has(.Control) and .selection.count
                         {
-                            me.selection.clear()
-                            me.selectionHasChanged()
+                            .selection.clear()
+                            .selectionHasChanged()
                         }
 
-                        let res = me.hitTests(localPos, false)
-                        me.lastSelectHit += 1
-                        if me.lastSelectHit >= res.count:
-                            me.lastSelectHit = 0
-                        me.hotForm = res[me.lastSelectHit]
-                        here       = me.selection.contains(me.hotForm)
+                        let res = .hitTests(localPos, false)
+                        .lastSelectHit += 1
+                        if .lastSelectHit >= res.count:
+                            .lastSelectHit = 0
+                        .hotForm = res[.lastSelectHit]
+                        here     = .selection.contains(.hotForm)
                     }
-                    elif !evt.modifiers.has(.Control) and !here and me.selection.count
+                    elif !evt.modifiers.has(.Control) and !here and .selection.count
                     {
-                        me.updateModelFromSelection()
-                        me.selection.clear()
-                        me.selectionHasChanged()
-                        me.lastSelectHit = 0
+                        .updateModelValuesFromSelection()
+                        .selection.clear()
+                        .selectionHasChanged()
+                        .lastSelectHit = 0
                     }
 
-                    if me.hotForm != Swag.U64.Max
+                    if .hotForm != Swag.U64.Max
                     {
                         if !here
                         {
-                            me.lastSelectPos = evt.surfacePos
-                            me.selection.add(me.hotForm)
-                            me.selectionHasChanged()
+                            .lastSelectPos = evt.surfacePos
+                            .selection.add(me.hotForm)
+                            .selectionHasChanged()
                         }
 
-                        me.mouseMode      = .Moving
-                        me.firstMouseMove = true
-                        me.movingStart    = localPos
+                        .mouseMode      = .Moving
+                        .firstMouseMove = true
+                        .movingStart    = localPos
                         view.captureMouse()
                         view.invalidate()
                     }
-                    elif !hadSelection or me.editView.main.editMode != .Step
+                    else
                     {
-                        me.mouseMode      = .Creating
-                        me.firstMouseMove = true
-                        me.movingStart    = localPos
+                        .mouseMode      = .Creating
+                        .firstMouseMove = true
+                        .movingStart    = localPos
                         view.captureMouse()
                         view.invalidate()
                     }
@@ -1117,134 +1116,134 @@ impl Capture
         ///////////////////////
         if evt.kind == .MouseReleased and evt.button == .Left
         {
-            me.snapX, me.snapY = -1
+            .snapX, .snapY = -1
 
-            if me.mouseMode == .Selecting
+            if .mouseMode == .Selecting
             {
                 view.releaseMouse()
                 view.invalidate()
-                me.mouseMode   = .None
-                me.drawSelRect = false
+                .mouseMode   = .None
+                .drawSelRect = false
                 view.main.updateState()
             }
 
-            if me.mouseMode == .Moving or me.firstMouseMove
+            if .mouseMode == .Moving or .firstMouseMove
             {
                 view.releaseMouse()
                 view.invalidate()
-                me.mouseMode = .None
+                .mouseMode = .None
             }
         }
 
         // Mode
         ///////////////////////
-        switch me.mouseMode
+        switch .mouseMode
         {
         case Selecting:
             var r: Math.Rectangle
 
             if !ctrlPressed:
-                me.selection.clear()
-            me.movingEnd = localPos
+                .selection.clear()
+            .movingEnd = localPos
 
-            r.set(me.movingStart, me.movingEnd)
+            r.set(.movingStart, .movingEnd)
 
-            foreach f, idx in me.forms
+            foreach f, idx in .forms
             {
                 let pp = f.boundRect() * view.zoom
-                if pp.intersectWith(r) and !me.selection.contains(idx):
-                    me.selection.add(idx)
+                if pp.intersectWith(r) and !.selection.contains(idx):
+                    .selection.add(idx)
             }
 
-            me.firstMouseMove = false
+            .firstMouseMove = false
             view.invalidate()
-            me.selectionHasChanged()
+            .selectionHasChanged()
             return true
 
         case Moving:
-            let newPosX = cast(s32) ((localPos.x - me.movingStart.x) / view.zoom)
-            let newPosY = cast(s32) ((localPos.y - me.movingStart.y) / view.zoom)
+            let newPosX = cast(s32) ((localPos.x - .movingStart.x) / view.zoom)
+            let newPosY = cast(s32) ((localPos.y - .movingStart.y) / view.zoom)
 
-            if me.firstMouseMove
+            if .firstMouseMove
             {
                 if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3:
                     return true
-                me.firstMouseMove = false
+                .firstMouseMove = false
             }
             else:
-                me.undo()
+                .undo()
 
-            let u = me.newUndo(.OffsetSelection)
+            let u = .newUndo(.OffsetSelection)
 
             // Snap by bottom/right
             var nx = newPosX
             var ny = newPosY
-            me.snap(&nx, &ny, true, true)
-            let saveSnapX = me.snapX
-            let saveSnapY = me.snapY
+            .snap(&nx, &ny, true, true)
+            let saveSnapX = .snapX
+            let saveSnapY = .snapY
 
             // Snap by top/left
             var nx1 = newPosX
             var ny1 = newPosY
-            me.snap(&nx1, &ny1, false, false)
+            .snap(&nx1, &ny1, false, false)
 
             if Math.abs(nx - newPosX) > Math.abs(nx1 - newPosX)
             {
-                me.snapX  = saveSnapX
+                .snapX  = saveSnapX
                 u.newPosX = nx
             }
             else:
                 u.newPosX = nx1
             if Math.abs(ny - newPosY) > Math.abs(ny1 - newPosY)
             {
-                me.snapY  = saveSnapY
+                .snapY  = saveSnapY
                 u.newPosY = ny
             }
             else:
                 u.newPosY = ny1
 
-            me.pushUndo(u)
+            .pushUndo(u)
             view.invalidate()
             return true
 
         case Creating:
-            let newPosX = cast(s32) ((localPos.x - me.movingStart.x) / view.zoom)
-            let newPosY = cast(s32) ((localPos.y - me.movingStart.y) / view.zoom)
+            let newPosX = cast(s32) ((localPos.x - .movingStart.x) / view.zoom)
+            let newPosY = cast(s32) ((localPos.y - .movingStart.y) / view.zoom)
 
-            if me.firstMouseMove
+            if .firstMouseMove
             {
-                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and me.editView.main.editMode != .Step:
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and .editView.main.editMode != .Step:
                     return true
-                me.firstMouseMove = false
+                .firstMouseMove = false
 
-                let mode = me.editView.main.getEditMode()
-                let itf  = me.editView.main.newFormFromModel(mode, clear: true)
+                let mode = .editView.main.getEditMode()
+                let itf  = .editView.main.newFormFromModel(mode, clear: true)
                 if itf:
                     itf.setup(me)
                 let base = cast(*BaseForm) @dataof(itf)
-                if base and me.editView.main.editMode == .PixSel:
+                if base and .editView.main.editMode == .PixSel:
                     base.subKind = .PixSel
-                let undo = me.newUndo(.CreateForm)
+                let undo = .newUndo(.CreateForm)
                 undo.oldForms.add(itf)
-                me.pushUndo(undo)
+                .pushUndo(undo)
 
                 if itf != FormStep
                 {
-                    me.selection.clear()
-                    me.selection.add(me.forms.count - 1)
-                    me.selectionHasChanged()
+                    .selection.clear()
+                    .selection.add(.forms.count - 1)
+                    .selectionHasChanged()
                 }
             }
 
-            let f = me.forms.back()
-            if !f.edit(evt, me.movingStart, localPos, view.zoom)
+            let f = .forms.back()
+            if !f.edit(evt, .movingStart, localPos, view.zoom)
             {
                 view.releaseMouse()
                 view.invalidate()
-                me.mouseMode = .None
+                .mouseMode = .None
             }
 
-            me.hasChanged()
+            .hasChanged()
             return true
         }
 
@@ -1300,32 +1299,39 @@ impl Capture
 
     mtd updateEditModeFromSelection()
     {
-        if !me.selection.count:
+        if !.selection.count:
             return
 
-        let main = me.editView.main
+        let main = .editView.main
         if main.editMode == .Selection:
             return
 
-        let f = me.forms[me.selection.back()]
+        let f = .forms[.selection.back()]
         main.updateEditMode(f)
+    }
+
+    mtd updateModelValuesFromSelection()
+    {
+        if !.selection.count:
+            return
+        let f = .forms[.selection.back()]
+        .editView.main.updateModelValues(f)
     }
 
     mtd updateModelFromSelection()
     {
-        if !me.selection.count:
+        if !.selection.count:
             return
-
-        let f = me.forms[me.selection.back()]
-        me.editView.main.updateModel(f)
+        let f = .forms[.selection.back()]
+        .editView.main.updateModel(f)
     }
 
     mtd selectionHasChanged()
     {
-        me.updateEditModeFromSelection()
-        me.updateModelFromSelection()
-        me.editView.main.updateState()
-        me.editView.invalidate()
+        .updateEditModeFromSelection()
+        .updateModelFromSelection()
+        .editView.main.updateState()
+        .editView.invalidate()
     }
 
     //////////////////////////////

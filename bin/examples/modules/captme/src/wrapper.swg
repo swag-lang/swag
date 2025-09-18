@@ -1,76 +1,87 @@
 impl MainWnd
 {
+    mtd updateModelValues(f: IForm)
+    {
+        switch f
+        {
+        case FormStep as b:
+            .mdlFormStep    = dref b
+            .mdlFormStep.ws = b.w
+            .mdlFormStep.hs = b.h
+        }
+    }
+
     mtd updateModel(f: IForm)
     {
         let form = cast(*BaseForm) @dataof(f)
 
         if form.subKind == .Highlight:
-            me.mdlHighlight = f
+            .mdlHighlight = f
         elif form.subKind == .PixSel:
-            me.mdlPixSel = f
+            .mdlPixSel = f
 
         #[Swag.Complete]
         switch f
         {
         case FormShape as b:
-            me.mdlFormShape = dref b
-            me.mdlFavorite  = &me.mdlFormShape
-            me.mdlHighlight = &me.mdlFormShape
-            me.mdlPixSel    = &me.mdlFormShape
+            .mdlFormShape = dref b
+            .mdlFavorite  = &.mdlFormShape
+            .mdlHighlight = &.mdlFormShape
+            .mdlPixSel    = &.mdlFormShape
         case FormImage as b:
-            me.mdlFormImage = dref b
-            me.mdlFavorite  = &me.mdlFormImage
+            .mdlFormImage = dref b
+            .mdlFavorite  = &.mdlFormImage
         case FormStep as b:
-            me.mdlFormStep    = dref b
-            me.mdlFormStep.ws = b.w
-            me.mdlFormStep.hs = b.h
-            me.mdlFavorite    = &me.mdlFormStep
+            .mdlFormStep    = dref b
+            .mdlFormStep.ws = b.w
+            .mdlFormStep.hs = b.h
+            .mdlFavorite    = &.mdlFormStep
         case FormArrow as b:
-            me.mdlFormArrow = dref b
-            me.mdlFavorite  = &me.mdlFormArrow
+            .mdlFormArrow = dref b
+            .mdlFavorite  = &.mdlFormArrow
         case FormLine as b:
-            me.mdlFormLine  = dref b
-            me.mdlFavorite  = &me.mdlFormLine
-            me.mdlHighlight = &me.mdlFormLine
+            .mdlFormLine  = dref b
+            .mdlFavorite  = &.mdlFormLine
+            .mdlHighlight = &.mdlFormLine
         case FormPolygon as b:
-            me.mdlFormPolygon = dref b
-            me.mdlFavorite    = &me.mdlFormPolygon
-            me.mdlHighlight   = &me.mdlFormPolygon
-            me.mdlPixSel      = &me.mdlFormPolygon
+            .mdlFormPolygon = dref b
+            .mdlFavorite    = &.mdlFormPolygon
+            .mdlHighlight   = &.mdlFormPolygon
+            .mdlPixSel      = &.mdlFormPolygon
         case FormText as b:
-            me.mdlFormText = dref b
-            me.mdlFavorite = &me.mdlFormText
+            .mdlFormText = dref b
+            .mdlFavorite = &.mdlFormText
         case FormDraw as b:
-            me.mdlFormDraw  = dref b
-            me.mdlFavorite  = &me.mdlFormDraw
-            me.mdlHighlight = &me.mdlFormDraw
-            me.mdlPixSel    = &me.mdlFormDraw
+            .mdlFormDraw  = dref b
+            .mdlFavorite  = &.mdlFormDraw
+            .mdlHighlight = &.mdlFormDraw
+            .mdlPixSel    = &.mdlFormDraw
         }
     }
 
     mtd updateEditMode(f: IForm)
     {
-        if me.editMode == .Favorites
+        if .editMode == .Favorites
         {
             #[Swag.Complete]
             switch f
             {
             case FormShape:
-                me.mdlFavorite = me.mdlFormShape
+                .mdlFavorite = .mdlFormShape
             case FormImage:
-                me.mdlFavorite = me.mdlFormImage
+                .mdlFavorite = .mdlFormImage
             case FormStep:
-                me.mdlFavorite = me.mdlFormStep
+                .mdlFavorite = .mdlFormStep
             case FormArrow:
-                me.mdlFavorite = me.mdlFormArrow
+                .mdlFavorite = .mdlFormArrow
             case FormLine:
-                me.mdlFavorite = me.mdlFormLine
+                .mdlFavorite = .mdlFormLine
             case FormPolygon:
-                me.mdlFavorite = me.mdlFormPolygon
+                .mdlFavorite = .mdlFormPolygon
             case FormText:
-                me.mdlFavorite = me.mdlFormText
+                .mdlFavorite = .mdlFormText
             case FormDraw:
-                me.mdlFavorite = me.mdlFormDraw
+                .mdlFavorite = .mdlFormDraw
             }
 
             return
@@ -79,12 +90,12 @@ impl MainWnd
         let form = cast(*BaseForm) @dataof(f)
         if form.subKind == .Highlight
         {
-            me.editMode = .Highlight
+            .editMode = .Highlight
             return
         }
         elif form.subKind == .PixSel
         {
-            me.editMode = .PixSel
+            .editMode = .PixSel
             return
         }
 
@@ -92,21 +103,21 @@ impl MainWnd
         switch f
         {
         case FormShape:
-            me.editMode = .Shape
+            .editMode = .Shape
         case FormImage:
-            me.editMode = .Image
+            .editMode = .Image
         case FormStep:
-            me.editMode = .Step
+            .editMode = .Step
         case FormArrow:
-            me.editMode = .Arrow
+            .editMode = .Arrow
         case FormLine:
-            me.editMode = .Line
+            .editMode = .Line
         case FormPolygon:
-            me.editMode = .Polygon
+            .editMode = .Polygon
         case FormText:
-            me.editMode = .Text
+            .editMode = .Text
         case FormDraw:
-            me.editMode = .Draw
+            .editMode = .Draw
         }
     }
 
@@ -144,27 +155,27 @@ impl MainWnd
         switch mode
         {
         case Arrow:
-            formItf = cast(IForm) me.mdlFormArrow
+            formItf = cast(IForm) .mdlFormArrow
         case Shape:
-            formItf = cast(IForm) me.mdlFormShape
+            formItf = cast(IForm) .mdlFormShape
         case Image:
-            formItf = cast(IForm) me.mdlFormImage
+            formItf = cast(IForm) .mdlFormImage
         case Step:
-            formItf = cast(IForm) me.mdlFormStep
+            formItf = cast(IForm) .mdlFormStep
         case Line:
-            formItf = cast(IForm) me.mdlFormLine
+            formItf = cast(IForm) .mdlFormLine
         case Polygon:
-            formItf = cast(IForm) me.mdlFormPolygon
+            formItf = cast(IForm) .mdlFormPolygon
         case Text:
-            formItf = cast(IForm) me.mdlFormText
+            formItf = cast(IForm) .mdlFormText
         case Draw:
-            formItf = cast(IForm) me.mdlFormDraw
+            formItf = cast(IForm) .mdlFormDraw
         case Favorites, Selection:
-            formItf = me.mdlFavorite
+            formItf = .mdlFavorite
         case Highlight:
-            formItf = me.mdlHighlight
+            formItf = .mdlHighlight
         case PixSel:
-            formItf = me.mdlPixSel
+            formItf = .mdlPixSel
         }
 
         return formItf
@@ -177,39 +188,39 @@ impl MainWnd
         {
         case Arrow:
             let mdl = Memory.new'FormArrow()
-            mdl.IForm.copy(mdl, &me.mdlFormArrow)
+            mdl.IForm.copy(mdl, &.mdlFormArrow)
             return mdl
         case Shape:
             let mdl = Memory.new'FormShape()
-            mdl.IForm.copy(mdl, &me.mdlFormShape)
+            mdl.IForm.copy(mdl, &.mdlFormShape)
             return mdl
         case Image:
             let mdl = Memory.new'FormImage()
-            mdl.IForm.copy(mdl, &me.mdlFormImage)
+            mdl.IForm.copy(mdl, &.mdlFormImage)
             if clear:
                 mdl.image.release()
             return mdl
         case Step:
             let mdl = Memory.new'FormStep()
-            mdl.IForm.copy(mdl, &me.mdlFormStep)
+            mdl.IForm.copy(mdl, &.mdlFormStep)
             return mdl
         case Line:
             let mdl = Memory.new'FormLine()
-            mdl.IForm.copy(mdl, &me.mdlFormLine)
+            mdl.IForm.copy(mdl, &.mdlFormLine)
             return mdl
         case Polygon:
             let mdl = Memory.new'FormPolygon()
-            mdl.IForm.copy(mdl, &me.mdlFormPolygon)
+            mdl.IForm.copy(mdl, &.mdlFormPolygon)
             if clear:
                 mdl.points.clear()
             return mdl
         case Text:
             let mdl = Memory.new'FormText()
-            mdl.IForm.copy(mdl, &me.mdlFormText)
+            mdl.IForm.copy(mdl, &.mdlFormText)
             return mdl
         case Draw:
             let mdl = Memory.new'FormDraw()
-            mdl.IForm.copy(mdl, &me.mdlFormDraw)
+            mdl.IForm.copy(mdl, &.mdlFormDraw)
             if clear:
                 mdl.points.clear()
             return mdl

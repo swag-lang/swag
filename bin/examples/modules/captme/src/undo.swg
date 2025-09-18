@@ -349,15 +349,15 @@ impl Undo
             }
 
         case SetTypedValue:
-            foreach s in me.selection
+            foreach s in .selection
             {
-                let f = me.capture.forms[s]
-                if !me.acceptsType(@kindof(f)):
+                let f = .capture.forms[s]
+                if !.acceptsType(@kindof(f)):
                     continue
-                Reflection.setFieldValue(@dataof(f), me.valRef, &me.valU32, true)
+                Reflection.setFieldValue(@dataof(f), .valRef, &.valU32, true)
             }
 
-            me.capture.updateModelFromSelection()
+            .capture.updateModelFromSelection()
 
         case AlignLeft:
             foreach s in me.selection
@@ -610,7 +610,7 @@ impl Undo
                 var val = me.oldU32[i]
                 Reflection.setFieldValue(@dataof(f), me.valRef, &val, true)
             }
-            me.capture.updateModelFromSelection()
+            .capture.updateModelFromSelection()
 
         case AlignLeft, AlignRight, AlignCenter, AlignTop, AlignBottom, AlignMiddle:
             foreach s, i in me.selection

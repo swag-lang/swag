@@ -325,13 +325,13 @@ impl MainWnd
 
     mtd saveAsImage(linked = false)
     {
-        let fileName = me.geteSaveAsImageName()
+        let fileName = me.getSaveAsImageName()
         if fileName.isEmpty():
             return
         me.doSaveAsImage(fileName, linked)
     }
 
-    mtd geteSaveAsImageName()->String
+    mtd getSaveAsImageName()->String
     {
         let capture = assume me.getCapture()
 

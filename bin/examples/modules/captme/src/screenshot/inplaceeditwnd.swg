@@ -28,8 +28,19 @@ impl InPlaceEditWnd
 {
     func create(capture: *Capture, main: *MainWnd, parent: *Wnd)->*InPlaceEditWnd
     {
-        // Generate a main window
-        let theme   = main.getTheme()
+        with let frame = createMainFrame(main, parent, capture)
+        {
+            .createActionBar()
+            .createEditBar(main)
+            .setupCapture(capture)
+        }
+
+        return frame
+    }
+
+    // Private helper methods
+    func createMainFrame(main: *MainWnd, parent: *Wnd, capture: *Capture)->*InPlaceEditWnd
+    {
         let newMain = Wnd.create'MainWnd(main.parent, {})
         newMain.registerActions()
         newMain.registerShortcuts()
@@ -37,175 +48,228 @@ impl InPlaceEditWnd
 
         with let frame = Wnd.create'InPlaceEditWnd(parent)
         {
-            .owner             = newMain
-            .capture           = capture
+            .owner   = newMain
+            .capture = capture
+            .newMain = newMain
+
             .editWnd           = EditWnd.create(newMain, frame)
             .editWnd.dockStyle = .Center
-            .newMain           = newMain
             newMain.editWnd    = .editWnd
 
             with let view = frame.editWnd.editView
             {
-                .dockStyle  = .Center
-                .viewMargin = 0
+                .dockStyle   = .Center
+                .viewMargin  = 0
+                .inPlaceEdit = true
                 .setCapture(capture)
                 .setZoom(1)
                 .setFocus()
-                .inPlaceEdit = true
-            }
-
-            .actionBar                 = IconBar.create(.editWnd.editView, 24, {})
-            .actionBar.backgroundStyle = .Window
-
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Save), "save").toolTip      = "Save capture as image file"
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Copy), "copy").toolTip      = "Copy image to clipboard"
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.Edit), "edit").toolTip      = "Open in Captme editor"
-            .actionBar.addItem(theme.getIcon24(ThemeIcons24.WndClose), "close").toolTip = "Cancel and discard capture"
-
-            .actionBar.sigPressed += func|frame|(btn)
-            {
-                switch btn.id
-                {
-                case "copy":
-                    InPlaceEditWnd.cropCapture(frame.capture)
-                    frame.capture.copyAll()
-                    g_Exit     = true
-                    g_GrabDone = false
-                case "close":
-                    g_Exit     = true
-                    g_GrabDone = false
-                case "edit":
-                    InPlaceEditWnd.cropCapture(frame.capture)
-                    g_Exit     = true
-                    g_GrabDone = true
-                case "save":
-                    let fileName = frame.newMain.geteSaveAsImageName()
-                    if fileName.isEmpty():
-                        return
-                    InPlaceEditWnd.cropCapture(frame.capture)
-                    frame.newMain.doSaveAsImage(fileName)
-                    g_Exit     = true
-                    g_GrabDone = false
-                }
-            }
-
-            .editBar                 = IconBar.create(.editWnd.editView, 24, {})
-            .editBar.backgroundStyle = .Window
-
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 7), "draw").toolTip    = "Free draw tool"
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 1), "line").toolTip    = "Draw straight line"
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 19), "circle").toolTip = "Draw circle or ellipse"
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 20), "rect").toolTip   = "Draw rectangle or square"
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 3), "arrow").toolTip   = "Draw arrow"
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 4), "text").toolTip    = "Add text annotation"
-            .editBar.addCheckableItem(Icon.from(&main.icons48, 9), "marker").toolTip  = "Highlight with marker"
-            .editBar.setIconBarFlags(.Vertical)
-
-            .editBar.sigCheckChanged += func|frame|(btn)
-            {
-                switch btn.id
-                {
-                case "draw":
-                    frame.editMode = .Draw
-                case "line":
-                    frame.editMode = .Line
-                case "circle":
-                    frame.editMode = .Circle
-                case "rect":
-                    frame.editMode = .Rect
-                case "arrow":
-                    frame.editMode = .Arrow
-                case "text":
-                    frame.editMode = .Text
-                case "marker":
-                    frame.editMode = .Marker
-                }
-
-                frame.updateEditMode()
-            }
-
-            let btnColor = .editBar.addItem({}, "color")
-            btnColor.iconBtnFlags.add(.Popup)
-            btnColor.sigPaintIcon = func|frame|(btn, bc, pos, flags)
-            {
-                bc.painter.setParams(.Antialiased)
-                var rect = pos
-                rect.inflate(-2)
-                var color = frame.editMode == .Marker ? frame.editColorHilight : frame.editColor
-                bc.painter.fillRoundRect(rect, 10, 10, color)
-            }
-
-            btnColor.sigShowPopup += func|frame|(btn)
-            {
-                var color  = frame.editMode == .Marker ? frame.editColorHilight : frame.editColor
-                var picker = PropWnd.createColorPicker(cast(*IconButton) btn, color)
-                picker.sigChanged += func|picker, frame, btn|(pk)
-                {
-                    if frame.editMode == .Marker:
-                        frame.editColorHilight = picker.getColor()
-                    else:
-                        frame.editColor = picker.getColor()
-                    frame.updateEditMode()
-                    btn.invalidate()
-                }
             }
         }
-
-        capture.gizmo.sigHasChanged = func|frame|()
-        {
-            frame.moveButtons()
-        }
-
-        frame.moveButtons()
-        frame.updateEditMode()
 
         return frame
     }
 
-    func cropCapture(capture: *Capture)
+    mtd createActionBar()
     {
-        var grabRect: Math.Rectangle
+        .actionBar                 = IconBar.create(.editWnd.editView, 24, {})
+        .actionBar.backgroundStyle = .Window
+
+        let actions = [
+            {"save", ThemeIcons24.Save, "Save capture as image file"},
+            {"copy", ThemeIcons24.Copy, "Copy image to clipboard"},
+            {"edit", ThemeIcons24.Edit, "Open in Captme editor"},
+            {"close", ThemeIcons24.WndClose, "Cancel and discard capture"}]
+
+        let theme = .getTheme()
+        foreach action in actions:
+            .actionBar.addItem(theme.getIcon24(action.item1), action.item0).toolTip = action.item2
+
+        .actionBar.sigPressed += mtd||(btn) { me.handleActionBarPress(btn.id); }
+    }
+
+    mtd createEditBar(main: *MainWnd)
+    {
+        .editBar                 = IconBar.create(.editWnd.editView, 24, {})
+        .editBar.backgroundStyle = .Window
+        .editBar.setIconBarFlags(.Vertical)
+
+        let editTools = [
+            {"draw", 7, "Free draw tool"},
+            {"line", 1, "Draw straight line"},
+            {"circle", 19, "Draw circle or ellipse"},
+            {"rect", 20, "Draw rectangle or square"},
+            {"arrow", 3, "Draw arrow"},
+            {"text", 4, "Add text annotation"},
+            {"marker", 9, "Highlight with marker"}]
+
+        foreach tool in editTools:
+            .editBar.addCheckableItem(Icon.from(&main.icons48, tool.item1), tool.item0).toolTip = tool.item2
+
+        .editBar.sigCheckChanged += mtd||(btn) { me.handleEditModeChange(btn.id); }
+        .createColorPicker()
+    }
+
+    mtd createColorPicker()
+    {
+        let btnColor = .editBar.addItem({}, "color")
+        btnColor.iconBtnFlags.add(.Popup)
+
+        btnColor.sigPaintIcon = mtd||(btn, bc, pos, flags)
+        {
+            bc.painter.setParams(.Antialiased)
+            var rect = pos
+            rect.inflate(-2)
+            let color = me.editMode == .Marker ? me.editColorHilight : me.editColor
+            bc.painter.fillRoundRect(rect, 10, 10, color)
+        }
+
+        btnColor.sigShowPopup += mtd||(btn)
+        {
+            let color  = me.editMode == .Marker ? me.editColorHilight : me.editColor
+            let picker = PropWnd.createColorPicker(cast(*IconButton) btn, color)
+            picker.sigChanged += mtd|picker, btn|(pk)
+            {
+                if me.editMode == .Marker:
+                    me.editColorHilight = picker.getColor()
+                else:
+                    me.editColor = picker.getColor()
+                me.updateEditMode()
+                btn.invalidate()
+            }
+        }
+    }
+
+    mtd setupCapture(capture: *Capture)
+    {
+        capture.gizmo.sigHasChanged = mtd||() { me.moveButtons(); }
+        .moveButtons()
+        .updateEditMode()
+    }
+
+    mtd handleActionBarPress(actionId: string)
+    {
+        switch actionId
+        {
+        case "copy":
+            .capture.crop()
+            .capture.copyAll()
+            exitWithResult(false)
+        case "close":
+            exitWithResult(false)
+        case "edit":
+            .capture.crop()
+            exitWithResult(true)
+        case "save":
+            let fileName = .newMain.getSaveAsImageName()
+            if !fileName.isEmpty():
+                .capture.crop()
+            .newMain.doSaveAsImage(fileName)
+            exitWithResult(false)
+        }
+    }
+
+    mtd handleEditModeChange(toolId: string)
+    {
+        switch toolId
+        {
+        case "draw":
+            .editMode = .Draw
+        case "line":
+            .editMode = .Line
+        case "circle":
+            .editMode = .Circle
+        case "rect":
+            .editMode = .Rect
+        case "arrow":
+            .editMode = .Arrow
+        case "text":
+            .editMode = .Text
+        case "marker":
+            .editMode = .Marker
+        }
+
+        .updateEditMode()
+    }
+
+    func exitWithResult(grabDone: bool)
+    {
+        g_Exit     = true
+        g_GrabDone = grabDone
+    }
+
+    func crop(capture: *Capture)
+    {
+        let grabRect = calculateGrabRect(capture)
+        capture.applyScaling(grabRect)
+        capture.updateCaptureState()
+    }
+
+    func calculateGrabRect(capture: *Capture)->Math.Rectangle
+    {
+        return Math.Rectangle{-capture.backImagePos.x, -capture.backImagePos.y, capture.width, capture.height}
+    }
+
+    func applyScaling(capture: *Capture, rect: Math.Rectangle)
+    {
+        var grabRect = rect
+        let scale    = Env.getDPIScale()
+        grabRect.x *= scale
+        grabRect.y *= scale
+        grabRect.width *= scale
+        grabRect.height *= scale
+
+        capture.backImg.crop(grabRect)
+        if capture.backImgOriginal.isValid():
+            capture.backImgOriginal = capture.backImg
+
+        foreach f in capture.forms:
+            f.scaleBaseForm(scale)
+    }
+
+    func updateCaptureState(capture: *Capture)
+    {
         with capture
         {
-            grabRect.x      = -.backImagePos.x
-            grabRect.y      = -.backImagePos.y
-            grabRect.width  = .width
-            grabRect.height = .height
-
-            let scale = Env.getDPIScale()
-            grabRect.x *= scale
-            grabRect.y *= scale
-            grabRect.width *= scale
-            grabRect.height *= scale
-
-            .backImg.crop(grabRect)
-            if .backImgOriginal.isValid():
-                .backImgOriginal = .backImg
             .width, .widthOrg = cast(s32) .backImg.width
             .height, .heightOrg = cast(s32) .backImg.height
-            .backImagePos = {}
-
+            .backImagePos        = {}
             .gizmo.sigHasChanged = null
             .inPlaceEdit         = false
             .dirtyBackImg        = true
-
-            foreach f in capture.forms:
-                f.scaleBaseForm(scale)
-
             .selection.clear()
         }
     }
 
     mtd updateEditMode()
     {
+        .updateEditBarButtons()
+        .configureMainWindowEditMode()
+    }
+
+    mtd updateEditBarButtons()
+    {
         with InPlaceEditMode
         {
-            foreach m in [{"draw", .Draw}, {"line", .Line}, {"circle", .Circle}, {"rect", .Rect}, {"arrow", .Arrow}, {"text", .Text}, {"marker", .Marker}]
-            {
-                let btn = assume me.editBar.getButton(m.item0)
-                btn.setCheck(me.editMode == m.item1)
-            }
+            let modeMap = [
+                {"draw", .Draw}, {"line", .Line}, {"circle", .Circle}, {"rect", .Rect},
+                {"arrow", .Arrow}, {"text", .Text}, {"marker", .Marker}]
         }
+
+        foreach m in modeMap
+        {
+            let btn = assume me.editBar.getButton(m.item0)
+            btn.setCheck(me.editMode == m.item1)
+        }
+    }
+
+    mtd configureMainWindowEditMode()
+    {
+        const BORDER_SIZE    = 8
+        const MARKER_SIZE    = 30
+        const TEXT_SIZE      = 40
+        const TEXT_BOLD      = 2
+        const ARROW_END_SIZE = 5
 
         with .newMain
         {
@@ -213,40 +277,46 @@ impl InPlaceEditWnd
             {
             case Draw:
                 .editMode                = .Draw
-                .mdlFormDraw.borderSize  = 8
+                .mdlFormDraw.borderSize  = BORDER_SIZE
                 .mdlFormDraw.borderColor = me.editColor
+
             case Line:
                 .editMode                = .Line
-                .mdlFormLine.borderSize  = 8
+                .mdlFormLine.borderSize  = BORDER_SIZE
                 .mdlFormLine.borderColor = me.editColor
+
             case Circle:
                 .editMode                 = .Shape
                 .mdlFormShape.kind        = .Ellipse
-                .mdlFormShape.borderSize  = 8
+                .mdlFormShape.borderSize  = BORDER_SIZE
                 .mdlFormShape.borderColor = me.editColor
                 .mdlFormShape.backColor   = 0
+
             case Rect:
                 .editMode                 = .Shape
                 .mdlFormShape.kind        = .RoundRectangle
-                .mdlFormShape.borderSize  = 8
+                .mdlFormShape.borderSize  = BORDER_SIZE
                 .mdlFormShape.borderColor = me.editColor
                 .mdlFormShape.backColor   = 0
+
             case Arrow:
                 .editMode                 = .Arrow
-                .mdlFormArrow.borderSize  = 8
-                .mdlFormArrow.endSize     = 5
+                .mdlFormArrow.borderSize  = BORDER_SIZE
+                .mdlFormArrow.endSize     = ARROW_END_SIZE
                 .mdlFormArrow.endCap      = .ArrowAnchor
                 .mdlFormArrow.borderColor = me.editColor
+
             case Text:
                 .editMode               = .Text
-                .mdlFormText.fontSize   = 40
+                .mdlFormText.fontSize   = TEXT_SIZE
                 .mdlFormText.borderSize = 3
                 .mdlFormText.text       = "A"
-                .mdlFormText.boldSize   = 2
+                .mdlFormText.boldSize   = TEXT_BOLD
                 .mdlFormText.backColor  = me.editColor
+
             case Marker:
                 .editMode                = .Draw
-                .mdlFormDraw.borderSize  = 30
+                .mdlFormDraw.borderSize  = MARKER_SIZE
                 .mdlFormDraw.borderColor = me.editColorHilight.withAlpha(160)
             }
         }
@@ -254,33 +324,38 @@ impl InPlaceEditWnd
 
     mtd moveButtons()
     {
-        let rect: Math.Rectangle{-.capture.backImagePos.x, -.capture.backImagePos.y, .capture.width, .capture.height}
-        const Margin = 4
+        let rect = Math.Rectangle{-.capture.backImagePos.x, -.capture.backImagePos.y, .capture.width, .capture.height}
+        .positionActionBar(rect)
+        .positionEditBar(rect)
+    }
 
-        {
-            const H = 40.0
-            let w   = .actionBar.position.width
+    mtd positionActionBar(rect: Math.Rectangle)
+    {
+        const MARGIN = 4
+        const HEIGHT = 40.0
+        let width    = .actionBar.position.width
+        let x        = Math.max(10, rect.right() - width)
 
-            let x = Math.max(10, rect.right() - w)
-            if rect.bottom() < g_ScreenHeight - H + Margin:
-                .actionBar.setPosition(x, rect.bottom() + Margin, w, H)
-            elif rect.y > H + Margin:
-                .actionBar.setPosition(x, rect.y - H - Margin, w, H)
-            else:
-                .actionBar.setPosition(x, rect.bottom() - H - Margin, w, H)
-        }
+        if rect.bottom() < g_ScreenHeight - HEIGHT + MARGIN:
+            .actionBar.setPosition(x, rect.bottom() + MARGIN, width, HEIGHT)
+        elif rect.y > HEIGHT + MARGIN:
+            .actionBar.setPosition(x, rect.y - HEIGHT - MARGIN, width, HEIGHT)
+        else:
+            .actionBar.setPosition(x, rect.bottom() - HEIGHT - MARGIN, width, HEIGHT)
+    }
 
-        {
-            let h   = .editBar.position.height
-            const W = 40.0
+    mtd positionEditBar(rect: Math.Rectangle)
+    {
+        const MARGIN = 4
+        const WIDTH  = 40.0
+        let height   = .editBar.position.height
 
-            if rect.right() < g_ScreenWidth - W + Margin:
-                .editBar.setPosition(rect.right() + Margin, rect.bottom() - h, W, h)
-            elif rect.x > W + Margin:
-                .editBar.setPosition(rect.x - W - Margin, rect.bottom() - h, W, h)
-            else:
-                .editBar.setPosition(rect.right() - W - Margin, rect.bottom() - h - Margin, W, h)
-        }
+        if rect.right() < g_ScreenWidth - WIDTH + MARGIN:
+            .editBar.setPosition(rect.right() + MARGIN, rect.bottom() - height, WIDTH, height)
+        elif rect.x > WIDTH + MARGIN:
+            .editBar.setPosition(rect.x - WIDTH - MARGIN, rect.bottom() - height, WIDTH, height)
+        else:
+            .editBar.setPosition(rect.right() - WIDTH - MARGIN, rect.bottom() - height - MARGIN, WIDTH, height)
     }
 }
 
