@@ -83,22 +83,19 @@ impl MainWnd
 {
     mtd swapLibraryMode()
     {
-        with me
-        {
-            .libraryMode = !.libraryMode
+        .libraryMode = !.libraryMode
 
-            .editWnd.show(!.libraryMode)
-            .quickStyleBar.show(!.libraryMode)
-            .recentBar.show(!.libraryMode)
-            .editZoomBar.show(!.libraryMode)
-            .editToolBar.show(!.libraryMode)
+        .editWnd.show(!.libraryMode)
+        .quickStyleBar.show(!.libraryMode)
+        .recentBar.show(!.libraryMode)
+        .editZoomBar.show(!.libraryMode)
+        .editToolBar.show(!.libraryMode)
 
-            .libWnd.show(.libraryMode)
+        .libWnd.show(.libraryMode)
 
-            if .libraryMode:
-                .libWnd.fill()
+        if .libraryMode:
+            .libWnd.fill()
 
-            .applyLayout()
-        }
+        .applyLayout()
     }
 }

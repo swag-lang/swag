@@ -993,15 +993,12 @@ impl ListCtrl
     // Clear all lines
     mtd clear()
     {
-        with me
-        {
-            .lines.clear()
-            .virtualCount = 0
-            .idxLineToIdxList.clear()
-            .focusIndex = Swag.U32.Max
-            .selModel.unselectAll()
-            .checkModel.unselectAll()
-        }
+        .lines.clear()
+        .virtualCount = 0
+        .idxLineToIdxList.clear()
+        .focusIndex = Swag.U32.Max
+        .selModel.unselectAll()
+        .checkModel.unselectAll()
     }
 
     // Add one column in a multi columns list

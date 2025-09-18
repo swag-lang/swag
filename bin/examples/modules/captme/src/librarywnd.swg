@@ -264,19 +264,16 @@ impl LibraryWnd
 
     mtd registerActions()
     {
-        with me
-        {
-            .registerAction'ActionLibSort()
-            .registerAction'ActionLibFilter()
-            .registerAction'ActionLibSel()
+        .registerAction'ActionLibSort()
+        .registerAction'ActionLibFilter()
+        .registerAction'ActionLibSel()
 
-            .registerKeyShortcut(.Zero, .Left, ActionLibSel.Left)
-            .registerKeyShortcut(.Zero, .Right, ActionLibSel.Right)
-            .registerKeyShortcut(.Zero, .Up, ActionLibSel.Up)
-            .registerKeyShortcut(.Zero, .Down, ActionLibSel.Down)
-            .registerKeyShortcut(.Zero, .Home, ActionLibSel.Home)
-            .registerKeyShortcut(.Zero, .End, ActionLibSel.End)
-        }
+        .registerKeyShortcut(.Zero, .Left, ActionLibSel.Left)
+        .registerKeyShortcut(.Zero, .Right, ActionLibSel.Right)
+        .registerKeyShortcut(.Zero, .Up, ActionLibSel.Up)
+        .registerKeyShortcut(.Zero, .Down, ActionLibSel.Down)
+        .registerKeyShortcut(.Zero, .Home, ActionLibSel.Home)
+        .registerKeyShortcut(.Zero, .End, ActionLibSel.End)
     }
 
     func create(parent: *MainWnd)->*LibraryWnd

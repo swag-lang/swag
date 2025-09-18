@@ -23,15 +23,12 @@ impl Transform2
     // Set transform to identity
     mtd setIdentity()
     {
-        with me
-        {
-            .m11 = 1
-            .m12 = 0
-            .m21 = 0
-            .m22 = 1
-            .m31 = 0
-            .m32 = 0
-        }
+        .m11 = 1
+        .m12 = 0
+        .m21 = 0
+        .m22 = 1
+        .m31 = 0
+        .m32 = 0
     }
 
     // Checks if the transform is the identity matrix

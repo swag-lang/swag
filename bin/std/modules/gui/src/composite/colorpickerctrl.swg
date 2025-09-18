@@ -73,33 +73,27 @@ internal impl ColorPickerCtrl
 {
     mtd updateMode()
     {
-        with me
-        {
-            .radioH.setChecked(.mode == .SaturationLightness)
-            .radioL.setChecked(.mode == .HueSaturation)
-            .radioS.setChecked(.mode == .HueLightness)
-            .radioR.setChecked(.mode == .GreenBlue)
-            .radioG.setChecked(.mode == .RedBlue)
-            .radioB.setChecked(.mode == .RedGreen)
-        }
+        .radioH.setChecked(.mode == .SaturationLightness)
+        .radioL.setChecked(.mode == .HueSaturation)
+        .radioS.setChecked(.mode == .HueLightness)
+        .radioR.setChecked(.mode == .GreenBlue)
+        .radioG.setChecked(.mode == .RedBlue)
+        .radioB.setChecked(.mode == .RedGreen)
     }
 
     mtd updatePickers()
     {
-        with me
-        {
-            .pickBox.sigChanged.disable()
-            .pickBox.setColor(.color)
-            .pickBox.sigChanged.enable()
+        .pickBox.sigChanged.disable()
+        .pickBox.setColor(.color)
+        .pickBox.sigChanged.enable()
 
-            .pickBar.sigChanged.disable()
-            .pickBar.setColor(.color)
-            .pickBar.sigChanged.enable()
+        .pickBar.sigChanged.disable()
+        .pickBar.setColor(.color)
+        .pickBar.sigChanged.enable()
 
-            .pickAlpha.sigChanged.disable()
-            .pickAlpha.setColor(.color)
-            .pickAlpha.sigChanged.enable()
-        }
+        .pickAlpha.sigChanged.disable()
+        .pickAlpha.setColor(.color)
+        .pickAlpha.sigChanged.enable()
     }
 
     mtd updateEdits()
@@ -415,30 +409,27 @@ impl ColorPickerCtrl
     // Change the display mode
     mtd setMode(mode: ColorPickerViewMode)
     {
-        with me
+        .mode = mode
+        switch .mode
         {
-            .mode = mode
-            switch .mode
-            {
-            case SaturationLightness:
-                .pickBox.setMode(.SaturationLightness)
-                .pickBar.setMode(.HueHorz)
-            case HueSaturation:
-                .pickBox.setMode(.HueSaturation)
-                .pickBar.setMode(.LightnessHorz)
-            case HueLightness:
-                .pickBox.setMode(.HueLightness)
-                .pickBar.setMode(.SaturationHorz)
-            case GreenBlue:
-                .pickBox.setMode(.GreenBlue)
-                .pickBar.setMode(.RedHorz)
-            case RedBlue:
-                .pickBox.setMode(.RedBlue)
-                .pickBar.setMode(.GreenHorz)
-            case RedGreen:
-                .pickBox.setMode(.RedGreen)
-                .pickBar.setMode(.BlueHorz)
-            }
+        case SaturationLightness:
+            .pickBox.setMode(.SaturationLightness)
+            .pickBar.setMode(.HueHorz)
+        case HueSaturation:
+            .pickBox.setMode(.HueSaturation)
+            .pickBar.setMode(.LightnessHorz)
+        case HueLightness:
+            .pickBox.setMode(.HueLightness)
+            .pickBar.setMode(.SaturationHorz)
+        case GreenBlue:
+            .pickBox.setMode(.GreenBlue)
+            .pickBar.setMode(.RedHorz)
+        case RedBlue:
+            .pickBox.setMode(.RedBlue)
+            .pickBar.setMode(.GreenHorz)
+        case RedGreen:
+            .pickBox.setMode(.RedGreen)
+            .pickBar.setMode(.BlueHorz)
         }
     }
 

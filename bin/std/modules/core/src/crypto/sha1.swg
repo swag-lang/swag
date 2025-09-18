@@ -6,10 +6,10 @@
 // Supports incremental hashing through 'init', 'update', and 'final' operations.
 public struct Sha1
 {
-    data:        [64] u8  // Internal data buffer for processing 512-bit blocks
-    state:       [5] u32  // Five 32-bit hash state values (A, B, C, D, E)
-    datalen:     u32      // Current number of bytes in the data buffer
-    bitlen:      u64      // Total number of bits processed so far
+    data:        [64] u8     // Internal data buffer for processing 512-bit blocks
+    state:       [5] u32     // Five 32-bit hash state values (A, B, C, D, E)
+    datalen:     u32         // Current number of bytes in the data buffer
+    bitlen:      u64         // Total number of bits processed so far
 }
 
 impl Sha1
@@ -43,14 +43,11 @@ impl Sha1
             i += 1
         }
 
-        with me
-        {
-            var a = .state[0]
-            var b = .state[1]
-            var c = .state[2]
-            var d = .state[3]
-            var e = .state[4]
-        }
+        var a = .state[0]
+        var b = .state[1]
+        var c = .state[2]
+        var d = .state[3]
+        var e = .state[4]
 
         i = 0
         while i < 80
@@ -86,20 +83,17 @@ impl Sha1
             i += 1
         }
 
-        with me
-        {
-            .state[0] += a
-            .state[1] += b
-            .state[2] += c
-            .state[3] += d
-            .state[4] += e
-        }
+        .state[0] += a
+        .state[1] += b
+        .state[2] += c
+        .state[3] += d
+        .state[4] += e
     }
 }
 
 public impl Sha1
 {
-    alias Digest = [5] u32  // SHA-1 digest result as five 32-bit words
+    alias Digest = [5] u32 // SHA-1 digest result as five 32-bit words
 
     // Finalize the computation and produce the final hash digest.
     // Applies padding and length encoding, then stores the result in 'result'.
@@ -136,19 +130,16 @@ public impl Sha1
             }
         }
 
-        with me
-        {
-            .bitlen += .datalen * 8
-            .data[63] = cast #bit (u8) .bitlen
-            .data[62] = cast #bit (u8) (.bitlen >> 8)
-            .data[61] = cast #bit (u8) (.bitlen >> 16)
-            .data[60] = cast #bit (u8) (.bitlen >> 24)
-            .data[59] = cast #bit (u8) (.bitlen >> 32)
-            .data[58] = cast #bit (u8) (.bitlen >> 40)
-            .data[57] = cast #bit (u8) (.bitlen >> 48)
-            .data[56] = cast #bit (u8) (.bitlen >> 56)
-            .transform(.data)
-        }
+        .bitlen += .datalen * 8
+        .data[63] = cast #bit (u8) .bitlen
+        .data[62] = cast #bit (u8) (.bitlen >> 8)
+        .data[61] = cast #bit (u8) (.bitlen >> 16)
+        .data[60] = cast #bit (u8) (.bitlen >> 24)
+        .data[59] = cast #bit (u8) (.bitlen >> 32)
+        .data[58] = cast #bit (u8) (.bitlen >> 40)
+        .data[57] = cast #bit (u8) (.bitlen >> 48)
+        .data[56] = cast #bit (u8) (.bitlen >> 56)
+        .transform(.data)
 
         Memory.copy(result, &me.state[0], #sizeof(me.state))
     }
@@ -158,14 +149,11 @@ public impl Sha1
     mtd init()
     {
         @init(me, 1)
-        with me
-        {
-            .state[0] = 0x67452301
-            .state[1] = 0xefcdab89
-            .state[2] = 0x98badcfe
-            .state[3] = 0x10325476
-            .state[4] = 0xc3d2e1f0
-        }
+        .state[0] = 0x67452301
+        .state[1] = 0xefcdab89
+        .state[2] = 0x98badcfe
+        .state[3] = 0x10325476
+        .state[4] = 0xc3d2e1f0
     }
 
     // Update the hash value with 'buffer' content.

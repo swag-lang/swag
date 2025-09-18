@@ -69,17 +69,14 @@ impl Image
     // This gives the opportunity to set the pixels with an external buffer
     mtd init(width, height: s32, pf: PixelFormat)
     {
-        with me
-        {
-            .pixels.clear()
-            .width  = width
-            .height = height
-            .pf     = pf
-            .bpp    = .pf.bpp()
-            .bpp8   = cast(u8) (.bpp >> 3)
-            .width8 = .width * .bpp8
-            .size   = cast(u64) (.width * .height * .bpp8)
-        }
+        .pixels.clear()
+        .width  = width
+        .height = height
+        .pf     = pf
+        .bpp    = .pf.bpp()
+        .bpp8   = cast(u8) (.bpp >> 3)
+        .width8 = .width * .bpp8
+        .size   = cast(u64) (.width * .height * .bpp8)
     }
 
     // Allocate pixels.

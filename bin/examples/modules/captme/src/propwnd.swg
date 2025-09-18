@@ -1338,33 +1338,30 @@ impl PropWnd
         if stack1.childs.count == 0:
             stack1.destroyNow()
 
-        with me
-        {
-            .propImageKind()
-            .propStrength()
-            .propNextStep()
-            .propText()
-            .propFontSize()
-            .propBoldSize()
-            .propBorderSize()
-            .propStartSize()
-            .propEndSize()
-            .propRoundSize()
-            .propJoinStyle()
-            .propSmooth()
-            .propPixSel()
+        .propImageKind()
+        .propStrength()
+        .propNextStep()
+        .propText()
+        .propFontSize()
+        .propBoldSize()
+        .propBorderSize()
+        .propStartSize()
+        .propEndSize()
+        .propRoundSize()
+        .propJoinStyle()
+        .propSmooth()
+        .propPixSel()
 
-            .propSep()
+        .propSep()
 
-            .propScale()
-            .propRotate()
-            .propOpacity()
-            .propShadow()
+        .propScale()
+        .propRotate()
+        .propOpacity()
+        .propShadow()
 
-            .propSep()
+        .propSep()
 
-            .propXY()
-        }
+        .propXY()
 
         me.mainLayout.computeLayout()
         if me.mainLayout.childs.count:
