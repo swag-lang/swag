@@ -1581,12 +1581,14 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 {
                     multi = Ast::newNode<AstNode>(AstNodeKind::MultiIdentifier, this, parent);
                     Ast::addChildBack(multi, exprNode);
+                    tokenStart.comments.clear();
                 }
             }
 
             Ast::removeFromParent(multi);
             *result = multi ? multi : exprNode;
             FormatAst::inheritFormatBefore(this, *result, &tokenStart);
+            tokenStart.comments.clear();
             break;
         }
 

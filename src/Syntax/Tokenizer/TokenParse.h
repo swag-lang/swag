@@ -72,6 +72,13 @@ struct TokenComments
         return result;
     }
 
+    void clear()
+    {
+        before.clear();
+        justBefore.clear();
+        after.clear();
+    }
+
     Vector<TokenComment> before;
     Vector<TokenComment> justBefore;
     Vector<TokenComment> after;

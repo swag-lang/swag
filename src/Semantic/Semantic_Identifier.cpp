@@ -168,7 +168,6 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
     return true;
 }
 
-#pragma optimize("", off) 
 void Semantic::setConst(AstNode* node)
 {
     if (node->token.text == "a")
