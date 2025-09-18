@@ -1,4 +1,3 @@
-
 #[Swag.EnumIndex]
 public enum HatchStyle
 {

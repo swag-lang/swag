@@ -112,7 +112,7 @@ impl Theme
         if count == 0 and !icon.isValid():
             return
 
-        var pos = position
+        var pos       = position
         let iconColor = icon.color.a ? icon.color : stringFormat.palette[0]
 
         // Icon alone

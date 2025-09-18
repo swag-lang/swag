@@ -68,16 +68,16 @@ func getMonitorForPoint(pt: Math.Point)->Env.Monitor
     }
 
     // Second pass: nearest (min distance from point to monitor rect)
-    var bestM   : retval
-    var bestD2  = Swag.F32.Inf
+    var bestM: retval
+    var bestD2 = Swag.F32.Inf
     foreach m in monitors
     {
-        let r = m.rect
+        let r  = m.rect
         let cx = Math.clamp(pt.x, r.x, r.right())
         let cy = Math.clamp(pt.y, r.y, r.bottom())
         let dx = pt.x - cx
         let dy = pt.y - cy
-        let d2 = dx*dx + dy*dy
+        let d2 = dx * dx + dy * dy
         if d2 < bestD2
         {
             bestD2 = d2

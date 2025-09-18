@@ -14,16 +14,16 @@ struct(K, V) HashTableEntry
 struct(K, V) HashTable
 {
     // Special hash values to indicate the state of a slot in the me.table.
-    const HASH_FREE        = 0'u32             // The slot is empty and has never been used.
-    const HASH_DELETED     = 1'u32             // The slot was previously occupied but has been me.deleted.
-    const HASH_FIRST       = 2'u32             // The first possible valid hash value.
-    const HASH_MASK        = 2'u32             // A mask to ensure that valid hashes are >= HASH_FIRST.
+    const HASH_FREE        = 0'u32                // The slot is empty and has never been used.
+    const HASH_DELETED     = 1'u32                // The slot was previously occupied but has been me.deleted.
+    const HASH_FIRST       = 2'u32                // The first possible valid hash value.
+    const HASH_MASK        = 2'u32                // A mask to ensure that valid hashes are >= HASH_FIRST.
 
-    allocator:             IAllocator          // The me.allocator used for memory operations.
-    table:                 [*] HashTableEntry  // Pointer to the contiguous memory block for the hash me.table.
-    count:                 u64                 // The number of valid key-value pairs currently in the me.table.
-    capacity:              u64                 // The total number of slots in the hash me.table.
-    deleted:               u64                 // The number of slots marked as me.deleted.
+    allocator:             IAllocator             // The me.allocator used for memory operations.
+    table:                 [*] HashTableEntry     // Pointer to the contiguous memory block for the hash me.table.
+    count:                 u64                    // The number of valid key-value pairs currently in the me.table.
+    capacity:              u64                    // The total number of slots in the hash me.table.
+    deleted:               u64                    // The number of slots marked as me.deleted.
 }
 
 impl HashTable

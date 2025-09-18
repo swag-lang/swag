@@ -67,20 +67,20 @@ namespace __Win32RT
 
     struct IMAGEHLP_LINE64
     {
-        SizeOfStruct:     DWORD       // set to sizeof(IMAGEHLP_LINE64)
-        Key:              *void       // internal
-        LineNumber:       DWORD       // line number in file
-        FileName:         [*] CHAR    // full filename
-        Address:          ULONG64     // first instruction of line
+        SizeOfStruct:     DWORD        // set to sizeof(IMAGEHLP_LINE64)
+        Key:              *void        // internal
+        LineNumber:       DWORD        // line number in file
+        FileName:         [*] CHAR     // full filename
+        Address:          ULONG64      // first instruction of line
     }
 
     struct IMAGEHLP_LINEW64
     {
-        SizeOfStruct:     DWORD       // set to sizeof(IMAGEHLP_LINEW64)
-        Key:              *void       // internal
-        LineNumber:       DWORD       // line number in file
-        FileName:         [*] WCHAR   // full filename
-        Address:          ULONG64     // first instruction of line
+        SizeOfStruct:     DWORD         // set to sizeof(IMAGEHLP_LINEW64)
+        Key:              *void         // internal
+        LineNumber:       DWORD         // line number in file
+        FileName:         [*] WCHAR     // full filename
+        Address:          ULONG64       // first instruction of line
     }
 
     #[Swag.Foreign("DbgHelp")]

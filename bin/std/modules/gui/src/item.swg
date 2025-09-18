@@ -13,7 +13,7 @@ struct Item
 #[Swag.EnumFlags]
 enum PaintItemFlags
 {
-    Zero = 0
+    Zero     = 0
     Checked
     Pressed
     Hot

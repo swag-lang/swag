@@ -535,8 +535,8 @@ namespace Swag
 
     struct Interface
     {
-        obj:        *void                // Pointer to the associated struct instance
-        itable:     const [*][*]void     // Pointer to the virtual table
+        obj:        *void                  // Pointer to the associated struct instance
+        itable:     const [*] [*] void     // Pointer to the virtual table
     }
 
     struct AttributeParam
@@ -965,25 +965,25 @@ func @compiler()->Swag.ICompiler;
 // Returns a system allocated memory block of 'size' bytes.
 //
 // Use [[@free]] to release the allocated memory.
-func @alloc(size: u64)->[*]void;
+func @alloc(size: u64)->[*] void;
 
 // Realloc a system memory block allocated with [[@alloc]]
-func @realloc(ptr: [*]void, size: u64)->[*]void;
+func @realloc(ptr: [*] void, size: u64)->[*] void;
 
 // Free a system memory block allocated with [[@alloc]]
-func @free(ptr: [*]void);
+func @free(ptr: [*] void);
 
 // Set all bytes of a given memory block to 'value'
-func @memset(dst: [*]void, value: u8, size: u64);
+func @memset(dst: [*] void, value: u8, size: u64);
 
 // Copy one memory block to another address.
-func @memcpy(dst: [*]void, src: const [*]void, size: u64);
+func @memcpy(dst: [*] void, src: const [*] void, size: u64);
 
 // Move one memory block to another address.
-func @memmove(dst: [*]void, src: const [*]void, size: u64);
+func @memmove(dst: [*] void, src: const [*] void, size: u64);
 
 // Compare two memory blocks, and returns -1, 0 if equal, or 1.
-func @memcmp(dst, src: const [*]void, size: u64)->s32;
+func @memcmp(dst, src: const [*] void, size: u64)->s32;
 
 // Returns the length of the given 0 terminated string.
 func @strlen(str: cstring)->u64;

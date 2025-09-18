@@ -5,7 +5,7 @@ impl Image
     mtd const doMirror(dstImage: *Image)
     {
         let mec = cast #unconst (*Image) me
-        let f = dstImage
+        let f   = dstImage
 
         #[Swag.Mixin]
         func(BPP: u8) doIt()

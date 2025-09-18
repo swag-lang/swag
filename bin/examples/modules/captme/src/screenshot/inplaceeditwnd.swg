@@ -54,7 +54,7 @@ impl InPlaceEditWnd
                 .inPlaceEdit = true
             }
 
-            .actionBar = IconBar.create(.editWnd.editView, 24, {})
+            .actionBar                 = IconBar.create(.editWnd.editView, 24, {})
             .actionBar.backgroundStyle = .Window
 
             .actionBar.addItem(theme.getIcon24(ThemeIcons24.Save), "save").toolTip      = "Save capture as image file"
@@ -89,7 +89,7 @@ impl InPlaceEditWnd
                 }
             }
 
-            .editBar = IconBar.create(.editWnd.editView, 24, {})
+            .editBar                 = IconBar.create(.editWnd.editView, 24, {})
             .editBar.backgroundStyle = .Window
 
             .editBar.addCheckableItem(Icon.from(&main.icons48, 7), "draw").toolTip    = "Free draw tool"

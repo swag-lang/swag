@@ -189,10 +189,10 @@ impl IWnd for RecentView
 
             with var infos: RecentInfos
             {
-                .hot = idx == me.hotItem
-                .selected = idx == me.selected
+                .hot            = idx == me.hotItem
+                .selected       = idx == me.selected
                 .linkedUpToDate = item.linkedUpToDate
-                .linked = item.linked
+                .linked         = item.linked
             }
 
             paintRecent(me, painter, item.preview, rect, infos)

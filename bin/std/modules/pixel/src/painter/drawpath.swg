@@ -658,7 +658,6 @@ impl Painter
             return info
         }
 
-
         // If no skip distance needed, return early
         if info.distance <= 0:
             return info

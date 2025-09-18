@@ -177,7 +177,7 @@ public impl MessageDlg
         var opt = options
         if !opt.icon.isValid()
         {
-            opt.icon = from.app.theme.getIcon64(ThemeIcons64.Question)
+            opt.icon      = from.app.theme.getIcon64(ThemeIcons64.Question)
             opt.iconColor = Argb.White
         }
 
@@ -197,7 +197,7 @@ public impl MessageDlg
         var opt = options
         if !opt.icon.isValid()
         {
-            opt.icon = from.app.theme.getIcon64(ThemeIcons64.Question)
+            opt.icon      = from.app.theme.getIcon64(ThemeIcons64.Question)
             opt.iconColor = Argb.White
         }
 
@@ -244,7 +244,7 @@ public impl MessageDlg
         var opt = options
         if !opt.icon.isValid()
         {
-            opt.icon = from.app.theme.getIcon64(.Critical)
+            opt.icon      = from.app.theme.getIcon64(.Critical)
             opt.iconColor = Argb.White
         }
 

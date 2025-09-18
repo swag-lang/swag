@@ -549,7 +549,7 @@ impl MainWnd
             let dh = Math.max(0, (capture.backImagePos.y + capture.backImg.height) - capture.height)
             cropRect.moveLeft(dx)
             cropRect.moveTop(dy)
-            cropRect.width  -= dw
+            cropRect.width -= dw
             cropRect.height -= dh
 
             let undo = capture.newUndo(.SetImage, serial)

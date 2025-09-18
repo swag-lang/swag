@@ -6,7 +6,7 @@ using Swag, Core.Errors
 struct Folder
 {
     type:     typeinfo     // Type information of the structure
-    data:     [*] void        // Pointer to the actual structure instance
+    data:     [*] void     // Pointer to the actual structure instance
 }
 
 // Represents a tweak file parser that can load configuration into registered folders
@@ -49,7 +49,7 @@ impl TweakFile
 
         struct Ref
         {
-            folder:     *Folder         // Folder where the reference is defined
+            folder:     *Folder        // Folder where the reference is defined
             src:        *TypeValue     // Source field that is being referenced
             dst:        *TypeValue     // Destination field to copy to
         }
