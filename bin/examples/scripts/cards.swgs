@@ -31,7 +31,7 @@ const LOGO_WIDTH         = cast(f32) (CARD_WIDTH / 4)
 const LOGO_HEIGHT        = MARGIN_BOTTOM
 
 var g_InitDone = false
-var g_IconM, g_IconF, g_Pepper: Texture
+var g_IconH, g_IconF, g_Pepper: Texture
 var g_BackText:  Texture
 var g_BackTitle: [5] Texture
 var g_Logo:      Texture
@@ -66,9 +66,9 @@ func loadRes(app: *Application)
     var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
     dataPath = Path.combine(dataPath, "datas", "cards", "res")
 
-    var img = assume Image.load(Path.combine(dataPath, "m.png"))
+    var img = assume Image.load(Path.combine(dataPath, "h.png"))
     img.resize(cast() BADGE_SIZE, cast() BADGE_SIZE, .Bicubic)
-    g_IconM = app.renderer.addImage(img)
+    g_IconH = app.renderer.addImage(img)
 
     img = assume Image.load(Path.combine(dataPath, "f.png"))
     img.resize(cast() BADGE_SIZE, cast() BADGE_SIZE, .Bicubic)
@@ -130,7 +130,7 @@ func paintBadge(dc: *Painter, x, y: f32, m: bool)
 
     if m
     {
-        texture = g_IconM
+        texture = g_IconH
         color   = Argb.CornflowerBlue
     }
     else
@@ -182,13 +182,13 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         {
             let ratio     = img.width / cast(f32) img.height
             let newHeight = rectImage.height
-            img.resize(cast(s32) (newHeight * ratio), cast(s32) newHeight)
+            img.resize(cast(s32) (newHeight * ratio), cast(s32) newHeight, .Bicubic)
         }
         else
         {
             let ratio    = img.height / cast(f32) img.width
             let newWidth = rectImage.width
-            img.resize(cast(s32) newWidth, cast(s32) (newWidth * ratio))
+            img.resize(cast(s32) newWidth, cast(s32) (newWidth * ratio), .Bicubic)
         }
 
         var cropRect: Math.Rectangle
@@ -355,6 +355,8 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     foreach l in lines
     {
         let tokens  = Tokenize.split(l, ';''rune, removeEmpty: false)
+        if tokens.count == 0:
+            continue
         var fi:     ImageInfo
         var folders = Tokenize.split(tokens[0], '/''rune)
 
