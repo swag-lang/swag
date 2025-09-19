@@ -10,6 +10,7 @@ struct CaptureRectWnd
     tryStartGrab:     bool
     autoGrab:         bool
     lerpGrab:         Math.Rectangle
+    clickStartPos:    Math.Point  // Track where the click started
 }
 
 impl IWnd for CaptureRectWnd
@@ -32,25 +33,6 @@ impl IWnd for CaptureRectWnd
         if evt.kind == .KeyPressed and evt.key == .Escape:
             g_Exit = true
 
-        if !.tryStartGrab and !.startGrab
-        {
-            if evt.key == .Shift or evt.key == .RShift
-            {
-                if evt.kind == .KeyPressed
-                {
-                    .autoGrab = true
-                    .testAutoGrab()
-                }
-                else
-                {
-                    let pt = Input.getMousePos()
-                    g_StartGrabX, g_EndGrabX = pt.x
-                    g_StartGrabY, g_EndGrabY = pt.y
-                    .autoGrab = false
-                }
-            }
-        }
-
         .invalidate()
     }
 
@@ -62,9 +44,12 @@ impl IWnd for CaptureRectWnd
             .startGrab    = false
             .tryStartGrab = false
             .cancelGrag   = true
+            .autoGrab     = true  // Return to auto grab mode
 
-        case MousePressed where evt.button == .Left and !.autoGrab:
+        case MousePressed where evt.button == .Left:
             .tryStartGrab = true
+            .clickStartPos.x = evt.surfacePos.x
+            .clickStartPos.y = evt.surfacePos.y
 
         case MouseReleased where evt.button == .Left:
             if .cancelGrag
@@ -73,18 +58,36 @@ impl IWnd for CaptureRectWnd
                 break
             }
 
-            g_GrabDone = .startGrab or .autoGrab
-            g_Exit     = true
+            // If we're still in tryStartGrab mode (didn't move mouse significantly)
+            if .tryStartGrab
+            {
+                // Validate the current auto grab selection
+                g_GrabDone = true
+                g_Exit     = true
+            }
+            elif .startGrab
+            {
+                // Manual rectangle selection completed
+                g_GrabDone = true
+                g_Exit     = true
+            }
 
         case MouseMove where .tryStartGrab:
             g_EndGrabX = evt.surfacePos.x
             g_EndGrabY = evt.surfacePos.y
 
-            if Math.abs(g_EndGrabX - g_StartGrabX) > 1 and
-               Math.abs(g_EndGrabY - g_StartGrabY) > 1
+            // Check if mouse moved significantly from click start position
+            if Math.abs(evt.surfacePos.x - .clickStartPos.x) > 1 and
+               Math.abs(evt.surfacePos.y - .clickStartPos.y) > 1
             {
+                // Switch to manual rectangle selection mode
                 .tryStartGrab = false
                 .startGrab    = true
+                .autoGrab     = false
+
+                // Set grab start to click position
+                g_StartGrabX = .clickStartPos.x
+                g_StartGrabY = .clickStartPos.y
             }
 
         case MouseMove where .startGrab:
@@ -93,17 +96,13 @@ impl IWnd for CaptureRectWnd
             .invalidate()
 
         case MouseMove:
-            if !.autoGrab
+            // Auto grab is always active when not dragging
+            if !.startGrab
             {
-                g_StartGrabX, g_EndGrabX = evt.surfacePos.x
-                g_StartGrabY, g_EndGrabY = evt.surfacePos.y
-            }
-            else
-            {
+                .autoGrab = true
                 .testAutoGrab()
+                .invalidate()
             }
-
-            .invalidate()
         }
     }
 
@@ -111,14 +110,14 @@ impl IWnd for CaptureRectWnd
     {
         var grabRect = getGrabRect()
 
-        // Lerp grab rectangle
-        if .autoGrab
+        // Lerp grab rectangle only in auto grab mode
+        if .autoGrab and !.startGrab
         {
-            let dt = 0.1'f32
-            .lerpGrab.x      = Math.lerp(.lerpGrab.x, grabRect.x, dt)
-            .lerpGrab.y      = Math.lerp(.lerpGrab.y, grabRect.y, dt)
-            .lerpGrab.width  = Math.lerp(.lerpGrab.width, grabRect.width, dt)
-            .lerpGrab.height = Math.lerp(.lerpGrab.height, grabRect.height, dt)
+            let dt = 100.0'f32
+            .lerpGrab.x      = Math.moveTowards(.lerpGrab.x, grabRect.x, dt)
+            .lerpGrab.y      = Math.moveTowards(.lerpGrab.y, grabRect.y, dt)
+            .lerpGrab.width  = Math.moveTowards(.lerpGrab.width, grabRect.width, dt)
+            .lerpGrab.height = Math.moveTowards(.lerpGrab.height, grabRect.height, dt)
             var roundRect = .lerpGrab
             roundRect.round()
             if !grabRect.isEqualEpsilon(roundRect):
@@ -153,7 +152,7 @@ impl IWnd for CaptureRectWnd
         let col = .getThemeColors().hilight
         painter.drawRect(grabRect, col, 2)
 
-        // Rectangles
+        // Rectangles - only show crosshairs in manual grab mode
         if .main.captureOptions.drawCross and !.autoGrab
         {
             painter.drawLine(g_EndGrabX, 0, g_EndGrabX, cast() g_ScreenHeight, Argb.White)

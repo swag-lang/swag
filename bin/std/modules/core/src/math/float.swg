@@ -54,6 +54,23 @@ alias ConstF64 = Const'f64
     func interpQuintic(t: f32) => t * t * t * (t * (t * 6 - 15) + 10)
     func interpQuintic(t: f64) => t * t * t * (t * (t * 6 - 15) + 10)
 
+    // Interpolation at constant speed - moves a fixed distance per step
+    func moveTowards(current, target, speed: f32)->f32
+    {
+        let distance = target - current
+        if (abs(distance) <= speed):
+            return target
+        return current + sign(distance) * speed
+    }
+
+    func moveTowards(current, target, speed: f64)->f64
+    {
+        let distance = target - current
+        if (abs(distance) <= speed):
+            return target
+        return current + sign(distance) * speed
+    }
+
     // Perform smooth damping interpolation towards 'target'.
     // Uses 'smoothTime' and 'deltaTime' for frame-rate independent smooth movement.
     // 'currentVelocity' is modified to track the current rate of change.

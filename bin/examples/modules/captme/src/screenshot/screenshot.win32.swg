@@ -8,7 +8,9 @@ private
     var g_Ignore:    HWND
     var g_Awareness: DPI_AWARENESS_CONTEXT
 
-    func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
+    const SKIP_SYSTEM_INVISIBLE = 0x00000001
+
+    func enumProc(hWnd: HWND, lParam: LPARAM)->BOOL
     {
         if !IsWindowVisible(hWnd):
             return TRUE
@@ -23,6 +25,23 @@ private
            g_HitTest.y >= r.top and
            g_HitTest.y < r.bottom
         {
+            if lParam & SKIP_SYSTEM_INVISIBLE
+            {
+                var className: [256] CHAR
+                let n          = GetClassNameA(hWnd, &className[0], 256)
+                let str        = String.from(@mkstring(&className[0], n))
+
+                let systemClasses = [
+                    "Windows.UI.Core.CoreWindow", // UWP system windows
+                    "ApplicationFrameWindow"] // UWP app frames
+
+                foreach s in systemClasses
+                {
+                    if str == s:
+                        return TRUE
+                }
+            }
+
             g_Hit = hWnd
             return FALSE
         }
@@ -38,7 +57,7 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
 
     g_Hit    = null
     g_Ignore = srf.hWnd
-    EnumWindows(cast() &enumProc, 0)
+    EnumWindows(cast() &enumProc, SKIP_SYSTEM_INVISIBLE)
     if !g_Hit:
         return {}
 

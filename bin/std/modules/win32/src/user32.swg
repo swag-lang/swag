@@ -1031,6 +1031,8 @@ func GET_Y_LPARAM(lp: LPARAM) => cast(s32) HIWORD(lp)
     func GetWindowRect(hWnd: HWND, lpRect: *RECT)->BOOL;
     func GetWindowTextA(hWnd: HWND, lpString: LPSTR, nMaxCount: s32)->s32;
     func GetWindowTextW(hWnd: HWND, lpString: LPWSTR, nMaxCount: s32)->s32;
+    func GetClassNameA(hWnd: HWND, lpClassName: LPSTR, nMaxCount: s32)->s32;
+    func GetClassNameW(hWnd: HWND, lpClassName: LPWSTR, nMaxCount: s32)->s32;
 
     func ShowWindow(hWnd: HWND, nCmdShow: s32)->BOOL;
     func EnableWindow(hWnd: HWND, bEnable: BOOL)->BOOL;
