@@ -10,11 +10,8 @@ impl Painter
         if width == 0 or height == 0 or color.a == 0 or penSize == 0:
             return
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawRect(left, top, width, height, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawRect(left, top, width, height, pen)
     }
 
     #[Swag.Overload]
@@ -107,9 +104,9 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0:
             return
-        .sharedSolidBrush.color = color
-        .sharedSolidBrush.type  = .SolidColor
-        .fillRect(left, top, width, height, .sharedSolidBrush)
+
+        let brush = Brush.createSolid(color)
+        .fillRect(left, top, width, height, brush)
     }
 
     #[Swag.Overload]
@@ -125,11 +122,8 @@ impl Painter
         if width == 0 or height == 0 or color.a == 0 or penSize == 0:
             return
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawRoundRect(left, top, width, height, radiusX, radiusY, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawRoundRect(left, top, width, height, radiusX, radiusY, pen)
     }
 
     #[Swag.Overload]
@@ -183,11 +177,8 @@ impl Painter
     #[Swag.Overload]
     mtd drawRoundRect(rect: Math.Rectangle, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY, pen)
     }
 
     // Draw a filled round rectangle
@@ -214,9 +205,9 @@ impl Painter
     {
         if width == 0 or height == 0 or color.a == 0:
             return
-        .sharedSolidBrush.type  = .SolidColor
-        .sharedSolidBrush.color = color
-        .fillRoundRect(left, top, width, height, radiusX, radiusY, .sharedSolidBrush)
+
+        let brush = Brush.createSolid(color)
+        .fillRoundRect(left, top, width, height, radiusX, radiusY, brush)
     }
 
     #[Swag.Overload]

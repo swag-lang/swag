@@ -854,11 +854,8 @@ public impl Painter
     #[Swag.Overload]
     mtd drawPath(path: *LinePath, color: Color, penSize: f32)
     {
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawPath(path, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawPath(path, pen)
     }
 
     #[Swag.Overload]
@@ -929,11 +926,8 @@ public impl Painter
         if !pathList.paths.count:
             return
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawPath(pathList, .sharedSolidPen, mode)
+        let pen = Pen.createSolid(color, penSize)
+        .drawPath(pathList, pen, mode)
     }
 
     // Returns the extent in both directions of a given LineCapStyle.

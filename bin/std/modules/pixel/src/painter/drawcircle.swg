@@ -13,13 +13,9 @@ impl Painter
             return
         Debug.assert(endAngle.rad > startAngle.rad)
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-
+        let pen = Pen.createSolid(color, penSize)
         .sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
-        .drawPath(&.sharedLinePath, .sharedSolidPen)
+        .drawPath(&.sharedLinePath, pen)
     }
 
     #[Swag.Overload]
@@ -40,11 +36,8 @@ impl Painter
         if radius == 0 or color.a == 0:
             return
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawCircle(centerX, centerY, radius, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawCircle(centerX, centerY, radius, pen)
     }
 
     #[Swag.Overload]
@@ -69,11 +62,9 @@ impl Painter
         if radius == 0 or color.a == 0:
             return
 
-        @init(.sharedSolidBrush)
-        .sharedSolidBrush.type  = .SolidColor
-        .sharedSolidBrush.color = color
+        let brush = Brush.createSolid(color)
         .sharedLinePath.setEllipse(centerX, centerY, radius, radius)
-        .fillPath(&.sharedLinePath, .sharedSolidBrush)
+        .fillPath(&.sharedLinePath, brush)
     }
 
     // Draw an empty ellipse
@@ -83,11 +74,8 @@ impl Painter
         if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0:
             return
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawEllipse(centerX, centerY, radiusX, radiusY, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawEllipse(centerX, centerY, radiusX, radiusY, pen)
     }
 
     #[Swag.Overload]
@@ -140,10 +128,10 @@ impl Painter
     {
         if radiusX == 0 or radiusY == 0 or color.a == 0:
             return
-        .sharedSolidBrush.type  = .SolidColor
-        .sharedSolidBrush.color = color
+
+        let brush = Brush.createSolid(color)
         .sharedLinePath.setEllipse(centerX, centerY, radiusX, radiusY)
-        .fillPath(&.sharedLinePath, .sharedSolidBrush)
+        .fillPath(&.sharedLinePath, brush)
     }
 
     #[Swag.Overload]

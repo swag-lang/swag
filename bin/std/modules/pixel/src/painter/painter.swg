@@ -140,8 +140,6 @@ struct Painter
     triangulateIdx:         Array's32
     fake:                   bool
 
-    sharedSolidPen:         Pen
-    sharedSolidBrush:       Brush
     sharedLinePath:         LinePath
     sharedLinePathList:     LinePathList
     sharedRoundTmp:         Array'{ factor: f32, pos: Vector2 }

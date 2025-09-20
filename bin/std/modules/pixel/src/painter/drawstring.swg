@@ -140,9 +140,9 @@ impl Painter
     {
         if @countof(text) == 0 or color.a == 0:
             return
-        me.sharedSolidBrush.type  = .SolidColor
-        me.sharedSolidBrush.color = color
-        me.drawString(left, top, text, font, me.sharedSolidBrush, under, zoom)
+
+        let brush = Brush.createSolid(color)
+        .drawString(left, top, text, font, brush, under, zoom)
     }
 
     // Draw a simple string

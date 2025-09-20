@@ -53,9 +53,9 @@ public impl Painter
     {
         if !pathList.paths.count:
             return
-        me.sharedSolidBrush.type  = .SolidColor
-        me.sharedSolidBrush.color = color
-        me.fillPath(pathList, me.sharedSolidBrush)
+
+        let brush = Brush.createSolid(color)
+        .fillPath(pathList, brush)
     }
 
     #[Swag.Overload]
@@ -147,9 +147,8 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPath(path: *LinePath, color: Color)
     {
-        me.sharedSolidBrush.type  = .SolidColor
-        me.sharedSolidBrush.color = color
-        me.fillPath(path, me.sharedSolidBrush)
+        let brush = Brush.createSolid(color)
+        .fillPath(path, brush)
     }
 
     // Fill a list of paths.
@@ -220,9 +219,8 @@ public impl Painter
         if color.a == 0:
             return
 
-        me.sharedSolidBrush.type  = .SolidColor
-        me.sharedSolidBrush.color = color
-        me.fillPolygon(path, me.sharedSolidBrush)
+        let brush = Brush.createSolid(color)
+        .fillPolygon(path, brush)
     }
 
     // Fill the polygon with the given 'brush'

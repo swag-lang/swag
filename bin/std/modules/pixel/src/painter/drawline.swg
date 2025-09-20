@@ -16,11 +16,8 @@ impl Painter
         if (startX == endX and startY == endY) or color.a == 0 or penSize == 0:
             return
 
-        @init(.sharedSolidPen)
-        .sharedSolidPen.brush.type  = .SolidColor
-        .sharedSolidPen.brush.color = color
-        .sharedSolidPen.size        = penSize
-        .drawLine(startX, startY, endX, endY, .sharedSolidPen)
+        let pen = Pen.createSolid(color, penSize)
+        .drawLine(startX, startY, endX, endY, pen)
     }
 
     #[Swag.Overload]
