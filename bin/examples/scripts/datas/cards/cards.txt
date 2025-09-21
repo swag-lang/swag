@@ -1,5 +1,1 @@
-Montagne/AVENTURE;1.jpg;;0;Rendez-vous là-bas.;;
-Désert/AVENTURE;1.jpg;f;1;Rendez-vous là-bas.;;
-Mer/Ile Déserte/AVENTURE;1.jpg;fh;2;Rendez-vous <b>là-bas<b>.;;
-Bateau/TRANSPORT;1.jpg;h;3;Rendez-vous là-bas.;;
-Voiture/TRANSPORT;1.jpg;hf;4;Rendez-vous là-bas.;<i>Ceci est un deuxième texte;
+AA;BB;CC;;1.jpg;h;1

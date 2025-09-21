@@ -52,13 +52,13 @@ var g_TextFont2:    FontFamily
 
 struct ImageInfo
 {
-    image:         String
-    badge:         String
-    title:         String
-    subTitles:     Array'string
-    text:          String
-    text2:         String
-    rank:          s32
+    image:      String
+    badge:      String
+    title:      String
+    family:     Array'string
+    text:       String
+    text2:      String
+    rank:       s32
 }
 
 func loadRes(app: *Application)
@@ -260,7 +260,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         rect1.inflate(-BORDER_SIZE)
         rect1.y      = rect1.bottom() - TEXT_HEIGHT - (TITLE_HEIGHT / 2)
         rect1.height = TITLE_HEIGHT
-        dc.drawTexture(rect1, g_BackTitle[fi.rank])
+        dc.drawTexture(rect1, g_BackTitle[fi.rank - 1])
 
         var rectSub = rect1
         rectSub.y      = rectSub.bottom() - SUBTITLE_HEIGHT
@@ -283,7 +283,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
 
         // Sub title
         var str: String
-        foreach c in fi.subTitles
+        foreach c in fi.family
         {
             if @index:
                 str += " \u2022 "
@@ -354,20 +354,17 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
     let lines   = assume File.readAllLines(Path.combine(dataPath, "cards.txt"))
     foreach l in lines
     {
-        let tokens  = Tokenize.split(l, ';''rune, removeEmpty: false)
+        let tokens = Tokenize.split(l, ';''rune, removeEmpty: false)
         if tokens.count == 0:
             continue
         var fi:     ImageInfo
-        var folders = Tokenize.split(tokens[0], '/''rune)
-
-        fi.title = folders.back()
-        fi.image = Path.combine(pathImg, tokens[1])
-        fi.badge = tokens[2]
-        fi.rank  = assume StrConv.toS32(tokens[3])
-        fi.text  = tokens[4]
-        fi.text2 = tokens[5]
-        folders.removeBack()
-        fi.subTitles = folders
+        fi.family = Tokenize.split(tokens[0], '/''rune)
+        fi.title  = tokens[1]
+        fi.text   = tokens[2]
+        fi.text2  = tokens[3]
+        fi.image  = Path.combine(pathImg, tokens[4])
+        fi.badge  = tokens[5]
+        fi.rank   = assume StrConv.toS32(tokens[6])
         g_Files.add(fi)
     }
 
