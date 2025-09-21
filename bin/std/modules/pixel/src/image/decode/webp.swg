@@ -15,7 +15,6 @@ private
     const DCT_CAT4 = 8
     const DCT_CAT5 = 9
     const DCT_CAT6 = 10
-    const DCT_EOB  = 11
 
     // Decode 4x4 block coefficients
     func decodeBlock4x4(b: *BoolDec, coeffs: [*] s16, plane: s32)->bool
@@ -83,20 +82,11 @@ private
     const MaxDim  = 8192
     const MBSize  = 16
     const BLK4    = 4
-    const BLK8    = 8
-    const QFixed  = 7
-
-    struct ChunkInfo
-    {
-        id:         u32
-        size:       s32
-        offset:     s32
-    }
 
     struct VP8Header
     {
         keyFrame:        bool
-        version:         u8
+        version:         s32
         showFrame:       bool
         firstPartSz:     s32
         width:           s32
@@ -121,20 +111,6 @@ private
         [[229, 240, 215], [87, 131, 92], [72, 100, 58]],
         [[237, 243, 218], [88, 132, 93], [73, 101, 60]]],
         // UV 4x4
-        [[[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-        [[156, 203, 179], [70, 118, 71], [67, 94, 50]],
-        [[189, 223, 201], [75, 123, 83], [69, 97, 54]],
-        [[214, 235, 210], [83, 129, 89], [70, 98, 56]],
-        [[228, 241, 214], [85, 131, 91], [71, 100, 58]],
-        [[236, 244, 217], [87, 132, 92], [72, 101, 59]]],
-        // Y2 (DC 16x16)
-        [[[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-        [[173, 231, 194], [80, 110, 76], [69, 93, 54]],
-        [[200, 239, 208], [88, 127, 86], [73, 100, 58]],
-        [[216, 242, 214], [90, 131, 90], [74, 102, 60]],
-        [[224, 244, 217], [92, 133, 92], [75, 103, 60]],
-        [[230, 246, 219], [93, 134, 93], [76, 104, 61]]],
-        // UV 16x16 (treated like UV 4x4 in VP8, so already covered)
         [[[0, 0, 0], [0, 0, 0], [0, 0, 0]],
         [[156, 203, 179], [70, 118, 71], [67, 94, 50]],
         [[189, 223, 201], [75, 123, 83], [69, 97, 54]],
@@ -229,16 +205,17 @@ private
             let r2: s32 = cast(s32) src[i + 8]
             let r3: s32 = cast(s32) src[i + 12]
 
-            let s0: s32 = r0 + r2
-            let s1: s32 = r0 - r2
-            // add +32 for round-to-nearest (>>6)
-            let s2: s32 = (r1 * 83 + r3 * 36 + 32) >> 6
-            let s3: s32 = (r1 * 36 - r3 * 83 + 32) >> 6
+            // 1D IDCT on column i
+            let t0: s32 = (r0 + r2) * 64
+            let t1: s32 = (r0 - r2) * 64
+            let t2: s32 = (r1 * 83 + r3 * 36)
+            let t3: s32 = (r1 * 36 - r3 * 83)
 
-            tmp[i + 0]  = s0 + s2 // row 0, col i
-            tmp[i + 4]  = s1 + s3 // row 1, col i
-            tmp[i + 8]  = s1 - s3 // row 2, col i
-            tmp[i + 12] = s0 - s2 // row 3, col i
+            tmp[i + 0]  = t0 + t2
+            tmp[i + 4]  = t1 + t3
+            tmp[i + 8]  = t1 - t3
+            tmp[i + 12] = t0 - t2
+
             i += 1
         }
 
@@ -246,22 +223,16 @@ private
         i = 0
         while i < 16
         {
-            let t0: s32 = tmp[i + 0]
-            let t1: s32 = tmp[i + 1]
-            let t2: s32 = tmp[i + 2]
-            let t3: s32 = tmp[i + 3]
+            let t0: s32 = tmp[i + 0] + tmp[i + 2]
+            let t1: s32 = tmp[i + 0] - tmp[i + 2]
+            let t2: s32 = tmp[i + 1] * 83 + tmp[i + 3] * 36
+            let t3: s32 = tmp[i + 1] * 36 - tmp[i + 3] * 83
 
-            let s0: s32 = t0 + t2
-            let s1: s32 = t0 - t2
-            // add +32 for round-to-nearest (>>6)
-            let s2: s32 = (t1 * 83 + t3 * 36 + 32) >> 6
-            let s3: s32 = (t1 * 36 - t3 * 83 + 32) >> 6
-
-            // final >>3 — use +4 for round-to-nearest
-            dst[i + 0] = sat16((s0 + s2 + 4) >> 3)
-            dst[i + 1] = sat16((s1 + s3 + 4) >> 3)
-            dst[i + 2] = sat16((s1 - s3 + 4) >> 3)
-            dst[i + 3] = sat16((s0 - s2 + 4) >> 3)
+            // shift back (>>6 + >>3) with rounding
+            dst[i + 0] = sat16(((t0 + t2) + 512 + 4) >> 9)
+            dst[i + 1] = sat16(((t1 + t3) + 512 + 4) >> 9)
+            dst[i + 2] = sat16(((t1 - t3) + 512 + 4) >> 9)
+            dst[i + 3] = sat16(((t0 - t2) + 512 + 4) >> 9)
 
             i += 4
         }
@@ -334,118 +305,56 @@ private
     }
 }
 
-public struct Decoder
-{
-    // whole stream
-    stream:        const [*] u8
-    streamLen:     s32
-
-    // image
-    imageSizeX:     s32
-    imageSizeY:     s32
-
-    // metadata
-    decOptions:     DecodeOptions
-    metaDatas:      Array'ImageMetaData
-}
-
 impl Decoder
 {
     // --- read helpers ---
-    mtd U8(at: s32)->u8 { if at < 0 or at >= me.streamLen:return 0; return me.stream[at]; }
-    mtd U16(at: s32)->u32 { return cast(u32) me.U8(at) | (cast(u32) me.U8(at + 1) << 8); }
-    mtd U24(at: s32)->u32 { return cast(u32) me.U8(at) | (cast(u32) me.U8(at + 1) << 8) | (cast(u32) me.U8(at + 2) << 16); }
-    mtd U32(at: s32)->u32 { return cast(u32) me.U8(at) | (cast(u32) me.U8(at + 1) << 8) | (cast(u32) me.U8(at + 2) << 16) | (cast(u32) me.U8(at + 3) << 24); }
-    mtd isTag(at: s32, a: u8, b: u8, c: u8, d: u8)->bool { return me.U8(at) == a and me.U8(at + 1) == b and me.U8(at + 2) == c and me.U8(at + 3) == d; }
+    mtd dU8(at: s32)->u8 { if at < 0 or at >= me.streamLen:return 0; return me.stream[at]; }
+    mtd dU16(at: s32)->u16 { return cast(u16) me.dU8(at) | cast(u16) me.dU8(at + 1) << 8; }
+    mtd dU32(at: s32)->u32 { return cast(u32) me.dU8(at) | (cast(u32) me.dU8(at + 1) << 8) | (cast(u32) me.dU8(at + 2) << 16) | (cast(u32) me.dU8(at + 3) << 24); }
 
-    mtd init(buffer: const [..] u8)
+    mtd isTag(at: s32, a: u8, b: u8, c: u8, d: u8)->bool
     {
-        @init(me, 1)
-        me.stream     = @dataof(buffer)
-        me.streamLen  = cast(s32) @countof(buffer)
-        me.imageSizeX = 0
-        me.imageSizeY = 0
+        return me.dU8(at + 0) == a and me.dU8(at + 1) == b and me.dU8(at + 2) == c and me.dU8(at + 3) == d
     }
 
-    // --------- RIFF/WEBP ----------
-    mtd parseRiff()->{ ofsVp8: s32, sizVp8: s32 } throw
+    // parse RIFF, return (offset,size) for 'VP8 ' chunk
+    mtd parseRiff()->{ offset, size: s32 } throw
     {
         if me.streamLen < 12:
-            throw InvalidFormatError{"webp: file too short"}
-        if !me.isTag(0, 'R', 'I', 'F', 'F'):
-            throw InvalidFormatError{"webp: missing RIFF"}
-        if !me.isTag(8, 'W', 'E', 'B', 'P'):
-            throw InvalidFormatError{"webp: missing WEBP"}
+            throw InvalidFormatError{"webp: too short"}
+
+        if !(me.isTag(0, 'R', 'I', 'F', 'F') and me.isTag(8, 'W', 'E', 'B', 'P')):
+            throw InvalidFormatError{"webp: missing RIFF/WEBP header"}
+
+        let riffSize = cast(s32) me.dU32(4) + 8
+        if riffSize > me.streamLen or riffSize <= 0 or riffSize > MaxSize:
+            throw InvalidFormatError{"webp: bad RIFF size"}
 
         var p      = 12
         var vp8Ofs = -1
         var vp8Siz = 0
-        var w      = 0
-        var h      = 0
-
         while (p + 8) <= me.streamLen
         {
-            discard me.U32(p)
-            let csz = cast(s32) me.U32(p + 4)
+            let tag = me.dU32(p + 0)
+            let csz = cast(s32) me.dU32(p + 4)
             let dat = p + 8
-            if csz < 0 or dat + csz > me.streamLen:
-                break
 
-            if me.isTag(p, 'V', 'P', '8', 'X')
-            {
-                if csz >= 10
-                {
-                    // flags = U8(dat)
-                    discard me.U8(dat)
-                    // 3 reserved
-                    // width/height minus 1 on 24b
-                    w = cast(s32) me.U24(dat + 4) + 1
-                    h = cast(s32) me.U24(dat + 7) + 1
-                }
-            }
-            elif me.isTag(p, 'V', 'P', '8', ' ')
+            if tag == (cast(u32) 'V' | (cast(u32) 'P' << 8) | (cast(u32) '8' << 16) | (cast(u32) ' ' << 24))
             {
                 vp8Ofs = dat
                 vp8Siz = csz
             }
-            elif me.isTag(p, 'I', 'C', 'C', 'P')
-            {
-                var md: ImageMetaData
-                md.sig = 0
-                md.tag.add('I')
-                md.tag.add('C')
-                md.tag.add('C')
-                md.tag.add('P')
-                var i = 0
-                while i < csz
-                {
-                    md.value.add(me.U8(dat + i))
-                    i += 1
-                }
-                me.metaDatas.add(md)
-            }
 
-            p = dat + csz
-            if (csz & 1) != 0:
-                p += 1
+            p = dat + ((csz + 1) & ~1) // chunks are padded to even
         }
 
         if vp8Ofs < 0:
-            throw InvalidFormatError{"webp: missing VP8 chunk"}
-        // fallback size from raw VP8 if not found
-        if w == 0 or h == 0
-        {
-            if !(me.U8(vp8Ofs + 3) == 0x9D and me.U8(vp8Ofs + 4) == 0x01 and me.U8(vp8Ofs + 5) == 0x2A):
-                throw InvalidFormatError{"webp: invalid VP8 header"}
-            w = cast(s32) (me.U16(vp8Ofs + 6) & 0x3FFF)
-            h = cast(s32) (me.U16(vp8Ofs + 8) & 0x3FFF)
-        }
+            throw InvalidFormatError{"webp: VP8 missing"}
 
-        if w <= 0 or h <= 0 or w > MaxDim or h > MaxDim:
-            throw InvalidFormatError{"webp: invalid dimensions"}
+        // clamp to stream size
+        if (vp8Ofs + vp8Siz) > me.streamLen:
+            vp8Siz = me.streamLen - vp8Ofs
 
-        me.imageSizeX = w
-        me.imageSizeY = h
         return {vp8Ofs, vp8Siz}
     }
 
@@ -454,9 +363,9 @@ impl Decoder
         if size < 10:
             throw InvalidFormatError{"vp8: chunk too short"}
 
-        let b0 = me.U8(ofs + 0)
-        let b1 = me.U8(ofs + 1)
-        let b2 = me.U8(ofs + 2)
+        let b0 = me.dU8(ofs + 0)
+        let b1 = me.dU8(ofs + 1)
+        let b2 = me.dU8(ofs + 2)
 
         var hdr: VP8Header
         hdr.keyFrame    = ((b0 & 1) == 0)
@@ -468,15 +377,15 @@ impl Decoder
             throw UnsupportedFormatError{"vp8: only keyframes supported"}
 
         // Check keyframe signature
-        if !(me.U8(ofs + 3) == 0x9D and me.U8(ofs + 4) == 0x01 and me.U8(ofs + 5) == 0x2A):
+        if !(me.dU8(ofs + 3) == 0x9D and me.dU8(ofs + 4) == 0x01 and me.dU8(ofs + 5) == 0x2A):
             throw InvalidFormatError{"vp8: invalid keyframe signature"}
 
-        hdr.width  = cast(s32) (me.U16(ofs + 6) & 0x3FFF)
-        hdr.height = cast(s32) (me.U16(ofs + 8) & 0x3FFF)
-        hdr.scaleW = cast(u8) ((me.U16(ofs + 6) >> 14) & 3)
-        hdr.scaleH = cast(u8) ((me.U16(ofs + 8) >> 14) & 3)
+        hdr.width  = cast(s32) (me.dU16(ofs + 6) & 0x3FFF)
+        hdr.height = cast(s32) (me.dU16(ofs + 8) & 0x3FFF)
+        hdr.scaleW = cast(u8) ((me.dU16(ofs + 6) >> 14) & 3)
+        hdr.scaleH = cast(u8) ((me.dU16(ofs + 8) >> 14) & 3)
 
-        if hdr.width <= 0 or hdr.height <= 0:
+        if hdr.width <= 0 or hdr.height <= 0 or hdr.width > MaxDim or hdr.height > MaxDim:
             throw InvalidFormatError{"vp8: invalid dimensions"}
 
         hdr.yStride  = hdr.width
@@ -505,14 +414,21 @@ impl Decoder
 
         // Skip VP8 frame header bits (color space, clamping, etc.)
         discard readBit(&b) // color_space
-        discard readBit(&b) // clamp_type
+        discard readBit(&b) // clamping_type
 
-        // set up macroblock loops
+        // Very simplified intra-only keyframe decoding:
+        // We assume all macroblocks are intra-coded and 4x4 prediction.
+        // We only decode coefficients and apply an IDCT. We now add a DC-predictor
+        // from neighbors so chroma is not stuck at 128 (grayscale).
+
+        let mbW = (hdr.width + 15) >> 4      // number of 16x16 luma macroblocks across
+        let mbH = (hdr.height + 15) >> 4     // number of 16x16 luma macroblocks down
+
         var mbY = 0
-        while mbY < hdr.height
+        while mbY < mbH
         {
             var mbX = 0
-            while mbX < hdr.width
+            while mbX < mbW
             {
                 // -------- Y (luma) 16x16: 16 4x4 sub-blocks ----------
                 var coeffs: [16] s16
@@ -537,6 +453,37 @@ impl Decoder
                             }
                         }
 
+                        // DC predictor for this 4x4 luma block (simple): average of top and left samples when available
+                        let ix0 = mbX * 16 + bx * 4
+                        let iy0 = mbY * 16 + by * 4
+                        var dcY = 128
+                        var sum = 0
+                        var cnt = 0
+                        // top row
+                        if iy0 > 0 and (ix0 + 3) < hdr.width
+                        {
+                            var k = 0
+                            while k < 4
+                            {
+                                sum += cast(s32) yPlane[(iy0 - 1) * hdr.yStride + ix0 + k]
+                                cnt += 1
+                                k += 1
+                            }
+                        }
+                        // left column
+                        if ix0 > 0 and (iy0 + 3) < hdr.height
+                        {
+                            var k = 0
+                            while k < 4
+                            {
+                                sum += cast(s32) yPlane[(iy0 + k) * hdr.yStride + (ix0 - 1)]
+                                cnt += 1
+                                k += 1
+                            }
+                        }
+                        if cnt > 0:
+                            dcY = sum / cnt
+
                         // write back to Y plane
                         var py = 0
                         while py < 4
@@ -548,7 +495,7 @@ impl Decoder
                                 let iy = mbY * 16 + by * 4 + py
                                 if ix < hdr.width and iy < hdr.height
                                 {
-                                    let val = 128 + cast(s32) recon[py * 4 + px]
+                                    let val = dcY + cast(s32) recon[py * 4 + px]
                                     yPlane[iy * hdr.yStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                 }
 
@@ -587,6 +534,39 @@ impl Decoder
                                 }
                             }
 
+                            // DC predictor for this 4x4 chroma-U block
+                            let cix0 = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
+                            let ciy0 = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
+                            var dcU  = 128
+                            var csum = 0
+                            var ccnt = 0
+                            // top row in U plane
+                            let uW = (hdr.width + 1) >> 1
+                            let uH = (hdr.height + 1) >> 1
+                            if ciy0 > 0 and (cix0 + 3) < uW
+                            {
+                                var k = 0
+                                while k < 4
+                                {
+                                    csum += cast(s32) uPlane[(ciy0 - 1) * hdr.uvStride + cix0 + k]
+                                    ccnt += 1
+                                    k += 1
+                                }
+                            }
+                            // left column in U plane
+                            if cix0 > 0 and (ciy0 + 3) < uH
+                            {
+                                var k = 0
+                                while k < 4
+                                {
+                                    csum += cast(s32) uPlane[(ciy0 + k) * hdr.uvStride + (cix0 - 1)]
+                                    ccnt += 1
+                                    k += 1
+                                }
+                            }
+                            if ccnt > 0:
+                                dcU = csum / ccnt
+
                             let sy = (sub >> 1) * 4
                             let sx = (sub & 1) * 4
 
@@ -600,7 +580,7 @@ impl Decoder
                                     let iy = mbY * 8 + cby * 4 + sy + py
                                     if ix < ((hdr.width + 1) >> 1) and iy < ((hdr.height + 1) >> 1)
                                     {
-                                        let val = 128 + cast(s32) recon[py * 4 + px]
+                                        let val = dcU + cast(s32) recon[py * 4 + px]
                                         uPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                     }
 
@@ -629,7 +609,7 @@ impl Decoder
                         var sub = 0
                         while sub < 4
                         {
-                            let hasCoeffs = decodeBlock4x4(&b, &coeffs[0], 2) // fixed: plane 2 for V
+                            let hasCoeffs = decodeBlock4x4(&b, &coeffs[0], 1) // plane 1 = V uses same probs as U
                             if hasCoeffs:
                                 idct4(&coeffs[0], &recon[0])
                             else
@@ -641,6 +621,37 @@ impl Decoder
                                     r += 1
                                 }
                             }
+
+                            // DC predictor for this 4x4 chroma-V block
+                            let vcix0 = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
+                            let vciy0 = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
+                            var dcV   = 128
+                            var vsum  = 0
+                            var vcnt  = 0
+                            let vW    = (hdr.width + 1) >> 1
+                            let vH    = (hdr.height + 1) >> 1
+                            if vciy0 > 0 and (vcix0 + 3) < vW
+                            {
+                                var k = 0
+                                while k < 4
+                                {
+                                    vsum += cast(s32) vPlane[(vciy0 - 1) * hdr.uvStride + vcix0 + k]
+                                    vcnt += 1
+                                    k += 1
+                                }
+                            }
+                            if vcix0 > 0 and (vciy0 + 3) < vH
+                            {
+                                var k = 0
+                                while k < 4
+                                {
+                                    vsum += cast(s32) vPlane[(vciy0 + k) * hdr.uvStride + (vcix0 - 1)]
+                                    vcnt += 1
+                                    k += 1
+                                }
+                            }
+                            if vcnt > 0:
+                                dcV = vsum / vcnt
 
                             let sy = (sub >> 1) * 4
                             let sx = (sub & 1) * 4
@@ -655,7 +666,7 @@ impl Decoder
                                     let iy = mbY * 8 + cby * 4 + sy + py
                                     if ix < ((hdr.width + 1) >> 1) and iy < ((hdr.height + 1) >> 1)
                                     {
-                                        let val = 128 + cast(s32) recon[py * 4 + px]
+                                        let val = dcV + cast(s32) recon[py * 4 + px]
                                         vPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                     }
 
@@ -717,16 +728,17 @@ impl Decoder
         var p = 12
         while (p + 8) <= me.streamLen
         {
-            let csz = cast(s32) me.U32(p + 4)
+            let csz = cast(s32) me.dU32(p + 4)
             let dat = p + 8
             if me.isTag(p, 'V', 'P', '8', ' ')
             {
-                vp8Ofs = dat; vp8Siz = csz; break
+                vp8Ofs = dat
+                vp8Siz = csz
+                break
             }
-            p = dat + csz
-            if (csz & 1) != 0:
-                p += 1
+            p = dat + ((csz + 1) & ~1)
         }
+
         if vp8Ofs < 0:
             throw InvalidFormatError{"webp: VP8 missing"}
 
@@ -761,6 +773,37 @@ impl Decoder
         // Convert to BGR
         toBGR(pixels, @dataof(yPlane), @dataof(uPlane), @dataof(vPlane), W, H)
     }
+
+    // small init that scans sizes
+    mtd init(buffer: const [..] u8) throw
+    {
+        me.stream    = @dataof(buffer)
+        me.streamLen = cast(s32) @countof(buffer)
+
+        // find the VP8 chunk once to read dimensions
+        let (vp8Ofs, vp8Siz) = me.parseRiff()
+        if vp8Ofs < 0 or vp8Siz <= 0:
+            throw InvalidFormatError{"webp: no VP8 chunk"}
+
+        let hdr = me.parseVP8Frame(vp8Ofs, vp8Siz)
+        me.imageSizeX = hdr.width
+        me.imageSizeY = hdr.height
+    }
+}
+
+public struct Decoder
+{
+    // stream
+    stream:        const [*] u8
+    streamLen:     s32
+
+    // image
+    imageSizeX:     s32
+    imageSizeY:     s32
+
+    // metadata
+    decOptions:     DecodeOptions
+    metaDatas:      Array'ImageMetaData
 }
 
 public impl IImageDecoder for Decoder
@@ -773,12 +816,14 @@ public impl IImageDecoder for Decoder
 
     mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        var result: retval
         me.decOptions = options
+        me.metaDatas.clear()
 
+        // Start / parse headers
         me.init(buffer)
         me.start()
 
+        var result: Image
         result.init(me.imageSizeX, me.imageSizeY, PixelFormat.BGR8)
         if !options.decodePixels:
             return result
