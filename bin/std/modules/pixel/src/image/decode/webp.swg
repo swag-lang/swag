@@ -47,7 +47,7 @@ private
             // Check if coefficient is zero
             if readBool(b, CoeffProbsDefault[bt][validBand][ctx][1]) == 0
             {
-                i += 1 // Zero coefficient
+                i += 1
                 continue
             }
 
@@ -55,7 +55,7 @@ private
             hasCoeffs = true
 
             // Decode the token (simplified - just handle small values for now)
-            var value = 1 // Start with 1
+            var value = 1
 
             // Check if it's larger than 1
             if readBool(b, CoeffProbsDefault[bt][validBand][ctx][2]) != 0
@@ -532,7 +532,9 @@ impl Decoder
                             var r = 0
                             while r < 16
                             {
-                                recon[r] = 0; r += 1; }
+                                recon[r] = 0
+                                r += 1
+                            }
                         }
 
                         // write back to Y plane
@@ -549,13 +551,16 @@ impl Decoder
                                     let val = 128 + cast(s32) recon[py * 4 + px]
                                     yPlane[iy * hdr.yStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                 }
+
                                 px += 1
                             }
+
                             py += 1
                         }
 
                         bx += 1
                     }
+
                     by += 1
                 }
 
@@ -577,7 +582,9 @@ impl Decoder
                                 var r = 0
                                 while r < 16
                                 {
-                                    recon[r] = 0; r += 1; }
+                                    recon[r] = 0
+                                    r += 1
+                                }
                             }
 
                             let sy = (sub >> 1) * 4
@@ -596,15 +603,19 @@ impl Decoder
                                         let val = 128 + cast(s32) recon[py * 4 + px]
                                         uPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                     }
+
                                     px += 1
                                 }
+
                                 py += 1
                             }
 
                             sub += 1
                         }
+
                         cbx += 1
                     }
+
                     cby += 1
                 }
 
@@ -626,7 +637,9 @@ impl Decoder
                                 var r = 0
                                 while r < 16
                                 {
-                                    recon[r] = 0; r += 1; }
+                                    recon[r] = 0
+                                    r += 1
+                                }
                             }
 
                             let sy = (sub >> 1) * 4
@@ -645,20 +658,25 @@ impl Decoder
                                         let val = 128 + cast(s32) recon[py * 4 + px]
                                         vPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                     }
+
                                     px += 1
                                 }
+
                                 py += 1
                             }
 
                             sub += 1
                         }
+
                         cbx += 1
                     }
+
                     cby += 1
                 }
 
                 mbX += 1
             }
+
             mbY += 1
         }
     }
@@ -726,12 +744,15 @@ impl Decoder
         var i = 0
         while i < @countof(uPlane)
         {
-            uPlane[i] = 128; i += 1
+            uPlane[i] = 128
+            i += 1
         }
+
         i = 0
         while i < @countof(vPlane)
         {
-            vPlane[i] = 128; i += 1
+            vPlane[i] = 128
+            i += 1
         }
 
         // Decode bounded keyframe (intra)
