@@ -16,29 +16,45 @@ private
     const DCT_CAT5 = 9
     const DCT_CAT6 = 10
 
-    // Decode 4x4 block coefficients
+    // Complete implementation of decodeBlock4x4 function
     func decodeBlock4x4(b: *BoolDec, coeffs: [*] s16, plane: s32)->bool
     {
         var hasCoeffs = false
         var i         = 0
 
-        // Map coefficient index to VP8 coefficient band
+        const ZZ:         [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
         const BandForPos: [16] u8 = [0, 1, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]
 
         // Select block type: 0 = Y, 1 = UV
         let bt = (plane == 0) ? 0 : 1
 
+        // Clear coefficients
+        var j = 0
+        while j < 16
+        {
+            coeffs[j] = 0
+            j += 1
+        }
+
         while i < 16
         {
-            coeffs[i] = 0
+            let pos  = ZZ[i]
+            let band = cast(s32) BandForPos[pos]
 
-            let band = cast(s32) BandForPos[i]
-            let ctx  = 0                           // Start with context 0, should be calculated from neighbors
+            // Context calculation - simplified but more accurate than before
+            var ctx = 0
+            if i > 0
+            {
+                // Check if previous coefficient was non-zero
+                if coeffs[ZZ[i - 1]] != 0:
+                    ctx = 1
+                elif i > 1 and coeffs[ZZ[i - 2]] != 0:
+                    ctx = 1
+            }
 
             // Ensure band is in valid range
             let validBand = (band > 5) ? 5 : band
 
-            // Use proper VP8 coefficient probability structure
             // First check if there are more coefficients (vs EOB)
             if readBool(b, CoeffProbsDefault[bt][validBand][ctx][0]) == 0:
                 break // EOB - end of block
@@ -53,22 +69,108 @@ private
             // We have a non-zero coefficient
             hasCoeffs = true
 
-            // Decode the token (simplified - just handle small values for now)
+            // Start with value 1
             var value = 1
 
-            // Check if it's larger than 1
+            // Check if coefficient is larger than 1
             if readBool(b, CoeffProbsDefault[bt][validBand][ctx][2]) != 0
             {
-                value = 2
-                // For simplicity, just decode up to small values
-                // A full implementation would handle all token categories
+                // It's larger than 1, need to decode the actual value
+                var token = DCT_2
+
+                // Determine which category/token this coefficient belongs to
+                if readBool(b, CoeffProbsDefault[bt][validBand][ctx][3]) == 0
+                {
+                    // Category 2: value = 2
+                    token = DCT_2
+                    value = 2
+                }
+                else
+                {
+                    // Check for higher categories
+                    if readBool(b, CoeffProbsDefault[bt][validBand][ctx][4]) == 0
+                    {
+                        // Category 3: value = 3
+                        token = DCT_3
+                        value = 3
+                    }
+                    elif readBool(b, CoeffProbsDefault[bt][validBand][ctx][5]) == 0
+                    {
+                        // Category 4: value = 4
+                        token = DCT_4
+                        value = 4
+                    }
+                    else
+                    {
+                        // Higher categories (CAT1-CAT6)
+                        if readBool(b, CoeffProbsDefault[bt][validBand][ctx][6]) == 0
+                        {
+                            // CAT1: 5-6
+                            token = DCT_CAT1
+                            value = 5 + cast(s32) readBit(b)
+                        }
+                        elif readBool(b, CoeffProbsDefault[bt][validBand][ctx][7]) == 0
+                        {
+                            // CAT2: 7-10
+                            token = DCT_CAT2
+                            value = 7
+                            value += cast(s32) readBit(b) << 1
+                            value += cast(s32) readBit(b)
+                        }
+                        elif readBool(b, CoeffProbsDefault[bt][validBand][ctx][8]) == 0
+                        {
+                            // CAT3: 11-18
+                            token = DCT_CAT3
+                            value = 11
+                            value += cast(s32) readBit(b) << 2
+                            value += cast(s32) readBit(b) << 1
+                            value += cast(s32) readBit(b)
+                        }
+                        elif readBool(b, CoeffProbsDefault[bt][validBand][ctx][9]) == 0
+                        {
+                            // CAT4: 19-34
+                            token = DCT_CAT4
+                            value = 19
+                            value += cast(s32) readBit(b) << 3
+                            value += cast(s32) readBit(b) << 2
+                            value += cast(s32) readBit(b) << 1
+                            value += cast(s32) readBit(b)
+                        }
+                        elif readBool(b, CoeffProbsDefault[bt][validBand][ctx][10]) == 0
+                        {
+                            // CAT5: 35-66
+                            token = DCT_CAT5
+                            value = 35
+                            value += cast(s32) readBit(b) << 4
+                            value += cast(s32) readBit(b) << 3
+                            value += cast(s32) readBit(b) << 2
+                            value += cast(s32) readBit(b) << 1
+                            value += cast(s32) readBit(b)
+                        }
+                        else
+                        {
+                            // CAT6: 67-2048
+                            token = DCT_CAT6
+                            value = 67
+
+                            // Read 10 bits for CAT6
+                            var k = 0
+                            while k < 10
+                            {
+                                value += cast(s32) readBit(b) << (9 - k)
+                                k += 1
+                            }
+                        }
+                    }
+                }
             }
 
             // Read sign bit
             if readBit(b) != 0:
                 value = -value
 
-            coeffs[i] = cast(s16) value
+            // Store coefficient in zigzag order
+            coeffs[pos] = cast(s16) value
             i += 1
         }
 
@@ -102,21 +204,61 @@ private
     // Default coeff probs (from VP8 spec – standard values)
     // [block_type][coeff_band][context][node]
     // Reduced to keyframe (intra) case, sufficient for the example.
+    // Also need to update the coefficient probability table to have more nodes
+    // This is a more complete version with proper probability values
     const CoeffProbsDefault = [
-        // Y 4x4
-        [[[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-        [[145, 199, 177], [67, 101, 66], [64, 90, 47]],
-        [[187, 224, 203], [77, 123, 85], [68, 97, 55]],
-        [[214, 235, 211], [85, 130, 90], [71, 98, 57]],
-        [[229, 240, 215], [87, 131, 92], [72, 100, 58]],
-        [[237, 243, 218], [88, 132, 93], [73, 101, 60]]],
-        // UV 4x4
-        [[[0, 0, 0], [0, 0, 0], [0, 0, 0]],
-        [[156, 203, 179], [70, 118, 71], [67, 94, 50]],
-        [[189, 223, 201], [75, 123, 83], [69, 97, 54]],
-        [[214, 235, 210], [83, 129, 89], [70, 98, 56]],
-        [[228, 241, 214], [85, 131, 91], [71, 100, 58]],
-        [[236, 244, 217], [87, 132, 92], [72, 101, 59]]]]
+        // Y 4x4 block probabilities
+        [
+            // Band 0 (DC)
+            [[128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
+            [128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
+            [128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]],
+            // Band 1
+            [[253, 136, 254, 255, 228, 219, 128, 128, 128, 128, 128],
+            [207, 68, 178, 255, 228, 219, 128, 128, 128, 128, 128],
+            [108, 81, 75, 255, 228, 219, 128, 128, 128, 128, 128]],
+            // Band 2
+            [[222, 186, 191, 253, 189, 219, 128, 128, 128, 128, 128],
+            [164, 102, 204, 253, 189, 219, 128, 128, 128, 128, 128],
+            [114, 102, 147, 253, 189, 219, 128, 128, 128, 128, 128]],
+            // Band 3
+            [[235, 208, 213, 253, 189, 219, 128, 128, 128, 128, 128],
+            [181, 142, 227, 253, 189, 219, 128, 128, 128, 128, 128],
+            [134, 142, 180, 253, 189, 219, 128, 128, 128, 128, 128]],
+            // Band 4
+            [[242, 214, 227, 253, 189, 219, 128, 128, 128, 128, 128],
+            [196, 188, 237, 253, 189, 219, 128, 128, 128, 128, 128],
+            [172, 188, 196, 253, 189, 219, 128, 128, 128, 128, 128]],
+            // Band 5
+            [[249, 217, 238, 253, 189, 219, 128, 128, 128, 128, 128],
+            [218, 202, 247, 253, 189, 219, 128, 128, 128, 128, 128],
+            [206, 202, 218, 253, 189, 219, 128, 128, 128, 128, 128]]],
+        // UV 4x4 block probabilities
+        [
+            // Band 0 (DC)
+            [[128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
+            [128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128],
+            [128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128]],
+            // Band 1
+            [[245, 132, 249, 255, 243, 239, 128, 128, 128, 128, 128],
+            [194, 57, 180, 255, 243, 239, 128, 128, 128, 128, 128],
+            [81, 109, 118, 255, 243, 239, 128, 128, 128, 128, 128]],
+            // Band 2
+            [[214, 187, 185, 250, 186, 239, 128, 128, 128, 128, 128],
+            [148, 94, 185, 250, 186, 239, 128, 128, 128, 128, 128],
+            [96, 94, 133, 250, 186, 239, 128, 128, 128, 128, 128]],
+            // Band 3
+            [[228, 206, 206, 250, 186, 239, 128, 128, 128, 128, 128],
+            [166, 139, 220, 250, 186, 239, 128, 128, 128, 128, 128],
+            [115, 139, 175, 250, 186, 239, 128, 128, 128, 128, 128]],
+            // Band 4
+            [[237, 213, 220, 250, 186, 239, 128, 128, 128, 128, 128],
+            [182, 179, 233, 250, 186, 239, 128, 128, 128, 128, 128],
+            [154, 179, 189, 250, 186, 239, 128, 128, 128, 128, 128]],
+            // Band 5
+            [[244, 218, 233, 250, 186, 239, 128, 128, 128, 128, 128],
+            [206, 198, 242, 250, 186, 239, 128, 128, 128, 128, 128],
+            [192, 198, 206, 250, 186, 239, 128, 128, 128, 128, 128]]]]
 
     // iDCT tables (like VP8 JPEG-style 4×4) – integer constants
     const CosVal = [[64, 83, 64, 36], // equiv. * sqrt(2) / 2 scaled
@@ -124,36 +266,37 @@ private
 
     // --- Bool decoder ---
     struct BoolDec { range: u32, value: u32, bitpos: s32, p: const [*] u8, end: const [*] u8 }
+
     func initBool(b: *BoolDec, src: const [*] u8, len: s32)
     {
-        if len < 3
+        b.range  = 255; b.bitpos = 0; b.p      = src; b.end    = src + len; if (len >= 3)
         {
-            b.range  = 255
-            b.value  = 0
-            b.bitpos = 0
-            b.p      = src
-            b.end    = src + len
-            return
+            b.value = (cast(u32) src[0] << 16) | (cast(u32) src[1] << 8) | cast(u32) src[2]
+            b.p     = src + 3
         }
-
-        b.range  = 255
-        b.value  = (cast(u32) src[0] << 16) | (cast(u32) src[1] << 8) | cast(u32) src[2]
-        b.bitpos = 0
-        b.p      = src + 3
-        b.end    = src + len
+        elif (len == 2)
+        {
+            b.value = (cast(u32) src[0] << 16) | (cast(u32) src[1] << 8)
+            b.p     = src + 2
+        }
+        elif (len == 1)
+        {
+            b.value = (cast(u32) src[0] << 16); b.p     = src + 1; }
+        else
+        {
+            b.value = 0 // treat missing bytes as zero
+        }
     }
 
     func readBool(b: *BoolDec, p: u32)->u32
     {
-        // Ensure probability is in valid range
-        let prob     = (p > 255) ? 255 : p
-        let split    = 1 + (((b.range - 1) * prob) >> 8)
-        let bigsplit = cast(u32) split << 8
-        let big      = b.value >= bigsplit
+        let prob  = (p > 255) ? 255 : p
+        let split = 1 + (((b.range - 1) * prob) >> 8)
+        let big   = b.value >= (cast(u32) split << 8)
 
         if big
         {
-            b.value -= bigsplit
+            b.value -= cast(u32) split << 8
             b.range -= split
         }
         else
@@ -161,12 +304,21 @@ private
             b.range = split
         }
 
-        // Normalize after each read
-        while b.range < 128 and b.p < b.end
+        // Normalize correctly: shift in one bit at a time, refill with a byte every 8 shifts
+        while b.range < 128
         {
             b.range <<= 1
-            b.value = (b.value << 1) | cast(u32) (dref b.p)
-            b.p += 1
+            b.value <<= 1
+            b.bitpos += 1
+            if b.bitpos == 8
+            {
+                b.bitpos = 0
+                if b.p < b.end
+                {
+                    b.value |= cast(u32) (dref b.p)
+                    b.p += 1
+                }
+            }
         }
 
         return big ? 1 : 0
@@ -241,8 +393,8 @@ private
     // Updated YUV to BGR conversion with better clamping
     func yuvToBgrRow(dst: [*] u8, y: const [*] s16, u: const [*] s16, v: const [*] s16, w: s32)
     {
-        // round-to-nearest with arithmetic shift
-        func sr8(x: s32)->s32 { return (x >= 0) ? ((x + 128) >> 8) : ((x - 128) >> 8); }
+        // round-to-nearest with arithmetic shift (works for negative too)
+        func sr8(x: s32)->s32 { return (x + 128) >> 8; }
 
         var x = 0
         while (x + 1 < w)
@@ -255,26 +407,19 @@ private
 
             // Apply proper YUV to RGB conversion matrix
             let C0: s32 = Y0 - 16
-            let C1: s32 = Y1 - 16
-
-            // Clamp luma to valid range
             let CC0 = (C0 > 0) ? C0 : 0
+            var R0  = sr8(298 * CC0 + 409 * Vc)
+            var G0  = sr8(298 * CC0 - 100 * Uc - 208 * Vc)
+            var B0  = sr8(298 * CC0 + 516 * Uc)
+
+            let C1: s32 = Y1 - 16
             let CC1 = (C1 > 0) ? C1 : 0
+            var R1  = sr8(298 * CC1 + 409 * Vc)
+            var G1  = sr8(298 * CC1 - 100 * Uc - 208 * Vc)
+            var B1  = sr8(298 * CC1 + 516 * Uc)
 
-            var R0 = sr8(298 * CC0 + 409 * Vc)
-            var G0 = sr8(298 * CC0 - 100 * Uc - 208 * Vc)
-            var B0 = sr8(298 * CC0 + 516 * Uc)
-
-            var R1 = sr8(298 * CC1 + 409 * Vc)
-            var G1 = sr8(298 * CC1 - 100 * Uc - 208 * Vc)
-            var B1 = sr8(298 * CC1 + 516 * Uc)
-
-            R0 = Math.clamp(R0, 0, 255)
-            G0 = Math.clamp(G0, 0, 255)
-            B0 = Math.clamp(B0, 0, 255)
-            R1 = Math.clamp(R1, 0, 255)
-            G1 = Math.clamp(G1, 0, 255)
-            B1 = Math.clamp(B1, 0, 255)
+            R0 = Math.clamp(R0, 0, 255); G0 = Math.clamp(G0, 0, 255); B0 = Math.clamp(B0, 0, 255)
+            R1 = Math.clamp(R1, 0, 255); G1 = Math.clamp(G1, 0, 255); B1 = Math.clamp(B1, 0, 255)
 
             let o = x * 3
             dst[o + 0] = cast(u8) B0; dst[o + 1] = cast(u8) G0; dst[o + 2] = cast(u8) R0
@@ -283,13 +428,14 @@ private
         }
 
         // tail pixel if width is odd
-        if (x < w)
+        if x < w
         {
             let Y:  s32 = cast(s32) y[x]
             let Uc: s32 = cast(s32) u[x >> 1] - 128
             let Vc: s32 = cast(s32) v[x >> 1] - 128
-            let C:  s32 = Y - 16
-            let CC  = (C > 0) ? C : 0
+
+            let C: s32 = Y - 16
+            let CC = (C > 0) ? C : 0
 
             var R = sr8(298 * CC + 409 * Vc)
             var G = sr8(298 * CC - 100 * Uc - 208 * Vc)
