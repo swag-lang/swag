@@ -303,7 +303,7 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
 
     const auto identifier = castAst<AstIdentifier>(lastChild, AstNodeKind::Identifier);
     identifier->addSpecFlag(AstIdentifier::SPEC_FLAG_TOP_LEVEL);
-    
+
     if (!identifier->callParameters)
     {
         const Diagnostic err{lastChild, lastChild->token, formErr(Err0645, lastChild->token.cstr())};
@@ -312,6 +312,27 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
 
     identifier->semanticFct = Semantic::resolveTopLevelIdentifier;
     identifier->byteCodeFct = nullptr;
+
+    return true;
+}
+
+bool Parser::doDottedIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags)
+{
+    if (tokenParse.is(TokenId::SymDot))
+    {
+        SWAG_CHECK(eatToken());
+        if (tokenParse.isNot(TokenId::Identifier))
+            return error(tokenParse, formErr(Err0199, ".").cstr());
+        AstNode* idref;
+        SWAG_CHECK(doIdentifierRef(parent, &idref, identifierFlags));
+        *result = idref;
+        SWAG_ASSERT(idref->is(AstNodeKind::IdentifierRef));
+        idref->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE);
+    }
+    else
+    {
+        SWAG_CHECK(doIdentifierRef(parent, result, identifierFlags));
+    }
 
     return true;
 }
@@ -470,8 +491,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0394, tokenParse.cstr(), node->token.cstr())));
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0394, tokenParse.cstr(), node->token.cstr())));
         SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0394, tokenParse.cstr(), node->token.cstr())));
-        SWAG_CHECK(checkIsIdentifier(tokenParse, formErr(Err0167, node->token.cstr())));
-        SWAG_CHECK(doIdentifierRef(node, &dummyResult));
+        SWAG_CHECK(doDottedIdentifierRef(node, &dummyResult));
     }
 
     return true;

@@ -181,6 +181,7 @@ struct Parser
     bool doAffectExpression(AstNode* parent, AstNode** result);
     bool doIdentifier(AstNode* parent, IdentifierFlags identifierFlags = 0);
     bool doTopLevelIdentifierRef(AstNode* parent);
+    bool doDottedIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0);
     bool doIdentifierRef(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags = 0);
     bool doDiscard(AstNode* parent, AstNode** result);
     bool doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDiscard = false);
