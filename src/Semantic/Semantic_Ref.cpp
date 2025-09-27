@@ -631,9 +631,14 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     const auto baseType  = arrayNode->array->typeInfo;
     const auto arrayType = TypeManager::concretePtrRefType(baseType, CONCRETE_FORCE_ALIAS | CONCRETE_FUNC);
 
-    // When we are building a pointer, this is fine to be const, because in fact we do no generate an address to modify the content
+    // When we are building a pointer, this is fine to be const. In fact, we do not generate an address to modify the content
     // (or it will be done later on a pointer, and it will be const too)
-    if (const auto pr2 = arrayNode->getParent(2); pr2->isNot(AstNodeKind::MakePointer))
+    auto pr2 = arrayNode->parent;
+    while (pr2->is(AstNodeKind::ArrayPointerIndex))
+        pr2 = pr2->parent;
+    pr2 = pr2->parent;
+    
+    if (pr2->isNot(AstNodeKind::MakePointer))
     {
         if (baseType->isConst())
         {
@@ -644,9 +649,9 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
     }
     else
     {
-        // If array is const, inform the make pointer that it need to make a const pointer
+        // If an array is const, inform the make pointer that it needs to make a const pointer
         if (baseType->isConst())
-            arrayNode->getParent(2)->addAstFlag(AST_CONST);
+            pr2->addAstFlag(AST_CONST);
     }
 
     const auto accessType = TypeManager::concreteType(arrayNode->access->typeInfo);
