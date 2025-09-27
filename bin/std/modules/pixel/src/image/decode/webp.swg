@@ -345,6 +345,95 @@ private
         return nonZeroCount
     }
 
+    // Initialize token partitions reading from START of first partition
+    func initTokenPartitionsFromStart(tp: *TokenPartitions, data: const [*] u8, offset: s32, size: s32, numPartitions: s32)
+    {
+        tp.count = Math.min(numPartitions, 8)
+
+        if tp.count == 1
+        {
+            Console.printf("Single partition mode\n")
+            initBoolDecoder(&tp.decoders[0], data + offset, size)
+            return
+        }
+
+        Console.printf("Reading partition sizes from VERY START of first partition\n")
+
+        // Multiple partitions - read partition sizes from the very beginning
+        var partitionSizes: [8] s32
+        let totalHeaderSize = (tp.count - 1) * 3  // 3 bytes per partition size
+
+        if totalHeaderSize > size
+        {
+            Console.printf("Error: partition header too large, falling back to single partition\n")
+            tp.count = 1
+            initBoolDecoder(&tp.decoders[0], data + offset, size)
+            return
+        }
+
+        // Debug the first few bytes
+        Console.printf("First % bytes of partition: ", Math.min(30, size))
+        for i in Math.min(30, size)
+        {
+            Console.printf("%, ", data[offset + i])
+        }
+        Console.printf("\n")
+
+        // Read partition sizes from start
+        var dataOffset = offset
+        var totalPartitionSize = 0
+
+        for i in (tp.count - 1)
+        {
+            let b0 = cast(s32) data[dataOffset + 0]
+            let b1 = cast(s32) data[dataOffset + 1]
+            let b2 = cast(s32) data[dataOffset + 2]
+            partitionSizes[i] = b0 | (b1 << 8) | (b2 << 16)
+
+            Console.printf("  Partition % header: bytes=[%,%,%] -> size=%\n", i, b0, b1, b2, partitionSizes[i])
+
+            // Validate partition size
+            if partitionSizes[i] < 0 or partitionSizes[i] > size
+            {
+                Console.printf("Error: invalid partition % size: %\n", i, partitionSizes[i])
+                tp.count = 1
+                initBoolDecoder(&tp.decoders[0], data + offset, size)
+                return
+            }
+
+            totalPartitionSize += partitionSizes[i]
+            dataOffset += 3
+        }
+
+        // First partition gets remaining space in first partition data
+        let remainingFirstPartition = size - totalHeaderSize - totalPartitionSize
+        partitionSizes[tp.count - 1] = remainingFirstPartition
+
+        Console.printf("Calculated first partition coefficient size: %\n", remainingFirstPartition)
+
+        if remainingFirstPartition < 0
+        {
+            Console.printf("Error: negative remaining space for first partition\n")
+            tp.count = 1
+            initBoolDecoder(&tp.decoders[0], data + offset, size)
+            return
+        }
+
+        Console.printf("Token partitions: %\n", tp.count)
+
+        // First partition starts after all headers + frame header parsing
+        let firstPartCoeffStart = offset + totalHeaderSize
+        // Note: frame header will be parsed from this area, so first partition coeffs start later
+
+        // For now, just initialize the first partition with remaining data after headers
+        initBoolDecoder(&tp.decoders[0], data + firstPartCoeffStart, remainingFirstPartition)
+        Console.printf("  Partition 0: offset=%, size=% (includes frame header)\n", firstPartCoeffStart, remainingFirstPartition)
+
+        // Other partitions would follow after the first partition in the VP8 stream
+        // but we need the token area after first partition to find them
+        Console.printf("Note: Other partitions would be in the token area after first partition\n")
+    }
+
     // Initialize token partitions - PROPER CONSUMPTION TRACKING
     func initTokenPartitions(tp: *TokenPartitions, data: const [*] u8, offset: s32, size: s32, numPartitions: s32, bd: *BoolDecoder)
     {
@@ -797,36 +886,123 @@ impl Decoder
 
         Console.printf("VP8 dimensions: %x%\n", width, height)
 
-        // Parse frame header using boolean decoder
+        // First partition starts after VP8 header
         let partitionStart = offset + 10
         let partitionSize = cast(s32) Math.min(firstPartitionSize, cast(u32) (size - 10))
 
         if partitionSize <= 0:
             throw InvalidFormatError{"VP8: Invalid first partition size"}
 
-        var bd: BoolDecoder
-        initBoolDecoder(&bd, me.stream + partitionStart, partitionSize)
+        // CRITICAL: Check if we need to read partition sizes FIRST
+        // Parse token partitions structure BEFORE parsing frame header
+        var tokenPartitions: TokenPartitions
+        var frameHeaderStart = partitionStart
 
-        let frameHeader = parseVP8FrameHeader(&bd, width, height)
+        // Pre-read the number of partitions to know the structure
+        var tempBd: BoolDecoder
+        initBoolDecoder(&tempBd, me.stream + partitionStart, partitionSize)
 
-        Console.printf("VP8 frame header parsed successfully!\n")
+        // Skip to partition count in frame header (this is approximate parsing)
+        discard readBit(&tempBd) // color_space
+        discard readBit(&tempBd) // clamping_type
 
-        // Initialize token partitions for coefficient data
-        let tokenStart = partitionStart + partitionSize
-        let tokenSize = size - 10 - partitionSize
-
-        if tokenSize > 0
+        // Skip segmentation
+        let useSegment = readBit(&tempBd) != 0
+        if useSegment
         {
-            var tokenPartitions: TokenPartitions
-            initTokenPartitions(&tokenPartitions, me.stream, partitionStart, partitionSize, frameHeader.numPartitions, &bd)
+            let updateSegmentMap = readBit(&tempBd) != 0
+            if readBit(&tempBd) != 0  // update_segment_feature_data
+            {
+                discard readBit(&tempBd)  // segment_feature_mode
+                for i in 4
+                {
+                    for j in 2
+                    {
+                        if readBit(&tempBd) != 0
+                        {
+                            discard readBits(&tempBd, 7)
+                            discard readBit(&tempBd)
+                        }
+                    }
+                }
+            }
+            if updateSegmentMap
+            {
+                for i in 3
+                {
+                    if readBit(&tempBd) != 0
+                    {
+                        discard readBits(&tempBd, 8)
+                    }
+                }
+            }
+        }
 
-            // Test coefficient decoding
-            testCoefficientDecoding(&tokenPartitions)
+        // Skip filter settings
+        discard readBit(&tempBd)      // filter_type
+        discard readBits(&tempBd, 6)  // filter_level
+        discard readBits(&tempBd, 3)  // sharpness_level
+
+        if readBit(&tempBd) != 0  // loop_filter_adj_enable
+        {
+            if readBit(&tempBd) != 0
+            {
+                for i in 4
+                {
+                    if readBit(&tempBd) != 0:
+                        discard readSignedDelta(&tempBd)
+                }
+                for i in 4
+                {
+                    if readBit(&tempBd) != 0:
+                        discard readSignedDelta(&tempBd)
+                }
+            }
+        }
+
+        // NOW read the partition count
+        var numPartitions = 1 << readBits(&tempBd, 2)
+        Console.printf("Pre-parsed token partitions: %\n", numPartitions)
+
+        // FORCE single partition mode for now since multi-partition parsing is failing
+        if numPartitions > 1
+        {
+            Console.printf("Multiple partitions detected, but forcing single partition mode due to parsing issues\n")
+            numPartitions = 1
+        }
+
+        if numPartitions > 1
+        {
+            // Multiple partitions: partition sizes are at START of first partition
+            Console.printf("Reading % partition sizes from START of first partition\n", numPartitions - 1)
+            initTokenPartitionsFromStart(&tokenPartitions, me.stream, partitionStart, partitionSize, numPartitions)
+
+            // Frame header starts AFTER partition size headers
+            let headerSkip = (numPartitions - 1) * 3
+            frameHeaderStart = partitionStart + headerSkip
+            let frameHeaderSize = partitionSize - headerSkip
+
+            Console.printf("Frame header starts at offset % (skipped % bytes for partition sizes)\n", frameHeaderStart, headerSkip)
+
+            var bd: BoolDecoder
+            initBoolDecoder(&bd, me.stream + frameHeaderStart, frameHeaderSize)
+            let frameHeader = parseVP8FrameHeader(&bd, width, height)
         }
         else
         {
-            Console.printf("No token partition data found\n")
+            // Single partition: normal parsing
+            Console.printf("Using single partition mode\n")
+            var bd: BoolDecoder
+            initBoolDecoder(&bd, me.stream + partitionStart, partitionSize)
+            let frameHeader = parseVP8FrameHeader(&bd, width, height)
+
+            initTokenPartitions(&tokenPartitions, me.stream, partitionStart, partitionSize, 1, &bd)
         }
+
+        Console.printf("VP8 frame header parsed successfully!\n")
+
+        // Test coefficient decoding
+        testCoefficientDecoding(&tokenPartitions)
     }
 }
 
