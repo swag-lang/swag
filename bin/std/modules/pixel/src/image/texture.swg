@@ -3,7 +3,7 @@ using Ogl, Core
 
 struct Texture
 {
-    handle:            TextureHandle
+    handle:            TextureHandle = InvalidTextureHandle
     pf:                PixelFormat = undefined
     width, height:     s32
     valid:             bool
@@ -24,6 +24,11 @@ enum UVMode
 
 impl Texture
 {
-    mtd const getByteSize()->s32 => me.width * me.height * me.pf.bpp() / 8
-    mtd const isValid()->bool    => me.handle != InvalidTextureHandle
+    mtd const getByteSize()->s32 => .width * .height * .pf.bpp() / 8
+    mtd const isValid()->bool    => .handle != InvalidTextureHandle
+
+    mtd clear()
+    {
+        .handle = InvalidTextureHandle
+    }
 }

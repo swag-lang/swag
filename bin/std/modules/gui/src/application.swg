@@ -529,7 +529,7 @@ impl Application
     {
         foreach it in me.surfaces:
             it.destroy()
-        me.sendDestroyEvents()
+        .sendDestroyEvents()
 
         foreach it in me.postedEvents
         {
@@ -537,8 +537,8 @@ impl Application
             me.toDelete.add({ptr, ptr.type})
         }
 
-        me.deletePointers()
-        me.theme.freeDefault()
+        .deletePointers()
+        .theme.freeDefault()
     }
 
     // Get application variables
@@ -576,23 +576,23 @@ impl Application
         surface.position  = {x, y, width, height}
         surface.surfaceID = surfaceID
 
-        if !me.mainSurface
+        if !.mainSurface
         {
-            me.theme = Memory.new'Theme()
-            me.style.set(me.theme)
+            .theme = Memory.new'Theme()
+            .style.set(me.theme)
         }
 
         try Surface.create(surface, x, y, width, height, flags, me.mainSurface)
 
-        if !me.mainSurface
+        if !.mainSurface
         {
-            me.renderer.setCurrentContext(surface.rc)
-            me.renderer.init()
-            me.theme.setupDefault(&me.renderer)
-            me.mainSurface = surface
+            .renderer.setCurrentContext(surface.rc)
+            .renderer.init()
+            .theme.setupDefault(&me.renderer)
+            .mainSurface = surface
         }
 
-        me.surfaces.add(surface)
+        .surfaces.add(surface)
 
         with surface
         {

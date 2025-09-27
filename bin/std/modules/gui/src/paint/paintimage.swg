@@ -42,27 +42,27 @@ impl PaintImage
 
     public mtd opDrop()
     {
-        if me.surface:
-            me.surface.destroy()
+        if .surface:
+            .surface.destroy()
     }
 
     // First init the PaintImage instance
     public mtd init(w, h: s32)
     {
-        me.surface          = assume me.app.createSurface(0, 0, 1, 1, hook: &onEvent)
-        me.surface.userData = me
-        me.w                = w
-        me.h                = h
+        .surface          = assume .app.createSurface(0, 0, 1, 1, hook: &onEvent)
+        .surface.userData = me
+        .w                = w
+        .h                = h
     }
 
     // Draw to an image by calling the func
     #[Swag.Overload]
     public mtd draw(call: func||(*Application, *Painter))->Image
     {
-        me.paint = call
-        me.surface.invalidate()
-        me.app.runFrame()
-        return me.image
+        .paint = call
+        .surface.invalidate()
+        .app.runFrame()
+        return .image
     }
 
     // One shot paint to image

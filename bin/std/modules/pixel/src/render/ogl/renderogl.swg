@@ -76,37 +76,37 @@ internal impl RenderOgl
     mtd createShaders()
     {
         {
-            assume createShader(&me.shaderSimple, VertexShaderSimple, PixelShaderSimple)
-            let text0 = glGetUniformLocation(cast(GLuint) me.shaderSimple.handle, @dataof("inTexture0"))
-            glUseProgram(cast(GLuint) me.shaderSimple.handle)
+            assume createShader(&.shaderSimple, VertexShaderSimple, PixelShaderSimple)
+            let text0 = glGetUniformLocation(cast(GLuint) .shaderSimple.handle, @dataof("inTexture0"))
+            glUseProgram(cast(GLuint) .shaderSimple.handle)
             glUniform1i(text0, 0)
         }
 
         {
-            assume createShader(&me.shaderAA, VertexShaderAA, PixelShaderAA)
-            let text0 = glGetUniformLocation(cast(GLuint) me.shaderAA.handle, @dataof("inTexture0"))
-            let text1 = glGetUniformLocation(cast(GLuint) me.shaderAA.handle, @dataof("inTexture1"))
-            glUseProgram(cast(GLuint) me.shaderAA.handle)
+            assume createShader(&.shaderAA, VertexShaderAA, PixelShaderAA)
+            let text0 = glGetUniformLocation(cast(GLuint) .shaderAA.handle, @dataof("inTexture0"))
+            let text1 = glGetUniformLocation(cast(GLuint) .shaderAA.handle, @dataof("inTexture1"))
+            glUseProgram(cast(GLuint) .shaderAA.handle)
             glUniform1i(text0, 0)
             glUniform1i(text1, 1)
         }
 
         {
-            assume createShader(&me.shaderFont, VertexShaderFont, PixelShaderFont)
-            let text0 = glGetUniformLocation(cast(GLuint) me.shaderFont.handle, @dataof("inTexture0"))
-            let text1 = glGetUniformLocation(cast(GLuint) me.shaderFont.handle, @dataof("inTexture1"))
-            glUseProgram(cast(GLuint) me.shaderFont.handle)
+            assume createShader(&.shaderFont, VertexShaderFont, PixelShaderFont)
+            let text0 = glGetUniformLocation(cast(GLuint) .shaderFont.handle, @dataof("inTexture0"))
+            let text1 = glGetUniformLocation(cast(GLuint) .shaderFont.handle, @dataof("inTexture1"))
+            glUseProgram(cast(GLuint) .shaderFont.handle)
             glUniform1i(text0, 0)
             glUniform1i(text1, 1)
         }
 
         {
-            assume createShader(&me.shaderBlur, VertexShaderSimple, PixelShaderBlur)
-            let text0 = glGetUniformLocation(cast(GLuint) me.shaderBlur.handle, @dataof("inTexture0"))
-            glUseProgram(cast(GLuint) me.shaderBlur.handle)
+            assume createShader(&.shaderBlur, VertexShaderSimple, PixelShaderBlur)
+            let text0 = glGetUniformLocation(cast(GLuint) .shaderBlur.handle, @dataof("inTexture0"))
+            glUseProgram(cast(GLuint) .shaderBlur.handle)
             glUniform1i(text0, 0)
-            me.shaderBlur.axis   = cast() glGetUniformLocation(cast(GLuint) me.shaderBlur.handle, @dataof("axis"))
-            me.shaderBlur.radius = cast() glGetUniformLocation(cast(GLuint) me.shaderBlur.handle, @dataof("radius"))
+            .shaderBlur.axis   = cast() glGetUniformLocation(cast(GLuint) .shaderBlur.handle, @dataof("axis"))
+            .shaderBlur.radius = cast() glGetUniformLocation(cast(GLuint) .shaderBlur.handle, @dataof("radius"))
         }
     }
 
@@ -151,30 +151,30 @@ internal impl RenderOgl
 
     mtd buildModelMatrix(modelTransform: Transform2)
     {
-        var tr = me.worldTransform
+        var tr = .worldTransform
         tr.multiply(modelTransform)
 
         // Received matrix is in row major order, so transpose it
 
         // x
-        me.modelMatrix.m[0, 0] = tr.m11
-        me.modelMatrix.m[0, 1] = tr.m12
+        .modelMatrix.m[0, 0] = tr.m11
+        .modelMatrix.m[0, 1] = tr.m12
 
         // y
-        me.modelMatrix.m[1, 0] = tr.m21
-        me.modelMatrix.m[1, 1] = tr.m22
+        .modelMatrix.m[1, 0] = tr.m21
+        .modelMatrix.m[1, 1] = tr.m22
 
         // z
-        me.modelMatrix.m[2, 2] = 1
+        .modelMatrix.m[2, 2] = 1
 
         // translation
-        me.modelMatrix.m[3, 0] = tr.m31
-        me.modelMatrix.m[3, 1] = tr.m32
+        .modelMatrix.m[3, 0] = tr.m31
+        .modelMatrix.m[3, 1] = tr.m32
     }
 
     mtd setBlendingMode(bm: BlendingMode)
     {
-        me.blendingMode = bm
+        .blendingMode = bm
 
         #[Swag.Complete]
         switch bm
@@ -213,19 +213,19 @@ impl RenderOgl
 {
     mtd opDrop()
     {
-        foreach rt in me.stackReleasedRT:
+        foreach rt in .stackReleasedRT:
             Memory.delete(rt)
-        foreach rt in me.stackRT:
+        foreach rt in .stackRT:
             Memory.delete(rt)
-        Memory.delete(me.curRT)
+        Memory.delete(.curRT)
     }
 
     // To be called before rendering
     mtd begin(rc: RenderingContext)
     {
-        me.curRC = rc
-        me.native.setCurrentContext(me.curRC)
-        me.resetTransform()
+        .curRC = rc
+        .native.setCurrentContext(.curRC)
+        .resetTransform()
     }
 
     // To be called after rendering
@@ -233,13 +233,13 @@ impl RenderOgl
     {
         glFlush()
         glFinish()
-        me.native.swapBuffers(me.curRC)
+        .native.swapBuffers(.curRC)
     }
 
     // Set the current rendering context
     mtd setCurrentContext(rc: RenderingContext)
     {
-        me.native.setCurrentContext(rc)
+        .native.setCurrentContext(rc)
     }
 
     // Clear current render buffers
@@ -255,16 +255,16 @@ impl RenderOgl
     // Get the actual render target size
     mtd getTargetSize()->{ width, height: s32 }
     {
-        if me.curRT:
-            return {me.curRT.colorBuffer.width, me.curRT.colorBuffer.height}
-        return {me.curRC.width, me.curRC.height}
+        if .curRT:
+            return {.curRT.colorBuffer.width, .curRT.colorBuffer.height}
+        return {.curRC.width, .curRC.height}
     }
 
     // Force the scissor
     mtd setScissorRect(rect: Math.Rectangle)
     {
         glEnable(GL_SCISSOR_TEST)
-        let (?, h) = me.getTargetSize()
+        let (?, h) = .getTargetSize()
         glScissor(cast(GLint) rect.x, cast(GLint) (h - rect.y - rect.height), cast(GLint) rect.width, cast(GLint) rect.height)
     }
 
@@ -284,15 +284,17 @@ impl RenderOgl
     // First init
     mtd init()
     {
+        Font.clearCaches()
+
         glInitExtensions()
-        me.createShaders()
+        .createShaders()
 
         //glEnable(GL_DEBUG_OUTPUT);
         //glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
         //glDebugMessageCallback(@mkcallback(&GLDebugMessageCallback), null);
 
-        glGenBuffers(1, &me.vertexbuffer)
-        glBindBuffer(GL_ARRAY_BUFFER, me.vertexbuffer)
+        glGenBuffers(1, &.vertexbuffer)
+        glBindBuffer(GL_ARRAY_BUFFER, .vertexbuffer)
 
         // Vertex buffer layout
         var offset: const [*] u8 = null
@@ -333,44 +335,44 @@ impl RenderOgl
         glVertexAttribPointer(15, 1, GL_FLOAT, GL_FALSE, #sizeof(VertexLayout), offset)
 
         // Generate predefined textures
-        me.whiteTexture = generateTexture([1], 1, 1)
+        .whiteTexture = generateTexture([1], 1, 1)
         using HatchStyle
-        me.hatchTextures[Dot]                   = generateTexture(Hatch.Dot, 8, 8)
-        me.hatchTextures[Horizontal]            = generateTexture(Hatch.Horizontal, 8, 8)
-        me.hatchTextures[HorizontalLight]       = generateTexture(Hatch.HorizontalLight, 8, 8)
-        me.hatchTextures[HorizontalNarrow]      = generateTexture(Hatch.HorizontalNarrow, 8, 8)
-        me.hatchTextures[Vertical]              = generateTexture(Hatch.Vertical, 8, 8)
-        me.hatchTextures[VerticalLight]         = generateTexture(Hatch.VerticalLight, 8, 8)
-        me.hatchTextures[VerticalNarrow]        = generateTexture(Hatch.VerticalNarrow, 8, 8)
-        me.hatchTextures[SolidDiamond]          = generateTexture(Hatch.SolidDiamond, 8, 8)
-        me.hatchTextures[OutlinedDiamond]       = generateTexture(Hatch.OutlinedDiamond, 8, 8)
-        me.hatchTextures[HorizontalDark]        = generateTexture(Hatch.HorizontalDark, 8, 8)
-        me.hatchTextures[VerticalDark]          = generateTexture(Hatch.VerticalDark, 8, 8)
-        me.hatchTextures[Grid]                  = generateTexture(Hatch.Grid, 8, 8)
-        me.hatchTextures[GridLarge]             = generateTexture(Hatch.GridLarge, 8, 8)
-        me.hatchTextures[GridDotted]            = generateTexture(Hatch.GridDotted, 8, 8)
-        me.hatchTextures[Cross]                 = generateTexture(Hatch.Cross, 8, 8)
-        me.hatchTextures[CrossLarge]            = generateTexture(Hatch.CrossLarge, 8, 8)
-        me.hatchTextures[Percent5]              = generateTexture(Hatch.Percent5, 8, 8)
-        me.hatchTextures[Percent10]             = generateTexture(Hatch.Percent10, 8, 8)
-        me.hatchTextures[Percent20]             = generateTexture(Hatch.Percent20, 8, 8)
-        me.hatchTextures[Percent25]             = generateTexture(Hatch.Percent25, 8, 8)
-        me.hatchTextures[Percent30]             = generateTexture(Hatch.Percent30, 8, 8)
-        me.hatchTextures[Percent40]             = generateTexture(Hatch.Percent40, 8, 8)
-        me.hatchTextures[Percent50]             = generateTexture(Hatch.Percent50, 8, 8)
-        me.hatchTextures[Percent60]             = generateTexture(Hatch.Percent60, 8, 8)
-        me.hatchTextures[Percent70]             = generateTexture(Hatch.Percent70, 8, 8)
-        me.hatchTextures[Percent75]             = generateTexture(Hatch.Percent75, 8, 8)
-        me.hatchTextures[Percent80]             = generateTexture(Hatch.Percent80, 8, 8)
-        me.hatchTextures[Percent90]             = generateTexture(Hatch.Percent90, 8, 8)
-        me.hatchTextures[CheckBoard]            = generateTexture(Hatch.CheckBoard, 8, 8)
-        me.hatchTextures[CheckBoardLarge]       = generateTexture(Hatch.CheckBoardLarge, 8, 8)
-        me.hatchTextures[Weave]                 = generateTexture(Hatch.Weave, 8, 8)
-        me.hatchTextures[DiagonalForward]       = generateTexture(Hatch.DiagonalForward, 8, 8)
-        me.hatchTextures[DiagonalForwardLight]  = generateTexture(Hatch.DiagonalForwardLight, 8, 8)
-        me.hatchTextures[DiagonalBackward]      = generateTexture(Hatch.DiagonalBackward, 8, 8)
-        me.hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
-        me.hatchTextures[DiagonalCross]         = generateTexture(Hatch.DiagonalCross, 8, 8)
+        .hatchTextures[Dot]                   = generateTexture(Hatch.Dot, 8, 8)
+        .hatchTextures[Horizontal]            = generateTexture(Hatch.Horizontal, 8, 8)
+        .hatchTextures[HorizontalLight]       = generateTexture(Hatch.HorizontalLight, 8, 8)
+        .hatchTextures[HorizontalNarrow]      = generateTexture(Hatch.HorizontalNarrow, 8, 8)
+        .hatchTextures[Vertical]              = generateTexture(Hatch.Vertical, 8, 8)
+        .hatchTextures[VerticalLight]         = generateTexture(Hatch.VerticalLight, 8, 8)
+        .hatchTextures[VerticalNarrow]        = generateTexture(Hatch.VerticalNarrow, 8, 8)
+        .hatchTextures[SolidDiamond]          = generateTexture(Hatch.SolidDiamond, 8, 8)
+        .hatchTextures[OutlinedDiamond]       = generateTexture(Hatch.OutlinedDiamond, 8, 8)
+        .hatchTextures[HorizontalDark]        = generateTexture(Hatch.HorizontalDark, 8, 8)
+        .hatchTextures[VerticalDark]          = generateTexture(Hatch.VerticalDark, 8, 8)
+        .hatchTextures[Grid]                  = generateTexture(Hatch.Grid, 8, 8)
+        .hatchTextures[GridLarge]             = generateTexture(Hatch.GridLarge, 8, 8)
+        .hatchTextures[GridDotted]            = generateTexture(Hatch.GridDotted, 8, 8)
+        .hatchTextures[Cross]                 = generateTexture(Hatch.Cross, 8, 8)
+        .hatchTextures[CrossLarge]            = generateTexture(Hatch.CrossLarge, 8, 8)
+        .hatchTextures[Percent5]              = generateTexture(Hatch.Percent5, 8, 8)
+        .hatchTextures[Percent10]             = generateTexture(Hatch.Percent10, 8, 8)
+        .hatchTextures[Percent20]             = generateTexture(Hatch.Percent20, 8, 8)
+        .hatchTextures[Percent25]             = generateTexture(Hatch.Percent25, 8, 8)
+        .hatchTextures[Percent30]             = generateTexture(Hatch.Percent30, 8, 8)
+        .hatchTextures[Percent40]             = generateTexture(Hatch.Percent40, 8, 8)
+        .hatchTextures[Percent50]             = generateTexture(Hatch.Percent50, 8, 8)
+        .hatchTextures[Percent60]             = generateTexture(Hatch.Percent60, 8, 8)
+        .hatchTextures[Percent70]             = generateTexture(Hatch.Percent70, 8, 8)
+        .hatchTextures[Percent75]             = generateTexture(Hatch.Percent75, 8, 8)
+        .hatchTextures[Percent80]             = generateTexture(Hatch.Percent80, 8, 8)
+        .hatchTextures[Percent90]             = generateTexture(Hatch.Percent90, 8, 8)
+        .hatchTextures[CheckBoard]            = generateTexture(Hatch.CheckBoard, 8, 8)
+        .hatchTextures[CheckBoardLarge]       = generateTexture(Hatch.CheckBoardLarge, 8, 8)
+        .hatchTextures[Weave]                 = generateTexture(Hatch.Weave, 8, 8)
+        .hatchTextures[DiagonalForward]       = generateTexture(Hatch.DiagonalForward, 8, 8)
+        .hatchTextures[DiagonalForwardLight]  = generateTexture(Hatch.DiagonalForwardLight, 8, 8)
+        .hatchTextures[DiagonalBackward]      = generateTexture(Hatch.DiagonalBackward, 8, 8)
+        .hatchTextures[DiagonalBackwardLight] = generateTexture(Hatch.DiagonalBackwardLight, 8, 8)
+        .hatchTextures[DiagonalCross]         = generateTexture(Hatch.DiagonalCross, 8, 8)
     }
 
     // Set the current render target
@@ -379,15 +381,15 @@ impl RenderOgl
         Debug.assert(rt != null)
         if !rt.colorBuffer.valid:
             return
-        if me.curRT:
-            me.stackRT.add(me.curRT)
-        me.curRT            = rt
-        me.curRT.paintAlpha = false
-        glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) me.curRT.handle)
+        if .curRT:
+            .stackRT.add(.curRT)
+        .curRT            = rt
+        .curRT.paintAlpha = false
+        glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) .curRT.handle)
         if vp:
             glViewport(cast() vp.x, cast() vp.y, cast() vp.width, cast() vp.height)
         else:
-            glViewport(0, 0, me.curRT.colorBuffer.width, me.curRT.colorBuffer.height)
+            glViewport(0, 0, .curRT.colorBuffer.width, .curRT.colorBuffer.height)
     }
 
     // Get current render target pixels
@@ -395,25 +397,25 @@ impl RenderOgl
     {
         var result: retval = Image.create(w, h, .BGRA8)
         glReadBuffer(GL_COLOR_ATTACHMENT0)
-        glReadPixels(x, me.curRT.colorBuffer.height - h - y, w, h, GL_BGRA, GL_UNSIGNED_BYTE, result.pixels.buffer)
-        me.unbindRenderTarget()
+        glReadPixels(x, .curRT.colorBuffer.height - h - y, w, h, GL_BGRA, GL_UNSIGNED_BYTE, result.pixels.buffer)
+        .unbindRenderTarget()
         return result
     }
 
     // Go back to the previous render target, or frame buffer
     mtd unbindRenderTarget()
     {
-        if me.stackRT.count
+        if .stackRT.count
         {
-            me.curRT = me.stackRT.popBack()
-            glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) me.curRT.handle)
-            glViewport(0, 0, me.curRT.colorBuffer.width, me.curRT.colorBuffer.height)
+            .curRT = .stackRT.popBack()
+            glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) .curRT.handle)
+            glViewport(0, 0, .curRT.colorBuffer.width, .curRT.colorBuffer.height)
         }
         else
         {
-            me.curRT = null
+            .curRT = null
             glBindFramebuffer(GL_FRAMEBUFFER, 0)
-            glViewport(0, 0, me.curRC.width, me.curRC.height)
+            glViewport(0, 0, .curRC.width, .curRC.height)
         }
     }
 
@@ -476,7 +478,7 @@ impl RenderOgl
     #[Swag.Overload]
     mtd addImage(fullName: string)->Texture throw
     {
-        return me.addImage(Image.load(fullName))
+        return .addImage(Image.load(fullName))
     }
 
     // Register an image for rendering
@@ -574,7 +576,7 @@ impl RenderOgl
     mtd translateTransform(x, y: f32)
     {
         let tr = Transform2.createTranslation(x, y)
-        me.worldTransform.multiply(tr)
+        .worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
@@ -582,7 +584,7 @@ impl RenderOgl
     mtd rotateTransform(angle: Math.Angle)
     {
         let tr = Transform2.createRotation(angle.rad, 0, 0)
-        me.worldTransform.multiply(tr)
+        .worldTransform.multiply(tr)
     }
 
     // Rotate the world transform
@@ -590,35 +592,35 @@ impl RenderOgl
     mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
         let tr = Transform2.createRotation(angle.rad, centerX, centerY)
-        me.worldTransform.multiply(tr)
+        .worldTransform.multiply(tr)
     }
 
     // Scale the world transform
     mtd scaleTransform(x, y: f32)
     {
         let tr = Transform2.createScale(x, y, 0, 0)
-        me.worldTransform.multiply(tr)
+        .worldTransform.multiply(tr)
     }
 
     // Reset the world transform
     mtd resetTransform()
     {
-        me.worldTransform.setIdentity()
-        me.modelMatrix.setIdentity()
+        .worldTransform.setIdentity()
+        .modelMatrix.setIdentity()
     }
 
     mtd computeMatrices(mvp, mdl: ShaderParamHandle)
     {
-        let (width, height) = me.getTargetSize()
+        let (width, height) = .getTargetSize()
 
         // View, ortho projection
-        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, me.orthoMatrix.m)
-        glUniformMatrix4fv(cast(GLint) mvp, 1, GL_FALSE, &me.orthoMatrix.m[0, 0])
+        ortho(cast(f32) height, 0, 0, cast(f32) width, 0, 1.0, .orthoMatrix.m)
+        glUniformMatrix4fv(cast(GLint) mvp, 1, GL_FALSE, &.orthoMatrix.m[0, 0])
         glViewport(0, 0, width, height)
 
         // Draw matrix
-        me.buildModelMatrix(Transform2.Identity)
-        glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &me.modelMatrix.m[0, 0])
+        .buildModelMatrix(Transform2.Identity)
+        glUniformMatrix4fv(cast(GLint) mdl, 1, GL_FALSE, &.modelMatrix.m[0, 0])
     }
 
     internal mtd executeCommand(dc: *Painter, cmd: Pixel.Command, cmdIdx: u64, width, height: s32)
@@ -627,7 +629,7 @@ impl RenderOgl
         {
         case SetBlendingMode:
             let params = &cmd.blendingMode
-            me.setBlendingMode(params.mode)
+            .setBlendingMode(params.mode)
 
         case Clear:
             let params = &cmd.clear
@@ -641,8 +643,8 @@ impl RenderOgl
 
         case Transform:
             let params = &cmd.transform
-            me.buildModelMatrix(params.tr)
-            glUniformMatrix4fv(cast(GLint) me.curShader.mdl, 1, GL_FALSE, &me.modelMatrix.m[0, 0])
+            .buildModelMatrix(params.tr)
+            glUniformMatrix4fv(cast(GLint) .curShader.mdl, 1, GL_FALSE, &.modelMatrix.m[0, 0])
 
         case StartClippingRegion:
             glEnable(GL_STENCIL_TEST)
@@ -672,15 +674,15 @@ impl RenderOgl
             glDisable(GL_SCISSOR_TEST)
 
         case StartNoOverlap:
-            me.overlapMode = true
+            .overlapMode = true
 
         case StopNoOverlap:
-            me.overlapMode = false
-            me.setBlendingMode(me.blendingMode)
+            .overlapMode = false
+            .setBlendingMode(.blendingMode)
 
         case DrawTriangles:
             let params = &cmd.drawTriangles
-            if !me.overlapMode
+            if !.overlapMode
             {
                 glDrawArrays(GL_TRIANGLES, cast(GLint) params.start, cast(GLsizei) params.count)
             }
@@ -710,9 +712,9 @@ impl RenderOgl
             }
 
         case StartFont:
-            me.setShader(&me.shaderFont)
+            .setShader(&.shaderFont)
         case EndFont:
-            me.setShader(&me.shaderAA)
+            .setShader(&.shaderAA)
 
         case BindTextureFont:
             let params = &cmd.textureFont
@@ -726,7 +728,7 @@ impl RenderOgl
 
         case ResetTextureFont:
             glActiveTexture(GL_TEXTURE1)
-            glBindTexture(GL_TEXTURE_2D, me.whiteTexture)
+            glBindTexture(GL_TEXTURE_2D, .whiteTexture)
 
         case UpdateFont:
             let font = cmd.font.fontRef
@@ -739,7 +741,7 @@ impl RenderOgl
                 if !atlas.dirty:
                     continue
                 atlas.dirty = false
-                if cast(u32) atlas.texture.handle == 0:
+                if atlas.texture.handle == InvalidTextureHandle:
                     glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
                 atlas.texture.width  = atlas.width / atlas.bpp
                 atlas.texture.height = atlas.height
@@ -752,27 +754,27 @@ impl RenderOgl
 
         case ResetTexture0:
             glActiveTexture(GL_TEXTURE0)
-            glBindTexture(GL_TEXTURE_2D, me.whiteTexture)
+            glBindTexture(GL_TEXTURE_2D, .whiteTexture)
 
         case BindTexture0:
             let params = &cmd.texture0
-            glUniform4fv(cast(GLint) me.curShader.boundRect, 1, &params.boundRect.x)
-            glUniform4fv(cast(GLint) me.curShader.textureRect, 1, &params.textureRect.x)
-            glUniform1f(cast(GLint) me.curShader.uvMode, cast(GLfloat) params.uvMode)
-            glUniform1i(cast(GLint) me.curShader.copyMode, cast(GLint) (me.blendingMode == .Copy))
+            glUniform4fv(cast(GLint) .curShader.boundRect, 1, &params.boundRect.x)
+            glUniform4fv(cast(GLint) .curShader.textureRect, 1, &params.textureRect.x)
+            glUniform1f(cast(GLint) .curShader.uvMode, cast(GLfloat) params.uvMode)
+            glUniform1i(cast(GLint) .curShader.copyMode, cast(GLint) (.blendingMode == .Copy))
             glActiveTexture(GL_TEXTURE0)
 
             #[Swag.Complete]
             switch params.type
             {
             case SolidColor:
-                glBindTexture(GL_TEXTURE_2D, me.whiteTexture)
+                glBindTexture(GL_TEXTURE_2D, .whiteTexture)
             case Texture:
                 glBindTexture(GL_TEXTURE_2D, cast(GLuint) params.texture.handle)
-                glUniform1f(cast(GLint) me.curShader.textureW, cast(GLfloat) params.texture.width)
-                glUniform1f(cast(GLint) me.curShader.textureH, cast(GLfloat) params.texture.height)
+                glUniform1f(cast(GLint) .curShader.textureW, cast(GLfloat) params.texture.width)
+                glUniform1f(cast(GLint) .curShader.textureH, cast(GLfloat) params.texture.height)
             case Hatch:
-                glBindTexture(GL_TEXTURE_2D, me.hatchTextures[params.hatch])
+                glBindTexture(GL_TEXTURE_2D, .hatchTextures[params.hatch])
             }
 
             #[Swag.Complete]
@@ -798,15 +800,15 @@ impl RenderOgl
             }
 
         case BindRenderTarget:
-            me.bindRenderTarget(cmd.renderTgt.tgt)
-            me.curRT.paintAlpha    = cmd.renderTgt.paintAlpha
-            me.curRT.paintAlphaIdx = cmdIdx
-            me.computeMatrices(me.curShader.mvp, me.curShader.mdl)
+            .bindRenderTarget(cmd.renderTgt.tgt)
+            .curRT.paintAlpha    = cmd.renderTgt.paintAlpha
+            .curRT.paintAlphaIdx = cmdIdx
+            .computeMatrices(.curShader.mvp, .curShader.mdl)
 
         case UnbindRenderTarget:
-            Debug.assert(me.curRT != null)
+            Debug.assert(.curRT != null)
 
-            if me.curRT.paintAlpha
+            if .curRT.paintAlpha
             {
                 glEnable(GL_BLEND)
                 glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE)
@@ -815,26 +817,26 @@ impl RenderOgl
                 glBlendFunc(GL_SRC_ALPHA, GL_ZERO)
                 glBlendEquation(GL_MAX)
 
-                for var i = me.curRT.paintAlphaIdx; i < cmdIdx; i += 1
+                for var i = .curRT.paintAlphaIdx; i < cmdIdx; i += 1
                 {
                     let cmd1 = dc.commandBuffer[i]
                     switch cmd1.id
                     {
                     case Transform, ResetTexture0, BindTexture0, ResetTextureFont, BindTextureFont, DrawTriangles:
-                        me.executeCommand(dc, cmd1, cast(u64) i, width, height)
+                        .executeCommand(dc, cmd1, cast(u64) i, width, height)
                     }
                 }
             }
 
-            me.unbindRenderTarget()
-            me.computeMatrices(me.curShader.mvp, me.curShader.mdl)
+            .unbindRenderTarget()
+            .computeMatrices(.curShader.mvp, .curShader.mdl)
 
         case ReleaseRenderTarget:
-            me.releaseRenderTarget(cmd.renderTgt.tgt)
+            .releaseRenderTarget(cmd.renderTgt.tgt)
 
         case SetShader:
             let params = &cmd.shader
-            me.setShader(params.shader)
+            .setShader(params.shader)
 
         case SetShaderParam:
             let params = &cmd.shaderParam
@@ -853,16 +855,16 @@ impl RenderOgl
     // Draw the given painter
     mtd draw(dc: *Painter)
     {
-        let (width, height) = me.getTargetSize()
+        let (width, height) = .getTargetSize()
         if width <= 0 or height <= 0:
             return
 
-        glBindBuffer(GL_ARRAY_BUFFER, me.vertexbuffer)
+        glBindBuffer(GL_ARRAY_BUFFER, .vertexbuffer)
         glBufferData(GL_ARRAY_BUFFER, dc.vertexBuffer.count * #sizeof(VertexLayout), dc.vertexBuffer.buffer, GL_STATIC_DRAW)
 
         // Default shader
-        me.setShader(&me.shaderAA)
-        me.computeMatrices(me.curShader.mvp, me.curShader.mdl)
+        .setShader(&.shaderAA)
+        .computeMatrices(.curShader.mvp, .curShader.mdl)
 
         // Default state
         glDisable(GL_SCISSOR_TEST)
@@ -873,16 +875,16 @@ impl RenderOgl
         glDepthMask(GL_FALSE)
 
         glActiveTexture(GL_TEXTURE0)
-        glBindTexture(GL_TEXTURE_2D, me.whiteTexture)
+        glBindTexture(GL_TEXTURE_2D, .whiteTexture)
         glActiveTexture(GL_TEXTURE1)
-        glBindTexture(GL_TEXTURE_2D, me.whiteTexture)
-        me.setBlendingMode(BlendingMode.Alpha)
+        glBindTexture(GL_TEXTURE_2D, .whiteTexture)
+        .setBlendingMode(BlendingMode.Alpha)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
         for i in 16:
             glEnableVertexAttribArray(cast(GLuint) i)
         foreach cmd, cmdIdx in dc.commandBuffer:
-            me.executeCommand(dc, cmd, cmdIdx, width, height)
+            .executeCommand(dc, cmd, cmdIdx, width, height)
         for i in 16:
             glDisableVertexAttribArray(cast(GLuint) i)
     }
@@ -890,10 +892,10 @@ impl RenderOgl
     // Set the current shader
     mtd setShader(shader: *ShaderBase = null)
     {
-        me.curShader = shader orelse &me.shaderAA
-        glUseProgram(cast(GLuint) me.curShader.handle)
-        glUniformMatrix4fv(cast(GLint) me.curShader.mvp, 1, GL_FALSE, &me.orthoMatrix.m[0, 0])
-        glUniformMatrix4fv(cast(GLint) me.curShader.mdl, 1, GL_FALSE, &me.modelMatrix.m[0, 0])
+        .curShader = shader orelse &.shaderAA
+        glUseProgram(cast(GLuint) .curShader.handle)
+        glUniformMatrix4fv(cast(GLint) .curShader.mvp, 1, GL_FALSE, &.orthoMatrix.m[0, 0])
+        glUniformMatrix4fv(cast(GLint) .curShader.mdl, 1, GL_FALSE, &.modelMatrix.m[0, 0])
     }
 
     // Get a render target of the given size
@@ -903,33 +905,33 @@ impl RenderOgl
         let w2 = Math.roundUpToPowerOf2(cast(u32) w)
         let h2 = Math.roundUpToPowerOf2(cast(u32) h)
 
-        foreach rt, i in me.stackReleasedRT
+        foreach rt, i in .stackReleasedRT
         {
             if rt.colorBuffer.width == w2 and rt.colorBuffer.height == h2
             {
-                me.stackReleasedRT.removeAt(i)
+                .stackReleasedRT.removeAt(i)
                 return rt
             }
         }
 
-        foreach rt, i in me.stackReleasedRT
+        foreach rt, i in .stackReleasedRT
         {
             if rt.colorBuffer.width >= w2 and rt.colorBuffer.height >= h2
             {
-                me.stackReleasedRT.removeAt(i)
+                .stackReleasedRT.removeAt(i)
                 return rt
             }
         }
 
         var rt = Memory.new'RenderTarget()
-        dref rt = me.createRenderTarget(cast(s32) w2, cast(s32) h2)
+        dref rt = .createRenderTarget(cast(s32) w2, cast(s32) h2)
         return rt
     }
 
     // Release the given render target
     mtd releaseRenderTarget(tgt: *RenderTarget)
     {
-        me.stackReleasedRT.add(tgt)
+        .stackReleasedRT.add(tgt)
     }
 
     // Create the given shader
