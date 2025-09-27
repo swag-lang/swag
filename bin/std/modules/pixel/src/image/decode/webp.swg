@@ -1,6 +1,21 @@
 #global namespace Webp
 using Swag, Core, Core.Errors
 
+public struct Decoder
+{
+    // Stream data
+    stream:        const [*] u8
+    streamLen:     s32
+
+    // Image properties
+    imageSizeX:     s32
+    imageSizeY:     s32
+
+    // Decoder options and metadata
+    decOptions:     DecodeOptions
+    metaDatas:      Array'ImageMetaData
+}
+
 private
 {
     // VP8 coefficient token values
@@ -35,19 +50,12 @@ private
         uvStride:        s32
     }
 
-    // ---- VP8 tables (probabilities & quant) ----
-
-    // Default coeff probs (from VP8 spec – standard values)
-    // [block_type][coeff_band][context][node]
-    // Reduced to keyframe (intra) case, sufficient for the example.
-    // Also need to update the coefficient probability table to have more nodes
-    // This is a more complete version with proper probability values
-    // VP8 Default coefficient probabilities - simplified but working version
+    // VP8 Default coefficient probabilities
     // Format: [plane_type][band][context][prob_index]
     const CoeffProbsDefault = [
         // Y plane
         [
-            [[255, 255, 255], [255, 255, 255], [255, 255, 255]], // Band 0 - let everything through for now
+            [[255, 255, 255], [255, 255, 255], [255, 255, 255]], // Band 0
             [[145, 199, 177], [67, 101, 66], [64, 90, 47]], // Band 1
             [[187, 224, 203], [77, 123, 85], [68, 97, 55]], // Band 2
             [[214, 235, 211], [85, 130, 90], [71, 98, 57]], // Band 3
@@ -55,92 +63,50 @@ private
             [[237, 243, 218], [88, 132, 93], [73, 101, 60]]],
         // UV plane
         [
-            [[255, 255, 255], [255, 255, 255], [255, 255, 255]], // Band 0 - let everything through for now
+            [[255, 255, 255], [255, 255, 255], [255, 255, 255]], // Band 0
             [[156, 203, 179], [70, 118, 71], [67, 94, 50]], // Band 1
             [[189, 223, 201], [75, 123, 83], [69, 97, 54]], // Band 2
             [[214, 235, 210], [83, 129, 89], [70, 98, 56]], // Band 3
             [[228, 241, 214], [85, 131, 91], [71, 100, 58]], // Band 4
-            [[236, 244, 217], [87, 132, 92], [72, 101, 59]]]] // Band 5+
+            [[236, 244, 217], [87, 132, 92], [72, 101, 59]]]]
 
-    // VP8 zigzag scan order for 4x4 blocks
-    const ZigZag4x4: [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
-
-    // Band mapping for coefficient positions
+    // VP8 zigzag scan order and band mapping
+    const ZigZag4x4:  [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
     const BandForPos: [16] u8 = [0, 1, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]
 
-    // iDCT tables (like VP8 JPEG-style 4×4) – integer constants
-    const CosVal = [[64, 83, 64, 36], [64, 36, -64, -83]]
+    // Basic quantization tables
+    const QuantDC: [2] s32 = [6, 5]     // Y DC, UV DC
+    const QuantAC: [2] s32 = [4, 4]     // Y AC, UV AC
 
-    // --- Bool decoder ---
-    struct BoolDec { range: u32, value: u32, bitpos: s32, p: const [*] u8, end: const [*] u8 }
-
-    // VP8 4x4 WHT (Walsh-Hadamard Transform) for the DC coefficients of Y blocks
-    func iwht4x4(input: [*] s16, output: [*] s16)
+    // Boolean decoder
+    struct BoolDec
     {
-        var temp: [16] s16
-
-        // First pass: columns
-        var i = 0
-        while i < 4
-        {
-            let a = cast(s32) input[0 + i] + cast(s32) input[12 + i]
-            let b = cast(s32) input[4 + i] + cast(s32) input[8 + i]
-            let c = cast(s32) input[4 + i] - cast(s32) input[8 + i]
-            let d = cast(s32) input[0 + i] - cast(s32) input[12 + i]
-
-            temp[0 + i]  = cast(s16) (a + b)
-            temp[4 + i]  = cast(s16) (c + d)
-            temp[8 + i]  = cast(s16) (a - b)
-            temp[12 + i] = cast(s16) (d - c)
-
-            i += 1
-        }
-
-        // Second pass: rows
-        i = 0
-        while i < 16
-        {
-            let a = cast(s32) temp[i + 0] + cast(s32) temp[i + 3]
-            let b = cast(s32) temp[i + 1] + cast(s32) temp[i + 2]
-            let c = cast(s32) temp[i + 1] - cast(s32) temp[i + 2]
-            let d = cast(s32) temp[i + 0] - cast(s32) temp[i + 3]
-
-            let op_a = a + b
-            let op_b = c + d
-            let op_c = a - b
-            let op_d = d - c
-
-            output[i + 0] = cast(s16) ((op_a + 3) >> 3)
-            output[i + 1] = cast(s16) ((op_b + 3) >> 3)
-            output[i + 2] = cast(s16) ((op_c + 3) >> 3)
-            output[i + 3] = cast(s16) ((op_d + 3) >> 3)
-
-            i += 4
-        }
+        range:      u32
+        value:      u32
+        bitpos:     s32
+        p:          const [*] u8
+        end:        const [*] u8
     }
 
-    // VP8 4x4 IDCT - this is the actual VP8 transform, not JPEG DCT
+    // --- Transform functions ---
+
+    // VP8 4x4 IDCT
     func idct4(src: const [*] s16, dst: [*] s16)
     {
         var temp: [16] s32
 
         func clampPixel(v: s32)->s16
         {
-            if v > 255:
-                return 255
-            if v < 0:
-                return 0
-            return cast(s16) v
+            return cast(s16) Math.clamp(v, 0, 255)
         }
 
         // First pass: columns (vertical transform)
-        var i = 0
-        while i < 4
+        for i in 4
         {
-            let ip  = cast(s32) src[i + 0]      // input[0]
-            let ip1 = cast(s32) src[i + 4]      // input[1]
-            let ip2 = cast(s32) src[i + 8]      // input[2]
-            let ip3 = cast(s32) src[i + 12]     // input[3]
+            let ip  = cast(s32) src[i + 0]
+            let ip1 = cast(s32) src[i + 4]
+            let ip2 = cast(s32) src[i + 8]
+            let ip3 = cast(s32) src[i + 12]
 
             let a1    = ip + ip3
             let b1    = ip - ip3
@@ -154,13 +120,10 @@ private
             temp[i + 4]  = b1 + c1
             temp[i + 8]  = b1 - c1
             temp[i + 12] = a1 - temp4
-
-            i += 1
         }
 
         // Second pass: rows (horizontal transform)
-        i = 0
-        while i < 16
+        foreach i in [0, 4, 8, 12]
         {
             let a1    = temp[i + 0] + temp[i + 3]
             let b1    = temp[i + 0] - temp[i + 3]
@@ -170,132 +133,47 @@ private
             let temp4 = (temp3 + (temp[i + 2] * 52808)) >> 16
             let c1    = temp2 - temp4
 
-            // Final output with proper DC offset and clamping
             dst[i + 0] = clampPixel((a1 + temp4 + 4) >> 3)
             dst[i + 1] = clampPixel((b1 + c1 + 4) >> 3)
             dst[i + 2] = clampPixel((b1 - c1 + 4) >> 3)
             dst[i + 3] = clampPixel((a1 - temp4 + 4) >> 3)
-
-            i += 4
         }
     }
 
-    // Simplified but more accurate coefficient decoding
-    func decodeBlock4x4(b: *BoolDec, coeffs: [*] s16, plane: s32)->bool
-    {
-        // Clear coefficients first
-        var i = 0
-        while i < 16
-        {
-            coeffs[i] = 0
-            i += 1
-        }
-
-        const ZZ: [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
-        //const BandForPos: [16] u8 = [0, 1, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]
-
-        let bt        = (plane == 0) ? 0 : 1
-        var hasCoeffs = false
-
-        i = 0
-        while i < 16
-        {
-            let pos      = ZZ[i]
-            let band     = cast(s32) BandForPos[pos]
-            let safeBand = (band > 5) ? 5 : band
-
-            // Simple context - in a real decoder this would be more sophisticated
-            var ctx = 0
-            if i > 0 and coeffs[ZZ[i - 1]] != 0:
-                ctx = 1
-            elif i > 1 and coeffs[ZZ[i - 2]] != 0:
-                ctx = 1
-            if ctx > 2:
-                ctx = 2
-
-            // Check for end of block
-            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][0]) == 0:
-                break
-
-            // Check if coefficient is non-zero
-            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][1]) == 0
-            {
-                i += 1
-                continue
-            }
-
-            hasCoeffs = true
-
-            // Decode coefficient magnitude (simplified)
-            var level = 1
-            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][2]) != 0
-            {
-                // Larger than 1
-                level = 2
-
-                // For even larger values, add more bits
-                while readBit(b) != 0 and level < 40
-                {
-                    level += 1
-                }
-            }
-
-            // Add sign
-            if readBit(b) != 0:
-                level = -level
-
-            coeffs[pos] = cast(s16) level
-            i += 1
-        }
-
-        return hasCoeffs
-    }
-
-    // Basic quantization tables (these should come from frame header in real decoder)
-    const QuantDC: [2] s32 = [6, 5]     // Y DC, UV DC
-    const QuantAC: [2] s32 = [4, 4]     // Y AC, UV AC
-
-    // Dequantize coefficients
-    func dequantizeBlock(coeffs: [*] s16, plane: s32, isDC: bool)
-    {
-        let qp = isDC ? QuantDC[plane] : QuantAC[plane]
-
-        var i = 0
-        while i < 16
-        {
-            if coeffs[i] != 0
-            {
-                coeffs[i] = cast(s16) (cast(s32) coeffs[i] * qp)
-            }
-            i += 1
-        }
-    }
+    // --- Boolean decoder functions ---
 
     func initBool(b: *BoolDec, src: const [*] u8, len: s32)
     {
-        b.range  = 255; b.bitpos = 0; b.p      = src; b.end    = src + len; if (len >= 3)
+        b.range  = 255
+        b.bitpos = 0
+        b.p      = src
+        b.end    = src + len
+
+        if len >= 3
         {
             b.value = (cast(u32) src[0] << 16) | (cast(u32) src[1] << 8) | cast(u32) src[2]
             b.p     = src + 3
         }
-        elif (len == 2)
+        elif len == 2
         {
             b.value = (cast(u32) src[0] << 16) | (cast(u32) src[1] << 8)
             b.p     = src + 2
         }
-        elif (len == 1)
+        elif len == 1
         {
-            b.value = (cast(u32) src[0] << 16); b.p     = src + 1; }
+            b.value = (cast(u32) src[0] << 16)
+            b.p     = src + 1
+        }
         else
         {
-            b.value = 0 // treat missing bytes as zero
+            b.value = 0
         }
     }
 
-    func readBool(b: *BoolDec, p: u32)->u32
+    func readBool(b: *BoolDec, prob: u32)->u32
     {
-        let prob  = (p > 255) ? 255 : p
-        let split = 1 + (((b.range - 1) * prob) >> 8)
+        let p     = Math.min(prob, 255)
+        let split = 1 + (((b.range - 1) * p) >> 8)
         let big   = b.value >= (cast(u32) split << 8)
 
         if big
@@ -308,12 +186,13 @@ private
             b.range = split
         }
 
-        // Normalize correctly: shift in one bit at a time, refill with a byte every 8 shifts
+        // Normalize
         while b.range < 128
         {
             b.range <<= 1
             b.value <<= 1
             b.bitpos += 1
+
             if b.bitpos == 8
             {
                 b.bitpos = 0
@@ -328,85 +207,254 @@ private
         return big ? 1 : 0
     }
 
-    func readBit(b: *BoolDec)->u32
+    func readBit(b: *BoolDec)->u32 => readBool(b, 128)
+
+    // --- Coefficient decoding ---
+
+    func decodeBlock4x4(b: *BoolDec, coeffs: [*] s16, plane: s32)->bool
     {
-        return readBool(b, 128)
+        // Clear coefficients
+        Memory.set(coeffs, 0, #sizeof(s16) * 16)
+
+        let bt        = (plane == 0) ? 0 : 1
+        var hasCoeffs = false
+
+        for i in 16
+        {
+            let pos      = ZigZag4x4[i]
+            let band     = cast(s32) BandForPos[pos]
+            let safeBand = Math.min(band, 5)
+
+            // Simple context determination
+            var ctx = 0
+            if i > 0 and coeffs[ZigZag4x4[i - 1]] != 0
+            {
+                ctx = 1
+            }
+            elif i > 1 and coeffs[ZigZag4x4[i - 2]] != 0
+            {
+                ctx = 1
+            }
+            ctx = Math.min(ctx, 2)
+
+            // Check for end of block
+            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][0]) == 0:
+                break
+
+            // Check if coefficient is non-zero
+            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][1]) == 0:
+                continue
+
+            hasCoeffs = true
+
+            // Decode coefficient magnitude
+            var level = 1
+            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][2]) != 0
+            {
+                level = 2
+                while readBit(b) != 0 and level < 40
+                {
+                    level += 1
+                }
+            }
+
+            // Add sign
+            if readBit(b) != 0:
+                level = -level
+
+            coeffs[pos] = cast(s16) level
+        }
+
+        return hasCoeffs
     }
 
-    // Updated YUV to BGR conversion with better clamping
-    func yuvToBgrRow(dst: [*] u8, y: const [*] s16, u: const [*] s16, v: const [*] s16, w: s32)
+    // Dequantize coefficients
+    func dequantizeBlock(coeffs: [*] s16, plane: s32, isDC: bool)
     {
-        // round-to-nearest with arithmetic shift (works for negative too)
-        func sr8(x: s32)->s32 { return (x + 128) >> 8; }
+        let qp = isDC ? QuantDC[plane] : QuantAC[plane]
+
+        for i in 16
+        {
+            if coeffs[i] != 0
+            {
+                coeffs[i] = cast(s16) (cast(s32) coeffs[i] * qp)
+            }
+        }
+    }
+
+    // --- YUV to BGR conversion ---
+
+    func yuvToBgrRow(dst: [*] u8, y: const [*] s16, u: const [*] s16, v: const [*] s16, width: s32)
+    {
+        func sr8(x: s32)->s32 => (x + 128) >> 8
+
+        func convertPixel(Y: s32, Uc: s32, Vc: s32)->{ r: s32, g: s32, b: s32 }
+        {
+            let C = Math.max(Y - 16, 0)
+            let r = sr8(298 * C + 409 * Vc)
+            let g = sr8(298 * C - 100 * Uc - 208 * Vc)
+            let b = sr8(298 * C + 516 * Uc)
+
+            return {
+                Math.clamp(r, 0, 255),
+                Math.clamp(g, 0, 255),
+                Math.clamp(b, 0, 255)}
+        }
 
         var x = 0
-        while (x + 1 < w)
+        while x + 1 < width
         {
-            // process 2 pixels sharing the same U,V
-            let Y0: s32 = cast(s32) y[x + 0]
-            let Y1: s32 = cast(s32) y[x + 1]
-            let Uc: s32 = cast(s32) u[x >> 1] - 128
-            let Vc: s32 = cast(s32) v[x >> 1] - 128
+            let Y0 = cast(s32) y[x + 0]
+            let Y1 = cast(s32) y[x + 1]
+            let Uc = cast(s32) u[x >> 1] - 128
+            let Vc = cast(s32) v[x >> 1] - 128
 
-            // Apply proper YUV to RGB conversion matrix
-            let C0: s32 = Y0 - 16
-            let CC0 = (C0 > 0) ? C0 : 0
-            var R0  = sr8(298 * CC0 + 409 * Vc)
-            var G0  = sr8(298 * CC0 - 100 * Uc - 208 * Vc)
-            var B0  = sr8(298 * CC0 + 516 * Uc)
+            let (r0, g0, b0) = convertPixel(Y0, Uc, Vc)
+            let (r1, g1, b1) = convertPixel(Y1, Uc, Vc)
 
-            let C1: s32 = Y1 - 16
-            let CC1 = (C1 > 0) ? C1 : 0
-            var R1  = sr8(298 * CC1 + 409 * Vc)
-            var G1  = sr8(298 * CC1 - 100 * Uc - 208 * Vc)
-            var B1  = sr8(298 * CC1 + 516 * Uc)
+            let offset = x * 3
+            dst[offset + 0] = cast(u8) b0
+            dst[offset + 1] = cast(u8) g0
+            dst[offset + 2] = cast(u8) r0
+            dst[offset + 3] = cast(u8) b1
+            dst[offset + 4] = cast(u8) g1
+            dst[offset + 5] = cast(u8) r1
 
-            R0 = Math.clamp(R0, 0, 255); G0 = Math.clamp(G0, 0, 255); B0 = Math.clamp(B0, 0, 255)
-            R1 = Math.clamp(R1, 0, 255); G1 = Math.clamp(G1, 0, 255); B1 = Math.clamp(B1, 0, 255)
-
-            let o = x * 3
-            dst[o + 0] = cast(u8) B0; dst[o + 1] = cast(u8) G0; dst[o + 2] = cast(u8) R0
-            dst[o + 3] = cast(u8) B1; dst[o + 4] = cast(u8) G1; dst[o + 5] = cast(u8) R1
             x += 2
         }
 
-        // tail pixel if width is odd
-        if x < w
+        // Handle odd width
+        if x < width
         {
-            let Y:  s32 = cast(s32) y[x]
-            let Uc: s32 = cast(s32) u[x >> 1] - 128
-            let Vc: s32 = cast(s32) v[x >> 1] - 128
+            let Y  = cast(s32) y[x]
+            let Uc = cast(s32) u[x >> 1] - 128
+            let Vc = cast(s32) v[x >> 1] - 128
+            let (r, g, b) = convertPixel(Y, Uc, Vc)
 
-            let C: s32 = Y - 16
-            let CC = (C > 0) ? C : 0
-
-            var R = sr8(298 * CC + 409 * Vc)
-            var G = sr8(298 * CC - 100 * Uc - 208 * Vc)
-            var B = sr8(298 * CC + 516 * Uc)
-
-            R = Math.clamp(R, 0, 255)
-            G = Math.clamp(G, 0, 255)
-            B = Math.clamp(B, 0, 255)
-
-            let o = x * 3
-            dst[o + 0] = cast(u8) B; dst[o + 1] = cast(u8) G; dst[o + 2] = cast(u8) R
+            let offset = x * 3
+            dst[offset + 0] = cast(u8) b
+            dst[offset + 1] = cast(u8) g
+            dst[offset + 2] = cast(u8) r
         }
+    }
+
+    // --- Partition management ---
+
+    struct TokenPartitions
+    {
+        decoders:     [8] BoolDec
+        count:        s32
+    }
+
+    func initTokenPartitions(tp: *TokenPartitions, data: const [*] u8, size: s32, tokensStart: s32)
+    {
+        func readSize24(p: const [*] u8)->s32 => cast(s32) p[0] | (cast(s32) p[1] << 8) | (cast(s32) p[2] << 16)
+
+        let tokensAvail = size - tokensStart
+        var partOfs:    [8] s32
+        var partLen:    [8] s32
+
+        // Try different partition counts (1, 2, 4, 8)
+        const candidates: [4] s32 = [1, 2, 4, 8]
+        tp.count = 1 // default fallback
+
+        foreach numParts in candidates
+        {
+            let hdrSize = 3 * (numParts - 1)
+            if hdrSize > tokensAvail:
+                continue
+
+            var valid   = true
+            var sizeSum = 0
+
+            // Calculate partition sizes
+            for i in numParts - 1
+            {
+                let s = readSize24(data + tokensStart + (i * 3))
+                if s < 0 or s > tokensAvail
+                {
+                    valid = false
+                    break
+                }
+                partLen[i] = s
+                sizeSum += s
+            }
+
+            if !valid:
+                continue
+
+            let tailSize = tokensAvail - hdrSize - sizeSum
+            if tailSize < 0:
+                continue
+
+            // Set up partition offsets and sizes
+            partOfs[0] = cast(s32) (tokensStart + hdrSize)
+            for i in 1 until numParts
+            {
+                partOfs[i] = partOfs[i - 1] + partLen[i - 1]
+            }
+
+            if numParts == 1
+            {
+                partOfs[0] = tokensStart
+                partLen[0] = tokensAvail
+            }
+            else
+            {
+                partLen[numParts - 1] = cast(s32) tailSize
+            }
+
+            // Validate all partitions
+            valid = true
+            for i in numParts
+            {
+                if partLen[i] <= 0 or partOfs[i] < tokensStart or
+                   (partOfs[i] + partLen[i]) > (tokensStart + tokensAvail)
+                {
+                    valid = false
+                    break
+                }
+            }
+
+            if valid
+            {
+                tp.count = cast() numParts
+                break
+            }
+        }
+
+        // Initialize decoders
+        for i in tp.count
+        {
+            initBool(&tp.decoders[i], data + partOfs[i], partLen[i])
+        }
+    }
+
+    func getPartitionForMB(tp: *TokenPartitions, mbRow: s32)->*BoolDec
+    {
+        if tp.count == 1:
+            return &tp.decoders[0]
+        let idx = mbRow & (tp.count - 1)
+        return &tp.decoders[idx]
     }
 }
 
 impl Decoder
 {
-    // --- read helpers ---
-    mtd dU8(at: s32)->u8 { if at < 0 or at >= me.streamLen:return 0; return me.stream[at]; }
-    mtd dU16(at: s32)->u16 { return cast(u16) me.dU8(at) | cast(u16) me.dU8(at + 1) << 8; }
-    mtd dU32(at: s32)->u32 { return cast(u32) me.dU8(at) | (cast(u32) me.dU8(at + 1) << 8) | (cast(u32) me.dU8(at + 2) << 16) | (cast(u32) me.dU8(at + 3) << 24); }
+    // --- Helper functions ---
 
-    mtd isTag(at: s32, a: u8, b: u8, c: u8, d: u8)->bool
-    {
-        return me.dU8(at + 0) == a and me.dU8(at + 1) == b and me.dU8(at + 2) == c and me.dU8(at + 3) == d
-    }
+    mtd dU8(at: s32)->u8 => (at < 0 or at >= me.streamLen) ? 0 : me.stream[at]
 
-    // parse RIFF, return (offset,size) for 'VP8 ' chunk
+    mtd dU16(at: s32)->u16 => cast(u16) me.dU8(at) | cast(u16) me.dU8(at + 1) << 8
+
+    mtd dU32(at: s32)->u32 => cast(u32) me.dU8(at) | (cast(u32) me.dU8(at + 1) << 8) |
+                              (cast(u32) me.dU8(at + 2) << 16) | (cast(u32) me.dU8(at + 3) << 24)
+
+    mtd isTag(at: s32, a: u8, b: u8, c: u8, d: u8)->bool => me.dU8(at + 0) == a and me.dU8(at + 1) == b and
+                                                            me.dU8(at + 2) == c and me.dU8(at + 3) == d
+
+    // --- RIFF parsing ---
+
     mtd parseRiff()->{ offset, size: s32 } throw
     {
         if me.streamLen < 12:
@@ -419,33 +467,33 @@ impl Decoder
         if riffSize > me.streamLen or riffSize <= 0 or riffSize > MaxSize:
             throw InvalidFormatError{"webp: bad RIFF size"}
 
-        var p      = 12
-        var vp8Ofs = -1
-        var vp8Siz = 0
+        return me.findVP8Chunk()
+    }
+
+    mtd findVP8Chunk()->{ offset, size: s32 } throw
+    {
+        var p = 12
         while (p + 8) <= me.streamLen
         {
-            let tag = me.dU32(p + 0)
-            let csz = cast(s32) me.dU32(p + 4)
-            let dat = p + 8
+            let tag        = me.dU32(p + 0)
+            let chunkSize  = cast(s32) me.dU32(p + 4)
+            let dataOffset = p + 8
 
-            if tag == (cast(u32) 'V' | (cast(u32) 'P' << 8) | (cast(u32) '8' << 16) | (cast(u32) ' ' << 24))
+            if tag == (cast(u32) 'V' | (cast(u32) 'P' << 8) |
+                      (cast(u32) '8' << 16) | (cast(u32) ' ' << 24))
             {
-                vp8Ofs = dat
-                vp8Siz = csz
+                let actualSize = Math.min(chunkSize, me.streamLen - dataOffset)
+                return {dataOffset, actualSize}
             }
 
-            p = dat + ((csz + 1) & ~1) // chunks are padded to even
+            p = dataOffset + ((chunkSize + 1) & ~1) // chunks are padded to even
         }
 
-        if vp8Ofs < 0:
-            throw InvalidFormatError{"webp: VP8 missing"}
-
-        // clamp to stream size
-        if (vp8Ofs + vp8Siz) > me.streamLen:
-            vp8Siz = me.streamLen - vp8Ofs
-
-        return {vp8Ofs, vp8Siz}
+        throw InvalidFormatError{"webp: VP8 missing"}
+        return {0, 0}
     }
+
+    // --- VP8 frame parsing ---
 
     mtd parseVP8Frame(ofs: s32, size: s32)->VP8Header throw
     {
@@ -457,7 +505,7 @@ impl Decoder
         let b2 = me.dU8(ofs + 2)
 
         var hdr: VP8Header
-        hdr.keyFrame    = ((b0 & 1) == 0)
+        hdr.keyFrame    = (b0 & 1) == 0
         hdr.version     = (b0 >> 1) & 7
         hdr.showFrame   = ((b0 >> 4) & 1) == 1
         hdr.firstPartSz = cast(s32) (b0 >> 5) | (cast(s32) b1 << 3) | (cast(s32) b2 << 11)
@@ -465,7 +513,6 @@ impl Decoder
         if !hdr.keyFrame:
             throw UnsupportedFormatError{"vp8: only keyframes supported"}
 
-        // Check keyframe signature
         if !(me.dU8(ofs + 3) == 0x9D and me.dU8(ofs + 4) == 0x01 and me.dU8(ofs + 5) == 0x2A):
             throw InvalidFormatError{"vp8: invalid keyframe signature"}
 
@@ -480,509 +527,269 @@ impl Decoder
         hdr.yStride  = hdr.width
         hdr.uvStride = (hdr.width + 1) >> 1
 
-        // Sync with container dimensions
         me.imageSizeX = hdr.width
         me.imageSizeY = hdr.height
 
         return hdr
     }
 
+    // --- Block reconstruction ---
+
+    func reconstructBlock(coeffs: [*] s16, recon: [*] s16, hasCoeffs: bool, dcValue: s32)
+    {
+        if hasCoeffs
+        {
+            idct4(coeffs, recon)
+        }
+        else
+        {
+            Memory.set(recon, 0, #sizeof(s16) * 16)
+        }
+
+        // Apply DC prediction
+        for i in 16
+        {
+            let val = dcValue + cast(s32) recon[i]
+            recon[i] = cast(s16) Math.clamp(val, 0, 255)
+        }
+    }
+
+    func calculateDCPredictor(plane: [*] s16, stride: s32, x: s32, y: s32, blockSize: s32)->s32
+    {
+        var sum   = 0
+        var count = 0
+
+        // Top neighbors
+        if y > 0
+        {
+            for i in blockSize
+            {
+                if (x + i) < stride
+                {
+                    sum += cast(s32) plane[(y - 1) * stride + x + i]
+                    count += 1
+                }
+            }
+        }
+
+        // Left neighbors
+        if x > 0
+        {
+            for i in blockSize
+            {
+                sum += cast(s32) plane[(y + i) * stride + (x - 1)]
+                count += 1
+            }
+        }
+
+        return count > 0 ? sum / count : 128
+    }
+
+    // --- Main decode function ---
+
     mtd decodeKeyframe(ofs: s32, size: s32, yPlane: [*] s16, uPlane: [*] s16, vPlane: [*] s16) throw
     {
         let hdr = me.parseVP8Frame(ofs, size)
 
-        // Uncompressed header (10 bytes) already consumed by parseVP8Frame:
-        // 3-byte frame tag + 7-byte keyframe header
         let part0Start = ofs + 10
         let part0Size  = hdr.firstPartSz
 
         if part0Size <= 0 or (part0Start + part0Size) > (ofs + size):
             throw InvalidFormatError{"vp8: invalid partition 0 size"}
 
-        // --- Partition 0 (modes/headers) ---
+        // Parse minimal header
         var headerDec: BoolDec
         initBool(&headerDec, me.stream + part0Start, part0Size)
+        discard readBit(&headerDec) // color_space
+        discard readBit(&headerDec) // clamping_type
 
-        // We don't truly parse the compressed header here; keep minimal consumption.
-        // (These two reads are harmless; real header parsing could go here.)
-        discard readBit(&headerDec) // color_space (placeholder read)
-        discard readBit(&headerDec) // clamping_type (placeholder read)
+        // Initialize token partitions
+        var tokenPartitions: TokenPartitions
+        initTokenPartitions(&tokenPartitions, me.stream, ofs + size, part0Start + part0Size)
 
-        // --- Token partitions start right after partition 0 ---
-        let tokensStart = part0Start + part0Size
-        let tokensAvail = (ofs + size) - tokensStart
-        if tokensAvail <= 0:
-            throw InvalidFormatError{"vp8: no token data after partition 0"}
+        decodeMacroblocks(hdr, &tokenPartitions, yPlane, uPlane, vPlane)
+    }
 
-        // The tokens area may be split into 1/2/4/8 partitions.
-        // For N>1 there is a table of (N-1) little-endian 24-bit sizes at the beginning.
-        // We'll autodetect N ∈ {1,2,4,8} by validating size arithmetic.
-        func readSize24(p: const [*] u8)->s32
-        {
-            return cast(s32) p[0] | (cast(s32) p[1] << 8) | (cast(s32) p[2] << 16)
-        }
-
-        var numParts = 1
-        var partOfs: [8] s32
-        var partLen: [8] s32
-
-        // Try candidates 1,2,4,8 and pick the first that validates.
-        var candidateIdx  = 0
-        const candidates: [4] s32 = [1, 2, 4, 8]
-        var picked        = false
-        while candidateIdx < 4 and !picked
-        {
-            let np      = candidates[candidateIdx]
-            let hdrSize = 3 * (np - 1)
-            if hdrSize <= tokensAvail
-            {
-                // Build offsets/lengths
-                var ok      = true
-                var sizesum = 0
-
-                // First partition always starts right after the size table
-                partOfs[0] = tokensStart + hdrSize
-
-                // Read sizes for partitions 0..np-2 (these sizes are for partitions 0..np-2)
-                var i = 0
-                while i < (np - 1)
-                {
-                    let s = readSize24(me.stream + tokensStart + (i * 3))
-                    if s < 0 or s > tokensAvail
-                    {
-                        ok = false; break
-                    }
-                    partLen[i] = s
-                    sizesum += s
-                    if i != 0:
-                        partOfs[i] = partOfs[i - 1] + partLen[i - 1]
-                    i += 1
-                }
-
-                if ok
-                {
-                    // Last partition takes the remainder
-                    let tail = tokensAvail - hdrSize - sizesum
-                    if tail < 0:
-                        ok = false
-                    else
-                    {
-                        if np == 1
-                        {
-                            partOfs[0] = tokensStart
-                            partLen[0] = tokensAvail
-                        }
-                        else
-                        {
-                            partOfs[np - 1] = (np == 1) ? tokensStart : (partOfs[np - 2] + partLen[np - 2])
-                            partLen[np - 1] = tail
-                        }
-
-                        // Bounds check all partitions
-                        var k = 0
-                        while k < np and ok
-                        {
-                            let begin = partOfs[k]
-                            let plen  = partLen[k]
-                            if plen <= 0 or (begin < tokensStart) or (begin + plen > (tokensStart + tokensAvail)):
-                                ok = false
-                            k += 1
-                        }
-                    }
-                }
-
-                if ok
-                {
-                    numParts = np
-                    picked   = true
-                }
-            }
-            candidateIdx += 1
-        }
-
-        // Fallback: treat everything as a single partition
-        if !picked:
-            numParts = 1
-        partOfs[0] = tokensStart
-        partLen[0] = tokensAvail
-
-        // Build bool decoders for each token partition
-        var tokenDecs: [8] BoolDec
-        var pidx       = 0
-        while pidx < numParts
-        {
-            initBool(&tokenDecs[pidx], me.stream + partOfs[pidx], partLen[pidx])
-            pidx += 1
-        }
-
-        // Helper to select the partition for a macroblock row:
-        #[Swag.Mixin]
-        func pickPart(mbRow: s32)->*BoolDec
-        {
-            if numParts == 1:
-                return &tokenDecs[0]
-            // VP8 stripes rows across partitions; modulo works for 1,2,4,8.
-            let idx = mbRow & (numParts - 1)
-            return &tokenDecs[idx]
-        }
-
-        // --- Simplified intra-only decode using the proper token stream(s) ---
+    func decodeMacroblocks(hdr: VP8Header, tp: *TokenPartitions, yPlane: [*] s16, uPlane: [*] s16, vPlane: [*] s16)
+    {
         let mbW = (hdr.width + 15) >> 4
         let mbH = (hdr.height + 15) >> 4
 
-        var mbY = 0
-        while mbY < mbH
+        for mbY in mbH
         {
-            // Choose the token partition for this row
-            var tok = pickPart(mbY)
+            let tokenDec = getPartitionForMB(tp, mbY)
 
-            var mbX = 0
-            while mbX < mbW
+            for mbX in mbW
             {
-                var coeffs: [16] s16
-                var recon:  [16] s16
-
-                // -------- Y (luma) 16x16: 16× 4x4 ----------
-                var by = 0
-                while by < 4
-                {
-                    var bx = 0
-                    while bx < 4
-                    {
-                        let hasCoeffs = decodeBlock4x4(tok, &coeffs[0], 0) // plane 0 = Y
-                        if hasCoeffs
-                        {
-                            dequantizeBlock(&coeffs[0], 0, false)
-                            idct4(&coeffs[0], &recon[0])
-                        }
-                        else
-                        {
-                            var r = 0
-                            while r < 16
-                            {
-                                recon[r] = 0; r += 1; }
-                        }
-
-                        // Simple DC predictor (average of available top/left)
-                        let ix0 = mbX * 16 + bx * 4
-                        let iy0 = mbY * 16 + by * 4
-                        var dcY = 128
-                        var sum = 0
-                        var cnt = 0
-                        if iy0 > 0 and (ix0 + 3) < hdr.width
-                        {
-                            var k = 0
-                            while k < 4
-                            {
-                                sum += cast(s32) yPlane[(iy0 - 1) * hdr.yStride + ix0 + k]; cnt += 1; k += 1
-                            }
-                        }
-                        if ix0 > 0 and (iy0 + 3) < hdr.height
-                        {
-                            var k = 0
-                            while k < 4
-                            {
-                                sum += cast(s32) yPlane[(iy0 + k) * hdr.yStride + (ix0 - 1)]; cnt += 1; k += 1
-                            }
-                        }
-                        if cnt > 0:
-                            dcY = sum / cnt
-
-                        var py = 0
-                        while py < 4
-                        {
-                            var px = 0
-                            while px < 4
-                            {
-                                let ix = ix0 + px
-                                let iy = iy0 + py
-                                if ix < hdr.width and iy < hdr.height
-                                {
-                                    let val = dcY + cast(s32) recon[py * 4 + px]
-                                    yPlane[iy * hdr.yStride + ix] = cast(s16) Math.clamp(val, 0, 255)
-                                }
-                                px += 1
-                            }
-                            py += 1
-                        }
-
-                        bx += 1
-                    }
-                    by += 1
-                }
-
-                // -------- U (Cb) chroma 8x8: 4× 4x4 ----------
-                var cby = 0
-                while cby < 2
-                {
-                    var cbx = 0
-                    while cbx < 2
-                    {
-                        var sub = 0
-                        while sub < 4
-                        {
-                            let hasCoeffs = decodeBlock4x4(tok, &coeffs[0], 1) // plane 1 = U
-                            if hasCoeffs
-                            {
-                                dequantizeBlock(&coeffs[0], 1, false)
-                                idct4(&coeffs[0], &recon[0])
-                            }
-                            else
-                            {
-                                var r = 0
-                                while r < 16
-                                {
-                                    recon[r] = 0; r += 1
-                                }
-                            }
-
-                            let cix0 = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
-                            let ciy0 = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
-                            var dcU  = 128
-                            var csum = 0
-                            var ccnt = 0
-                            let uW   = (hdr.width + 1) >> 1
-                            let uH   = (hdr.height + 1) >> 1
-                            if ciy0 > 0 and (cix0 + 3) < uW
-                            {
-                                var k = 0
-                                while k < 4
-                                {
-                                    csum += cast(s32) uPlane[(ciy0 - 1) * hdr.uvStride + cix0 + k]; ccnt += 1; k += 1
-                                }
-                            }
-                            if cix0 > 0 and (ciy0 + 3) < uH
-                            {
-                                var k = 0
-                                while k < 4
-                                {
-                                    csum += cast(s32) uPlane[(ciy0 + k) * hdr.uvStride + (cix0 - 1)]; ccnt += 1; k += 1
-                                }
-                            }
-                            if ccnt > 0:
-                                dcU = csum / ccnt
-
-                            let sy = (sub >> 1) * 4
-                            let sx = (sub & 1) * 4
-                            var py = 0
-                            while py < 4
-                            {
-                                var px = 0
-                                while px < 4
-                                {
-                                    let ix = mbX * 8 + cbx * 4 + sx + px
-                                    let iy = mbY * 8 + cby * 4 + sy + py
-                                    if ix < ((hdr.width + 1) >> 1) and iy < ((hdr.height + 1) >> 1)
-                                    {
-                                        let val = dcU + cast(s32) recon[py * 4 + px]
-                                        uPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
-                                    }
-                                    px += 1
-                                }
-                                py += 1
-                            }
-                            sub += 1
-                        }
-                        cbx += 1
-                    }
-                    cby += 1
-                }
-
-                // -------- V (Cr) chroma 8x8: 4× 4x4 ----------
-                cby = 0
-                while cby < 2
-                {
-                    var cbx = 0
-                    while cbx < 2
-                    {
-                        var sub = 0
-                        while sub < 4
-                        {
-                            let hasCoeffs = decodeBlock4x4(tok, &coeffs[0], 1) // reuse same probs for V
-                            if hasCoeffs
-                            {
-                                dequantizeBlock(&coeffs[0], 1, false)
-                                idct4(&coeffs[0], &recon[0])
-                            }
-                            else
-                            {
-                                var r = 0
-                                while r < 16
-                                {
-                                    recon[r] = 0; r += 1
-                                }
-                            }
-
-                            let vcix0 = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
-                            let vciy0 = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
-                            var dcV   = 128
-                            var vsum  = 0
-                            var vcnt  = 0
-                            let vW    = (hdr.width + 1) >> 1
-                            let vH    = (hdr.height + 1) >> 1
-                            if vciy0 > 0 and (vcix0 + 3) < vW
-                            {
-                                var k = 0
-                                while k < 4
-                                {
-                                    vsum += cast(s32) vPlane[(vciy0 - 1) * hdr.uvStride + vcix0 + k]; vcnt += 1; k += 1
-                                }
-                            }
-                            if vcix0 > 0 and (vciy0 + 3) < vH
-                            {
-                                var k = 0
-                                while k < 4
-                                {
-                                    vsum += cast(s32) vPlane[(vciy0 + k) * hdr.uvStride + (vcix0 - 1)]; vcnt += 1; k += 1
-                                }
-                            }
-                            if vcnt > 0:
-                                dcV = vsum / vcnt
-
-                            let sy = (sub >> 1) * 4
-                            let sx = (sub & 1) * 4
-                            var py = 0
-                            while py < 4
-                            {
-                                var px = 0
-                                while px < 4
-                                {
-                                    let ix = mbX * 8 + cbx * 4 + sx + px
-                                    let iy = mbY * 8 + cby * 4 + sy + py
-                                    if ix < ((hdr.width + 1) >> 1) and iy < ((hdr.height + 1) >> 1)
-                                    {
-                                        let val = dcV + cast(s32) recon[py * 4 + px]
-                                        vPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
-                                    }
-                                    px += 1
-                                }
-                                py += 1
-                            }
-                            sub += 1
-                        }
-                        cbx += 1
-                    }
-                    cby += 1
-                }
-
-                mbX += 1
+                decodeMacroblock(mbX, mbY, hdr, tokenDec, yPlane, uPlane, vPlane)
             }
-            mbY += 1
         }
     }
+
+    func decodeMacroblock(mbX: s32, mbY: s32, hdr: VP8Header, tokenDec: *BoolDec, yPlane: [*] s16, uPlane: [*] s16, vPlane: [*] s16)
+    {
+        var coeffs: [16] s16
+        var recon:  [16] s16
+
+        // Decode Y blocks (16 4x4 blocks)
+        for by in 4
+        {
+            for bx in 4
+            {
+                let hasCoeffs = decodeBlock4x4(tokenDec, &coeffs[0], 0)
+                if hasCoeffs:
+                    dequantizeBlock(&coeffs[0], 0, false)
+
+                let blockX  = mbX * 16 + bx * 4
+                let blockY  = mbY * 16 + by * 4
+                let dcValue = calculateDCPredictor(yPlane, hdr.yStride, blockX, blockY, 4)
+
+                reconstructBlock(&coeffs[0], &recon[0], hasCoeffs, dcValue)
+                copyBlockToPlane(&recon[0], yPlane, hdr.yStride, blockX, blockY, hdr.width, hdr.height)
+            }
+        }
+
+        // Decode U and V blocks (4 4x4 blocks each)
+        decodeChromaBlocks(mbX, mbY, hdr, tokenDec, uPlane, vPlane)
+    }
+
+    func decodeChromaBlocks(mbX: s32, mbY: s32, hdr: VP8Header, tokenDec: *BoolDec, uPlane: [*] s16, vPlane: [*] s16)
+    {
+        let chromaW = (hdr.width + 1) >> 1
+        let chromaH = (hdr.height + 1) >> 1
+        var coeffs: [16] s16
+        var recon:  [16] s16
+
+        // Decode U blocks
+        for cby in 2
+        {
+            for cbx in 2
+            {
+                for sub in 4
+                {
+                    let hasCoeffs = decodeBlock4x4(tokenDec, &coeffs[0], 1)
+                    if hasCoeffs:
+                        dequantizeBlock(&coeffs[0], 1, false)
+
+                    let blockX  = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
+                    let blockY  = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
+                    let dcValue = calculateDCPredictor(uPlane, hdr.uvStride, blockX, blockY, 4)
+
+                    reconstructBlock(&coeffs[0], &recon[0], hasCoeffs, dcValue)
+                    copyBlockToPlane(&recon[0], uPlane, hdr.uvStride, blockX, blockY, chromaW, chromaH)
+                }
+            }
+        }
+
+        // Decode V blocks
+        for cby in 2
+        {
+            for cbx in 2
+            {
+                for sub in 4
+                {
+                    let hasCoeffs = decodeBlock4x4(tokenDec, &coeffs[0], 1)
+                    if hasCoeffs:
+                        dequantizeBlock(&coeffs[0], 1, false)
+
+                    let blockX  = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
+                    let blockY  = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
+                    let dcValue = calculateDCPredictor(vPlane, hdr.uvStride, blockX, blockY, 4)
+
+                    reconstructBlock(&coeffs[0], &recon[0], hasCoeffs, dcValue)
+                    copyBlockToPlane(&recon[0], vPlane, hdr.uvStride, blockX, blockY, chromaW, chromaH)
+                }
+            }
+        }
+    }
+
+    func copyBlockToPlane(block: [*] s16, plane: [*] s16, stride: s32, startX: s32, startY: s32, maxW: s32, maxH: s32)
+    {
+        for py in 4
+        {
+            for px in 4
+            {
+                let x = startX + px
+                let y = startY + py
+                if x < maxW and y < maxH
+                {
+                    plane[y * stride + x] = block[py * 4 + px]
+                }
+            }
+        }
+    }
+
+    // --- Image conversion ---
+
+    mtd convertToRGB(pixels: [*] u8, yPlane: [*] s16, uPlane: [*] s16, vPlane: [*] s16)
+    {
+        let width  = me.imageSizeX
+        let height = me.imageSizeY
+
+        for y in height
+        {
+            let yRow   = yPlane + y * width
+            let uRow   = uPlane + (y >> 1) * ((width + 1) >> 1)
+            let vRow   = vPlane + (y >> 1) * ((width + 1) >> 1)
+            let dstRow = pixels + y * width * 3
+            yuvToBgrRow(dstRow, yRow, uRow, vRow, width)
+        }
+    }
+
+    // --- Main interface methods ---
 
     mtd start() throw
     {
-        // parse RIFF + sizes, find VP8
-        let (?, vp8Siz) = me.parseRiff()
-        if vp8Siz <= 0:
+        let (?, vp8Size) = me.parseRiff()
+        if vp8Size <= 0:
             throw InvalidFormatError{"webp/vp8: zero size"}
-    }
-
-    // Conversion to BGR8 from s16 Y/U/V planes
-    func toBGR(dst: [*] u8, y: [*] s16, u: [*] s16, v: [*] s16, w: s32, h: s32)
-    {
-        var j = 0
-        while j < h
-        {
-            let yrow   = y + j * w
-            let urow   = u + (j >> 1) * ((w + 1) >> 1)
-            let vrow   = v + (j >> 1) * ((w + 1) >> 1)
-            let dstRow = dst + j * w * 3
-            yuvToBgrRow(dstRow, yrow, urow, vrow, w)
-            j += 1
-        }
     }
 
     mtd doit(pixels: [*] u8) throw
     {
-        // find VP8 chunk
-        var vp8Ofs = -1
-        var vp8Siz = 0
+        let (vp8Offset, vp8Size) = me.findVP8Chunk()
 
-        // Minimal rescan (refactor to avoid storing)
-        if !(me.isTag(0, 'R', 'I', 'F', 'F') and me.isTag(8, 'W', 'E', 'B', 'P')):
-            throw InvalidFormatError{"webp: missing RIFF/WEBP header"}
+        // Allocate YUV planes
+        let width   = me.imageSizeX
+        let height  = me.imageSizeY
+        let chromaW = (width + 1) >> 1
+        let chromaH = (height + 1) >> 1
 
-        var p = 12
-        while (p + 8) <= me.streamLen
-        {
-            let csz = cast(s32) me.dU32(p + 4)
-            let dat = p + 8
-            if me.isTag(p, 'V', 'P', '8', ' ')
-            {
-                vp8Ofs = dat
-                vp8Siz = csz
-                break
-            }
-            p = dat + ((csz + 1) & ~1)
-        }
-
-        if vp8Ofs < 0:
-            throw InvalidFormatError{"webp: VP8 missing"}
-
-        // Temporary s16 planes
-        let W       = me.imageSizeX
-        let H       = me.imageSizeY
         var yPlane: Array's16
         var uPlane: Array's16
         var vPlane: Array's16
-        yPlane.resize(W * H)
-        uPlane.resize(((W + 1) >> 1) * ((H + 1) >> 1))
-        vPlane.resize(((W + 1) >> 1) * ((H + 1) >> 1))
 
-        // Initialize neutral chroma 128 (just in case)
-        var i = 0
-        while i < @countof(uPlane)
+        yPlane.resize(width * height)
+        uPlane.resize(chromaW * chromaH)
+        vPlane.resize(chromaW * chromaH)
+
+        // Initialize chroma planes to neutral value
+        for i in @countof(uPlane)
         {
             uPlane[i] = 128
-            i += 1
-        }
-
-        i = 0
-        while i < @countof(vPlane)
-        {
             vPlane[i] = 128
-            i += 1
         }
 
-        // Decode bounded keyframe (intra)
-        me.decodeKeyframe(vp8Ofs, vp8Siz, @dataof(yPlane), @dataof(uPlane), @dataof(vPlane))
+        // Decode VP8 keyframe
+        me.decodeKeyframe(vp8Offset, vp8Size, @dataof(yPlane), @dataof(uPlane), @dataof(vPlane))
 
-        // Convert to BGR
-        toBGR(pixels, @dataof(yPlane), @dataof(uPlane), @dataof(vPlane), W, H)
+        // Convert YUV to BGR
+        me.convertToRGB(pixels, @dataof(yPlane), @dataof(uPlane), @dataof(vPlane))
     }
 
-    // small init that scans sizes
     mtd init(buffer: const [..] u8) throw
     {
         me.stream    = @dataof(buffer)
         me.streamLen = cast(s32) @countof(buffer)
 
-        // find the VP8 chunk once to read dimensions
-        let (vp8Ofs, vp8Siz) = me.parseRiff()
-        if vp8Ofs < 0 or vp8Siz <= 0:
+        let (vp8Offset, vp8Size) = me.parseRiff()
+        if vp8Offset < 0 or vp8Size <= 0:
             throw InvalidFormatError{"webp: no VP8 chunk"}
 
-        let hdr = me.parseVP8Frame(vp8Ofs, vp8Siz)
+        let hdr = me.parseVP8Frame(vp8Offset, vp8Size)
         me.imageSizeX = hdr.width
         me.imageSizeY = hdr.height
     }
-}
-
-public struct Decoder
-{
-    // stream
-    stream:        const [*] u8
-    streamLen:     s32
-
-    // image
-    imageSizeX:     s32
-    imageSizeY:     s32
-
-    // metadata
-    decOptions:     DecodeOptions
-    metaDatas:      Array'ImageMetaData
 }
 
 public impl IImageDecoder for Decoder
@@ -1002,12 +809,14 @@ public impl IImageDecoder for Decoder
 
         var result: Image
         result.init(.imageSizeX, .imageSizeY, PixelFormat.BGR8)
+
         if !options.decodePixels:
             return result
-        result.allocPixels()
 
+        result.allocPixels()
         .doit(result.pixels.buffer)
         result.metaDatas = #move .metaDatas
+
         return result
     }
 }
