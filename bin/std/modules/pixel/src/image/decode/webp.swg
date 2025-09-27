@@ -1,8 +1,8 @@
 #global namespace Webp
 using Swag, Core, Core.Errors
 
-// Step 2: Add VP8 Boolean Decoder (Arithmetic Decoder)
-// This handles reading bits from the compressed VP8 bitstream
+// Step 3: VP8 Frame Header Parsing
+// Parse VP8 control information: color space, quantization, loop filter, etc.
 
 public struct Decoder
 {
@@ -27,12 +27,45 @@ private
     // VP8 Boolean (Arithmetic) Decoder
     struct BoolDecoder
     {
-        range:      u32         // Current range
-        value:      u32         // Current value
-        bitCount:   s32         // Bits consumed from current byte
-        buffer:     const [*] u8 // Input buffer
-        pos:        s32         // Current position in buffer
-        end:        s32         // End of buffer
+        range:        u32
+        value:        u32
+        bitCount:     s32
+        buffer:       const [*] u8
+        pos:          s32
+        end:          s32
+    }
+
+    // VP8 Frame Header Information
+    struct VP8FrameHeader
+    {
+        // Basic frame info
+        width:      s32
+        height:     s32
+
+        // Color space and pixel format
+        colorSpace:       u32     // 0 = YUV, 1 = reserved
+        clampingType:     u32     // 0 = [0,255], 1 = [16,235]
+
+        // Segmentation
+        useSegment:           bool
+        updateSegmentMap:     bool
+        segmentProbs:         [3] u32
+
+        // Loop filter
+        filterType:         u32     // 0 = normal, 1 = simple
+        filterLevel:        u32     // 0-63
+        sharpnessLevel:     u32     // 0-7
+
+        // Quantization
+        baseQIndex:     u32     // Base quantizer 0-127
+        yDCDelta:       s32     // Y DC quantizer delta
+        y2DCDelta:      s32     // Y2 DC quantizer delta
+        y2ACDelta:      s32     // Y2 AC quantizer delta
+        uvDCDelta:      s32     // UV DC quantizer delta
+        uvACDelta:      s32     // UV AC quantizer delta
+
+        // Token partitions
+        numPartitions: s32 // Number of DCT token partitions
     }
 
     // Initialize boolean decoder
@@ -45,20 +78,18 @@ private
         bd.bitCount = 0
         bd.value    = 0
 
-        // Load initial bytes into value
         if size >= 2
         {
             bd.value = (cast(u32) data[0] << 8) | cast(u32) data[1]
-            bd.pos = 2
+            bd.pos   = 2
         }
         elif size >= 1
         {
             bd.value = cast(u32) data[0] << 8
-            bd.pos = 1
+            bd.pos   = 1
         }
     }
 
-    // Read next byte and shift it into value
     func shiftBytes(bd: *BoolDecoder)
     {
         if bd.pos < bd.end
@@ -73,13 +104,12 @@ private
         bd.bitCount = 0
     }
 
-    // Normalize the decoder state
     func normalize(bd: *BoolDecoder)
     {
         while bd.range < 128
         {
-            bd.range  <<= 1
-            bd.value  <<= 1
+            bd.range <<= 1
+            bd.value <<= 1
             bd.bitCount += 1
 
             if bd.bitCount == 8
@@ -89,43 +119,31 @@ private
         }
     }
 
-    // Read a boolean value with given probability (0-255)
     func readBool(bd: *BoolDecoder, probability: u32)->u32
     {
-        // Clamp probability to valid range
-        let prob = Math.min(probability, 255)
-
-        // Calculate split point
-        let split = 1 + (((bd.range - 1) * prob) >> 8)
-
-        // Check if value is in upper or lower partition
+        let prob   = Math.min(probability, 255)
+        let split  = 1 + (((bd.range - 1) * prob) >> 8)
         let bigBit = (bd.value >> 8) >= split
 
         if bigBit
         {
-            // Upper partition - bit is 1
             bd.range -= split
             bd.value -= cast(u32) split << 8
         }
         else
         {
-            // Lower partition - bit is 0
             bd.range = split
         }
 
-        // Renormalize
         normalize(bd)
-
         return bigBit ? 1 : 0
     }
 
-    // Read a bit with 50/50 probability
     func readBit(bd: *BoolDecoder)->u32
     {
         return readBool(bd, 128)
     }
 
-    // Read multiple bits as an integer (LSB first)
     func readBits(bd: *BoolDecoder, numBits: s32)->u32
     {
         var result: u32 = 0
@@ -139,41 +157,114 @@ private
         return result
     }
 
-    // Read signed integer with given number of bits
-    func readSignedBits(bd: *BoolDecoder, numBits: s32)->s32
+    // Read signed integer (delta values)
+    func readSignedDelta(bd: *BoolDecoder)->s32
     {
-        let value = cast(s32) readBits(bd, numBits)
-        let sign = readBit(bd)
-        return sign != 0 ? -value : value
+        if readBit(bd) == 0:
+            return 0
+
+        let magnitude = cast(s32) readBits(bd, 4)     // 4-bit magnitude
+        let sign      = readBit(bd)
+
+        return sign != 0 ? -magnitude : magnitude
     }
 
-    // Test the boolean decoder with some basic operations
-    func testBooleanDecoder(bd: *BoolDecoder)
+    // Parse VP8 frame header from boolean decoder
+    func parseVP8FrameHeader(bd: *BoolDecoder, width: s32, height: s32)->VP8FrameHeader
     {
-        Console.printf("Testing boolean decoder...\n")
+        var header: VP8FrameHeader
+        header.width  = width
+        header.height = height
 
-        // Read a few bits to test
-        for i in 8
+        Console.printf("Parsing VP8 frame header...\n")
+
+        // Color space and clamping
+        header.colorSpace   = readBit(bd)
+        header.clampingType = readBit(bd)
+
+        Console.printf("Color space: %, clamping: %\n", header.colorSpace, header.clampingType)
+
+        // Segmentation
+        header.useSegment = readBit(bd) != 0
+        if header.useSegment
         {
-            let bit = readBit(bd)
-            Console.printf("Bit %: %\n", i, bit)
+            header.updateSegmentMap = readBit(bd) != 0
+
+            if readBit(bd) != 0 // update_segment_feature_data
+            {
+                // Skip segment feature data for now
+                discard readBit(bd) // segment_feature_mode
+
+                // Skip quantizer and loop filter deltas
+                for i in 4 // segments
+                {
+                    for j in 2 // features (quantizer, loop_filter)
+                    {
+                        if readBit(bd) != 0 // feature enabled
+                        {
+                            discard readBits(bd, 7) // feature data
+                            discard readBit(bd) // feature sign
+                        }
+                    }
+                }
+            }
+
+            if header.updateSegmentMap
+            {
+                // Read segment tree probabilities
+                for i in 3
+                {
+                    header.segmentProbs[i] = readBit(bd) != 0 ? readBits(bd, 8) : 255
+                }
+            }
         }
 
-        // Read a few boolean values with different probabilities
-        for i in 4
+        Console.printf("Segmentation: use=%, update_map=%\n", header.useSegment, header.updateSegmentMap)
+
+        // Loop filter
+        header.filterType     = readBit(bd)
+        header.filterLevel    = readBits(bd, 6)
+        header.sharpnessLevel = readBits(bd, 3)
+
+        Console.printf("Filter: type=%, level=%, sharpness=%\n", header.filterType, header.filterLevel, header.sharpnessLevel)
+
+        // Loop filter adjustments
+        if readBit(bd) != 0 // loop_filter_adj_enable
         {
-            let prob = 64 + (i * 48) // 64, 112, 160, 208
-            let bit = readBool(bd, cast(u32) prob)
-            Console.printf("Bool % (prob %): %\n", i, prob, bit)
+            if readBit(bd) != 0 // mode_ref_lf_delta_update
+            {
+                // Skip reference frame deltas
+                for i in 4 // ref frames
+                {
+                    if readBit(bd) != 0:
+                        discard readSignedDelta(bd)
+                }
+
+                // Skip mode deltas
+                for i in 4 // prediction modes
+                {
+                    if readBit(bd) != 0:
+                        discard readSignedDelta(bd)
+                }
+            }
         }
 
-        // Read some multi-bit values
-        for i in 3
-        {
-            let numBits = 2 + i // 2, 3, 4 bits
-            let value = readBits(bd, numBits)
-            Console.printf("% bits: %\n", numBits, value)
-        }
+        // Number of DCT token partitions
+        header.numPartitions = 1 << readBits(bd, 2) // 1, 2, 4, or 8 partitions
+        Console.printf("Token partitions: %\n", header.numPartitions)
+
+        // Quantization parameters
+        header.baseQIndex = readBits(bd, 7) // Base quantizer index (0-127)
+
+        header.yDCDelta  = readSignedDelta(bd)
+        header.y2DCDelta = readSignedDelta(bd)
+        header.y2ACDelta = readSignedDelta(bd)
+        header.uvDCDelta = readSignedDelta(bd)
+        header.uvACDelta = readSignedDelta(bd)
+
+        Console.printf("Quantization: base=%, deltas=[%,%,%,%,%]\n", header.baseQIndex, header.yDCDelta, header.y2DCDelta, header.y2ACDelta, header.uvDCDelta, header.uvACDelta)
+
+        return header
     }
 }
 
@@ -216,7 +307,6 @@ impl Decoder
                (cast(u32) d << 24)
     }
 
-    // Parse RIFF container
     mtd parseRiff() throw
     {
         if me.streamLen < 12:
@@ -243,7 +333,7 @@ impl Decoder
     mtd parseChunks()->Array'ChunkInfo throw
     {
         var chunks: Array'ChunkInfo
-        var offset = 12
+        var offset  = 12
 
         while (offset + 8) <= me.streamLen
         {
@@ -262,8 +352,6 @@ impl Decoder
             chunk.size   = size
 
             chunks.add(chunk)
-
-            Console.printf("Found chunk at offset %, size % bytes\n", chunk.offset, chunk.size)
             offset += 8 + ((size + 1) & ~1)
         }
 
@@ -302,8 +390,7 @@ impl Decoder
         if vp8Chunk.offset >= 0
         {
             Console.printf("Found VP8 chunk, parsing...\n")
-            me.parseVP8Header(vp8Chunk.offset, vp8Chunk.size)
-            me.testVP8BooleanDecoder(vp8Chunk.offset, vp8Chunk.size)
+            me.parseVP8Complete(vp8Chunk.offset, vp8Chunk.size)
             return
         }
 
@@ -322,26 +409,31 @@ impl Decoder
         throw InvalidFormatError{"WebP: No supported chunk found"}
     }
 
-    mtd parseVP8Header(offset: s32, size: s32) throw
+    // Parse complete VP8 frame (header + frame data)
+    mtd parseVP8Complete(offset: s32, size: s32) throw
     {
         if size < 10:
             throw InvalidFormatError{"VP8: Chunk too small"}
 
-        let frameTag  = me.dU8(offset) | (me.dU8(offset + 1) << 8) | (me.dU8(offset + 2) << 16)
-        let keyFrame  = (frameTag & 1) == 0
-        let version   = (frameTag >> 1) & 7
-        let showFrame = (frameTag >> 4) & 1
+        // Parse VP8 frame tag
+        let frameTag:          u32 = me.dU8(offset) | (me.dU8(offset + 1) << 8) | (me.dU8(offset + 2) << 16)
+        let keyFrame           = (frameTag & 1) == 0
+        let version            = (frameTag >> 1) & 7
+        let showFrame          = (frameTag >> 4) & 1
+        let firstPartitionSize = (frameTag >> 5) | (cast(u32) me.dU8(offset + 1) << 3) | (cast(u32) me.dU8(offset + 2) << 11)
 
         if !keyFrame:
             throw UnsupportedFormatError{"VP8: Only keyframes supported currently"}
 
-        Console.printf("VP8 frame: keyframe=%, version=%, show=%\n", keyFrame, version, showFrame)
+        Console.printf("VP8 frame: keyframe=%, version=%, show=%, first_partition=%\n", keyFrame, version, showFrame, firstPartitionSize)
 
+        // Check keyframe start code
         if !(me.dU8(offset + 3) == 0x9D and
             me.dU8(offset + 4) == 0x01 and
             me.dU8(offset + 5) == 0x2A):
             throw InvalidFormatError{"VP8: Invalid keyframe start code"}
 
+        // Read dimensions
         let width  = cast(s32) (me.dU16(offset + 6) & 0x3FFF)
         let height = cast(s32) (me.dU16(offset + 8) & 0x3FFF)
 
@@ -352,35 +444,20 @@ impl Decoder
         me.imageSizeY = height
 
         Console.printf("VP8 dimensions: %x%\n", width, height)
-    }
 
-    // Test the VP8 boolean decoder on actual VP8 data
-    mtd testVP8BooleanDecoder(offset: s32, size: s32) throw
-    {
-        if size < 10:
-            return
-
-        Console.printf("Testing VP8 boolean decoder...\n")
-
-        // Skip VP8 header and start from bitstream data
-        let frameTag: u32 = me.dU8(offset) | (me.dU8(offset + 1) << 8) | (me.dU8(offset + 2) << 16)
-        let firstPartitionSize = (frameTag >> 5) | (cast(u32) me.dU8(offset + 1) << 3) | (cast(u32) me.dU8(offset + 2) << 11)
-
-        Console.printf("First partition size: % bytes\n", firstPartitionSize)
-
-        // Initialize boolean decoder with first partition data
-        let partitionStart = offset + 10 // Skip 10-byte VP8 header
-        let partitionSize = cast(s32) Math.min(firstPartitionSize, cast(u32) (size - 10))
+        // Parse frame header using boolean decoder
+        let partitionStart = offset + 10
+        let partitionSize  = cast(s32) Math.min(firstPartitionSize, cast(u32) (size - 10))
 
         if partitionSize <= 0:
-            return
+            throw InvalidFormatError{"VP8: Invalid first partition size"}
 
         var bd: BoolDecoder
         initBoolDecoder(&bd, me.stream + partitionStart, partitionSize)
 
-        // Test reading some values from the actual VP8 stream
-        Console.printf("Reading from VP8 bitstream:\n")
-        testBooleanDecoder(&bd)
+        let frameHeader = parseVP8FrameHeader(&bd, width, height)
+
+        Console.printf("VP8 frame header parsed successfully!\n")
     }
 }
 
