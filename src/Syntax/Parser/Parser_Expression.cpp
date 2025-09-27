@@ -1853,7 +1853,7 @@ bool Parser::doAffectExpression(AstNode* parent, AstNode** result)
         leftAlone = true;
     }
 
-    if (tokenParse.is(TokenId::SymLeftCurly) || tokenParse.is(TokenId::SymColon))
+    if (tokenParse.is(TokenId::SymLeftCurly) || tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::SymRightCurly))
         return true;
     if (Tokenizer::isStartOfNewStatement(tokenParse))
         return eatSemiCol("left expression");
