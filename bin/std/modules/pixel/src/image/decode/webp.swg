@@ -74,199 +74,202 @@ private
     // --- Bool decoder ---
     struct BoolDec { range: u32, value: u32, bitpos: s32, p: const [*] u8, end: const [*] u8 }
 
-// VP8 4x4 WHT (Walsh-Hadamard Transform) for the DC coefficients of Y blocks
-func iwht4x4(input: [*] s16, output: [*] s16)
-{
-    var temp: [16] s16
-
-    // First pass: columns
-    var i = 0
-    while i < 4
+    // VP8 4x4 WHT (Walsh-Hadamard Transform) for the DC coefficients of Y blocks
+    func iwht4x4(input: [*] s16, output: [*] s16)
     {
-        let a = cast(s32) input[0 + i] + cast(s32) input[12 + i]
-        let b = cast(s32) input[4 + i] + cast(s32) input[8 + i]
-        let c = cast(s32) input[4 + i] - cast(s32) input[8 + i]
-        let d = cast(s32) input[0 + i] - cast(s32) input[12 + i]
+        var temp: [16] s16
 
-        temp[0 + i] = cast(s16) (a + b)
-        temp[4 + i] = cast(s16) (c + d)
-        temp[8 + i] = cast(s16) (a - b)
-        temp[12 + i] = cast(s16) (d - c)
-
-        i += 1
-    }
-
-    // Second pass: rows
-    i = 0
-    while i < 16
-    {
-        let a = cast(s32) temp[i + 0] + cast(s32) temp[i + 3]
-        let b = cast(s32) temp[i + 1] + cast(s32) temp[i + 2]
-        let c = cast(s32) temp[i + 1] - cast(s32) temp[i + 2]
-        let d = cast(s32) temp[i + 0] - cast(s32) temp[i + 3]
-
-        let op_a = a + b
-        let op_b = c + d
-        let op_c = a - b
-        let op_d = d - c
-
-        output[i + 0] = cast(s16) ((op_a + 3) >> 3)
-        output[i + 1] = cast(s16) ((op_b + 3) >> 3)
-        output[i + 2] = cast(s16) ((op_c + 3) >> 3)
-        output[i + 3] = cast(s16) ((op_d + 3) >> 3)
-
-        i += 4
-    }
-}
-
-// VP8 4x4 IDCT - this is the actual VP8 transform, not JPEG DCT
-func idct4(src: const [*] s16, dst: [*] s16)
-{
-    var temp: [16] s32
-
-    func clampPixel(v: s32)->s16
-    {
-        if v > 255: return 255
-        if v < 0: return 0
-        return cast(s16) v
-    }
-
-    // First pass: columns (vertical transform)
-    var i = 0
-    while i < 4
-    {
-        let ip = cast(s32) src[i + 0]   // input[0]
-        let ip1 = cast(s32) src[i + 4]  // input[1]
-        let ip2 = cast(s32) src[i + 8]  // input[2]
-        let ip3 = cast(s32) src[i + 12] // input[3]
-
-        let a1 = ip + ip3
-        let b1 = ip - ip3
-        let temp1 = (ip2 * 35468) >> 16
-        let temp2 = ip1 + temp1
-        let temp3 = ip1 * 20091
-        let temp4 = (temp3 + (ip2 * 52808)) >> 16
-        let c1 = temp2 - temp4
-
-        temp[i + 0] = a1 + temp4
-        temp[i + 4] = b1 + c1
-        temp[i + 8] = b1 - c1
-        temp[i + 12] = a1 - temp4
-
-        i += 1
-    }
-
-    // Second pass: rows (horizontal transform)
-    i = 0
-    while i < 16
-    {
-        let a1 = temp[i + 0] + temp[i + 3]
-        let b1 = temp[i + 0] - temp[i + 3]
-        let temp1 = (temp[i + 2] * 35468) >> 16
-        let temp2 = temp[i + 1] + temp1
-        let temp3 = temp[i + 1] * 20091
-        let temp4 = (temp3 + (temp[i + 2] * 52808)) >> 16
-        let c1 = temp2 - temp4
-
-        // Final output with proper DC offset and clamping
-        dst[i + 0] = clampPixel((a1 + temp4 + 4) >> 3)
-        dst[i + 1] = clampPixel((b1 + c1 + 4) >> 3)
-        dst[i + 2] = clampPixel((b1 - c1 + 4) >> 3)
-        dst[i + 3] = clampPixel((a1 - temp4 + 4) >> 3)
-
-        i += 4
-    }
-}
-
-// Simplified but more accurate coefficient decoding
-func decodeBlock4x4(b: *BoolDec, coeffs: [*] s16, plane: s32)->bool
-{
-    // Clear coefficients first
-    var i = 0
-    while i < 16
-    {
-        coeffs[i] = 0
-        i += 1
-    }
-
-    const ZZ: [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
-    //const BandForPos: [16] u8 = [0, 1, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]
-
-    let bt = (plane == 0) ? 0 : 1
-    var hasCoeffs = false
-
-    i = 0
-    while i < 16
-    {
-        let pos = ZZ[i]
-        let band = cast(s32) BandForPos[pos]
-        let safeBand = (band > 5) ? 5 : band
-
-        // Simple context - in a real decoder this would be more sophisticated
-        var ctx = 0
-        if i > 0 and coeffs[ZZ[i-1]] != 0:
-            ctx = 1
-        elif i > 1 and coeffs[ZZ[i-2]] != 0:
-            ctx = 1
-        if ctx > 2: ctx = 2
-
-        // Check for end of block
-        if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][0]) == 0:
-            break
-
-        // Check if coefficient is non-zero
-        if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][1]) == 0
+        // First pass: columns
+        var i = 0
+        while i < 4
         {
+            let a = cast(s32) input[0 + i] + cast(s32) input[12 + i]
+            let b = cast(s32) input[4 + i] + cast(s32) input[8 + i]
+            let c = cast(s32) input[4 + i] - cast(s32) input[8 + i]
+            let d = cast(s32) input[0 + i] - cast(s32) input[12 + i]
+
+            temp[0 + i]  = cast(s16) (a + b)
+            temp[4 + i]  = cast(s16) (c + d)
+            temp[8 + i]  = cast(s16) (a - b)
+            temp[12 + i] = cast(s16) (d - c)
+
             i += 1
-            continue
         }
 
-        hasCoeffs = true
-
-        // Decode coefficient magnitude (simplified)
-        var level = 1
-        if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][2]) != 0
+        // Second pass: rows
+        i = 0
+        while i < 16
         {
-            // Larger than 1
-            level = 2
+            let a = cast(s32) temp[i + 0] + cast(s32) temp[i + 3]
+            let b = cast(s32) temp[i + 1] + cast(s32) temp[i + 2]
+            let c = cast(s32) temp[i + 1] - cast(s32) temp[i + 2]
+            let d = cast(s32) temp[i + 0] - cast(s32) temp[i + 3]
 
-            // For even larger values, add more bits
-            while readBit(b) != 0 and level < 40
-            {
-                level += 1
-            }
+            let op_a = a + b
+            let op_b = c + d
+            let op_c = a - b
+            let op_d = d - c
+
+            output[i + 0] = cast(s16) ((op_a + 3) >> 3)
+            output[i + 1] = cast(s16) ((op_b + 3) >> 3)
+            output[i + 2] = cast(s16) ((op_c + 3) >> 3)
+            output[i + 3] = cast(s16) ((op_d + 3) >> 3)
+
+            i += 4
         }
-
-        // Add sign
-        if readBit(b) != 0:
-            level = -level
-
-        coeffs[pos] = cast(s16) level
-        i += 1
     }
 
-    return hasCoeffs
-}
-
-// Basic quantization tables (these should come from frame header in real decoder)
-const QuantDC: [2] s32 = [6, 5]    // Y DC, UV DC
-const QuantAC: [2] s32 = [4, 4]    // Y AC, UV AC
-
-// Dequantize coefficients
-func dequantizeBlock(coeffs: [*] s16, plane: s32, isDC: bool)
-{
-    let qp = isDC ? QuantDC[plane] : QuantAC[plane]
-
-    var i = 0
-    while i < 16
+    // VP8 4x4 IDCT - this is the actual VP8 transform, not JPEG DCT
+    func idct4(src: const [*] s16, dst: [*] s16)
     {
-        if coeffs[i] != 0
+        var temp: [16] s32
+
+        func clampPixel(v: s32)->s16
         {
-            coeffs[i] = cast(s16) (cast(s32) coeffs[i] * qp)
+            if v > 255:
+                return 255
+            if v < 0:
+                return 0
+            return cast(s16) v
         }
-        i += 1
+
+        // First pass: columns (vertical transform)
+        var i = 0
+        while i < 4
+        {
+            let ip  = cast(s32) src[i + 0]      // input[0]
+            let ip1 = cast(s32) src[i + 4]      // input[1]
+            let ip2 = cast(s32) src[i + 8]      // input[2]
+            let ip3 = cast(s32) src[i + 12]     // input[3]
+
+            let a1    = ip + ip3
+            let b1    = ip - ip3
+            let temp1 = (ip2 * 35468) >> 16
+            let temp2 = ip1 + temp1
+            let temp3 = ip1 * 20091
+            let temp4 = (temp3 + (ip2 * 52808)) >> 16
+            let c1    = temp2 - temp4
+
+            temp[i + 0]  = a1 + temp4
+            temp[i + 4]  = b1 + c1
+            temp[i + 8]  = b1 - c1
+            temp[i + 12] = a1 - temp4
+
+            i += 1
+        }
+
+        // Second pass: rows (horizontal transform)
+        i = 0
+        while i < 16
+        {
+            let a1    = temp[i + 0] + temp[i + 3]
+            let b1    = temp[i + 0] - temp[i + 3]
+            let temp1 = (temp[i + 2] * 35468) >> 16
+            let temp2 = temp[i + 1] + temp1
+            let temp3 = temp[i + 1] * 20091
+            let temp4 = (temp3 + (temp[i + 2] * 52808)) >> 16
+            let c1    = temp2 - temp4
+
+            // Final output with proper DC offset and clamping
+            dst[i + 0] = clampPixel((a1 + temp4 + 4) >> 3)
+            dst[i + 1] = clampPixel((b1 + c1 + 4) >> 3)
+            dst[i + 2] = clampPixel((b1 - c1 + 4) >> 3)
+            dst[i + 3] = clampPixel((a1 - temp4 + 4) >> 3)
+
+            i += 4
+        }
     }
-}
+
+    // Simplified but more accurate coefficient decoding
+    func decodeBlock4x4(b: *BoolDec, coeffs: [*] s16, plane: s32)->bool
+    {
+        // Clear coefficients first
+        var i = 0
+        while i < 16
+        {
+            coeffs[i] = 0
+            i += 1
+        }
+
+        const ZZ: [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
+        //const BandForPos: [16] u8 = [0, 1, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5]
+
+        let bt        = (plane == 0) ? 0 : 1
+        var hasCoeffs = false
+
+        i = 0
+        while i < 16
+        {
+            let pos      = ZZ[i]
+            let band     = cast(s32) BandForPos[pos]
+            let safeBand = (band > 5) ? 5 : band
+
+            // Simple context - in a real decoder this would be more sophisticated
+            var ctx = 0
+            if i > 0 and coeffs[ZZ[i - 1]] != 0:
+                ctx = 1
+            elif i > 1 and coeffs[ZZ[i - 2]] != 0:
+                ctx = 1
+            if ctx > 2:
+                ctx = 2
+
+            // Check for end of block
+            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][0]) == 0:
+                break
+
+            // Check if coefficient is non-zero
+            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][1]) == 0
+            {
+                i += 1
+                continue
+            }
+
+            hasCoeffs = true
+
+            // Decode coefficient magnitude (simplified)
+            var level = 1
+            if readBool(b, CoeffProbsDefault[bt][safeBand][ctx][2]) != 0
+            {
+                // Larger than 1
+                level = 2
+
+                // For even larger values, add more bits
+                while readBit(b) != 0 and level < 40
+                {
+                    level += 1
+                }
+            }
+
+            // Add sign
+            if readBit(b) != 0:
+                level = -level
+
+            coeffs[pos] = cast(s16) level
+            i += 1
+        }
+
+        return hasCoeffs
+    }
+
+    // Basic quantization tables (these should come from frame header in real decoder)
+    const QuantDC: [2] s32 = [6, 5]     // Y DC, UV DC
+    const QuantAC: [2] s32 = [4, 4]     // Y AC, UV AC
+
+    // Dequantize coefficients
+    func dequantizeBlock(coeffs: [*] s16, plane: s32, isDC: bool)
+    {
+        let qp = isDC ? QuantDC[plane] : QuantAC[plane]
+
+        var i = 0
+        while i < 16
+        {
+            if coeffs[i] != 0
+            {
+                coeffs[i] = cast(s16) (cast(s32) coeffs[i] * qp)
+            }
+            i += 1
+        }
+    }
 
     func initBool(b: *BoolDec, src: const [*] u8, len: s32)
     {
@@ -488,48 +491,168 @@ impl Decoder
     {
         let hdr = me.parseVP8Frame(ofs, size)
 
-        // VP8 keyframe structure: 10 bytes header + compressed data
-        let dataStart = ofs + 10
-        let dataSize  = hdr.firstPartSz
+        // Uncompressed header (10 bytes) already consumed by parseVP8Frame:
+        // 3-byte frame tag + 7-byte keyframe header
+        let part0Start = ofs + 10
+        let part0Size  = hdr.firstPartSz
 
-        if dataSize <= 0 or (dataStart + dataSize) > (ofs + size):
-            throw InvalidFormatError{"vp8: invalid partition size"}
+        if part0Size <= 0 or (part0Start + part0Size) > (ofs + size):
+            throw InvalidFormatError{"vp8: invalid partition 0 size"}
 
-        var b: BoolDec
-        initBool(&b, me.stream + dataStart, dataSize)
+        // --- Partition 0 (modes/headers) ---
+        var headerDec: BoolDec
+        initBool(&headerDec, me.stream + part0Start, part0Size)
 
-        // Skip VP8 frame header bits (color space, clamping, etc.)
-        discard readBit(&b) // color_space
-        discard readBit(&b) // clamping_type
+        // We don't truly parse the compressed header here; keep minimal consumption.
+        // (These two reads are harmless; real header parsing could go here.)
+        discard readBit(&headerDec) // color_space (placeholder read)
+        discard readBit(&headerDec) // clamping_type (placeholder read)
 
-        // Very simplified intra-only keyframe decoding:
-        // We assume all macroblocks are intra-coded and 4x4 prediction.
-        // We only decode coefficients and apply an IDCT. We now add a DC-predictor
-        // from neighbors so chroma is not stuck at 128 (grayscale).
+        // --- Token partitions start right after partition 0 ---
+        let tokensStart = part0Start + part0Size
+        let tokensAvail = (ofs + size) - tokensStart
+        if tokensAvail <= 0:
+            throw InvalidFormatError{"vp8: no token data after partition 0"}
 
-        let mbW = (hdr.width + 15) >> 4      // number of 16x16 luma macroblocks across
-        let mbH = (hdr.height + 15) >> 4     // number of 16x16 luma macroblocks down
+        // The tokens area may be split into 1/2/4/8 partitions.
+        // For N>1 there is a table of (N-1) little-endian 24-bit sizes at the beginning.
+        // We'll autodetect N ∈ {1,2,4,8} by validating size arithmetic.
+        func readSize24(p: const [*] u8)->s32
+        {
+            return cast(s32) p[0] | (cast(s32) p[1] << 8) | (cast(s32) p[2] << 16)
+        }
+
+        var numParts = 1
+        var partOfs: [8] s32
+        var partLen: [8] s32
+
+        // Try candidates 1,2,4,8 and pick the first that validates.
+        var candidateIdx  = 0
+        const candidates: [4] s32 = [1, 2, 4, 8]
+        var picked        = false
+        while candidateIdx < 4 and !picked
+        {
+            let np      = candidates[candidateIdx]
+            let hdrSize = 3 * (np - 1)
+            if hdrSize <= tokensAvail
+            {
+                // Build offsets/lengths
+                var ok      = true
+                var sizesum = 0
+
+                // First partition always starts right after the size table
+                partOfs[0] = tokensStart + hdrSize
+
+                // Read sizes for partitions 0..np-2 (these sizes are for partitions 0..np-2)
+                var i = 0
+                while i < (np - 1)
+                {
+                    let s = readSize24(me.stream + tokensStart + (i * 3))
+                    if s < 0 or s > tokensAvail
+                    {
+                        ok = false; break
+                    }
+                    partLen[i] = s
+                    sizesum += s
+                    if i != 0:
+                        partOfs[i] = partOfs[i - 1] + partLen[i - 1]
+                    i += 1
+                }
+
+                if ok
+                {
+                    // Last partition takes the remainder
+                    let tail = tokensAvail - hdrSize - sizesum
+                    if tail < 0:
+                        ok = false
+                    else
+                    {
+                        if np == 1
+                        {
+                            partOfs[0] = tokensStart
+                            partLen[0] = tokensAvail
+                        }
+                        else
+                        {
+                            partOfs[np - 1] = (np == 1) ? tokensStart : (partOfs[np - 2] + partLen[np - 2])
+                            partLen[np - 1] = tail
+                        }
+
+                        // Bounds check all partitions
+                        var k = 0
+                        while k < np and ok
+                        {
+                            let begin = partOfs[k]
+                            let plen  = partLen[k]
+                            if plen <= 0 or (begin < tokensStart) or (begin + plen > (tokensStart + tokensAvail)):
+                                ok = false
+                            k += 1
+                        }
+                    }
+                }
+
+                if ok
+                {
+                    numParts = np
+                    picked   = true
+                }
+            }
+            candidateIdx += 1
+        }
+
+        // Fallback: treat everything as a single partition
+        if !picked:
+            numParts = 1
+        partOfs[0] = tokensStart
+        partLen[0] = tokensAvail
+
+        // Build bool decoders for each token partition
+        var tokenDecs: [8] BoolDec
+        var pidx       = 0
+        while pidx < numParts
+        {
+            initBool(&tokenDecs[pidx], me.stream + partOfs[pidx], partLen[pidx])
+            pidx += 1
+        }
+
+        // Helper to select the partition for a macroblock row:
+        #[Swag.Mixin]
+        func pickPart(mbRow: s32)->*BoolDec
+        {
+            if numParts == 1:
+                return &tokenDecs[0]
+            // VP8 stripes rows across partitions; modulo works for 1,2,4,8.
+            let idx = mbRow & (numParts - 1)
+            return &tokenDecs[idx]
+        }
+
+        // --- Simplified intra-only decode using the proper token stream(s) ---
+        let mbW = (hdr.width + 15) >> 4
+        let mbH = (hdr.height + 15) >> 4
 
         var mbY = 0
         while mbY < mbH
         {
+            // Choose the token partition for this row
+            var tok = pickPart(mbY)
+
             var mbX = 0
             while mbX < mbW
             {
-                // -------- Y (luma) 16x16: 16 4x4 sub-blocks ----------
                 var coeffs: [16] s16
                 var recon:  [16] s16
 
+                // -------- Y (luma) 16x16: 16× 4x4 ----------
                 var by = 0
                 while by < 4
                 {
                     var bx = 0
                     while bx < 4
                     {
-                        let hasCoeffs = decodeBlock4x4(&b, &coeffs[0], 0) // plane 0 = Y
+                        let hasCoeffs = decodeBlock4x4(tok, &coeffs[0], 0) // plane 0 = Y
                         if hasCoeffs
                         {
-                            dequantizeBlock(&coeffs[0], 0, false) // false = not DC block
+                            dequantizeBlock(&coeffs[0], 0, false)
                             idct4(&coeffs[0], &recon[0])
                         }
                         else
@@ -537,70 +660,58 @@ impl Decoder
                             var r = 0
                             while r < 16
                             {
-                                recon[r] = 0
-                                r += 1
-                            }
+                                recon[r] = 0; r += 1; }
                         }
 
-                        // DC predictor for this 4x4 luma block (simple): average of top and left samples when available
+                        // Simple DC predictor (average of available top/left)
                         let ix0 = mbX * 16 + bx * 4
                         let iy0 = mbY * 16 + by * 4
                         var dcY = 128
                         var sum = 0
                         var cnt = 0
-                        // top row
                         if iy0 > 0 and (ix0 + 3) < hdr.width
                         {
                             var k = 0
                             while k < 4
                             {
-                                sum += cast(s32) yPlane[(iy0 - 1) * hdr.yStride + ix0 + k]
-                                cnt += 1
-                                k += 1
+                                sum += cast(s32) yPlane[(iy0 - 1) * hdr.yStride + ix0 + k]; cnt += 1; k += 1
                             }
                         }
-                        // left column
                         if ix0 > 0 and (iy0 + 3) < hdr.height
                         {
                             var k = 0
                             while k < 4
                             {
-                                sum += cast(s32) yPlane[(iy0 + k) * hdr.yStride + (ix0 - 1)]
-                                cnt += 1
-                                k += 1
+                                sum += cast(s32) yPlane[(iy0 + k) * hdr.yStride + (ix0 - 1)]; cnt += 1; k += 1
                             }
                         }
                         if cnt > 0:
                             dcY = sum / cnt
 
-                        // write back to Y plane
                         var py = 0
                         while py < 4
                         {
                             var px = 0
                             while px < 4
                             {
-                                let ix = mbX * 16 + bx * 4 + px
-                                let iy = mbY * 16 + by * 4 + py
+                                let ix = ix0 + px
+                                let iy = iy0 + py
                                 if ix < hdr.width and iy < hdr.height
                                 {
                                     let val = dcY + cast(s32) recon[py * 4 + px]
                                     yPlane[iy * hdr.yStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                 }
-
                                 px += 1
                             }
-
                             py += 1
                         }
 
                         bx += 1
                     }
-
                     by += 1
                 }
 
-                // -------- U (Cb) chroma 8x8: 4x 4x4 sub-blocks ----------
+                // -------- U (Cb) chroma 8x8: 4× 4x4 ----------
                 var cby = 0
                 while cby < 2
                 {
@@ -608,9 +719,9 @@ impl Decoder
                     while cbx < 2
                     {
                         var sub = 0
-                        while sub < 4 // Each 8x8 has 4 4x4 sub-blocks
+                        while sub < 4
                         {
-                            let hasCoeffs = decodeBlock4x4(&b, &coeffs[0], 1) // plane 1 = U
+                            let hasCoeffs = decodeBlock4x4(tok, &coeffs[0], 1) // plane 1 = U
                             if hasCoeffs
                             {
                                 dequantizeBlock(&coeffs[0], 1, false)
@@ -621,39 +732,31 @@ impl Decoder
                                 var r = 0
                                 while r < 16
                                 {
-                                    recon[r] = 0
-                                    r += 1
+                                    recon[r] = 0; r += 1
                                 }
                             }
 
-                            // DC predictor for this 4x4 chroma-U block
                             let cix0 = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
                             let ciy0 = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
                             var dcU  = 128
                             var csum = 0
                             var ccnt = 0
-                            // top row in U plane
-                            let uW = (hdr.width + 1) >> 1
-                            let uH = (hdr.height + 1) >> 1
+                            let uW   = (hdr.width + 1) >> 1
+                            let uH   = (hdr.height + 1) >> 1
                             if ciy0 > 0 and (cix0 + 3) < uW
                             {
                                 var k = 0
                                 while k < 4
                                 {
-                                    csum += cast(s32) uPlane[(ciy0 - 1) * hdr.uvStride + cix0 + k]
-                                    ccnt += 1
-                                    k += 1
+                                    csum += cast(s32) uPlane[(ciy0 - 1) * hdr.uvStride + cix0 + k]; ccnt += 1; k += 1
                                 }
                             }
-                            // left column in U plane
                             if cix0 > 0 and (ciy0 + 3) < uH
                             {
                                 var k = 0
                                 while k < 4
                                 {
-                                    csum += cast(s32) uPlane[(ciy0 + k) * hdr.uvStride + (cix0 - 1)]
-                                    ccnt += 1
-                                    k += 1
+                                    csum += cast(s32) uPlane[(ciy0 + k) * hdr.uvStride + (cix0 - 1)]; ccnt += 1; k += 1
                                 }
                             }
                             if ccnt > 0:
@@ -661,7 +764,6 @@ impl Decoder
 
                             let sy = (sub >> 1) * 4
                             let sx = (sub & 1) * 4
-
                             var py = 0
                             while py < 4
                             {
@@ -675,23 +777,18 @@ impl Decoder
                                         let val = dcU + cast(s32) recon[py * 4 + px]
                                         uPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                     }
-
                                     px += 1
                                 }
-
                                 py += 1
                             }
-
                             sub += 1
                         }
-
                         cbx += 1
                     }
-
                     cby += 1
                 }
 
-                // -------- V (Cr) chroma 8x8: 4x 4x4 sub-blocks ----------
+                // -------- V (Cr) chroma 8x8: 4× 4x4 ----------
                 cby = 0
                 while cby < 2
                 {
@@ -701,7 +798,7 @@ impl Decoder
                         var sub = 0
                         while sub < 4
                         {
-                            let hasCoeffs = decodeBlock4x4(&b, &coeffs[0], 1) // plane 1 = V uses same probs as U
+                            let hasCoeffs = decodeBlock4x4(tok, &coeffs[0], 1) // reuse same probs for V
                             if hasCoeffs
                             {
                                 dequantizeBlock(&coeffs[0], 1, false)
@@ -712,12 +809,10 @@ impl Decoder
                                 var r = 0
                                 while r < 16
                                 {
-                                    recon[r] = 0
-                                    r += 1
+                                    recon[r] = 0; r += 1
                                 }
                             }
 
-                            // DC predictor for this 4x4 chroma-V block
                             let vcix0 = mbX * 8 + cbx * 4 + ((sub & 1) * 4)
                             let vciy0 = mbY * 8 + cby * 4 + ((sub >> 1) * 4)
                             var dcV   = 128
@@ -730,9 +825,7 @@ impl Decoder
                                 var k = 0
                                 while k < 4
                                 {
-                                    vsum += cast(s32) vPlane[(vciy0 - 1) * hdr.uvStride + vcix0 + k]
-                                    vcnt += 1
-                                    k += 1
+                                    vsum += cast(s32) vPlane[(vciy0 - 1) * hdr.uvStride + vcix0 + k]; vcnt += 1; k += 1
                                 }
                             }
                             if vcix0 > 0 and (vciy0 + 3) < vH
@@ -740,9 +833,7 @@ impl Decoder
                                 var k = 0
                                 while k < 4
                                 {
-                                    vsum += cast(s32) vPlane[(vciy0 + k) * hdr.uvStride + (vcix0 - 1)]
-                                    vcnt += 1
-                                    k += 1
+                                    vsum += cast(s32) vPlane[(vciy0 + k) * hdr.uvStride + (vcix0 - 1)]; vcnt += 1; k += 1
                                 }
                             }
                             if vcnt > 0:
@@ -750,7 +841,6 @@ impl Decoder
 
                             let sy = (sub >> 1) * 4
                             let sx = (sub & 1) * 4
-
                             var py = 0
                             while py < 4
                             {
@@ -764,25 +854,19 @@ impl Decoder
                                         let val = dcV + cast(s32) recon[py * 4 + px]
                                         vPlane[iy * hdr.uvStride + ix] = cast(s16) Math.clamp(val, 0, 255)
                                     }
-
                                     px += 1
                                 }
-
                                 py += 1
                             }
-
                             sub += 1
                         }
-
                         cbx += 1
                     }
-
                     cby += 1
                 }
 
                 mbX += 1
             }
-
             mbY += 1
         }
     }
@@ -911,21 +995,19 @@ public impl IImageDecoder for Decoder
 
     mtd impl decode(buffer: const [..] u8, options: DecodeOptions)->Image throw
     {
-        me.decOptions = options
-        me.metaDatas.clear()
-
-        // Start / parse headers
-        me.init(buffer)
-        me.start()
+        .decOptions = options
+        .metaDatas.clear()
+        .init(buffer)
+        .start()
 
         var result: Image
-        result.init(me.imageSizeX, me.imageSizeY, PixelFormat.BGR8)
+        result.init(.imageSizeX, .imageSizeY, PixelFormat.BGR8)
         if !options.decodePixels:
             return result
         result.allocPixels()
 
-        me.doit(result.pixels.buffer)
-        result.metaDatas = #move me.metaDatas
+        .doit(result.pixels.buffer)
+        result.metaDatas = #move .metaDatas
         return result
     }
 }
