@@ -4,12 +4,26 @@ using Swag, Core, Core.Errors
 // Step 5: IDCT + Quantization + Full Image Decoding
 // Convert DCT coefficients to pixels and decode complete image
 
+// Image planes
+public struct ImagePlanes
+{
+    yPlane:       Array's16
+    uPlane:       Array's16
+    vPlane:       Array's16
+    yStride:      s32
+    uvStride:     s32
+}
+
 public struct Decoder
 {
     stream:         const [*] u8
     streamLen:      s32
     imageSizeX:     s32
     imageSizeY:     s32
+
+    // Store decoded planes for final conversion
+    decodedPlanes:     ImagePlanes
+    isDecoded:         bool
 }
 
 private
@@ -26,33 +40,33 @@ private
 
     struct BoolDecoder
     {
-        range:      u32
-        value:      u32
-        bitCount:   s32
-        buffer:     const [*] u8
-        pos:        s32
-        end:        s32
+        range:        u32
+        value:        u32
+        bitCount:     s32
+        buffer:       const [*] u8
+        pos:          s32
+        end:          s32
     }
 
     struct VP8FrameHeader
     {
-        width:              s32
-        height:             s32
-        colorSpace:         u32
-        clampingType:       u32
-        useSegment:         bool
-        updateSegmentMap:   bool
-        segmentProbs:       [3] u32
-        filterType:         u32
-        filterLevel:        u32
-        sharpnessLevel:     u32
-        baseQIndex:         u32
-        yDCDelta:          s32
-        y2DCDelta:         s32
-        y2ACDelta:         s32
-        uvDCDelta:         s32
-        uvACDelta:         s32
-        numPartitions:      s32
+        width:                s32
+        height:               s32
+        colorSpace:           u32
+        clampingType:         u32
+        useSegment:           bool
+        updateSegmentMap:     bool
+        segmentProbs:         [3] u32
+        filterType:           u32
+        filterLevel:          u32
+        sharpnessLevel:       u32
+        baseQIndex:           u32
+        yDCDelta:             s32
+        y2DCDelta:            s32
+        y2ACDelta:            s32
+        uvDCDelta:            s32
+        uvACDelta:            s32
+        numPartitions:        s32
     }
 
     // VP8 coefficient token probabilities (default values from spec)
@@ -60,55 +74,55 @@ private
         // Y plane [band][context][token]
         [
             [[255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[176, 246, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [223, 241, 252, 255, 255, 255, 255, 255, 255, 255, 255],
-             [249, 253, 253, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [223, 241, 252, 255, 255, 255, 255, 255, 255, 255, 255],
+            [249, 253, 253, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 244, 252, 255, 255, 255, 255, 255, 255, 255, 255],
-             [234, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [253, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [234, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [253, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 246, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [239, 253, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [254, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [239, 253, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [254, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 248, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [251, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [251, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 253, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [251, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [254, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [251, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [254, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 254, 253, 255, 255, 255, 255, 255, 255, 255, 255],
-             [250, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [254, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [250, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [254, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]]],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]]],
         // UV plane [band][context][token]
         [
             [[255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[181, 239, 251, 255, 255, 255, 255, 255, 255, 255, 255],
-             [209, 219, 229, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 248, 253, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [209, 219, 229, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 248, 253, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 236, 253, 255, 255, 255, 255, 255, 255, 255, 255],
-             [236, 253, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [251, 253, 253, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [236, 253, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [251, 253, 253, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 240, 253, 255, 255, 255, 255, 255, 255, 255, 255],
-             [243, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [254, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [243, 254, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [254, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 244, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [250, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [250, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 251, 254, 255, 255, 255, 255, 255, 255, 255, 255],
-             [248, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [248, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 254, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 253, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [252, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
+            [252, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]],
             [[255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
-             [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]]]]
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255],
+            [255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255]]]]
 
     // VP8 zigzag scan order for 4x4 DCT
     const ZigZag4x4: [16] u8 = [0, 1, 4, 8, 5, 2, 3, 6, 9, 12, 13, 10, 7, 11, 14, 15]
@@ -117,53 +131,43 @@ private
     const CoeffBands: [16] u8 = [0, 1, 2, 3, 6, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7]
 
     // DCT coefficient tokens
-    const DCT_EOB_TOKEN         = 0   // End of block
-    const DCT_0_TOKEN           = 1   // Zero run
-    const DCT_1_TOKEN           = 2   // +/-1
-    const DCT_2_TOKEN           = 3   // +/-2
-    const DCT_3_TOKEN           = 4   // +/-3
-    const DCT_4_TOKEN           = 5   // +/-4
-    const DCT_CAT1_TOKEN        = 6   // 5-6
-    const DCT_CAT2_TOKEN        = 7   // 7-10
-    const DCT_CAT3_TOKEN        = 8   // 11-18
-    const DCT_CAT4_TOKEN        = 9   // 19-34
-    const DCT_CAT5_TOKEN        = 10  // 35-66
-    const DCT_CAT6_TOKEN        = 11  // 67-2048
+    const DCT_EOB_TOKEN  = 0      // End of block
+    const DCT_0_TOKEN    = 1      // Zero run
+    const DCT_1_TOKEN    = 2      // +/-1
+    const DCT_2_TOKEN    = 3      // +/-2
+    const DCT_3_TOKEN    = 4      // +/-3
+    const DCT_4_TOKEN    = 5      // +/-4
+    const DCT_CAT1_TOKEN = 6      // 5-6
+    const DCT_CAT2_TOKEN = 7      // 7-10
+    const DCT_CAT3_TOKEN = 8      // 11-18
+    const DCT_CAT4_TOKEN = 9      // 19-34
+    const DCT_CAT5_TOKEN = 10     // 35-66
+    const DCT_CAT6_TOKEN = 11     // 67-2048
 
     // Quantization tables (simplified)
     const QuantTable: [128] s32 = [
-        4,   5,   6,   7,   8,   9,  10,  10,
-       11,  12,  13,  14,  15,  16,  17,  17,
-       18,  19,  20,  20,  21,  21,  22,  22,
-       23,  23,  24,  25,  25,  26,  27,  28,
-       29,  30,  31,  32,  33,  34,  35,  36,
-       37,  37,  38,  39,  39,  40,  41,  42,
-       43,  44,  45,  46,  47,  48,  49,  50,
-       51,  52,  53,  54,  55,  56,  57,  58,
-       59,  60,  61,  62,  63,  64,  65,  66,
-       67,  68,  69,  70,  71,  72,  73,  74,
-       75,  76,  76,  77,  78,  79,  80,  81,
-       82,  83,  84,  85,  86,  87,  88,  89,
-       91,  93,  95,  96,  98, 100, 101, 102,
-      104, 106, 108, 110, 112, 114, 116, 118,
-      122, 124, 126, 128, 130, 132, 134, 136,
-      138, 140, 143, 145, 148, 151, 154, 157]
+        4, 5, 6, 7, 8, 9, 10, 10,
+        11, 12, 13, 14, 15, 16, 17, 17,
+        18, 19, 20, 20, 21, 21, 22, 22,
+        23, 23, 24, 25, 25, 26, 27, 28,
+        29, 30, 31, 32, 33, 34, 35, 36,
+        37, 37, 38, 39, 39, 40, 41, 42,
+        43, 44, 45, 46, 47, 48, 49, 50,
+        51, 52, 53, 54, 55, 56, 57, 58,
+        59, 60, 61, 62, 63, 64, 65, 66,
+        67, 68, 69, 70, 71, 72, 73, 74,
+        75, 76, 76, 77, 78, 79, 80, 81,
+        82, 83, 84, 85, 86, 87, 88, 89,
+        91, 93, 95, 96, 98, 100, 101, 102,
+        104, 106, 108, 110, 112, 114, 116, 118,
+        122, 124, 126, 128, 130, 132, 134, 136,
+        138, 140, 143, 145, 148, 151, 154, 157]
 
     // Token partition structure
     struct TokenPartitions
     {
-        decoders:   [8] BoolDecoder
-        count:      s32
-    }
-
-    // Image planes
-    struct ImagePlanes
-    {
-        yPlane:     Array's16
-        uPlane:     Array's16
-        vPlane:     Array's16
-        yStride:    s32
-        uvStride:   s32
+        decoders:     [8] BoolDecoder
+        count:        s32
     }
 
     // Initialize boolean decoder
@@ -179,12 +183,12 @@ private
         if size >= 2
         {
             bd.value = (cast(u32) data[0] << 8) | cast(u32) data[1]
-            bd.pos = 2
+            bd.pos   = 2
         }
         elif size >= 1
         {
             bd.value = cast(u32) data[0] << 8
-            bd.pos = 1
+            bd.pos   = 1
         }
     }
 
@@ -206,8 +210,8 @@ private
     {
         while bd.range < 128
         {
-            bd.range  <<= 1
-            bd.value  <<= 1
+            bd.range <<= 1
+            bd.value <<= 1
             bd.bitCount += 1
 
             if bd.bitCount == 8
@@ -219,8 +223,8 @@ private
 
     func readBool(bd: *BoolDecoder, probability: u32)->u32
     {
-        let prob = Math.min(probability, 255)
-        let split = 1 + (((bd.range - 1) * prob) >> 8)
+        let prob   = Math.min(probability, 255)
+        let split  = 1 + (((bd.range - 1) * prob) >> 8)
         let bigBit = (bd.value >> 8) >= split
 
         if bigBit
@@ -258,16 +262,16 @@ private
         if readBit(bd) == 0:
             return 0
         let magnitude = cast(s32) readBits(bd, 4)
-        let sign = readBit(bd)
+        let sign      = readBit(bd)
         return sign != 0 ? -magnitude : magnitude
     }
 
     // Decode single DCT coefficient token
-    func decodeCoeffToken(bd: *BoolDecoder, plane: s32, band: s32, ctx: s32)->{value: s32, hasMore: bool}
+    func decodeCoeffToken(bd: *BoolDecoder, plane: s32, band: s32, ctx: s32)->{ value: s32, hasMore: bool }
     {
-        let planeIdx = Math.min(plane, 1)  // Y=0, UV=1
-        let bandIdx = Math.min(band, 7)
-        let ctxIdx = Math.min(ctx, 2)
+        let planeIdx = Math.min(plane, 1)     // Y=0, UV=1
+        let bandIdx  = Math.min(band, 7)
+        let ctxIdx   = Math.min(ctx, 2)
 
         // Read token using coefficient probabilities
         var token = 0
@@ -282,10 +286,10 @@ private
         switch token
         {
         case DCT_EOB_TOKEN:
-            return {0, false}  // End of block
+            return {0, false}
 
         case DCT_0_TOKEN:
-            return {0, true}   // Zero coefficient
+            return {0, true}
 
         case DCT_1_TOKEN:
             let sign = readBit(bd)
@@ -303,53 +307,59 @@ private
             let sign = readBit(bd)
             return {sign != 0 ? -4 : 4, true}
 
-        case DCT_CAT1_TOKEN:  // 5-6
+        case DCT_CAT1_TOKEN:
             let extra = readBit(bd)
-            let base = 5 + cast(s32) extra
-            let sign = readBit(bd)
+            let base  = 5 + cast(s32) extra
+            let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
+ // 5-6
 
-        case DCT_CAT2_TOKEN:  // 7-10
+        case DCT_CAT2_TOKEN:
             let extra = readBits(bd, 2)
-            let base = 7 + cast(s32) extra
-            let sign = readBit(bd)
+            let base  = 7 + cast(s32) extra
+            let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
+ // 7-10
 
-        case DCT_CAT3_TOKEN:  // 11-18
+        case DCT_CAT3_TOKEN:
             let extra = readBits(bd, 3)
-            let base = 11 + cast(s32) extra
-            let sign = readBit(bd)
+            let base  = 11 + cast(s32) extra
+            let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
+ // 11-18
 
-        case DCT_CAT4_TOKEN:  // 19-34
+        case DCT_CAT4_TOKEN:
             let extra = readBits(bd, 4)
-            let base = 19 + cast(s32) extra
-            let sign = readBit(bd)
+            let base  = 19 + cast(s32) extra
+            let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
+ // 19-34
 
-        case DCT_CAT5_TOKEN:  // 35-66
+        case DCT_CAT5_TOKEN:
             let extra = readBits(bd, 5)
-            let base = 35 + cast(s32) extra
-            let sign = readBit(bd)
+            let base  = 35 + cast(s32) extra
+            let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
+ // 35-66
 
-        case DCT_CAT6_TOKEN:  // 67-2048
+        case DCT_CAT6_TOKEN:
             let extra = readBits(bd, 11)
-            let base = 67 + cast(s32) extra
-            let sign = readBit(bd)
+            let base  = 67 + cast(s32) extra
+            let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
+ // 67-2048
         }
 
         return {0, false}
     }
 
     // Decode 4x4 DCT block coefficients
-    func decode4x4Block(bd: *BoolDecoder, coeffs: [*] s16, plane: s32)->s32  // returns number of non-zero coeffs
+    func decode4x4Block(bd: *BoolDecoder, coeffs: [*] s16, plane: s32)->s32 // returns number of non-zero coeffs
     {
         Memory.set(coeffs, 0, #sizeof(s16) * 16)
 
         var nonZeroCount = 0
-        var ctx = 0
+        var ctx          = 0
 
         for pos in 16
         {
@@ -357,17 +367,17 @@ private
             let (value, hasMore) = decodeCoeffToken(bd, plane, band, ctx)
 
             if !hasMore:
-                break  // EOB token
+                break // EOB token
 
             if value != 0
             {
                 coeffs[ZigZag4x4[pos]] = cast(s16) value
                 nonZeroCount += 1
-                ctx = 1  // Non-zero context for next coefficient
+                ctx = 1 // Non-zero context for next coefficient
             }
             else
             {
-                ctx = 0  // Zero context
+                ctx = 0 // Zero context
             }
         }
 
@@ -469,12 +479,12 @@ private
     // Decode complete image
     func decodeImage(tp: *TokenPartitions, header: VP8FrameHeader, planes: *ImagePlanes)
     {
-        let mbCols = (header.width + 15) >> 4   // Macroblocks per row
-        let mbRows = (header.height + 15) >> 4  // Macroblock rows
+        let mbCols = (header.width + 15) >> 4      // Macroblocks per row
+        let mbRows = (header.height + 15) >> 4     // Macroblock rows
 
         Console.printf("Decoding %x% macroblocks (%x% pixels)\n", mbCols, mbRows, header.width, header.height)
 
-        var totalNonZero = 0
+        var totalNonZero  = 0
         var blocksDecoded = 0
 
         for mbY in mbRows
@@ -488,7 +498,7 @@ private
                 {
                     for bx in 4
                     {
-                        var coeffs: [16] s16
+                        var coeffs:        [16] s16
                         var reconstructed: [16] s16
 
                         let nonZero = decode4x4Block(tokenDec, &coeffs[0], 0)
@@ -516,11 +526,11 @@ private
                 }
 
                 // Decode U and V blocks (4 4x4 blocks each per macroblock)
-                for uv in 2  // U=0, V=1
+                for uv in 2 // U=0, V=1
                 {
-                    for cb in 4  // 4 chroma blocks per macroblock
+                    for cb in 4 // 4 chroma blocks per macroblock
                     {
-                        var coeffs: [16] s16
+                        var coeffs:        [16] s16
                         var reconstructed: [16] s16
 
                         let nonZero = decode4x4Block(tokenDec, &coeffs[0], 1)
@@ -599,9 +609,9 @@ private
 
                 // Clamp and store as BGR
                 let pixelOffset = (y * width + x) * 3
-                pixels[pixelOffset + 0] = cast(u8) Math.clamp(b, 0, 255)  // B
-                pixels[pixelOffset + 1] = cast(u8) Math.clamp(g, 0, 255)  // G
-                pixels[pixelOffset + 2] = cast(u8) Math.clamp(r, 0, 255)  // R
+                pixels[pixelOffset + 0] = cast(u8) Math.clamp(b, 0, 255) // B
+                pixels[pixelOffset + 1] = cast(u8) Math.clamp(g, 0, 255) // G
+                pixels[pixelOffset + 2] = cast(u8) Math.clamp(r, 0, 255) // R
             }
         }
 
@@ -611,12 +621,12 @@ private
     func parseVP8FrameHeader(bd: *BoolDecoder, width: s32, height: s32)->VP8FrameHeader
     {
         var header: VP8FrameHeader
-        header.width = width
+        header.width  = width
         header.height = height
 
         Console.printf("Parsing VP8 frame header...\n")
 
-        header.colorSpace = readBit(bd)
+        header.colorSpace   = readBit(bd)
         header.clampingType = readBit(bd)
         Console.printf("Color space: %, clamping: %\n", header.colorSpace, header.clampingType)
 
@@ -625,17 +635,17 @@ private
         {
             header.updateSegmentMap = readBit(bd) != 0
 
-            if readBit(bd) != 0  // update_segment_feature_data
+            if readBit(bd) != 0 // update_segment_feature_data
             {
-                discard readBit(bd)  // segment_feature_mode
-                for i in 4  // segments
+                discard readBit(bd) // segment_feature_mode
+                for i in 4 // segments
                 {
-                    for j in 2  // features
+                    for j in 2 // features
                     {
-                        if readBit(bd) != 0  // feature enabled
+                        if readBit(bd) != 0 // feature enabled
                         {
-                            discard readBits(bd, 7)  // feature data
-                            discard readBit(bd)      // feature sign
+                            discard readBits(bd, 7) // feature data
+                            discard readBit(bd) // feature sign
                         }
                     }
                 }
@@ -655,15 +665,14 @@ private
 
         Console.printf("Segmentation: use=%, update_map=%\n", header.useSegment, header.updateSegmentMap)
 
-        header.filterType = readBit(bd)
-        header.filterLevel = readBits(bd, 6)
+        header.filterType     = readBit(bd)
+        header.filterLevel    = readBits(bd, 6)
         header.sharpnessLevel = readBits(bd, 3)
-        Console.printf("Filter: type=%, level=%, sharpness=%\n",
-                      header.filterType, header.filterLevel, header.sharpnessLevel)
+        Console.printf("Filter: type=%, level=%, sharpness=%\n", header.filterType, header.filterLevel, header.sharpnessLevel)
 
-        if readBit(bd) != 0  // loop_filter_adj_enable
+        if readBit(bd) != 0 // loop_filter_adj_enable
         {
-            if readBit(bd) != 0  // mode_ref_lf_delta_update
+            if readBit(bd) != 0 // mode_ref_lf_delta_update
             {
                 for i in 4
                 {
@@ -682,16 +691,13 @@ private
         Console.printf("Token partitions: %\n", header.numPartitions)
 
         header.baseQIndex = readBits(bd, 7)
-        header.yDCDelta  = readSignedDelta(bd)
-        header.y2DCDelta = readSignedDelta(bd)
-        header.y2ACDelta = readSignedDelta(bd)
-        header.uvDCDelta = readSignedDelta(bd)
-        header.uvACDelta = readSignedDelta(bd)
+        header.yDCDelta   = readSignedDelta(bd)
+        header.y2DCDelta  = readSignedDelta(bd)
+        header.y2ACDelta  = readSignedDelta(bd)
+        header.uvDCDelta  = readSignedDelta(bd)
+        header.uvACDelta  = readSignedDelta(bd)
 
-        Console.printf("Quantization: base=%, deltas=[%,%,%,%,%]\n",
-                      header.baseQIndex,
-                      header.yDCDelta, header.y2DCDelta, header.y2ACDelta,
-                      header.uvDCDelta, header.uvACDelta)
+        Console.printf("Quantization: base=%, deltas=[%,%,%,%,%]\n", header.baseQIndex, header.yDCDelta, header.y2DCDelta, header.y2ACDelta, header.uvDCDelta, header.uvACDelta)
 
         return header
     }
@@ -761,7 +767,7 @@ impl Decoder
     mtd parseChunks()->Array'ChunkInfo throw
     {
         var chunks: Array'ChunkInfo
-        var offset = 12
+        var offset  = 12
 
         while (offset + 8) <= me.streamLen
         {
@@ -844,17 +850,16 @@ impl Decoder
             throw InvalidFormatError{"VP8: Chunk too small"}
 
         // Parse VP8 frame tag
-        let frameTag: u32  = me.dU8(offset) | (me.dU8(offset + 1) << 8) | (me.dU8(offset + 2) << 16)
-        let keyFrame  = (frameTag & 1) == 0
-        let version   = (frameTag >> 1) & 7
-        let showFrame = (frameTag >> 4) & 1
+        let frameTag:          u32 = me.dU8(offset) | (me.dU8(offset + 1) << 8) | (me.dU8(offset + 2) << 16)
+        let keyFrame           = (frameTag & 1) == 0
+        let version            = (frameTag >> 1) & 7
+        let showFrame          = (frameTag >> 4) & 1
         let firstPartitionSize = (frameTag >> 5) | (cast(u32) me.dU8(offset + 1) << 3) | (cast(u32) me.dU8(offset + 2) << 11)
 
         if !keyFrame:
             throw UnsupportedFormatError{"VP8: Only keyframes supported currently"}
 
-        Console.printf("VP8 frame: keyframe=%, version=%, show=%, first_partition=%\n",
-                      keyFrame, version, showFrame, firstPartitionSize)
+        Console.printf("VP8 frame: keyframe=%, version=%, show=%, first_partition=%\n", keyFrame, version, showFrame, firstPartitionSize)
 
         // Check keyframe start code
         if !(me.dU8(offset + 3) == 0x9D and
@@ -876,7 +881,7 @@ impl Decoder
 
         // Parse frame header and initialize token partitions
         let partitionStart = offset + 10
-        let partitionSize = cast(s32) Math.min(firstPartitionSize, cast(u32) (size - 10))
+        let partitionSize  = cast(s32) Math.min(firstPartitionSize, cast(u32) (size - 10))
 
         if partitionSize <= 0:
             throw InvalidFormatError{"VP8: Invalid first partition size"}
@@ -893,50 +898,56 @@ impl Decoder
         Console.printf("VP8 frame header parsed successfully!\n")
 
         // Initialize image planes
-        var planes: ImagePlanes
-        planes.yStride = width
-        planes.uvStride = (width + 1) >> 1
+        me.decodedPlanes.yStride  = width
+        me.decodedPlanes.uvStride = (width + 1) >> 1
 
-        planes.yPlane.resize(width * height)
-        planes.uPlane.resize(((width + 1) >> 1) * ((height + 1) >> 1))
-        planes.vPlane.resize(((width + 1) >> 1) * ((height + 1) >> 1))
+        me.decodedPlanes.yPlane.resize(width * height)
+        me.decodedPlanes.uPlane.resize(((width + 1) >> 1) * ((height + 1) >> 1))
+        me.decodedPlanes.vPlane.resize(((width + 1) >> 1) * ((height + 1) >> 1))
 
         // Initialize planes to neutral values
-        for i in @countof(planes.yPlane)
+        for i in @countof(me.decodedPlanes.yPlane)
         {
-            planes.yPlane[i] = 128
+            me.decodedPlanes.yPlane[i] = 128
         }
-        for i in @countof(planes.uPlane)
+        for i in @countof(me.decodedPlanes.uPlane)
         {
-            planes.uPlane[i] = 128
+            me.decodedPlanes.uPlane[i] = 128
         }
-        for i in @countof(planes.vPlane)
+        for i in @countof(me.decodedPlanes.vPlane)
         {
-            planes.vPlane[i] = 128
+            me.decodedPlanes.vPlane[i] = 128
         }
 
         // Decode complete image
-        decodeImage(&tokenPartitions, frameHeader, &planes)
+        decodeImage(&tokenPartitions, frameHeader, &me.decodedPlanes)
+        me.isDecoded = true
     }
 
     // Decode full image and return pixel data
     mtd decodeFullImage(pixels: [*] u8) throw
     {
-        // This method would be called from the IImageDecoder interface
-        // For now, just fill with a test pattern
-        let width = me.imageSizeX
+        let width  = me.imageSizeX
         let height = me.imageSizeY
 
-        Console.printf("Generating test pattern for %x% image\n", width, height)
-
-        for y in height
+        if me.isDecoded
         {
-            for x in width
+            Console.printf("Converting decoded YUV to RGB (%x%)\n", width, height)
+            convertYUVtoRGB(&me.decodedPlanes, pixels, width, height)
+        }
+        else
+        {
+            Console.printf("No decoded data available, generating test pattern for %x% image\n", width, height)
+
+            for y in height
             {
-                let pixelOffset = (y * width + x) * 3
-                pixels[pixelOffset + 0] = cast(u8) ((x + y) & 255)     // B
-                pixels[pixelOffset + 1] = cast(u8) (x & 255)           // G
-                pixels[pixelOffset + 2] = cast(u8) (y & 255)           // R
+                for x in width
+                {
+                    let pixelOffset = (y * width + x) * 3
+                    pixels[pixelOffset + 0] = cast(u8) ((x + y) & 255) // B
+                    pixels[pixelOffset + 1] = cast(u8) (x & 255) // G
+                    pixels[pixelOffset + 2] = cast(u8) (y & 255) // R
+                }
             }
         }
     }
