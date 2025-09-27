@@ -345,47 +345,80 @@ private
         return nonZeroCount
     }
 
-    // Initialize token partitions - FIXED VERSION
-    func initTokenPartitions(tp: *TokenPartitions, data: const [*] u8, offset: s32, size: s32, numPartitions: s32)
+    // Initialize token partitions - PROPER CONSUMPTION TRACKING
+    func initTokenPartitions(tp: *TokenPartitions, data: const [*] u8, offset: s32, size: s32, numPartitions: s32, bd: *BoolDecoder)
     {
         tp.count = Math.min(numPartitions, 8)
 
         if tp.count == 1
         {
-            // Single partition - use all remaining data
-            initBoolDecoder(&tp.decoders[0], data + offset, size)
-            Console.printf("Initialized 1 token partition, size: %\n", size)
+            // Single partition - remaining data from boolean decoder
+            let remainingSize = bd.end - bd.pos
+            Console.printf("Single partition mode: remaining % bytes from frame header parsing\n", remainingSize)
+
+            if remainingSize > 0
+            {
+                initBoolDecoder(&tp.decoders[0], bd.buffer + bd.pos, remainingSize)
+                Console.printf("Initialized 1 token partition, size: %\n", remainingSize)
+            }
+            else
+            {
+                Console.printf("Warning: no remaining data for single partition\n")
+                initBoolDecoder(&tp.decoders[0], bd.buffer, 0)
+            }
             return
         }
 
-        // Multiple partitions - read partition sizes
+        Console.printf("Multi-partition mode: consumed % bytes for frame header\n", bd.pos)
+
+        // Debug: show bytes around the expected partition header location
+        Console.printf("Debugging partition header area:\n")
+        let debugStart = Math.max(0, bd.pos - 10)
+        let debugEnd = Math.min(bd.end, bd.pos + 30)
+        Console.printf("Bytes from offset % to %: ", debugStart, debugEnd - 1)
+        for i in debugStart until debugEnd
+        {
+            Console.printf("%, ", bd.buffer[i])
+        }
+        Console.printf("\n")
+        Console.printf("Boolean decoder state: pos=%, end=%, range=%, value=%\n", bd.pos, bd.end, bd.range, bd.value)
+
+        // Calculate where token partition headers start
+        let consumedBytes = bd.pos
+        let tokenHeaderStart = offset + consumedBytes
+        let availableForTokens = size - consumedBytes
+
+        Console.printf("Token partition headers start at offset %, available bytes: %\n", tokenHeaderStart, availableForTokens)
+
+        // Multiple partitions - read partition sizes from remaining first partition
         var partitionSizes: [8] s32
         let totalHeaderSize = (tp.count - 1) * 3  // 3 bytes per partition size
 
-        if totalHeaderSize > size
+        if totalHeaderSize > availableForTokens
         {
-            Console.printf("Warning: partition header too large, falling back to single partition\n")
+            Console.printf("Warning: partition header too large (need %, have %), falling back to single partition\n",
+                          totalHeaderSize, availableForTokens)
             tp.count = 1
-            initBoolDecoder(&tp.decoders[0], data + offset, size)
+            let remainingSize = bd.end - bd.pos
+            if remainingSize > 0
+            {
+                initBoolDecoder(&tp.decoders[0], bd.buffer + bd.pos, remainingSize)
+            }
+            else
+            {
+                initBoolDecoder(&tp.decoders[0], bd.buffer, 0)
+            }
             return
         }
 
-        Console.printf("Reading % partition sizes from header\n", tp.count - 1)
+        Console.printf("Reading % partition sizes from offset %\n", tp.count - 1, tokenHeaderStart)
 
-        // Read partition sizes (24-bit little endian) with bounds checking
-        var dataOffset = offset
+        // Read partition sizes (24-bit little endian) from the correct location
+        var dataOffset = tokenHeaderStart
         var totalPartitionSize = 0
 
         for i in (tp.count - 1)
         {
-            if dataOffset + 3 > offset + size
-            {
-                Console.printf("Error: partition header extends beyond data\n")
-                tp.count = 1
-                initBoolDecoder(&tp.decoders[0], data + offset, size)
-                return
-            }
-
             let b0 = cast(s32) data[dataOffset + 0]
             let b1 = cast(s32) data[dataOffset + 1]
             let b2 = cast(s32) data[dataOffset + 2]
@@ -393,12 +426,20 @@ private
 
             Console.printf("  Partition % header: bytes=[%,%,%] -> size=%\n", i, b0, b1, b2, partitionSizes[i])
 
-            // Validate partition size
-            if partitionSizes[i] < 0 or partitionSizes[i] > size
+            // Validate partition size against remaining data
+            if partitionSizes[i] < 0 or partitionSizes[i] > availableForTokens
             {
-                Console.printf("Error: invalid partition % size: %\n", i, partitionSizes[i])
+                Console.printf("Error: invalid partition % size: % (max %)\n", i, partitionSizes[i], availableForTokens)
                 tp.count = 1
-                initBoolDecoder(&tp.decoders[0], data + offset, size)
+                let remainingSize = bd.end - bd.pos
+                if remainingSize > 0
+                {
+                    initBoolDecoder(&tp.decoders[0], bd.buffer + bd.pos, remainingSize)
+                }
+                else
+                {
+                    initBoolDecoder(&tp.decoders[0], bd.buffer, 0)
+                }
                 return
             }
 
@@ -406,38 +447,42 @@ private
             dataOffset += 3
         }
 
-        // Last partition gets remaining data
-        let remainingSize = size - totalHeaderSize - totalPartitionSize
-        partitionSizes[tp.count - 1] = remainingSize
+        // Last partition gets remaining data after all headers
+        let remainingForLastPartition = availableForTokens - totalHeaderSize - totalPartitionSize
+        partitionSizes[tp.count - 1] = remainingForLastPartition
 
-        Console.printf("Calculated last partition size: %\n", remainingSize)
-        Console.printf("Total partition sizes: %, available: %\n", totalPartitionSize + remainingSize, size - totalHeaderSize)
+        Console.printf("Calculated last partition size: %\n", remainingForLastPartition)
+        Console.printf("Total partition sizes: %, available after headers: %\n",
+                      totalPartitionSize + remainingForLastPartition, availableForTokens - totalHeaderSize)
 
         // Validate total size
-        if totalPartitionSize + remainingSize > size - totalHeaderSize
+        if totalPartitionSize + remainingForLastPartition > availableForTokens - totalHeaderSize or remainingForLastPartition < 0
         {
-            Console.printf("Error: total partition sizes exceed available data\n")
+            Console.printf("Error: total partition sizes exceed available data or negative last partition\n")
             tp.count = 1
-            initBoolDecoder(&tp.decoders[0], data + offset, size)
+            let remainingSize = bd.end - bd.pos
+            if remainingSize > 0
+            {
+                initBoolDecoder(&tp.decoders[0], bd.buffer + bd.pos, remainingSize)
+            }
+            else
+            {
+                initBoolDecoder(&tp.decoders[0], bd.buffer, 0)
+            }
             return
         }
 
         Console.printf("Token partitions: %\n", tp.count)
 
-        // Initialize decoders with bounds checking
-        var currentOffset = offset + totalHeaderSize
+        // Initialize decoders starting after partition headers
+        var currentOffset = tokenHeaderStart + totalHeaderSize
         for i in tp.count
         {
-            if currentOffset + partitionSizes[i] > offset + size
+            if partitionSizes[i] <= 0
             {
-                Console.printf("Error: partition % extends beyond data\n", i)
-                partitionSizes[i] = (offset + size) - currentOffset
-                if partitionSizes[i] <= 0
-                {
-                    Console.printf("Error: no data left for partition %\n", i)
-                    tp.count = i
-                    break
-                }
+                Console.printf("Error: partition % has invalid size %\n", i, partitionSizes[i])
+                tp.count = i
+                break
             }
 
             initBoolDecoder(&tp.decoders[i], data + currentOffset, partitionSizes[i])
@@ -773,7 +818,7 @@ impl Decoder
         if tokenSize > 0
         {
             var tokenPartitions: TokenPartitions
-            initTokenPartitions(&tokenPartitions, me.stream, tokenStart, tokenSize, frameHeader.numPartitions)
+            initTokenPartitions(&tokenPartitions, me.stream, partitionStart, partitionSize, frameHeader.numPartitions, &bd)
 
             // Test coefficient decoding
             testCoefficientDecoding(&tokenPartitions)
