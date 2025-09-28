@@ -225,12 +225,6 @@ bool Tokenizer::doSymbol(TokenParse& tokenParse, uint32_t c)
                     curBuffer += 2;
                     location.column += 2;
                 }
-                else if (curBuffer[1] == '<')
-                {
-                    tokenParse.token.id = TokenId::SymDotDotLess;
-                    curBuffer += 2;
-                    location.column += 2;
-                }
                 else
                 {
                     tokenParse.token.id = TokenId::SymDotDot;

@@ -57,8 +57,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 
     AstNode* firstExpr = nullptr;
 
-    if (tokenParse.is(TokenId::SymDotDot) || tokenParse.is(TokenId::SymDotDotLess) ||
-        tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
+    if (tokenParse.is(TokenId::SymDotDot) || tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
     {
         const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, nullptr);
         firstExpr          = literal;
@@ -74,8 +73,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
     }
 
     // Slicing
-    if (tokenParse.is(TokenId::SymDotDot) || tokenParse.is(TokenId::SymDotDotLess) ||
-        tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
+    if (tokenParse.is(TokenId::SymDotDot) || tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
     {
         const auto arrayNode   = Ast::newNode<AstArrayPointerSlicing>(AstNodeKind::ArrayPointerSlicing, this, nullptr);
         arrayNode->semanticFct = Semantic::resolveArrayPointerSlicing;
@@ -83,7 +81,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         Ast::addChildBack(arrayNode, *exprNode);
         Ast::addChildBack(arrayNode, firstExpr);
         arrayNode->lowerBound = firstExpr;
-        if (tokenParse.is(TokenId::SymDotDotLess) || tokenParse.is(TokenId::KwdUntil))
+        if (tokenParse.is(TokenId::KwdUntil))
             arrayNode->addSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP);
         SWAG_CHECK(eatToken());
 

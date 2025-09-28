@@ -8,7 +8,7 @@
 
     {
         let x = "abcd"
-        let y = x[..<2]
+        let y = x[until 2]
         @assert(y == "ab")
     }
 }
