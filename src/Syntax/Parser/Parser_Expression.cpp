@@ -1441,10 +1441,11 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
     // Helper: after we parsed an IdentifierRef into exprNode and detected that a leading dot
     // requires a receiver, prepend either the nearest 'with' identifier(s) or an implicit 'me'
     // when inside a method. Resets the 'prepend' toggle for the caller.
-    auto prependReceiverIfNeeded = [&](AstNode*&       exprNode,
-                                       const AstWith*& withNode,
-                                       bool&           prepend,
-                                       const AstNode*  parentNode) -> bool {
+    auto prependReceiverIfNeeded = [&](const TokenParse& tokenDot,
+                                       AstNode*&         exprNode,
+                                       const AstWith*&   withNode,
+                                       bool&             prepend,
+                                       const AstNode*    parentNode) -> bool {
         if (!prepend)
             return true;
 
@@ -1474,9 +1475,8 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         // Implicit 'me' when in a method body and no 'with' was found
         if (parentNode->ownerFct && parentNode->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
         {
-            const auto             id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), "me", this, exprNode);
+            const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), "me", this, exprNode);
             id->addAstFlag(AST_GENERATED);
-            // Reuse the same path/flags as 'with' so the rest of the pipeline remains unchanged
             id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
             id->allocateIdentifierExtension();
             id->identifierExtension->fromAlternateVar = nullptr;
@@ -1486,8 +1486,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             return true;
         }
 
-        // No 'with', not in a method: original error
-        return error(tokenParse, toErr(Err0404));
+        return error(tokenDot, toErr(Err0404));
     };
 
     switch (tokenParse.token.id)
@@ -1501,6 +1500,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             const AstWith* withNode        = nullptr;
             AstNode*       exprNode        = nullptr;
             bool           prependReceiver = false;
+            TokenParse     tokenDot;
 
             SWAG_CHECK(eatToken());
             while (true)
@@ -1515,6 +1515,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                             withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
                     }
 
+                    tokenDot        = tokenParse;
                     prependReceiver = true;
                     eatToken();
                 }
@@ -1524,7 +1525,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
                 if (prependReceiver)
                 {
-                    SWAG_CHECK(prependReceiverIfNeeded(exprNode, withNode, prependReceiver, parent));
+                    SWAG_CHECK(prependReceiverIfNeeded(tokenDot, exprNode, withNode, prependReceiver, parent));
                 }
 
                 if (tokenParse.is(TokenId::SymRightParen))
@@ -1546,6 +1547,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             AstNode*       exprNode        = nullptr;
             bool           prependReceiver = false;
             TokenParse     tokenStart      = tokenParse;
+            TokenParse     tokenDot;
 
             while (true)
             {
@@ -1559,6 +1561,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                             withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
                     }
 
+                    tokenDot        = tokenParse;
                     prependReceiver = true;
                     eatToken();
                 }
@@ -1569,7 +1572,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
                 if (prependReceiver)
                 {
-                    SWAG_CHECK(prependReceiverIfNeeded(exprNode, withNode, prependReceiver, parent));
+                    SWAG_CHECK(prependReceiverIfNeeded(tokenDot, exprNode, withNode, prependReceiver, parent));
                 }
 
                 if (tokenParse.isNot(TokenId::SymComma))
