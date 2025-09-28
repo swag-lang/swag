@@ -13,17 +13,17 @@ func day4B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "4.txt")
     let lines    = assume File.readAllLines(dataPath)
-    Slice.sort(lines[..])
+    Slice.sort(lines[ to ])
 
     var curGuard, startSleep, curMin = 0
     var count: [60] HashTable'(s32, s32)
 
     foreach l in lines
     {
-        curMin = assume StrConv.parseS32(l[15..]).value
+        curMin = assume StrConv.parseS32(l[15 to ]).value
 
         if Utf8.contains(l, "begins shift"):
-            curGuard = assume StrConv.parseS32(l[26..]).value
+            curGuard = assume StrConv.parseS32(l[26 to ]).value
         elif Utf8.contains(l, "falls asleep"):
             startSleep = curMin
         elif Utf8.contains(l, "wakes up"):

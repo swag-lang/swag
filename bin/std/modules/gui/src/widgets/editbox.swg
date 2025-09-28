@@ -623,7 +623,7 @@ internal impl EditBox
         if selB == .text.length:
             return false
 
-        .countRunes -= cast(s32) Utf8.countRunes(.text[selB..selE - 1])
+        .countRunes -= cast(s32) Utf8.countRunes(.text[selB to selE - 1])
         .text.remove(selB, selE - selB)
         discard .checkContent()
 

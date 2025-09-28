@@ -42,7 +42,7 @@ func day3B()
         result.add(pos)
         foreach v in Tokenize.split(line, ',''u8)
         {
-            let val = assume StrConv.toF32(v[1..])
+            let val = assume StrConv.toF32(v[1 to ])
             switch v[0]
             {
             case 'U':

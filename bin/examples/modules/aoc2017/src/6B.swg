@@ -13,7 +13,7 @@ func day6B()
 {
     let line   = "4 10 4 1 8 4 9 14 5 1 14 15 0 15 3 5"
     let slice  = Tokenize.split(line, " ")
-    var blocks = Slice.map(slice[..], func(x) => assume StrConv.toS32(x))
+    var blocks = Slice.map(slice[ to ], func(x) => assume StrConv.toS32(x))
 
     var set:  HashTable'(String, u64)
     var total = 0'u64

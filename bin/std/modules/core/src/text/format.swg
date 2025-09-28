@@ -204,23 +204,23 @@ func toInterp(buf: *ConcatBuffer, exp: string)
             var idxE = Utf8.indexOf(exp, "{", startByteIndex: idx)
             if idxE == Swag.U64.Max
             {
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx to ])
                 break
             }
 
             if idx != idxE:
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx..<idxE])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx until idxE])
 
             // Find the end of the interpolated string, or the start of the format
             idx  = idxE + 1
             idxE = Utf8.indexOfAny(exp, "}:", startByteIndex: idx)
             if idxE == Swag.U64.Max
             {
-                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx - 1..])
+                sb.appendFormat("buf.addBytes(\"%\")\n", exp[idx - 1 to ])
                 break
             }
 
-            let value = exp[idx..<idxE]
+            let value = exp[idx until idxE]
             idx = idxE + 1
 
             // Format
@@ -230,7 +230,7 @@ func toInterp(buf: *ConcatBuffer, exp: string)
                 idxE = Utf8.indexOf(exp, "}", startByteIndex: idx)
                 if idxE != Swag.U64.Max
                 {
-                    format = exp[idx..<idxE]
+                    format = exp[idx until idxE]
                     idx    = idxE + 1
                 }
             }

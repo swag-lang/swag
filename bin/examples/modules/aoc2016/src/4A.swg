@@ -36,11 +36,11 @@ func day4A()
                 idx += 1
             }
 
-            let res = StrConv.parseS64(l[idx..])
+            let res = StrConv.parseS64(l[idx to ])
             idx += res.eat
 
             var valid = true
-            foreach c in l[idx + 1..idx + 5]
+            foreach c in l[idx + 1 to idx + 5]
             {
                 var max, maxi = 0'u64
                 for i in count where count[i] > max

@@ -16,7 +16,7 @@ func day5B()
 
     let dataPath = Path.combine(Path.getDirectoryName(#file), "5.txt")
     let lines    = assume File.readAllLines(dataPath)
-    var jumps    = Slice.map(lines[..], func(x) => assume StrConv.toS64(x))
+    var jumps    = Slice.map(lines[ to ], func(x) => assume StrConv.toS64(x))
 
     var it, step = 0's64
     while it < jumps.count

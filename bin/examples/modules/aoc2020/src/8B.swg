@@ -58,8 +58,8 @@ func day8B()
         while ip < lines.count and lines[ip].length
         {
             let lip = ip
-            let v   = assume StrConv.parseS32(lines[ip][4..]).value
-            switch lines[ip][0..2]
+            let v   = assume StrConv.parseS32(lines[ip][4 to ]).value
+            switch lines[ip][0 to 2]
             {
             case "nop":
                 ip += cpt == fix ? v : 1

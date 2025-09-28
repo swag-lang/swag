@@ -44,7 +44,7 @@ func day9B()
         var sum = 0
         var min = Swag.S32.Max
         var max = 0
-        foreach l1 in lines[i..]
+        foreach l1 in lines[i to ]
         {
             let v1 = assume StrConv.toS32(l1)
             min = Math.min(min, v1)

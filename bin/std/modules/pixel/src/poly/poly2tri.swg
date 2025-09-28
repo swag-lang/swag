@@ -684,7 +684,7 @@ impl Tessellate
         }
 
         Debug.assert(.polyStart != .points.count, "no points !")
-        initEdges(me, .points[.polyStart .. .points.count - 1])
+        initEdges(me, .points[.polyStart to .points.count - 1])
     }
 
     // Register a polygon as a polyline

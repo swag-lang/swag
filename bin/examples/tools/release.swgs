@@ -54,7 +54,7 @@ func filter(file: File.FileInfo)->bool
     // Generate list of files
     var allLines: Array'string
     foreach f in allFiles:
-        allLines.add(cast(string) f.fullname[9..])
+        allLines.add(cast(string) f.fullname[9 to ])
 
     let mo = try Directory.getCurrent()
     try Directory.setCurrent(Path.getDirectoryName(Path.getDirectoryName(dataPath)))

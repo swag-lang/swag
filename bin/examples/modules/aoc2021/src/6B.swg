@@ -28,7 +28,7 @@ func day6B()
         state[6], state[8] = oldState[0]
         total = oldState[0] * 2
 
-        foreach f, i in oldState[1..]
+        foreach f, i in oldState[1 to ]
         {
             state[i] += oldState[i + 1]
             total += oldState[i + 1]

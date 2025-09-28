@@ -12,7 +12,7 @@ impl Properties
         {
             let dataField = cast(*f32) (data + v.offset)
 
-            with let label = Label.create(line, v.name[0..0], {0, 0, item.line.position.height})
+            with let label = Label.create(line, v.name[0 to 0], {0, 0, item.line.position.height})
             {
                 .dockStyle         = .Left
                 .horzAlignmentText = .Center

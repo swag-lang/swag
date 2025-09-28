@@ -42,7 +42,7 @@ func day10A()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
     let slice    = Tokenize.split(assume File.readAllText(dataPath), ",")
-    let nums     = Slice.map(slice[..], func(x) => assume StrConv.toS32(x))
+    let nums     = Slice.map(slice[ to ], func(x) => assume StrConv.toS32(x))
 
     var arr, tmp: Array's32
     for i in 256:

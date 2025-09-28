@@ -12,10 +12,12 @@ bool FormatAst::outputArrayPointerSlicing(FormatContext& context, AstNode* node)
     SWAG_CHECK(outputNode(context, arrayNode->array));
     concat->addChar('[');
     SWAG_CHECK(outputNode(context, arrayNode->lowerBound));
+    concat->addBlank();
     if (arrayNode->hasSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP))
-        concat->addString("..<");
+        concat->addString("until");
     else
-        concat->addString("..");
+        concat->addString("to");
+    concat->addBlank();
     SWAG_CHECK(outputNode(context, arrayNode->upperBound));
     concat->addChar(']');
     return true;

@@ -30,7 +30,7 @@ func day9A()
     var start = 0'u64
     while start != @countof(line)
     {
-        let res = r.partialMatch(line[start..])
+        let res = r.partialMatch(line[start to ])
         if res
         {
             let n = assume StrConv.toS32(r[1])
@@ -39,7 +39,7 @@ func day9A()
 
             while x
             {
-                let sub = line[start..<start + n]
+                let sub = line[start until start + n]
                 decode += sub
                 x -= 1
             }

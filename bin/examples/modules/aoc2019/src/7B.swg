@@ -111,7 +111,7 @@ func day7B()
                 break
         }
 
-        if !Slice.nextPermutation(phase[..]):
+        if !Slice.nextPermutation(phase[ to ]):
             break
     }
 

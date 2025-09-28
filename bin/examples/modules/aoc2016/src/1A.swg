@@ -32,7 +32,7 @@ func day1A()
     foreach it in split
     {
         let v = Latin1.trim(it)
-        let n = assume StrConv.toS32(v[1..])
+        let n = assume StrConv.toS32(v[1 to ])
         switch v[0]
         {
         case 'R':

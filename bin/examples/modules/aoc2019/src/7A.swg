@@ -110,7 +110,7 @@ func day7A()
         }
 
         total = Math.max(total, input)
-        if !Slice.nextPermutation(phase[..]):
+        if !Slice.nextPermutation(phase[ to ]):
             break
     }
 

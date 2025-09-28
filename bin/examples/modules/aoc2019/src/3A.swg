@@ -81,7 +81,7 @@ func day3A0()
                 dy = 0
             }
 
-            let val = assume StrConv.toS32(v[1..])
+            let val = assume StrConv.toS32(v[1 to ])
             for val
             {
                 x = x + dx
@@ -118,7 +118,7 @@ func day3A1()
         result.add(pos)
         foreach v in Tokenize.split(line, ',''u8)
         {
-            let val = assume StrConv.toF32(v[1..])
+            let val = assume StrConv.toF32(v[1 to ])
             switch v[0]
             {
             case 'U':

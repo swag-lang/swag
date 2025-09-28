@@ -37,7 +37,7 @@ func day2A()
         var count: [26] s32
         foreach #Bytes c in l:
             count[c - 'a'] += 1
-        Slice.sort(count[..], bigFirst: true)
+        Slice.sort(count[ to ], bigFirst: true)
         switch
         {
         case count[0] == 3 and count[1] == 2:

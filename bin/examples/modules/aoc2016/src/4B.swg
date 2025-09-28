@@ -29,7 +29,7 @@ func day4B()
             idx += 1
         }
 
-        let res = assume StrConv.parseS64(l[idx..])
+        let res = assume StrConv.parseS64(l[idx to ])
 
         for i in str:
             str[i] = 'a' + cast(u8) ((str[i] + res.value) % 26)

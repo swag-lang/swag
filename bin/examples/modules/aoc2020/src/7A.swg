@@ -63,7 +63,7 @@ func day7A0()
         foreach v in split1
         {
             let splitVal = Tokenize.split(v, ' ''u8, 1)
-            foreach can in splitVal[1..]
+            foreach can in splitVal[1 to ]
             {
                 let it = id.tryFind(split[0])
                 if it:

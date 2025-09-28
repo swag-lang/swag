@@ -150,7 +150,7 @@ func day10B()
         toCheck()
         if l != "noop"
         {
-            x += assume StrConv.toS32(l[5..])
+            x += assume StrConv.toS32(l[5 to ])
             toCheck()
         }
     }

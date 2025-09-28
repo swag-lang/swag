@@ -109,7 +109,7 @@ func day10B()
         }
     }
 
-    let idxStart = Slice.max(tot[..]).index
+    let idxStart = Slice.max(tot[ to ]).index
     let posStart = arr[idxStart].pos
     arr.removeAt(idxStart)
 

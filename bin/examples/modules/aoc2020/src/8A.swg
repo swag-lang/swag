@@ -53,15 +53,15 @@ func day8A()
     while lines[ip].length
     {
         let lip = ip
-        switch lines[ip][0..2]
+        switch lines[ip][0 to 2]
         {
         case "nop":
             ip += 1
         case "acc":
-            total += assume StrConv.parseS32(lines[ip][4..]).value
+            total += assume StrConv.parseS32(lines[ip][4 to ]).value
             ip += 1
         case "jmp":
-            ip += assume StrConv.parseS32(lines[ip][4..]).value
+            ip += assume StrConv.parseS32(lines[ip][4 to ]).value
         }
 
         lines[lip].clear()

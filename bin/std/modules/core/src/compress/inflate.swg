@@ -342,8 +342,8 @@ impl Inflate
 
                 if n != ntot:
                     throw InvalidFormatError{"bad code lengths"}
-                repeatHt.init(lenCodes[0..hlit - 1])
-                repeatZ.init(lenCodes[hlit..ntot - 1])
+                repeatHt.init(lenCodes[0 to hlit - 1])
+                repeatZ.init(lenCodes[hlit to ntot - 1])
                 .parseBlock(&repeatHt, &repeatZ, result)
             }
 

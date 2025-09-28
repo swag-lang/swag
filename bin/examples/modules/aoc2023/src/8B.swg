@@ -55,7 +55,7 @@ func day8B()
             instructions = l.toString()
         elif i > 1
         {
-            let name = l[0..2]
+            let name = l[0 to 2]
             nameToNode.add(name, i - 2)
             if name[2] == 'A':
                 startNode.add(i - 2)
@@ -67,9 +67,9 @@ func day8B()
     {
         if i <= 1:
             continue
-        let name   = l[0..2]
-        let left   = l[7..9]
-        let right  = l[12..14]
+        let name   = l[0 to 2]
+        let left   = l[7 to 9]
+        let right  = l[12 to 14]
         let leftV  = nameToNode.find(left).value
         let rightV = nameToNode.find(right).value
         nodes[i - 2] = {name, leftV, rightV}

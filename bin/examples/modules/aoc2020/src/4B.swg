@@ -106,7 +106,7 @@ func day4B0()
                     break
                 if val.eat == @countof(res1[1]):
                     break
-                let sub = res1[1][val.eat..]
+                let sub = res1[1][val.eat to ]
                 if sub != "cm" and sub != "in":
                     break
                 if sub == "cm" and val.value >= 150 and val.value <= 193:
@@ -116,7 +116,7 @@ func day4B0()
             case "hcl":
                 if @countof(res1[1]) != 7 or res1[1][0] != '#':
                     break
-                discard catch StrConv.parseX64(res1[1][1..])
+                discard catch StrConv.parseX64(res1[1][1 to ])
                 if @err == null:
                     pass |= 16
             case "ecl":

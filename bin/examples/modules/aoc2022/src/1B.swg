@@ -33,7 +33,7 @@ func day1B()
                 count[2] = one
             }
 
-            Slice.sort(count[..])
+            Slice.sort(count[ to ])
             one = 0
         }
     }

@@ -58,7 +58,7 @@ func day10B()
 {
     let dataPath = Path.combine(Path.getDirectoryName(#file), "10.txt")
     let lines    = assume File.readAllLines(dataPath)
-    var vals     = Slice.map(lines[..], func(x) => assume StrConv.toS64(x))
+    var vals     = Slice.map(lines[ to ], func(x) => assume StrConv.toS64(x))
 
     vals.sort()
 

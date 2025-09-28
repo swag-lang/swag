@@ -22,13 +22,13 @@ func day1B()
 
     foreach v0, i0 in arr
     {
-        foreach v1, i1 in arr[i0..]
+        foreach v1, i1 in arr[i0 to ]
         {
             let v2 = 2020 - (v0 + v1)
             if v2 < 0:
                 continue
 
-            if Slice.containsSorted(arr[i1..], v2)
+            if Slice.containsSorted(arr[i1 to ], v2)
             {
                 //Console.print("total: ", v0*v1*v2)
                 @assert(v0 * v1 * v2 == 165795564)

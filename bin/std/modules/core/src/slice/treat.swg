@@ -143,7 +143,7 @@ func(T) nextPermutation(arr: [..] T)->bool
 
     swap(&arr[i], &arr[j])
     if i + 1 != size - 1:
-        reverse(arr[i + 1..size - 1])
+        reverse(arr[i + 1 to size - 1])
 
     return true
 }

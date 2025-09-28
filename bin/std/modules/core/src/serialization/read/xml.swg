@@ -43,7 +43,7 @@ public impl Xml
             throw .getError("malformed tag, missing closing [[>]]")
 
         let end = .stream.getSeek() - 1
-        return Latin1.trim(cast(string) .stream.readBuffer[start..<end])
+        return Latin1.trim(cast(string) .stream.readBuffer[start until end])
     }
 
     mtd readStartTag()->string throw
@@ -57,7 +57,7 @@ public impl Xml
     {
         let tag   = .readTag()
         let start = .stackTags.popBack()
-        if tag[1..] != start:
+        if tag[1 to ] != start:
             throw .getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
     }
 

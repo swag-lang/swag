@@ -69,7 +69,7 @@ func day10B()
     res.clear()
     for i in 16
     {
-        let v = arr[i * 16..(i * 16) + 15]
+        let v = arr[i * 16 to (i * 16) + 15]
         res += Format.toString("%{X}", Slice.reduce(v, func(x, y) => x ^ y))
     }
 

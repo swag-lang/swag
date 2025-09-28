@@ -30,7 +30,7 @@ using Core, Libc
 
     {
         let x = "16661"
-        let y = x[1..3]
+        let y = x[1 to 3]
         let z = atoi(String.from(y))
         @assert(z == 666)
     }

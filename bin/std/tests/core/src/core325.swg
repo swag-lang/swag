@@ -13,7 +13,7 @@ func sendWords(text: string)
         var stop = Utf8.indexOf(text, ' ''rune, start)
         if stop == Swag.U64.Max:
             stop = @countof(text) - 1
-        let word = text[start..stop]
+        let word = text[start to stop]
         sendMessage(word)
         start = stop + 1
     }
