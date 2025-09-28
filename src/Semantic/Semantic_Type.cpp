@@ -116,7 +116,7 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
         {
             const auto typeFct = castTypeInfo<TypeInfoFuncAttr>(node->ownerFct->typeInfo, TypeInfoKind::FuncAttr);
             if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
-                err.addNote(node->ownerFct, node->ownerFct->token, "consider using [[mtd]] instead of [[func]] to implicitly include [[me]] as the first parameter");
+                err.addNote(node->ownerFct, node->ownerFct->token, "consider using [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter");
             else
                 err.addNote("could [[me]] be missing?");
         }

@@ -260,6 +260,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
             if (identifier->token.text == g_LangSpec->name_me &&
                 identifier->ownerFct &&
                 !identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD) &&
+                !identifier->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
                 identifier->ownerStructScope)
             {
                 notes.push_back(Diagnostic::note(identifier->ownerFct, identifier->ownerFct->token, "consider using [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter"));
