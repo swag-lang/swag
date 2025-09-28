@@ -100,18 +100,6 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
         if (!child)
             continue;
 
-        if (child->is(AstNodeKind::Identifier) &&
-            child->token.text == "me" &&
-            !child->findParent(AstNodeKind::With) &&
-            !child->findParent(AstNodeKind::CompilerMacro) &&
-            child == node->children.front() &&
-            child != node->children.back())
-        {
-            if (!node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE | AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE))
-                concat->addChar('.');
-            continue;
-        }
-
         if (child->hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL))
         {
             SWAG_CHECK(outputNode(context, child));
