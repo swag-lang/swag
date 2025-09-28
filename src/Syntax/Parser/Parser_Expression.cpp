@@ -1473,7 +1473,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         }
 
         // Implicit 'me' when in a method body and no 'with' was found
-        if (parentNode->ownerFct && parentNode->ownerFct->isFctWithMe())
+        auto ownerFct = parentNode->ownerFct;
+        if (ownerFct->hasOwnerInline() && !ownerFct->ownerInline()->func->hasAttribute(ATTRIBUTE_MIXIN))
+            ownerFct = ownerFct->ownerInline()->func;
+        if (ownerFct && ownerFct->isFctWithMe())
         {
             const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), g_LangSpec->name_me, this, exprNode);
             id->addAstFlag(AST_GENERATED);
