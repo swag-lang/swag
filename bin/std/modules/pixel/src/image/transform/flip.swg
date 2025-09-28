@@ -6,7 +6,7 @@ impl Image
     {
         let mec = cast #unconst (*Image) me
         let f   = dstImage
-        mec.visitPixels(f, stride: me.width)
+        mec.visitPixels(f, stride: .width)
         {
             let dstImage = cast(*Image) userData
             let w8       = image.width * image.bpp8
@@ -17,18 +17,18 @@ impl Image
     // Flip image vertically
     public mtd flip()
     {
-        Debug.assert(me.pixels.buffer != null)
-        me.allocWorkingBuffer()
-        me.doFlip(me.workingBuffer)
-        me.applyWorkingBuffer()
+        Debug.assert(.pixels.buffer != null)
+        .allocWorkingBuffer()
+        .doFlip(.workingBuffer)
+        .applyWorkingBuffer()
     }
 
     // Flip image vertically
     public mtd const toFlip()->Image
     {
-        Debug.assert(me.pixels.buffer != null)
-        var result: retval = create(me.width, me.height, me.pf)
-        me.doFlip(&result)
+        Debug.assert(.pixels.buffer != null)
+        var result: retval = create(.width, .height, .pf)
+        .doFlip(&result)
         return result
     }
 }

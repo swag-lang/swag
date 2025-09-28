@@ -13,14 +13,14 @@ impl ImageMetaData
     // Returns true if the metadata has the tag 'val'
     mtd isTag(val: const [..] u8)->bool
     {
-        if @countof(val) != me.tag.count:
+        if @countof(val) != .tag.count:
             return false
-        return Memory.compare(@dataof(val), me.tag.buffer, @countof(val)) == 0
+        return Memory.compare(@dataof(val), .tag.buffer, @countof(val)) == 0
     }
 
     // Convert the value to a slice
     mtd toSlice()->const [..] u8
     {
-        return me.value.toSlice()
+        return .value.toSlice()
     }
 }

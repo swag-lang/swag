@@ -15,37 +15,37 @@ impl DriverNative
     // Create the xaudio2 engine
     mtd createNative(initCOM: bool = true) throw
     {
-        Debug.assert(!me.xAudio2)
+        Debug.assert(!.xAudio2)
 
         var result: HRESULT
-        defer #err me.destroyNative()
+        defer #err .destroyNative()
 
         if initCOM
         {
             result = CoInitializeEx(null, 0)
             if result != S_OK:
                 throw SystemError{"failed to initialize COM", errorID: cast(u64) result}
-            me.hasInitCOM = initCOM
+            .hasInitCOM = initCOM
         }
 
-        result = XAudio2Create(&me.xAudio2, 0)
+        result = XAudio2Create(&.xAudio2, 0)
         if result != S_OK:
             throw SystemError{"cannot create xaudio2 device", errorID: cast(u64) result}
 
-        result = me.xAudio2.vtbl.createMasteringVoice(me.xAudio2, &me.masteringVoice)
+        result = .xAudio2.vtbl.createMasteringVoice(.xAudio2, &.masteringVoice)
         if result != S_OK:
             throw SystemError{"cannot create xaudio2 mastering voice", errorID: cast(u64) result}
 
         var debug: XAUDIO2_DEBUG_CONFIGURATION
         debug.traceMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
         //debug.breakMask = XAUDIO2_LOG_ERRORS | XAUDIO2_LOG_WARNINGS
-        me.xAudio2.vtbl.setDebugConfiguration(me.xAudio2, &debug, null)
+        .xAudio2.vtbl.setDebugConfiguration(.xAudio2, &debug, null)
 
-        result = me.masteringVoice.vtbl.getChannelMask(me.masteringVoice, &me.channelMask)
+        result = .masteringVoice.vtbl.getChannelMask(.masteringVoice, &.channelMask)
         if result != S_OK:
             throw SystemError{"cannot get xaudio2 channel mask", errorID: cast(u64) result}
 
-        result = X3DAudioInitialize(me.channelMask, X3DAUDIO_SPEED_OF_SOUND, me.x3DInstance)
+        result = X3DAudioInitialize(.channelMask, X3DAUDIO_SPEED_OF_SOUND, .x3DInstance)
         if result != S_OK:
             throw SystemError{"cannot initialize X3D audio", errorID: cast(u64) result}
 
@@ -57,22 +57,22 @@ impl DriverNative
     // Destroys the xaudio2 engine
     mtd destroyNative()
     {
-        if me.masteringVoice
+        if .masteringVoice
         {
-            me.masteringVoice.vtbl.destroyVoice(cast() me.masteringVoice)
-            me.masteringVoice = null
+            .masteringVoice.vtbl.destroyVoice(cast() .masteringVoice)
+            .masteringVoice = null
         }
 
-        if me.xAudio2
+        if .xAudio2
         {
-            discard me.xAudio2.vtbl.release(me.xAudio2)
-            me.xAudio2 = null
+            discard .xAudio2.vtbl.release(.xAudio2)
+            .xAudio2 = null
         }
 
-        if me.hasInitCOM
+        if .hasInitCOM
         {
             CoUninitialize()
-            me.hasInitCOM = false
+            .hasInitCOM = false
         }
     }
 }
@@ -81,19 +81,19 @@ impl Driver
 {
     mtd setOutputVolume(volume: f32) throw
     {
-        if !me.masteringVoice:
+        if !.masteringVoice:
             return
-        let hr = me.masteringVoice.vtbl.setVolume(cast() me.masteringVoice, volume, 0)
+        let hr = .masteringVoice.vtbl.setVolume(cast() .masteringVoice, volume, 0)
         if hr != S_OK:
             throw SystemError{"setOutputVolume", errorID: cast(u64) hr}
     }
 
     mtd getOutputVolume()->f32
     {
-        if !me.masteringVoice:
+        if !.masteringVoice:
             return 0
         var volume: f32
-        me.masteringVoice.vtbl.getVolume(cast() me.masteringVoice, &volume)
+        .masteringVoice.vtbl.getVolume(cast() .masteringVoice, &volume)
         return volume
     }
 }
@@ -193,22 +193,22 @@ impl Voice
 
     mtd destroyNative()
     {
-        if !me.handle:
+        if !.handle:
             return
-        me.handle.vtbl.destroyVoice(cast() me.handle)
-        me.handle = null
+        .handle.vtbl.destroyVoice(cast() .handle)
+        .handle = null
     }
 
     mtd updateNative()->bool throw
     {
-        if !me.handle:
+        if !.handle:
             return false
 
         var voiceState: XAUDIO2_VOICE_STATE
-        me.handle.vtbl.getState(me.handle, &voiceState, 0)
+        .handle.vtbl.getState(.handle, &voiceState, 0)
         while voiceState.buffersQueued < NumDecodedBuffers - 1
         {
-            let (ptrBuffer, sizeBuffer) = me.readBuffer()
+            let (ptrBuffer, sizeBuffer) = .readBuffer()
             if !sizeBuffer:
                 break
 
@@ -216,10 +216,10 @@ impl Voice
             buffer.pAudioData = ptrBuffer
             buffer.audioBytes = cast() sizeBuffer
             buffer.pContext   = me
-            let hr = me.handle.vtbl.submitSourceBuffer(me.handle, &buffer, null)
+            let hr = .handle.vtbl.submitSourceBuffer(.handle, &buffer, null)
             if hr != S_OK:
                 throw SystemError{"submitSourceBuffer", errorID: cast(u64) hr}
-            me.handle.vtbl.getState(me.handle, &voiceState, 0)
+            .handle.vtbl.getState(.handle, &voiceState, 0)
         }
 
         return voiceState.buffersQueued != 0
@@ -227,18 +227,18 @@ impl Voice
 
     mtd playNative(batchID: u32 = 0) throw
     {
-        if !me.handle:
+        if !.handle:
             return
-        let hr = me.handle.vtbl.start(me.handle, 0, batchID)
+        let hr = .handle.vtbl.start(.handle, 0, batchID)
         if hr != S_OK:
             throw SystemError{"start", errorID: cast(u64) hr}
     }
 
     mtd stopNative(batchID: u32 = 0) throw
     {
-        if !me.handle:
+        if !.handle:
             return
-        let hr = me.handle.vtbl.stop(me.handle, 0, batchID)
+        let hr = .handle.vtbl.stop(.handle, 0, batchID)
         if hr != S_OK:
             throw SystemError{"stop", errorID: cast(u64) hr}
     }
@@ -249,10 +249,10 @@ public impl Voice
     // Set the playing voice volume between [0..1].
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
-        if !me.handle:
+        if !.handle:
             return
         let v  = Math.clamp(volume, 0, 1)
-        let hr = me.handle.vtbl.setVolume(cast() me.handle, v, batchID)
+        let hr = .handle.vtbl.setVolume(cast() .handle, v, batchID)
         if hr != S_OK:
             throw SystemError{"setVolume", errorID: cast(u64) hr}
     }
@@ -260,10 +260,10 @@ public impl Voice
     // Returns the actual volume.
     mtd getVolume()->f32 throw
     {
-        if !me.handle:
+        if !.handle:
             return 0
         var volume: f32
-        me.handle.vtbl.getVolume(cast() me.handle, &volume)
+        .handle.vtbl.getVolume(cast() .handle, &volume)
         return volume
     }
 
@@ -272,9 +272,9 @@ public impl Voice
     // See [[Voice.create]]
     mtd setFrequencyRatio(ratio: f32, batchID: u32 = 0) throw
     {
-        if !me.handle:
+        if !.handle:
             return
-        let hr = me.handle.vtbl.setFrequencyRatio(me.handle, ratio, batchID)
+        let hr = .handle.vtbl.setFrequencyRatio(.handle, ratio, batchID)
         if hr != S_OK:
             throw SystemError{"setFrequencyRatio", errorID: cast(u64) hr}
     }
@@ -306,7 +306,7 @@ public impl Voice
             pSFXSEndList          = &sfxSendList
         }
 
-        let hr = me.handle.vtbl.setOutputVoices(cast() me.handle, pSFXSEndList)
+        let hr = .handle.vtbl.setOutputVoices(cast() .handle, pSFXSEndList)
         if hr != S_OK:
             throw SystemError{"setOutputVoices", errorID: cast(u64) hr}
     }
@@ -344,10 +344,10 @@ impl Bus
 
     mtd destroyNative()
     {
-        if !me.handle:
+        if !.handle:
             return
-        me.handle.vtbl.destroyVoice(cast() me.handle)
-        me.handle = null
+        .handle.vtbl.destroyVoice(cast() .handle)
+        .handle = null
     }
 }
 
@@ -356,10 +356,10 @@ public impl Bus
     // Set the playing bus volume between [0..1]
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
-        if !me.handle:
+        if !.handle:
             return
         let v  = Math.clamp(volume, 0, 1)
-        let hr = me.handle.vtbl.setVolume(cast() me.handle, v, batchID)
+        let hr = .handle.vtbl.setVolume(cast() .handle, v, batchID)
         if hr != S_OK:
             throw SystemError{"setVolume", errorID: cast(u64) hr}
     }
@@ -367,10 +367,10 @@ public impl Bus
     // Returns the actual volume
     mtd getVolume()->f32 throw
     {
-        if !me.handle:
+        if !.handle:
             return 0
         var volume: f32
-        me.handle.vtbl.getVolume(cast() me.handle, &volume)
+        .handle.vtbl.getVolume(cast() .handle, &volume)
         return volume
     }
 }

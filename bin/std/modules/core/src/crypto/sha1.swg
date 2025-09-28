@@ -99,33 +99,33 @@ public impl Sha1
     // Applies padding and length encoding, then stores the result in 'result'.
     mtd final(result: Digest)
     {
-        var i = me.datalen
-        if me.datalen < 56
+        var i = .datalen
+        if .datalen < 56
         {
-            me.data[i] = 0x80
+            .data[i] = 0x80
             i += 1
             while i < 56
             {
-                me.data[i] = 0x00
+                .data[i] = 0x00
                 i += 1
             }
         }
         else
         {
-            me.data[i] = 0x80
+            .data[i] = 0x80
             i += 1
             while i < 64
             {
-                me.data[i] = 0x00
+                .data[i] = 0x00
                 i += 1
             }
 
-            me.transform(me.data)
+            .transform(.data)
 
             i = 0
             while i < 56
             {
-                me.data[i] = 0x00
+                .data[i] = 0x00
                 i += 1
             }
         }
@@ -141,7 +141,7 @@ public impl Sha1
         .data[56] = cast #bit (u8) (.bitlen >> 56)
         .transform(.data)
 
-        Memory.copy(result, &me.state[0], #sizeof(me.state))
+        Memory.copy(result, &.state[0], #sizeof(.state))
     }
 
     // Initialize the hashing sequence with standard SHA-1 constants.
@@ -166,13 +166,13 @@ public impl Sha1
 
         for i in len
         {
-            me.data[me.datalen] = buf[i]
-            me.datalen += 1
-            if me.datalen == 64
+            .data[.datalen] = buf[i]
+            .datalen += 1
+            if .datalen == 64
             {
-                me.transform(me.data)
-                me.bitlen += 512
-                me.datalen = 0
+                .transform(.data)
+                .bitlen += 512
+                .datalen = 0
             }
         }
     }

@@ -22,29 +22,29 @@ impl TextReader
 {
     mtd readBuffer()
     {
-        me.byteSeek = 0
+        .byteSeek = 0
 
         // First init. Fill force 4 bytes of the decode buffer to be 0 to
         // read the BOM
-        if me.checkPreamble
+        if .checkPreamble
         {
-            me.checkPreamble = false
-            me.buffer.reserve(me.bufferSize)
+            .checkPreamble = false
+            .buffer.reserve(.bufferSize)
 
-            if me.encodingType == .Utf8
+            if .encodingType == .Utf8
             {
-                dref cast(*u32) me.buffer.buffer = 0
-                me.buffer.count                  = me.stream.read(me.buffer.buffer, me.buffer.capacity)
+                dref cast(*u32) .buffer.buffer = 0
+                .buffer.count                  = .stream.read(.buffer.buffer, .buffer.capacity)
 
                 // BOM
-                if me.buffer.count >= 3 and me.buffer[0] == 0xEF and me.buffer[1] == 0xBB and me.buffer[2] == 0xBF:
-                    me.byteSeek = 3
+                if .buffer.count >= 3 and .buffer[0] == 0xEF and .buffer[1] == 0xBB and .buffer[2] == 0xBF:
+                    .byteSeek = 3
 
                 return
             }
         }
 
-        me.buffer.count = me.stream.read(me.buffer.buffer, me.buffer.capacity)
+        .buffer.count = .stream.read(.buffer.buffer, .buffer.capacity)
     }
 }
 
@@ -53,22 +53,22 @@ public impl TextReader
     // Opens the reader with the specified text encoding (default is UTF-8)
     mtd open(fullname: string, encoding = TextEncoding.Utf8) throw
     {
-        Debug.assert(!me.stream.isOpen())
+        Debug.assert(!.stream.isOpen())
 
-        me.stream = try openRead(fullname)
-        Debug.assert(me.stream.isOpen())
+        .stream = try openRead(fullname)
+        Debug.assert(.stream.isOpen())
 
-        me.byteSeek      = 0
-        me.checkPreamble = true
-        me.bufferSize    = Math.min(me.stream.getSize(), 64 * 1024'u64)
-        me.bufferSize    = Math.max(me.bufferSize, 16)
-        me.encodingType  = encoding
+        .byteSeek      = 0
+        .checkPreamble = true
+        .bufferSize    = Math.min(.stream.getSize(), 64 * 1024'u64)
+        .bufferSize    = Math.max(.bufferSize, 16)
+        .encodingType  = encoding
     }
 
     // Closes the reader and the associated stream
     mtd close()
     {
-        me.stream.close()
+        .stream.close()
     }
 
     // Reads one line of text into the result string
@@ -78,18 +78,18 @@ public impl TextReader
     {
         result.clear()
 
-        if me.byteSeek == me.buffer.count
+        if .byteSeek == .buffer.count
         {
-            me.readBuffer()
-            if me.buffer.count == 0:
+            .readBuffer()
+            if .buffer.count == 0:
                 return false
         }
 
         for
         {
-            var ptr  = me.buffer.buffer + me.byteSeek
+            var ptr  = .buffer.buffer + .byteSeek
             let ptrB = ptr
-            let ptrE = me.buffer.buffer + me.buffer.count
+            let ptrE = .buffer.buffer + .buffer.count
 
             // u64 by u64
             while ptr + 8'u64 <= ptrE
@@ -111,22 +111,22 @@ public impl TextReader
             // Restart
             if ptr == ptrE
             {
-                me.readBuffer()
-                if me.buffer.count == 0:
+                .readBuffer()
+                if .buffer.count == 0:
                     return true
                 continue
             }
 
             // + 1 because we eat the eol
-            me.byteSeek += range + 1
+            .byteSeek += range + 1
 
             // If we have a '\r', then eat the following '\n' if it exists
             if dref ptr == '\r'
             {
-                if me.byteSeek == me.buffer.count:
-                    me.readBuffer()
-                if me.buffer.count and me.buffer[me.byteSeek] == '\n':
-                    me.byteSeek += 1
+                if .byteSeek == .buffer.count:
+                    .readBuffer()
+                if .buffer.count and .buffer[.byteSeek] == '\n':
+                    .byteSeek += 1
             }
 
             break
@@ -142,22 +142,22 @@ public impl TextReader
         var result: retval
 
         // Append what remains valid in the current decoded buffer
-        if me.byteSeek < me.buffer.count
+        if .byteSeek < .buffer.count
         {
-            let remain = me.buffer.count - me.byteSeek
+            let remain = .buffer.count - .byteSeek
             result.grow(result.length + remain)
-            Memory.copy(result.buffer + result.length, me.buffer.buffer + me.byteSeek, remain)
+            Memory.copy(result.buffer + result.length, .buffer.buffer + .byteSeek, remain)
             result.length += remain
         }
 
         // Then read and append all the rest
-        me.readBuffer()
-        while me.buffer.count
+        .readBuffer()
+        while .buffer.count
         {
-            result.grow(result.length + (me.buffer.count - me.byteSeek))
-            Memory.copy(result.buffer + result.length, me.buffer.buffer + me.byteSeek, me.buffer.count - me.byteSeek)
-            result.length += me.buffer.count
-            me.readBuffer()
+            result.grow(result.length + (.buffer.count - .byteSeek))
+            Memory.copy(result.buffer + result.length, .buffer.buffer + .byteSeek, .buffer.count - .byteSeek)
+            result.length += .buffer.count
+            .readBuffer()
         }
 
         return result

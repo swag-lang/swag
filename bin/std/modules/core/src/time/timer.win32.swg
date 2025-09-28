@@ -24,26 +24,26 @@ impl Timer
     // Initialize timer
     mtd init(elapsedTimeMs: u32, lambda: func(Timer), periodic = false) throw
     {
-        Debug.assert(me.handle == null)
+        Debug.assert(.handle == null)
         Debug.assert(elapsedTimeMs > 0)
         Debug.assert(lambda != null)
-        me.userLambda = lambda
-        me.context    = dref @getcontext()
-        try CreateTimerQueueTimer(&me.handle, null, @mkcallback(&timerEntry), me, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
+        .userLambda = lambda
+        .context    = dref @getcontext()
+        try CreateTimerQueueTimer(&.handle, null, @mkcallback(&timerEntry), me, elapsedTimeMs, periodic ? elapsedTimeMs : 0, 0)
     }
 
     // Release the timer
     mtd release()
     {
-        if !me.handle:
+        if !.handle:
             return
 
         let evt = assume CreateEventA(null, FALSE, FALSE, null)
         defer CloseHandle(evt)
 
-        DeleteTimerQueueTimer(null, me.handle, evt)
+        DeleteTimerQueueTimer(null, .handle, evt)
         assume WaitForSingleObject(evt, INFINITE)
 
-        me.handle = null
+        .handle = null
     }
 }

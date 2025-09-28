@@ -5,7 +5,7 @@ impl Image
     // Fill the image with a noise.
     public mtd noise(noise: *Noise.FastNoise)
     {
-        me.visitPixels(noise)
+        .visitPixels(noise)
         {
             let params = cast(*Noise.FastNoise) userData
             let v      = params.noise(x, y)

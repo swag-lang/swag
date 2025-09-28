@@ -22,10 +22,10 @@ impl IWnd for ProgressBar
     {
         let bc      = evt.bc
         let painter = bc.painter
-        let theme   = me.getTheme()
-        let metrics = me.getThemeMetrics()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
+        let theme   = .getTheme()
+        let metrics = .getThemeMetrics()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
 
         var colorBk:     Color = undefined
         var colorBorder: Color = undefined
@@ -48,7 +48,7 @@ impl IWnd for ProgressBar
         let subRectMark   = &rects.progressBar_Mark
 
         // Bk
-        let clientRect = me.getClientRect()
+        let clientRect = .getClientRect()
         theme.drawSubRect(painter, clientRect, subRectBk, colorBk)
 
         painter.startClippingRegion()
@@ -60,23 +60,23 @@ impl IWnd for ProgressBar
         // Bar
         var posBox = clientRect
         posBox.y = clientRect.vertCenter() - (posBox.height * 0.5)
-        if me.prgBarFlags.has(.Infinite)
+        if .prgBarFlags.has(.Infinite)
         {
             let w = Math.max(clientRect.width / 5, 1)
             posBox.width = w
 
             let wt = clientRect.width + 2 * w
-            posBox.x = -w + (me.progression * wt)
+            posBox.x = -w + (.progression * wt)
 
             // Automatic update of progresssion
-            me.progression += me.getTiming().dt * metrics.progressBar_SpeedInf
-            if me.progression > 1:
-                me.progression = 0
-            me.invalidate()
+            .progression += .getTiming().dt * metrics.progressBar_SpeedInf
+            if .progression > 1:
+                .progression = 0
+            .invalidate()
         }
         else
         {
-            posBox.width = clientRect.width * me.progression
+            posBox.width = clientRect.width * .progression
         }
 
         theme.drawSubRect(painter, posBox, subRectMark, colorMark)
@@ -103,9 +103,9 @@ impl ProgressBar
     mtd setProgression(prg: f32)
     {
         let newPrg = Math.saturate(prg)
-        if newPrg == me.progression:
+        if newPrg == .progression:
             return
-        me.progression = newPrg
-        me.invalidate()
+        .progression = newPrg
+        .invalidate()
     }
 }

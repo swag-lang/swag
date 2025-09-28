@@ -63,7 +63,7 @@ impl Theme
     mtd getIcon24(idx: ThemeIcons24, size = 24'f32)->Icon
     {
         var result: retval
-        result.imageList = me.res.icons24
+        result.imageList = .res.icons24
         result.index     = cast(s32) idx
         result.sizeX     = size
         result.sizeY     = size
@@ -73,7 +73,7 @@ impl Theme
     mtd getIcon64(idx: ThemeIcons64, size = 64'f32)->Icon
     {
         var result: retval
-        result.imageList = me.res.icons64
+        result.imageList = .res.icons64
         result.index     = cast(s32) idx
         result.sizeX     = size
         result.sizeY     = size

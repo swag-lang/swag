@@ -44,7 +44,7 @@ impl ConvertFormatFloat
         // Force sign for positive numbers
         if buffer[cpt] == '+''u8
         {
-            me.forceSign = true
+            .forceSign = true
             cpt += 1
         }
 
@@ -54,7 +54,7 @@ impl ConvertFormatFloat
             switch buffer[cpt]
             {
             case 'e''u8, 'E''u8, 'f''u8, 'g''u8, 'G''u8:
-                me.fmt = buffer[cpt]
+                .fmt = buffer[cpt]
                 cpt += 1
             }
         }
@@ -65,7 +65,7 @@ impl ConvertFormatFloat
             let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) (countof - cpt)))
             Debug.assert(userWidth <= 255, "precision overflow")
             if eatCount:
-                me.precision = cast(s8) userWidth
+                .precision = cast(s8) userWidth
         }
     }
 }
@@ -110,7 +110,7 @@ impl ConvertFormatInt
         // Force sign for positive numbers
         if buffer[cpt] == '+''u8
         {
-            me.forceSign = true
+            .forceSign = true
             cpt += 1
         }
 
@@ -118,22 +118,22 @@ impl ConvertFormatInt
         switch buffer[cpt]
         {
         case 'B''u8:
-            me.base = 2
+            .base = 2
             cpt += 1
 
         case 'D''u8:
-            me.base = 10
+            .base = 10
             cpt += 1
 
         case 'X''u8:
-            me.base = 16
+            .base = 16
             cpt += 1
         }
 
         // Next comes the padding characters
         if cpt >= countof:
             return
-        me.padding = buffer[cpt]
+        .padding = buffer[cpt]
         cpt += 1
 
         // Next comes the padding width
@@ -142,7 +142,7 @@ impl ConvertFormatInt
         let (userWidth, eatCount, ?) = assume parseU64(@mkstring(buffer + cpt, cast(u64) countof - cpt))
         Debug.assert(userWidth <= 255, "padding width overflow")
         if eatCount:
-            me.width = cast(u8) userWidth
+            .width = cast(u8) userWidth
     }
 }
 

@@ -7,7 +7,7 @@ struct(T = Random.MWC) Rdom
 
 impl Rdom
 {
-    func nextF32(me)->f32 => me.rng.nextU32() / cast(f32) Swag.U32.Max
+    func nextF32(me)->f32 => .rng.nextU32() / cast(f32) Swag.U32.Max
 }
 
 //#[Swag.PrintBc]

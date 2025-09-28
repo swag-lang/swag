@@ -15,18 +15,18 @@ impl IWnd for EditCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !me.label:
+        if !.label:
             return
 
-        let rect    = me.getClientRect()
-        let metrics = me.getThemeMetrics()
+        let rect    = .getClientRect()
+        let metrics = .getThemeMetrics()
 
         let y = rect.vertCenter() - metrics.editBox_Height / 2
-        me.label.setPosition(0, y, me.labelSize, metrics.editBox_Height)
-        if me.editSize == 0:
-            me.edit.setPosition(me.label.position.right() + 5, y, me.position.width - 5 - me.labelSize, metrics.editBox_Height)
+        .label.setPosition(0, y, .labelSize, metrics.editBox_Height)
+        if .editSize == 0:
+            .edit.setPosition(.label.position.right() + 5, y, .position.width - 5 - .labelSize, metrics.editBox_Height)
         else:
-            me.edit.setPosition(me.label.position.right() + 5, y, me.editSize, metrics.editBox_Height)
+            .edit.setPosition(.label.position.right() + 5, y, .editSize, metrics.editBox_Height)
     }
 }
 

@@ -13,46 +13,46 @@ public impl Stopwatch
     // Starts or resumes measuring elapsed time
     mtd start()
     {
-        if !me.isStarted
+        if !.isStarted
         {
-            me.isStarted      = true
-            me.startTimeStamp = nowPrecise()
+            .isStarted      = true
+            .startTimeStamp = nowPrecise()
         }
     }
 
     // Stops measuring elapsed time and accumulates the result
     mtd stop()
     {
-        if me.isStarted
+        if .isStarted
         {
             let endTimeStamp       = nowPrecise()
-            let elapsedTicksPeriod = endTimeStamp - me.startTimeStamp
-            me.elapsedTicks += elapsedTicksPeriod
-            me.isStarted = false
+            let elapsedTicksPeriod = endTimeStamp - .startTimeStamp
+            .elapsedTicks += elapsedTicksPeriod
+            .isStarted = false
         }
     }
 
     // Resets the stopwatch and clears the elapsed time
     mtd reset()
     {
-        me.elapsedTicks   = 0
-        me.startTimeStamp = 0
-        me.isStarted      = false
+        .elapsedTicks   = 0
+        .startTimeStamp = 0
+        .isStarted      = false
     }
 
     // Resets the stopwatch and immediately starts measuring elapsed time
     mtd restart()
     {
-        me.elapsedTicks   = 0
-        me.startTimeStamp = nowPrecise()
-        me.isStarted      = true
+        .elapsedTicks   = 0
+        .startTimeStamp = nowPrecise()
+        .isStarted      = true
     }
 
     // Returns the current elapsed time in milliseconds since the last start
     mtd elapsedMillisecondsNow()->u32
     {
         let endTimeStamp       = nowPrecise()
-        let elapsedTicksPeriod = endTimeStamp - me.startTimeStamp
+        let elapsedTicksPeriod = endTimeStamp - .startTimeStamp
         return cast() ((elapsedTicksPeriod * 1000) / preciseFrequency())
     }
 
@@ -60,20 +60,20 @@ public impl Stopwatch
     mtd elapsedMicrosecondsNow()->u32
     {
         let endTimeStamp       = nowPrecise()
-        let elapsedTicksPeriod = endTimeStamp - me.startTimeStamp
+        let elapsedTicksPeriod = endTimeStamp - .startTimeStamp
         return cast() ((elapsedTicksPeriod * 1000000) / preciseFrequency())
     }
 
     // Returns the total elapsed time in milliseconds, after calling `stop`
     mtd elapsedMilliseconds()->u32
     {
-        return cast() ((me.elapsedTicks * 1000) / preciseFrequency())
+        return cast() ((.elapsedTicks * 1000) / preciseFrequency())
     }
 
     // Returns the total elapsed time in microseconds, after calling `stop`
     mtd elapsedMicroseconds()->u32
     {
-        return cast() ((me.elapsedTicks * 1000000) / preciseFrequency())
+        return cast() ((.elapsedTicks * 1000000) / preciseFrequency())
     }
 
     // Measures elapsed time for the current scope and prints the result when the scope ends

@@ -21,17 +21,17 @@ impl Image
     public mtd fillHsl(fillType: FillHslType, color: Color = Argb.White)
     {
         // unsupported pixel format
-        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
+        if .pf.channels() < 3 or .pf.bitDepth() != 8:
             return
 
         let hsl    = color.toHsl()
-        var swapRB = me.pf == .RGB8 or me.pf == .RGBA8
+        var swapRB = .pf == .RGB8 or .pf == .RGBA8
 
         #[Swag.Complete]
         switch fillType
         {
         case HueVert:
-            me.visitPixels(&swapRB)
+            .visitPixels(&swapRB)
             {
                 let swapRB  = dref cast(*bool) userData
                 let factor0 = y / cast(f32) image.height
@@ -53,10 +53,10 @@ impl Image
             }
 
         case HueHorz:
-            var pix = me.pixels.buffer
-            for x in me.width
+            var pix = .pixels.buffer
+            for x in .width
             {
-                let factor0 = x / cast(f32) me.width
+                let factor0 = x / cast(f32) .width
                 let col     = Color.fromHsl(factor0, 1, 0.5)
                 if swapRB
                 {
@@ -70,19 +70,19 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if me.pf.hasAlpha():
+                if .pf.hasAlpha():
                     pix[3] = 255
-                pix += me.bpp8
+                pix += .bpp8
             }
 
-            me.visitPixels(stride: me.width)
+            .visitPixels(stride: .width)
             {
                 Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
             }
 
         case SaturationVert:
             var pms = {hsl, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let swapRB  = params.swapRB
@@ -105,10 +105,10 @@ impl Image
             }
 
         case SaturationHorz:
-            var pix = me.pixels.buffer
-            for x in me.width
+            var pix = .pixels.buffer
+            for x in .width
             {
-                let factor0 = x / cast(f32) me.width
+                let factor0 = x / cast(f32) .width
                 let col     = Color.fromHsl(hsl.h, factor0, 0.5)
                 if swapRB
                 {
@@ -122,19 +122,19 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if me.pf.hasAlpha():
+                if .pf.hasAlpha():
                     pix[3] = 255
-                pix += me.bpp8
+                pix += .bpp8
             }
 
-            me.visitPixels(stride: me.width)
+            .visitPixels(stride: .width)
             {
                 Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
             }
 
         case LightnessVert:
             var pms = {hsl, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let swapRB  = params.swapRB
@@ -157,10 +157,10 @@ impl Image
             }
 
         case LightnessHorz:
-            var pix = me.pixels.buffer
-            for x in me.width
+            var pix = .pixels.buffer
+            for x in .width
             {
-                let factor0 = x / cast(f32) me.width
+                let factor0 = x / cast(f32) .width
                 let col     = Color.fromHsl(hsl.h, hsl.s, factor0)
                 if swapRB
                 {
@@ -174,19 +174,19 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if me.pf.hasAlpha():
+                if .pf.hasAlpha():
                     pix[3] = 255
-                pix += me.bpp8
+                pix += .bpp8
             }
 
-            me.visitPixels(stride: me.width)
+            .visitPixels(stride: .width)
             {
                 Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
             }
 
         case HueSaturation:
             var pms = {hsl, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
@@ -210,7 +210,7 @@ impl Image
 
         case HueLightness:
             var pms = {hsl, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
@@ -234,7 +234,7 @@ impl Image
 
         case SaturationLightness:
             var pms = {hsl, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
@@ -260,7 +260,7 @@ impl Image
 
         case GreenBlue:
             var pms = {color.r / 255.0, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
@@ -284,7 +284,7 @@ impl Image
 
         case RedBlue:
             var pms = {color.g / 255.0, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width
@@ -308,7 +308,7 @@ impl Image
 
         case RedGreen:
             var pms = {color.b / 255.0, swapRB}
-            me.visitPixels(&pms)
+            .visitPixels(&pms)
             {
                 let params  = dref cast(*#decltype(pms)) userData
                 let factor0 = x / cast(f32) image.width

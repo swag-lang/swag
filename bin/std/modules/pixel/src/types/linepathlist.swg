@@ -12,35 +12,35 @@ impl LinePathList
 {
     mtd opDrop()
     {
-        me.clear()
+        .clear()
     }
 
     mtd opPostCopy()
     {
-        foreach p, i in me.paths
+        foreach p, i in .paths
         {
             var ptr = Memory.new'LinePath()
-            dref ptr    = dref p
-            me.paths[i] = ptr
+            dref ptr  = dref p
+            .paths[i] = ptr
         }
     }
 
     #[Swag.Inline]
-    mtd count() => me.paths.count
+    mtd count() => .paths.count
 
     // Remove all internal line paths
     mtd clear()
     {
-        foreach p in me.paths:
+        foreach p in .paths:
             Memory.delete(p)
-        me.paths.clear()
+        .paths.clear()
     }
 
     // Returns a new path
     mtd newPath()->*LinePath
     {
         let ptr = Memory.new'LinePath()
-        me.paths.add(ptr)
+        .paths.add(ptr)
         return ptr
     }
 
@@ -48,13 +48,13 @@ impl LinePathList
     mtd flatten(quality: PaintQuality)
     {
         // Flatten all path, and compute BV
-        me.bvMin = Vector2.Max
-        me.bvMax = Vector2.NegMax
-        foreach p in me.paths
+        .bvMin = Vector2.Max
+        .bvMax = Vector2.NegMax
+        foreach p in .paths
         {
             p.flatten(quality)
-            me.bvMin = Vector2.min(me.bvMin, p.bvMin)
-            me.bvMax = Vector2.max(me.bvMax, p.bvMax)
+            .bvMin = Vector2.min(.bvMin, p.bvMin)
+            .bvMax = Vector2.max(.bvMax, p.bvMax)
         }
     }
 
@@ -66,7 +66,7 @@ impl LinePathList
         if Math.isZeroEpsilon(value):
             return
 
-        foreach p in me.paths
+        foreach p in .paths
         {
             let v = p.polygon.isClockwise ? value : -value
             p.polygon.offset(v)
@@ -83,7 +83,7 @@ impl LinePathList
 
         var newList: LinePathList
 
-        foreach p in me.paths
+        foreach p in .paths
         {
             let v = p.polygon.isClockwise ? value : -value
 
@@ -92,9 +92,9 @@ impl LinePathList
             res.paths.count = 0
         }
 
-        me.clear()
-        me.paths = #move newList.paths
-        me.clean()
+        .clear()
+        .paths = #move newList.paths
+        .clean()
     }
 
     // Clean all paths
@@ -103,14 +103,14 @@ impl LinePathList
     {
         var newList: LinePathList
 
-        foreach p in me.paths
+        foreach p in .paths
         {
             var res = p.polygon.getClean()
             newList.paths.add(res.paths.toSlice())
             res.paths.count = 0
         }
 
-        me.clear()
-        me.paths = #move newList.paths
+        .clear()
+        .paths = #move newList.paths
     }
 }

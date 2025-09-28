@@ -25,30 +25,30 @@ impl FontFamily
         switch style
         {
         case Regular:
-            if me.regular:
-                return me.regular
+            if .regular:
+                return .regular
 
         case Bold:
-            if me.bold:
-                return me.bold
-            if me.regular:
-                return me.regular
+            if .bold:
+                return .bold
+            if .regular:
+                return .regular
 
         case Italic:
-            if me.italic:
-                return me.italic
-            if me.regular:
-                return me.regular
+            if .italic:
+                return .italic
+            if .regular:
+                return .regular
 
         case BoldItalic:
-            if me.boldItalic:
-                return me.boldItalic
-            if me.italic:
-                return me.italic
-            if me.bold:
-                return me.bold
-            if me.regular:
-                return me.regular
+            if .boldItalic:
+                return .boldItalic
+            if .italic:
+                return .italic
+            if .bold:
+                return .bold
+            if .regular:
+                return .regular
         }
 
         return null
@@ -60,13 +60,13 @@ impl FontFamily
         switch style
         {
         case Regular:
-            me.regular = fnt
+            .regular = fnt
         case Bold:
-            me.bold = fnt
+            .bold = fnt
         case Italic:
-            me.italic = fnt
+            .italic = fnt
         case BoldItalic:
-            me.boldItalic = fnt
+            .boldItalic = fnt
         }
     }
 }

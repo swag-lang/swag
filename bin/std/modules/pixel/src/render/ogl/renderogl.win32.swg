@@ -16,7 +16,7 @@ public impl NativeRenderOgl
     #[Warning("Wrn0006", WarningLevel.Disable), Overload]
     mtd createContext(hWnd: HWND, width, height: s32, mainRC: HGLRC = null)->RenderingContext throw
     {
-        return try me.createContext(GetDC(hWnd), width, height, mainRC)
+        return try .createContext(GetDC(hWnd), width, height, mainRC)
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable), Overload]

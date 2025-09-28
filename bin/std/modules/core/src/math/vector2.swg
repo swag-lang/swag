@@ -27,7 +27,7 @@ impl Vector2
     #[Swag.Complete, Swag.Inline]
     mtd opAffect(value: f32)
     {
-        me.x, me.y = value
+        .x, .y = value
     }
 
     // Compound assignment operators for vector-vector operations (+=, -=, *=, /=).
@@ -37,23 +37,23 @@ impl Vector2
     {
         #if op == "+="
         {
-            me.x += other.x
-            me.y += other.y
+            .x += other.x
+            .y += other.y
         }
         #elif op == "-="
         {
-            me.x -= other.x
-            me.y -= other.y
+            .x -= other.x
+            .y -= other.y
         }
         #elif op == "*="
         {
-            me.x *= other.x
-            me.y *= other.y
+            .x *= other.x
+            .y *= other.y
         }
         #elif op == "/="
         {
-            me.x /= other.x
-            me.y /= other.y
+            .x /= other.x
+            .y /= other.y
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -66,23 +66,23 @@ impl Vector2
     {
         #if op == "+="
         {
-            me.x += value
-            me.y += value
+            .x += value
+            .y += value
         }
         #elif op == "-="
         {
-            me.x -= value
-            me.y -= value
+            .x -= value
+            .y -= value
         }
         #elif op == "*="
         {
-            me.x *= value
-            me.y *= value
+            .x *= value
+            .y *= value
         }
         #elif op == "/="
         {
-            me.x /= value
-            me.y /= value
+            .x /= value
+            .y /= value
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -94,13 +94,13 @@ impl Vector2
     mtd(op: string) const opBinary(other: Vector2)->Vector2
     {
         #if op == "+":
-            return Vector2{me.x + other.x, me.y + other.y}
+            return Vector2{.x + other.x, .y + other.y}
         #elif op == "-":
-            return Vector2{me.x - other.x, me.y - other.y}
+            return Vector2{.x - other.x, .y - other.y}
         #elif op == "*":
-            return Vector2{me.x * other.x, me.y * other.y}
+            return Vector2{.x * other.x, .y * other.y}
         #elif op == "/":
-            return Vector2{me.x / other.x, me.y / other.y}
+            return Vector2{.x / other.x, .y / other.y}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -111,13 +111,13 @@ impl Vector2
     mtd(op: string) const opBinary(value: f32)->Vector2
     {
         #if op == "+":
-            return Vector2{me.x + value, me.y + value}
+            return Vector2{.x + value, .y + value}
         #elif op == "-":
-            return Vector2{me.x - value, me.y - value}
+            return Vector2{.x - value, .y - value}
         #elif op == "*":
-            return Vector2{me.x * value, me.y * value}
+            return Vector2{.x * value, .y * value}
         #elif op == "/":
-            return Vector2{me.x / value, me.y / value}
+            return Vector2{.x / value, .y / value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -128,7 +128,7 @@ impl Vector2
     mtd(op: string) const opUnary()->Vector2
     {
         #if op == "-":
-            return Vector2{-me.x, -me.y}
+            return Vector2{-.x, -.y}
         #else:
             #error("unsupported unary operation [[" ++ op ++ "]]")
     }
@@ -138,31 +138,31 @@ impl Vector2
     #[Swag.Inline]
     mtd set(x, y: f32)
     {
-        me.x = x
-        me.y = y
+        .x = x
+        .y = y
     }
 
     // Returns the length (magnitude) of the vector.
     // Calculated using the Euclidean distance formula: sqrt(x² + y²).
     #[Swag.Inline]
-    mtd const length()->f32 => sqrt((me.x * me.x) + (me.y * me.y))
+    mtd const length()->f32 => sqrt((.x * .x) + (.y * .y))
 
     // Returns the squared length of the vector.
     // Faster than 'length()' when only comparing magnitudes since it avoids the square root operation.
     #[Swag.Inline]
-    mtd const lengthSquared()->f32 => (me.x * me.x) + (me.y * me.y)
+    mtd const lengthSquared()->f32 => (.x * .x) + (.y * .y)
 
     // Returns the dot product between this vector and 'other'.
     // The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂).
     #[Swag.Inline]
-    mtd const dot(other: Vector2)->f32 => (me.x * other.x) + (me.y * other.y)
+    mtd const dot(other: Vector2)->f32 => (.x * other.x) + (.y * other.y)
 
     // Returns the perpendicular vector in the 2D plane scaled by 'axis'.
     // The 'axis' parameter determines the sign and scale of the result.
     #[Swag.Overload, Swag.Inline]
     mtd const cross(axis: f32)->Vector2
     {
-        return {me.y * axis, -me.x * axis}
+        return {.y * axis, -.x * axis}
     }
 
     // Returns the Z component of the cross product (scalar cross product in 2D).
@@ -170,7 +170,7 @@ impl Vector2
     #[Swag.Overload, Swag.Inline]
     mtd const cross(other: Vector2)->f32
     {
-        return me.x * other.y - me.y * other.x
+        return .x * other.y - .y * other.x
     }
 
     // Set both vector components to zero.
@@ -178,7 +178,7 @@ impl Vector2
     #[Swag.Inline]
     mtd setZero()
     {
-        me.x, me.y = 0
+        .x, .y = 0
     }
 
     // Negate the vector in-place.
@@ -186,8 +186,8 @@ impl Vector2
     #[Swag.Inline]
     mtd negate()
     {
-        me.x = -me.x
-        me.y = -me.y
+        .x = -.x
+        .y = -.y
     }
 
     // Returns true if this vector is exactly zero.
@@ -195,29 +195,29 @@ impl Vector2
     #[Swag.Inline]
     mtd const isZero()->bool
     {
-        return me.x == 0 and me.y == 0
+        return .x == 0 and .y == 0
     }
 
     // Returns true if this vector is zero within an epsilon tolerance.
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = cast(f32) ConstF64.Epsilon)->bool
     {
-        return Math.isZeroEpsilon(me.x, eps) and Math.isZeroEpsilon(me.y, eps)
+        return Math.isZeroEpsilon(.x, eps) and Math.isZeroEpsilon(.y, eps)
     }
 
     // Returns true if this vector is equal to 'other' within an epsilon tolerance.
     // Compares each component separately using the specified 'eps' tolerance.
     mtd const isEqualEpsilon(other: Vector2, eps = cast(f32) ConstF64.Epsilon)->bool
     {
-        return Math.isEqualEpsilon(me.x, other.x, eps) and Math.isEqualEpsilon(me.y, other.y, eps)
+        return Math.isEqualEpsilon(.x, other.x, eps) and Math.isEqualEpsilon(.y, other.y, eps)
     }
 
     // Returns the Euclidean distance between this vector and 'dest'.
     // Calculated as the length of the difference vector between the two positions.
     mtd const distanceTo(dest: Vector2)->f32
     {
-        let xn = (me.x - dest.x)
-        let yn = (me.y - dest.y)
+        let xn = (.x - dest.x)
+        let yn = (.y - dest.y)
         return sqrt((xn * xn) + (yn * yn))
     }
 
@@ -225,8 +225,8 @@ impl Vector2
     // Faster than 'distance()' when only comparing distances since it avoids the square root operation.
     mtd const distanceToSquared(dest: Vector2)->f32
     {
-        let xn = (me.x - dest.x)
-        let yn = (me.y - dest.y)
+        let xn = (.x - dest.x)
+        let yn = (.y - dest.y)
         return (xn * xn) + (yn * yn)
     }
 
@@ -234,66 +234,66 @@ impl Vector2
     // Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero.
     mtd normalize()
     {
-        var norm = sqrt((me.x * me.x) + (me.y * me.y))
+        var norm = sqrt((.x * .x) + (.y * .y))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
-        me.x *= norm
-        me.y *= norm
+        .x *= norm
+        .y *= norm
     }
 
     // Returns this vector normalized to unit length without modifying the original.
     // Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero.
     mtd const toNormalized()->Vector2
     {
-        var norm = sqrt((me.x * me.x) + (me.y * me.y))
+        var norm = sqrt((.x * .x) + (.y * .y))
         Debug.assert(!Math.isZeroEpsilon(norm))
         norm = 1 / norm
-        return Vector2{me.x * norm, me.y * norm}
+        return Vector2{.x * norm, .y * norm}
     }
 
     // Set the vector to the specified length safely.
     // First normalizes the vector safely, then scales it to 'newLength'. Handles zero-length vectors.
     mtd setLengthSafe(newLength: f32)
     {
-        me.normalizeSafe()
-        me.x *= newLength
-        me.y *= newLength
+        .normalizeSafe()
+        .x *= newLength
+        .y *= newLength
     }
 
     // Set the vector to the specified length.
     // First normalizes the vector, then scales it to 'newLength'. Assumes the vector is not zero.
     mtd setLength(newLength: f32)
     {
-        me.normalize()
-        me.x *= newLength
-        me.y *= newLength
+        .normalize()
+        .x *= newLength
+        .y *= newLength
     }
 
     // Normalize this vector in-place safely.
     // Sets the vector to unit length, or to zero if the original length is near zero.
     mtd normalizeSafe()
     {
-        var norm = sqrt((me.x * me.x) + (me.y * me.y))
+        var norm = sqrt((.x * .x) + (.y * .y))
         if Math.isZeroEpsilon(norm)
         {
-            me.x, me.y = 0
+            .x, .y = 0
             return
         }
 
         norm = 1 / norm
-        me.x *= norm
-        me.y *= norm
+        .x *= norm
+        .y *= norm
     }
 
     // Returns this vector normalized safely without modifying the original.
     // Returns a unit vector in the same direction, or the zero vector if length is near zero.
     mtd const toNormalizedSafe()->Vector2
     {
-        var norm = sqrt((me.x * me.x) + (me.y * me.y))
+        var norm = sqrt((.x * .x) + (.y * .y))
         if Math.isZeroEpsilon(norm):
             return Zero
         norm = 1 / norm
-        return Vector2{me.x * norm, me.y * norm}
+        return Vector2{.x * norm, .y * norm}
     }
 
     // Returns a vector containing the minimum components of two vectors.
@@ -320,24 +320,24 @@ impl Vector2
     // Rounds each component down to the nearest integer value.
     mtd floor()
     {
-        me.x = Math.floor(me.x)
-        me.y = Math.floor(me.y)
+        .x = Math.floor(.x)
+        .y = Math.floor(.y)
     }
 
     // Apply ceiling function to both components in-place.
     // Rounds each component up to the nearest integer value.
     mtd ceil()
     {
-        me.x = Math.ceil(me.x)
-        me.y = Math.ceil(me.y)
+        .x = Math.ceil(.x)
+        .y = Math.ceil(.y)
     }
 
     // Apply rounding function to both components in-place.
     // Rounds each component to the nearest integer value.
     mtd round()
     {
-        me.x = Math.round(me.x)
-        me.y = Math.round(me.y)
+        .x = Math.round(.x)
+        .y = Math.round(.y)
     }
 
     // Rotate the vector by a given angle around the origin.
@@ -346,32 +346,32 @@ impl Vector2
     {
         let s  = Math.sin(angle.rad)
         let c  = Math.cos(angle.rad)
-        let tx = me.x
-        let ty = me.y
-        me.x = (c * tx) - (s * ty)
-        me.y = (s * tx) + (c * ty)
+        let tx = .x
+        let ty = .y
+        .x = (c * tx) - (s * ty)
+        .y = (s * tx) + (c * ty)
     }
 
     // Returns the cosine of the angle between this vector and 'other'.
     // Calculated using the dot product formula: dot(a,b) / (|a| * |b|).
     mtd const cosAngleTo(other: Vector2)->f32
     {
-        return me.dot(other) / (me.length() * other.length())
+        return .dot(other) / (.length() * other.length())
     }
 
     // Returns the angle between this vector and 'other' in radians.
     // The result is in the range [0, π] using the arc cosine of the normalized dot product.
     mtd const angleTo(other: Vector2)->f32
     {
-        return Math.acos(me.cosAngleTo(other))
+        return Math.acos(.cosAngleTo(other))
     }
 
     // Returns the angle between this vector and 'other' in the range [0, 2π].
     // Uses the cross product to determine the sign and adjust the angle accordingly.
     mtd const angle0To2Pi(other: Vector2)->f32
     {
-        var angle = Math.acos(me.cosAngleTo(other))
-        let sign  = (me.x * other.y) - (me.y * other.x)
+        var angle = Math.acos(.cosAngleTo(other))
+        let sign  = (.x * other.y) - (.y * other.x)
         if sign > 0:
             angle = ConstF32.TwoPi - angle
         return angle
@@ -383,8 +383,8 @@ impl Vector2
     mtd lerpTo(dst: Vector2, factor: f32)->Vector2
     {
         var result: retval = undefined
-        result.x = Math.lerp(me.x, dst.x, factor)
-        result.y = Math.lerp(me.y, dst.y, factor)
+        result.x = Math.lerp(.x, dst.x, factor)
+        result.y = Math.lerp(.y, dst.y, factor)
         return result
     }
 
@@ -392,37 +392,37 @@ impl Vector2
     // Each component is independently clamped to stay within the specified range.
     mtd clamp(min, max: Vector2)
     {
-        me.x = Math.clamp(me.x, min.x, max.x)
-        me.y = Math.clamp(me.y, min.y, max.y)
+        .x = Math.clamp(.x, min.x, max.x)
+        .y = Math.clamp(.y, min.y, max.y)
     }
 
     // Returns a new vector with components clamped between 'min' and 'max' values.
     // Each component is independently clamped to stay within the specified range.
     mtd const toClamped(min, max: Vector2)->Vector2
     {
-        return Vector2{Math.clamp(me.x, min.x, max.x), Math.clamp(me.y, min.y, max.y)}
+        return Vector2{Math.clamp(.x, min.x, max.x), Math.clamp(.y, min.y, max.y)}
     }
 
     // Clamp this vector's length to be within 'minLength' and 'maxLength'.
     // Preserves the vector's direction while constraining its magnitude.
     mtd clampLength(minLength, maxLength: f32)
     {
-        let len = me.length()
+        let len = .length()
         if len < minLength:
-            me.setLength(minLength)
+            .setLength(minLength)
         elif len > maxLength:
-            me.setLength(maxLength)
+            .setLength(maxLength)
     }
 
     // Returns a new vector with length clamped between 'minLength' and 'maxLength'.
     // Preserves the vector's direction while constraining its magnitude.
     mtd const clampedLength(minLength, maxLength: f32)->Vector2
     {
-        let len = me.length()
+        let len = .length()
         if len < minLength:
-            return me.toNormalized() * minLength
+            return .toNormalized() * minLength
         elif len > maxLength:
-            return me.toNormalized() * maxLength
+            return .toNormalized() * maxLength
         return dref me
     }
 
@@ -430,36 +430,36 @@ impl Vector2
     // Creates a new vector where each component is its absolute value.
     mtd const toAbs()->Vector2
     {
-        return Vector2{Math.abs(me.x), Math.abs(me.y)}
+        return Vector2{Math.abs(.x), Math.abs(.y)}
     }
 
     // Apply absolute value to both components in-place.
     // Makes both components positive by removing their sign.
     mtd makeAbs()
     {
-        me.x = Math.abs(me.x)
-        me.y = Math.abs(me.y)
+        .x = Math.abs(.x)
+        .y = Math.abs(.y)
     }
 
     // Returns a vector perpendicular to this one (rotated 90 degrees counter-clockwise).
     // The perpendicular vector has the same length but is rotated 90° CCW.
     mtd const toPerp()->Vector2
     {
-        return Vector2{-me.y, me.x}
+        return Vector2{-.y, .x}
     }
 
     // Returns a vector perpendicular to this one (rotated 90 degrees clockwise).
     // The perpendicular vector has the same length but is rotated 90° CW.
     mtd const toPerpCW()->Vector2
     {
-        return Vector2{me.y, -me.x}
+        return Vector2{.y, -.x}
     }
 
     // Project this vector onto 'other' vector.
     // Returns the component of this vector in the direction of 'other'.
     mtd const toProject(other: Vector2)->Vector2
     {
-        let dotProduct    = me.dot(other)
+        let dotProduct    = .dot(other)
         let otherLengthSq = other.lengthSquared()
         if Math.isZeroEpsilon(otherLengthSq):
             return Zero
@@ -470,28 +470,28 @@ impl Vector2
     // The 'normal' should be a unit vector pointing away from the surface.
     mtd const toReflect(normal: Vector2)->Vector2
     {
-        return dref me - (normal * (2 * me.dot(normal)))
+        return dref me - (normal * (2 * .dot(normal)))
     }
 
     // Returns the component-wise sign of the vector (-1, 0, or 1 for each component).
     // Each component becomes -1 if negative, 0 if zero, or 1 if positive.
     mtd const toSign()->Vector2
     {
-        return Vector2{Math.sign(me.x), Math.sign(me.y)}
+        return Vector2{Math.sign(.x), Math.sign(.y)}
     }
 
     // Returns true if all components are finite (not infinite or NaN).
     // Useful for validating vector values after calculations.
     mtd const isFinite()->bool
     {
-        return Math.isFinite(me.x) and Math.isFinite(me.y)
+        return Math.isFinite(.x) and Math.isFinite(.y)
     }
 
     // Returns true if any component is NaN (Not a Number).
     // Useful for detecting invalid vector values after calculations.
     mtd const isNaN()->bool
     {
-        return Math.isNaN(me.x) or Math.isNaN(me.y)
+        return Math.isNaN(.x) or Math.isNaN(.y)
     }
 
     // Move this vector towards 'target' by a maximum distance of 'maxDistance'.
@@ -539,22 +539,22 @@ impl Vector2
     // Returns angle in radians and radius (magnitude) as a tuple-like struct.
     mtd const toPolar()->{ angle: f32, radius: f32 }
     {
-        return {Math.atan2(me.y, me.x), me.length()}
+        return {Math.atan2(.y, .x), .length()}
     }
 
     // Returns the angle of this vector in radians.
     // The angle is measured from the positive X-axis, counter-clockwise.
     mtd const toAngle()->f32
     {
-        return Math.atan2(me.y, me.x)
+        return Math.atan2(.y, .x)
     }
 
     // Rotate this vector to face the specified 'angle' in radians.
     // Preserves the vector's magnitude while changing its direction.
     mtd setAngle(angle: f32)
     {
-        let magnitude = me.length()
-        me.x = magnitude * Math.cos(angle)
-        me.y = magnitude * Math.sin(angle)
+        let magnitude = .length()
+        .x = magnitude * Math.cos(angle)
+        .y = magnitude * Math.sin(angle)
     }
 }

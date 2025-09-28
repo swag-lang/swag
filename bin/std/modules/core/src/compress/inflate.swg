@@ -97,33 +97,33 @@ private
             var k, cde = 0'u16
             for i in 1 to 15
             {
-                nextCode[i]       = cde
-                me.firstCode[i]   = cde
-                me.firstSymbol[i] = k
+                nextCode[i]     = cde
+                .firstCode[i]   = cde
+                .firstSymbol[i] = k
                 cde += sizes[i]
                 if sizes[i] != 0 and (cde - 1) >= (1 << i):
                     throw InvalidFormatError{"huffman bad code lengths"}
-                me.maxCode[i] = cast(s64) cde << (16 - i)
+                .maxCode[i] = cast(s64) cde << (16 - i)
                 cde <<= 1
                 k += sizes[i]
             }
 
-            me.maxCode[16] = 0x10000
+            .maxCode[16] = 0x10000
             foreach v, ci in codeLengths
             {
                 if !v:
                     continue
 
-                let c     = nextCode[v] - me.firstCode[v] + me.firstSymbol[v]
+                let c     = nextCode[v] - .firstCode[v] + .firstSymbol[v]
                 let fastv = (cast(u16) v << 9) | cast(u16) ci
-                me.size[c]  = v
-                me.value[c] = cast(u16) ci
+                .size[c]  = v
+                .value[c] = cast(u16) ci
                 if v <= FastBits
                 {
                     var j = reverse16(nextCode[v], v)
                     while j < (1 << FastBits)
                     {
-                        me.fast[j] = fastv
+                        .fast[j] = fastv
                         j += (1'u16 << v)
                     }
                 }
@@ -148,22 +148,22 @@ impl Inflate
 
     mtd decode(ht: *HuffmanTable)->u16 throw
     {
-        if me.stream.numBits < 16
+        if .stream.numBits < 16
         {
-            me.stream.refill()
-            if me.stream.numBits == 255:
+            .stream.refill()
+            if .stream.numBits == 255:
                 throw InvalidFormatError{"malformed"}
         }
 
-        let b = ht.fast[me.stream.codeBuffer & FastMask]
+        let b = ht.fast[.stream.codeBuffer & FastMask]
         if b
         {
             let s = cast(u8) (b >> FastBits)
-            me.stream.consumeBits(s)
+            .stream.consumeBits(s)
             return b & 511
         }
 
-        let cde = cast(u16) me.stream.peekBits(16)
+        let cde = cast(u16) .stream.peekBits(16)
         let k   = reverse16(cde, 16)
 
         var s = HuffmanFastBits + 1
@@ -178,7 +178,7 @@ impl Inflate
         if ht.size[b1] != s:
             throw InvalidFormatError{"bad huffman code"}
 
-        me.stream.consumeBits(cast(u8) s)
+        .stream.consumeBits(cast(u8) s)
         return ht.value[b1]
     }
 
@@ -187,7 +187,7 @@ impl Inflate
         let startBufCount = dest.count
         for
         {
-            var value = try me.decode(repeatHt)
+            var value = try .decode(repeatHt)
             if value < 256
             {
                 dest.add(cast(u8) value)
@@ -198,19 +198,19 @@ impl Inflate
             if value == 256
             {
                 let newSlice = @mkslice(dest.buffer + startBufCount, dest.count - startBufCount)
-                me.adler.update(newSlice)
+                .adler.update(newSlice)
                 return
             }
 
             value -= 257
             var length = LengthBase[value]
             if LengthExtra[value] > 0:
-                length += cast(u16) me.stream.readBits(LengthExtra[value])
+                length += cast(u16) .stream.readBits(LengthExtra[value])
 
-            value = try me.decode(repeatZ)
+            value = try .decode(repeatZ)
             var distance = DistBase[value]
             if DistExtra[value] > 0:
-                distance += cast(u16) me.stream.readBits(DistExtra[value])
+                distance += cast(u16) .stream.readBits(DistExtra[value])
 
             if dest.count < distance:
                 throw InvalidFormatError{"bad distance"}
@@ -247,52 +247,52 @@ impl Inflate
     // Decompress the associated stream
     public mtd decompress(result: *Array'u8, buf: const [..] u8, winSize: u32 = InflateMaxDistance) throw
     {
-        me.stream.init(buf)
-        me.adler.init()
-        me.windowSize = Math.min(winSize, InflateMaxDistance)
+        .stream.init(buf)
+        .adler.init()
+        .windowSize = Math.min(winSize, InflateMaxDistance)
 
         var repeatHt:     HuffmanTable
         var repeatZ:      HuffmanTable
         var codeLengthHt: HuffmanTable
 
-        Debug.assert(me.windowSize > 0)
+        Debug.assert(.windowSize > 0)
 
         for
         {
-            let final = me.stream.readBits(1)
-            let type  = me.stream.readBits(2)
+            let final = .stream.readBits(1)
+            let type  = .stream.readBits(2)
 
             switch type
             {
             case 0:
-                me.stream.discardToNextByte()
-                let uncompressedLen = cast(u16) me.stream.readBits(16)
-                let lengthCheck     = cast(u16) me.stream.readBits(16)
+                .stream.discardToNextByte()
+                let uncompressedLen = cast(u16) .stream.readBits(16)
+                let lengthCheck     = cast(u16) .stream.readBits(16)
                 if ~uncompressedLen != lengthCheck:
                     throw InvalidFormatError{"invalid buffer, length mismatch"}
 
-                me.stream.revert()
-                let newSlice = @mkslice(me.stream.curPtr(), uncompressedLen)
-                me.adler.update(newSlice)
+                .stream.revert()
+                let newSlice = @mkslice(.stream.curPtr(), uncompressedLen)
+                .adler.update(newSlice)
                 result.add(newSlice)
-                me.stream.curByte += uncompressedLen
+                .stream.curByte += uncompressedLen
             case 1:
                 repeatHt.init(FixedLength)
                 repeatZ.init(FixedDist)
-                me.parseBlock(&repeatHt, &repeatZ, result)
+                .parseBlock(&repeatHt, &repeatZ, result)
 
             case 3:
                 throw InvalidFormatError{"invalid block type"}
             default:
                 var lenCodes:        [286 + 32 + 137] u8
                 var codeLengthSizes: [19] u8
-                me.stream.refill(14)
-                let hlit  = me.stream.readBitsNoRefill(5) + 257
-                let hdist = me.stream.readBitsNoRefill(5) + 1
-                let hclen = me.stream.readBitsNoRefill(4) + 4
+                .stream.refill(14)
+                let hlit  = .stream.readBitsNoRefill(5) + 257
+                let hdist = .stream.readBitsNoRefill(5) + 1
+                let hclen = .stream.readBitsNoRefill(4) + 4
                 for i in hclen
                 {
-                    let s = cast(u8) me.stream.readBits(3)
+                    let s = cast(u8) .stream.readBits(3)
                     codeLengthSizes[LengthDezigzag[i]] = s
                 }
 
@@ -301,7 +301,7 @@ impl Inflate
                 var n    = 0
                 while n < ntot
                 {
-                    var c = me.decode(&codeLengthHt)
+                    var c = .decode(&codeLengthHt)
                     if c < 0 or c >= 19:
                         throw InvalidFormatError{"bad code lengths"}
 
@@ -313,18 +313,18 @@ impl Inflate
                     else
                     {
                         var fill = 0'u8
-                        me.stream.refill(7)
+                        .stream.refill(7)
                         switch c
                         {
                         case 16:
-                            c = cast(u16) (me.stream.readBitsNoRefill(2) + 3)
+                            c = cast(u16) (.stream.readBitsNoRefill(2) + 3)
                             if n == 0:
                                 throw InvalidFormatError{"bad code lengths"}
                             fill = lenCodes[n - 1]
                         case 17:
-                            c = cast(u16) (me.stream.readBitsNoRefill(3) + 3)
+                            c = cast(u16) (.stream.readBitsNoRefill(3) + 3)
                         case 18:
-                            c = cast(u16) (me.stream.readBitsNoRefill(7) + 11)
+                            c = cast(u16) (.stream.readBitsNoRefill(7) + 11)
                         default:
                             throw InvalidFormatError{"bad code lengths"}
                         }
@@ -344,7 +344,7 @@ impl Inflate
                     throw InvalidFormatError{"bad code lengths"}
                 repeatHt.init(lenCodes[0..hlit - 1])
                 repeatZ.init(lenCodes[hlit..ntot - 1])
-                me.parseBlock(&repeatHt, &repeatZ, result)
+                .parseBlock(&repeatHt, &repeatZ, result)
             }
 
             if final == 1:

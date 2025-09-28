@@ -137,14 +137,14 @@ impl RegExp
 {
     public mtd opDrop()
     {
-        me.clear()
+        .clear()
     }
 
     // You can get a capture group value by using the derefence syntax.
     // Returns 'null' if the capture group does not exist
     public mtd opIndex(idx: u64)->string
     {
-        foreach v in me.groups
+        foreach v in .groups
         {
             if v.rank == idx:
                 return v.value
@@ -155,24 +155,24 @@ impl RegExp
 
     mtd clearMatch()
     {
-        me.hasStarted, me.wasWord = false
-        me.group = 0
-        me.groups.clear()
+        .hasStarted, .wasWord = false
+        .group = 0
+        .groups.clear()
     }
 
     // Clear content
     public mtd clear()
     {
-        me.nfaNodes.clear()
-        me.dfaNodes.clear()
-        me.nfaTables.clear()
-        me.charSet.clear()
-        me.openParen.clear()
-        me.orOpStack.clear()
-        me.orOpLevel.clear()
-        me.preprocessed.clear()
+        .nfaNodes.clear()
+        .dfaNodes.clear()
+        .nfaTables.clear()
+        .charSet.clear()
+        .openParen.clear()
+        .orOpStack.clear()
+        .orOpLevel.clear()
+        .preprocessed.clear()
 
-        me.clearMatch()
+        .clearMatch()
     }
 
     // Creates and return an expression
@@ -186,17 +186,17 @@ impl RegExp
     // Compile the expression
     public mtd compile(expr: string, ignoreCase = false) throw
     {
-        me.clear()
-        me.ignoreCase = ignoreCase
-        me.preprocess(expr)
-        me.nfaBuild()
-        me.dfaBuild()
+        .clear()
+        .ignoreCase = ignoreCase
+        .preprocess(expr)
+        .nfaBuild()
+        .dfaBuild()
     }
 
     // Returns the parsed string associated with a given captured group
     public mtd getCapture(rank: u32)->string
     {
-        foreach g in me.groups
+        foreach g in .groups
         {
             if g.rank == rank:
                 return g.value
@@ -209,7 +209,7 @@ impl RegExp
     public mtd getCaptures()->Array'string
     {
         var result: retval
-        foreach v in me.groups:
+        foreach v in .groups:
             result.add(v.value)
         return result
     }
@@ -218,8 +218,8 @@ impl RegExp
     #[Swag.Overload]
     public mtd match(expr, str: string, ignoreCase = false)->bool throw
     {
-        me.compile(expr, ignoreCase)
-        return me.match(str)
+        .compile(expr, ignoreCase)
+        return .match(str)
     }
 
     // Returns true if 'str' matches the regexp.
@@ -227,8 +227,8 @@ impl RegExp
     #[Swag.Overload]
     public mtd match(str: string)->bool
     {
-        me.clearMatch()
-        let (ok, ?) = me.matchInternal(str, false)
+        .clearMatch()
+        let (ok, ?) = .matchInternal(str, false)
         return ok
     }
 
@@ -251,11 +251,11 @@ impl RegExp
 
         var res = str
         let end = @dataof(str) + @countof(str)
-        me.clearMatch()
+        .clearMatch()
 
         for
         {
-            let val = me.internalGrep(res)
+            let val = .internalGrep(res)
             if !val:
                 break
             result.add(val)
@@ -280,8 +280,8 @@ impl RegExp
     {
         if str == null:
             return null
-        me.clearMatch()
-        return me.internalGrep(str)
+        .clearMatch()
+        return .internalGrep(str)
     }
 
     // Try to match the start of the string, and returns the matched value or null.
@@ -292,7 +292,7 @@ impl RegExp
         let beg  = @dataof(str)
         let last = beg + @countof(str)
 
-        let res = me.matchInternal(@mkstring(beg, last - beg), true)
+        let res = .matchInternal(@mkstring(beg, last - beg), true)
         if res.ok:
             return @mkstring(beg, res.buf - beg)
         return null
@@ -305,7 +305,7 @@ impl RegExp
 
         while beg != last
         {
-            let res = me.matchInternal(@mkstring(beg, last - beg), true)
+            let res = .matchInternal(@mkstring(beg, last - beg), true)
             if res.ok:
                 return @mkstring(beg, res.buf - beg)
             beg += 1
@@ -332,18 +332,18 @@ impl RegExp
     {
         var result: retval
 
-        if me.dfaNodes.isEmpty():
+        if .dfaNodes.isEmpty():
             return result
 
-        me.bufStart  = @dataof(str)
-        me.bufLength = @countof(str)
+        .bufStart  = @dataof(str)
+        .bufLength = @countof(str)
 
         var stack1, stack2: Array'DfaState
         var grepTerm: DfaState
 
         var st: DfaState
-        st.node       = me.dfaNodes[0]
-        st.groupStart = me.bufStart
+        st.node       = .dfaNodes[0]
+        st.groupStart = .bufStart
         stack1.add(st)
 
         var pstack1 = &stack1
@@ -355,17 +355,17 @@ impl RegExp
             while !pstack1.isEmpty()
             {
                 var curState = pstack1.popBack()
-                if curState.parseIdx >= me.bufLength
+                if curState.parseIdx >= .bufLength
                 {
                     pstack2.add(curState)
                     continue
                 }
 
-                let ptr = me.bufStart + curState.parseIdx
-                let (cr, eat) = Utf8.decodeRune(@mkslice(ptr, me.bufLength - curState.parseIdx))
-                let c = me.ignoreCase ? Unicode.toUpper(cr) : cr
+                let ptr = .bufStart + curState.parseIdx
+                let (cr, eat) = Utf8.decodeRune(@mkslice(ptr, .bufLength - curState.parseIdx))
+                let c = .ignoreCase ? Unicode.toUpper(cr) : cr
 
-                me.dfaMatch(pstack2, c, eat, &curState)
+                .dfaMatch(pstack2, c, eat, &curState)
             }
 
             swap(&pstack1, &pstack2)
@@ -373,12 +373,12 @@ impl RegExp
             var cptReachedEnd = 0
             foreach &v in dref pstack1
             {
-                if v.parseIdx >= me.bufLength:
+                if v.parseIdx >= .bufLength:
                     cptReachedEnd += 1
 
                 if v.node.terminal and forGrep:
                     grepTerm = dref v
-                elif v.node.terminal and v.parseIdx >= me.bufLength:
+                elif v.node.terminal and v.parseIdx >= .bufLength:
                     mustEnd = true
             }
 
@@ -395,14 +395,14 @@ impl RegExp
             while !pstack1.isEmpty()
             {
                 var curState = pstack1.popBack()
-                if curState.node.terminal and (forGrep or curState.parseIdx >= me.bufLength)
+                if curState.node.terminal and (forGrep or curState.parseIdx >= .bufLength)
                 {
-                    me.closeGroup(&curState)
-                    me.groups = #move curState.groups
-                    return {true, me.bufStart + curState.parseIdx}
+                    .closeGroup(&curState)
+                    .groups = #move curState.groups
+                    return {true, .bufStart + curState.parseIdx}
                 }
 
-                me.dfaMatch(pstack2, RuneEnd, 0, &curState)
+                .dfaMatch(pstack2, RuneEnd, 0, &curState)
             }
 
             if pstack2.isEmpty():
@@ -415,7 +415,7 @@ impl RegExp
 
     mtd closeGroup(state: *DfaState)
     {
-        let ptr = me.bufStart + state.parseIdx
+        let ptr = .bufStart + state.parseIdx
         if state.lastGroup
         {
             let strGroup = @mkstring(state.groupStart, ptr - state.groupStart)
@@ -431,7 +431,7 @@ impl RegExp
         let grp = state.node.transitions.tryFind(what)
         if grp
         {
-            me.closeGroup(state)
+            .closeGroup(state)
 
             var strGroup: string
             foreach g in state.groups
@@ -445,8 +445,8 @@ impl RegExp
 
             if @countof(strGroup)
             {
-                let ptr = me.bufStart + state.parseIdx
-                if Utf8.startsWith(@mkslice(ptr, me.bufLength - state.parseIdx), strGroup, me.ignoreCase ? .UnicodeNoCase : .Unicode)
+                let ptr = .bufStart + state.parseIdx
+                if Utf8.startsWith(@mkslice(ptr, .bufLength - state.parseIdx), strGroup, .ignoreCase ? .UnicodeNoCase : .Unicode)
                 {
                     var st = dref state
                     st.node = grp.value
@@ -462,7 +462,7 @@ impl RegExp
         var ok = false
 
         #[Swag.Mixin]
-        func checkTr(c: rune, length: s32)
+        mtd checkTr(c: rune, length: s32)
         {
             let #uniq1 = curState.node.transitions.tryFind(c)
             if #uniq1
@@ -470,7 +470,7 @@ impl RegExp
                 var st = dref curState
                 st.node = #uniq1.value
                 if st.node.group != st.lastGroup:
-                    me.closeGroup(&st)
+                    .closeGroup(&st)
                 st.parseIdx += length
                 out.add(st)
                 ok = true
@@ -478,25 +478,25 @@ impl RegExp
         }
 
         // Word transition
-        if !me.hasStarted
+        if !.hasStarted
         {
-            checkTr(RuneStart, 0)
-            checkTr(RuneWordSwap, 0)
-            me.hasStarted = true
+            .checkTr(RuneStart, 0)
+            .checkTr(RuneWordSwap, 0)
+            .hasStarted = true
             if ok:
                 return
         }
-        elif !me.wasWord and Unicode.isWord(c)
+        elif !.wasWord and Unicode.isWord(c)
         {
-            me.wasWord = true
-            checkTr(RuneWordSwap, 0)
+            .wasWord = true
+            .checkTr(RuneWordSwap, 0)
             if ok:
                 return
         }
-        elif me.wasWord and !Unicode.isWord(c)
+        elif .wasWord and !Unicode.isWord(c)
         {
-            me.wasWord = false
-            checkTr(RuneWordSwap, 0)
+            .wasWord = false
+            .checkTr(RuneWordSwap, 0)
             if ok:
                 return
         }
@@ -504,7 +504,7 @@ impl RegExp
         // Backreference
         for 9
         {
-            me.backward(out, RuneGroup1 + @index, curState)
+            .backward(out, RuneGroup1 + @index, curState)
         }
 
         if Unicode.isAscii(c)
@@ -512,73 +512,73 @@ impl RegExp
             let c8 = cast(u8) c
 
             if Latin1.isDigit(c8):
-                checkTr(RuneAsciiDigit, eat)
+                .checkTr(RuneAsciiDigit, eat)
             else:
-                checkTr(RuneAsciiDigit | RuneInvert, eat)
+                .checkTr(RuneAsciiDigit | RuneInvert, eat)
 
             if Latin1.isHexDigit(c8):
-                checkTr(RuneAsciiHexa, eat)
+                .checkTr(RuneAsciiHexa, eat)
             else:
-                checkTr(RuneAsciiHexa | RuneInvert, eat)
+                .checkTr(RuneAsciiHexa | RuneInvert, eat)
 
             if Latin1.isLetter(c8):
-                checkTr(RuneAsciiLetter, eat)
+                .checkTr(RuneAsciiLetter, eat)
             else:
-                checkTr(RuneAsciiLetter | RuneInvert, eat)
+                .checkTr(RuneAsciiLetter | RuneInvert, eat)
 
             if Latin1.isLower(c8):
-                checkTr(RuneAsciiLower, eat)
+                .checkTr(RuneAsciiLower, eat)
             else:
-                checkTr(RuneAsciiLower | RuneInvert, eat)
+                .checkTr(RuneAsciiLower | RuneInvert, eat)
 
             if Latin1.isUpper(c8):
-                checkTr(RuneAsciiUpper, eat)
+                .checkTr(RuneAsciiUpper, eat)
             else:
-                checkTr(RuneAsciiUpper | RuneInvert, eat)
+                .checkTr(RuneAsciiUpper | RuneInvert, eat)
 
             if Latin1.isLetterOrDigit(c8):
-                checkTr(RuneAsciiAlNum, eat)
+                .checkTr(RuneAsciiAlNum, eat)
             else:
-                checkTr(RuneAsciiAlNum | RuneInvert, eat)
+                .checkTr(RuneAsciiAlNum | RuneInvert, eat)
 
             if Latin1.isLetterOrDigit(c8) or c8 == '_':
-                checkTr(RuneAsciiWord, eat)
+                .checkTr(RuneAsciiWord, eat)
             else:
-                checkTr(RuneAsciiWord | RuneInvert, eat)
+                .checkTr(RuneAsciiWord | RuneInvert, eat)
 
             if Latin1.isSpace(c8):
-                checkTr(RuneAsciiSpace, eat)
+                .checkTr(RuneAsciiSpace, eat)
             else:
-                checkTr(RuneAsciiSpace | RuneInvert, eat)
+                .checkTr(RuneAsciiSpace | RuneInvert, eat)
 
             if c8 == ' ' or c8 == '\t':
-                checkTr(RuneAsciiBlank, eat)
+                .checkTr(RuneAsciiBlank, eat)
             else:
-                checkTr(RuneAsciiBlank | RuneInvert, eat)
+                .checkTr(RuneAsciiBlank | RuneInvert, eat)
 
-            checkTr(RuneAscii, eat)
+            .checkTr(RuneAscii, eat)
         }
         else
         {
-            checkTr(RuneAscii | RuneInvert, eat)
+            .checkTr(RuneAscii | RuneInvert, eat)
         }
 
         if Unicode.isLetter(c):
-            checkTr(RuneUnicodeLetter, eat)
+            .checkTr(RuneUnicodeLetter, eat)
         if Unicode.isLower(c):
-            checkTr(RuneUnicodeLetterLower, eat)
+            .checkTr(RuneUnicodeLetterLower, eat)
         if Unicode.isUpper(c):
-            checkTr(RuneUnicodeLetterUpper, eat)
+            .checkTr(RuneUnicodeLetterUpper, eat)
         if Unicode.isNumber(c):
-            checkTr(RuneUnicodeNumber, eat)
+            .checkTr(RuneUnicodeNumber, eat)
         if Unicode.isSymbol(c):
-            checkTr(RuneUnicodeSymbol, eat)
+            .checkTr(RuneUnicodeSymbol, eat)
         if Unicode.isSymbolMath(c):
-            checkTr(RuneUnicodeSymbolMath, eat)
+            .checkTr(RuneUnicodeSymbolMath, eat)
 
-        checkTr(c, eat)
-        checkTr(RuneWhatever, eat)
-        checkTr(0'rune, eat)
+        .checkTr(c, eat)
+        .checkTr(RuneWhatever, eat)
+        .checkTr(0'rune, eat)
     }
 
     func addTransition(node: *NfaNode, c: rune, toNode: *NfaNode)
@@ -595,63 +595,63 @@ impl RegExp
 
     mtd nfaPop()->*NfaTable throw
     {
-        if me.nfaStack.isEmpty():
+        if .nfaStack.isEmpty():
             throw SyntaxError{"nfaPop"}
-        return me.nfaStack.popBack()
+        return .nfaStack.popBack()
     }
 
     // Creates 2 new states, and one transition (by c) between them
     mtd nfaPush(c: rune)
     {
-        let table = me.nfaTables.addNewPtr()
-        let s1    = me.nfaNodes.addNewPtr()
-        let s2    = me.nfaNodes.addNewPtr()
+        let table = .nfaTables.addNewPtr()
+        let s1    = .nfaNodes.addNewPtr()
+        let s2    = .nfaNodes.addNewPtr()
 
-        table.level = cast(u32) me.openParen.count
+        table.level = cast(u32) .openParen.count
         s1.addTransition(c, s2)
 
         table.nodes.add(s1)
         table.nodes.add(s2)
-        me.nfaStack.add(table)
+        .nfaStack.add(table)
 
         // Add the character to the list of used characters
-        me.charSet.add(c)
+        .charSet.add(c)
     }
 
     mtd unionValidate() throw
     {
-        if me.orOpStack.isEmpty():
+        if .orOpStack.isEmpty():
             return
-        if me.nfaStack.count < 2:
+        if .nfaStack.count < 2:
             return
 
         // Check if the two tables have the same nested level
-        let table2 = me.nfaPop()
-        let table1 = me.nfaPop()
-        me.nfaStack.add(table1)
-        me.nfaStack.add(table2)
+        let table2 = .nfaPop()
+        let table1 = .nfaPop()
+        .nfaStack.add(table1)
+        .nfaStack.add(table2)
         if table1.level != table2.level:
             return
 
         // Operator must be at the same level
-        if me.orOpLevel[me.orOpLevel.count - 1] != table1.level:
+        if .orOpLevel[.orOpLevel.count - 1] != table1.level:
             return
 
         // Else validate union
-        me.orOpStack.removeBack()
-        me.orOpLevel.removeBack()
-        me.operatorUnion()
+        .orOpStack.removeBack()
+        .orOpLevel.removeBack()
+        .operatorUnion()
     }
 
     mtd operatorUnion() throw
     {
-        let table2 = me.nfaPop()
-        let table1 = me.nfaPop()
+        let table2 = .nfaPop()
+        let table1 = .nfaPop()
 
         let ns1 = Memory.new'NfaNode()
         let ns2 = Memory.new'NfaNode()
-        me.nfaNodes.add(ns1)
-        me.nfaNodes.add(ns2)
+        .nfaNodes.add(ns1)
+        .nfaNodes.add(ns2)
 
         let sa1 = table1.nodes.front()
         let sa2 = table1.nodes.back()
@@ -666,7 +666,7 @@ impl RegExp
         table1.nodes.add(table2.nodes.toSlice())
         table1.nodes.insertAt(0, ns1)
         table1.nodes.add(ns2)
-        me.nfaStack.add(table1)
+        .nfaStack.add(table1)
     }
 
     mtd operatorConcat(cpt: u64, canGroup = true) throw
@@ -674,19 +674,19 @@ impl RegExp
         var count = cpt
         while count >= 2
         {
-            let table2 = me.nfaPop()
-            let table1 = me.nfaPop()
+            let table2 = .nfaPop()
+            let table1 = .nfaPop()
 
             // Update nested level
-            table1.level = cast(u32) me.openParen.count
-            table2.level = cast(u32) me.openParen.count
+            table1.level = cast(u32) .openParen.count
+            table2.level = cast(u32) .openParen.count
 
             let s1 = table1.nodes.back()
             let s2 = table2.nodes.front()
             s1.addTransition(0'rune, s2)
 
             table1.nodes.add(table2.nodes.toSlice())
-            me.nfaStack.add(table1)
+            .nfaStack.add(table1)
 
             count -= 1
         }
@@ -694,49 +694,49 @@ impl RegExp
         // Update nested level
         if count == 1
         {
-            let table1 = me.nfaPop()
-            table1.level = cast(u32) me.openParen.count
+            let table1 = .nfaPop()
+            table1.level = cast(u32) .openParen.count
 
             if canGroup
             {
-                me.group += 1
+                .group += 1
                 foreach n in table1.nodes
                 {
                     if n.group == 0:
-                        n.group = me.group
+                        n.group = .group
                 }
             }
 
-            me.nfaStack.add(table1)
+            .nfaStack.add(table1)
         }
     }
 
     mtd operatorStar() throw
     {
-        let table = me.nfaPop()
+        let table = .nfaPop()
         let s1    = table.nodes.front()
         let s2    = table.nodes.back()
         s1.addTransition(0'rune, s2)
         s2.addTransition(0'rune, s1)
-        me.nfaStack.add(table)
+        .nfaStack.add(table)
     }
 
     mtd operatorPlus() throw
     {
-        let table = me.nfaPop()
+        let table = .nfaPop()
         let s1    = table.nodes.front()
         let s2    = table.nodes.back()
         s2.addTransition(0'rune, s1)
-        me.nfaStack.add(table)
+        .nfaStack.add(table)
     }
 
     mtd operatorQuestion() throw
     {
-        let table = me.nfaPop()
+        let table = .nfaPop()
         let s1    = table.nodes.front()
         let s2    = table.nodes.back()
         s1.addTransition(0'rune, s2)
-        me.nfaStack.add(table)
+        .nfaStack.add(table)
     }
 
     func isReservedChar(c: rune)->bool
@@ -752,46 +752,46 @@ impl RegExp
 
     mtd nfaBuild() throw
     {
-        var pz  = me.preprocessed.buffer
+        var pz  = .preprocessed.buffer
         var cpt = 0
 
-        while cpt < me.preprocessed.count
+        while cpt < .preprocessed.count
         {
             var c = dref pz
             switch c
             {
             case '(', RuneOpenParen:
-                me.openParen.add(cast(u32) me.nfaStack.count)
+                .openParen.add(cast(u32) .nfaStack.count)
 
             case RuneCloseParen:
-                me.unionValidate()
-                let op = me.openParen.popBack()
-                me.operatorConcat(me.nfaStack.count - op, false)
+                .unionValidate()
+                let op = .openParen.popBack()
+                .operatorConcat(.nfaStack.count - op, false)
 
             case ')':
-                me.unionValidate()
-                if me.openParen.isEmpty():
+                .unionValidate()
+                if .openParen.isEmpty():
                     throw SyntaxError{"unexpected right parenthesis"}
-                let op = me.openParen.popBack()
-                me.operatorConcat(me.nfaStack.count - op)
+                let op = .openParen.popBack()
+                .operatorConcat(.nfaStack.count - op)
 
             case '*':
-                me.operatorStar()
+                .operatorStar()
 
             case '+':
-                me.operatorPlus()
+                .operatorPlus()
 
             case '?':
-                me.operatorQuestion()
+                .operatorQuestion()
 
             case '|':
-                me.unionValidate()
-                me.orOpStack.add(c)
-                me.orOpLevel.add(cast(u32) me.openParen.count)
+                .unionValidate()
+                .orOpStack.add(c)
+                .orOpLevel.add(cast(u32) .openParen.count)
 
             case '.':
-                me.unionValidate()
-                me.nfaPush(RuneWhatever)
+                .unionValidate()
+                .nfaPush(RuneWhatever)
 
             case '\\':
                 if isReservedChar(pz[1])
@@ -800,24 +800,24 @@ impl RegExp
                     cpt, pz += 1
                 }
 
-                me.unionValidate()
-                me.nfaPush(c)
+                .unionValidate()
+                .nfaPush(c)
 
             default:
-                me.unionValidate()
-                me.nfaPush(c)
+                .unionValidate()
+                .nfaPush(c)
             }
 
             cpt, pz += 1
         }
 
         // Remaining operators
-        me.unionValidate()
-        if !me.orOpStack.isEmpty():
+        .unionValidate()
+        if !.orOpStack.isEmpty():
             throw SyntaxError{}
 
         // Concat the remaining nodes
-        me.operatorConcat(me.nfaStack.count)
+        .operatorConcat(.nfaStack.count)
     }
 
     func dfaEClosure(inH, outH: *Array'(*NfaNode))
@@ -851,7 +851,7 @@ impl RegExp
         foreach n in node.table
         {
             if node.group == 0:
-                node.group = me.groupTransform[n.group]
+                node.group = .groupTransform[n.group]
 
             if n.terminal:
                 node.terminal = true
@@ -889,7 +889,7 @@ impl RegExp
     mtd dfaBuild() throw
     {
         // One table must remain
-        let table = me.nfaPop()
+        let table = .nfaPop()
 
         // Last state of NFA table is a terminal
         table.nodes.back().terminal = true
@@ -902,13 +902,13 @@ impl RegExp
 
         var curGroup, curGroupSwap: u32
 
-        me.groupTransform.resize(cast(u64) me.group + 1)
+        .groupTransform.resize(cast(u64) .group + 1)
         foreach n in grp
         {
             if n != curGroup:
                 curGroupSwap += 1
-            curGroup             = n
-            me.groupTransform[n] = curGroupSwap
+            curGroup           = n
+            .groupTransform[n] = curGroupSwap
         }
 
         // Build the first state of the DFA table
@@ -917,8 +917,8 @@ impl RegExp
         dfaEClosure(&nfaStart, &dfaStart)
 
         var state = Memory.new'DfaNode()
-        me.setTable(state, &dfaStart)
-        me.dfaNodes.add(state)
+        .setTable(state, &dfaStart)
+        .dfaNodes.add(state)
 
         var moveRes, epsilonRes: Array'(*NfaNode)
         var stack: Array'(*DfaNode)
@@ -926,7 +926,7 @@ impl RegExp
         while stack.count
         {
             state = stack.popBack()
-            foreach c in me.charSet
+            foreach c in .charSet
             {
                 dfaMoveNode(&moveRes, c, state.table)
                 if moveRes.count == 0:
@@ -934,7 +934,7 @@ impl RegExp
                 dfaEClosure(&moveRes, &epsilonRes)
 
                 var found: *DfaNode
-                foreach tstate in me.dfaNodes
+                foreach tstate in .dfaNodes
                 {
                     if equals(&tstate.table, &epsilonRes)
                     {
@@ -946,9 +946,9 @@ impl RegExp
                 if !found
                 {
                     found = Memory.new'DfaNode()
-                    me.setTable(found, &epsilonRes)
+                    .setTable(found, &epsilonRes)
                     stack.add(found)
-                    me.dfaNodes.add(found)
+                    .dfaNodes.add(found)
                 }
 
                 state.transitions.add(c, found)
@@ -963,7 +963,7 @@ impl RegExp
         let pzStart = pz
         let pzEnd   = pz + @countof(sl)
 
-        me.preprocessed.add(RuneOpenParen)
+        .preprocessed.add(RuneOpenParen)
         pz += 1
 
         // Negation
@@ -975,7 +975,7 @@ impl RegExp
         while pz != pzEnd and pz[0] != ']'
         {
             if !firstExp:
-                me.preprocessed.add('|')
+                .preprocessed.add('|')
             firstExp = false
 
             let subSlice = @mkslice(pz, pzEnd - pz)
@@ -985,70 +985,70 @@ impl RegExp
             {
                 if Unicode.compare(subSlice, #runes("[:digit:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiDigit | invert)
+                    .preprocessed.add(RuneAsciiDigit | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, #runes("[:xdigit:]"), false, 10) == 0
                 {
-                    me.preprocessed.add(RuneAsciiHexa | invert)
+                    .preprocessed.add(RuneAsciiHexa | invert)
                     pz += 10
                     continue
                 }
 
                 if Unicode.compare(subSlice, #runes("[:alpha:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiLetter | invert)
+                    .preprocessed.add(RuneAsciiLetter | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, #runes("[:alnum:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiAlNum | invert)
+                    .preprocessed.add(RuneAsciiAlNum | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, #runes("[:lower:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiLower | invert)
+                    .preprocessed.add(RuneAsciiLower | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(subSlice, #runes("[:upper:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiUpper)
+                    .preprocessed.add(RuneAsciiUpper)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:blank:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiBlank | invert)
+                    .preprocessed.add(RuneAsciiBlank | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:space:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAsciiSpace | invert)
+                    .preprocessed.add(RuneAsciiSpace | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:ascii:]"), false, 9) == 0
                 {
-                    me.preprocessed.add(RuneAscii | invert)
+                    .preprocessed.add(RuneAscii | invert)
                     pz += 9
                     continue
                 }
 
                 if Unicode.compare(@mkslice(pz, pzEnd - pz), #runes("[:word:]"), false, 8) == 0
                 {
-                    me.preprocessed.add(RuneAsciiWord | invert)
+                    .preprocessed.add(RuneAsciiWord | invert)
                     pz += 8
                     continue
                 }
@@ -1063,21 +1063,21 @@ impl RegExp
                     swap(&first, &end)
 
                 if first == 'A' and end == 'Z':
-                    me.preprocessed.add(RuneAsciiUpper)
+                    .preprocessed.add(RuneAsciiUpper)
                 elif first == 'a' and end == 'z':
-                    me.preprocessed.add(RuneAsciiLower)
+                    .preprocessed.add(RuneAsciiLower)
                 elif first == '0' and end == '9':
-                    me.preprocessed.add(RuneAsciiDigit)
+                    .preprocessed.add(RuneAsciiDigit)
                 else
                 {
                     while first < end
                     {
-                        me.preprocessed.add(first)
-                        me.preprocessed.add('|')
+                        .preprocessed.add(first)
+                        .preprocessed.add('|')
                         first += 1
                     }
 
-                    me.preprocessed.add(first)
+                    .preprocessed.add(first)
                 }
 
                 pz += 3
@@ -1087,19 +1087,19 @@ impl RegExp
             // This is not an interval
             if isReservedChar(dref pz)
             {
-                me.preprocessed.add('\\')
-                me.preprocessed.add(dref pz)
+                .preprocessed.add('\\')
+                .preprocessed.add(dref pz)
                 pz += 1
             }
             else
             {
-                pz = me.preprocessEscape(@mkslice(pz, pz - pzStart), true)
+                pz = .preprocessEscape(@mkslice(pz, pz - pzStart), true)
             }
         }
 
         if pz != pzEnd:
             pz += 1
-        me.preprocessed.add(RuneCloseParen)
+        .preprocessed.add(RuneCloseParen)
 
         return pz
     }
@@ -1127,7 +1127,7 @@ impl RegExp
         var pz    = @dataof(sl)
         let pzEnd = pz + @countof(sl)
 
-        if me.preprocessed.count == 0:
+        if .preprocessed.count == 0:
             throw SyntaxError{"'{' without a previous expression"}
 
         var m = -1
@@ -1160,20 +1160,20 @@ impl RegExp
         pz += 1
 
         if n == 0 and m == -1:
-            me.preprocessed.add('*')
+            .preprocessed.add('*')
         elif n == 0 and m == 1:
-            me.preprocessed.add('?')
+            .preprocessed.add('?')
         elif n == 1 and m == -1:
-            me.preprocessed.add('+')
+            .preprocessed.add('+')
         elif n != 1 or m != 1 // {1,1}
         {
             // Isolate expression to duplicate
-            let pze      = me.preprocessed.buffer + me.preprocessed.count - 1
+            let pze      = .preprocessed.buffer + .preprocessed.count - 1
             var pz1      = pze
             var cptParen = 0
             if pz1[0] == ')' or pz1[0] == RuneCloseParen:
                 cptParen += 1
-            while cptParen and pz1 != me.preprocessed.buffer
+            while cptParen and pz1 != .preprocessed.buffer
             {
                 pz1 -= 1
                 if pz1[0] == ')' or pz1[0] == RuneCloseParen:
@@ -1193,20 +1193,20 @@ impl RegExp
             }
 
             if n == 0:
-                me.preprocessed.add(expr.toSlice())
+                .preprocessed.add(expr.toSlice())
             else
             {
                 var i = n - 1
                 while i
                 {
-                    me.preprocessed.add(expr.toSlice())
+                    .preprocessed.add(expr.toSlice())
                     i -= 1
                 }
             }
 
             if m == -1
             {
-                me.preprocessed.add('+')
+                .preprocessed.add('+')
             }
             else
             {
@@ -1215,8 +1215,8 @@ impl RegExp
                 m -= n
                 while m
                 {
-                    me.preprocessed.add(expr.toSlice())
-                    me.preprocessed.add('?')
+                    .preprocessed.add(expr.toSlice())
+                    .preprocessed.add('?')
                     m -= 1
                 }
             }
@@ -1235,10 +1235,10 @@ impl RegExp
                 switch pz[2]
                 {
                 case 'l':
-                    me.preprocessed.add(RuneUnicodeLetterLower)
+                    .preprocessed.add(RuneUnicodeLetterLower)
                     return pz + 4
                 case 'u':
-                    me.preprocessed.add(RuneUnicodeLetterUpper)
+                    .preprocessed.add(RuneUnicodeLetterUpper)
                     return pz + 4
                 }
             }
@@ -1247,7 +1247,7 @@ impl RegExp
                 switch pz[2]
                 {
                 case 'm':
-                    me.preprocessed.add(RuneUnicodeSymbolMath)
+                    .preprocessed.add(RuneUnicodeSymbolMath)
                     return pz + 4
                 }
             }
@@ -1256,13 +1256,13 @@ impl RegExp
         switch pz[0]
         {
         case 'L':
-            me.preprocessed.add(RuneUnicodeLetter)
+            .preprocessed.add(RuneUnicodeLetter)
             return pz + 1
         case 'N':
-            me.preprocessed.add(RuneUnicodeNumber)
+            .preprocessed.add(RuneUnicodeNumber)
             return pz + 1
         case 'S':
-            me.preprocessed.add(RuneUnicodeSymbol)
+            .preprocessed.add(RuneUnicodeSymbol)
             return pz + 1
         }
 
@@ -1278,71 +1278,71 @@ impl RegExp
             switch pz[1]
             {
             case 'd':
-                me.preprocessInter(#runes("[[:digit:]]"))
+                .preprocessInter(#runes("[[:digit:]]"))
                 return pz + 2
             case 'D':
-                me.preprocessInter(#runes("[^[:digit:]]"))
+                .preprocessInter(#runes("[^[:digit:]]"))
                 return pz + 2
             case 'w':
-                me.preprocessInter(#runes("[[:word:]]"))
+                .preprocessInter(#runes("[[:word:]]"))
                 return pz + 2
             case 'W':
-                me.preprocessInter(#runes("[^[:word:]]"))
+                .preprocessInter(#runes("[^[:word:]]"))
                 return pz + 2
             case 's':
-                me.preprocessInter(#runes("[[:space:]]"))
+                .preprocessInter(#runes("[[:space:]]"))
                 return pz + 2
             case 'S':
-                me.preprocessInter(#runes("[^[:space:]]"))
+                .preprocessInter(#runes("[^[:space:]]"))
                 return pz + 2
             case 'l':
-                me.preprocessInter(#runes("[[:lower:]]"))
+                .preprocessInter(#runes("[[:lower:]]"))
                 return pz + 2
             case 'L':
-                me.preprocessInter(#runes("[^[:lower:]]"))
+                .preprocessInter(#runes("[^[:lower:]]"))
                 return pz + 2
             case 'u':
-                me.preprocessInter(#runes("[[:upper:]]"))
+                .preprocessInter(#runes("[[:upper:]]"))
                 return pz + 2
             case 'U':
-                me.preprocessInter(#runes("[^[:upper:]]"))
+                .preprocessInter(#runes("[^[:upper:]]"))
                 return pz + 2
             case 'a':
-                me.preprocessed.add('\a')
+                .preprocessed.add('\a')
                 return pz + 2
             case 'b':
-                me.preprocessed.add(RuneWordSwap)
+                .preprocessed.add(RuneWordSwap)
                 return pz + 2
             case 'f':
-                me.preprocessed.add('\f')
+                .preprocessed.add('\f')
                 return pz + 2
             case 'n':
-                me.preprocessed.add('\n')
+                .preprocessed.add('\n')
                 return pz + 2
             case 'r':
-                me.preprocessed.add('\r')
+                .preprocessed.add('\r')
                 return pz + 2
             case 't':
-                me.preprocessed.add('\t')
+                .preprocessed.add('\t')
                 return pz + 2
             case 'v':
-                me.preprocessed.add('\v')
+                .preprocessed.add('\v')
                 return pz + 2
             case 'p':
-                pz = me.preprocessUnicode(sl)
+                pz = .preprocessUnicode(sl)
                 return pz
             case '1', '2', '3', '4', '5', '6', '7', '8', '9':
-                me.preprocessed.add(RuneGroup1 + (pz[1] - '1'))
+                .preprocessed.add(RuneGroup1 + (pz[1] - '1'))
                 return pz + 2
             }
         }
 
         if c == '^' and !inInter:
-            me.preprocessed.add(RuneStart)
+            .preprocessed.add(RuneStart)
         elif c == '$' and !inInter:
-            me.preprocessed.add(RuneEnd)
+            .preprocessed.add(RuneEnd)
         else:
-            me.preprocessed.add(c)
+            .preprocessed.add(c)
 
         return pz + 1
     }
@@ -1435,22 +1435,22 @@ impl RegExp
         var pz    = cast(const [*] rune) in32.buffer
         let pzEnd = pz + in32.count
 
-        var c = me.ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
+        var c = .ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         while c
         {
             switch c
             {
             case '[':
-                pz = me.preprocessInter(@mkslice(pz, pzEnd - pz))
+                pz = .preprocessInter(@mkslice(pz, pzEnd - pz))
             case '{':
-                pz = me.preprocessEnum(@mkslice(pz, pzEnd - pz))
+                pz = .preprocessEnum(@mkslice(pz, pzEnd - pz))
             default:
-                pz = me.preprocessEscape(@mkslice(pz, pzEnd - pz))
+                pz = .preprocessEscape(@mkslice(pz, pzEnd - pz))
             }
 
             if !pz:
                 break
-            c = me.ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
+            c = .ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         }
     }
 }

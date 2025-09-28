@@ -6,7 +6,7 @@ impl Theme
     #[Swag.Overload]
     mtd drawSubRect(painter: *Painter, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
-        drawSubRect(painter, me.res.imgWidgets, dstRect, subRect, color, center, interpol)
+        drawSubRect(painter, .res.imgWidgets, dstRect, subRect, color, center, interpol)
     }
 
     #[Swag.Overload]
@@ -138,8 +138,8 @@ impl Theme
     mtd setTextColors(fmt: *RichStringFormat, mainColor: Color)
     {
         fmt.palette[0] = mainColor
-        fmt.palette[1] = me.colors.richColor1
-        fmt.palette[2] = me.colors.richColor2
-        fmt.palette[3] = me.colors.richColor3
+        fmt.palette[1] = .colors.richColor1
+        fmt.palette[2] = .colors.richColor2
+        fmt.palette[3] = .colors.richColor3
     }
 }

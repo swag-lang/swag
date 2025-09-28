@@ -43,7 +43,7 @@ impl FormImage
 {
     mtd opPostCopy()
     {
-        @init(&me.texture, 1)
+        @init(&.texture, 1)
     }
 }
 
@@ -52,14 +52,14 @@ impl IForm for FormImage
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormImage) ptr
-        if me.kind == .Image and me.backColor != other.backColor:
+        if .kind == .Image and .backColor != other.backColor:
             return false
-        return me.borderColor == other.borderColor and
-               me.borderSize == other.borderSize and
-               me.alpha == other.alpha and
-               me.kind == other.kind and
-               me.paintShadow == other.paintShadow and
-               me.strength == other.strength
+        return .borderColor == other.borderColor and
+               .borderSize == other.borderSize and
+               .alpha == other.alpha and
+               .kind == other.kind and
+               .paintShadow == other.paintShadow and
+               .strength == other.strength
     }
 
     mtd impl copy(dst, src: *BaseForm)
@@ -83,107 +83,107 @@ impl IForm for FormImage
         let ya = cast(s32) (movingStart.y / zoom)
         let xb = cast(s32) (localPos.x / zoom)
         let yb = cast(s32) (localPos.y / zoom)
-        me.setBaseForm(xa, ya, xb - xa, yb - ya)
+        .setBaseForm(xa, ya, xb - xa, yb - ya)
         if evt.kind == .MouseReleased and evt.button == .Left
         {
-            me.isReadyToCapture = true
+            .isReadyToCapture = true
             return false
         }
 
         return true
     }
 
-    mtd mustEditInside() => me.kind == .Image and me.place == .Free and me.editInside
+    mtd mustEditInside() => .kind == .Image and .place == .Free and .editInside
 
     mtd impl moveBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        if me.mustEditInside()
+        if .mustEditInside()
         {
-            me.freePos.x += newPosX
-            me.freePos.y += newPosY
-            me.freePos.width += newSizeX
-            me.freePos.height += newSizeY
+            .freePos.x += newPosX
+            .freePos.y += newPosY
+            .freePos.width += newSizeX
+            .freePos.height += newSizeY
         }
         else
         {
-            me.x += newPosX
-            me.y += newPosY
-            me.w += newSizeX
-            me.h += newSizeY
+            .x += newPosX
+            .y += newPosY
+            .w += newSizeX
+            .h += newSizeY
         }
     }
 
     mtd impl scaleBaseForm(val: f32)
     {
-        me.x = cast(s32) (me.x * val)
-        me.y = cast(s32) (me.y * val)
-        me.w = cast(s32) (me.w * val)
-        me.h = cast(s32) (me.h * val)
+        .x = cast(s32) (.x * val)
+        .y = cast(s32) (.y * val)
+        .w = cast(s32) (.w * val)
+        .h = cast(s32) (.h * val)
     }
 
     mtd impl setBaseForm(newPosX, newPosY, newSizeX, newSizeY: s32)
     {
-        if me.mustEditInside()
+        if .mustEditInside()
         {
             if newSizeX < 0
             {
-                me.freePos.x     = newPosX + newSizeX
-                me.freePos.width = -newSizeX
+                .freePos.x     = newPosX + newSizeX
+                .freePos.width = -newSizeX
             }
             else
             {
-                me.freePos.x     = newPosX
-                me.freePos.width = newSizeX
+                .freePos.x     = newPosX
+                .freePos.width = newSizeX
             }
 
             if newSizeY < 0
             {
-                me.freePos.y      = newPosY + newSizeY
-                me.freePos.height = -newSizeY
+                .freePos.y      = newPosY + newSizeY
+                .freePos.height = -newSizeY
             }
             else
             {
-                me.freePos.y      = newPosY
-                me.freePos.height = newSizeY
+                .freePos.y      = newPosY
+                .freePos.height = newSizeY
             }
         }
         else
         {
             if newSizeX < 0
             {
-                me.x = newPosX + newSizeX
-                me.w = -newSizeX
+                .x = newPosX + newSizeX
+                .w = -newSizeX
             }
             else
             {
-                me.x = newPosX
-                me.w = newSizeX
+                .x = newPosX
+                .w = newSizeX
             }
 
             if newSizeY < 0
             {
-                me.y = newPosY + newSizeY
-                me.h = -newSizeY
+                .y = newPosY + newSizeY
+                .h = -newSizeY
             }
             else
             {
-                me.y = newPosY
-                me.h = newSizeY
+                .y = newPosY
+                .h = newSizeY
             }
         }
     }
 
     mtd impl moveForm(newPosX, newPosY: s32)
     {
-        if me.mustEditInside()
+        if .mustEditInside()
         {
-            me.freePos.x += newPosX
-            me.freePos.y += newPosY
+            .freePos.x += newPosX
+            .freePos.y += newPosY
         }
         else
         {
-            me.x += newPosX
-            me.y += newPosY
+            .x += newPosX
+            .y += newPosY
         }
     }
 
@@ -191,65 +191,65 @@ impl IForm for FormImage
 
     mtd impl boundRect()->Math.Rectangle
     {
-        return Math.Rectangle{me.x, me.y, me.w, me.h}
+        return Math.Rectangle{.x, .y, .w, .h}
     }
 
     mtd impl mouse(view: *EditView, pos: Math.Point, evt: *MouseEvent)->bool
     {
-        if me.kind == .Image and
-           me.place == .Free and
+        if .kind == .Image and
+           .place == .Free and
            evt.kind == .MouseDoubleClick and
            evt.button == .Left and
-           me.image.isValid()
+           .image.isValid()
         {
-            me.editInside = !me.editInside
+            .editInside = !.editInside
             return true
         }
 
-        if me.mustEditInside()
+        if .mustEditInside()
         {
             evt.modifiers ^= .Shift
         }
 
-        return me.gizmo.mouse(view, pos, evt)
+        return .gizmo.mouse(view, pos, evt)
     }
 
     mtd impl paintGizmo(painter: *Painter, z: f32, flags: FormFlags)
     {
         if flags.has(.Hot | .Selected)
         {
-            me.gizmo.rect = me.boundRect() * z
-            if me.mustEditInside()
+            .gizmo.rect = .boundRect() * z
+            if .mustEditInside()
             {
-                me.gizmo.rect.offset(me.freePos.x * z, me.freePos.y * z)
-                me.gizmo.rect.width  = me.freePos.width * z
-                me.gizmo.rect.height = me.freePos.height * z
-                me.gizmo.paint(painter, !flags.has(.Selected), Argb.Yellow)
+                .gizmo.rect.offset(.freePos.x * z, .freePos.y * z)
+                .gizmo.rect.width  = .freePos.width * z
+                .gizmo.rect.height = .freePos.height * z
+                .gizmo.paint(painter, !flags.has(.Selected), Argb.Yellow)
             }
             else
             {
-                me.gizmo.paint(painter, !flags.has(.Selected))
+                .gizmo.paint(painter, !flags.has(.Selected))
             }
         }
         else
         {
-            me.editInside = false
+            .editInside = false
         }
     }
 
     mtd impl isInside(pt: Math.Point)->bool
     {
-        return me.boundRect().contains(pt)
+        return .boundRect().contains(pt)
     }
 
     mtd impl hitTest(pt: Math.Point, z: f32)->bool
     {
-        var pp = me.boundRect() * z
-        if me.mustEditInside()
+        var pp = .boundRect() * z
+        if .mustEditInside()
         {
-            pp.offset(me.freePos.x * z, me.freePos.y * z)
-            pp.width  = me.freePos.width * z
-            pp.height = me.freePos.height * z
+            pp.offset(.freePos.x * z, .freePos.y * z)
+            pp.width  = .freePos.width * z
+            pp.height = .freePos.height * z
             return pp.contains(pt)
         }
 
@@ -260,7 +260,7 @@ impl IForm for FormImage
     {
         let renderer = g_App.getRenderer()
 
-        me.image.visitPixels(mask)
+        .image.visitPixels(mask)
         {
             var maskImg = cast(*Image) userData
             var pix1    = maskImg.pixels.buffer + x * 4
@@ -269,120 +269,120 @@ impl IForm for FormImage
                 dref cast(*u32) pix = 0
         }
 
-        renderer.removeTexture(&me.texture)
-        me.texture = g_App.getRenderer().addImage(me.image)
+        renderer.removeTexture(&.texture)
+        .texture = g_App.getRenderer().addImage(.image)
     }
 
     mtd backCapture()
     {
         let renderer = g_App.getRenderer()
-        let x1       = cast(s32) (me.x - me.capture.backImagePos.x)
-        let y1       = cast(s32) (me.y - me.capture.backImagePos.y)
+        let x1       = cast(s32) (.x - .capture.backImagePos.x)
+        let y1       = cast(s32) (.y - .capture.backImagePos.y)
 
-        if me.w > 1 and me.h > 1 and me.isReadyToCapture
+        if .w > 1 and .h > 1 and .isReadyToCapture
         {
-            me.isReadyToCapture = false
-            me.dirty            = false
-            me.textureKind      = me.kind
-            renderer.removeTexture(&me.texture)
-            me.image   = me.capture.backImg.toCrop(x1, y1, me.w, me.h)
-            me.texture = g_App.getRenderer().addImage(me.image)
+            .isReadyToCapture = false
+            .dirty            = false
+            .textureKind      = .kind
+            renderer.removeTexture(&.texture)
+            .image   = .capture.backImg.toCrop(x1, y1, .w, .h)
+            .texture = g_App.getRenderer().addImage(.image)
         }
-        elif me.image.isValid()
+        elif .image.isValid()
         {
-            me.texture = g_App.getRenderer().addImage(me.image)
+            .texture = g_App.getRenderer().addImage(.image)
         }
     }
 
     mtd impl paint(painter: *Painter, cxt: FormPaintContext)
     {
         let z     = cxt.z
-        let bSize = BaseForm.adaptSize(me.borderSize, MinBorderSize, MaxBorderSize, cxt)
-        var pp    = me.boundRect() * z
-        let pen   = Pen.createSolid(me.borderColor, bSize)
+        let bSize = BaseForm.adaptSize(.borderSize, MinBorderSize, MaxBorderSize, cxt)
+        var pp    = .boundRect() * z
+        let pen   = Pen.createSolid(.borderColor, bSize)
 
         if !cxt.quickMode
         {
             let renderer = g_App.getRenderer()
-            let x1       = cast(s32) (me.x - me.capture.backImagePos.x)
-            let y1       = cast(s32) (me.y - me.capture.backImagePos.y)
+            let x1       = cast(s32) (.x - .capture.backImagePos.x)
+            let y1       = cast(s32) (.y - .capture.backImagePos.y)
 
-            switch me.kind
+            switch .kind
             {
             case Image:
-                if (!me.texture.isValid() or me.textureKind != me.kind or me.dirty) and me.image.isValid()
+                if (!.texture.isValid() or .textureKind != .kind or .dirty) and .image.isValid()
                 {
-                    me.dirty       = false
-                    me.textureKind = me.kind
-                    renderer.removeTexture(&me.texture)
-                    me.texture = renderer.addImage(me.image)
-                    if !me.freePos.width:
-                        me.freePos.width = me.image.width
-                    if !me.freePos.height:
-                        me.freePos.height = me.image.height
+                    .dirty       = false
+                    .textureKind = .kind
+                    renderer.removeTexture(&.texture)
+                    .texture = renderer.addImage(.image)
+                    if !.freePos.width:
+                        .freePos.width = .image.width
+                    if !.freePos.height:
+                        .freePos.height = .image.height
                 }
 
             case Capture:
-                if !me.texture.isValid() or
-                   me.textureKind != me.kind
+                if !.texture.isValid() or
+                   .textureKind != .kind
                 {
-                    me.backCapture()
+                    .backCapture()
                 }
 
             case Blur, Pixelate:
-                if !me.texture.isValid() or
-                   me.xc != me.x or me.yc != me.y or me.wc != me.w or me.hc != me.h or
-                   me.textureKind != me.kind or
-                   me.dirty or
-                   me.stc != me.strength or
-                   me.serial != me.capture.serialBackTexture
+                if !.texture.isValid() or
+                   .xc != .x or .yc != .y or .wc != .w or .hc != .h or
+                   .textureKind != .kind or
+                   .dirty or
+                   .stc != .strength or
+                   .serial != .capture.serialBackTexture
                 {
-                    if me.w > 1 and me.h > 1
+                    if .w > 1 and .h > 1
                     {
-                        me.dirty       = false
-                        me.serial      = me.capture.serialBackTexture
-                        me.textureKind = me.kind
-                        me.stc         = me.strength
-                        me.xc          = me.x
-                        me.yc          = me.y
-                        me.wc          = me.w
-                        me.hc          = me.h
-                        renderer.removeTexture(&me.texture)
-                        var img = me.capture.backImg.toCrop(x1, y1, me.w, me.h)
-                        let st  = Math.map(cast(f32) me.strength, 0, 100, 1, 16)
+                        .dirty       = false
+                        .serial      = .capture.serialBackTexture
+                        .textureKind = .kind
+                        .stc         = .strength
+                        .xc          = .x
+                        .yc          = .y
+                        .wc          = .w
+                        .hc          = .h
+                        renderer.removeTexture(&.texture)
+                        var img = .capture.backImg.toCrop(x1, y1, .w, .h)
+                        let st  = Math.map(cast(f32) .strength, 0, 100, 1, 16)
                         let nw  = Math.max(cast(s32) (img.width / st), 4)
                         let nh  = Math.max(cast(s32) (img.height / st), 4)
                         img.resize(nw, nh, .Quadratic)
-                        img.resize(me.w, me.h, me.kind == .Pixelate ? .Raw : .Quadratic)
-                        me.texture = g_App.getRenderer().addImage(img)
+                        img.resize(.w, .h, .kind == .Pixelate ? .Raw : .Quadratic)
+                        .texture = g_App.getRenderer().addImage(img)
                     }
                 }
 
             case Zoom:
-                if !me.texture.isValid() or
-                   me.xc != me.x or me.yc != me.y or me.wc != me.w or me.hc != me.h or
-                   me.textureKind != me.kind or
-                   me.dirty or
-                   me.stc != me.strength or
-                   me.serial != me.capture.serialBackTexture
+                if !.texture.isValid() or
+                   .xc != .x or .yc != .y or .wc != .w or .hc != .h or
+                   .textureKind != .kind or
+                   .dirty or
+                   .stc != .strength or
+                   .serial != .capture.serialBackTexture
                 {
-                    if me.w > 1 and me.h > 1
+                    if .w > 1 and .h > 1
                     {
-                        me.dirty       = false
-                        me.serial      = me.capture.serialBackTexture
-                        me.textureKind = me.kind
-                        me.stc         = me.strength
-                        me.xc          = me.x
-                        me.yc          = me.y
-                        me.wc          = me.w
-                        me.hc          = me.h
-                        renderer.removeTexture(&me.texture)
+                        .dirty       = false
+                        .serial      = .capture.serialBackTexture
+                        .textureKind = .kind
+                        .stc         = .strength
+                        .xc          = .x
+                        .yc          = .y
+                        .wc          = .w
+                        .hc          = .h
+                        renderer.removeTexture(&.texture)
                         const ZoomFactor = 2.5
-                        let stw          = cast(s32) Math.map(cast(f32) me.strength, 0, 100, 1, me.w / ZoomFactor)
-                        let sth          = cast(s32) Math.map(cast(f32) me.strength, 0, 100, 1, me.h / ZoomFactor)
-                        var img          = me.capture.backImg.toCrop(x1 + stw, y1 + sth, me.w - stw * 2, me.h - sth * 2)
-                        img.resize(me.w, me.h, .Raw)
-                        me.texture = g_App.getRenderer().addImage(img)
+                        let stw          = cast(s32) Math.map(cast(f32) .strength, 0, 100, 1, .w / ZoomFactor)
+                        let sth          = cast(s32) Math.map(cast(f32) .strength, 0, 100, 1, .h / ZoomFactor)
+                        var img          = .capture.backImg.toCrop(x1 + stw, y1 + sth, .w - stw * 2, .h - sth * 2)
+                        img.resize(.w, .h, .Raw)
+                        .texture = g_App.getRenderer().addImage(img)
                     }
                 }
             }
@@ -390,8 +390,8 @@ impl IForm for FormImage
 
         let iconColor = g_App.theme.colors.btnIcon_Icon
 
-        if me.borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
-            painter.fillRect(pp, me.borderColor)
+        if .borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
+            painter.fillRect(pp, .borderColor)
         else
         {
             if cxt.quickMode
@@ -399,10 +399,10 @@ impl IForm for FormImage
                 pp.height -= 10
 
                 var icon: Icon
-                switch me.kind
+                switch .kind
                 {
                 case Image:
-                    painter.fillRect(pp, me.backColor)
+                    painter.fillRect(pp, .backColor)
                     icon = Icon.from(&g_Main.icons48, 13)
                 case Blur:
                     icon = Icon.from(&g_Main.icons48, 14)
@@ -419,38 +419,38 @@ impl IForm for FormImage
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }
-            elif me.kind == .Capture and !me.texture.isValid()
+            elif .kind == .Capture and !.texture.isValid()
             {
                 painter.drawRect(pp, Argb.White, 4)
             }
-            elif me.kind == .Image and !me.image.isValid()
+            elif .kind == .Image and !.image.isValid()
             {
-                painter.fillRect(pp, me.backColor)
+                painter.fillRect(pp, .backColor)
                 let icon = Icon.from(&g_Main.icons48, 13)
                 icon.paint(painter, pp.horzCenter() - icon.sizeX * 0.5, pp.vertCenter() - icon.sizeY * 0.5, iconColor)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }
-            elif me.kind == .Image
+            elif .kind == .Image
             {
-                painter.fillRect(pp, me.backColor)
-                switch me.place
+                painter.fillRect(pp, .backColor)
+                switch .place
                 {
                 case Frame:
-                    painter.drawTexture(pp, me.texture)
+                    painter.drawTexture(pp, .texture)
                 case Center:
                     var pp1 = pp
-                    pp1.x      = pp.horzCenter() - (me.texture.width / 2) * z
-                    pp1.y      = pp.vertCenter() - (me.texture.height / 2) * z
-                    pp1.width  = me.texture.width * z
-                    pp1.height = me.texture.height * z
-                    painter.drawTexture(pp1, me.texture)
+                    pp1.x      = pp.horzCenter() - (.texture.width / 2) * z
+                    pp1.y      = pp.vertCenter() - (.texture.height / 2) * z
+                    pp1.width  = .texture.width * z
+                    pp1.height = .texture.height * z
+                    painter.drawTexture(pp1, .texture)
                 case Free:
                     var pp1 = pp
-                    pp1.offset(me.freePos.x * z, me.freePos.y * z)
-                    pp1.width  = me.freePos.width * z
-                    pp1.height = me.freePos.height * z
-                    painter.drawTexture(pp1, me.texture)
+                    pp1.offset(.freePos.x * z, .freePos.y * z)
+                    pp1.width  = .freePos.width * z
+                    pp1.height = .freePos.height * z
+                    painter.drawTexture(pp1, .texture)
                 }
 
                 pp.inflate(-bSize * 0.5)
@@ -458,7 +458,7 @@ impl IForm for FormImage
             }
             else
             {
-                painter.drawTexture(pp, me.texture)
+                painter.drawTexture(pp, .texture)
                 pp.inflate(-bSize * 0.5)
                 painter.drawRect(pp, pen)
             }
@@ -467,7 +467,7 @@ impl IForm for FormImage
 
     mtd impl setup(capt: *Capture)
     {
-        me.capture = capt
+        .capture = capt
 
         with me.gizmo
         {
@@ -478,7 +478,7 @@ impl IForm for FormImage
             .paintBigBorder    = true
         }
 
-        me.gizmo.sigChanged = mtd||(g, first, hitMove)
+        .gizmo.sigChanged = mtd||(g, first, hitMove)
         {
             g.apply(me, first, hitMove)
         }

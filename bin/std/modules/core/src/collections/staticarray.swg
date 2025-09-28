@@ -15,34 +15,34 @@ impl StaticArray
     #[Inline]
     mtd opCount()->u64
     {
-        return me.count
+        return .count
     }
 
     // Returns a raw, constant pointer to the array's buffer.
     #[Inline]
     mtd opData()->const *T
     {
-        return &me.buffer[0]
+        return &.buffer[0]
     }
 
     // Ensures that if elements have destructors, they are called when the array goes out of scope.
     mtd opDrop()
     {
-        me.free()
+        .free()
     }
 
     // Allows the array to be implicitly cast to a mutable slice.
     #[Inline, Overload]
     mtd opCast()->[..] T
     {
-        return me.toSlice()
+        return .toSlice()
     }
 
     // Allows the array to be implicitly cast to an immutable slice.
     #[Inline, Overload]
     mtd opCast()->const [..] T
     {
-        return me.toSlice()
+        return .toSlice()
     }
 
     // Creates a slice from a sub-part of the array.
@@ -50,25 +50,25 @@ impl StaticArray
     mtd opSlice(lower, upper: u64)->[..] T
     {
         Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
-        Debug.safetyBoundCheck(lower < me.count, "lower bound out of range")
-        Debug.safetyBoundCheck(upper < me.count, "upper bound out of range")
-        return @mkslice(&me.buffer[0] + lower, (upper + 1) - lower)
+        Debug.safetyBoundCheck(lower < .count, "lower bound out of range")
+        Debug.safetyBoundCheck(upper < .count, "upper bound out of range")
+        return @mkslice(&.buffer[0] + lower, (upper + 1) - lower)
     }
 
     // Returns a constant reference to the element at the specified index.
     #[Inline, Overload]
     mtd const opIndex(index: u64)->const &T
     {
-        Debug.safetyBoundCheck(index < me.count, "index out of range")
-        return &me.buffer[index]
+        Debug.safetyBoundCheck(index < .count, "index out of range")
+        return &.buffer[index]
     }
 
     // Returns a mutable reference to the element at the specified index.
     #[Inline, Overload]
     mtd opIndex(index: u64)->&T
     {
-        Debug.safetyBoundCheck(index < me.count, "index out of range")
-        return &me.buffer[index]
+        Debug.safetyBoundCheck(index < .count, "index out of range")
+        return &.buffer[index]
     }
 
     // Assigns a new value to the element at the specified index.
@@ -76,15 +76,15 @@ impl StaticArray
     mtd opIndexAffect(index: u64, value: T)
         where Reflection.canCopy(T)
     {
-        Debug.safetyBoundCheck(index < me.count, "index out of range")
-        me.buffer[index] = value
+        Debug.safetyBoundCheck(index < .count, "index out of range")
+        .buffer[index] = value
     }
 
     // Handles compound assignment operators (e.g., `+=`, `-=`) for elements.
     #[Inline]
     mtd(op: string) opIndexAssign(index: u64, value: T)
     {
-        Debug.safetyBoundCheck(index < me.count, "index out of range")
+        Debug.safetyBoundCheck(index < .count, "index out of range")
         #ast "buffer[index] " ++ op ++ " value"
     }
 
@@ -93,7 +93,7 @@ impl StaticArray
     mtd opAffect(arr: const [..] T)
         where Reflection.canCopy(T)
     {
-        me.clear()
+        .clear()
         var countof = @countof(arr)
         if !countof:
             return
@@ -103,14 +103,14 @@ impl StaticArray
         #if Reflection.hasPostCopy(T)
         {
             for i in countof:
-                me.buffer[i] = #nodrop dataof[i]
+                .buffer[i] = #nodrop dataof[i]
         }
         #else
         {
-            Memory.copy(me.buffer, dataof, #sizeof(T) * countof)
+            Memory.copy(.buffer, dataof, #sizeof(T) * countof)
         }
 
-        me.count += countof
+        .count += countof
     }
 
     // Provides a way to iterate over each element in the array.
@@ -119,16 +119,16 @@ impl StaticArray
     #[Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
-        if !me.count:
+        if !.count:
             return
 
         // Little trick to avoid labels. That way a 'continue' in the user code will work correctly
         #if back:
-            var scan = &me.buffer[0] + me.count
+            var scan = &.buffer[0] + .count
         #else:
-            var scan = &me.buffer[0] - 1
+            var scan = &.buffer[0] - 1
 
-        for me.count
+        for .count
         {
             #if back:
                 scan -= 1
@@ -152,45 +152,45 @@ impl StaticArray
     // This is equivalent to 'clear' for this type.
     mtd free()
     {
-        if !me.count:
+        if !.count:
             return
 
         // Need to drop every structs
         #if Reflection.hasDrop(T)
         {
-            @drop(&me.buffer[0], me.count)
+            @drop(&.buffer[0], .count)
         }
 
-        me.count = 0
+        .count = 0
     }
 
     // Returns 'true' if the array contains no elements.
     #[Inline]
-    mtd const isEmpty() => me.count == 0
+    mtd const isEmpty() => .count == 0
 
     // Returns a mutable slice containing all valid elements of the array.
     #[Inline]
     mtd toSlice()->[..] T
     {
-        return @mkslice(&me.buffer[0], me.count)
+        return @mkslice(&.buffer[0], .count)
     }
 
     // Changes the number of elements in the array to 'newCount'.
     // Asserts if 'newCount' exceeds the static capacity.
     mtd resize(newCount: u64)
     {
-        if newCount == me.count:
+        if newCount == .count:
             return
         Debug.assert(newCount < N, "size is too big")
-        if newCount > me.count
+        if newCount > .count
         {
-            @init(buffer + me.count, newCount - me.count)
-            me.count = newCount
+            @init(buffer + .count, newCount - .count)
+            .count = newCount
         }
         else
         {
-            @drop(buffer + newCount, me.count - newCount)
-            me.count = newCount
+            @drop(buffer + newCount, .count - newCount)
+            .count = newCount
         }
     }
 
@@ -200,11 +200,11 @@ impl StaticArray
     {
         #if Reflection.hasDrop(T)
         {
-            for me.count:
-                @drop(&me.buffer[0] + @index)
+            for .count:
+                @drop(&.buffer[0] + @index)
         }
 
-        me.count = 0
+        .count = 0
     }
 
     // Adds an element to the end of the array, but only if it's not already present.
@@ -212,11 +212,11 @@ impl StaticArray
     mtd addOnce(value: T)
         where Reflection.canCopy(T)
     {
-        if me.contains(value):
+        if .contains(value):
             return
-        Debug.assert(me.count != N, "the array is full")
-        me.buffer[me.count] = #nodrop value
-        me.count += 1
+        Debug.assert(.count != N, "the array is full")
+        .buffer[.count] = #nodrop value
+        .count += 1
     }
 
     // Adds a copy of an element to the end of the array.
@@ -225,9 +225,9 @@ impl StaticArray
     mtd add(value: T)
         where Reflection.canCopy(T)
     {
-        Debug.assert(me.count != N, "the array is full")
-        me.buffer[me.count] = #nodrop value
-        me.count += 1
+        Debug.assert(.count != N, "the array is full")
+        .buffer[.count] = #nodrop value
+        .count += 1
     }
 
     // Moves an element to the end of the array.
@@ -235,27 +235,27 @@ impl StaticArray
     #[Overload]
     mtd add(value: &&T)
     {
-        Debug.assert(me.count != N, "the array is full")
-        me.buffer[me.count] = #nodrop #move value
-        me.count += 1
+        Debug.assert(.count != N, "the array is full")
+        .buffer[.count] = #nodrop #move value
+        .count += 1
     }
 
     // Makes room for 'num' elements at the end of the array and returns a pointer to the new space.
     // The new memory is not initialized. Asserts if the array does not have enough capacity.
     mtd emplaceAddress(num: u32 = 1)->[*] T
     {
-        Debug.assert(me.count + num <= N, "the array is full")
-        me.count += num
-        return me.buffer + me.count - num
+        Debug.assert(.count + num <= N, "the array is full")
+        .count += num
+        return .buffer + .count - num
     }
 
     // Makes room for 'num' elements at the end of the array and returns a pointer to the new space.
     // The new memory is default-initialized. Asserts if the array does not have enough capacity.
     mtd emplaceInitAddress(num: u32 = 1)->[*] T
     {
-        Debug.assert(me.count + num <= N, "the array is full")
-        me.count += num
-        var res = me.buffer + me.count - num
+        Debug.assert(.count + num <= N, "the array is full")
+        .count += num
+        var res = .buffer + .count - num
         @init(res, num)
         return res
     }
@@ -266,23 +266,23 @@ impl StaticArray
     mtd insertAt(index: u64, value: T)
         where Reflection.canCopy(T)
     {
-        Debug.assert(index <= me.count, "index out of range")
-        if index == me.count:
-            return me.add(value)
-        Debug.assert(me.count != N, "the array is full")
-        me.count += 1
+        Debug.assert(index <= .count, "index out of range")
+        if index == .count:
+            return .add(value)
+        Debug.assert(.count != N, "the array is full")
+        .count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = me.count - 1; idx > index; idx -= 1:
-                me.buffer[idx] = #nodrop #moveraw me.buffer[idx - 1]
+            for var idx = .count - 1; idx > index; idx -= 1:
+                .buffer[idx] = #nodrop #moveraw .buffer[idx - 1]
         }
         #else
         {
-            Memory.copyOver(&me.buffer[0] + index + 1, &me.buffer[0] + index, #sizeof(T) * (me.count - 1 - index))
+            Memory.copyOver(&.buffer[0] + index + 1, &.buffer[0] + index, #sizeof(T) * (.count - 1 - index))
         }
 
-        me.buffer[index] = #nodrop value
+        .buffer[index] = #nodrop value
     }
 
     // Inserts a moved value at a specific index, shifting existing elements to the right.
@@ -290,23 +290,23 @@ impl StaticArray
     #[Overload]
     mtd insertAt(index: u64, value: &&T)
     {
-        Debug.assert(index <= me.count, "index out of range")
-        if index == me.count:
-            return me.emplace(value)
-        Debug.assert(me.count != N, "the array is full")
-        me.count += 1
+        Debug.assert(index <= .count, "index out of range")
+        if index == .count:
+            return .emplace(value)
+        Debug.assert(.count != N, "the array is full")
+        .count += 1
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = me.count - 1; idx > index; idx -= 1:
-                me.buffer[idx] = #nodrop #moveraw me.buffer[idx - 1]
+            for var idx = .count - 1; idx > index; idx -= 1:
+                .buffer[idx] = #nodrop #moveraw .buffer[idx - 1]
         }
         #else
         {
-            Memory.copyOver(&me.buffer[0] + index + 1, &me.buffer[0] + index, #sizeof(T) * (me.count - 1 - index))
+            Memory.copyOver(&.buffer[0] + index + 1, &.buffer[0] + index, #sizeof(T) * (.count - 1 - index))
         }
 
-        me.buffer[index] = #nodrop #move value
+        .buffer[index] = #nodrop #move value
     }
 
     // Inserts elements from a slice at a specific index, shifting existing elements to the right.
@@ -319,30 +319,30 @@ impl StaticArray
         if !sliceCount:
             return
 
-        Debug.assert(index <= me.count, "index out of range")
-        if index == me.count:
-            return me.add(values)
-        Debug.assert(me.count + sliceCount <= N, "the array is full")
-        me.count += sliceCount
+        Debug.assert(index <= .count, "index out of range")
+        if index == .count:
+            return .add(values)
+        Debug.assert(.count + sliceCount <= N, "the array is full")
+        .count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = me.count - 1; idx >= index + sliceCount; idx -= 1:
-                me.buffer[idx] = #nodrop #moveraw me.buffer[idx - sliceCount]
+            for var idx = .count - 1; idx >= index + sliceCount; idx -= 1:
+                .buffer[idx] = #nodrop #moveraw .buffer[idx - sliceCount]
         }
         #else
         {
-            Memory.copyOver(&me.buffer[0] + index + sliceCount, &me.buffer[0] + index, #sizeof(T) * (me.count - sliceCount - index))
+            Memory.copyOver(&.buffer[0] + index + sliceCount, &.buffer[0] + index, #sizeof(T) * (.count - sliceCount - index))
         }
 
         #if Reflection.hasPostCopy(T)
         {
             for var idx = 0; idx < sliceCount; idx += 1:
-                me.buffer[index + idx] = #nodrop values[idx]
+                .buffer[index + idx] = #nodrop values[idx]
         }
         #else
         {
-            Memory.copy(&me.buffer[0] + index, @dataof(values), #sizeof(T) * sliceCount)
+            Memory.copy(&.buffer[0] + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -355,30 +355,30 @@ impl StaticArray
         if !sliceCount:
             return
 
-        Debug.assert(index <= me.count, "index out of range")
-        if index == me.count:
-            return me.add(values)
-        Debug.assert(me.count + sliceCount <= N, "the array is full")
-        me.count += sliceCount
+        Debug.assert(index <= .count, "index out of range")
+        if index == .count:
+            return .add(values)
+        Debug.assert(.count + sliceCount <= N, "the array is full")
+        .count += sliceCount
 
         #if Reflection.hasPostMove(T)
         {
-            for var idx = me.count - 1; idx >= index + sliceCount; idx -= 1:
-                me.buffer[idx] = #nodrop #moveraw me.buffer[idx - sliceCount]
+            for var idx = .count - 1; idx >= index + sliceCount; idx -= 1:
+                .buffer[idx] = #nodrop #moveraw .buffer[idx - sliceCount]
         }
         #else
         {
-            Memory.copyOver(&me.buffer[0] + index + @countof(values), &me.buffer[0] + index, #sizeof(T) * (me.count - sliceCount - index))
+            Memory.copyOver(&.buffer[0] + index + @countof(values), &.buffer[0] + index, #sizeof(T) * (.count - sliceCount - index))
         }
 
         #if Reflection.hasPostMove(T)
         {
             for var idx = 0; idx < sliceCount; idx += 1:
-                me.buffer[index + idx] = #nodrop #move values[idx]
+                .buffer[index + idx] = #nodrop #move values[idx]
         }
         #else
         {
-            Memory.copy(&me.buffer[0] + index, @dataof(values), #sizeof(T) * sliceCount)
+            Memory.copy(&.buffer[0] + index, @dataof(values), #sizeof(T) * sliceCount)
         }
     }
 
@@ -391,13 +391,13 @@ impl StaticArray
         var sliceCount = @countof(values)
         if !sliceCount:
             return
-        Debug.assert(me.count + sliceCount <= N, "the array is full")
-        var oldCount = me.count
-        me.count += sliceCount
+        Debug.assert(.count + sliceCount <= N, "the array is full")
+        var oldCount = .count
+        .count += sliceCount
 
         #if Reflection.hasPostCopy(T)
         {
-            var destPtr = &me.buffer[0] + oldCount
+            var destPtr = &.buffer[0] + oldCount
             for sliceCount
             {
                 dref destPtr = #nodrop values[@index]
@@ -406,7 +406,7 @@ impl StaticArray
         }
         #else
         {
-            Memory.copy(&me.buffer[0] + oldCount, @dataof(values), sliceCount * #sizeof(T))
+            Memory.copy(&.buffer[0] + oldCount, @dataof(values), sliceCount * #sizeof(T))
         }
     }
 
@@ -417,21 +417,21 @@ impl StaticArray
     {
         if !num:
             return
-        Debug.assert(index + num <= me.count, "index out of range")
+        Debug.assert(index + num <= .count, "index out of range")
 
         #if !Reflection.hasPostMove(T) and !Reflection.hasDrop(T)
         {
-            Memory.copyOver(&me.buffer[0] + index, &me.buffer[0] + index + num, (me.count - (index + num)) * #sizeof(T))
+            Memory.copyOver(&.buffer[0] + index, &.buffer[0] + index + num, (.count - (index + num)) * #sizeof(T))
         }
         #else
         {
-            for i in me.count - num
+            for i in .count - num
             {
-                me.buffer[index + i] = #moveraw me.buffer[index + num + i]
+                .buffer[index + i] = #moveraw .buffer[index + num + i]
             }
         }
 
-        me.count -= num
+        .count -= num
     }
 
     // Removes the first occurrence of a given value from the array.
@@ -439,22 +439,22 @@ impl StaticArray
     #[Overload]
     mtd(V) remove(value: V)
     {
-        let idx = Slice.findLinear(me.toSlice(), value)
+        let idx = Slice.findLinear(.toSlice(), value)
         if idx == Swag.U64.Max:
             return
-        me.removeAt(idx)
+        .removeAt(idx)
     }
 
     // Removes the element at a given index by swapping it with the last element.
     // This is very fast, but the order of elements is not preserved.
     mtd removeAt(index: u64)
     {
-        Debug.assert(index < me.count, "index out of range")
-        me.count -= 1
-        if index == me.count:
-            @drop(&me.buffer[0] + me.count)
+        Debug.assert(index < .count, "index out of range")
+        .count -= 1
+        if index == .count:
+            @drop(&.buffer[0] + .count)
         else:
-            me.buffer[index] = #moveraw me.buffer[me.count]
+            .buffer[index] = #moveraw .buffer[.count]
     }
 
     // Removes one or more elements at a given index, shifting subsequent elements to the left.
@@ -463,30 +463,30 @@ impl StaticArray
     {
         if !numValues:
             return
-        Debug.assert(index + numValues <= me.count, "index out of range")
-        me.count -= numValues
+        Debug.assert(index + numValues <= .count, "index out of range")
+        .count -= numValues
 
         #if Reflection.hasDrop(T)
         {
             for idx in numValues:
-                @drop(&me.buffer[0] + index + idx)
+                @drop(&.buffer[0] + index + idx)
         }
 
-        if index >= me.count:
+        if index >= .count:
             return
 
         #if Reflection.hasPostMove(T)
         {
             var idx = index
-            for me.count - index
+            for .count - index
             {
-                me.buffer[idx] = #nodrop #moveraw me.buffer[idx + numValues]
+                .buffer[idx] = #nodrop #moveraw .buffer[idx + numValues]
                 idx += 1
             }
         }
         #else
         {
-            Memory.copyOver(&me.buffer[0] + index, &me.buffer[0] + index + numValues, #sizeof(T) * (me.count - index))
+            Memory.copyOver(&.buffer[0] + index, &.buffer[0] + index + numValues, #sizeof(T) * (.count - index))
         }
     }
 
@@ -494,29 +494,29 @@ impl StaticArray
     // Does nothing if the value is not found.
     mtd(V) removeOrdered(value: V)
     {
-        let idx = Slice.findLinear(me.toSlice(), value)
+        let idx = Slice.findLinear(.toSlice(), value)
         if idx == Swag.U64.Max:
             return
-        me.removeAtOrdered(idx)
+        .removeAtOrdered(idx)
     }
 
     // Returns 'true' if the array contains the given value.
     mtd(V) contains(value: V)->bool
     {
-        return Slice.findLinear(me.toSlice(), value) != Swag.U64.Max
+        return Slice.findLinear(.toSlice(), value) != Swag.U64.Max
     }
 
     // Sorts the array in ascending order using the default comparison operator.
     #[Swag.Overload]
     mtd sort()
     {
-        Slice.sort(me.toSlice(), func(x, y: T)->s32 => x <=> y)
+        Slice.sort(.toSlice(), func(x, y: T)->s32 => x <=> y)
     }
 
     // Sorts the array in descending order.
     mtd sortReverse()
     {
-        Slice.sort(me.toSlice(), func(x, y: T)->s32 => y <=> x)
+        Slice.sort(.toSlice(), func(x, y: T)->s32 => y <=> x)
     }
 
     // Sorts the array using a custom comparison function.
@@ -524,15 +524,15 @@ impl StaticArray
     mtd sort(cb: func||(T, T)->s32)
     {
         Debug.assert(cb != null)
-        Slice.sort(me.toSlice(), cb)
+        Slice.sort(.toSlice(), cb)
     }
 
     // Returns a copy of the first element of the array.
     // Asserts if the array is empty.
     mtd front()->T
     {
-        Debug.assert(me.count > 0, "array is empty")
-        let result: retval = me.buffer[0]
+        Debug.assert(.count > 0, "array is empty")
+        let result: retval = .buffer[0]
         return result
     }
 
@@ -540,16 +540,16 @@ impl StaticArray
     // Asserts if the array is empty.
     mtd frontPtr()->*T
     {
-        Debug.assert(me.count > 0, "array is empty")
-        return &me.buffer[0]
+        Debug.assert(.count > 0, "array is empty")
+        return &.buffer[0]
     }
 
     // Returns a copy of the last element of the array.
     // Asserts if the array is empty.
     mtd back()->T
     {
-        Debug.assert(me.count > 0, "array is empty")
-        let result: retval = me.buffer[me.count - 1]
+        Debug.assert(.count > 0, "array is empty")
+        let result: retval = .buffer[.count - 1]
         return result
     }
 
@@ -557,18 +557,18 @@ impl StaticArray
     // Asserts if the array is empty.
     mtd backPtr()->*T
     {
-        Debug.assert(me.count > 0, "array is empty")
-        return &me.buffer[me.count - 1]
+        Debug.assert(.count > 0, "array is empty")
+        return &.buffer[.count - 1]
     }
 
     // Removes the last element from the array and returns it.
     // Asserts if the array is empty.
     mtd popBack()->T
     {
-        Debug.assert(me.count > 0, "array is empty")
+        Debug.assert(.count > 0, "array is empty")
         var result: retval = undefined
-        result = #nodrop #moveraw me.buffer[me.count - 1]
-        me.count -= 1
+        result = #nodrop #moveraw .buffer[.count - 1]
+        .count -= 1
         return result
     }
 
@@ -576,8 +576,8 @@ impl StaticArray
     // Asserts if the array is empty.
     mtd removeBack()
     {
-        Debug.assert(me.count > 0, "array is empty")
-        @drop(&me.buffer[0] + me.count - 1)
-        me.count -= 1
+        Debug.assert(.count > 0, "array is empty")
+        @drop(&.buffer[0] + .count - 1)
+        .count -= 1
     }
 }

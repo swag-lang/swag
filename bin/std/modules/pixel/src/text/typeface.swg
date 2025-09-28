@@ -63,19 +63,19 @@ public impl TypeFace
     // Returns true if the typeface is bold
     mtd const isBold()->bool
     {
-        return cast(bool) (me.face.style_flags & FT_STYLE_FLAG_BOLD)
+        return cast(bool) (.face.style_flags & FT_STYLE_FLAG_BOLD)
     }
 
     // Returns true if the typeface is italic
     mtd const isItalic()->bool
     {
-        return cast(bool) (me.face.style_flags & FT_STYLE_FLAG_ITALIC)
+        return cast(bool) (.face.style_flags & FT_STYLE_FLAG_ITALIC)
     }
 
     // Returns the underlying font family name
     mtd const getFamilyName()->string
     {
-        let defname = @mkstring(me.face.family_name, @strlen(me.face.family_name))
+        let defname = @mkstring(.face.family_name, @strlen(.face.family_name))
         return defname
     }
 
@@ -138,22 +138,22 @@ public impl TypeFace
 
     internal mtd transform(size, embolden: u32 = 0, forceBold, forceItalic = false) throw
     {
-        var emb = me.forceBold or forceBold ? Math.max(1, size / me.forceBoldDiv) : 0
+        var emb = .forceBold or forceBold ? Math.max(1, size / .forceBoldDiv) : 0
         emb += embolden
         if emb:
-            FT_Outline_Embolden(&me.face.glyph.outline, cast(FT_Pos) emb * 64)
-        if me.forceItalic or forceItalic:
-            FT_GlyphSlot_Oblique(me.face.glyph)
+            FT_Outline_Embolden(&.face.glyph.outline, cast(FT_Pos) emb * 64)
+        if .forceItalic or forceItalic:
+            FT_GlyphSlot_Oblique(.face.glyph)
     }
 
     // Render one glyph
     mtd renderGlyph(c: rune, size: u32, forceBold, forceItalic = false)->const *FT_Bitmap throw
     {
-        FT_Set_Pixel_Sizes(me.face, 0, size)
-        FT_Load_Char(me.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
-        me.transform(size, 0, forceBold, forceItalic)
-        FT_Render_Glyph(me.face.glyph, .FT_RENDER_MODE_NORMAL)
-        return &me.face.glyph.bitmap
+        FT_Set_Pixel_Sizes(.face, 0, size)
+        FT_Load_Char(.face, cast(FT_ULong) c, FT_LOAD_DEFAULT)
+        .transform(size, 0, forceBold, forceItalic)
+        FT_Render_Glyph(.face.glyph, .FT_RENDER_MODE_NORMAL)
+        return &.face.glyph.bitmap
     }
 
     // Convert a rune to its outline, at a given size
@@ -168,12 +168,12 @@ public impl TypeFace
         itf.conic_to = cast(*void) @mkcallback(&conicTo)
         itf.cubic_to = cast(*void) @mkcallback(&bezierTo)
 
-        FT_Set_Pixel_Sizes(me.face, 0, size)
-        FT_Load_Char(me.face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-        me.transform(size, embolden)
+        FT_Set_Pixel_Sizes(.face, 0, size)
+        FT_Load_Char(.face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+        .transform(size, embolden)
 
         let prevIdx = pathList.paths.count
-        FT_Outline_Decompose(&me.face.glyph.outline, &itf, pathList)
+        FT_Outline_Decompose(&.face.glyph.outline, &itf, pathList)
 
         if prevIdx != pathList.paths.count
         {
@@ -181,7 +181,7 @@ public impl TypeFace
                 pathList.paths[i].isClosed = true
         }
 
-        return embolden + (me.face.glyph.advance.x / 64.0)
+        return embolden + (.face.glyph.advance.x / 64.0)
     }
 
     // Convert a string to its outline, at a given size
@@ -195,20 +195,20 @@ public impl TypeFace
         itf.conic_to = cast(*void) @mkcallback(&conicTo)
         itf.cubic_to = cast(*void) @mkcallback(&bezierTo)
 
-        try FT_Set_Pixel_Sizes(me.face, 0, size)
+        try FT_Set_Pixel_Sizes(.face, 0, size)
 
         var serial = 0
         var x      = 0
 
         Utf8.visitRunes(|c| text)
         {
-            FT_Load_Char(me.face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
-            me.transform(size, embolden)
+            FT_Load_Char(.face, cast(FT_ULong) c, FT_LOAD_NO_BITMAP)
+            .transform(size, embolden)
 
-            FT_Outline_Translate(me.face.glyph.outline, x, 0)
+            FT_Outline_Translate(.face.glyph.outline, x, 0)
 
             let prevIdx = pathList.paths.count
-            FT_Outline_Decompose(&me.face.glyph.outline, &itf, pathList)
+            FT_Outline_Decompose(&.face.glyph.outline, &itf, pathList)
 
             if prevIdx != pathList.paths.count
             {
@@ -221,7 +221,7 @@ public impl TypeFace
                 serial += 1
             }
 
-            x += me.face.glyph.advance.x
+            x += .face.glyph.advance.x
         }
     }
 }

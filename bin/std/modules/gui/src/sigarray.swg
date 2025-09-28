@@ -12,35 +12,35 @@ impl SigArray
     mtd(op: string) opAssign(fn: T)
     {
         #assert(op == "+=")
-        me.arr.add(fn)
+        .arr.add(fn)
     }
 
     // Disable the calls.
     mtd disable()
     {
-        me.disabled += 1
+        .disabled += 1
     }
 
     // Enable the calls.
     mtd enable()
     {
-        Debug.assert(me.disabled > 0)
-        me.disabled -= 1
+        Debug.assert(.disabled > 0)
+        .disabled -= 1
     }
 
     // Returns 'true' if the array is empty.
-    mtd const isEmpty()->bool => me.arr.isEmpty()
+    mtd const isEmpty()->bool => .arr.isEmpty()
 
     // Call all registered lambdas.
     mtd call(params: ...)
     {
-        if me.disabled:
+        if .disabled:
             return
 
         // Be sure the call has the right number of arguments
         Debug.assert(@countof(params) == @countof(#typeof(T).parameters))
 
-        foreach fn in me.arr
+        foreach fn in .arr
         {
             #ast
             {

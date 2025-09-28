@@ -27,113 +27,113 @@ impl IWnd for StackLayoutCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !me.childs.count
+        if !.childs.count
         {
-            me.wnd.IWnd.onResizeEvent(evt)
+            .wnd.IWnd.onResizeEvent(evt)
             return
         }
 
-        if me.layoutKind == .HorzFit
+        if .layoutKind == .HorzFit
         {
-            var w = me.position.width
-            w -= me.spacing * cast(s32) me.childs.count - 1
-            w /= cast(s32) me.childs.count
-            foreach c in me.childs
+            var w = .position.width
+            w -= .spacing * cast(s32) .childs.count - 1
+            w /= cast(s32) .childs.count
+            foreach c in .childs
             {
                 c.position.width = w
             }
         }
-        elif me.layoutKind == .VertFit
+        elif .layoutKind == .VertFit
         {
-            var h = me.position.height
-            h -= me.spacing * cast(s32) me.childs.count - 1
-            h /= cast(s32) me.childs.count
-            foreach c in me.childs
+            var h = .position.height
+            h -= .spacing * cast(s32) .childs.count - 1
+            h /= cast(s32) .childs.count
+            foreach c in .childs
             {
                 c.position.height = h
             }
         }
 
-        if me.layoutKind == .HorzCenter or me.layoutKind == .HorzCenterVertCenter
+        if .layoutKind == .HorzCenter or .layoutKind == .HorzCenterVertCenter
         {
             var totalW = 0'f32
-            foreach c, i in me.childs:
+            foreach c, i in .childs:
                 totalW += c.position.width + c.margin.x + c.margin.z
-            totalW += cast(f32) ((me.childs.count - 1) * me.spacing)
+            totalW += cast(f32) ((.childs.count - 1) * .spacing)
 
-            var x = me.position.width * 0.5 - totalW * 0.5
-            x = Math.max(x, me.padding.x)
-            let y = me.getClientRectPadding().vertCenter()
-            foreach c in me.childs
+            var x = .position.width * 0.5 - totalW * 0.5
+            x = Math.max(x, .padding.x)
+            let y = .getClientRectPadding().vertCenter()
+            foreach c in .childs
             {
                 var pos = c.position
-                if me.layoutKind == .HorzCenterVertCenter:
+                if .layoutKind == .HorzCenterVertCenter:
                     pos.y = y - (pos.height * 0.5)
                 pos.x = Math.round(x + c.margin.x)
                 c.setPosition(pos)
-                x += c.position.width + me.spacing + c.margin.z
+                x += c.position.width + .spacing + c.margin.z
             }
         }
-        elif me.layoutKind == .VertCenter
+        elif .layoutKind == .VertCenter
         {
             var totalH = 0'f32
-            foreach c, i in me.childs:
+            foreach c, i in .childs:
                 totalH += c.position.height + c.margin.y + c.margin.w
-            totalH += cast(f32) ((me.childs.count - 1) * me.spacing)
+            totalH += cast(f32) ((.childs.count - 1) * .spacing)
 
-            var y = me.position.height * 0.5 - totalH * 0.5
-            y = Math.max(y, me.padding.y)
-            foreach c in me.childs
+            var y = .position.height * 0.5 - totalH * 0.5
+            y = Math.max(y, .padding.y)
+            foreach c in .childs
             {
                 var pos = c.position
                 pos.y = Math.round(y + c.margin.y)
                 c.setPosition(pos)
-                y += c.position.height + me.spacing + c.margin.w
+                y += c.position.height + .spacing + c.margin.w
             }
         }
         else
         {
-            foreach c, i in me.childs
+            foreach c, i in .childs
             {
-                switch me.layoutKind
+                switch .layoutKind
                 {
                 case Top, VertFit:
                     c.dockStyle = .Top
                     if i > 0:
-                        c.margin.y = Math.max(c.margin.y, me.spacing)
+                        c.margin.y = Math.max(c.margin.y, .spacing)
                 case Bottom:
                     c.dockStyle = .Bottom
                     if i > 0:
-                        c.margin.w = Math.max(c.margin.w, me.spacing)
+                        c.margin.w = Math.max(c.margin.w, .spacing)
                 case Left, HorzFit:
                     c.dockStyle = .Left
                     if i > 0:
-                        c.margin.x = Math.max(c.margin.x, me.spacing)
+                        c.margin.x = Math.max(c.margin.x, .spacing)
                 case Right:
                     c.dockStyle = .Right
                     if i > 0:
-                        c.margin.z = Math.max(c.margin.z, me.spacing)
+                        c.margin.z = Math.max(c.margin.z, .spacing)
                 }
             }
 
-            me.applyLayout(evt.oldSize)
+            .applyLayout(evt.oldSize)
         }
 
-        me.wnd.IWnd.onResizeEvent(evt)
+        .wnd.IWnd.onResizeEvent(evt)
 
-        if me.fitToContent
+        if .fitToContent
         {
-            switch me.layoutKind
+            switch .layoutKind
             {
             case Top, VertFit:
-                let b = me.childs.back()
-                let y = b.position.bottom() + me.padding.w
-                me.position.height = y
+                let b = .childs.back()
+                let y = b.position.bottom() + .padding.w
+                .position.height = y
 
             case Left, HorzFit:
-                let b = me.childs.back()
-                let x = b.position.right() + me.padding.z
-                me.position.width = x
+                let b = .childs.back()
+                let x = b.position.right() + .padding.z
+                .position.width = x
             }
         }
     }
@@ -152,6 +152,6 @@ impl StackLayoutCtrl
     // Recompute layout of all childs
     mtd computeLayout()
     {
-        me.sendResizeEvent()
+        .sendResizeEvent()
     }
 }

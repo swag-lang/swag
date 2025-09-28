@@ -149,7 +149,7 @@ public impl Font
         }
 
         // Render the glyph
-        let bmp = assume .typeFace.renderGlyph(c, me.size, me.forceBold, me.forceItalic)
+        let bmp = assume .typeFace.renderGlyph(c, .size, .forceBold, .forceItalic)
 
         // Creates a new atlas if this is the first time, or if the last atlas is full
         var atlas = .atlases.count ? &.atlases.buffer[.atlases.count - 1] : null
@@ -173,8 +173,8 @@ public impl Font
         {
             var newAtlas: GlyphAtlas
             newAtlas.bpp    = 1
-            newAtlas.width  = Math.roundUpToPowerOf2(me.size * 4) * newAtlas.bpp
-            newAtlas.height = Math.roundUpToPowerOf2(me.size * 4)
+            newAtlas.width  = Math.roundUpToPowerOf2(.size * 4) * newAtlas.bpp
+            newAtlas.height = Math.roundUpToPowerOf2(.size * 4)
             newAtlas.datas.resize(cast(u64) newAtlas.width * newAtlas.height)
             Memory.clear(newAtlas.datas.buffer, newAtlas.datas.count)
             .atlases.add(newAtlas)

@@ -25,20 +25,20 @@ impl Image
     // Change the alpha channel
     public mtd setAlpha(value: u8 = 0)
     {
-        if me.pf != .BGRA8:
+        if .pf != .BGRA8:
             return
-        me.setChannel(Image.ChannelMode.Alpha, Image.ChannelValueMode.Color, value)
+        .setChannel(Image.ChannelMode.Alpha, Image.ChannelValueMode.Color, value)
     }
 
     // Change specified color channels
     public mtd setChannel(mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
     {
-        if me.pf != .BGR8 and me.pf != .BGRA8:
+        if .pf != .BGR8 and .pf != .BGRA8:
             return
 
         // Remove alpha change if it does not exists
         var rmode = mode
-        if me.pf == .BGR8
+        if .pf == .BGR8
         {
             rmode &= ~.Alpha
             if rmode == 0 or value == .Alpha:
@@ -46,7 +46,7 @@ impl Image
         }
 
         var f = {rmode, value, color}
-        me.visitPixels(&f)
+        .visitPixels(&f)
         {
             let params = cast(*#decltype(f)) userData
             let mode   = params.rmode

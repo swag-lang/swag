@@ -95,83 +95,83 @@ impl Driver
 {
     mtd create() throw
     {
-        me.driverIsClosing = false
-        me.createNative()
+        .driverIsClosing = false
+        .createNative()
 
-        me.wakeupUpdate.init()
-        me.updateTh.init(&updateThreadProc)
-        me.updateTh.start()
+        .wakeupUpdate.init()
+        .updateTh.init(&updateThreadProc)
+        .updateTh.start()
     }
 
     mtd destroy()
     {
-        me.driverIsClosing = true
+        .driverIsClosing = true
 
         // Force update thread to end
         ////////////////
-        me.updateTh.safeForceEnd()
-        me.wakeupUpdate.signal()
-        me.updateTh.wait()
-        me.wakeupUpdate.release()
+        .updateTh.safeForceEnd()
+        .wakeupUpdate.signal()
+        .updateTh.wait()
+        .wakeupUpdate.release()
 
         // Be sure no update can come during the closing.
         // If there's a Register update, then register the voice to be destroyed, as it's not
         // yet registered in the active list
         ////////////////
-        me.mutexVoicesToUpdate.lock()
-        foreach cmd in me.voicesToUpdate
+        .mutexVoicesToUpdate.lock()
+        foreach cmd in .voicesToUpdate
         {
             if cmd.command == .Register:
-                me.toRecycleVoices.add(cmd.voice)
+                .toRecycleVoices.add(cmd.voice)
         }
-        me.voicesToUpdate.clear()
-        me.mutexVoicesToUpdate.unlock()
+        .voicesToUpdate.clear()
+        .mutexVoicesToUpdate.unlock()
 
         // Destroy voices lists
         ////////////////
-        me.toRecycleVoices.add(me.pendingRecycleVoices.toSlice())
-        me.pendingRecycleVoices.clear()
+        .toRecycleVoices.add(.pendingRecycleVoices.toSlice())
+        .pendingRecycleVoices.clear()
 
-        foreach voice in me.toRecycleVoices:
+        foreach voice in .toRecycleVoices:
             Memory.delete(voice)
-        me.toRecycleVoices.clear()
+        .toRecycleVoices.clear()
 
-        foreach voice in me.activeVoices
+        foreach voice in .activeVoices
         {
             catch voice.stopNative()
             voice.destroyNative()
             Memory.delete(voice)
         }
-        me.activeVoices.clear()
+        .activeVoices.clear()
 
         // Destroy buses
         ////////////////
-        foreach bus in me.buses:
+        foreach bus in .buses:
             catch bus.destroy()
-        me.buses.clear()
+        .buses.clear()
 
         // Then destroy native driver
         ////////////////
-        me.destroyNative()
+        .destroyNative()
     }
 
     mtd updateVoice(voice: *Voice, cmd: UpdateCommand)
     {
-        me.mutexVoicesToUpdate.lock()
-        defer me.mutexVoicesToUpdate.unlock()
-        if me.driverIsClosing:
+        .mutexVoicesToUpdate.lock()
+        defer .mutexVoicesToUpdate.unlock()
+        if .driverIsClosing:
             return
-        me.voicesToUpdate.add({voice, cmd})
-        me.wakeupUpdate.signal()
+        .voicesToUpdate.add({voice, cmd})
+        .wakeupUpdate.signal()
     }
 
     mtd createVoice()->*Voice
     {
         var back: *Voice
-        me.mutexRecycleVoices.lock()
-        if !me.toRecycleVoices.isEmpty():
-            back = me.toRecycleVoices.popBack()
-        me.mutexRecycleVoices.unlock()
+        .mutexRecycleVoices.lock()
+        if !.toRecycleVoices.isEmpty():
+            back = .toRecycleVoices.popBack()
+        .mutexRecycleVoices.unlock()
         if back:
             back.recycle()
         return back orelse Memory.new'Voice()

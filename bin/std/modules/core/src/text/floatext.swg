@@ -133,26 +133,26 @@ impl FloatExt
     {
         var result: retval
 
-        me.mant = mantp
-        me.exp  = expp - Swag.F64.MantBits
-        me.neg  = negp
-        if me.exp <= 0 and me.mant == (me.mant >> cast(u32) -me.exp) << cast(u32) -me.exp
+        .mant = mantp
+        .exp  = expp - Swag.F64.MantBits
+        .neg  = negp
+        if .exp <= 0 and .mant == (.mant >> cast(u32) -.exp) << cast(u32) -.exp
         {
             // An exact integer
-            me.mant >>= cast(u32) -me.exp
-            me.exp       = 0
+            .mant >>= cast(u32) -.exp
+            .exp         = 0
             result.lower = dref me
             result.upper = dref me
             return result
         }
 
-        let expBiased = me.exp - Swag.F64.Bias
+        let expBiased = .exp - Swag.F64.Bias
 
-        result.upper = FloatExt{2 * me.mant + 1, me.exp - 1, me.neg}
-        if me.mant != 1'u64 << Swag.F64.MantBits or expBiased == 1:
-            result.lower = FloatExt{2 * me.mant - 1, me.exp - 1, me.neg}
+        result.upper = FloatExt{2 * .mant + 1, .exp - 1, .neg}
+        if .mant != 1'u64 << Swag.F64.MantBits or expBiased == 1:
+            result.lower = FloatExt{2 * .mant - 1, .exp - 1, .neg}
         else:
-            result.lower = FloatExt{4 * me.mant - 1, me.exp - 2, me.neg}
+            result.lower = FloatExt{4 * .mant - 1, .exp - 2, .neg}
         return result
     }
 
@@ -160,20 +160,20 @@ impl FloatExt
     // set, and returns the number by which the mantissa was left-shifted.
     mtd normalize()
     {
-        if me.mant == 0:
+        if .mant == 0:
             return
-        let shift = @bitcountlz(me.mant)
-        me.mant <<= cast(u32) shift
-        me.exp -= cast(s64) shift
+        let shift = @bitcountlz(.mant)
+        .mant <<= cast(u32) shift
+        .exp -= cast(s64) shift
     }
 
     // Multiply sets f to the product f*g: the result is correctly rounded,
     // but not normalized.
     mtd multiply(g: FloatExt)
     {
-        let (hi, lo) = Math.mulU64(me.mant, g.mant)
-        me.mant = hi + (lo >> 63)
-        me.exp  = me.exp + g.exp + 64
+        let (hi, lo) = Math.mulU64(.mant, g.mant)
+        .mant = hi + (lo >> 63)
+        .exp  = .exp + g.exp + 64
     }
 
     const uint64pow10: [?] u64 = [
@@ -214,12 +214,12 @@ impl FloatExt
 
         // Find power of ten such that x * 10^n has a binary exponent
         // between expMin and expMax.
-        let approxExp10 = ((expMin + expMax) / 2 - me.exp) * 28 / 93           // log(10)/log(2) is close to 93/28.
+        let approxExp10 = ((expMin + expMax) / 2 - .exp) * 28 / 93             // log(10)/log(2) is close to 93/28.
         var i           = (approxExp10 - firstPowerOfTen) / stepPowerOfTen
         #scope(Loop)
         for
         {
-            let exp1 = me.exp + powersOfTen[i].exp + 64
+            let exp1 = .exp + powersOfTen[i].exp + 64
             switch
             {
             case exp1 < expMin:
@@ -233,7 +233,7 @@ impl FloatExt
 
         // Apply the desired decimal shift on f. It will have exponent
         // in the desired range. This is multiplication by 10^-exp10.
-        me.multiply(powersOfTen[i])
+        .multiply(powersOfTen[i])
 
         var result: retval
         result.exp10 = -(firstPowerOfTen + i * stepPowerOfTen)
@@ -255,23 +255,23 @@ impl FloatExt
     // if it cannot be sure of the answer.
     mtd fixedDecimal(d: *DecimalSlice, n: s64)->bool
     {
-        if me.mant == 0
+        if .mant == 0
         {
             d.nd  = 0
             d.dp  = 0
-            d.neg = me.neg
+            d.neg = .neg
             return true
         }
 
         // Multiply by an appropriate power of ten to have a reasonable
         // number to process.
-        me.normalize()
-        let (exp10, ?) = me.frexp10()
+        .normalize()
+        let (exp10, ?) = .frexp10()
 
-        let shift    = cast(u32) -me.exp
-        var integer  = cast(u32) (me.mant >> shift)
-        var fraction = me.mant - (cast(u64) integer << shift)
-        var e        = 1'u64                                      // e is the uncertainty we have on the mantissa of f.
+        let shift    = cast(u32) -.exp
+        var integer  = cast(u32) (.mant >> shift)
+        var fraction = .mant - (cast(u64) integer << shift)
+        var e        = 1'u64                                    // e is the uncertainty we have on the mantissa of f.
 
         // Write exactly n digits to d.
         var needed        = n         // how many digits are left to write.
@@ -424,20 +424,20 @@ impl FloatExt
     // uses the Grisu3 algorithm.
     mtd shortestDecimal(d: *DecimalSlice, lower, upper: *FloatExt)->bool
     {
-        if me.mant == 0
+        if .mant == 0
         {
             d.nd  = 0
             d.dp  = 0
-            d.neg = me.neg
+            d.neg = .neg
             return true
         }
 
-        if me.exp == 0 and dref lower == dref me and dref lower == dref upper
+        if .exp == 0 and dref lower == dref me and dref lower == dref upper
         {
             // an exact integer.
             var buf: [24] u8
             var n    = @countof(buf) - 1
-            var v    = me.mant
+            var v    = .mant
             while v > 0
             {
                 let v1 = v / 10
@@ -458,17 +458,17 @@ impl FloatExt
 
             if d.nd == 0:
                 d.dp = 0
-            d.neg = me.neg
+            d.neg = .neg
             return true
         }
 
         upper.normalize()
 
         // Uniformize exponents.
-        if me.exp > upper.exp
+        if .exp > upper.exp
         {
-            me.mant <<= cast(u32) (me.exp - upper.exp)
-            me.exp = upper.exp
+            .mant <<= cast(u32) (.exp - upper.exp)
+            .exp = upper.exp
         }
 
         if lower.exp > upper.exp
@@ -493,7 +493,7 @@ impl FloatExt
         let allowance = upper.mant - lower.mant
 
         // How far we should go to get a very precise result.
-        let targetDiff = upper.mant - me.mant
+        let targetDiff = upper.mant - .mant
 
         // Count integral digits: there are at most 10.
         var integerDigits: s64
@@ -522,7 +522,7 @@ impl FloatExt
             {
                 d.nd  = i + 1
                 d.dp  = integerDigits + exp10
-                d.neg = me.neg
+                d.neg = .neg
                 // Sometimes allowance is so large the last digit might need to be
                 // decremented to get closer to f.
                 return adjustLastDigit(d, currentDiff, targetDiff, allowance, pow << shift, 2)
@@ -531,7 +531,7 @@ impl FloatExt
 
         d.nd  = integerDigits
         d.dp  = d.nd + exp10
-        d.neg = me.neg
+        d.neg = .neg
 
         // Compute digits of the fractional part. At each step fraction does not
         // overflow. The choice of minExp implies that fraction is less than 2^60.

@@ -151,7 +151,7 @@ internal impl Surface
 {
     mtd setFocus()
     {
-        SetFocus(me.hWnd)
+        SetFocus(.hWnd)
     }
 
     // Creates a new (invisible) surface
@@ -209,7 +209,7 @@ internal impl Surface
 
     mtd destroyNative()
     {
-        catch DestroyWindow(me.hWnd)
+        catch DestroyWindow(.hWnd)
     }
 }
 
@@ -217,16 +217,16 @@ impl Surface
 {
     mtd applyNativeSurfaceFlags()
     {
-        var exStyle = cast(u64) GetWindowLongPtrA(me.hWnd, GWL_EXSTYLE)
-        if me.flags & .Secondary:
+        var exStyle = cast(u64) GetWindowLongPtrA(.hWnd, GWL_EXSTYLE)
+        if .flags & .Secondary:
             exStyle |= WS_EX_TOOLWINDOW
         else:
             exStyle &= ~WS_EX_TOOLWINDOW
-        if me.flags & .TopMost:
+        if .flags & .TopMost:
             exStyle |= WS_EX_TOPMOST
         else:
             exStyle &= ~WS_EX_TOPMOST
-        SetWindowLongPtrA(me.hWnd, GWL_EXSTYLE, cast(LONG_PTR) exStyle)
+        SetWindowLongPtrA(.hWnd, GWL_EXSTYLE, cast(LONG_PTR) exStyle)
     }
 
     // Send a custom message to the surface application with name 'surfaceID'
@@ -244,122 +244,122 @@ impl Surface
     {
         var clampPos = pos
 
-        if me.minSize.x > 0:
-            clampPos.width = Math.max(clampPos.width, me.minSize.x)
-        if me.minSize.y > 0:
-            clampPos.height = Math.max(clampPos.height, me.minSize.y)
-        if me.maxSize.x > 0:
-            clampPos.width = Math.min(clampPos.width, me.maxSize.x)
-        if me.maxSize.y > 0:
-            clampPos.height = Math.min(clampPos.height, me.maxSize.y)
+        if .minSize.x > 0:
+            clampPos.width = Math.max(clampPos.width, .minSize.x)
+        if .minSize.y > 0:
+            clampPos.height = Math.max(clampPos.height, .minSize.y)
+        if .maxSize.x > 0:
+            clampPos.width = Math.min(clampPos.width, .maxSize.x)
+        if .maxSize.y > 0:
+            clampPos.height = Math.min(clampPos.height, .maxSize.y)
 
-        me.position = clampPos
-        catch SetWindowPos(me.hWnd, null, cast(s32) clampPos.x, cast(s32) clampPos.y, cast(s32) clampPos.width, cast(s32) clampPos.height, SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
+        .position = clampPos
+        catch SetWindowPos(.hWnd, null, cast(s32) clampPos.x, cast(s32) clampPos.y, cast(s32) clampPos.width, cast(s32) clampPos.height, SWP_NOCOPYBITS | SWP_DEFERERASE | SWP_NOREDRAW | SWP_NOSENDCHANGING)
     }
 
     // Set the window as a topmost window (above all non topmost)
     mtd setTopMost()
     {
-        catch SetWindowPos(me.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE)
-        me.topMost = true
+        catch SetWindowPos(.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_NOACTIVATE)
+        .topMost = true
     }
 
     mtd isTopMost()->bool
     {
-        return me.topMost
+        return .topMost
     }
 
     // Bring the surface at the top of the Z order
     mtd bringToTop()
     {
-        BringWindowToTop(me.hWnd)
+        BringWindowToTop(.hWnd)
     }
 
     // Enable the surface
     mtd enable()
     {
-        if !me.isDisabled:
+        if !.isDisabled:
             return
-        me.isDisabled = false
-        EnableWindow(me.hWnd, TRUE)
+        .isDisabled = false
+        EnableWindow(.hWnd, TRUE)
     }
 
     // Enable the surface
     mtd disable()
     {
-        if me.isDisabled:
+        if .isDisabled:
             return
-        me.isDisabled = true
-        EnableWindow(me.hWnd, FALSE)
+        .isDisabled = true
+        EnableWindow(.hWnd, FALSE)
     }
 
     // Show the surface
     mtd show()
     {
-        if !me.isHidden:
+        if !.isHidden:
             return
 
-        me.isHidden = false
-        me.invalidate()
+        .isHidden = false
+        .invalidate()
 
-        me.wnd.applyLayout({me.position.width, me.position.height})
-        ShowWindow(me.hWnd, SW_SHOW)
+        .wnd.applyLayout({.position.width, .position.height})
+        ShowWindow(.hWnd, SW_SHOW)
 
-        let curFocus = me.wnd.view.getFocus()
-        if !curFocus or !me.wnd.isParentOf(curFocus):
-            me.wnd.view.setFocus()
-        SetActiveWindow(me.hWnd)
-        SetFocus(me.hWnd)
+        let curFocus = .wnd.view.getFocus()
+        if !curFocus or !.wnd.isParentOf(curFocus):
+            .wnd.view.setFocus()
+        SetActiveWindow(.hWnd)
+        SetFocus(.hWnd)
 
-        me.wnd.view.sendStateEvent(.Show)
+        .wnd.view.sendStateEvent(.Show)
     }
 
     // Hide the surface
     mtd hide()
     {
-        if me.isHidden:
+        if .isHidden:
             return
-        me.isHidden = true
+        .isHidden = true
 
-        ShowWindow(me.hWnd, SW_HIDE)
-        me.wnd.view.sendStateEvent(.Hide)
+        ShowWindow(.hWnd, SW_HIDE)
+        .wnd.view.sendStateEvent(.Hide)
     }
 
     // Show the surface as maximized
     mtd showMaximized()
     {
-        if me.isMaximized:
+        if .isMaximized:
             return
-        me.isMaximized          = true
-        me.isMinimized          = false
-        me.positionNotMaximized = me.position
-        ShowWindow(me.hWnd, SW_SHOWMAXIMIZED)
+        .isMaximized          = true
+        .isMinimized          = false
+        .positionNotMaximized = .position
+        ShowWindow(.hWnd, SW_SHOWMAXIMIZED)
     }
 
     // Show the surface in its default state
     mtd showNormal()
     {
-        if !me.isMaximized and !me.isMinimized:
+        if !.isMaximized and !.isMinimized:
             return
-        me.isMaximized = false
-        me.isMinimized = false
-        ShowWindow(me.hWnd, SW_RESTORE)
+        .isMaximized = false
+        .isMinimized = false
+        ShowWindow(.hWnd, SW_RESTORE)
     }
 
     // Show the surface as minimized
     mtd showMinimized()
     {
-        if me.isMinimized:
+        if .isMinimized:
             return
-        me.isMinimized = true
-        ShowWindow(me.hWnd, SW_SHOWMINIMIZED)
+        .isMinimized = true
+        ShowWindow(.hWnd, SW_SHOWMINIMIZED)
     }
 
     // Transform a point in screen space relative to the surface
     mtd screenToSurface(pt: *Math.Point)
     {
         var wpt = POINT{cast(s32) pt.x, cast(s32) pt.y}
-        ScreenToClient(me.hWnd, &wpt)
+        ScreenToClient(.hWnd, &wpt)
         pt.x = wpt.x
         pt.y = wpt.y
     }
@@ -368,7 +368,7 @@ impl Surface
     mtd surfaceToScreen(pt: *Math.Point)
     {
         var wpt = POINT{cast(s32) pt.x, cast(s32) pt.y}
-        ClientToScreen(me.hWnd, &wpt)
+        ClientToScreen(.hWnd, &wpt)
         pt.x = wpt.x
         pt.y = wpt.y
     }

@@ -37,7 +37,7 @@ impl GUID64
     // Returns 'true' if both GUIDs have identical values.
     mtd opEquals(other: GUID64)->bool
     {
-        return me.guid == other.guid
+        return .guid == other.guid
     }
 
     // Get a timestamp-based GUID64 with minimal collision risk
@@ -103,13 +103,13 @@ impl GUID64
     // Clear GUID
     mtd clear()
     {
-        me.guid = 0
+        .guid = 0
     }
 
     // Check if GUID is null/empty
     mtd isNull()->bool
     {
-        return me.guid == 0
+        return .guid == 0
     }
 
     // Convert GUID64 to hexadecimal string
@@ -121,7 +121,7 @@ impl GUID64
 
         // Convert each nibble to hex, starting from most significant
         // Unroll the loop for better performance
-        var idx = me.guid
+        var idx = .guid
         result[15] = Tbl[idx & 0xF]; idx >>= 4
         result[14] = Tbl[idx & 0xF]; idx >>= 4
         result[13] = Tbl[idx & 0xF]; idx >>= 4
@@ -147,7 +147,7 @@ impl GUID64
         var result: retval
         result.reserve(16)
         result.length = 16
-        me.toString(result.toSlice())
+        .toString(result.toSlice())
         return result
     }
 
@@ -193,7 +193,7 @@ impl StrConv.IConvert for GUID64
     // Produces a 16-character uppercase hex string without separators.
     mtd impl convert(buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
-        buf.addBytes(me.getString())
+        buf.addBytes(.getString())
     }
 }
 
@@ -205,6 +205,6 @@ impl Hash.IHash32 for GUID64
     // Uses CRC32 algorithm on the 8-byte GUID data for consistent hashing.
     mtd const impl compute()->u32
     {
-        return Hash.Crc32.compute(@mkslice(cast(const [*] u8) &me.guid, #sizeof(u64)))
+        return Hash.Crc32.compute(@mkslice(cast(const [*] u8) &.guid, #sizeof(u64)))
     }
 }

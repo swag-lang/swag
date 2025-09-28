@@ -62,7 +62,7 @@ impl IWnd for MainWnd
 {
     mtd popupBar()
     {
-        let sf = catch me.surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
+        let sf = catch .surface.app.createSurface(500, 400, 300, 300, .Secondary | .TopMost)
         with let menu = Wnd.create'MenuCtrl(sf.wnd.view, cast(WndId) null)
         {
             .addItem(ActionGlobal.ShowEditor)
@@ -98,7 +98,7 @@ impl IWnd for MainWnd
         }
 
         let pt         = Input.getMousePos()
-        let shadowSize = me.getThemeMetrics().surfaceWnd_ShadowSize
+        let shadowSize = .getThemeMetrics().surfaceWnd_ShadowSize
         menu.position.width += 2 * shadowSize
         menu.position.height += 2 * shadowSize
         sf.setPosition({pt.x, pt.y, menu.position.width, menu.position.height})
@@ -108,10 +108,10 @@ impl IWnd for MainWnd
         sf.show()
         sf.bringToTop()
         while !menu.endModal:
-            me.surface.app.runFrame()
+            .surface.app.runFrame()
         sf.hide()
         if menu.endModalResult:
-            me.postCommandEvent(menu.endModalResult)
+            .postCommandEvent(menu.endModalResult)
         sf.destroy()
     }
 
@@ -124,15 +124,15 @@ impl IWnd for MainWnd
             case Win32.WM_USER:
                 if evt.param1 == Win32.WM_LBUTTONDBLCLK
                 {
-                    me.surface.show()
-                    me.surface.bringToTop()
+                    .surface.show()
+                    .surface.bringToTop()
                 }
                 elif evt.param1 == Win32.WM_RBUTTONDOWN:
-                    me.popupBar()
+                    .popupBar()
 
             case Win32.WM_USER + 1:
                 if Clipboard.hasString():
-                    me.loadExternalImage(Clipboard.getString())
+                    .loadExternalImage(Clipboard.getString())
             }
         }
     }
@@ -143,16 +143,16 @@ impl IWnd for MainWnd
         if evt.kind == .Close
         {
             evt.accepted = true
-            if me.editorOptions.hideOnClose:
-                me.surface.hide()
+            if .editorOptions.hideOnClose:
+                .surface.hide()
             else:
-                me.postCommandEvent(ActionGlobal.Exit)
+                .postCommandEvent(ActionGlobal.Exit)
         }
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if !me.firstShow:
+        if !.firstShow:
             catch g_App.saveState()
     }
 
@@ -160,12 +160,12 @@ impl IWnd for MainWnd
     {
         if evt.kind == .Show
         {
-            if me.firstShow
+            if .firstShow
             {
-                me.firstShow = false
+                .firstShow = false
                 catch g_App.loadState()
-                me.surface.constaintPositionToScreen(topLeft: true, margin: 10)
-                me.recentWnd.loadRecent()
+                .surface.constaintPositionToScreen(topLeft: true, margin: 10)
+                .recentWnd.loadRecent()
             }
             evt.accepted = true
         }
@@ -173,7 +173,7 @@ impl IWnd for MainWnd
 
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
-        if me.inPlaceEdit:
+        if .inPlaceEdit:
             return
 
         catch
@@ -194,18 +194,18 @@ impl IWnd for MainWnd
 
         if evt.ser.isReading()
         {
-            me.setTheme()
-            me.quickStyleBar.sendResizeEvent()
-            me.setBottomSize(me.bottomSize)
-            me.setTopBarHeight()
-            me.updateState()
+            .setTheme()
+            .quickStyleBar.sendResizeEvent()
+            .setBottomSize(.bottomSize)
+            .setTopBarHeight()
+            .updateState()
         }
     }
 
     mtd impl onFrameEvent(evt: *FrameEvent)
     {
         if evt.firstFrame:
-            me.quickWnd.setDefault()
+            .quickWnd.setDefault()
     }
 }
 
@@ -217,7 +217,7 @@ impl MainWnd
         let imgToLoad = catch Image.load(arg)
         if @err != null
         {
-            MessageDlg.error(me.surface, Format.toString("Failed to load file: %", arg))
+            MessageDlg.error(.surface, Format.toString("Failed to load file: %", arg))
             return
         }
 
@@ -226,7 +226,7 @@ impl MainWnd
         {
             if md.isTag("Captme.File")
             {
-                let dupCapture = catch me.recentWnd.addRecent(cast(string) md.toSlice(), true, true)
+                let dupCapture = catch .recentWnd.addRecent(cast(string) md.toSlice(), true, true)
                 Memory.delete(dupCapture)
                 done = true
                 break
@@ -234,60 +234,60 @@ impl MainWnd
         }
 
         if !done:
-            me.newCapture(imgToLoad, arg)
+            .newCapture(imgToLoad, arg)
 
-        if me.libraryMode
+        if .libraryMode
         {
-            me.swapLibraryMode()
-            me.updateState()
+            .swapLibraryMode()
+            .updateState()
         }
 
-        me.surface.bringToTop()
+        .surface.bringToTop()
     }
 
     mtd getEditMode()->EditMode
     {
-        switch me.editMode
+        switch .editMode
         {
         case Selection:
-            me.editMode = .Shape
-            let capture = me.getCapture()
+            .editMode = .Shape
+            let capture = .getCapture()
             if capture:
                 capture.updateEditModeFromSelection()
-            let edMode = me.editMode
-            me.editMode = .Selection
+            let edMode = .editMode
+            .editMode = .Selection
             return edMode
         case Favorites:
-            return formToEditMode(me.mdlFavorite)
+            return formToEditMode(.mdlFavorite)
         case Highlight:
-            return formToEditMode(me.mdlHighlight)
+            return formToEditMode(.mdlHighlight)
         case PixSel:
-            return formToEditMode(me.mdlPixSel)
+            return formToEditMode(.mdlPixSel)
         }
-        return me.editMode
+        return .editMode
     }
 
     mtd freezeSelection(freeze: bool)
     {
-        if !freeze and me.embInfoFreeze
+        if !freeze and .embInfoFreeze
         {
-            me.embInfoFreeze.destroy()
-            me.embInfoFreeze = null
-            me.freezeSel     = false
+            .embInfoFreeze.destroy()
+            .embInfoFreeze = null
+            .freezeSel     = false
         }
-        elif freeze and !me.embInfoFreeze
+        elif freeze and !.embInfoFreeze
         {
-            me.embInfoFreeze = EmbInfoCtrl.create(me.editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
-            me.embInfoFreeze.sigOnClose += mtd||(ctrl)
+            .embInfoFreeze = EmbInfoCtrl.create(.editWnd.view, "Selection is freezed", .Message, flags: .Bottom)
+            .embInfoFreeze.sigOnClose += mtd||(ctrl)
             {
-                me.freezeSel     = false
-                me.embInfoFreeze = null
+                .freezeSel     = false
+                .embInfoFreeze = null
             }
 
-            let capture = assume me.getCapture()
+            let capture = assume .getCapture()
             capture.selection.clear()
             capture.selectionHasChanged()
-            me.freezeSel = true
+            .freezeSel = true
 
             foreach it in capture.forms
             {
@@ -299,50 +299,50 @@ impl MainWnd
 
     mtd updateState()
     {
-        me.updateCommandState()
-        if me.propWnd:
-            me.propWnd.selectionHasChanged()
-        if me.quickWnd:
-            me.quickWnd.updateQuickStyles()
+        .updateCommandState()
+        if .propWnd:
+            .propWnd.selectionHasChanged()
+        if .quickWnd:
+            .quickWnd.updateQuickStyles()
     }
 
     mtd captureHasChanged()
     {
-        me.updateSizeDisplay()
-        if me.recentWnd
+        .updateSizeDisplay()
+        if .recentWnd
         {
-            me.editToolBar.updateCommandState()
-            me.updateRecent()
+            .editToolBar.updateCommandState()
+            .updateRecent()
         }
     }
 
     mtd getCapture()->#null *Capture
     {
-        if me.libraryMode:
-            return me.libWnd.getCapture()
-        return me.editWnd.getCapture()
+        if .libraryMode:
+            return .libWnd.getCapture()
+        return .editWnd.getCapture()
     }
 
     mtd updateRecent()
     {
-        if me.recentWnd:
-            me.recentWnd.updateRecent()
+        if .recentWnd:
+            .recentWnd.updateRecent()
     }
 
     mtd updateZoomDisplay()
     {
-        let z = cast(s32) (me.editWnd.editView.zoom * 100)
-        me.zoomBtn.name = Format.toString("% %%", z)
-        me.zoomBtn.invalidate()
+        let z = cast(s32) (.editWnd.editView.zoom * 100)
+        .zoomBtn.name = Format.toString("% %%", z)
+        .zoomBtn.invalidate()
     }
 
     mtd updateSizeDisplay()
     {
-        let capture = me.getCapture()
-        if !capture or !me.sizeBtn:
+        let capture = .getCapture()
+        if !capture or !.sizeBtn:
             return
-        me.sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
-        me.sizeBtn.invalidate()
+        .sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
+        .sizeBtn.invalidate()
     }
 
     mtd registerActions()
@@ -412,26 +412,27 @@ impl MainWnd
         .registerKeyShortcut(.Control, .NumPad0, ActionZoom.Zoom1)
 
         var errorReg = false
+
         #[Swag.Mixin]
-        func registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
+        mtd registerHotKey(mdf: Input.KeyModifiers, key: Input.Key, wndId: WndId)
         {
-            catch me.getApp().registerHotKey(mdf, key, wndId, me)
+            catch .getApp().registerHotKey(mdf, key, wndId, me)
             if @err != null
             {
                 if !errorReg
                 {
                     var msg = Format.toString("Cannot register global shortcut '%'. ", Input.getKeyName(mdf, key))
                     msg += "Another running application is probably already using it!"
-                    discard EmbInfoCtrl.create(me.editWnd, msg, .Critical)
+                    discard EmbInfoCtrl.create(.editWnd, msg, .Critical)
                 }
                 errorReg = true
             }
         }
 
-        registerHotKey(.Zero, .PrintScreen, ActionCapture.Area)
-        registerHotKey(.CtrlShift, .PrintScreen, ActionCapture.LastArea)
-        registerHotKey(.Control, .PrintScreen, ActionCapture.FullScreen)
-        registerHotKey(.Alt, .PrintScreen, ActionCapture.ActiveWnd)
+        .registerHotKey(.Zero, .PrintScreen, ActionCapture.Area)
+        .registerHotKey(.CtrlShift, .PrintScreen, ActionCapture.LastArea)
+        .registerHotKey(.Control, .PrintScreen, ActionCapture.FullScreen)
+        .registerHotKey(.Alt, .PrintScreen, ActionCapture.ActiveWnd)
     }
 
     mtd createTopMenu()
@@ -555,29 +556,29 @@ impl MainWnd
             }
         }
 
-        me.captureBtn           = IconButton.create(me.topBar, Icon.from(&me.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
-        me.captureBtn.iconColor = Argb.White
-        me.libraryBtn           = IconButton.create(me.topBar, Icon.from(&me.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
+        .captureBtn           = IconButton.create(.topBar, Icon.from(&.icons48, 6), {0, 0, 64, 64}, id: ActionCapture.DoIt)
+        .captureBtn.iconColor = Argb.White
+        .libraryBtn           = IconButton.create(.topBar, Icon.from(&.icons48, 8), {64, 0, 64, 64}, id: ActionGlobal.ShowLibrary)
     }
 
     mtd setTheme()
     {
-        if me.editorOptions.theme == .Dark:
-            me.getApp().theme.colors.setDark()
+        if .editorOptions.theme == .Dark:
+            .getApp().theme.colors.setDark()
         else:
-            me.getApp().theme.colors.setLight()
-        me.getApp().themeHasChanged()
+            .getApp().theme.colors.setLight()
+        .getApp().themeHasChanged()
     }
 
     mtd setTopBarHeight()
     {
         var icons: Array'(*IconButton)
-        foreach c in me.topBar.childs
+        foreach c in .topBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
         }
-        foreach c in me.editToolBar.childs
+        foreach c in .editToolBar.childs
         {
             if c.type == IconButton:
                 icons.add(cast(*IconButton) c)
@@ -585,27 +586,27 @@ impl MainWnd
 
         foreach c in icons
         {
-            if me.editorOptions.showToolBarLabels
+            if .editorOptions.showToolBarLabels
             {
                 c.iconBtnFlags.remove(.HideName)
                 c.position.width, c.position.height = 64
                 c.iconSizeX, c.iconSizeY = 48
-                me.libraryBtn.position.x = 64
+                .libraryBtn.position.x = 64
             }
             else
             {
                 c.iconBtnFlags.add(.HideName)
                 c.position.width, c.position.height = 40
                 c.iconSizeX, c.iconSizeY = 32
-                me.libraryBtn.position.x = 48
+                .libraryBtn.position.x = 48
             }
         }
 
-        me.topBar.position.height = me.editorOptions.showToolBarLabels ? 68 : 50
-        me.editWnd.sendResizeEvent()
-        me.topBar.sendResizeEvent()
-        me.editToolBar.sendResizeEvent()
-        me.applyLayout()
+        .topBar.position.height = .editorOptions.showToolBarLabels ? 68 : 50
+        .editWnd.sendResizeEvent()
+        .topBar.sendResizeEvent()
+        .editToolBar.sendResizeEvent()
+        .applyLayout()
     }
 
     func create(parent: *Wnd)->*MainWnd

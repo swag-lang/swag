@@ -183,25 +183,25 @@ impl Painter
 
     internal mtd resetTexture0()
     {
-        if me.lastTexture0Handle or me.lastTexture0Type != .SolidColor
+        if .lastTexture0Handle or .lastTexture0Type != .SolidColor
         {
-            me.lastTexture0Handle = cast(TextureHandle) 0
-            me.lastTexture0Type   = .SolidColor
-            discard me.newCommand(.ResetTexture0, true)
+            .lastTexture0Handle = cast(TextureHandle) 0
+            .lastTexture0Type   = .SolidColor
+            discard .newCommand(.ResetTexture0, true)
         }
     }
 
     internal mtd setTexture0(bvMin, bvMax: Vector2, brush: Brush)
     {
-        if !me.canSetTexture0:
+        if !.canSetTexture0:
             return
         if brush.type == .SolidColor
         {
-            me.resetTexture0()
+            .resetTexture0()
             return
         }
 
-        let cmd    = me.newCommand(.BindTexture0, true)
+        let cmd    = .newCommand(.BindTexture0, true)
         let params = &cmd.texture0
 
         params.boundRect.x = bvMin.x
@@ -236,53 +236,53 @@ impl Painter
         if brush.type == .Hatch:
             params.interpolationMode = .Pixel
         else:
-            params.interpolationMode = me.curState.interpolationMode
+            params.interpolationMode = .curState.interpolationMode
 
-        me.lastTexture0Handle = brush.texture.handle
-        me.lastTexture0Type   = brush.type
+        .lastTexture0Handle = brush.texture.handle
+        .lastTexture0Type   = brush.type
     }
 
     internal mtd startFont()
     {
-        discard me.newCommand(.StartFont, true)
+        discard .newCommand(.StartFont, true)
     }
 
     internal mtd endFont()
     {
-        discard me.newCommand(.EndFont, true)
+        discard .newCommand(.EndFont, true)
     }
 
     internal mtd resetTextureFont()
     {
-        if !me.hasTextureFont:
+        if !.hasTextureFont:
             return
-        me.hasTextureFont = false
-        discard me.newCommand(.ResetTextureFont, true)
+        .hasTextureFont = false
+        discard .newCommand(.ResetTextureFont, true)
     }
 
     internal mtd setTextureFont(font: *Font, atlasIndex: s32)
     {
-        let cmd    = me.newCommand(.BindTextureFont, true)
+        let cmd    = .newCommand(.BindTextureFont, true)
         let params = &cmd.textureFont
         params.font       = font
         params.atlasIndex = atlasIndex
-        me.hasTextureFont = true
+        .hasTextureFont   = true
     }
 
     internal mtd pushTriangleCmd()->*Command
     {
         var cmd: *Command
-        if me.commandBuffer.count
+        if .commandBuffer.count
         {
-            let last = me.commandBuffer.buffer + me.commandBuffer.count - 1
+            let last = .commandBuffer.buffer + .commandBuffer.count - 1
             if last.id == CommandId.DrawTriangles:
                 cmd = last
         }
 
         if !cmd
         {
-            cmd                     = me.newCommand(.DrawTriangles)
-            cmd.drawTriangles.start = cast(u32) me.vertexBuffer.count
+            cmd                     = .newCommand(.DrawTriangles)
+            cmd.drawTriangles.start = cast(u32) .vertexBuffer.count
             cmd.drawTriangles.count = 0
         }
 
@@ -292,10 +292,10 @@ impl Painter
     #[Swag.Overload]
     internal mtd pushTriangle(p1, p2, p3: Vector2, uv1, uv2, uv3: Vector2, color: Color)->u64
     {
-        let cmd = me.pushTriangleCmd()
+        let cmd = .pushTriangleCmd()
         cmd.drawTriangles.count += 3
 
-        var ptr = me.vertexBuffer.emplaceAddress(3)
+        var ptr = .vertexBuffer.emplaceAddress(3)
         ptr.pos   = p1
         ptr.color = color.argb
         ptr.aanum = 0
@@ -311,16 +311,16 @@ impl Painter
         ptr.aanum = 0
         ptr.uv    = uv3
 
-        return me.vertexBuffer.count - 3
+        return .vertexBuffer.count - 3
     }
 
     #[Swag.Overload]
     internal mtd pushTriangle(p1, p2, p3: Vector2, color: Color)->u64
     {
-        let cmd = me.pushTriangleCmd()
+        let cmd = .pushTriangleCmd()
         cmd.drawTriangles.count += 3
 
-        var ptr = me.vertexBuffer.emplaceAddress(3)
+        var ptr = .vertexBuffer.emplaceAddress(3)
         ptr.pos   = p1
         ptr.color = color.argb
         ptr.aanum = 0
@@ -333,13 +333,13 @@ impl Painter
         ptr.color = color.argb
         ptr.aanum = 0
 
-        return me.vertexBuffer.count - 3
+        return .vertexBuffer.count - 3
     }
 
     #[Swag.Safety("", false), Swag.Overload]
     internal mtd addEdgeAA(tri: u64, startx, starty, endx, endy: f32)
     {
-        var ptr = me.vertexBuffer.buffer + tri
+        var ptr = .vertexBuffer.buffer + tri
         if ptr.aanum == MaxAAEdge:
             return
 
@@ -372,19 +372,19 @@ impl Painter
     #[Swag.Inline, Swag.Overload]
     internal mtd addEdgeAA(tri: u64, start, end: Vector2)
     {
-        me.addEdgeAA(tri, start.x, start.y, end.x, end.y)
+        .addEdgeAA(tri, start.x, start.y, end.x, end.y)
     }
 
     #[Swag.Inline]
     internal mtd newCommand(cmd: CommandId, replaceLast = false)->*Command
     {
-        Debug.assert(me.drawingBegin, "begin() not called before")
+        Debug.assert(.drawingBegin, "begin() not called before")
 
         // Take the previous command if it's the same
-        if replaceLast and me.commandBuffer.count and me.commandBuffer.buffer[me.commandBuffer.count - 1].id == cmd:
-            return me.commandBuffer.buffer + me.commandBuffer.count - 1
+        if replaceLast and .commandBuffer.count and .commandBuffer.buffer[.commandBuffer.count - 1].id == cmd:
+            return .commandBuffer.buffer + .commandBuffer.count - 1
 
-        let ptr = me.commandBuffer.emplaceAddress(1)
+        let ptr = .commandBuffer.emplaceAddress(1)
         ptr.id = cmd
         return ptr
     }
@@ -393,7 +393,7 @@ impl Painter
     {
         if !fontRef.dirty:
             return
-        let cmd = me.newCommand(.UpdateFont, false)
+        let cmd = .newCommand(.UpdateFont, false)
         cmd.font.fontRef = fontRef
     }
 
@@ -404,52 +404,52 @@ impl Painter
             alpha = true
         if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha():
             alpha = true
-        if me.curRT and me.curRT.paintAlpha and me.curState.paintParams & .Antialiased:
+        if .curRT and .curRT.paintAlpha and .curState.paintParams & .Antialiased:
             alpha = true
-        if alpha and me.curState.blendingMode == .Alpha
+        if alpha and .curState.blendingMode == .Alpha
         {
-            me.overlapMode = true
-            discard me.newCommand(.StartNoOverlap, true)
+            .overlapMode = true
+            discard .newCommand(.StartNoOverlap, true)
         }
     }
 
     internal mtd stopOverlapMode()
     {
-        if me.overlapMode
+        if .overlapMode
         {
-            me.overlapMode = false
-            discard me.newCommand(.StopNoOverlap, true)
+            .overlapMode = false
+            discard .newCommand(.StopNoOverlap, true)
         }
     }
 
     // Call this before drawing
     mtd begin()
     {
-        Debug.assert(me.drawingBegin == false)
+        Debug.assert(.drawingBegin == false)
 
-        me.commandBuffer.clear()
-        me.vertexBuffer.clear()
+        .commandBuffer.clear()
+        .vertexBuffer.clear()
 
-        me.drawingBegin   = true
-        me.canSetTexture0 = true
-        me.overlapMode    = false
-        me.curRT          = null
-        me.stackRT.clear()
+        .drawingBegin   = true
+        .canSetTexture0 = true
+        .overlapMode    = false
+        .curRT          = null
+        .stackRT.clear()
 
-        me.resetState()
+        .resetState()
     }
 
     // Call this after drawing
     mtd end()
     {
-        Debug.assert(me.drawingBegin)
-        me.drawingBegin = false
+        Debug.assert(.drawingBegin)
+        .drawingBegin = false
     }
 
     // Clear the rendering surface
     mtd clear(color: Color)
     {
-        let cmd = me.newCommand(.Clear)
+        let cmd = .newCommand(.Clear)
         cmd.clear.color = color
     }
 
@@ -467,75 +467,75 @@ impl Painter
             .colorMask.a = false
         }
 
-        me.resetClippingRect()
-        me.resetTexture0()
-        me.resetTextureFont()
-        me.setState(me.curState)
+        .resetClippingRect()
+        .resetTexture0()
+        .resetTextureFont()
+        .setState(.curState)
     }
 
     // Set the current painting state
     mtd setState(state: PaintState)
     {
-        me.curState = state
-        me.setTransform(me.curState.transform)
-        me.setBlendingMode(me.curState.blendingMode)
-        me.setColorMask(me.curState.colorMask)
+        .curState = state
+        .setTransform(.curState.transform)
+        .setBlendingMode(.curState.blendingMode)
+        .setColorMask(.curState.colorMask)
 
-        if me.curState.clippingRectOn
+        if .curState.clippingRectOn
         {
-            me.curState.clippingRectOn = false
-            me.setClippingRect(me.curState.clippingRect)
+            .curState.clippingRectOn = false
+            .setClippingRect(.curState.clippingRect)
         }
     }
 
     // Save the current paint state
     mtd pushState()
     {
-        me.stackState.add(me.curState)
+        .stackState.add(.curState)
     }
 
     // Restore the last paint state
     mtd popState()
     {
-        let state = me.stackState.popBack()
-        me.setState(state)
+        let state = .stackState.popBack()
+        .setState(state)
     }
 
     // Set the paint parameters
     mtd setParams(add: PaintParams, remove: PaintParams = .Zero)
     {
-        me.curState.paintParams |= add
-        me.curState.paintParams &= ~remove
+        .curState.paintParams |= add
+        .curState.paintParams &= ~remove
     }
 
     mtd addParams(add: PaintParams)
     {
-        me.curState.paintParams |= add
+        .curState.paintParams |= add
     }
 
     mtd removeParams(remove: PaintParams)
     {
-        me.curState.paintParams &= ~remove
+        .curState.paintParams &= ~remove
     }
 
     // Set antialiased mode on/off
     mtd setAntialiased(aa = true)
     {
         if aa:
-            me.curState.paintParams |= .Antialiased
+            .curState.paintParams |= .Antialiased
         else:
-            me.curState.paintParams &= ~.Antialiased
+            .curState.paintParams &= ~.Antialiased
     }
 
     #[Swag.Inline]
-    mtd getParams() => me.curState.paintParams
+    mtd getParams() => .curState.paintParams
     #[Swag.Inline]
-    mtd getQuality() => me.curState.paintQuality
+    mtd getQuality() => .curState.paintQuality
 
     // Set the paint quality
     mtd setQuality(quality: PaintQuality)
     {
-        me.curState.paintQuality = quality
+        .curState.paintQuality = quality
     }
 
     // Set the paint position
@@ -544,8 +544,8 @@ impl Painter
         if isZeroEpsilon(x) and isZeroEpsilon(y):
             return
         let tr = Transform2.createTranslation(x, y)
-        me.curState.transform.multiply(tr)
-        me.setTransform(me.curState.transform)
+        .curState.transform.multiply(tr)
+        .setTransform(.curState.transform)
     }
 
     // Set the paint rotation
@@ -555,8 +555,8 @@ impl Painter
         if isZeroEpsilon(angle.rad):
             return
         let tr = Transform2.createRotation(angle.rad, 0, 0)
-        me.curState.transform.multiply(tr)
-        me.setTransform(me.curState.transform)
+        .curState.transform.multiply(tr)
+        .setTransform(.curState.transform)
     }
 
     // Set the paint rotation
@@ -566,8 +566,8 @@ impl Painter
         if isZeroEpsilon(angle.rad):
             return
         let tr = Transform2.createRotation(angle.rad, centerX, centerY)
-        me.curState.transform.multiply(tr)
-        me.setTransform(me.curState.transform)
+        .curState.transform.multiply(tr)
+        .setTransform(.curState.transform)
     }
 
     // Set the paint rotation.
@@ -576,9 +576,9 @@ impl Painter
     {
         if isZeroEpsilon(angle.rad):
             return
-        let tr = Transform2.createRotation(angle.rad, me.curState.transform.tx, me.curState.transform.ty)
-        me.curState.transform.multiply(tr)
-        me.setTransform(me.curState.transform)
+        let tr = Transform2.createRotation(angle.rad, .curState.transform.tx, .curState.transform.ty)
+        .curState.transform.multiply(tr)
+        .setTransform(.curState.transform)
     }
 
     // Set the paint scale
@@ -587,84 +587,84 @@ impl Painter
         if isZeroEpsilon(x) and isZeroEpsilon(y):
             return
         let tr = Transform2.createScale(x, y, 0, 0)
-        me.curState.transform.multiply(tr)
-        me.setTransform(me.curState.transform)
+        .curState.transform.multiply(tr)
+        .setTransform(.curState.transform)
     }
 
     // Push the current transformation
     mtd pushTransform()
     {
-        me.stackTransform.add(me.curState.transform)
+        .stackTransform.add(.curState.transform)
     }
 
     // Restore the pushed transformation
     mtd popTransform()
     {
-        me.setTransform(me.stackTransform.popBack())
+        .setTransform(.stackTransform.popBack())
     }
 
     // Reset the paint position, rotation, scale
     mtd resetTransform()
     {
-        me.curState.transform.setIdentity()
-        me.setTransform(me.curState.transform)
+        .curState.transform.setIdentity()
+        .setTransform(.curState.transform)
     }
 
     // Set the paint transformation
     mtd setTransform(tr: Transform2)
     {
-        me.curState.transform = tr
-        let cmd = me.newCommand(.Transform, true)
+        .curState.transform = tr
+        let cmd = .newCommand(.Transform, true)
         cmd.transform.tr = tr
     }
 
     // Returns the current tranformation
     mtd getTransform()->Transform2
     {
-        var result: retval = me.curState.transform
+        var result: retval = .curState.transform
         return result
     }
 
     // Set the texture interpolation mode
     mtd setInterpolationMode(mode: InterpolationMode)
     {
-        me.curState.interpolationMode = mode
+        .curState.interpolationMode = mode
     }
 
     // Set the current clipping rectangle
     #[Swag.Overload]
     mtd setClippingRect(x, y, width, height: f32)
     {
-        me.setClippingRect({x, y, width, height})
+        .setClippingRect({x, y, width, height})
     }
 
     // Set the current clipping rectangle
     #[Swag.Overload]
     mtd setClippingRect(rect: Rectangle)
     {
-        if me.curState.clippingRect == rect and me.curState.clippingRectOn:
+        if .curState.clippingRect == rect and .curState.clippingRectOn:
             return
-        me.curState.clippingRect   = rect
-        me.curState.clippingRectOn = true
-        let cmd = me.newCommand(.SetClippingRect, true)
-        cmd.clippingRect.rect = me.curState.clippingRect
+        .curState.clippingRect   = rect
+        .curState.clippingRectOn = true
+        let cmd = .newCommand(.SetClippingRect, true)
+        cmd.clippingRect.rect = .curState.clippingRect
     }
 
     // Reset the current clipping rectangle
     mtd resetClippingRect()
     {
-        if me.curState.clippingRectOn
+        if .curState.clippingRectOn
         {
-            me.curState.clippingRectOn = false
-            me.curState.stackClipRect.clear()
-            discard me.newCommand(.ResetClippingRect, true)
+            .curState.clippingRectOn = false
+            .curState.stackClipRect.clear()
+            discard .newCommand(.ResetClippingRect, true)
         }
     }
 
     // Interface the given rectangle with the current clipping rectangle
     mtd pushClippingSurfaceRect(rect: Rectangle)
     {
-        me.pushClippingRect(rect, true)
+        .pushClippingRect(rect, true)
     }
 
     // Interface the given rectangle with the current clipping rectangle
@@ -672,135 +672,135 @@ impl Painter
     {
         var rrect = rect
         if !isSurfacePos:
-            rrect.offset(me.curState.transform.tx, me.curState.transform.ty)
+            rrect.offset(.curState.transform.tx, .curState.transform.ty)
         rrect.round()
 
-        if me.curState.clippingRectOn
+        if .curState.clippingRectOn
         {
-            me.curState.stackClipRect.add(me.curState.clippingRect)
-            var newRect = me.curState.clippingRect
+            .curState.stackClipRect.add(.curState.clippingRect)
+            var newRect = .curState.clippingRect
             newRect.intersect(rrect)
-            me.setClippingRect(newRect)
+            .setClippingRect(newRect)
         }
         else
         {
-            me.setClippingRect(rrect)
+            .setClippingRect(rrect)
         }
     }
 
     // Restore the original clipping rectangle
     mtd popClippingRect()
     {
-        if me.curState.stackClipRect.isEmpty()
+        if .curState.stackClipRect.isEmpty()
         {
-            me.resetClippingRect()
+            .resetClippingRect()
         }
         else
         {
-            let clipRect = me.curState.stackClipRect.popBack()
-            me.setClippingRect(clipRect)
+            let clipRect = .curState.stackClipRect.popBack()
+            .setClippingRect(clipRect)
         }
     }
 
     // Get the current clipping rectangle
     mtd getClippingRect()->Rectangle
     {
-        if me.curState.clippingRectOn:
-            return me.curState.clippingRect
+        if .curState.clippingRectOn:
+            return .curState.clippingRect
         return {0, 0, Swag.F32.Max, Swag.F32.Max}
     }
 
     // Returns true if the current clipping rectangle is empty (no drawing !)
     mtd isEmptyClippingRect()->bool
     {
-        return me.curState.clippingRectOn and me.curState.clippingRect.isEmpty()
+        return .curState.clippingRectOn and .curState.clippingRect.isEmpty()
     }
 
     // Start painting in the clipping buffer
     mtd startClippingRegion(mode = ClippingMode.Set)
     {
-        let cmd = me.newCommand(.StartClippingRegion, true)
+        let cmd = .newCommand(.StartClippingRegion, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Set the clipping region mode
     mtd setClippingRegionMode(mode: ClippingMode)
     {
-        let cmd = me.newCommand(.SetClippingRegionMode, true)
+        let cmd = .newCommand(.SetClippingRegionMode, true)
         cmd.clippingRegion.mode = mode
     }
 
     // Stop painting in the clipping buffer. Back to normal.
     mtd endClippingRegion()
     {
-        discard me.newCommand(.EndClippingRegion, true)
+        discard .newCommand(.EndClippingRegion, true)
     }
 
     // Reset clipping buffer to its default value (no more clipping)
     mtd resetClippingRegion()
     {
-        discard me.newCommand(.ResetClippingRegion, true)
+        discard .newCommand(.ResetClippingRegion, true)
     }
 
     // Set the current blending mode
     mtd setBlendingMode(mode: BlendingMode)
     {
-        let cmd = me.newCommand(.SetBlendingMode, true)
-        cmd.blendingMode.mode    = mode
-        me.curState.blendingMode = mode
+        let cmd = .newCommand(.SetBlendingMode, true)
+        cmd.blendingMode.mode  = mode
+        .curState.blendingMode = mode
     }
 
     // Set color mask
     #[Swag.Overload]
     mtd setColorMask(cm: ColorMask)
     {
-        let cmd = me.newCommand(.ColorMask, true)
-        cmd.colorMask         = cm
-        me.curState.colorMask = cm
+        let cmd = .newCommand(.ColorMask, true)
+        cmd.colorMask       = cm
+        .curState.colorMask = cm
     }
 
     // Set color mask
     #[Swag.Overload]
     mtd setColorMask(r, g, b, a: bool)
     {
-        let cmd = me.newCommand(.ColorMask, true)
-        cmd.colorMask.r       = r
-        cmd.colorMask.g       = g
-        cmd.colorMask.b       = b
-        cmd.colorMask.a       = a
-        me.curState.colorMask = cmd.colorMask
+        let cmd = .newCommand(.ColorMask, true)
+        cmd.colorMask.r     = r
+        cmd.colorMask.g     = g
+        cmd.colorMask.b     = b
+        cmd.colorMask.a     = a
+        .curState.colorMask = cmd.colorMask
     }
 
-    mtd setColorMaskColor() => me.setColorMask(true, true, true, false)
-    mtd setColorMaskFull()  => me.setColorMask(true, true, true, true)
-    mtd setColorMaskAlpha() => me.setColorMask(false, false, false, true)
+    mtd setColorMaskColor() => .setColorMask(true, true, true, false)
+    mtd setColorMaskFull()  => .setColorMask(true, true, true, true)
+    mtd setColorMaskAlpha() => .setColorMask(false, false, false, true)
 
     // Bind a render target
     mtd bindRenderTarget(tgt: *RenderTarget, paintAlpha = false)
     {
-        me.pushState()
-        let cmd = me.newCommand(.BindRenderTarget, true)
+        .pushState()
+        let cmd = .newCommand(.BindRenderTarget, true)
         cmd.renderTgt.tgt        = tgt
         cmd.renderTgt.paintAlpha = paintAlpha
-        me.resetState()
+        .resetState()
 
-        if me.curRT:
-            me.stackRT.add(me.curRT)
-        me.curRT = tgt
+        if .curRT:
+            .stackRT.add(.curRT)
+        .curRT = tgt
     }
 
     // Bind a render target
     mtd unbindRenderTarget()
     {
-        discard me.newCommand(.UnbindRenderTarget, true)
-        me.popState()
+        discard .newCommand(.UnbindRenderTarget, true)
+        .popState()
 
-        if me.stackRT.count:
-            me.curRT = me.stackRT.popBack()
+        if .stackRT.count:
+            .curRT = .stackRT.popBack()
         else
         {
-            Debug.assert(me.curRT != null)
-            me.curRT = null
+            Debug.assert(.curRT != null)
+            .curRT = null
         }
     }
 
@@ -809,14 +809,14 @@ impl Painter
     {
         if !tgt:
             return
-        let cmd = me.newCommand(.ReleaseRenderTarget)
+        let cmd = .newCommand(.ReleaseRenderTarget)
         cmd.renderTgt.tgt = tgt
     }
 
     // Set the current shader
     mtd setShader(shader: *ShaderBase = null)
     {
-        let cmd = me.newCommand(.SetShader, true)
+        let cmd = .newCommand(.SetShader, true)
         cmd.shader.shader = shader
     }
 
@@ -824,7 +824,7 @@ impl Painter
     #[Swag.Overload]
     mtd setShaderParam(param: ShaderParamHandle, val: s32)
     {
-        let cmd = me.newCommand(.SetShaderParam)
+        let cmd = .newCommand(.SetShaderParam)
         cmd.shaderParam.param = param
         cmd.shaderParam.type  = s32
         cmd.shaderParam._s32  = val
@@ -834,7 +834,7 @@ impl Painter
     #[Swag.Overload]
     mtd setShaderParam(param: ShaderParamHandle, val: f32)
     {
-        let cmd = me.newCommand(.SetShaderParam)
+        let cmd = .newCommand(.SetShaderParam)
         cmd.shaderParam.param = param
         cmd.shaderParam.type  = f32
         cmd.shaderParam._f32  = val

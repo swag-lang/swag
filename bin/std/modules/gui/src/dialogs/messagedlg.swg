@@ -50,82 +50,82 @@ public impl MessageDlg
     // Display the box, centered, and returns the id of the pressed button
     mtd doModal(from: *Surface)->string
     {
-        me.adaptSizeToMessage()
-        me.surface.center(from)
+        .adaptSizeToMessage()
+        .surface.center(from)
         return Dialog.doModal(me)
     }
 
     internal mtd adaptSizeToMessage()
     {
-        let metrics = me.getThemeMetrics()
+        let metrics = .getThemeMetrics()
 
         // Evaluate size of text
         var fake: Painter{fake: true}
         var rsf:  RichStringFormat
-        rsf.font = me.getFont()
+        rsf.font = .getFont()
         rsf.flags |= .WordWrap
-        rsf.horzAlignment = me.label.horzAlignmentText
-        fake.drawRichString({0, 0, 512, 0}, &me.label.name, rsf)
-        me.label.name.invalidate()
+        rsf.horzAlignment = .label.horzAlignmentText
+        fake.drawRichString({0, 0, 512, 0}, &.label.name, rsf)
+        .label.name.invalidate()
 
         // Width
         var w = 0'f32
-        foreach btn in me.buttons:
+        foreach btn in .buttons:
             w += btn.position.width
-        w += cast(f32) ((me.buttons.count - 1) * metrics.dialog_BtnPadding)
+        w += cast(f32) ((.buttons.count - 1) * metrics.dialog_BtnPadding)
         w += 2 * metrics.dialog_Padding
         w += metrics.btnPush_Width
 
-        var wl = me.label.name.boundRect.width + 2 * metrics.dialog_Padding
+        var wl = .label.name.boundRect.width + 2 * metrics.dialog_Padding
         wl += 2 * metrics.wnd_BorderSize
         w = Math.max(w, wl)
 
-        if me.extension
+        if .extension
         {
-            var wl1 = me.extension.position.width + 2 * metrics.dialog_Padding
+            var wl1 = .extension.position.width + 2 * metrics.dialog_Padding
             wl1 += 2 * metrics.wnd_BorderSize
             w = Math.max(w, wl1)
         }
 
         // Height
-        var h = Math.min(512, me.label.name.boundRect.height + me.label.padding.y + me.label.padding.w)
-        if me.labelIcon:
-            h += me.labelIcon.position.height
+        var h = Math.min(512, .label.name.boundRect.height + .label.padding.y + .label.padding.w)
+        if .labelIcon:
+            h += .labelIcon.position.height
         else:
             h += metrics.dialog_Padding
-        h += me.wndBottom.position.height
+        h += .wndBottom.position.height
         h += 2 * metrics.wnd_BorderSize
-        if me.surface.flags & .SmallCaption:
+        if .surface.flags & .SmallCaption:
             h += metrics.wnd_SmallCaptionCY
-        elif me.surface.flags & .BigCaption:
+        elif .surface.flags & .BigCaption:
             h += metrics.wnd_BigCaptionCY
 
-        if me.extension:
-            h += me.extension.position.height
+        if .extension:
+            h += .extension.position.height
 
-        var pos = me.surface.position
+        var pos = .surface.position
         pos.width  = w
         pos.height = h
-        let sdw = me.surface.app.theme.metrics.surfaceWnd_ShadowSize
+        let sdw = .surface.app.theme.metrics.surfaceWnd_ShadowSize
         pos.width += sdw * 2
         pos.height += sdw * 2
-        me.surface.setPosition(pos)
+        .surface.setPosition(pos)
     }
 
     // Add a bottom extended window
     mtd setExtension(wndExtension: *Wnd)
     {
-        Debug.assert(me.extension == null)
-        me.extension           = wndExtension
-        me.extension.dockStyle = .Bottom
-        me.extension.margin.x  = me.getThemeMetrics().dialog_Padding
+        Debug.assert(.extension == null)
+        .extension           = wndExtension
+        .extension.dockStyle = .Bottom
+        .extension.margin.x  = .getThemeMetrics().dialog_Padding
     }
 
     // Set big icon color (icon must has been set before)
     mtd setIconColor(color: Color)
     {
-        Debug.assert(me.labelIcon != null)
-        me.labelIcon.iconColor = color
+        Debug.assert(.labelIcon != null)
+        .labelIcon.iconColor = color
     }
 
     // Set big icon
@@ -134,9 +134,9 @@ public impl MessageDlg
         if !icon.isValid():
             return
 
-        if !me.labelIcon:
-            me.labelIcon = Label.create(me.surface.wnd.view, "", {0, 0, 0, icon.sizeX + icon.sizeX * 0.5})
-        me.label.padding.y = 0
+        if !.labelIcon:
+            .labelIcon = Label.create(.surface.wnd.view, "", {0, 0, 0, icon.sizeX + icon.sizeX * 0.5})
+        .label.padding.y = 0
 
         with me.labelIcon
         {

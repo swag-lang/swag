@@ -80,7 +80,7 @@ public impl AboutDlg
     // Display the box, centered, and returns the id of the pressed button
     mtd doModal(from: *Surface)
     {
-        me.surface.center(from)
+        .surface.center(from)
         discard Dialog.doModal(me)
     }
 }

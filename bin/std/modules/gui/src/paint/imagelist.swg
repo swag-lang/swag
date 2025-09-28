@@ -13,16 +13,16 @@ impl ImageList
 {
     #[Swag.Inline]
     {
-        mtd countX() => me.texture.width / me.frameSizeX
-        mtd countY() => me.texture.height / me.frameSizeY
+        mtd countX() => .texture.width / .frameSizeX
+        mtd countY() => .texture.height / .frameSizeY
     }
 
     // Initialize image list
     mtd set(texture: Texture, fsx, fsy: s32 = 0, cpt: s32 = 0)
     {
-        me.texture     = texture
-        me.frameSizeX  = fsx orelse texture.width
-        me.frameSizeY  = fsy orelse texture.height
-        me.totalFrames = cpt orelse (me.texture.width / me.frameSizeX) * (me.texture.height / me.frameSizeY)
+        .texture     = texture
+        .frameSizeX  = fsx orelse texture.width
+        .frameSizeY  = fsy orelse texture.height
+        .totalFrames = cpt orelse (.texture.width / .frameSizeX) * (.texture.height / .frameSizeY)
     }
 }

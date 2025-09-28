@@ -21,10 +21,10 @@ impl IWnd for RadioButton
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
-        let theme   = me.getTheme()
-        let metrics = me.getThemeMetrics()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
+        let theme   = .getTheme()
+        let metrics = .getThemeMetrics()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
 
         var subRectBk:     *ThemeImageRect
         var subRectBorder: *ThemeImageRect
@@ -41,17 +41,17 @@ impl IWnd for RadioButton
             colorBorder = colors.btnCheck_DisabledBorder
             colorMark   = colors.btnCheck_DisabledMark
             colorText   = colors.btnCheck_DisabledText
-        case me.isPressed:
+        case .isPressed:
             colorBk     = colors.btnCheck_PressedBk
             colorBorder = colors.btnCheck_PressedBorder
             colorMark   = colors.btnCheck_PressedMark
             colorText   = colors.btnCheck_PressedText
-        case me.isHot:
+        case .isHot:
             colorBk     = colors.btnCheck_HotBk
             colorBorder = colors.btnCheck_HotBorder
             colorMark   = colors.btnCheck_HotMark
             colorText   = colors.btnCheck_HotText
-        case me.checked:
+        case .checked:
             colorBk     = colors.btnCheck_CheckedBk
             colorText   = colors.btnCheck_CheckedText
             colorBorder = colors.btnCheck_CheckedBorder
@@ -63,7 +63,7 @@ impl IWnd for RadioButton
             colorText   = colors.btnCheck_Text
         }
 
-        if me.checked
+        if .checked
         {
             subRectBk     = &rects.btnRadio_Checked
             subRectBorder = &rects.btnRadio_CheckedBorder
@@ -76,12 +76,12 @@ impl IWnd for RadioButton
         }
 
         // Box
-        let clientRect = me.getClientRect()
+        let clientRect = .getClientRect()
         var posBox     = clientRect
         posBox.height = metrics.btnCheck_Size
         posBox.y      = clientRect.vertCenter() - (posBox.height * 0.5)
         posBox.width  = posBox.height
-        if me.radioButtonFlags.has(.RightAlign):
+        if .radioButtonFlags.has(.RightAlign):
             posBox.x = clientRect.right() - posBox.width
         theme.drawSubRect(bc.painter, posBox, subRectBk, colorBk)
         theme.drawSubRect(bc.painter, posBox, subRectBorder, colorBorder)
@@ -90,27 +90,27 @@ impl IWnd for RadioButton
         // Content
         var format: RichStringFormat
         theme.setTextColors(&format, colorText)
-        if me.radioButtonFlags.has(.RightAlign):
+        if .radioButtonFlags.has(.RightAlign):
             format.horzAlignment = .Right
         else:
             format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags         = .Clip
-        format.font          = me.getFont()
+        format.font          = .getFont()
         var labelPos = clientRect
-        if !me.radioButtonFlags.has(.RightAlign):
+        if !.radioButtonFlags.has(.RightAlign):
             labelPos.x += posBox.width + metrics.btnCheck_Padding
         labelPos.width -= posBox.width + metrics.btnCheck_Padding
-        Theme.drawIconText(bc.painter, labelPos, me.icon, &me.name, format, metrics.iconText_Margin)
+        Theme.drawIconText(bc.painter, labelPos, .icon, &.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if me.processMouseEvent(evt) and !me.checked
+        if .processMouseEvent(evt) and !.checked
         {
-            me.checked = true
-            me.sigChanged.call(me)
-            me.postCommandEvent(me.id)
+            .checked = true
+            .sigChanged.call(me)
+            .postCommandEvent(.id)
         }
     }
 }
@@ -132,9 +132,9 @@ impl RadioButton
     // Set the checked state
     mtd setChecked(checked: bool)
     {
-        if me.checked == checked:
+        if .checked == checked:
             return
-        me.checked = checked
-        me.invalidate()
+        .checked = checked
+        .invalidate()
     }
 }

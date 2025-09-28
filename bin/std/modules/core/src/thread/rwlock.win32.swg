@@ -12,47 +12,47 @@ impl RWLock
 {
     mtd lock()
     {
-        me.lockExclusive()
+        .lockExclusive()
     }
 
     mtd unlock()
     {
-        me.unlockExclusive()
+        .unlockExclusive()
     }
 
     // Try to lock the mutex, and return 'true' if it's the case
     mtd tryLockExclusive()->bool
     {
-        return TryAcquireSRWLockExclusive(&me.v) ? true : false
+        return TryAcquireSRWLockExclusive(&.v) ? true : false
     }
 
     // Lock mutex
     mtd lockExclusive()
     {
-        AcquireSRWLockExclusive(&me.v)
+        AcquireSRWLockExclusive(&.v)
     }
 
     // Unlock mutex
     mtd unlockExclusive()
     {
-        ReleaseSRWLockExclusive(&me.v)
+        ReleaseSRWLockExclusive(&.v)
     }
 
     // Try to lock the mutex, and return 'true' if it's the case
     mtd tryLockShared()->bool
     {
-        return TryAcquireSRWLockShared(&me.v) ? true : false
+        return TryAcquireSRWLockShared(&.v) ? true : false
     }
 
     // Lock mutex
     mtd lockShared()
     {
-        AcquireSRWLockShared(&me.v)
+        AcquireSRWLockShared(&.v)
     }
 
     // Unlock mutex
     mtd unlockShared()
     {
-        ReleaseSRWLockShared(&me.v)
+        ReleaseSRWLockShared(&.v)
     }
 }

@@ -13,77 +13,77 @@ impl Rng
     #[Swag.Inline]
     mtd seedU32(seed: u32)
     {
-        me.seedDone = true
+        .seedDone = true
         #if #defined(T.seedU32):
-            return me.rng.seedU32(seed)
+            return .rng.seedU32(seed)
         #else:
-            return me.rng.seedU64(cast(u64) seed)
+            return .rng.seedU64(cast(u64) seed)
     }
 
     // Seed random generator with a 64 bits value
     #[Swag.Inline]
     mtd seedU64(seed: u64)
     {
-        me.seedDone = true
+        .seedDone = true
         #if #defined(T.seedU64):
-            return me.rng.seedU64(seed)
+            return .rng.seedU64(seed)
         #else:
-            return me.rng.seedU32(cast #wrap (u32) seed)
+            return .rng.seedU32(cast #wrap (u32) seed)
     }
 
     // Returns an unsigned 32 bits random value
     #[Swag.Inline, Swag.Overload]
     mtd nextU32()->u32
     {
-        if !me.seedDone:
-            me.seedU32(Time.nowMilliseconds())
+        if !.seedDone:
+            .seedU32(Time.nowMilliseconds())
 
         #if #defined(T.nextU32):
-            return me.rng.nextU32()
+            return .rng.nextU32()
         #else:
-            return cast #wrap (u32) me.rng.nextU64()
+            return cast #wrap (u32) .rng.nextU64()
     }
 
     // Returns an unsigned 64 bits random value
     #[Swag.Inline, Swag.Overload]
     mtd nextU64()->u64
     {
-        if !me.seedDone:
-            me.seedU32(Time.nowMilliseconds())
+        if !.seedDone:
+            .seedU32(Time.nowMilliseconds())
 
         #if #defined(T.nextU64):
-            return me.rng.nextU64()
+            return .rng.nextU64()
         #else:
-            return (cast(u64) me.rng.nextU32() << 32) | me.rng.nextU32()
+            return (cast(u64) .rng.nextU32() << 32) | .rng.nextU32()
     }
 
     // Seed the rng with the current time
     mtd seedNow()
     {
-        me.seedU32(Time.nowMicroseconds())
+        .seedU32(Time.nowMicroseconds())
     }
 
     // Returns a signed 32 bits random value
     #[Swag.Inline, Swag.Overload]
     mtd nextS32()->s32
     {
-        return cast #bit (s32) me.nextU32()
+        return cast #bit (s32) .nextU32()
     }
 
     // Returns a signed 64 bits random value
     #[Swag.Inline, Swag.Overload]
     mtd nextS64()->s64
     {
-        return cast #bit (s64) me.nextU64()
+        return cast #bit (s64) .nextU64()
     }
 
     // Range is [0..1[, so 1.0 will never be returned
     #[Swag.Inline, Swag.Overload]
     mtd nextF32()->f32
     {
-        var v = me.nextU32()
+        var v = .nextU32()
         while v == Swag.U32.Max:
-            v = me.nextU32()
+            v = .nextU32()
         return v / cast(f32) Swag.U32.Max
     }
 
@@ -91,9 +91,9 @@ impl Rng
     #[Swag.Inline, Swag.Overload]
     mtd nextF64()->f64
     {
-        var v = me.nextU64()
+        var v = .nextU64()
         while v == Swag.U64.Max:
-            v = me.nextU64()
+            v = .nextU64()
         return v / cast(f64) Swag.U64.Max
     }
 
@@ -104,7 +104,7 @@ impl Rng
     {
         Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u32) (max - min)
-        let value = me.nextU32() % range
+        let value = .nextU32() % range
         return min + value
     }
 
@@ -115,7 +115,7 @@ impl Rng
     {
         Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u64) (max - min)
-        let value = me.nextU64() % range
+        let value = .nextU64() % range
         return min + value
     }
 
@@ -126,7 +126,7 @@ impl Rng
     {
         Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u32) (max - min)
-        let value = cast(s32) (me.nextU32() % range)
+        let value = cast(s32) (.nextU32() % range)
         return min + value
     }
 
@@ -137,7 +137,7 @@ impl Rng
     {
         Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = cast(u64) (max - min)
-        let value = cast(s64) (me.nextU64() % range)
+        let value = cast(s64) (.nextU64() % range)
         return min + value
     }
 
@@ -148,7 +148,7 @@ impl Rng
     {
         Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = max - min
-        let value = me.nextF32()
+        let value = .nextF32()
         return min + (value * range)
     }
 
@@ -159,14 +159,14 @@ impl Rng
     {
         Debug.assert(max > min, "[[max]] must be greater than [[min]]")
         let range = max - min
-        let value = me.nextF64()
+        let value = .nextF64()
         return min + (value * range)
     }
 
     // Returns a random bool
     mtd nextBool()->bool
     {
-        return me.nextU32(0, 2) == 0 ? false : true
+        return .nextU32(0, 2) == 0 ? false : true
     }
 
     // Randomly change the order of a slice
@@ -176,7 +176,7 @@ impl Rng
         let dataOf  = @dataof(slice)
         for i in slice
         {
-            let o = me.nextU64(0, countOf)
+            let o = .nextU64(0, countOf)
             Core.swap(dataOf + i, dataOf + o)
         }
     }

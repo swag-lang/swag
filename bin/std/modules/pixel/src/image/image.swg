@@ -22,7 +22,7 @@ impl Image
 {
     // Returns true if the image is valid
     #[Swag.Inline]
-    mtd const isValid() => me.pixels.buffer != null
+    mtd const isValid() => .pixels.buffer != null
 
     // Creates a new image
     func create(width, height: s32, pf: PixelFormat, buffer: const [..] u8 = null)->Image
@@ -39,12 +39,12 @@ impl Image
 
     mtd opDrop()
     {
-        Memory.delete'Image(me.workingBuffer)
+        Memory.delete'Image(.workingBuffer)
     }
 
     mtd opPostCopy()
     {
-        me.workingBuffer = null
+        .workingBuffer = null
     }
 
     #[Swag.Macro]
@@ -83,57 +83,57 @@ impl Image
     // Pixels will not be initialized.
     mtd allocPixels()
     {
-        Debug.assert(me.size != 0)
+        Debug.assert(.size != 0)
 
         // Do not use pixels.resize to avoid initializing all the pixels
         // Pixels are not defined after a call to 'allocPixels', as design
-        me.pixels.grow(me.size)
-        me.pixels.count = me.size
+        .pixels.grow(.size)
+        .pixels.count = .size
     }
 
     // Allocate a computing buffer with current image size
     #[Swag.Overload]
     mtd allocWorkingBuffer()
     {
-        me.allocWorkingBuffer(me.width, me.height, me.pf)
+        .allocWorkingBuffer(.width, .height, .pf)
     }
 
     // Allocate a computing buffer with new sizes
     #[Swag.Overload]
     mtd allocWorkingBuffer(newWidth, newHeight: s32, newPf: PixelFormat)
     {
-        if me.workingBuffer and
-           newWidth == me.workingBuffer.width and
-           newHeight == me.workingBuffer.height and
-           newPf == me.workingBuffer.pf
+        if .workingBuffer and
+           newWidth == .workingBuffer.width and
+           newHeight == .workingBuffer.height and
+           newPf == .workingBuffer.pf
         {
             return
         }
 
-        me.freeWorkingBuffer()
-        me.workingBuffer      = Memory.new'Image()
-        dref me.workingBuffer = Image.create(newWidth, newHeight, newPf)
+        .freeWorkingBuffer()
+        .workingBuffer      = Memory.new'Image()
+        dref .workingBuffer = Image.create(newWidth, newHeight, newPf)
     }
 
     // Free the working buffer if allocated
     mtd freeWorkingBuffer()
     {
-        Memory.delete(me.workingBuffer)
-        me.workingBuffer = null
+        Memory.delete(.workingBuffer)
+        .workingBuffer = null
     }
 
     // Replace the current image content with the working buffer
     mtd applyWorkingBuffer()
     {
-        Debug.assert(me.workingBuffer != null)
-        swap(&me.pf, &me.workingBuffer.pf)
-        swap(&me.pixels, &me.workingBuffer.pixels)
-        swap(&me.width, &me.workingBuffer.width)
-        swap(&me.height, &me.workingBuffer.height)
-        swap(&me.bpp, &me.workingBuffer.bpp)
-        swap(&me.bpp8, &me.workingBuffer.bpp8)
-        swap(&me.size, &me.workingBuffer.size)
-        swap(&me.width8, &me.workingBuffer.width8)
+        Debug.assert(.workingBuffer != null)
+        swap(&.pf, &.workingBuffer.pf)
+        swap(&.pixels, &.workingBuffer.pixels)
+        swap(&.width, &.workingBuffer.width)
+        swap(&.height, &.workingBuffer.height)
+        swap(&.bpp, &.workingBuffer.bpp)
+        swap(&.bpp8, &.workingBuffer.bpp8)
+        swap(&.size, &.workingBuffer.size)
+        swap(&.width8, &.workingBuffer.width8)
     }
 
     // Macro to foreach all pixels of the image in parallel chunks.
@@ -150,7 +150,7 @@ impl Image
         Debug.assert(stride > 0)
 
         var p = {me, userData}
-        Jobs.parallelVisit(|buffer, data| me.pixels.toSlice(), cast(u32) (me.bpp8 * stride), &p)
+        Jobs.parallelVisit(|buffer, data| .pixels.toSlice(), cast(u32) (.bpp8 * stride), &p)
         {
             if !data:
                 return
@@ -180,8 +180,8 @@ impl Image
     // Clear the content of the image
     mtd clear()
     {
-        Debug.assert(me.pixels.buffer != null)
-        Memory.clear(me.pixels.buffer, me.size)
+        Debug.assert(.pixels.buffer != null)
+        Memory.clear(.pixels.buffer, .size)
     }
 
     // Copy one pixel, depending on bpp
@@ -240,13 +240,13 @@ impl Image
     mtd(PF: PixelFormat) const getPixelColorDirect(pixX, pixY: s32)->Color
     {
         var result: retval
-        let x       = Math.clamp(pixX, 0, me.width - 1)
-        var y       = Math.clamp(pixY, 0, me.height - 1)
-        y = me.height - y - 1
+        let x       = Math.clamp(pixX, 0, .width - 1)
+        var y       = Math.clamp(pixY, 0, .height - 1)
+        y = .height - y - 1
 
         #if PF == .RGBA8
         {
-            let pix = me.pixels.buffer + (x * 4) + (y * me.width * 4)
+            let pix = .pixels.buffer + (x * 4) + (y * .width * 4)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
@@ -254,7 +254,7 @@ impl Image
         }
         #elif PF == .RGB8
         {
-            let pix = me.pixels.buffer + (x * 3) + (y * me.width * 3)
+            let pix = .pixels.buffer + (x * 3) + (y * .width * 3)
             result.r = pix[0]
             result.g = pix[1]
             result.b = pix[2]
@@ -262,7 +262,7 @@ impl Image
         }
         #elif PF == .BGRA8
         {
-            let pix = me.pixels.buffer + (x * 4) + (y * me.width * 4)
+            let pix = .pixels.buffer + (x * 4) + (y * .width * 4)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
@@ -270,7 +270,7 @@ impl Image
         }
         #elif PF == .BGR8
         {
-            let pix = me.pixels.buffer + (x * 3) + (y * me.width * 3)
+            let pix = .pixels.buffer + (x * 3) + (y * .width * 3)
             result.b = pix[0]
             result.g = pix[1]
             result.r = pix[2]
@@ -285,16 +285,16 @@ impl Image
     mtd const getPixelColor(pixX, pixY: s32)->Color
     {
         #[Swag.Complete]
-        switch me.pf
+        switch .pf
         {
         case RGBA8:
-            return me.getPixelColorDirect'RGBA8(pixX, pixY)
+            return .getPixelColorDirect'RGBA8(pixX, pixY)
         case RGB8:
-            return me.getPixelColorDirect'RGB8(pixX, pixY)
+            return .getPixelColorDirect'RGB8(pixX, pixY)
         case BGRA8:
-            return me.getPixelColorDirect'BGRA8(pixX, pixY)
+            return .getPixelColorDirect'BGRA8(pixX, pixY)
         case BGR8:
-            return me.getPixelColorDirect'BGR8(pixX, pixY)
+            return .getPixelColorDirect'BGR8(pixX, pixY)
         }
 
         return {}

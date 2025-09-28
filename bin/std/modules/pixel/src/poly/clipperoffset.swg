@@ -39,17 +39,17 @@ impl Offset
     // Ensures all dynamically allocated polygon nodes are properly freed.
     mtd opDrop()
     {
-        me.clear()
+        .clear()
     }
 
     // Clear all stored polygons and reset the processor state.
     // Deallocates all polygon nodes and resets the lowest point tracking.
     mtd clear()
     {
-        foreach node in me.polyNodes.childs:
+        foreach node in .polyNodes.childs:
             Memory.delete(node)
-        me.polyNodes.childs.clear()
-        me.lowest.x = -1
+        .polyNodes.childs.clear()
+        .lowest.x = -1
     }
 
     // Add a polygon path to be processed with the specified join type.
@@ -86,15 +86,15 @@ impl Offset
             return
         }
 
-        me.polyNodes.addChild(newNode)
+        .polyNodes.addChild(newNode)
 
-        if me.lowest.x < 0:
-            me.lowest = IntPoint{me.polyNodes.childs.count - 1, k}
+        if .lowest.x < 0:
+            .lowest = IntPoint{.polyNodes.childs.count - 1, k}
         else
         {
-            let ip = me.polyNodes.childs[cast(s32) me.lowest.x].contour[cast(s32) me.lowest.y]
+            let ip = .polyNodes.childs[cast(s32) .lowest.x].contour[cast(s32) .lowest.y]
             if newNode.contour[k].y > ip.y or (newNode.contour[k].y == ip.y and newNode.contour[k].x < ip.x):
-                me.lowest = IntPoint{me.polyNodes.childs.count - 1, k}
+                .lowest = IntPoint{.polyNodes.childs.count - 1, k}
         }
     }
 
@@ -103,11 +103,11 @@ impl Offset
     mtd execute(solution: *ClipperPaths, delta: f64, reverseNeg: bool = false)
     {
         solution.clear()
-        me.fixOrientations()
-        me.doOffset(delta)
+        .fixOrientations()
+        .doOffset(delta)
 
         var clpr: Transform
-        foreach &p in me.destPolys:
+        foreach &p in .destPolys:
             clpr.addPath(p, PolyType.Subject)
 
         if delta > 0
@@ -165,9 +165,9 @@ impl Offset
     // Reverses polygon vertex order if the bottommost polygon has incorrect orientation.
     mtd fixOrientations()
     {
-        if me.lowest.x >= 0 and !orientation(me.polyNodes.childs[me.lowest.x].contour)
+        if .lowest.x >= 0 and !orientation(.polyNodes.childs[.lowest.x].contour)
         {
-            foreach node in me.polyNodes.childs:
+            foreach node in .polyNodes.childs:
                 Slice.reverse(node.contour.toSlice())
         }
     }
@@ -201,51 +201,51 @@ impl Offset
     {
         using Math
 
-        me.destPolys.clear()
-        me.deltaVal = delta
+        .destPolys.clear()
+        .deltaVal = delta
 
         if Math.isZeroEpsilon(delta)
         {
-            me.destPolys.reserve(me.polyNodes.childs.count)
-            foreach node in me.polyNodes.childs:
-                me.destPolys.add(node.contour)
+            .destPolys.reserve(.polyNodes.childs.count)
+            foreach node in .polyNodes.childs:
+                .destPolys.add(node.contour)
             return
         }
 
-        if me.miterLimit > 2:
-            me.miterLim = 2 / (me.miterLimit * me.miterLimit)
+        if .miterLimit > 2:
+            .miterLim = 2 / (.miterLimit * .miterLimit)
         else:
-            me.miterLim = 0.5
+            .miterLim = 0.5
 
         var arcT: f64 = undefined
-        if me.arcTolerance <= 0.0:
+        if .arcTolerance <= 0.0:
             arcT = DefaultArcTolerance
-        elif me.arcTolerance > abs(delta) * DefaultArcTolerance:
+        elif .arcTolerance > abs(delta) * DefaultArcTolerance:
             arcT = abs(delta) * DefaultArcTolerance
         else:
-            arcT = me.arcTolerance
+            arcT = .arcTolerance
 
         const Pi    = ConstF64.Pi
         const TwoPi = ConstF64.TwoPi
         var steps   = Pi / acos(1 - arcT / abs(delta))
         if steps > abs(delta) * Pi:
             steps = abs(delta) * Pi
-        me.sinVal      = sin(TwoPi / steps)
-        me.cosVal      = cos(TwoPi / steps)
-        me.stepsPerRad = steps / TwoPi
+        .sinVal      = sin(TwoPi / steps)
+        .cosVal      = cos(TwoPi / steps)
+        .stepsPerRad = steps / TwoPi
         if delta < 0.0:
-            me.sinVal = -me.sinVal
+            .sinVal = -.sinVal
 
-        me.destPolys.reserve(me.polyNodes.childs.count * 2)
-        foreach node, i in me.polyNodes.childs
+        .destPolys.reserve(.polyNodes.childs.count * 2)
+        foreach node, i in .polyNodes.childs
         {
-            me.srcPoly = node.contour
+            .srcPoly = node.contour
 
-            let len = cast(s32) me.srcPoly.count
+            let len = cast(s32) .srcPoly.count
             if len == 0 or (delta <= 0 and len < 3):
                 continue
 
-            me.destPoly.clear()
+            .destPoly.clear()
             if len == 1
             {
                 if node.jointype == .Round
@@ -254,12 +254,12 @@ impl Offset
                     var y = 0.0'f64
                     for var j = 1; j <= steps; j += 1
                     {
-                        let r1 = cround(me.srcPoly[0].x + x * delta)
-                        let r2 = cround(me.srcPoly[0].y + y * delta)
-                        me.destPoly.add(IntPoint{r1, r2})
+                        let r1 = cround(.srcPoly[0].x + x * delta)
+                        let r2 = cround(.srcPoly[0].y + y * delta)
+                        .destPoly.add(IntPoint{r1, r2})
                         let x2 = x
-                        x = x * me.cosVal - me.sinVal * y
-                        y = x2 * me.sinVal + y * me.cosVal
+                        x = x * .cosVal - .sinVal * y
+                        y = x2 * .sinVal + y * .cosVal
                     }
                 }
                 else
@@ -268,9 +268,9 @@ impl Offset
                     var y = -1.0'f64
                     for j in 4
                     {
-                        let r1 = cround(me.srcPoly[0].x + x * delta)
-                        let r2 = cround(me.srcPoly[0].y + y * delta)
-                        me.destPoly.add(IntPoint{r1, r2})
+                        let r1 = cround(.srcPoly[0].x + x * delta)
+                        let r2 = cround(.srcPoly[0].y + y * delta)
+                        .destPoly.add(IntPoint{r1, r2})
                         if x < 0:
                             x = 1
                         elif y < 0:
@@ -280,21 +280,21 @@ impl Offset
                     }
                 }
 
-                me.destPolys.add(me.destPoly)
+                .destPolys.add(.destPoly)
                 continue
             }
 
             // Build normals
-            me.normals.clear()
-            me.normals.reserve(cast(u64) len)
+            .normals.clear()
+            .normals.reserve(cast(u64) len)
             for j in len - 1:
-                me.normals.add(getUnitNormal(me.srcPoly[j], me.srcPoly[j + 1]))
-            me.normals.add(getUnitNormal(me.srcPoly[len - 1], me.srcPoly[0]))
+                .normals.add(getUnitNormal(.srcPoly[j], .srcPoly[j + 1]))
+            .normals.add(getUnitNormal(.srcPoly[len - 1], .srcPoly[0]))
 
             var k = len - 1
             for j in len:
-                me.offsetPoint(j, &k, node.jointype)
-            me.destPolys.add(me.destPoly)
+                .offsetPoint(j, &k, node.jointype)
+            .destPolys.add(.destPoly)
         }
     }
 
@@ -304,36 +304,36 @@ impl Offset
     {
         let k = dref ptrk
 
-        let kN = me.normals[k]
-        let jN = me.normals[j]
-        let jP = me.srcPoly[j]
+        let kN = .normals[k]
+        let jN = .normals[j]
+        let jP = .srcPoly[j]
 
-        me.sinaVal = (kN.x * jN.y - jN.x * kN.y)
-        if Math.abs(me.sinaVal * me.deltaVal) < 1.0
+        .sinaVal = (kN.x * jN.y - jN.x * kN.y)
+        if Math.abs(.sinaVal * .deltaVal) < 1.0
         {
             let cosA = (kN.x * jN.x + jN.y * kN.y)
             if cosA > 0
             {
-                let r1 = cround(jP.x + kN.x * me.deltaVal)
-                let r2 = cround(jP.y + kN.y * me.deltaVal)
-                me.destPoly.add(IntPoint{r1, r2})
+                let r1 = cround(jP.x + kN.x * .deltaVal)
+                let r2 = cround(jP.y + kN.y * .deltaVal)
+                .destPoly.add(IntPoint{r1, r2})
                 return
             }
         }
-        elif me.sinaVal > 1.0:
-            me.sinaVal = 1.0
-        elif me.sinaVal < -1.0:
-            me.sinaVal = -1.0
+        elif .sinaVal > 1.0:
+            .sinaVal = 1.0
+        elif .sinaVal < -1.0:
+            .sinaVal = -1.0
 
-        if me.sinaVal * me.deltaVal < 0
+        if .sinaVal * .deltaVal < 0
         {
-            var r1 = cround(jP.x + kN.x * me.deltaVal)
-            var r2 = cround(jP.y + kN.y * me.deltaVal)
-            me.destPoly.add(IntPoint{r1, r2})
-            me.destPoly.add(jP)
-            r1 = cround(jP.x + jN.x * me.deltaVal)
-            r2 = cround(jP.y + jN.y * me.deltaVal)
-            me.destPoly.add(IntPoint{r1, r2})
+            var r1 = cround(jP.x + kN.x * .deltaVal)
+            var r2 = cround(jP.y + kN.y * .deltaVal)
+            .destPoly.add(IntPoint{r1, r2})
+            .destPoly.add(jP)
+            r1 = cround(jP.x + jN.x * .deltaVal)
+            r2 = cround(jP.y + jN.y * .deltaVal)
+            .destPoly.add(IntPoint{r1, r2})
         }
         else
         {
@@ -341,14 +341,14 @@ impl Offset
             {
             case Miter:
                 let r = 1 + (jN.x * kN.x + jN.y * kN.y)
-                if r >= me.miterLim:
-                    me.doMiter(j, k, r)
+                if r >= .miterLim:
+                    .doMiter(j, k, r)
                 else:
-                    me.doSquare(j, k)
+                    .doSquare(j, k)
             case Square:
-                me.doSquare(j, k)
+                .doSquare(j, k)
             case Round:
-                me.doRound(j, k)
+                .doRound(j, k)
             }
         }
 
@@ -359,59 +359,59 @@ impl Offset
     // Extends the offset lines and connects them with a perpendicular segment.
     mtd doSquare(j, k: s32)
     {
-        let kN = me.normals[k]
-        let jN = me.normals[j]
-        let jP = me.srcPoly[j]
+        let kN = .normals[k]
+        let jN = .normals[j]
+        let jP = .srcPoly[j]
 
-        let dx = Math.tan(Math.atan2(me.sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
-        var r1 = cround(jP.x + me.deltaVal * (kN.x - kN.y * dx))
-        var r2 = cround(jP.y + me.deltaVal * (kN.y + kN.x * dx))
-        me.destPoly.add(IntPoint{r1, r2})
+        let dx = Math.tan(Math.atan2(.sinaVal, kN.x * jN.x + kN.y * jN.y) / 4)
+        var r1 = cround(jP.x + .deltaVal * (kN.x - kN.y * dx))
+        var r2 = cround(jP.y + .deltaVal * (kN.y + kN.x * dx))
+        .destPoly.add(IntPoint{r1, r2})
 
-        r1 = cround(jP.x + me.deltaVal * (jN.x + jN.y * dx))
-        r2 = cround(jP.y + me.deltaVal * (jN.y - jN.x * dx))
-        me.destPoly.add(IntPoint{r1, r2})
+        r1 = cround(jP.x + .deltaVal * (jN.x + jN.y * dx))
+        r2 = cround(jP.y + .deltaVal * (jN.y - jN.x * dx))
+        .destPoly.add(IntPoint{r1, r2})
     }
 
     // Create a miter join by extending offset edges until they intersect.
     // Used when the miter length is within acceptable limits.
     mtd doMiter(j, k: s32, r: f64)
     {
-        let kN = me.normals[k]
-        let jN = me.normals[j]
-        let jP = me.srcPoly[j]
+        let kN = .normals[k]
+        let jN = .normals[j]
+        let jP = .srcPoly[j]
 
-        let q  = me.deltaVal / r
+        let q  = .deltaVal / r
         let r1 = cround(jP.x + (kN.x + jN.x) * q)
         let r2 = cround(jP.y + (kN.y + jN.y) * q)
-        me.destPoly.add(IntPoint{r1, r2})
+        .destPoly.add(IntPoint{r1, r2})
     }
 
     // Create a rounded join by approximating a circular arc.
     // Connects offset edges with line segments that approximate the curve.
     mtd doRound(j, k: s32)
     {
-        let kN = me.normals[k]
-        let jN = me.normals[j]
-        let jP = me.srcPoly[j]
+        let kN = .normals[k]
+        let jN = .normals[j]
+        let jP = .srcPoly[j]
 
-        let a     = Math.atan2(me.sinaVal, kN.x * jN.x + kN.y * jN.y)
-        let steps = Math.max(cast(s32) cround(me.stepsPerRad * Math.abs(a)), 1)
+        let a     = Math.atan2(.sinaVal, kN.x * jN.x + kN.y * jN.y)
+        let steps = Math.max(cast(s32) cround(.stepsPerRad * Math.abs(a)), 1)
 
         var x = kN.x
         var y = kN.y
         for i in steps
         {
-            let r1 = cround(jP.x + x * me.deltaVal)
-            let r2 = cround(jP.y + y * me.deltaVal)
-            me.destPoly.add(IntPoint{r1, r2})
+            let r1 = cround(jP.x + x * .deltaVal)
+            let r2 = cround(jP.y + y * .deltaVal)
+            .destPoly.add(IntPoint{r1, r2})
             let x2 = x
-            x = x * me.cosVal - me.sinVal * y
-            y = x2 * me.sinVal + y * me.cosVal
+            x = x * .cosVal - .sinVal * y
+            y = x2 * .sinVal + y * .cosVal
         }
 
-        let r1 = cround(jP.x + jN.x * me.deltaVal)
-        let r2 = cround(jP.y + jN.y * me.deltaVal)
-        me.destPoly.add(IntPoint{r1, r2})
+        let r1 = cround(jP.x + jN.x * .deltaVal)
+        let r2 = cround(jP.y + jN.y * .deltaVal)
+        .destPoly.add(IntPoint{r1, r2})
     }
 }

@@ -20,7 +20,7 @@ impl Point
     #[Swag.Complete]
     mtd opAffect(value: f32)
     {
-        me.x, me.y = value
+        .x, .y = value
     }
 
     // Compound assignment operators for point-point operations (+=, -=, *=, /=).
@@ -30,23 +30,23 @@ impl Point
     {
         #if op == "+="
         {
-            me.x += other.x
-            me.y += other.y
+            .x += other.x
+            .y += other.y
         }
         #elif op == "-="
         {
-            me.x -= other.x
-            me.y -= other.y
+            .x -= other.x
+            .y -= other.y
         }
         #elif op == "*="
         {
-            me.x *= other.x
-            me.y *= other.y
+            .x *= other.x
+            .y *= other.y
         }
         #elif op == "/="
         {
-            me.x /= other.x
-            me.y /= other.y
+            .x /= other.x
+            .y /= other.y
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -59,23 +59,23 @@ impl Point
     {
         #if op == "+="
         {
-            me.x += value
-            me.y += value
+            .x += value
+            .y += value
         }
         #elif op == "-="
         {
-            me.x -= value
-            me.y -= value
+            .x -= value
+            .y -= value
         }
         #elif op == "*="
         {
-            me.x *= value
-            me.y *= value
+            .x *= value
+            .y *= value
         }
         #elif op == "/="
         {
-            me.x /= value
-            me.y /= value
+            .x /= value
+            .y /= value
         }
         #else:
             #error("unsupported assign operation [[" ++ op ++ "]]")
@@ -87,13 +87,13 @@ impl Point
     mtd(op: string) const opBinary(other: Point)->Point
     {
         #if op == "+":
-            return Point{me.x + other.x, me.y + other.y}
+            return Point{.x + other.x, .y + other.y}
         #elif op == "-":
-            return Point{me.x - other.x, me.y - other.y}
+            return Point{.x - other.x, .y - other.y}
         #elif op == "*":
-            return Point{me.x * other.x, me.y * other.y}
+            return Point{.x * other.x, .y * other.y}
         #elif op == "/":
-            return Point{me.x / other.x, me.y / other.y}
+            return Point{.x / other.x, .y / other.y}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -104,13 +104,13 @@ impl Point
     mtd(op: string) const opBinary(value: f32)->Point
     {
         #if op == "+":
-            return Point{me.x + value, me.y + value}
+            return Point{.x + value, .y + value}
         #elif op == "-":
-            return Point{me.x - value, me.y - value}
+            return Point{.x - value, .y - value}
         #elif op == "*":
-            return Point{me.x * value, me.y * value}
+            return Point{.x * value, .y * value}
         #elif op == "/":
-            return Point{me.x / value, me.y / value}
+            return Point{.x / value, .y / value}
         #else:
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
@@ -122,8 +122,8 @@ impl Point
         var result: retval
         #if op == "-"
         {
-            result.x = -me.x
-            result.y = -me.y
+            result.x = -.x
+            result.y = -.y
             return result
         }
         #else
@@ -136,28 +136,28 @@ impl Point
     // Equivalent to assigning the 'Zero' constant but modifies the current instance.
     mtd clear()
     {
-        me.x, me.y = 0
+        .x, .y = 0
     }
 
     // Returns true if this point is exactly at the origin.
     // Performs exact floating-point comparison, which may not work well with computed values.
     mtd const isZero()->bool
     {
-        return me.x == 0 and me.y == 0
+        return .x == 0 and .y == 0
     }
 
     // Returns true if this point is at the origin within an epsilon tolerance.
     // Uses 'eps' parameter to handle floating-point precision issues.
     mtd const isZeroEpsilon(eps = ConstF32.Epsilon)->bool
     {
-        return isZeroEpsilon(me.x, eps) and isZeroEpsilon(me.y, eps)
+        return isZeroEpsilon(.x, eps) and isZeroEpsilon(.y, eps)
     }
 
     // Returns true if this point is equal to 'other' within an epsilon tolerance.
     // Compares each coordinate separately using the specified 'eps' tolerance.
     mtd const isEqualEpsilon(other: Point, eps = ConstF32.Epsilon)->bool
     {
-        return Math.isEqualEpsilon(me.x, other.x, eps) and Math.isEqualEpsilon(me.y, other.y, eps)
+        return Math.isEqualEpsilon(.x, other.x, eps) and Math.isEqualEpsilon(.y, other.y, eps)
     }
 
     // Offset both coordinates by the same scalar value.
@@ -165,7 +165,7 @@ impl Point
     #[Swag.Overload]
     mtd offset(value: f32)
     {
-        me.x, me.y += value
+        .x, .y += value
     }
 
     // Offset this point by separate x and y values.
@@ -173,31 +173,31 @@ impl Point
     #[Swag.Overload]
     func offset(me, x, y: f32)
     {
-        me.x += x
-        me.y += y
+        .x += x
+        .y += y
     }
 
     // Round both coordinates to the nearest integer values.
     // Applies 'Math.round' function to both x and y coordinates in-place.
     mtd round()
     {
-        me.x = Math.round(me.x)
-        me.y = Math.round(me.y)
+        .x = Math.round(.x)
+        .y = Math.round(.y)
     }
 
     // Truncate both coordinates to integer values.
     // Applies 'Math.trunc' function to both x and y coordinates, removing fractional parts.
     mtd trunc()
     {
-        me.x = Math.trunc(me.x)
-        me.y = Math.trunc(me.y)
+        .x = Math.trunc(.x)
+        .y = Math.trunc(.y)
     }
 
     // Round both coordinates up to the next integer values.
     // Applies 'Math.ceil' function to both x and y coordinates in-place.
     mtd ceil()
     {
-        me.x = Math.ceil(me.x)
-        me.y = Math.ceil(me.y)
+        .x = Math.ceil(.x)
+        .y = Math.ceil(.y)
     }
 }

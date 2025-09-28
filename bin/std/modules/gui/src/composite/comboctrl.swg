@@ -15,14 +15,14 @@ impl IWnd for ComboCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !me.label:
+        if !.label:
             return
 
-        let rect    = me.getClientRect()
-        let metrics = me.getThemeMetrics()
+        let rect    = .getClientRect()
+        let metrics = .getThemeMetrics()
 
-        me.label.setPosition(0, 0, me.labelSize, metrics.comboBox_Height)
-        me.combo.setPosition(me.label.position.right() + 5, rect.vertCenter() - metrics.comboBox_Height / 2, me.comboSize, metrics.comboBox_Height)
+        .label.setPosition(0, 0, .labelSize, metrics.comboBox_Height)
+        .combo.setPosition(.label.position.right() + 5, rect.vertCenter() - metrics.comboBox_Height / 2, .comboSize, metrics.comboBox_Height)
     }
 }
 

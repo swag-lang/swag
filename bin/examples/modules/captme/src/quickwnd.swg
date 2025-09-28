@@ -7,7 +7,7 @@ impl QuickStyle
 {
     mtd opDrop()
     {
-        me.clear()
+        .clear()
     }
 
     func deleteOne(itf: IForm)
@@ -18,14 +18,14 @@ impl QuickStyle
     mtd remove(itf: IForm)
     {
         deleteOne(itf)
-        me.forms.remove(itf)
+        .forms.remove(itf)
     }
 
     mtd clear()
     {
-        foreach i in me.forms:
+        foreach i in .forms:
             deleteOne(i)
-        me.forms.clear()
+        .forms.clear()
     }
 }
 
@@ -63,12 +63,12 @@ impl IWnd for QuickWnd
     {
         if evt.kind == .MousePressed and evt.button == .Right
         {
-            me.btnPopup(null, evt.surfacePos)
+            .btnPopup(null, evt.surfacePos)
             evt.accepted = true
             return
         }
 
-        me.scrollWnd.IWnd.onMouseEvent(evt)
+        .scrollWnd.IWnd.onMouseEvent(evt)
     }
 
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
@@ -141,9 +141,9 @@ impl QuickWnd
         if res == "0" and btn
         {
             let qbtn = cast(*QuickButton) btn
-            me.currentStyle.remove(qbtn.formItf)
+            .currentStyle.remove(qbtn.formItf)
             qbtn.destroy()
-            me.updateQuickStyles()
+            .updateQuickStyles()
         }
     }
 
@@ -181,7 +181,7 @@ impl QuickWnd
             form.borderColor = color
             let it = cast(IForm) form
             it.setup(null)
-            me.qsArrow.forms.add(it)
+            .qsArrow.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -212,7 +212,7 @@ impl QuickWnd
             form.borderColor = color
             let it = cast(IForm) form
             it.setup(null)
-            me.qsLine.forms.add(it)
+            .qsLine.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -237,7 +237,7 @@ impl QuickWnd
             form.kind        = kind
             let it = cast(IForm) form
             it.setup(null)
-            me.qsShape.forms.add(it)
+            .qsShape.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -277,7 +277,7 @@ impl QuickWnd
                 form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
-            me.qsImage.forms.add(it)
+            .qsImage.forms.add(it)
         }
 
         .add(2, .Image, Argb.White)
@@ -297,7 +297,7 @@ impl QuickWnd
             form.kind        = kind
             let it = cast(IForm) form
             it.setup(null)
-            me.qsStep.forms.add(it)
+            .qsStep.forms.add(it)
         }
 
         .add(.Ellipse, Argb.White, ColorRed)
@@ -322,7 +322,7 @@ impl QuickWnd
             form.bezier      = bezier
             let it = cast(IForm) form
             it.setup(null)
-            me.qsPolygon.forms.add(it)
+            .qsPolygon.forms.add(it)
         }
 
         const BorderSize = 5.0
@@ -353,7 +353,7 @@ impl QuickWnd
             form.text        = "A"
             let it = cast(IForm) form
             it.setup(null)
-            me.qsText.forms.add(it)
+            .qsText.forms.add(it)
         }
 
         .add(4, 24, Argb.White, ColorRed)
@@ -384,7 +384,7 @@ impl QuickWnd
             form.borderColor = color
             let it = cast(IForm) form
             it.setup(null)
-            me.qsDraw.forms.add(it)
+            .qsDraw.forms.add(it)
         }
 
         const BorderSize = 10.0
@@ -410,7 +410,7 @@ impl QuickWnd
             form.subKind     = .Highlight
             let it = cast(IForm) form
             it.setup(null)
-            me.qsHighlight.forms.add(it)
+            .qsHighlight.forms.add(it)
         }
 
         mtd addShape(kind: FormShapeKind, backColor: Color)
@@ -424,7 +424,7 @@ impl QuickWnd
             form.subKind     = .Highlight
             let it = cast(IForm) form
             it.setup(null)
-            me.qsHighlight.forms.add(it)
+            .qsHighlight.forms.add(it)
         }
 
         mtd addPoly(backColor: Color)
@@ -437,7 +437,7 @@ impl QuickWnd
             form.subKind     = .Highlight
             let it = cast(IForm) form
             it.setup(null)
-            me.qsHighlight.forms.add(it)
+            .qsHighlight.forms.add(it)
         }
 
         const BorderSize = 20.0
@@ -467,7 +467,7 @@ impl QuickWnd
             form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
-            me.qsPixSel.forms.add(it)
+            .qsPixSel.forms.add(it)
         }
 
         mtd addShape(kind: FormShapeKind)
@@ -478,7 +478,7 @@ impl QuickWnd
             form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
-            me.qsPixSel.forms.add(it)
+            .qsPixSel.forms.add(it)
         }
 
         mtd addPoly()
@@ -488,7 +488,7 @@ impl QuickWnd
             form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
-            me.qsPixSel.forms.add(it)
+            .qsPixSel.forms.add(it)
         }
 
         with me
@@ -502,102 +502,102 @@ impl QuickWnd
 
     mtd updateSelection()
     {
-        if !me.currentStyle:
+        if !.currentStyle:
             return
         var done = false
-        let mode = me.main.getEditMode()
+        let mode = .main.getEditMode()
 
         var firstVisible = 0's32
-        foreach c in me.layout.childs
+        foreach c in .layout.childs
         {
             if c.isVisible():
                 break
             firstVisible += 1
         }
 
-        foreach it, i in me.currentStyle.forms
+        foreach it, i in .currentStyle.forms
         {
-            let btn = cast(*IconButton) me.layout.childs[i + firstVisible]
+            let btn = cast(*IconButton) .layout.childs[i + firstVisible]
 
             #[Swag.Complete]
             switch it
             {
             case FormArrow:
-                btn.isChecked = mode == .Arrow and it.isSame(&me.main.mdlFormArrow)
+                btn.isChecked = mode == .Arrow and it.isSame(&.main.mdlFormArrow)
             case FormShape:
-                btn.isChecked = mode == .Shape and it.isSame(&me.main.mdlFormShape)
+                btn.isChecked = mode == .Shape and it.isSame(&.main.mdlFormShape)
             case FormImage:
-                btn.isChecked = mode == .Image and it.isSame(&me.main.mdlFormImage)
+                btn.isChecked = mode == .Image and it.isSame(&.main.mdlFormImage)
             case FormStep:
-                btn.isChecked = mode == .Step and it.isSame(&me.main.mdlFormStep)
+                btn.isChecked = mode == .Step and it.isSame(&.main.mdlFormStep)
             case FormLine:
-                btn.isChecked = mode == .Line and it.isSame(&me.main.mdlFormLine)
+                btn.isChecked = mode == .Line and it.isSame(&.main.mdlFormLine)
             case FormPolygon:
-                btn.isChecked = mode == .Polygon and it.isSame(&me.main.mdlFormPolygon)
+                btn.isChecked = mode == .Polygon and it.isSame(&.main.mdlFormPolygon)
             case FormText:
-                btn.isChecked = mode == .Text and it.isSame(&me.main.mdlFormText)
+                btn.isChecked = mode == .Text and it.isSame(&.main.mdlFormText)
             case FormDraw:
-                btn.isChecked = mode == .Draw and it.isSame(&me.main.mdlFormDraw)
+                btn.isChecked = mode == .Draw and it.isSame(&.main.mdlFormDraw)
             }
 
             if btn.isChecked:
                 done = true
         }
 
-        let curMdl = cast(*IconButton) me.layout.childs.back()
+        let curMdl = cast(*IconButton) .layout.childs.back()
         if curMdl.userData
         {
             curMdl.show(!done)
             if !done:
                 curMdl.isChecked = true
-            me.layout.computeLayout()
-            me.setScrollSize(0, me.layout.resultHeight)
+            .layout.computeLayout()
+            .setScrollSize(0, .layout.resultHeight)
         }
 
-        me.invalidate()
+        .invalidate()
     }
 
     mtd resetQuickStyles()
     {
-        if !me.currentStyle:
+        if !.currentStyle:
             return
 
-        let res = MessageDlg.confirm(me.surface, "This will reset the styles to the default values.")
+        let res = MessageDlg.confirm(.surface, "This will reset the styles to the default values.")
         if res != MessageDlg.BtnYes:
             return
 
-        me.currentStyle.clear()
+        .currentStyle.clear()
 
         #[Swag.Complete]
-        switch me.main.editMode
+        switch .main.editMode
         {
         case Arrow:
-            me.defaultQuickStyleArrow()
+            .defaultQuickStyleArrow()
         case Shape:
-            me.defaultQuickStyleShape()
+            .defaultQuickStyleShape()
         case Image:
-            me.defaultQuickStyleImage()
+            .defaultQuickStyleImage()
         case Step:
-            me.defaultQuickStyleStep()
+            .defaultQuickStyleStep()
         case Line:
-            me.defaultQuickStyleLine()
+            .defaultQuickStyleLine()
         case Polygon:
-            me.defaultQuickStylePolygon()
+            .defaultQuickStylePolygon()
         case Text:
-            me.defaultQuickStyleText()
+            .defaultQuickStyleText()
         case Draw:
-            me.defaultQuickStyleDraw()
+            .defaultQuickStyleDraw()
         case Highlight:
-            me.defaultQuickStyleHighlight()
+            .defaultQuickStyleHighlight()
         case PixSel:
-            me.defaultQuickStylePixSel()
+            .defaultQuickStylePixSel()
         case Favorites:
             break
         case Selection:
             break
         }
 
-        me.updateQuickStyles()
+        .updateQuickStyles()
     }
 
     mtd updateQuickStyles()
@@ -653,44 +653,44 @@ impl QuickWnd
             }
         }
 
-        let edMode = me.main.editMode == .Selection ? me.main.getEditMode() : me.main.editMode
+        let edMode = .main.editMode == .Selection ? .main.getEditMode() : .main.editMode
         #[Swag.Complete]
         switch edMode
         {
         case Arrow:
-            me.currentStyle = &me.qsArrow
+            .currentStyle = &.qsArrow
         case Shape:
-            me.currentStyle = &me.qsShape
+            .currentStyle = &.qsShape
         case Image:
-            me.currentStyle = &me.qsImage
+            .currentStyle = &.qsImage
         case Step:
-            me.currentStyle = &me.qsStep
+            .currentStyle = &.qsStep
         case Line:
-            me.currentStyle = &me.qsLine
+            .currentStyle = &.qsLine
         case Polygon:
-            me.currentStyle = &me.qsPolygon
+            .currentStyle = &.qsPolygon
         case Text:
-            me.currentStyle = &me.qsText
+            .currentStyle = &.qsText
         case Favorites:
-            me.currentStyle = &me.qsFavorites
+            .currentStyle = &.qsFavorites
         case Draw:
-            me.currentStyle = &me.qsDraw
+            .currentStyle = &.qsDraw
         case Highlight:
-            me.currentStyle = &me.qsHighlight
+            .currentStyle = &.qsHighlight
         case PixSel:
-            me.currentStyle = &me.qsPixSel
+            .currentStyle = &.qsPixSel
         case Selection:
             return
         }
 
-        foreach c in me.layout.childs:
+        foreach c in .layout.childs:
             c.destroy()
-        if !me.currentStyle:
+        if !.currentStyle:
             return
 
-        foreach it in me.currentStyle.forms
+        foreach it in .currentStyle.forms
         {
-            let btn = Wnd.create'QuickButton(me.layout, null, {0, 0, 64, 64})
+            let btn = Wnd.create'QuickButton(.layout, null, {0, 0, 64, 64})
             btn.iconBtnFlags.add(.Checkable)
             btn.setForm(.RoundSquare)
             btn.formItf = it
@@ -703,16 +703,16 @@ impl QuickWnd
             btn.sigRightPressed += mtd||(btn)
             {
                 var rect = btn.getSurfaceRect()
-                me.btnPopup(btn, rect.center())
+                .btnPopup(btn, rect.center())
             }
 
             btn.sigCheckChanged += mtd|it|(btn)
             {
                 if !btn.isChecked:
                     return
-                me.main.updateModel(it)
+                .main.updateModel(it)
 
-                var capture = assume me.main.getCapture()
+                var capture = assume .main.getCapture()
                 if capture.selection.count
                 {
                     let mdlValue = MainWnd.newFormFromForm(it)
@@ -726,23 +726,23 @@ impl QuickWnd
                     capture.selection.clear()
                 }
 
-                me.updateSelection()
-                me.main.updateState()
+                .updateSelection()
+                .main.updateState()
             }
         }
 
-        let formItf     = me.main.editModeToModel(me.main.getEditMode())
+        let formItf     = .main.editModeToModel(.main.getEditMode())
         let baseForm    = cast(*BaseForm) @dataof(formItf)
         var canAddModel = false
         if baseForm
         {
             canAddModel = true
-            if me.main.editMode == .Highlight
+            if .main.editMode == .Highlight
             {
                 if baseForm.subKind != .Highlight:
                     canAddModel = false
             }
-            elif me.main.editMode == .PixSel
+            elif .main.editMode == .PixSel
             {
                 canAddModel = false
             }
@@ -754,14 +754,14 @@ impl QuickWnd
 
         if canAddModel
         {
-            let btn = Wnd.create'QuickButton(me.layout, null, {0, 0, 64, 64})
+            let btn = Wnd.create'QuickButton(.layout, null, {0, 0, 64, 64})
             btn.userData = cast(*void) 1'u64 // This is the model button
             btn.formItf  = formItf
             btn.setForm(.RoundSquare)
             btn.style.addStyleSheetColors("btnIcon_Bk          0x0")
             btn.style.addStyleSheetColors("btnIcon_HotBk       0x0")
             btn.style.addStyleSheetColors("btnIcon_PressedBk   0x0")
-            me.layout.sendResizeEvent()
+            .layout.sendResizeEvent()
 
             btn.sigPaintIcon = func(btn, bc, pos, flags)
             {
@@ -773,7 +773,7 @@ impl QuickWnd
             }
 
             // Button to add a new style
-            let ico  = me.getTheme().getIcon24(.Plus)
+            let ico  = .getTheme().getIcon24(.Plus)
             let btn1 = IconButton.create(btn, ico, {64 - 26, 2, 24, 24})
             btn1.style.addStyleSheetColors("btnIcon_Bk          $hilight")
             btn1.style.addStyleSheetColors("btnIcon_HotBk       $hilightLight")
@@ -781,21 +781,21 @@ impl QuickWnd
             btn1.style.addStyleSheetColors("btnIcon_Icon        $hilightLightContrast")
             btn1.setForm(.Round)
 
-            me.layout.sendResizeEvent()
-            me.setScrollSize(0, me.layout.resultHeight)
+            .layout.sendResizeEvent()
+            .setScrollSize(0, .layout.resultHeight)
 
             btn1.sigPressed += mtd|me.main|(btn)
             {
                 let mdl = main.newFormFromModel(main.getEditMode())
                 if mdl
                 {
-                    me.currentStyle.forms.add(mdl)
-                    me.updateQuickStyles()
+                    .currentStyle.forms.add(mdl)
+                    .updateQuickStyles()
                 }
             }
         }
 
-        me.updateSelection()
-        me.layout.computeLayout()
+        .updateSelection()
+        .layout.computeLayout()
     }
 }

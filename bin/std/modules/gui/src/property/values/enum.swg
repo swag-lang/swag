@@ -101,7 +101,7 @@ impl Properties
             }
         }
 
-        me.hasChanged(item)
+        .hasChanged(item)
     }
 
     mtd validateEnum(item: *PropertiesItem)
@@ -133,12 +133,12 @@ impl Properties
             }
         }
 
-        me.hasChanged(item)
+        .hasChanged(item)
     }
 
     mtd constructEnumFlags(value: Swag.TypeValue, typeEnum: const *Swag.TypeInfoEnum, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = me.addItem(value, data, parentItem)
+        let item = .addItem(value, data, parentItem)
         item.flags.add(.NoSeparator)
 
         foreach v in typeEnum.values
@@ -167,7 +167,7 @@ impl Properties
                 .flags.add(.NoSeparator)
             }
 
-            line.hookOnEvent = mtd|itemB|(hwnd, evt) { return me.onItemEvent(itemB, hwnd, evt); }
+            line.hookOnEvent = mtd|itemB|(hwnd, evt) { return .onItemEvent(itemB, hwnd, evt); }
 
             with let ed = CheckButton.create(line, "", {0, 0, me.gridLineHeight, 0})
             {
@@ -201,7 +201,7 @@ impl Properties
             refreshEnumFlags(itemB)
             itemB.checkBox.sigChanged += mtd|itemB|(ed)
             {
-                me.validateEnumFlags(itemB)
+                .validateEnumFlags(itemB)
             }
         }
     }
@@ -210,11 +210,11 @@ impl Properties
     {
         if Reflection.hasAttribute(typeEnum, Swag.EnumFlags)
         {
-            me.constructEnumFlags(value, typeEnum, data, parentItem)
+            .constructEnumFlags(value, typeEnum, data, parentItem)
             return
         }
 
-        let item = me.addItem(value, data, parentItem)
+        let item = .addItem(value, data, parentItem)
         with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
             .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
@@ -232,7 +232,7 @@ impl Properties
         refreshEnum(item)
         item.comboBox.sigChanged += mtd|item|(ed, n)
         {
-            me.validateEnum(item)
+            .validateEnum(item)
         }
     }
 }

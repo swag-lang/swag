@@ -5,10 +5,10 @@ impl RichEditCtrl
     mtd getTextPrivate(start, end: RichEditCursor)->{ text: Array'rune, styles: Array'u8 }
     {
         var result: retval
-        if !me.hasSelRect
+        if !.hasSelRect
         {
             // First line
-            var line  = me.lines[start.lineIndex]
+            var line  = .lines[start.lineIndex]
             var count = line.length()
             if count
             {
@@ -35,14 +35,14 @@ impl RichEditCtrl
                 // Pre allocate string to optimize append
                 count = 0
                 for var i = start.lineIndex + 1; i < end.lineIndex; i += 1:
-                    count += me.lines[i].length()
+                    count += .lines[i].length()
                 result.text.reserve(result.text.count + count)
                 result.styles.reserve(result.styles.count + count)
 
                 for var i = start.lineIndex + 1; i < end.lineIndex; i += 1
                 {
-                    result.text.add(me.lines[i].chars.toSlice())
-                    result.styles.add(me.lines[i].styles.toSlice())
+                    result.text.add(.lines[i].chars.toSlice())
+                    result.styles.add(.lines[i].styles.toSlice())
                     result.text.add('\n')
                     result.styles.add(0)
                 }
@@ -51,7 +51,7 @@ impl RichEditCtrl
             // Last line
             if start.lineIndex != end.lineIndex
             {
-                line  = me.lines[end.lineIndex]
+                line  = .lines[end.lineIndex]
                 count = line.length()
                 if count
                 {
@@ -71,12 +71,12 @@ impl RichEditCtrl
             while li <= end.lineIndex
             {
                 var rankBeg, rankEnd: u64
-                if me.getSelectionRectRange(li, &rankBeg, &rankEnd)
+                if .getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
                     for i in rankEnd - rankBeg
                     {
-                        result.text.add(me.lines[li].chars[rankBeg + i])
-                        result.styles.add(me.lines[li].styles[rankBeg + i])
+                        result.text.add(.lines[li].chars[rankBeg + i])
+                        result.styles.add(.lines[li].styles[rankBeg + i])
                     }
                 }
 
@@ -91,62 +91,62 @@ impl RichEditCtrl
 
     mtd unwrap(lineIndex: u64)
     {
-        if !(me.richEdFlags & .WordWrap):
+        if !(.richEdFlags & .WordWrap):
             return
 
         // Make one single line with current wrapped lines
         var i = lineIndex + 1
-        while i < me.lines.count
+        while i < .lines.count
         {
-            if !me.lines[i].wordWrap:
+            if !.lines[i].wordWrap:
                 break
 
-            if me.cursorPos.lineIndex == i
+            if .cursorPos.lineIndex == i
             {
-                me.cursorPos.lineIndex = lineIndex
-                me.cursorPos.charPosInLine += me.lines[lineIndex].chars.count
+                .cursorPos.lineIndex = lineIndex
+                .cursorPos.charPosInLine += .lines[lineIndex].chars.count
             }
 
-            if me.selBeg.lineIndex == i
+            if .selBeg.lineIndex == i
             {
-                me.selBeg.lineIndex = lineIndex
-                me.selBeg.charPosInLine += me.lines[lineIndex].chars.count
+                .selBeg.lineIndex = lineIndex
+                .selBeg.charPosInLine += .lines[lineIndex].chars.count
             }
 
-            me.lines[lineIndex].chars.add(me.lines[i].chars.toSlice())
-            me.lines[lineIndex].styles.add(me.lines[i].styles.toSlice())
+            .lines[lineIndex].chars.add(.lines[i].chars.toSlice())
+            .lines[lineIndex].styles.add(.lines[i].styles.toSlice())
             i += 1
         }
 
         // Remove current wrapped lines
         while i != lineIndex + 1
         {
-            me.deleteLine(lineIndex + 1)
+            .deleteLine(lineIndex + 1)
             i -= 1
         }
     }
 
     mtd wrap(lineIndex: u64)
     {
-        if !(me.richEdFlags & .WordWrap):
+        if !(.richEdFlags & .WordWrap):
             return
 
-        let fontR = me.getFont().getFont(me.styles[0].fontMode)
+        let fontR = .getFont().getFont(.styles[0].fontMode)
         if !fontR:
             return
 
         // Do the wrap
         var curLine    = lineIndex
         var i          = 0'u64
-        var clientRect = me.edView.getClientRect()
-        clientRect.width -= me.getMarginRight()
+        var clientRect = .edView.getClientRect()
+        clientRect.width -= .getMarginRight()
 
         var str: String
 
         var cutAti = i
-        while i < me.lines[curLine].length()
+        while i < .lines[curLine].length()
         {
-            let l  = me.lines[curLine]
+            let l  = .lines[curLine]
             let ch = l.chars[i]
             str += ch
 
@@ -155,26 +155,26 @@ impl RichEditCtrl
 
             if cutAti > 1
             {
-                let x = me.getMarginLeft() + Painter.measureString(str, fontR).width
+                let x = .getMarginLeft() + Painter.measureString(str, fontR).width
                 if x > clientRect.right()
                 {
                     if cutAti and cutAti == i + 1:
                         cutAti -= 1
 
-                    if me.cursorPos.lineIndex == curLine and me.cursorPos.charPosInLine >= cutAti
+                    if .cursorPos.lineIndex == curLine and .cursorPos.charPosInLine >= cutAti
                     {
-                        me.cursorPos.lineIndex += 1
-                        me.cursorPos.charPosInLine -= cutAti
+                        .cursorPos.lineIndex += 1
+                        .cursorPos.charPosInLine -= cutAti
                     }
 
-                    if me.selBeg.lineIndex == curLine and me.selBeg.charPosInLine >= cutAti
+                    if .selBeg.lineIndex == curLine and .selBeg.charPosInLine >= cutAti
                     {
-                        me.selBeg.lineIndex += 1
-                        me.selBeg.charPosInLine -= cutAti
+                        .selBeg.lineIndex += 1
+                        .selBeg.charPosInLine -= cutAti
                     }
 
                     i = cutAti
-                    let newL = me.newLine(curLine + 1)
+                    let newL = .newLine(curLine + 1)
                     newL.wordWrap = true
 
                     newL.chars.add(@mkslice(l.chars.buffer + i, l.chars.count - i))
@@ -203,19 +203,19 @@ impl RichEditCtrl
 
         if c == '\n'
         {
-            let linep = me.lines[cp.lineIndex]
-            discard me.newLine(cp.lineIndex + 1)
-            let line = me.lines[cp.lineIndex + 1]
+            let linep = .lines[cp.lineIndex]
+            discard .newLine(cp.lineIndex + 1)
+            let line = .lines[cp.lineIndex + 1]
             if cp.charPosInLine < linep.length():
                 line.insertRunes(0, linep, cp.charPosInLine, linep.length() - cp.charPosInLine)
             linep.setLength(cp.charPosInLine)
             cp.lineIndex += 1
             cp.charPosInLine = 0
         }
-        elif c == '\t' and (me.richEdFlags & .TabToSpaces)
+        elif c == '\t' and (.richEdFlags & .TabToSpaces)
         {
-            let line = me.lines[cp.lineIndex]
-            for me.tabSize
+            let line = .lines[cp.lineIndex]
+            for .tabSize
             {
                 let posIns = Math.min(cp.charPosInLine, line.length())
                 line.insertRune(posIns, ' ', txtStyle)
@@ -224,13 +224,13 @@ impl RichEditCtrl
         }
         else
         {
-            let line   = me.lines[cp.lineIndex]
+            let line   = .lines[cp.lineIndex]
             let posIns = Math.min(cp.charPosInLine, line.length())
             line.insertRune(posIns, c, txtStyle)
             cp.charPosInLine += 1
         }
 
-        me.recomputeScroll = true
+        .recomputeScroll = true
     }
 
     #[Swag.Overload]
@@ -246,7 +246,7 @@ impl RichEditCtrl
             {
                 let c = runes[i]
                 let s = nstyles[i]
-                me.insertRunePrivate(cp, c, s)
+                .insertRunePrivate(cp, c, s)
             }
         }
         else
@@ -257,7 +257,7 @@ impl RichEditCtrl
             var rankBeg, rankEnd: u64
             for
             {
-                let line = me.lines[lineIndex]
+                let line = .lines[lineIndex]
                 if rankEnd == runes.count or runes[rankEnd] == '\n'
                 {
                     var posIns = posInLine
@@ -270,9 +270,9 @@ impl RichEditCtrl
                         break
 
                     lineIndex += 1
-                    if lineIndex == me.lines.count
+                    if lineIndex == .lines.count
                     {
-                        me.newLine(lineIndex)
+                        .newLine(lineIndex)
                         posInLine = 0
                     }
 
@@ -290,16 +290,16 @@ impl RichEditCtrl
             cp.charPosInLine = posInLine + (rankEnd - rankBeg)
         }
 
-        me.recomputeScroll = true
+        .recomputeScroll = true
     }
 
     #[Swag.Overload]
     mtd insertTextPrivate(cp: *RichEditCursor, text: string, txtStyle: RichEditStyleRef)
     {
-        if me.lines.isEmpty():
-            me.newLine(0)
-        elif cp.lineIndex == me.lines.count:
-            me.newLine(cp.lineIndex)
+        if .lines.isEmpty():
+            .newLine(0)
+        elif cp.lineIndex == .lines.count:
+            .newLine(cp.lineIndex)
 
         var str = text
         for
@@ -308,10 +308,10 @@ impl RichEditCtrl
             if !eat:
                 break
             str = Tokenize.eatCount(str, cast(u64) eat)
-            me.insertRunePrivate(cp, c, txtStyle)
+            .insertRunePrivate(cp, c, txtStyle)
         }
 
-        me.recomputeScroll = true
+        .recomputeScroll = true
     }
 
     mtd deleteTextPrivate(posStart, posEnd: RichEditCursor, selRect: bool)
@@ -328,12 +328,12 @@ impl RichEditCtrl
             // Remove inside lines
             while pe.lineIndex > ps.lineIndex + 1
             {
-                me.deleteLine(ps.lineIndex + 1)
+                .deleteLine(ps.lineIndex + 1)
                 pe.lineIndex -= 1
             }
 
-            let lineSrc = me.lines[ps.lineIndex]
-            let lineEnd = me.lines[pe.lineIndex]
+            let lineSrc = .lines[ps.lineIndex]
+            let lineEnd = .lines[pe.lineIndex]
 
             if ps.lineIndex == pe.lineIndex
             {
@@ -345,7 +345,7 @@ impl RichEditCtrl
                 lineEnd.removeRunes(0, pe.charPosInLine)
                 if lineEnd.length():
                     lineSrc.insertRunes(ps.charPosInLine, lineEnd, 0, lineEnd.length())
-                me.deleteLine(pe.lineIndex)
+                .deleteLine(pe.lineIndex)
             }
         }
         else
@@ -359,16 +359,16 @@ impl RichEditCtrl
             while li <= pe.lineIndex
             {
                 var rankBeg, rankEnd: u64
-                if me.getSelectionRectRange(li, &rankBeg, &rankEnd)
+                if .getSelectionRectRange(li, &rankBeg, &rankEnd)
                 {
-                    me.lines[li].removeRunes(rankBeg, rankEnd - rankBeg)
+                    .lines[li].removeRunes(rankBeg, rankEnd - rankBeg)
                 }
 
                 li += 1
             }
         }
 
-        me.recomputeScroll = true
+        .recomputeScroll = true
     }
 
     func isWord(c: rune)->bool
@@ -393,22 +393,22 @@ public impl RichEditCtrl
     // Clear content
     mtd clear()
     {
-        me.clearUndo()
-        foreach l in me.lines:
-            me.freeLines.add(l)
-        me.lines.clear()
-        me.countVisibleLines    = 0
-        me.cursorPos            = {}
-        me.selBeg               = {}
-        me.dirtyFirstLineView   = true
-        me.firstVisibleLineView = 0
-        me.lastVisibleLineView  = 0
+        .clearUndo()
+        foreach l in .lines:
+            .freeLines.add(l)
+        .lines.clear()
+        .countVisibleLines    = 0
+        .cursorPos            = {}
+        .selBeg               = {}
+        .dirtyFirstLineView   = true
+        .firstVisibleLineView = 0
+        .lastVisibleLineView  = 0
     }
 
     // Get the selected text
     mtd getSelectedText()->String
     {
-        let res = me.getTextPrivate(me.getBegSelection(), me.getEndSelection())
+        let res = .getTextPrivate(.getBegSelection(), .getEndSelection())
         let txt = Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
@@ -418,9 +418,9 @@ public impl RichEditCtrl
     {
         var sel0: RichEditCursor
         var sel1: RichEditCursor
-        me.moveCursorStartFile(&sel0)
-        me.moveCursorEndFile(&sel1)
-        let res = me.getTextPrivate(sel0, sel1)
+        .moveCursorStartFile(&sel0)
+        .moveCursorEndFile(&sel1)
+        let res = .getTextPrivate(sel0, sel1)
         let txt = Utf8.fromUnicode(res.text.toSlice())
         return txt
     }
@@ -430,35 +430,35 @@ public impl RichEditCtrl
     {
         var sel0: RichEditCursor
         var sel1: RichEditCursor
-        me.moveCursorStartFile(&sel0)
-        me.moveCursorEndFile(&sel1)
-        return me.getTextPrivate(sel0, sel1)
+        .moveCursorStartFile(&sel0)
+        .moveCursorEndFile(&sel1)
+        return .getTextPrivate(sel0, sel1)
     }
 
     // Set the text content
     mtd setText(text: string)
     {
-        me.clear()
+        .clear()
 
         var cp: RichEditCursor
-        me.insertTextPrivate(&cp, text, 0)
+        .insertTextPrivate(&cp, text, 0)
 
-        me.resetModified()
-        me.invalidate()
+        .resetModified()
+        .invalidate()
     }
 
     // Append a text with a given style
     mtd addText(text: string, txtStyle: RichEditStyleRef = 0)
     {
         var cp: RichEditCursor
-        if me.lines.count
+        if .lines.count
         {
-            cp.lineIndex     = me.lines.count - 1
-            cp.charPosInLine = me.lines[cp.lineIndex].length()
+            cp.lineIndex     = .lines.count - 1
+            cp.charPosInLine = .lines[cp.lineIndex].length()
         }
 
-        me.insertTextPrivate(&cp, text, txtStyle)
-        me.setModified(true)
+        .insertTextPrivate(&cp, text, txtStyle)
+        .setModified(true)
     }
 
     // Insert a text with a given style
@@ -469,15 +469,15 @@ public impl RichEditCtrl
         undo.type  = .Insert
         undo.runes = Unicode.fromUtf8(text)
         undo.styles.resize(undo.runes.count)
-        undo.selBeg     = me.selBeg
-        undo.cursorPos  = me.cursorPos
-        undo.hasSelRect = me.hasSelRect
+        undo.selBeg     = .selBeg
+        undo.cursorPos  = .cursorPos
+        undo.hasSelRect = .hasSelRect
         undo.serial     = 0
-        me.resetUndo()
-        me.toUndo.add(undo)
-        me.insertTextPrivate(&me.cursorPos, text, 0)
-        me.clearSelection()
-        me.setModified(true)
+        .resetUndo()
+        .toUndo.add(undo)
+        .insertTextPrivate(&.cursorPos, text, 0)
+        .clearSelection()
+        .setModified(true)
     }
 
     // Insert a text with a style per character
@@ -488,30 +488,30 @@ public impl RichEditCtrl
         undo.type       = .Insert
         undo.runes      = Unicode.fromUtf8(text)
         undo.styles     = txtStyles
-        undo.selBeg     = me.selBeg
-        undo.cursorPos  = me.cursorPos
-        undo.hasSelRect = me.hasSelRect
+        undo.selBeg     = .selBeg
+        undo.cursorPos  = .cursorPos
+        undo.hasSelRect = .hasSelRect
         undo.serial     = 0
-        me.resetUndo()
-        me.toUndo.add(undo)
-        me.insertTextPrivate(&me.cursorPos, undo.runes, undo.styles, me.hasSelRect)
-        me.clearSelection()
-        me.setModified(true)
+        .resetUndo()
+        .toUndo.add(undo)
+        .insertTextPrivate(&.cursorPos, undo.runes, undo.styles, .hasSelRect)
+        .clearSelection()
+        .setModified(true)
     }
 
     // Get the rune at the given cursor pos
     mtd getRune(cp: RichEditCursor)->{ char: rune, style: RichEditStyleRef }
     {
         var result: retval
-        if cp.lineIndex >= me.lines.count:
+        if cp.lineIndex >= .lines.count:
             return result
-        let len = me.lines[cp.lineIndex].chars.count
+        let len = .lines[cp.lineIndex].chars.count
         if cp.charPosInLine > len:
             return result
         if cp.charPosInLine == len:
             return {'\n', 0}
-        result.char  = me.lines[cp.lineIndex].chars[cp.charPosInLine]
-        result.style = me.lines[cp.lineIndex].styles[cp.charPosInLine]
+        result.char  = .lines[cp.lineIndex].chars[cp.charPosInLine]
+        result.style = .lines[cp.lineIndex].styles[cp.charPosInLine]
         return result
     }
 
@@ -522,121 +522,121 @@ public impl RichEditCtrl
 
         // A new undo action needs to be regenerate ?
         var forceUndo = false
-        var pundo     = me.currentUndo ? me.undoMgr[me.currentUndo - 1] : null
-        if !me.hasSelRect and !me.isSelectionEmpty():
+        var pundo     = .currentUndo ? .undoMgr[.currentUndo - 1] : null
+        if !.hasSelRect and !.isSelectionEmpty():
             forceUndo = true
-        elif me.hasSelRect and me.cursorPos.charPosInLine != me.selBeg.charPosInLine:
+        elif .hasSelRect and .cursorPos.charPosInLine != .selBeg.charPosInLine:
             forceUndo = true
-        elif !me.currentUndo:
+        elif !.currentUndo:
             forceUndo = true
         elif pundo and !pundo.concatChars:
             forceUndo = true
-        elif pundo and pundo.cursorPos.lineIndex != me.cursorPos.lineIndex:
+        elif pundo and pundo.cursorPos.lineIndex != .cursorPos.lineIndex:
             forceUndo = true
-        elif pundo and me.cursorPos.charPosInLine != pundo.cursorPos.charPosInLine + pundo.runes.count:
+        elif pundo and .cursorPos.charPosInLine != pundo.cursorPos.charPosInLine + pundo.runes.count:
             forceUndo = true
 
         if forceUndo
         {
-            me.resetUndo()
+            .resetUndo()
 
             // Delete actual selection
-            if !me.hasSelRect and !me.isSelectionEmpty():
-                me.deleteSelection()
-            elif me.hasSelRect and me.cursorPos.charPosInLine != me.selBeg.charPosInLine:
-                me.deleteSelection()
+            if !.hasSelRect and !.isSelectionEmpty():
+                .deleteSelection()
+            elif .hasSelRect and .cursorPos.charPosInLine != .selBeg.charPosInLine:
+                .deleteSelection()
             else:
-                me.serialUndo += 1
+                .serialUndo += 1
 
             // Register action of deletion for overmode
-            if me.overwriteMode and me.cursorPos.charPosInLine != me.lines[me.cursorPos.lineIndex].length()
+            if .overwriteMode and .cursorPos.charPosInLine != .lines[.cursorPos.lineIndex].length()
             {
                 pundo                    = Memory.new'RichEditUndo()
                 pundo.type               = .Delete
                 pundo.concatChars        = true
-                pundo.selBeg             = me.selBeg
-                pundo.cursorPos          = me.cursorPos
-                pundo.serial             = me.serialUndo
-                pundo.begSelectionBefore = me.selBeg
-                pundo.endSelectionBefore = me.cursorPos
-                me.undoMgr.add(pundo)
-                me.currentUndo += 1
+                pundo.selBeg             = .selBeg
+                pundo.cursorPos          = .cursorPos
+                pundo.serial             = .serialUndo
+                pundo.begSelectionBefore = .selBeg
+                pundo.endSelectionBefore = .cursorPos
+                .undoMgr.add(pundo)
+                .currentUndo += 1
             }
 
             // Register action of insertion
             pundo                    = Memory.new'RichEditUndo()
             pundo.type               = .Insert
             pundo.concatChars        = true
-            pundo.selBeg             = me.selBeg
-            pundo.cursorPos          = me.cursorPos
-            pundo.serial             = me.serialUndo
-            pundo.begSelectionBefore = me.selBeg
-            pundo.endSelectionBefore = me.cursorPos
-            pundo.hasSelRect         = me.hasSelRect
-            me.undoMgr.add(pundo)
-            me.currentUndo += 1
+            pundo.selBeg             = .selBeg
+            pundo.cursorPos          = .cursorPos
+            pundo.serial             = .serialUndo
+            pundo.begSelectionBefore = .selBeg
+            pundo.endSelectionBefore = .cursorPos
+            pundo.hasSelRect         = .hasSelRect
+            .undoMgr.add(pundo)
+            .currentUndo += 1
         }
 
         var az: [4] u8
         let cpt = Utf8.encodeRune(az, c)
 
         // Add a deletion
-        if me.currentUndo > 1
+        if .currentUndo > 1
         {
-            pundo = me.undoMgr[me.currentUndo - 2]
+            pundo = .undoMgr[.currentUndo - 2]
             if pundo.type == .Delete and pundo.concatChars
             {
-                if me.cursorPos.charPosInLine != me.lines[me.cursorPos.lineIndex].length()
+                if .cursorPos.charPosInLine != .lines[.cursorPos.lineIndex].length()
                 {
-                    let r = me.getRune(me.cursorPos)
+                    let r = .getRune(.cursorPos)
                     pundo.runes.add(r.char)
                     pundo.styles.add(r.style)
-                    discard me.moveCursorRight(&pundo.selBeg)
-                    me.deleteTextPrivate(me.cursorPos, pundo.selBeg, false)
-                    me.clearSelection()
+                    discard .moveCursorRight(&pundo.selBeg)
+                    .deleteTextPrivate(.cursorPos, pundo.selBeg, false)
+                    .clearSelection()
                 }
             }
         }
 
         // Append the character to the last undo
-        pundo = me.undoMgr[me.currentUndo - 1]
+        pundo = .undoMgr[.currentUndo - 1]
         pundo.runes.add(c)
 
         // Get the style from the previous character
-        let line = me.lines[me.cursorPos.lineIndex]
+        let line = .lines[.cursorPos.lineIndex]
         var st:  u8
-        if !me.cursorPos.charPosInLine and line.length():
+        if !.cursorPos.charPosInLine and line.length():
             st = line.styles[0]
-        elif me.cursorPos.charPosInLine and me.cursorPos.charPosInLine - 1 < line.length():
-            st = line.styles[me.cursorPos.charPosInLine - 1]
+        elif .cursorPos.charPosInLine and .cursorPos.charPosInLine - 1 < line.length():
+            st = line.styles[.cursorPos.charPosInLine - 1]
         pundo.styles.add(st)
 
         // Do action
-        if me.hasSelRect
+        if .hasSelRect
         {
-            let sb = me.getBegSelection()
-            let se = me.getEndSelection()
+            let sb = .getBegSelection()
+            let se = .getEndSelection()
             for caretI in sb.lineIndex to se.lineIndex
             {
                 var cp = se
                 cp.lineIndex = caretI
-                if cp.charPosInLine > me.lines[cp.lineIndex].length():
+                if cp.charPosInLine > .lines[cp.lineIndex].length():
                     continue
-                me.insertTextPrivate(&cp, @mkstring(&az[0], cpt), st)
+                .insertTextPrivate(&cp, @mkstring(&az[0], cpt), st)
             }
 
-            me.moveCursorRight(&me.selBeg)
-            me.moveCursorRight(&me.cursorPos)
+            .moveCursorRight(&.selBeg)
+            .moveCursorRight(&.cursorPos)
         }
         else
         {
-            me.insertTextPrivate(&me.cursorPos, @mkstring(&az[0], cpt), st)
-            me.clearSelection()
+            .insertTextPrivate(&.cursorPos, @mkstring(&az[0], cpt), st)
+            .clearSelection()
         }
 
-        pundo.begSelectionAfter = me.selBeg
-        pundo.endSelectionAfter = me.cursorPos
-        me.setModified(true)
+        pundo.begSelectionAfter = .selBeg
+        pundo.endSelectionAfter = .cursorPos
+        .setModified(true)
     }
 
     // Insert text at the start of each selected line
@@ -644,11 +644,11 @@ public impl RichEditCtrl
     {
         var first = true
 
-        var beg = me.getBegSelection()
-        let end = me.getEndSelection()
+        var beg = .getBegSelection()
+        let end = .getEndSelection()
 
-        var savepos0 = me.selBeg
-        var savepos1 = me.cursorPos
+        var savepos0 = .selBeg
+        var savepos1 = .cursorPos
         beg.charPosInLine = 0
 
         let multiline = end.lineIndex > beg.lineIndex
@@ -658,15 +658,15 @@ public impl RichEditCtrl
             if beg.lineIndex == end.lineIndex and end.charPosInLine == 0 and multiline:
                 break
 
-            me.pushUndo()
+            .pushUndo()
             if !first:
-                me.serialUndo -= 1
+                .serialUndo -= 1
 
-            me.setCursorPos(beg)
-            me.selBeg = beg
-            me.insertText(txt)
+            .setCursorPos(beg)
+            .selBeg = beg
+            .insertText(txt)
 
-            me.popUndo()
+            .popUndo()
 
             if beg.lineIndex == savepos0.lineIndex and savepos0.charPosInLine:
                 savepos0.charPosInLine += 1
@@ -677,19 +677,19 @@ public impl RichEditCtrl
             first = false
         }
 
-        me.selBeg = savepos0
-        me.setCursorPos(savepos1)
+        .selBeg = savepos0
+        .setCursorPos(savepos1)
 
         // A dummy undo just to restore the selection
         if !first
         {
-            me.pushUndo()
-            me.serialUndo -= 1
-            me.undoRestoreSelection()
-            me.popUndo()
+            .pushUndo()
+            .serialUndo -= 1
+            .undoRestoreSelection()
+            .popUndo()
         }
 
-        me.setModified(true)
+        .setModified(true)
     }
 
     // Delete a given text at the start of each selected line
@@ -698,8 +698,8 @@ public impl RichEditCtrl
         var arrR   = Unicode.fromUtf8(txt)
         var first  = true
         let lenTxt = arrR.count
-        var beg    = me.getBegSelection()
-        let end    = me.getEndSelection()
+        var beg    = .getBegSelection()
+        let end    = .getEndSelection()
 
         if !lastLine
         {
@@ -712,14 +712,14 @@ public impl RichEditCtrl
         }
 
         let multiline = beg.lineIndex == end.lineIndex ? false : true
-        let size      = me.getXExtent()
-        var savepos0  = me.selBeg
-        var savepos1  = me.cursorPos
+        let size      = .getXExtent()
+        var savepos0  = .selBeg
+        var savepos1  = .cursorPos
 
         while beg.lineIndex <= end.lineIndex
         {
             // Go to the first non white character
-            let line = me.lines[beg.lineIndex]
+            let line = .lines[beg.lineIndex]
             if multiline
             {
                 while beg.charPosInLine < line.length() and Unicode.isSpace(line.chars[beg.charPosInLine])
@@ -740,17 +740,17 @@ public impl RichEditCtrl
                 if Unicode.isSpace(line.chars[beg.charPosInLine - 1])
                 {
                     // X is the request position
-                    var charPt = me.getCursorDisplayPos(beg)
-                    var x      = cast(f32) me.getTabOffset(cast(s32) charPt.x)
-                    x = (me.tabSize * size.x) - x
+                    var charPt = .getCursorDisplayPos(beg)
+                    var x      = cast(f32) .getTabOffset(cast(s32) charPt.x)
+                    x = (.tabSize * size.x) - x
                     if x == 0:
-                        x = me.tabSize * size.x
+                        x = .tabSize * size.x
                     x = charPt.x - x
 
                     while charPt.x > x and beg.charPosInLine and Unicode.isSpace(line.chars[beg.charPosInLine - 1])
                     {
                         beg.charPosInLine -= 1
-                        charPt = me.getCursorDisplayPos(beg)
+                        charPt = .getCursorDisplayPos(beg)
                     }
                 }
             }
@@ -758,13 +758,13 @@ public impl RichEditCtrl
             // Delete
             if beg1.charPosInLine != beg.charPosInLine
             {
-                me.pushUndo()
+                .pushUndo()
                 if !first:
-                    me.serialUndo -= 1
-                me.selBeg = beg
-                me.setCursorPos(beg1)
-                me.deleteSelectionPrivate(beg, beg1, false)
-                me.popUndo()
+                    .serialUndo -= 1
+                .selBeg = beg
+                .setCursorPos(beg1)
+                .deleteSelectionPrivate(beg, beg1, false)
+                .popUndo()
 
                 if beg.lineIndex == savepos0.lineIndex and savepos0.charPosInLine:
                     savepos0.charPosInLine -= beg1.charPosInLine - beg.charPosInLine
@@ -783,19 +783,19 @@ public impl RichEditCtrl
                 break
         }
 
-        me.selBeg = savepos0
-        me.setCursorPos(savepos1)
+        .selBeg = savepos0
+        .setCursorPos(savepos1)
 
         // A dummy undo just to restore the selection
         if !first
         {
-            me.pushUndo()
-            me.serialUndo -= 1
-            me.undoRestoreSelection()
-            me.popUndo()
+            .pushUndo()
+            .serialUndo -= 1
+            .undoRestoreSelection()
+            .popUndo()
         }
 
-        me.setModified(true)
+        .setModified(true)
     }
 
     // Evaluate the rendering size
@@ -803,15 +803,15 @@ public impl RichEditCtrl
     {
         var result: retval
 
-        let x = me.getXExtent()
+        let x = .getXExtent()
 
-        result.h = cast(f32) (me.lines.count * x.y)
-        result.h += cast(f32) ((me.lines.count - 1) * me.lineSpacing)
+        result.h = cast(f32) (.lines.count * x.y)
+        result.h += cast(f32) ((.lines.count - 1) * .lineSpacing)
 
-        let fontR = me.getFont().getFont(me.styles[0].fontMode)
+        let fontR = .getFont().getFont(.styles[0].fontMode)
         if fontR
         {
-            foreach l in me.lines
+            foreach l in .lines
             {
                 let arr     = Painter.getGlyphs(l.chars, fontR)
                 let measure = Painter.measureString(arr)
@@ -819,9 +819,9 @@ public impl RichEditCtrl
             }
         }
 
-        result.w += me.getMarginLeft() + me.getMarginRight()
-        result.h += me.getThemeMetrics().richEdit_Padding * 2
-        result.w += me.getThemeMetrics().richEdit_Padding * 2
+        result.w += .getMarginLeft() + .getMarginRight()
+        result.h += .getThemeMetrics().richEdit_Padding * 2
+        result.w += .getThemeMetrics().richEdit_Padding * 2
         return result
     }
 }

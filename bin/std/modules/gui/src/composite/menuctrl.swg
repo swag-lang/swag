@@ -53,20 +53,20 @@ public impl IWnd for MenuCtrl
 {
     internal mtd paintBar(painter: *Painter)
     {
-        let theme   = me.getTheme()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
-        let metrics = me.getThemeMetrics()
+        let theme   = .getTheme()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
+        let metrics = .getThemeMetrics()
 
-        if me.dirtyLayout
+        if .dirtyLayout
         {
-            me.dirtyLayout = false
-            me.computeLayoutBar()
+            .dirtyLayout = false
+            .computeLayoutBar()
         }
 
         // Back
-        let clientRect = me.getClientRect()
-        if me.backgroundStyle != .Transparent
+        let clientRect = .getClientRect()
+        if .backgroundStyle != .Transparent
         {
             theme.drawSubRect(painter, clientRect, &rects.menuBar_Bk, colors.menuBar_Bk)
             theme.drawSubRect(painter, clientRect, &rects.menuBar_Border, colors.menuBar_Border)
@@ -76,7 +76,7 @@ public impl IWnd for MenuCtrl
         var colorText:      Color
         var colorRightText: Color
 
-        foreach i, idx in me.items
+        foreach i, idx in .items
         {
             if i.hidden:
                 continue
@@ -94,7 +94,7 @@ public impl IWnd for MenuCtrl
 
             // Back selection
             var colorSel: Color
-            if !i.disabled and (me.hotIdx == idx or me.selectedIdx == idx)
+            if !i.disabled and (.hotIdx == idx or .selectedIdx == idx)
             {
                 colorSel       = colors.menuBar_SelectedBk
                 colorText      = colors.menuBar_SelectedText
@@ -118,42 +118,42 @@ public impl IWnd for MenuCtrl
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = me.getFont()
+            format.font          = .getFont()
             painter.drawRichString(labelPos, &i.name, format)
         }
     }
 
     internal mtd paintPopup(painter: *Painter)
     {
-        let theme   = me.getTheme()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
-        let metrics = me.getThemeMetrics()
+        let theme   = .getTheme()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
+        let metrics = .getThemeMetrics()
 
         // Shadow
-        if !me.paintByFrame
+        if !.paintByFrame
         {
             let subRect = &theme.rects.menuPopup_Shadow
-            theme.drawSubRect(painter, {0, 0, me.position.width, me.position.height}, subRect, colors.menuPopup_Shadow)
+            theme.drawSubRect(painter, {0, 0, .position.width, .position.height}, subRect, colors.menuPopup_Shadow)
         }
 
         // Back
-        var clientRect = me.getClientRect()
-        if !me.paintByFrame
+        var clientRect = .getClientRect()
+        if !.paintByFrame
         {
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
             theme.drawSubRect(painter, clientRect, &rects.menuPopup_Bk, colors.menuPopup_Bk)
             theme.drawSubRect(painter, clientRect, &rects.menuPopup_Border, colors.menuPopup_Border, interpol: .Pixel)
         }
 
-        clientRect.applyPadding(me.padding)
+        clientRect.applyPadding(.padding)
 
         var labelPos:       Math.Rectangle = undefined
         var colorText:      Color
         var colorRightText: Color
 
         var lastIsSeparator = true
-        foreach i, idx in me.items
+        foreach i, idx in .items
         {
             if i.hidden:
                 continue
@@ -177,7 +177,7 @@ public impl IWnd for MenuCtrl
 
             // Back selection
             var colorSel: Color
-            if me.hotIdx == idx and !i.disabled
+            if .hotIdx == idx and !i.disabled
             {
                 colorSel       = colors.popupItem_HotBk
                 colorText      = colors.popupItem_HotText
@@ -187,7 +187,7 @@ public impl IWnd for MenuCtrl
             var backPos = labelPos
             backPos.y -= metrics.menuPopup_SpaceLines * 0.5
             backPos.height += metrics.menuPopup_SpaceLines
-            backPos.inflate(me.paddingSel, 0)
+            backPos.inflate(.paddingSel, 0)
             theme.drawSubRect(painter, backPos, &rects.menuPopup_HotBk, colorSel)
 
             // Icon
@@ -223,17 +223,17 @@ public impl IWnd for MenuCtrl
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = me.getFont()
+            format.font          = .getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Text right
-            if !me.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
+            if !.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 format.palette[0]    = colorRightText
                 format.horzAlignment = .Right
                 format.vertAlignment = .Center
                 format.flags         = .Clip
-                format.font          = me.getFont()
+                format.font          = .getFont()
                 painter.drawRichString(labelPos, &i.rightName, format)
             }
 
@@ -248,39 +248,39 @@ public impl IWnd for MenuCtrl
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        me.frameWnd.IWnd.onPaintEvent(evt)
-        if me.bar:
-            me.paintBar(evt.bc.painter)
+        .frameWnd.IWnd.onPaintEvent(evt)
+        if .bar:
+            .paintBar(evt.bc.painter)
         else:
-            me.paintPopup(evt.bc.painter)
+            .paintPopup(evt.bc.painter)
     }
 
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
-        me.hideSubVisible()
-        me.deleteTimer()
-        me.showHotPopup()
+        .hideSubVisible()
+        .deleteTimer()
+        .showHotPopup()
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        let hit = me.hitTest(evt.surfacePos)
-        if hit != me.hotIdx
+        let hit = .hitTest(evt.surfacePos)
+        if hit != .hotIdx
         {
             // Timer to auto open/hide sub menus
-            if !me.bar
+            if !.bar
             {
-                if !me.timer:
-                    me.timer = me.surface.app.addTimer(300'ms, me)
-                me.timer.restart()
+                if !.timer:
+                    .timer = .surface.app.addTimer(300'ms, me)
+                .timer.restart()
             }
 
-            me.hotIdx = hit
-            me.invalidate()
+            .hotIdx = hit
+            .invalidate()
 
             if hit != Swag.U32.Max
             {
-                var p = me.ownerMenu
+                var p = .ownerMenu
                 while p
                 {
                     p.deleteTimer()
@@ -290,46 +290,46 @@ public impl IWnd for MenuCtrl
         }
 
         evt.accepted = true
-        if me.hotIdx == Swag.U32.Max and me.ownerMenu
+        if .hotIdx == Swag.U32.Max and .ownerMenu
         {
-            me.ownerMenu.onMouseEvent(evt)
+            .ownerMenu.onMouseEvent(evt)
             return
         }
 
-        if me.hotIdx == Swag.U32.Max and me.bar and !me.subVisible
+        if .hotIdx == Swag.U32.Max and .bar and !.subVisible
         {
             evt.accepted = false
             return
         }
 
         // If this is a bar, then track sub popup if one is currently open
-        if me.bar and me.subVisible and me.hotIdx != Swag.U32.Max
+        if .bar and .subVisible and .hotIdx != Swag.U32.Max
         {
-            me.hideSubVisible()
-            me.deleteTimer()
-            me.showHotPopup()
+            .hideSubVisible()
+            .deleteTimer()
+            .showHotPopup()
         }
 
         // On a popup menu, just react to press button
         elif evt.kind == .MouseReleased and evt.button == .Left
         {
-            if me.hotIdx != Swag.U32.Max
+            if .hotIdx != Swag.U32.Max
             {
-                let hotItem = me.items[me.hotIdx]
+                let hotItem = .items[.hotIdx]
                 if hotItem.popup
                 {
-                    me.hideSubVisible()
-                    me.deleteTimer()
-                    me.showHotPopup()
+                    .hideSubVisible()
+                    .deleteTimer()
+                    .showHotPopup()
                 }
                 elif !hotItem.separator and !hotItem.disabled
                 {
-                    me.setEndModal(hotItem.id)
+                    .setEndModal(hotItem.id)
                 }
             }
             else
             {
-                me.setEndModal(null)
+                .setEndModal(null)
             }
         }
     }
@@ -349,14 +349,14 @@ impl MenuCtrl
         p.endModal       = true
         p.endModalResult = result
 
-        if me.onValidateResult and result != null:
-            me.onValidateResult(me, result)
+        if .onValidateResult and result != null:
+            .onValidateResult(me, result)
 
-        if me.bar
+        if .bar
         {
-            me.hideSubVisible()
-            me.postCommandEvent(result)
-            me.setFocus()
+            .hideSubVisible()
+            .postCommandEvent(result)
+            .setFocus()
         }
 
         if p.bar
@@ -370,32 +370,32 @@ impl MenuCtrl
 
     mtd hideSubVisible()
     {
-        while me.subVisible
+        while .subVisible
         {
-            me.subVisible.hide()
-            me.subVisible = me.subVisible.subVisible
+            .subVisible.hide()
+            .subVisible = .subVisible.subVisible
         }
 
-        me.selectedIdx = Swag.U32.Max
-        if !me.bar:
-            me.captureMouse()
+        .selectedIdx = Swag.U32.Max
+        if !.bar:
+            .captureMouse()
         else:
-            me.releaseMouse()
+            .releaseMouse()
     }
 
     mtd deleteTimer()
     {
-        if !me.timer:
+        if !.timer:
             return
-        me.surface.app.deleteTimer(me.timer)
-        me.timer = null
+        .surface.app.deleteTimer(.timer)
+        .timer = null
     }
 
     public mtd updateState()
     {
-        foreach i in me.items
+        foreach i in .items
         {
-            let evt = me.sendComputeCommandStateEvent(i.id)
+            let evt = .sendComputeCommandStateEvent(i.id)
             if evt.setFlags.has(.Disabled):
                 i.disabled = evt.disabled
             if evt.setFlags.has(.Hidden):
@@ -433,83 +433,83 @@ impl MenuCtrl
 
     mtd showHotPopupBar()
     {
-        me.selectedIdx = me.hotIdx
-        let hotItem = me.items[me.hotIdx]
-        let metrics = me.getThemeMetrics()
+        .selectedIdx = .hotIdx
+        let hotItem = .items[.hotIdx]
+        let metrics = .getThemeMetrics()
 
-        var pos = me.getSurfaceRect()
+        var pos = .getSurfaceRect()
         pos.x += hotItem.pos
         pos.x -= metrics.menuPopup_ShadowSize
         pos.x -= metrics.menuBar_SpaceBetween * 0.5
         pos.y += pos.height
         pos.y -= metrics.menuPopup_ShadowSize
-        me.subVisible = hotItem.popup
+        .subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
-        me.subVisible.updateState()
-        me.subVisible.computeLayoutPopup()
-        let topView = me.getTopView()
+        .subVisible.updateState()
+        .subVisible.computeLayoutPopup()
+        let topView = .getTopView()
         var pt      = topView.surfaceToLocal({pos.x, pos.y})
-        let subPos  = me.subVisible.position
+        let subPos  = .subVisible.position
         if pt.x + subPos.width > topView.position.width:
             pt.x = topView.position.width - subPos.width
         if pt.y + subPos.height > topView.position.height:
             pt.y = topView.position.height - subPos.height
 
         pt = topView.localToSurface(pt)
-        me.showSubVisible(pt)
+        .showSubVisible(pt)
     }
 
     mtd showHotPopupPopup()
     {
-        me.selectedIdx = me.hotIdx
-        let hotItem = me.items[me.hotIdx]
+        .selectedIdx = .hotIdx
+        let hotItem = .items[.hotIdx]
 
-        var pos         = me.getSurfaceRect()
-        let sdw         = me.getThemeMetrics().menuPopup_ShadowSize
+        var pos         = .getSurfaceRect()
+        let sdw         = .getThemeMetrics().menuPopup_ShadowSize
         let surfaceRect = pos
         pos.x = pos.right() - sdw
         pos.y += hotItem.pos
-        pos.y -= me.padding.y
-        me.subVisible = hotItem.popup
+        pos.y -= .padding.y
+        .subVisible = hotItem.popup
 
         // Be sure popup menu is in the client area of the top view
-        me.subVisible.updateState()
-        me.subVisible.computeLayoutPopup()
-        let topView = me.getTopView()
+        .subVisible.updateState()
+        .subVisible.computeLayoutPopup()
+        let topView = .getTopView()
         var pt      = topView.surfaceToLocal({pos.x, pos.y})
         pt -= sdw
-        let subPos = me.subVisible.position
+        let subPos = .subVisible.position
         if pt.x + subPos.width > topView.position.width:
             pt.x = surfaceRect.x - subPos.width
         if pt.y + subPos.height > topView.position.height:
             pt.y = surfaceRect.y - subPos.height
 
         pt = topView.localToSurface(pt)
-        me.showSubVisible(pt)
+        .showSubVisible(pt)
     }
 
     mtd showHotPopup()
     {
-        if me.hotIdx == Swag.U32.Max or !me.items[me.hotIdx].popup
+        if .hotIdx == Swag.U32.Max or !.items[.hotIdx].popup
         {
-            me.selectedIdx = Swag.U32.Max
+            .selectedIdx = Swag.U32.Max
             return
         }
 
-        if me.bar:
-            me.showHotPopupBar()
+        if .bar:
+            .showHotPopupBar()
         else:
-            me.showHotPopupPopup()
+            .showHotPopupPopup()
     }
 
     mtd hitTestBar(surfacePos: Math.Point)->u32
     {
-        let pos        = me.surfaceToLocal(surfacePos)
-        let metrics    = me.getThemeMetrics()
-        let clientRect = me.getClientRect()
+        let pos        = .surfaceToLocal(surfacePos)
+        let metrics    = .getThemeMetrics()
+        let clientRect = .getClientRect()
         let sl         = metrics.menuBar_SpaceBetween
-        foreach i, idx in me.items
+        foreach i, idx in .items
         {
             let rect = Math.Rectangle{i.pos - sl * 0.5, clientRect.y, i.size + sl, clientRect.height}
             if rect.contains(pos):
@@ -521,11 +521,11 @@ impl MenuCtrl
 
     mtd hitTestPopup(surfacePos: Math.Point)->u32
     {
-        let pos        = me.surfaceToLocal(surfacePos)
-        let metrics    = me.getThemeMetrics()
-        let clientRect = me.getClientRect()
+        let pos        = .surfaceToLocal(surfacePos)
+        let metrics    = .getThemeMetrics()
+        let clientRect = .getClientRect()
         let sl         = metrics.menuPopup_SpaceLines
-        foreach i, idx in me.items
+        foreach i, idx in .items
         {
             let rect = Math.Rectangle{clientRect.x, i.pos - sl * 0.5, clientRect.width, i.size + sl}
             if rect.contains(pos):
@@ -537,26 +537,26 @@ impl MenuCtrl
 
     mtd hitTest(surfacePos: Math.Point)->u32
     {
-        return me.bar ? me.hitTestBar(surfacePos) : me.hitTestPopup(surfacePos)
+        return .bar ? .hitTestBar(surfacePos) : .hitTestPopup(surfacePos)
     }
 
     mtd computeLayoutBar()
     {
-        let metrics    = me.getThemeMetrics()
-        let clientRect = me.getClientRectPadding()
+        let metrics    = .getThemeMetrics()
+        let clientRect = .getClientRectPadding()
 
         var x = clientRect.x
 
         var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
-        rsf.font = me.getFont()
+        rsf.font = .getFont()
 
-        foreach i, idx in me.items
+        foreach i, idx in .items
         {
             if i.hidden:
                 continue
-            if me.onComputeItem:
-                me.onComputeItem(i)
+            if .onComputeItem:
+                .onComputeItem(i)
             i.pos = x + metrics.menuBar_SpaceBetween * 0.5
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             i.size = i.name.boundRect.width
@@ -566,39 +566,39 @@ impl MenuCtrl
 
     public mtd computeLayoutPopup()
     {
-        let metrics = me.getThemeMetrics()
+        let metrics = .getThemeMetrics()
 
-        var clientRect = me.getClientRect()
-        if !me.paintByFrame:
+        var clientRect = .getClientRect()
+        if !.paintByFrame:
             clientRect.inflate(-metrics.menuPopup_ShadowSize)
-        clientRect.applyPadding(me.padding)
+        clientRect.applyPadding(.padding)
 
-        me.position.width  = 0
-        me.position.height = clientRect.y
+        .position.width  = 0
+        .position.height = clientRect.y
 
         var fake: Pixel.Painter{fake: true}
         var rsf:  Pixel.RichStringFormat
-        rsf.font = me.getFont()
+        rsf.font = .getFont()
 
         var lastIsSeparator = true
-        foreach i, idx in me.items
+        foreach i, idx in .items
         {
             if i.hidden:
                 continue
             if i.separator and lastIsSeparator:
                 continue
 
-            if me.onComputeItem:
-                me.onComputeItem(i)
+            if .onComputeItem:
+                .onComputeItem(i)
             if idx:
-                me.position.height += metrics.menuPopup_SpaceLines
-            i.pos = me.position.height
+                .position.height += metrics.menuPopup_SpaceLines
+            i.pos = .position.height
 
             lastIsSeparator = i.separator
             if i.separator
             {
                 i.size = metrics.menuPopup_SeparatorHeight
-                me.position.height += i.size
+                .position.height += i.size
                 continue
             }
 
@@ -607,28 +607,28 @@ impl MenuCtrl
             fake.drawRichString({0, 0, 512, 0}, &i.name, rsf)
             var w = i.name.boundRect.width
 
-            if !me.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
+            if !.menuCtrlFlags.has(.NoKeyShortcuts) and !i.rightName.isEmpty()
             {
                 fake.drawRichString({0, 0, 512, 0}, &i.rightName, rsf)
                 w += i.rightName.boundRect.width + rsf.font.regular.height * 3
             }
 
-            me.position.width = Math.max(me.position.width, w)
-            me.position.height += i.size
+            .position.width = Math.max(.position.width, w)
+            .position.height += i.size
         }
 
         // Add shadow size
-        if !me.paintByFrame:
-            me.position.width += 2 * metrics.menuPopup_ShadowSize
+        if !.paintByFrame:
+            .position.width += 2 * metrics.menuPopup_ShadowSize
 
-        me.position.width += (2 * rsf.font.regular.height) + (1 * metrics.menuPopup_IconTextMargin)
+        .position.width += (2 * rsf.font.regular.height) + (1 * metrics.menuPopup_IconTextMargin)
 
-        if !me.paintByFrame:
-            me.position.height += metrics.menuPopup_ShadowSize
+        if !.paintByFrame:
+            .position.height += metrics.menuPopup_ShadowSize
 
         // Add padding
-        me.position.width += me.padding.x + me.padding.z
-        me.position.height += me.padding.w
+        .position.width += .padding.x + .padding.z
+        .position.height += .padding.w
     }
 }
 
@@ -667,7 +667,7 @@ public impl MenuCtrl
     #[Swag.Overload]
     mtd addItem(id: WndId)
     {
-        me.addItem(null, id)
+        .addItem(null, id)
     }
 
     // Add a list of items
@@ -675,15 +675,15 @@ public impl MenuCtrl
     mtd addItems(ids: const [..] WndId)
     {
         foreach id in ids:
-            me.addItem(null, id)
+            .addItem(null, id)
     }
 
     // Add a list of items followed by a separator
     #[Swag.Overload]
     mtd addGroup(ids: const [..] WndId)
     {
-        me.addItems(ids)
-        me.addSeparator()
+        .addItems(ids)
+        .addSeparator()
     }
 
     // Add a new item
@@ -700,15 +700,15 @@ public impl MenuCtrl
             .checked   = checked
         }
 
-        me.items.add(mitem)
-        me.dirtyLayout = true
+        .items.add(mitem)
+        .dirtyLayout = true
     }
 
     // Add a new popup item
     #[Swag.Overload]
     mtd addPopup(popup: *MenuCtrl, id: WndId)
     {
-        me.addPopup(null, popup, id: id)
+        .addPopup(null, popup, id: id)
     }
 
     // Add a new popup item
@@ -724,92 +724,92 @@ public impl MenuCtrl
         }
 
         popup.ownerMenu = me
-        me.items.add(mitem)
-        me.dirtyLayout = true
+        .items.add(mitem)
+        .dirtyLayout = true
     }
 
     // Add a separator
     mtd addSeparator()
     {
-        let item = me.items.newPtr()
+        let item = .items.newPtr()
         item.separator = true
-        me.items.add(item)
-        me.dirtyLayout = true
+        .items.add(item)
+        .dirtyLayout = true
     }
 
     // Make the popup menu modal
     // Will return the selected id
     mtd doModal(surfacePos: Math.Point, pos = PopupPos.TopLeft, autoDestroy: bool = false)->WndId
     {
-        Debug.assert(!me.bar)
+        Debug.assert(!.bar)
 
-        me.updateState()
+        .updateState()
 
         switch pos
         {
         case AnchorTopCenter:
-            me.paintByFrame = true
-            me.padding.y += 4
+            .paintByFrame = true
+            .padding.y += 4
         case AnchorBottomCenter:
-            me.paintByFrame = true
-            me.padding.w += 4
+            .paintByFrame = true
+            .padding.w += 4
         default:
-            me.paintByFrame = false
+            .paintByFrame = false
         }
 
-        me.computeLayoutPopup()
+        .computeLayoutPopup()
 
         // Be sure popup menu is in the client area of the top view
-        var pt = me.parent.surfaceToLocal(surfacePos)
+        var pt = .parent.surfaceToLocal(surfacePos)
 
         switch pos
         {
         case TopLeft:
-            pt -= me.getThemeMetrics().menuPopup_ShadowSize
-            me.setPosition({pt.x, pt.y, me.position.width, me.position.height})
+            pt -= .getThemeMetrics().menuPopup_ShadowSize
+            .setPosition({pt.x, pt.y, .position.width, .position.height})
 
         case AnchorTopCenter:
-            pt.y += me.getThemeMetrics().menuPopup_ShadowSize
-            me.setPosition({pt.x - me.position.width * 0.5, pt.y, me.position.width, me.position.height})
-            me.anchor    = .Top
-            me.anchorPos = me.position.width * 0.5
-            me.setFrameFlags(.Borders | .SmallShadow)
-            me.setFrameForm(.Round)
-            me.padding.y += 14
-            me.paddingSel = 0
+            pt.y += .getThemeMetrics().menuPopup_ShadowSize
+            .setPosition({pt.x - .position.width * 0.5, pt.y, .position.width, .position.height})
+            .anchor    = .Top
+            .anchorPos = .position.width * 0.5
+            .setFrameFlags(.Borders | .SmallShadow)
+            .setFrameForm(.Round)
+            .padding.y += 14
+            .paddingSel = 0
 
         case AnchorBottomCenter:
-            pt.y -= me.getThemeMetrics().menuPopup_ShadowSize
-            me.setPosition({pt.x - me.position.width * 0.5, pt.y - me.position.height, me.position.width, me.position.height})
-            me.anchor    = .Bottom
-            me.anchorPos = me.position.width * 0.5
-            me.setFrameFlags(.Borders | .SmallShadow)
-            me.setFrameForm(.Round)
-            me.paddingSel = 0
+            pt.y -= .getThemeMetrics().menuPopup_ShadowSize
+            .setPosition({pt.x - .position.width * 0.5, pt.y - .position.height, .position.width, .position.height})
+            .anchor    = .Bottom
+            .anchorPos = .position.width * 0.5
+            .setFrameFlags(.Borders | .SmallShadow)
+            .setFrameForm(.Round)
+            .paddingSel = 0
         }
 
-        me.fitPosInParent(simX: true, simY: true)
+        .fitPosInParent(simX: true, simY: true)
 
-        me.bringToTop()
-        me.show()
-        me.captureMouse()
+        .bringToTop()
+        .show()
+        .captureMouse()
 
-        me.endModal       = false
-        me.endModalResult = null
-        me.getApp().inModalLoop += 1
-        while !me.endModal:
-            me.surface.app.runFrame()
-        me.getApp().inModalLoop -= 1
+        .endModal       = false
+        .endModalResult = null
+        .getApp().inModalLoop += 1
+        while !.endModal:
+            .surface.app.runFrame()
+        .getApp().inModalLoop -= 1
 
-        me.hideSubVisible()
-        me.hide()
+        .hideSubVisible()
+        .hide()
 
-        if me.endModalResult:
-            me.postCommandEvent(me.endModalResult)
+        if .endModalResult:
+            .postCommandEvent(.endModalResult)
 
         if autoDestroy:
-            me.destroy()
+            .destroy()
 
-        return me.endModalResult
+        return .endModalResult
     }
 }

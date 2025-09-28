@@ -26,18 +26,18 @@ impl Image
     // Divide image size by 2 with a bilinear 2x2 filter
     public mtd halfSize()
     {
-        Debug.assert(me.width > 1 and me.height > 1)
-        me.allocWorkingBuffer(me.width / 2, me.height / 2, me.pf)
-        me.doHalfSize(me.workingBuffer)
-        me.applyWorkingBuffer()
+        Debug.assert(.width > 1 and .height > 1)
+        .allocWorkingBuffer(.width / 2, .height / 2, .pf)
+        .doHalfSize(.workingBuffer)
+        .applyWorkingBuffer()
     }
 
     // Divide image size by 2 with a bilinear 2x2 filter
     public mtd const toHalfSize()->Image
     {
-        Debug.assert(me.width > 1 and me.height > 1)
-        var result: retval = create(me.width / 2, me.height / 2, me.pf)
-        me.doHalfSize(&result)
+        Debug.assert(.width > 1 and .height > 1)
+        var result: retval = create(.width / 2, .height / 2, .pf)
+        .doHalfSize(&result)
         return result
     }
 }

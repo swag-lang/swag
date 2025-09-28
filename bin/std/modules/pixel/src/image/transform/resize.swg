@@ -19,13 +19,13 @@ public impl Image
     mtd resize(newWidth, newHeight: s32, mode = ResizeMode.Raw)
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
-        let nw = newWidth orelse cast(s32) (newHeight * (me.width / cast(f32) me.height))
-        let nh = newHeight orelse cast(s32) (newWidth * (me.height / cast(f32) me.width))
-        if nw == me.width and nh == me.height:
+        let nw = newWidth orelse cast(s32) (newHeight * (.width / cast(f32) .height))
+        let nh = newHeight orelse cast(s32) (newWidth * (.height / cast(f32) .width))
+        if nw == .width and nh == .height:
             return
-        me.allocWorkingBuffer(nw, nh, me.pf)
-        ResizeTools.doResize(me.workingBuffer, me, mode)
-        me.applyWorkingBuffer()
+        .allocWorkingBuffer(nw, nh, .pf)
+        ResizeTools.doResize(.workingBuffer, me, mode)
+        .applyWorkingBuffer()
     }
 
     // Resize image
@@ -33,16 +33,16 @@ public impl Image
     mtd const toResize(newWidth, newHeight: s32, mode = ResizeMode.Raw)->Image
     {
         Debug.assert(newWidth > 0 or newHeight > 0)
-        let nw = newWidth orelse cast(s32) (newHeight * (me.width / cast(f32) me.height))
-        let nh = newHeight orelse cast(s32) (newWidth * (me.height / cast(f32) me.width))
-        if nw == me.width and nh == me.height
+        let nw = newWidth orelse cast(s32) (newHeight * (.width / cast(f32) .height))
+        let nh = newHeight orelse cast(s32) (newWidth * (.height / cast(f32) .width))
+        if nw == .width and nh == .height
         {
             var result: retval = dref me
             return result
         }
 
         using ResizeTools
-        var result: retval = create(nw, nh, me.pf)
+        var result: retval = create(nw, nh, .pf)
         ResizeTools.doResize(&result, me, mode)
         return result
     }

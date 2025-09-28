@@ -131,7 +131,7 @@ impl Painter
         let ms = measureString(text, font)
         var yr = y - (ms.height * 0.5 * zoom)
         yr -= (font.ascent - ms.ascent) * zoom
-        me.drawString(x - (ms.width * 0.5 * zoom), yr, text, font, color, under, zoom)
+        .drawString(x - (ms.width * 0.5 * zoom), yr, text, font, color, under, zoom)
     }
 
     // Draw a simple string
@@ -151,7 +151,7 @@ impl Painter
     {
         if @countof(text) == 0 or brush.color.a == 0:
             return
-        if me.fake:
+        if .fake:
             return
 
         let arr = getGlyphs(text, font)
@@ -166,13 +166,13 @@ impl Painter
         if under != .None or brush.type != .SolidColor:
             ms = measureString(text, font)
 
-        me.startFont()
+        .startFont()
 
         // Set brush main texture
         if brush.type != .SolidColor:
-            me.setTexture0({x, y - ms.ascent * zoom}, {x + ms.width * zoom, y + ms.height * zoom}, brush)
+            .setTexture0({x, y - ms.ascent * zoom}, {x + ms.width * zoom, y + ms.height * zoom}, brush)
         else:
-            me.resetTexture0()
+            .resetTexture0()
 
         // Underline
         if under != .None
@@ -181,27 +181,27 @@ impl Painter
             pen.begCapStyle = .None
             pen.endCapStyle = .None
 
-            me.canSetTexture0 = false
+            .canSetTexture0 = false
             switch under
             {
             case Strikeout:
                 let yUnder = y - (ms.ascent * zoom / 2)
-                me.drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
+                .drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
             case Underline:
                 let yUnder = y - font.underlinePos
-                me.drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
+                .drawLine(x, yUnder, x + ms.width * zoom, yUnder, pen)
             }
 
-            me.canSetTexture0 = true
+            .canSetTexture0 = true
         }
 
-        me.updateFont(font)
+        .updateFont(font)
 
         if zoom == 1
         {
             foreach refr in arr
             {
-                me.setTextureFont(font, refr.atlasIndex)
+                .setTextureFont(font, refr.atlasIndex)
 
                 let x1 = Math.round(x + refr.shiftX)
                 let y1 = Math.round(y - refr.shiftY)
@@ -218,8 +218,8 @@ impl Painter
                 let uv3 = Math.Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
                 let uv4 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
-                discard me.pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
-                discard me.pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
+                discard .pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+                discard .pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
                 x += Math.round(refr.advanceX)
             }
@@ -228,7 +228,7 @@ impl Painter
         {
             foreach refr in arr
             {
-                me.setTextureFont(font, refr.atlasIndex)
+                .setTextureFont(font, refr.atlasIndex)
 
                 let x1 = Math.round(x + refr.shiftX * zoom)
                 let y1 = Math.round(y - refr.shiftY * zoom)
@@ -245,15 +245,15 @@ impl Painter
                 let uv3 = Math.Vector2{refr.uv.x, refr.uv.y + refr.uv.height}
                 let uv4 = Math.Vector2{refr.uv.x + refr.uv.width, refr.uv.y + refr.uv.height}
 
-                discard me.pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
-                discard me.pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
+                discard .pushTriangle(p1, p2, p3, uv1, uv2, uv3, brush.color)
+                discard .pushTriangle(p3, p2, p4, uv3, uv2, uv4, brush.color)
 
                 x += Math.round(refr.advanceX * zoom)
             }
         }
 
-        me.resetTextureFont()
-        me.endFont()
+        .resetTextureFont()
+        .endFont()
     }
 
     // Recompute the layout for a given rectangle
@@ -475,10 +475,10 @@ impl Painter
         // Clipping
         if format.flags & .Clip
         {
-            me.pushClippingRect(pos)
-            if me.curState.clippingRect.isEmpty()
+            .pushClippingRect(pos)
+            if .curState.clippingRect.isEmpty()
             {
-                me.popClippingRect()
+                .popClippingRect()
                 return
             }
         }
@@ -501,11 +501,11 @@ impl Painter
             if c.isHotUrl:
                 under = .Underline
 
-            me.drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
+            .drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
         }
 
         // Restore clipping to its previous value
         if format.flags & .Clip:
-            me.popClippingRect()
+            .popClippingRect()
     }
 }

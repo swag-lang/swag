@@ -85,7 +85,7 @@ impl InPlaceEditWnd
         foreach action in actions:
             .actionBar.addItem(theme.getIcon24(action.item1), action.item0).toolTip = action.item2
 
-        .actionBar.sigPressed += mtd||(btn) { me.handleActionBarPress(btn.id); }
+        .actionBar.sigPressed += mtd||(btn) { .handleActionBarPress(btn.id); }
     }
 
     mtd createEditBar(main: *MainWnd)
@@ -106,7 +106,7 @@ impl InPlaceEditWnd
         foreach tool in editTools:
             .editBar.addCheckableItem(Icon.from(&main.icons48, tool.item1), tool.item0).toolTip = tool.item2
 
-        .editBar.sigCheckChanged += mtd||(btn) { me.handleEditModeChange(btn.id); }
+        .editBar.sigCheckChanged += mtd||(btn) { .handleEditModeChange(btn.id); }
         .createColorPicker()
     }
 
@@ -120,21 +120,21 @@ impl InPlaceEditWnd
             bc.painter.setParams(.Antialiased)
             var rect = pos
             rect.inflate(-2)
-            let color = me.editMode == .Marker ? me.editColorHilight : me.editColor
+            let color = .editMode == .Marker ? .editColorHilight : .editColor
             bc.painter.fillRoundRect(rect, 10, 10, color)
         }
 
         btnColor.sigShowPopup += mtd||(btn)
         {
-            let color  = me.editMode == .Marker ? me.editColorHilight : me.editColor
+            let color  = .editMode == .Marker ? .editColorHilight : .editColor
             let picker = PropWnd.createColorPicker(cast(*IconButton) btn, color)
             picker.sigChanged += mtd|picker, btn|(pk)
             {
-                if me.editMode == .Marker:
-                    me.editColorHilight = picker.getColor()
+                if .editMode == .Marker:
+                    .editColorHilight = picker.getColor()
                 else:
-                    me.editColor = picker.getColor()
-                me.updateEditMode()
+                    .editColor = picker.getColor()
+                .updateEditMode()
                 btn.invalidate()
             }
         }
@@ -142,7 +142,7 @@ impl InPlaceEditWnd
 
     mtd setupCapture(capture: *Capture)
     {
-        capture.gizmo.sigHasChanged = mtd||() { me.moveButtons(); }
+        capture.gizmo.sigHasChanged = mtd||() { .moveButtons(); }
         .moveButtons()
         .updateEditMode()
     }
@@ -258,8 +258,8 @@ impl InPlaceEditWnd
 
         foreach m in modeMap
         {
-            let btn = assume me.editBar.getButton(m.item0)
-            btn.setCheck(me.editMode == m.item1)
+            let btn = assume .editBar.getButton(m.item0)
+            btn.setCheck(.editMode == m.item1)
         }
     }
 
@@ -271,7 +271,7 @@ impl InPlaceEditWnd
         const TEXT_BOLD      = 2
         const ARROW_END_SIZE = 5
 
-        with .newMain
+        with me.newMain
         {
             switch me.editMode
             {

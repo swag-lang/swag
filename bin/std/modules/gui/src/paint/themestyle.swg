@@ -20,58 +20,58 @@ impl ThemeStyle
 {
     mtd opDrop()
     {
-        me.free()
+        .free()
     }
 
     internal mtd free()
     {
-        if !me.refr:
+        if !.refr:
             return
-        me.refr.count -= 1
-        if me.refr.count == 0
+        .refr.count -= 1
+        if .refr.count == 0
         {
-            Memory.delete(me.refr.theme)
-            Memory.delete(me.refr)
-            me.refr = null
+            Memory.delete(.refr.theme)
+            Memory.delete(.refr)
+            .refr = null
         }
     }
 
     internal mtd set(theme: *Theme)
     {
-        me.refr       = Memory.new'ThemeStyleRef()
-        me.refr.theme = theme
-        me.refr.count = 1
+        .refr       = Memory.new'ThemeStyleRef()
+        .refr.theme = theme
+        .refr.count = 1
     }
 
     // Create a specific style based on the parent
     mtd create(parent: *ThemeStyle)
     {
-        me.free()
+        .free()
         var theme = Memory.new'Theme()
         dref theme = dref parent.refr.theme
-        me.set(theme)
+        .set(theme)
     }
 
     internal mtd compute(owner: *Wnd, parent: *ThemeStyle)
     {
         // First time, initialize to parent
-        if !me.refr
+        if !.refr
         {
-            me.refr = parent.refr
-            me.refr.count += 1
-            me.dirty = true
+            .refr = parent.refr
+            .refr.count += 1
+            .dirty = true
         }
 
         // If parent is dirty, or i am dirty, then we need
         // to compute.
-        if !me.dirty and !parent.dirty:
+        if !.dirty and !parent.dirty:
             return
-        me.dirty = true
+        .dirty = true
 
         // By default, same as the parent
-        me.free()
-        me.refr = parent.refr
-        me.refr.count += 1
+        .free()
+        .refr = parent.refr
+        .refr.count += 1
 
         // Ask user
         var evt = ThemeEvent{}
@@ -81,97 +81,97 @@ impl ThemeStyle
         owner.sendEvent(&evt)
 
         // Nothing to override
-        if me.styleSheetColors.length == 0 and
-           me.styleSheetMetrics.length == 0 and
-           me.font.regular == null and
-           me.font.bold == null and
-           me.font.italic == null and
-           me.font.boldItalic == null and
+        if .styleSheetColors.length == 0 and
+           .styleSheetMetrics.length == 0 and
+           .font.regular == null and
+           .font.bold == null and
+           .font.italic == null and
+           .font.boldItalic == null and
            !evt.accepted
         {
             return
         }
 
         // Make a new tweak as a copy of the parent
-        if me.refr == parent.refr:
-            me.create(parent)
+        if .refr == parent.refr:
+            .create(parent)
 
         // Then tweak it with the stylesheet
-        if me.styleSheetColors.length
+        if .styleSheetColors.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'ThemeColors(&me.refr.theme.colors)
-            catch tf.parse(me.styleSheetColors)
+            tf.registerFolder'ThemeColors(&.refr.theme.colors)
+            catch tf.parse(.styleSheetColors)
         }
 
-        if me.styleSheetMetrics.length
+        if .styleSheetMetrics.length
         {
             var tf: File.TweakFile
-            tf.registerFolder'ThemeMetrics(&me.refr.theme.metrics)
-            catch tf.parse(me.styleSheetMetrics)
+            tf.registerFolder'ThemeMetrics(&.refr.theme.metrics)
+            catch tf.parse(.styleSheetMetrics)
         }
     }
 
     mtd clearStyleSheetColors()
     {
-        me.styleSheetColors.clear()
-        me.dirty = true
+        .styleSheetColors.clear()
+        .dirty = true
     }
 
     mtd setStyleSheetColors(str: string)
     {
-        me.styleSheetColors = str
-        me.dirty            = true
+        .styleSheetColors = str
+        .dirty            = true
     }
 
     mtd addStyleSheetColors(str: string)
     {
-        me.styleSheetColors.append("\n")
-        me.styleSheetColors.append(str)
-        me.dirty = true
+        .styleSheetColors.append("\n")
+        .styleSheetColors.append(str)
+        .dirty = true
     }
 
     mtd setStyleSheetMetrics(str: string)
     {
-        me.styleSheetMetrics = str
-        me.dirty             = true
+        .styleSheetMetrics = str
+        .dirty             = true
     }
 
     mtd addStyleSheetMetrics(str: string)
     {
-        me.styleSheetMetrics.append("\n")
-        me.styleSheetMetrics.append(str)
-        me.dirty = true
+        .styleSheetMetrics.append("\n")
+        .styleSheetMetrics.append(str)
+        .dirty = true
     }
 
     mtd const getFont()->FontFamily
     {
         var result: retval
-        let df      = &me.refr.theme.res.fontDefault
-        result.regular    = me.font.regular orelse df.regular
-        result.bold       = me.font.bold orelse df.bold
-        result.italic     = me.font.italic orelse df.italic
-        result.boldItalic = me.font.boldItalic orelse df.boldItalic
+        let df      = &.refr.theme.res.fontDefault
+        result.regular    = .font.regular orelse df.regular
+        result.bold       = .font.bold orelse df.bold
+        result.italic     = .font.italic orelse df.italic
+        result.boldItalic = .font.boldItalic orelse df.boldItalic
         return result
     }
 
     #[Swag.Overload]
     mtd setFont(fnt: FontFamily)
     {
-        me.font  = fnt
-        me.dirty = true
+        .font  = fnt
+        .dirty = true
     }
 
     #[Swag.Overload]
     mtd setFont(fnt: *Font, style: FontFamilyStyle)
     {
-        me.font.setFont(fnt, style)
-        me.dirty = true
+        .font.setFont(fnt, style)
+        .dirty = true
     }
 
     mtd clearFont()
     {
-        @init(&me.font, 1)
-        me.dirty = true
+        @init(&.font, 1)
+        .dirty = true
     }
 }

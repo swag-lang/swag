@@ -42,16 +42,16 @@ impl Painter
         let v2 = Math.Vector2{v1.x + n.x, v1.y + n.y}
         let v3 = Math.Vector2{v0.x + n.x, v0.y + n.y}
 
-        let prim1 = me.pushTriangle(v0, v1, v3, pen.brush.color)
-        let prim2 = me.pushTriangle(v1, v3, v2, pen.brush.color)
+        let prim1 = .pushTriangle(v0, v1, v3, pen.brush.color)
+        let prim2 = .pushTriangle(v1, v3, v2, pen.brush.color)
 
-        if me.curState.paintParams & .Antialiased
+        if .curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(prim1, v0, v3)
-            me.addEdgeAA(prim1, v1, v2)
-            me.addEdgeAA(prim2, v3, v2)
-            me.addEdgeAA(prim2, v1, v2)
-            me.addEdgeAA(prim2, v0, v3)
+            .addEdgeAA(prim1, v0, v3)
+            .addEdgeAA(prim1, v1, v2)
+            .addEdgeAA(prim2, v3, v2)
+            .addEdgeAA(prim2, v1, v2)
+            .addEdgeAA(prim2, v0, v3)
         }
     }
 
@@ -61,12 +61,12 @@ impl Painter
         let v0    = Math.Vector2{p.x + d.x, p.y + d.y}
         let v1    = Math.Vector2{p.x - d.x, p.y - d.y}
         let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
-        let prim1 = me.pushTriangle(v0, v1, v2, pen.brush.color)
+        let prim1 = .pushTriangle(v0, v1, v2, pen.brush.color)
 
-        if me.curState.paintParams & .Antialiased
+        if .curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(prim1, v1, v2)
-            me.addEdgeAA(prim1, v0, v2)
+            .addEdgeAA(prim1, v1, v2)
+            .addEdgeAA(prim1, v0, v2)
         }
     }
 
@@ -86,20 +86,20 @@ impl Painter
         let v2 = Math.Vector2{v1.x + n.x, v1.y + n.y}
         let v3 = Math.Vector2{v0.x + n.x, v0.y + n.y}
 
-        let prim1 = me.pushTriangle(v0, v1, v3, pen.brush.color)
-        let prim2 = me.pushTriangle(v1, v3, v2, pen.brush.color)
+        let prim1 = .pushTriangle(v0, v1, v3, pen.brush.color)
+        let prim2 = .pushTriangle(v1, v3, v2, pen.brush.color)
 
-        if me.curState.paintParams & .Antialiased
+        if .curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(prim1, v0, v3)
-            me.addEdgeAA(prim1, v1, v2)
-            me.addEdgeAA(prim1, v3, v2)
-            me.addEdgeAA(prim1, v0, v1)
+            .addEdgeAA(prim1, v0, v3)
+            .addEdgeAA(prim1, v1, v2)
+            .addEdgeAA(prim1, v3, v2)
+            .addEdgeAA(prim1, v0, v1)
 
-            me.addEdgeAA(prim2, v0, v3)
-            me.addEdgeAA(prim2, v1, v2)
-            me.addEdgeAA(prim2, v3, v2)
-            me.addEdgeAA(prim2, v0, v1)
+            .addEdgeAA(prim2, v0, v3)
+            .addEdgeAA(prim2, v1, v2)
+            .addEdgeAA(prim2, v3, v2)
+            .addEdgeAA(prim2, v0, v1)
         }
     }
 
@@ -119,12 +119,12 @@ impl Painter
             let v0    = Math.Vector2{p.x + d.x - n1.x * sx2, p.y + d.y - n1.y * sx2}
             let v1    = Math.Vector2{p.x, p.y}
             let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
-            let prim1 = me.pushTriangle(v0, v1, v2, pen.brush.color)
+            let prim1 = .pushTriangle(v0, v1, v2, pen.brush.color)
 
-            if me.curState.paintParams & .Antialiased
+            if .curState.paintParams & .Antialiased
             {
-                me.addEdgeAA(prim1, v0, v2)
-                me.addEdgeAA(prim1, v0, v1)
+                .addEdgeAA(prim1, v0, v2)
+                .addEdgeAA(prim1, v0, v1)
             }
         }
 
@@ -132,12 +132,12 @@ impl Painter
             let v0    = Math.Vector2{p.x - d.x - n1.x * sx2, p.y - d.y - n1.y * sx2}
             let v1    = Math.Vector2{p.x, p.y}
             let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
-            let prim1 = me.pushTriangle(v0, v1, v2, pen.brush.color)
+            let prim1 = .pushTriangle(v0, v1, v2, pen.brush.color)
 
-            if me.curState.paintParams & .Antialiased
+            if .curState.paintParams & .Antialiased
             {
-                me.addEdgeAA(prim1, v0, v2)
-                me.addEdgeAA(prim1, v0, v1)
+                .addEdgeAA(prim1, v0, v2)
+                .addEdgeAA(prim1, v0, v1)
             }
         }
     }
@@ -155,13 +155,13 @@ impl Painter
         let v0    = Math.Vector2{p.x + d.x, p.y + d.y}
         let v1    = Math.Vector2{p.x - d.x, p.y - d.y}
         let v2    = Math.Vector2{p.x + n.x, p.y + n.y}
-        let prim1 = me.pushTriangle(v0, v1, v2, pen.brush.color)
+        let prim1 = .pushTriangle(v0, v1, v2, pen.brush.color)
 
-        if me.curState.paintParams & .Antialiased
+        if .curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(prim1, v1, v2)
-            me.addEdgeAA(prim1, v0, v2)
-            me.addEdgeAA(prim1, v0, v1)
+            .addEdgeAA(prim1, v1, v2)
+            .addEdgeAA(prim1, v0, v2)
+            .addEdgeAA(prim1, v0, v1)
         }
     }
 
@@ -172,7 +172,7 @@ impl Painter
         let angle0 = Math.atan2(-d.y, -d.x)
         let angle1 = angle0 + Math.ConstF32.TwoPi
         let radius = sx * d.length()
-        me.drawRound(p, radius, angle0, angle1, pen)
+        .drawRound(p, radius, angle0, angle1, pen)
     }
 
     mtd drawCapRound(p, d: Math.Vector2, sens: f32, pen: Pen)
@@ -180,14 +180,14 @@ impl Painter
         var radius = d.length()
         if radius < 2.5
         {
-            me.drawCapTriangle(p, d, sens, pen)
+            .drawCapTriangle(p, d, sens, pen)
             return
         }
 
         let angle0 = Math.atan2(-d.y, -d.x)
         let angle1 = angle0 + Math.ConstF32.Pi
         radius *= sens
-        me.drawRound(p, radius, angle0, angle1, pen)
+        .drawRound(p, radius, angle0, angle1, pen)
     }
 
     mtd drawLineCap(capStyle: LineCapStyle, p, d: Math.Vector2, sens: f32, pen: Pen, start: bool)
@@ -198,19 +198,19 @@ impl Painter
         case None:
             return
         case Triangle:
-            me.drawCapTriangle(p, d, sens, pen)
+            .drawCapTriangle(p, d, sens, pen)
         case Round:
-            me.drawCapRound(p, d, sens, pen)
+            .drawCapRound(p, d, sens, pen)
         case Square:
-            me.drawCapSquare(p, d, sens, pen)
+            .drawCapSquare(p, d, sens, pen)
         case SquareAnchor:
-            me.drawCapSquareAnchor(p, d, sens, pen, start)
+            .drawCapSquareAnchor(p, d, sens, pen, start)
         case ArrowAnchor:
-            me.drawCapArrowAnchor(p, d, sens, pen, start)
+            .drawCapArrowAnchor(p, d, sens, pen, start)
         case ArrowAnchor2:
-            me.drawCapArrowAnchor2(p, d, sens, pen, start)
+            .drawCapArrowAnchor2(p, d, sens, pen, start)
         case RoundAnchor:
-            me.drawCapRoundAnchor(p, d, pen, start)
+            .drawCapRoundAnchor(p, d, pen, start)
         }
     }
 
@@ -225,11 +225,11 @@ impl Painter
         case None:
             break
         case Triangle:
-            me.drawCapTriangle(p, d, sens, dref cxt.pen)
+            .drawCapTriangle(p, d, sens, dref cxt.pen)
         case Round:
-            me.drawCapRound(p, d, sens, dref cxt.pen)
+            .drawCapRound(p, d, sens, dref cxt.pen)
         case Square:
-            me.drawCapSquare(p, d, sens, dref cxt.pen)
+            .drawCapSquare(p, d, sens, dref cxt.pen)
         }
     }
 
@@ -253,9 +253,9 @@ impl Painter
             v2 = Math.Vector2{p.x + d2.x, p.y + d2.y}
         }
 
-        let prim1 = me.pushTriangle(v0, v1, v2, pen.brush.color)
-        if me.curState.paintParams & .Antialiased:
-            me.addEdgeAA(prim1, v1, v2)
+        let prim1 = .pushTriangle(v0, v1, v2, pen.brush.color)
+        if .curState.paintParams & .Antialiased:
+            .addEdgeAA(prim1, v1, v2)
     }
 
     mtd drawRound(center: Math.Vector2, radius: f32, angle0, angle1: f32, pen: Pen)
@@ -266,35 +266,35 @@ impl Painter
         endPos.x   = center.x + (Math.cos(angle1) * radius)
         endPos.y   = center.y + (Math.sin(angle1) * radius)
 
-        let minDist = LinePath.getFlattenDistance(me.curState.paintQuality)
+        let minDist = LinePath.getFlattenDistance(.curState.paintQuality)
 
         // We divide a segment by half until the computed point on the curve is
         // close to the corresponding segment
-        me.sharedRoundTmp.clear()
-        me.sharedRoundTmp.add({angle0, startPos})
-        me.sharedRoundTmp.add({angle1, endPos})
+        .sharedRoundTmp.clear()
+        .sharedRoundTmp.add({angle0, startPos})
+        .sharedRoundTmp.add({angle1, endPos})
 
         var point: Math.Vector2 = undefined
-        for var i = 0; i < me.sharedRoundTmp.count - 1; i += 1
+        for var i = 0; i < .sharedRoundTmp.count - 1; i += 1
         {
-            let angle = (me.sharedRoundTmp[i].factor + me.sharedRoundTmp[i + 1].factor) * 0.5
+            let angle = (.sharedRoundTmp[i].factor + .sharedRoundTmp[i + 1].factor) * 0.5
             point.x = center.x + (Math.cos(angle) * radius)
             point.y = center.y + (Math.sin(angle) * radius)
-            let dist = Math.Geometry.distanceToLine(point, me.sharedRoundTmp[i].pos, me.sharedRoundTmp[i + 1].pos)
+            let dist = Math.Geometry.distanceToLine(point, .sharedRoundTmp[i].pos, .sharedRoundTmp[i + 1].pos)
             if dist < minDist:
                 continue
 
-            me.sharedRoundTmp.insertAt(cast(u64) i + 1, {angle, point})
+            .sharedRoundTmp.insertAt(cast(u64) i + 1, {angle, point})
             i -= 1
         }
 
         var v1 = startPos
-        for i in 1 until me.sharedRoundTmp.count
+        for i in 1 until .sharedRoundTmp.count
         {
-            let v2    = me.sharedRoundTmp[i].pos
-            let prim1 = me.pushTriangle(center, v1, v2, pen.brush.color)
-            if me.curState.paintParams & .Antialiased:
-                me.addEdgeAA(prim1, v1, v2)
+            let v2    = .sharedRoundTmp[i].pos
+            let prim1 = .pushTriangle(center, v1, v2, pen.brush.color)
+            if .curState.paintParams & .Antialiased:
+                .addEdgeAA(prim1, v1, v2)
             v1 = v2
         }
     }
@@ -323,7 +323,7 @@ impl Painter
         elif angle1 < angle0 - Math.ConstF32.Pi:
             angle1 += Math.ConstF32.TwoPi
 
-        me.drawRound(p, radius, angle0, angle1, pen)
+        .drawRound(p, radius, angle0, angle1, pen)
     }
 
     mtd drawJoinMiter(p, d1, d2: Math.Vector2, justMiter: bool, pen: Pen)
@@ -340,7 +340,7 @@ impl Painter
             if justMiter:
                 m2 = pen.joinMiterLimit
             else:
-                return me.drawJoinBevel(p, d1, d2, pen)
+                return .drawJoinBevel(p, d1, d2, pen)
         }
 
         a.x = a.x / l * m2 * w
@@ -366,14 +366,14 @@ impl Painter
             v3 = Math.Vector2{p.x + d2.x, p.y + d2.y}
         }
 
-        let prim1 = me.pushTriangle(v0, v1, v3, pen.brush.color)
-        let prim2 = me.pushTriangle(v1, v3, v2, pen.brush.color)
-        if me.curState.paintParams & .Antialiased
+        let prim1 = .pushTriangle(v0, v1, v3, pen.brush.color)
+        let prim2 = .pushTriangle(v1, v3, v2, pen.brush.color)
+        if .curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(prim1, v3, v2)
-            me.addEdgeAA(prim1, v1, v2)
-            me.addEdgeAA(prim2, v3, v2)
-            me.addEdgeAA(prim2, v1, v2)
+            .addEdgeAA(prim1, v3, v2)
+            .addEdgeAA(prim1, v1, v2)
+            .addEdgeAA(prim2, v3, v2)
+            .addEdgeAA(prim2, v1, v2)
         }
     }
 
@@ -385,13 +385,13 @@ impl Painter
         case None:
             break
         case Bevel:
-            me.drawJoinBevel(p, d1, d2, dref cxt.pen)
+            .drawJoinBevel(p, d1, d2, dref cxt.pen)
         case Round:
-            me.drawJoinRound(p, d1, d2, dref cxt.pen)
+            .drawJoinRound(p, d1, d2, dref cxt.pen)
         case Miter:
-            me.drawJoinMiter(p, d1, d2, true, dref cxt.pen)
+            .drawJoinMiter(p, d1, d2, true, dref cxt.pen)
         case MiterBevel:
-            me.drawJoinMiter(p, d1, d2, false, dref cxt.pen)
+            .drawJoinMiter(p, d1, d2, false, dref cxt.pen)
         }
     }
 
@@ -402,15 +402,15 @@ impl Painter
 
         // Cap is defined
         if cxt.pen.dashEndCapStyle != DashCapStyle.None:
-            me.drawDashCap(cxt, cxt.pen.dashEndCapStyle, posCap, normalCap, -1.0)
+            .drawDashCap(cxt, cxt.pen.dashEndCapStyle, posCap, normalCap, -1.0)
 
         // AA end edge if no cap
-        elif me.curState.paintParams & .Antialiased
+        elif .curState.paintParams & .Antialiased
         {
-            let prim2p = me.vertexBuffer.buffer + cxt.prim2
+            let prim2p = .vertexBuffer.buffer + cxt.prim2
             let prim2t = prim2p + 2
-            me.addEdgeAA(cxt.prim1, prim2p.pos, prim2t.pos)
-            me.addEdgeAA(cxt.prim2, prim2p.pos, prim2t.pos)
+            .addEdgeAA(cxt.prim1, prim2p.pos, prim2t.pos)
+            .addEdgeAA(cxt.prim2, prim2p.pos, prim2t.pos)
         }
     }
 
@@ -454,35 +454,35 @@ impl Painter
         if cxt.pen.dashStyle != .None and (!cxt.firstLine or cxt.path.isClosed) and cxt.beginLine and cxt.pen.dashBegCapStyle != .None
         {
             flatBegin = false
-            me.drawDashCap(cxt, cxt.pen.dashBegCapStyle, cxt.prev, cxt.normal, 1.0)
+            .drawDashCap(cxt, cxt.pen.dashBegCapStyle, cxt.prev, cxt.normal, 1.0)
         }
 
         // Joints
         if !cxt.beginLine:
-            me.drawJoin(cxt, cxt.prev, cxt.normalPrev, cxt.normal)
+            .drawJoin(cxt, cxt.prev, cxt.normalPrev, cxt.normal)
 
         // Draw quad
         let v0 = cxt.prev - cxt.normal
         let v1 = newPos - cxt.normal
         let v3 = cxt.prev + cxt.normal
         let v2 = newPos + cxt.normal
-        cxt.prim1 = me.pushTriangle(v0, v1, v3, cxt.pen.brush.color)
-        cxt.prim2 = me.pushTriangle(v1, v3, v2, cxt.pen.brush.color)
+        cxt.prim1 = .pushTriangle(v0, v1, v3, cxt.pen.brush.color)
+        cxt.prim2 = .pushTriangle(v1, v3, v2, cxt.pen.brush.color)
 
         // Generate AA edges
-        if me.curState.paintParams & .Antialiased
+        if .curState.paintParams & .Antialiased
         {
-            me.addEdgeAA(cxt.prim1, v0, v1)
-            me.addEdgeAA(cxt.prim1, v3, v2)
-            me.addEdgeAA(cxt.prim2, v0, v1)
-            me.addEdgeAA(cxt.prim2, v3, v2)
+            .addEdgeAA(cxt.prim1, v0, v1)
+            .addEdgeAA(cxt.prim1, v3, v2)
+            .addEdgeAA(cxt.prim2, v0, v1)
+            .addEdgeAA(cxt.prim2, v3, v2)
 
             // If we are starting a line, and the line does not have a cap before, then
             // we must AA the corresponding edge
             if flatBegin and cxt.beginLine and (!cxt.firstLine or cxt.pen.begCapStyle == .None or cxt.path.isClosed)
             {
-                me.addEdgeAA(cxt.prim1, v0, v3)
-                me.addEdgeAA(cxt.prim2, v0, v3)
+                .addEdgeAA(cxt.prim1, v0, v3)
+                .addEdgeAA(cxt.prim2, v0, v3)
             }
         }
 
@@ -549,7 +549,7 @@ impl Painter
         // solid
         if cxt.pen.dashStyle == .None
         {
-            me.drawLineInternal(cxt, pos)
+            .drawLineInternal(cxt, pos)
             return
         }
 
@@ -583,13 +583,13 @@ impl Painter
                 let nextp = cxt.prev + (v * lengthInPattern)
                 if blankPatternIdx
                 {
-                    me.drawDashEndCap(cxt, cxt.prev, cxt.normal)
+                    .drawDashEndCap(cxt, cxt.prev, cxt.normal)
                     drawMoveCursor(cxt, nextp)
                     cxt.error -= addBlank
                 }
                 else
                 {
-                    me.drawLineInternal(cxt, nextp)
+                    .drawLineInternal(cxt, nextp)
                 }
 
                 // Start a new fresh pattern index
@@ -606,12 +606,12 @@ impl Painter
             cxt.remainingPatternLen -= remainingSegLen
             if blankPatternIdx
             {
-                me.drawDashEndCap(cxt, cxt.prev, cxt.normal)
+                .drawDashEndCap(cxt, cxt.prev, cxt.normal)
                 drawMoveCursor(cxt, pos)
             }
             else
             {
-                me.drawLineInternal(cxt, pos)
+                .drawLineInternal(cxt, pos)
             }
             break
         }
@@ -780,7 +780,7 @@ impl Painter
                 n.normalizeSafe()
                 var c = n.cross(1)
                 c *= cxt.penSize2
-                me.drawLineCap(cxt.pen.begCapStyle, v1, c, 1.0, dref cxt.pen, true)
+                .drawLineCap(cxt.pen.begCapStyle, v1, c, 1.0, dref cxt.pen, true)
             }
 
             // Draw end cap
@@ -792,7 +792,7 @@ impl Painter
                 n.normalizeSafe()
                 var c = n.cross(1)
                 c *= cxt.penSize2
-                me.drawLineCap(cxt.pen.endCapStyle, v1, c, -1.0, dref cxt.pen, false)
+                .drawLineCap(cxt.pen.endCapStyle, v1, c, -1.0, dref cxt.pen, false)
             }
         }
 
@@ -808,7 +808,7 @@ impl Painter
                     let nextPoint = cxt.path.polygon.getPoint(startPointIndex, cxt.offsetPath)
                     let startTo   = actualStartPoint - nextPoint
                     if startTo.length() > 0.01:
-                        me.drawLine(cxt, nextPoint)
+                        .drawLine(cxt, nextPoint)
                 }
 
                 for i in (startPointIndex + 1) to endPointIndex
@@ -816,7 +816,7 @@ impl Painter
                     if i < cxt.path.polygon.points.count
                     {
                         let p = cxt.path.polygon.getPoint(i, cxt.offsetPath)
-                        me.drawLine(cxt, p)
+                        .drawLine(cxt, p)
                     }
                 }
 
@@ -824,26 +824,26 @@ impl Painter
                 let endTo = actualEndPoint - cxt.path.polygon.getPoint(endPointIndex, cxt.offsetPath)
                 if endTo.length() > 0.01
                 {
-                    me.drawLine(cxt, actualEndPoint)
+                    .drawLine(cxt, actualEndPoint)
                 }
             }
             else
             {
-                me.drawLine(cxt, actualEndPoint)
+                .drawLine(cxt, actualEndPoint)
             }
         }
 
         // Handle AA and closing as before...
-        if !cxt.lastLineInvalid and !cxt.path.isClosed and (me.curState.paintParams & .Antialiased) and (cxt.pen.endCapStyle == .None)
+        if !cxt.lastLineInvalid and !cxt.path.isClosed and (.curState.paintParams & .Antialiased) and (cxt.pen.endCapStyle == .None)
         {
-            let prim2p = me.vertexBuffer.buffer + cxt.prim2
+            let prim2p = .vertexBuffer.buffer + cxt.prim2
             let prim2t = prim2p + 2
-            me.addEdgeAA(cxt.prim1, prim2p.pos, prim2t.pos)
-            me.addEdgeAA(cxt.prim2, prim2p.pos, prim2t.pos)
+            .addEdgeAA(cxt.prim1, prim2p.pos, prim2t.pos)
+            .addEdgeAA(cxt.prim2, prim2p.pos, prim2t.pos)
         }
         elif cxt.path.isClosed and !cxt.firstLine and !cxt.beginLine
         {
-            me.drawJoin(cxt, cxt.prev, cxt.normal, cxt.normalFirst)
+            .drawJoin(cxt, cxt.prev, cxt.normal, cxt.normalFirst)
         }
     }
 }
@@ -861,7 +861,7 @@ public impl Painter
     #[Swag.Overload]
     mtd drawPath(path: *LinePath, pen: Pen)
     {
-        path.flatten(me.curState.paintQuality)
+        path.flatten(.curState.paintQuality)
         if Math.isZeroEpsilon(path.polygon.totalLen):
             return
 
@@ -875,12 +875,12 @@ public impl Painter
         var bvMax = path.bvMax
         bvMin -= pen.size / 2
         bvMax += pen.size / 2
-        me.setTexture0(bvMin, bvMax, pen.brush)
-        me.resetTextureFont()
+        .setTexture0(bvMin, bvMax, pen.brush)
+        .resetTextureFont()
 
-        me.startOverlapMode(pen)
-        me.drawPath(&cxt)
-        me.stopOverlapMode()
+        .startOverlapMode(pen)
+        .drawPath(&cxt)
+        .stopOverlapMode()
     }
 
     // Draw a list of paths.
@@ -892,20 +892,20 @@ public impl Painter
         if mode == .Separate
         {
             foreach p in pathList.paths:
-                me.drawPath(p, pen)
+                .drawPath(p, pen)
             return
         }
 
-        pathList.flatten(me.curState.paintQuality)
+        pathList.flatten(.curState.paintQuality)
 
         var bvMin = pathList.bvMin
         var bvMax = pathList.bvMax
         bvMin -= pen.size / 2
         bvMax += pen.size / 2
-        me.setTexture0(bvMin, bvMax, pen.brush)
-        me.resetTextureFont()
+        .setTexture0(bvMin, bvMax, pen.brush)
+        .resetTextureFont()
 
-        me.startOverlapMode(pen)
+        .startOverlapMode(pen)
 
         var cxt: Context
         foreach p in pathList.paths
@@ -914,10 +914,10 @@ public impl Painter
             cxt.pen  = &pen
             if pen.dashStyle != .None:
                 preparePattern(&cxt)
-            me.drawPath(&cxt)
+            .drawPath(&cxt)
         }
 
-        me.stopOverlapMode()
+        .stopOverlapMode()
     }
 
     #[Swag.Overload]

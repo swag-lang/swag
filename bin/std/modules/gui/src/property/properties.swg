@@ -120,8 +120,8 @@ impl IWnd for Properties
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        let colorBar = me.cursorSet ? me.getThemeColors().splitView_BarHot : me.getThemeColors().prop_GridColumn
-        me.aniBar.apply(me, colorBar)
+        let colorBar = .cursorSet ? .getThemeColors().splitView_BarHot : .getThemeColors().prop_GridColumn
+        .aniBar.apply(me, colorBar)
     }
 }
 
@@ -129,13 +129,13 @@ internal impl Properties
 {
     mtd getColumnX()->f32
     {
-        return me.gridColumnSize + me.gridMarginColumn * 0.5
+        return .gridColumnSize + .gridMarginColumn * 0.5
     }
 
     mtd hitTest(ptLoc: Math.Point)->#null *PropertiesItem
     {
-        let pt = ptLoc + me.scrollWnd.getScrollPos()
-        foreach item in me.items
+        let pt = ptLoc + .scrollWnd.getScrollPos()
+        foreach item in .items
         {
             if !item.line.isVisible():
                 continue
@@ -168,22 +168,22 @@ internal impl Properties
         {
             let arrData = cast(*Array'u8) item.data
             itemDisabled = !canChange or arrData.isEmpty()
-            menu.addItem("Remove All", "ClearArray", me.getTheme().getIcon24(.RemoveAll), disabled: itemDisabled)
+            menu.addItem("Remove All", "ClearArray", .getTheme().getIcon24(.RemoveAll), disabled: itemDisabled)
         }
 
         if item.parent and item.parent.type and Reflection.isStructArray(item.parent.type)
         {
             itemDisabled = !canChange
-            menu.addItem("Remove", "ClearElementArray", me.getTheme().getIcon24(.Remove), disabled: itemDisabled)
+            menu.addItem("Remove", "ClearElementArray", .getTheme().getIcon24(.Remove), disabled: itemDisabled)
         }
 
         if item.data and item.type
         {
             if menu.items.count:
                 menu.addSeparator()
-            menu.addItem("Copy", "Copy", me.getTheme().getIcon24(.Copy))
+            menu.addItem("Copy", "Copy", .getTheme().getIcon24(.Copy))
             itemDisabled = !canChange or !Clipboard.hasTypedValue(item.type)
-            menu.addItem("Paste", "Paste", me.getTheme().getIcon24(.Paste), disabled: itemDisabled)
+            menu.addItem("Paste", "Paste", .getTheme().getIcon24(.Paste), disabled: itemDisabled)
         }
 
         if !menu.items.count
@@ -192,21 +192,21 @@ internal impl Properties
             return
         }
 
-        me.editPopup = menu
+        .editPopup = menu
         let result = menu.doModal(pt)
-        me.editPopup = null
+        .editPopup = null
 
         switch result
         {
         case "ClearArray":
-            if MessageDlg.confirm(me.wnd.surface, "This will remove all elements") != Dialog.BtnYes:
+            if MessageDlg.confirm(.wnd.surface, "This will remove all elements") != Dialog.BtnYes:
                 break
-            me.clearArray(item)
+            .clearArray(item)
 
         case "ClearElementArray":
-            if MessageDlg.confirm(me.wnd.surface, "This will remove the element") != Dialog.BtnYes:
+            if MessageDlg.confirm(.wnd.surface, "This will remove the element") != Dialog.BtnYes:
                 break
-            me.removeArrayValue(item)
+            .removeArrayValue(item)
 
         case "Copy":
             Clipboard.addTypedValue(item.data, item.type)
@@ -214,8 +214,8 @@ internal impl Properties
         case "Paste":
             if Clipboard.getTypedValue(item.data, item.type)
             {
-                me.refreshItem(item)
-                me.hasChanged(item)
+                .refreshItem(item)
+                .hasChanged(item)
             }
         }
     }
@@ -333,13 +333,13 @@ internal impl Properties
     {
         var colBkBk, colBk, colBorder: Color
 
-        let colors = me.wnd.getThemeColors()
-        if item == me.selItem
+        let colors = .wnd.getThemeColors()
+        if item == .selItem
         {
             colBk     = colors.prop_FocusBk
             colBorder = colors.prop_FocusBorder
         }
-        elif me.hotItem == item and me.hotItem.line.isEnabled()
+        elif .hotItem == item and .hotItem.line.isEnabled()
         {
             colBk     = colors.prop_HotBk
             colBorder = colors.prop_HotBorder
@@ -351,23 +351,23 @@ internal impl Properties
         var r = wndItem.getClientRect()
         r.moveTop(wndItem.childs.front().position.y)
         r.inflate(item.extendFocus)
-        if me.kind == .Grid
+        if .kind == .Grid
         {
             r.x     = 0
-            r.width = me.edView.position.width - 1
+            r.width = .edView.position.width - 1
         }
         else
         {
-            r.x     = -me.leftMargin + 1
-            r.width = me.edView.position.width - 1
+            r.x     = -.leftMargin + 1
+            r.width = .edView.position.width - 1
         }
 
         // Background
-        if me.kind == .Grid and item.flags.has(.Section):
+        if .kind == .Grid and item.flags.has(.Section):
             colBkBk = colors.prop_SectionBk
-        elif me.kind == .Grid and item.flags.has(.Category):
+        elif .kind == .Grid and item.flags.has(.Category):
             colBkBk = colors.prop_CategBk
-        elif me.kind == .Grid and item.level > 1:
+        elif .kind == .Grid and item.level > 1:
             colBkBk = colors.prop_Bk1
         painter.fillRect(r, colBkBk)
 
@@ -379,7 +379,7 @@ internal impl Properties
         }
 
         // In grid mode, display borders and column separator
-        if me.kind == .Grid
+        if .kind == .Grid
         {
             var r1 = r
             r1.height += 1
@@ -387,10 +387,10 @@ internal impl Properties
 
             if !item.flags.has(.NoSeparator)
             {
-                let x    = me.getColumnX() - item.line.position.x
-                let size = me.cursorSet ? 4 : 1
+                let x    = .getColumnX() - item.line.position.x
+                let size = .cursorSet ? 4 : 1
                 let rect = Math.Rectangle{x - size * 0.5, r1.y, size, r1.height}
-                painter.fillRect(rect, me.aniBar.cur())
+                painter.fillRect(rect, .aniBar.cur())
             }
         }
 
@@ -402,9 +402,9 @@ internal impl Properties
         }
 
         // Expand/Collapse icon
-        if me.kind == .Grid and item.numChilds
+        if .kind == .Grid and item.numChilds
         {
-            let expand = me.getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
+            let expand = .getTheme().getIcon24(item.flags.has(.Expanded) ? .Expanded : .Collapsed)
             expand.paint(painter, r.x + 2, r.vertCenter() - expand.sizeY * 0.5, Argb.White)
         }
     }
@@ -417,7 +417,7 @@ internal impl Properties
         switch evt
         {
         case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed and mouseEvt.button == .Right:
-            me.popupMenu(item, mouseEvt.surfacePos)
+            .popupMenu(item, mouseEvt.surfacePos)
             return true
 
         case NotifyEvent as ntfyEvt where ntfyEvt.ntfyKind == .ChildFocusChanged:
@@ -425,7 +425,7 @@ internal impl Properties
             return true
 
         case PaintEvent as paintEvt where paintEvt.kind == .PrePaint:
-            me.paintBackItem(paintEvt.bc.painter, item, wndItem)
+            .paintBackItem(paintEvt.bc.painter, item, wndItem)
         }
 
         return false
@@ -451,7 +451,7 @@ internal impl Properties
 
             scan = scan.parent
 
-            if scan and me.kind == .Grid and scan.numChilds and !scan.flags.has(.Expanded):
+            if scan and .kind == .Grid and scan.numChilds and !scan.flags.has(.Expanded):
                 result.visible = false
         }
 
@@ -485,7 +485,7 @@ internal impl Properties
             {
                 let typeStruct = cast(const *Swag.TypeInfoStruct) pointed
                 if typeStruct.fromGeneric == Array:
-                    me.refreshArray(item)
+                    .refreshArray(item)
             }
         }
     }
@@ -494,11 +494,11 @@ internal impl Properties
     {
         var line: *Wnd
 
-        if me.kind == .Grid:
-            line = Wnd.create'Wnd(me.edView, {0, 0, me.position.width, height orelse me.gridLineHeight})
+        if .kind == .Grid:
+            line = Wnd.create'Wnd(.edView, {0, 0, .position.width, height orelse .gridLineHeight})
         else
         {
-            let stk = StackLayoutCtrl.create(me.edView, .Top, {0, 0, me.position.width, height orelse me.gridLineHeight})
+            let stk = StackLayoutCtrl.create(.edView, .Top, {0, 0, .position.width, height orelse .gridLineHeight})
             stk.fitToContent = true
             line             = stk
         }
@@ -530,7 +530,7 @@ internal impl Properties
                 .extendFocus = me.gridLineMargin * 0.5
         }
 
-        line.hookOnEvent = mtd|item|(wnd, evt) { return me.onItemEvent(item, wnd, evt); }
+        line.hookOnEvent = mtd|item|(wnd, evt) { return .onItemEvent(item, wnd, evt); }
 
         // Name
         if flags.has(.Name)
@@ -589,7 +589,7 @@ internal impl Properties
 
             if flags.has(.Description)
             {
-                if me.kind != .Grid
+                if .kind != .Grid
                 {
                     with let labelDesc = Label.create(line, "", {0, 0, me.position.width, 0})
                     {
@@ -613,9 +613,9 @@ internal impl Properties
         switch
         {
         case Reflection.isStaticArray(value.pointedType):
-            let item           = me.addItem(value, data, parentItem)
+            let item           = .addItem(value, data, parentItem)
             let typeArr        = cast(const *Swag.TypeInfoArray) value.pointedType
-            let numItemsBefore = me.items.count
+            let numItemsBefore = .items.count
 
             var newData = data
             for i in typeArr.count
@@ -623,37 +623,37 @@ internal impl Properties
                 var subValue: Swag.TypeValue
                 subValue.name        = Format.toString("%", i).toString()
                 subValue.pointedType = typeArr.pointedType
-                me.addValue(subValue, newData, item)
+                .addValue(subValue, newData, item)
                 newData += typeArr.pointedType.sizeof
             }
 
-            item.numChilds += cast(u32) (me.items.count - numItemsBefore)
+            item.numChilds += cast(u32) (.items.count - numItemsBefore)
 
         case Reflection.isEnum(value.pointedType):
             let typeEnum = cast(const *Swag.TypeInfoEnum) value.pointedType
-            me.constructEnum(value, typeEnum, data, parentItem)
+            .constructEnum(value, typeEnum, data, parentItem)
 
         case value.pointedType == Core.String:
-            me.constructDynamicString(value, data, parentItem)
+            .constructDynamicString(value, data, parentItem)
 
         case Reflection.isString(value.pointedType):
-            me.constructStaticString(value, data, parentItem)
+            .constructStaticString(value, data, parentItem)
 
         case Reflection.isBool(value.pointedType):
-            me.constructBool(value, data, parentItem)
+            .constructBool(value, data, parentItem)
 
         case Reflection.isInteger(value.pointedType) or Reflection.isFloat(value.pointedType):
             let typeNative = cast(const *Swag.TypeInfoNative) value.pointedType
-            me.constructNative(value, typeNative, data, parentItem)
+            .constructNative(value, typeNative, data, parentItem)
 
         case value.pointedType == Array:
-            me.constructArray(value, data, parentItem)
+            .constructArray(value, data, parentItem)
 
         case Reflection.isStruct(value.pointedType):
             let typeSubStruct = cast(const *Swag.TypeInfoStruct) value.pointedType
             if typeSubStruct.fromGeneric == Array
             {
-                me.constructArray(value, data, parentItem)
+                .constructArray(value, data, parentItem)
                 break
             }
 
@@ -667,10 +667,10 @@ internal impl Properties
             }
             else
             {
-                let item           = me.addItem(value, data, parentItem)
-                let numItemsBefore = me.items.count
-                me.addStructInternal(typeSubStruct, data, item)
-                item.numChilds = cast(u32) (me.items.count - numItemsBefore)
+                let item           = .addItem(value, data, parentItem)
+                let numItemsBefore = .items.count
+                .addStructInternal(typeSubStruct, data, item)
+                item.numChilds = cast(u32) (.items.count - numItemsBefore)
             }
         }
     }
@@ -691,19 +691,19 @@ internal impl Properties
             if subCateg != null
             {
                 let v:   Swag.TypeValue{name: cast(string) subCateg}
-                let item = me.addItem(v, null, parentItem)
-                item.label.style.setFont(&me.fontCategory)
+                let item = .addItem(v, null, parentItem)
+                item.label.style.setFont(&.fontCategory)
                 item.flags.add(.Category | .NoSeparator | .Expanded | .NoFocus)
                 item.level = 0
-                me.sections.add({item, 1})
+                .sections.add({item, 1})
                 newParent = item
                 categItem = item
             }
 
-            let numItemsBefore = me.items.count
-            me.addValue(value, addr + value.offset, newParent)
+            let numItemsBefore = .items.count
+            .addValue(value, addr + value.offset, newParent)
             if categItem:
-                categItem.numChilds += cast(u32) (me.items.count - numItemsBefore)
+                categItem.numChilds += cast(u32) (.items.count - numItemsBefore)
         }
     }
 }
@@ -772,48 +772,48 @@ impl Properties
         Debug.assert(typeof.kind == .Struct)
 
         var item:          *PropertiesItem
-        let numItemsBefore = me.items.count
+        let numItemsBefore = .items.count
 
         // Section
         if section != null
         {
             let v: Swag.TypeValue{name: section}
-            item = me.addItem(v, null, null)
+            item = .addItem(v, null, null)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
-            item.label.style.setFont(&me.fontSection)
-            item.section = cast(u32) me.sections.count
-            me.sections.add({item, 0})
+            item.label.style.setFont(&.fontSection)
+            item.section = cast(u32) .sections.count
+            .sections.add({item, 0})
         }
 
         // Creates an empty parent item
         else
         {
             let v: Swag.TypeValue
-            item = me.addItem(v, null, null, 0, .Zero)
+            item = .addItem(v, null, null, 0, .Zero)
             item.flags.add(.Section | .NoSeparator | .Expanded | .NoFocus)
         }
 
         let typeStruct = cast(const *Swag.TypeInfoStruct) typeof
-        me.addStructInternal(typeStruct, dataof, item)
+        .addStructInternal(typeStruct, dataof, item)
 
-        item.numChilds = cast(u32) (me.items.count - numItemsBefore)
+        item.numChilds = cast(u32) (.items.count - numItemsBefore)
 
-        me.updateStates()
-        me.edView.sendResizeEvent()
+        .updateStates()
+        .edView.sendResizeEvent()
     }
 
     // Refresh all displayed values.
     mtd refresh()
     {
-        foreach it in me.items:
-            me.refreshItem(it)
+        foreach it in .items:
+            .refreshItem(it)
     }
 
     // To be called when a value has changed.
     mtd hasChanged(item: *PropertiesItem)
     {
-        me.refresh()
-        me.sigChanged.call(me, item)
+        .refresh()
+        .sigChanged.call(me, item)
 
         // Notify all the hierarchy
         var scan = item
@@ -824,25 +824,25 @@ impl Properties
             scan = scan.parent
         }
 
-        if Reflection.hasAttribute(item.typeValue, me.RecalcLayout):
-            me.updateStates()
+        if Reflection.hasAttribute(item.typeValue, .RecalcLayout):
+            .updateStates()
     }
 
     // Show hidden content depending on the input 'filter'.
     mtd setStringFilter(filter: string)
     {
-        if me.stringFilter == filter:
+        if .stringFilter == filter:
             return
-        me.stringFilter = filter
-        me.updateStates()
+        .stringFilter = filter
+        .updateStates()
     }
 
     // Only display a given section.
     // If 'sectionIndex' is too big, all sections will be displayed.
     mtd setCurrentSection(sectionIndex: u32)
     {
-        me.currentSectionIndex = sectionIndex
-        me.updateStates()
+        .currentSectionIndex = sectionIndex
+        .updateStates()
     }
 
     // Returns true if the given item can be changed
@@ -871,15 +871,15 @@ impl Properties
         var mustShow   = false
         var mustEnable = false
 
-        if item.section == me.currentSectionIndex or me.currentSectionIndex >= me.sections.count
+        if item.section == .currentSectionIndex or .currentSectionIndex >= .sections.count
         {
-            if me.stringFilter.length == 0:
+            if .stringFilter.length == 0:
                 mustShow = true
-            elif Utf8.indexOf(item.filter.toSlice(), me.stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max:
+            elif Utf8.indexOf(item.filter.toSlice(), .stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max:
                 mustShow = true
 
             if mustShow:
-                (mustShow, mustEnable) = me.getItemState(item)
+                (mustShow, mustEnable) = .getItemState(item)
         }
 
         item.line.show(mustShow)
@@ -894,7 +894,7 @@ impl Properties
             {
                 scan.line.show()
 
-                (?, mustEnable) = me.getItemState(scan)
+                (?, mustEnable) = .getItemState(scan)
                 scan.line.enable(mustEnable)
 
                 scan = scan.parent
@@ -905,27 +905,27 @@ impl Properties
     // Update the show/hide state of all content
     mtd updateStates()
     {
-        foreach it in me.items:
-            me.updateItemState(it)
-        me.applyLayout()
-        me.scrollWnd.view.sendResizeEvent()
+        foreach it in .items:
+            .updateItemState(it)
+        .applyLayout()
+        .scrollWnd.view.sendResizeEvent()
     }
 
     // Set the grid mode column size
     mtd setColumnSize(size: s32)
     {
-        if me.kind != .Grid:
+        if .kind != .Grid:
             return
 
-        me.gridColumnSize = Math.clamp(size, me.gridMarginColumn, cast(s32) me.position.width - me.gridMarginColumn - me.leftMargin - me.rightMargin)
-        foreach item in me.items
+        .gridColumnSize = Math.clamp(size, .gridMarginColumn, cast(s32) .position.width - .gridMarginColumn - .leftMargin - .rightMargin)
+        foreach item in .items
         {
             if !item.label:
                 continue
-            item.label.position.width = me.gridColumnSize
+            item.label.position.width = .gridColumnSize
         }
 
-        me.applyLayout()
-        me.invalidate()
+        .applyLayout()
+        .invalidate()
     }
 }

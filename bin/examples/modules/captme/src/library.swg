@@ -31,20 +31,20 @@ impl Library
 
     mtd fill()
     {
-        me.files = catch Directory.enumerateFiles(getFolder(), ".captme")
+        .files = catch Directory.enumerateFiles(getFolder(), ".captme")
     }
 
     mtd removeFile(name: string)
     {
-        foreach fi, idx in me.files
+        foreach fi, idx in .files
         {
             if fi.fullname == name
             {
                 catch File.delete(name)
                 if @err == null
                 {
-                    me.files.removeAtOrdered(idx)
-                    me.onDeleteFile.call(name)
+                    .files.removeAtOrdered(idx)
+                    .onDeleteFile.call(name)
                 }
 
                 break
@@ -57,6 +57,6 @@ impl Library
         let file = catch File.getFileInfo(name)
         if @err != null:
             return
-        me.files.add(file)
+        .files.add(file)
     }
 }

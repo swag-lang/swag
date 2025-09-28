@@ -6,16 +6,16 @@ impl Image
     public mtd fillGradient2(color0, color1: Color)
     {
         // unsupported pixel format
-        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
+        if .pf.channels() < 3 or .pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]
-        func(PF: PixelFormat) doIt()
+        mtd(PF: PixelFormat) doIt()
         {
-            var pix = me.pixels.buffer
-            for x in me.width
+            var pix = .pixels.buffer
+            for x in .width
             {
-                let factor0 = x / cast(f32) me.width
+                let factor0 = x / cast(f32) .width
                 let b       = cast(u8) Math.lerp(cast(f32) color0.b, cast(f32) color1.b, factor0)
                 let g       = cast(u8) Math.lerp(cast(f32) color0.g, cast(f32) color1.g, factor0)
                 let r       = cast(u8) Math.lerp(cast(f32) color0.r, cast(f32) color1.r, factor0)
@@ -23,25 +23,25 @@ impl Image
                 if PF.bpp() == 32:
                     a = cast(u8) Math.lerp(cast(f32) color0.a, cast(f32) color1.a, factor0)
                 convertToRGBA8'PF(pix, r, g, b, a)
-                pix += me.bpp8
+                pix += .bpp8
             }
         }
 
-        switch me.pf
+        switch .pf
         {
         case BGR8:
-            doIt'BGR8()
+            .doIt'BGR8()
         case BGRA8:
-            doIt'BGRA8()
+            .doIt'BGRA8()
         case RGB8:
-            doIt'RGB8()
+            .doIt'RGB8()
         case RGBA8:
-            doIt'RGBA8()
+            .doIt'RGBA8()
         default:
             Debug.assert(false)
         }
 
-        me.visitPixels(stride: me.width)
+        .visitPixels(stride: .width)
         {
             Memory.copy(pix, image.pixels.buffer, cast(u64) image.width * image.bpp8)
         }
@@ -51,13 +51,13 @@ impl Image
     public mtd fillGradient4(topLeft, topRight, bottomLeft, bottomRight: Color)
     {
         // unsupported pixel format
-        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
+        if .pf.channels() < 3 or .pf.bitDepth() != 8:
             return
 
         #[Swag.Mixin]
-        func(PF: PixelFormat) doIt()
+        mtd(PF: PixelFormat) doIt()
         {
-            me.visitPixels(&f)
+            .visitPixels(&f)
             {
                 let params  = cast(*#decltype(f)) userData
                 let factor0 = x / cast(f32) image.width
@@ -70,16 +70,16 @@ impl Image
         }
 
         var f = {topLeft, topRight, bottomLeft, bottomRight}
-        switch me.pf
+        switch .pf
         {
         case BGR8:
-            doIt'BGR8()
+            .doIt'BGR8()
         case BGRA8:
-            doIt'BGRA8()
+            .doIt'BGRA8()
         case RGB8:
-            doIt'RGB8()
+            .doIt'RGB8()
         case RGBA8:
-            doIt'RGBA8()
+            .doIt'RGBA8()
         default:
             Debug.assert(false)
         }

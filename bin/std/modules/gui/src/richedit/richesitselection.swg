@@ -5,25 +5,25 @@ internal impl RichEditCtrl
 {
     mtd getSelectionRectRange(lineIndex: u64, rankBeg, rankEnd: *u64)->bool
     {
-        let line = me.lines[lineIndex]
+        let line = .lines[lineIndex]
         let len  = line.length()
 
-        var x  = me.getMarginLeft()
+        var x  = .getMarginLeft()
         var rb = 0'u64
-        while x < me.selRectangle.x and rb < len
+        while x < .selRectangle.x and rb < len
         {
-            x += me.getRuneSize(line, rb, x).x
+            x += .getRuneSize(line, rb, x).x
             rb += 1
         }
 
         // Line is not concerned
-        if x < me.selRectangle.x:
+        if x < .selRectangle.x:
             return false
 
         var re = rb
-        while x < me.selRectangle.right() and re < len
+        while x < .selRectangle.right() and re < len
         {
-            x += me.getRuneSize(line, re, x).x
+            x += .getRuneSize(line, re, x).x
             re += 1
         }
 
@@ -36,44 +36,44 @@ internal impl RichEditCtrl
     {
         let undo = Memory.new'RichEditUndo()
         undo.type = .Delete
-        (undo.runes, undo.styles) = me.getTextPrivate(posStart, posEnd)
-        undo.selBeg     = me.selBeg
-        undo.cursorPos  = me.cursorPos
+        (undo.runes, undo.styles) = .getTextPrivate(posStart, posEnd)
+        undo.selBeg     = .selBeg
+        undo.cursorPos  = .cursorPos
         undo.hasSelRect = selRect
         undo.serial     = 0
-        me.resetUndo()
-        me.toUndo.add(undo)
-        me.deleteTextPrivate(posStart, posEnd, selRect)
+        .resetUndo()
+        .toUndo.add(undo)
+        .deleteTextPrivate(posStart, posEnd, selRect)
     }
 
     mtd undoRestoreSelection()
     {
         let undo = Memory.new'RichEditUndo()
         undo.type      = .Selection
-        undo.selBeg    = me.selBeg
-        undo.cursorPos = me.cursorPos
+        undo.selBeg    = .selBeg
+        undo.cursorPos = .cursorPos
         undo.serial    = 0
-        me.resetUndo()
-        me.toUndo.add(undo)
+        .resetUndo()
+        .toUndo.add(undo)
     }
 
     mtd computeRectangularSelection(beg, end: RichEditCursor)
     {
-        if !me.hasSelRect:
+        if !.hasSelRect:
             return
 
-        let size = me.getXExtent()
+        let size = .getXExtent()
 
-        var ptBeg = me.getCursorDisplayPos(beg)
-        var ptEnd = me.getCursorDisplayPos(end)
+        var ptBeg = .getCursorDisplayPos(beg)
+        var ptEnd = .getCursorDisplayPos(end)
 
         if ptBeg.x > ptEnd.x:
             swap(&ptBeg, &ptEnd)
 
-        me.selRectangle.x = ptBeg.x
-        me.selRectangle.y = Math.min(ptBeg.y, ptEnd.y) - size.y
-        me.selRectangle.setRight(ptEnd.x)
-        me.selRectangle.setBottom(Math.max(ptBeg.y, ptEnd.y))
+        .selRectangle.x = ptBeg.x
+        .selRectangle.y = Math.min(ptBeg.y, ptEnd.y) - size.y
+        .selRectangle.setRight(ptEnd.x)
+        .selRectangle.setBottom(Math.max(ptBeg.y, ptEnd.y))
     }
 }
 
@@ -81,197 +81,197 @@ impl RichEditCtrl
 {
     mtd selectAll()
     {
-        me.moveCursorStartFile(&me.selBeg)
-        me.moveCursorEndFile(&me.cursorPos)
-        me.setRectangularSelection(false)
+        .moveCursorStartFile(&.selBeg)
+        .moveCursorEndFile(&.cursorPos)
+        .setRectangularSelection(false)
     }
 
     mtd setRectangularSelection(selRect: bool)
     {
-        me.hasSelRect = selRect
+        .hasSelRect = selRect
     }
 
     mtd clearSelection()
     {
-        me.selBeg = me.cursorPos
-        me.setRectangularSelection(false)
+        .selBeg = .cursorPos
+        .setRectangularSelection(false)
     }
 
     mtd setSelection(start, end: RichEditCursor)
     {
-        me.selBeg    = start
-        me.cursorPos = end
-        me.checkSelection()
+        .selBeg    = start
+        .cursorPos = end
+        .checkSelection()
     }
 
     mtd isSelectionEmpty()->bool
     {
-        if me.selBeg.lineIndex != me.cursorPos.lineIndex:
+        if .selBeg.lineIndex != .cursorPos.lineIndex:
             return false
-        if me.selBeg.charPosInLine != me.cursorPos.charPosInLine:
+        if .selBeg.charPosInLine != .cursorPos.charPosInLine:
             return false
         return true
     }
 
     mtd getBegSelection()->RichEditCursor
     {
-        if me.hasSelRect
+        if .hasSelRect
         {
             var result: retval
-            result.lineIndex     = Math.min(me.selBeg.lineIndex, me.cursorPos.lineIndex)
-            result.charPosInLine = Math.min(me.selBeg.charPosInLine, me.cursorPos.charPosInLine)
+            result.lineIndex     = Math.min(.selBeg.lineIndex, .cursorPos.lineIndex)
+            result.charPosInLine = Math.min(.selBeg.charPosInLine, .cursorPos.charPosInLine)
             return result
         }
 
-        if me.selBeg.lineIndex < me.cursorPos.lineIndex:
-            return me.selBeg
-        if me.selBeg.lineIndex > me.cursorPos.lineIndex:
-            return me.cursorPos
-        if me.selBeg.charPosInLine <= me.cursorPos.charPosInLine:
-            return me.selBeg
-        return me.cursorPos
+        if .selBeg.lineIndex < .cursorPos.lineIndex:
+            return .selBeg
+        if .selBeg.lineIndex > .cursorPos.lineIndex:
+            return .cursorPos
+        if .selBeg.charPosInLine <= .cursorPos.charPosInLine:
+            return .selBeg
+        return .cursorPos
     }
 
     mtd getEndSelection()->RichEditCursor
     {
-        if me.hasSelRect
+        if .hasSelRect
         {
             var result: retval
-            result.lineIndex     = Math.max(me.selBeg.lineIndex, me.cursorPos.lineIndex)
-            result.charPosInLine = Math.max(me.selBeg.charPosInLine, me.cursorPos.charPosInLine)
+            result.lineIndex     = Math.max(.selBeg.lineIndex, .cursorPos.lineIndex)
+            result.charPosInLine = Math.max(.selBeg.charPosInLine, .cursorPos.charPosInLine)
             return result
         }
 
-        if me.selBeg.lineIndex < me.cursorPos.lineIndex:
-            return me.cursorPos
-        if me.selBeg.lineIndex > me.cursorPos.lineIndex:
-            return me.selBeg
-        if me.selBeg.charPosInLine <= me.cursorPos.charPosInLine:
-            return me.cursorPos
-        return me.selBeg
+        if .selBeg.lineIndex < .cursorPos.lineIndex:
+            return .cursorPos
+        if .selBeg.lineIndex > .cursorPos.lineIndex:
+            return .selBeg
+        if .selBeg.charPosInLine <= .cursorPos.charPosInLine:
+            return .cursorPos
+        return .selBeg
     }
 
     mtd checkSelection()
     {
-        if me.selBeg.lineIndex >= me.lines.count:
-            me.selBeg.lineIndex = me.lines.count - 1
-        if me.cursorPos.lineIndex >= me.lines.count:
-            me.cursorPos.lineIndex = me.lines.count - 1
+        if .selBeg.lineIndex >= .lines.count:
+            .selBeg.lineIndex = .lines.count - 1
+        if .cursorPos.lineIndex >= .lines.count:
+            .cursorPos.lineIndex = .lines.count - 1
 
-        if me.firstVisibleLineView >= me.lines.count or me.lastVisibleLineView >= me.lines.count
+        if .firstVisibleLineView >= .lines.count or .lastVisibleLineView >= .lines.count
         {
-            me.firstVisibleLineView = 0
-            me.lastVisibleLineView  = 0
-            me.dirtyFirstLineView   = true
-            me.invalidate()
+            .firstVisibleLineView = 0
+            .lastVisibleLineView  = 0
+            .dirtyFirstLineView   = true
+            .invalidate()
         }
 
-        let back = me.lines.back()
-        if me.selBeg.lineIndex == me.lines.count - 1 and me.selBeg.charPosInLine > back.length():
-            me.selBeg.charPosInLine = back.length()
+        let back = .lines.back()
+        if .selBeg.lineIndex == .lines.count - 1 and .selBeg.charPosInLine > back.length():
+            .selBeg.charPosInLine = back.length()
 
-        if me.cursorPos.lineIndex == me.lines.count - 1 and me.cursorPos.charPosInLine > back.length():
-            me.cursorPos.charPosInLine = back.length()
+        if .cursorPos.lineIndex == .lines.count - 1 and .cursorPos.charPosInLine > back.length():
+            .cursorPos.charPosInLine = back.length()
 
-        me.computeRectangularSelection(me.getBegSelection(), me.getEndSelection())
+        .computeRectangularSelection(.getBegSelection(), .getEndSelection())
     }
 
     mtd deleteSelection()
     {
-        if me.isReadOnly():
+        if .isReadOnly():
             return
-        if me.isSelectionEmpty():
+        if .isSelectionEmpty():
             return
 
-        me.pushUndo()
-        let cp = me.getBegSelection()
-        me.deleteSelectionPrivate(cp, me.getEndSelection(), me.hasSelRect)
-        me.computeScrollY()
+        .pushUndo()
+        let cp = .getBegSelection()
+        .deleteSelectionPrivate(cp, .getEndSelection(), .hasSelRect)
+        .computeScrollY()
 
-        if me.hasSelRect
+        if .hasSelRect
         {
-            me.cursorPos.charPosInLine = Math.min(me.cursorPos.charPosInLine, me.selBeg.charPosInLine)
-            me.selBeg.charPosInLine    = me.cursorPos.charPosInLine
+            .cursorPos.charPosInLine = Math.min(.cursorPos.charPosInLine, .selBeg.charPosInLine)
+            .selBeg.charPosInLine    = .cursorPos.charPosInLine
         }
         else
         {
-            me.setCursorPos(cp)
-            me.selBeg = cp
+            .setCursorPos(cp)
+            .selBeg = cp
         }
 
-        me.popUndo()
+        .popUndo()
     }
 
     mtd deleteLeft()
     {
-        me.pushUndo()
+        .pushUndo()
 
-        if me.isSelectionEmpty()
+        if .isSelectionEmpty()
         {
-            me.moveCursorLeft(&me.cursorPos)
+            .moveCursorLeft(&.cursorPos)
         }
-        elif me.hasSelRect and me.selBeg.charPosInLine == me.cursorPos.charPosInLine
+        elif .hasSelRect and .selBeg.charPosInLine == .cursorPos.charPosInLine
         {
-            var cp = me.cursorPos
-            me.moveCursorLeft(&cp)
-            if cp.lineIndex == me.cursorPos.lineIndex
+            var cp = .cursorPos
+            .moveCursorLeft(&cp)
+            if cp.lineIndex == .cursorPos.lineIndex
             {
-                me.cursorPos = cp
-                me.computeRectangularSelection(me.getBegSelection(), me.getEndSelection())
+                .cursorPos = cp
+                .computeRectangularSelection(.getBegSelection(), .getEndSelection())
             }
         }
 
-        me.deleteSelection()
-        me.popUndo()
+        .deleteSelection()
+        .popUndo()
     }
 
     mtd deleteRight()
     {
-        me.pushUndo()
-        if me.isSelectionEmpty() or (me.hasSelRect and me.selBeg.charPosInLine == me.cursorPos.charPosInLine)
+        .pushUndo()
+        if .isSelectionEmpty() or (.hasSelRect and .selBeg.charPosInLine == .cursorPos.charPosInLine)
         {
-            me.moveCursorRight(&me.selBeg)
-            me.computeRectangularSelection(me.getBegSelection(), me.getEndSelection())
+            .moveCursorRight(&.selBeg)
+            .computeRectangularSelection(.getBegSelection(), .getEndSelection())
         }
 
-        me.deleteSelection()
-        me.popUndo()
+        .deleteSelection()
+        .popUndo()
     }
 
     mtd deleteWordLeft()
     {
-        me.pushUndo()
-        me.deleteSelection()
-        me.moveCursorWordLeft(&me.cursorPos)
-        me.deleteSelection()
-        me.clearSelection()
-        me.popUndo()
+        .pushUndo()
+        .deleteSelection()
+        .moveCursorWordLeft(&.cursorPos)
+        .deleteSelection()
+        .clearSelection()
+        .popUndo()
     }
 
     mtd deleteWordRight()
     {
-        me.pushUndo()
-        me.deleteSelection()
-        me.moveCursorWordRight(&me.cursorPos, true)
-        me.deleteSelection()
-        me.clearSelection()
-        me.popUndo()
+        .pushUndo()
+        .deleteSelection()
+        .moveCursorWordRight(&.cursorPos, true)
+        .deleteSelection()
+        .clearSelection()
+        .popUndo()
     }
 
     internal mtd registerClipboardFormat()
     {
-        me.clipFormat = catch Clipboard.registerFormat("std.richedit.style")
+        .clipFormat = catch Clipboard.registerFormat("std.richedit.style")
     }
 
     mtd copyToClipboard()
     {
-        if me.isSelectionEmpty():
+        if .isSelectionEmpty():
             return
-        let res = me.getTextPrivate(me.getBegSelection(), me.getEndSelection())
+        let res = .getTextPrivate(.getBegSelection(), .getEndSelection())
 
-        me.registerClipboardFormat()
-        if me.clipFormat:
-            Clipboard.addTypedData(me.clipFormat, null, res.styles.toSlice())
+        .registerClipboardFormat()
+        if .clipFormat:
+            Clipboard.addTypedData(.clipFormat, null, res.styles.toSlice())
 
         let txt = Utf8.fromUnicode(res.text.toSlice())
         Clipboard.addString(txt)
@@ -280,135 +280,135 @@ impl RichEditCtrl
     mtd pasteFromClipboard()
     {
         let txt = Clipboard.getString()
-        me.registerClipboardFormat()
+        .registerClipboardFormat()
 
-        me.pushUndo()
-        me.deleteSelection()
+        .pushUndo()
+        .deleteSelection()
 
-        if me.clipFormat and Clipboard.hasFormat(me.clipFormat)
+        if .clipFormat and Clipboard.hasFormat(.clipFormat)
         {
-            let st = Clipboard.getTypedData(me.clipFormat, null)
-            me.insertText(txt, st)
+            let st = Clipboard.getTypedData(.clipFormat, null)
+            .insertText(txt, st)
         }
         else:
-            me.insertText(txt)
+            .insertText(txt)
 
-        me.popUndo()
-        me.forceCaretVisible = true
+        .popUndo()
+        .forceCaretVisible = true
     }
 
     #[Swag.Overload]
     mtd deleteLine()
     {
-        me.pushUndo()
-        var beg = me.getBegSelection()
-        var end = me.getEndSelection()
+        .pushUndo()
+        var beg = .getBegSelection()
+        var end = .getEndSelection()
         if end.charPosInLine == 0 and beg.lineIndex != end.lineIndex:
-            me.moveCursorLeft(&end)
+            .moveCursorLeft(&end)
         beg.charPosInLine = 0
-        end.charPosInLine = me.lines[end.lineIndex].length()
-        me.selBeg         = beg
-        me.setCursorPos(end)
-        me.moveCursorRight(&me.cursorPos)
-        me.copyToClipboard()
-        me.deleteSelection()
-        me.popUndo()
+        end.charPosInLine = .lines[end.lineIndex].length()
+        .selBeg           = beg
+        .setCursorPos(end)
+        .moveCursorRight(&.cursorPos)
+        .copyToClipboard()
+        .deleteSelection()
+        .popUndo()
     }
 
     mtd selectWord()
     {
-        let line = me.lines[me.cursorPos.lineIndex]
+        let line = .lines[.cursorPos.lineIndex]
         let len  = line.length()
         if !len:
             return
 
-        if me.cursorPos.charPosInLine == len:
-            me.cursorPos.charPosInLine -= 1
-        let cp = me.cursorPos.charPosInLine ? line.chars[me.selBeg.charPosInLine - 1] : 0'rune
-        let c  = me.selBeg.charPosInLine == len ? 0'rune : line.chars[me.selBeg.charPosInLine]
-        let cn = me.cursorPos.charPosInLine != len - 1 ? line.chars[me.selBeg.charPosInLine + 1] : 0'rune
+        if .cursorPos.charPosInLine == len:
+            .cursorPos.charPosInLine -= 1
+        let cp = .cursorPos.charPosInLine ? line.chars[.selBeg.charPosInLine - 1] : 0'rune
+        let c  = .selBeg.charPosInLine == len ? 0'rune : line.chars[.selBeg.charPosInLine]
+        let cn = .cursorPos.charPosInLine != len - 1 ? line.chars[.selBeg.charPosInLine + 1] : 0'rune
 
-        if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and me.cursorPos.charPosInLine:
-            me.cursorPos.charPosInLine -= 1
+        if Unicode.isSpace(c) and !Unicode.isSpace(cp) and !Unicode.isSpace(cn) and .cursorPos.charPosInLine:
+            .cursorPos.charPosInLine -= 1
 
-        me.selBeg = me.cursorPos
+        .selBeg = .cursorPos
 
         // Blanks
-        if Unicode.isSpace(line.chars[me.selBeg.charPosInLine])
+        if Unicode.isSpace(line.chars[.selBeg.charPosInLine])
         {
-            while me.selBeg.charPosInLine and Unicode.isSpace(line.chars[me.selBeg.charPosInLine - 1]):
-                me.selBeg.charPosInLine -= 1
-            while me.cursorPos.charPosInLine < len and Unicode.isSpace(line.chars[me.cursorPos.charPosInLine]):
-                me.cursorPos.charPosInLine += 1
+            while .selBeg.charPosInLine and Unicode.isSpace(line.chars[.selBeg.charPosInLine - 1]):
+                .selBeg.charPosInLine -= 1
+            while .cursorPos.charPosInLine < len and Unicode.isSpace(line.chars[.cursorPos.charPosInLine]):
+                .cursorPos.charPosInLine += 1
             return
         }
 
         // A word
-        if isWord(line.chars[me.cursorPos.charPosInLine])
+        if isWord(line.chars[.cursorPos.charPosInLine])
         {
-            while me.selBeg.charPosInLine and isWord(line.chars[me.selBeg.charPosInLine - 1]):
-                me.selBeg.charPosInLine -= 1
-            while (me.cursorPos.charPosInLine < len and isWord(line.chars[me.cursorPos.charPosInLine])):
-                me.cursorPos.charPosInLine += 1
+            while .selBeg.charPosInLine and isWord(line.chars[.selBeg.charPosInLine - 1]):
+                .selBeg.charPosInLine -= 1
+            while (.cursorPos.charPosInLine < len and isWord(line.chars[.cursorPos.charPosInLine])):
+                .cursorPos.charPosInLine += 1
             return
         }
 
         // Nothing
-        if !zapWordChar(line.chars[me.selBeg.charPosInLine])
+        if !zapWordChar(line.chars[.selBeg.charPosInLine])
         {
-            if me.selBeg.charPosInLine == len:
-                me.selBeg.charPosInLine -= 1
+            if .selBeg.charPosInLine == len:
+                .selBeg.charPosInLine -= 1
             else:
-                me.cursorPos.charPosInLine += 1
+                .cursorPos.charPosInLine += 1
             return
         }
 
-        while me.selBeg.charPosInLine and zapWordChar(line.chars[me.selBeg.charPosInLine - 1]):
-            me.selBeg.charPosInLine -= 1
-        while me.cursorPos.charPosInLine < len and zapWordChar(line.chars[me.cursorPos.charPosInLine]):
-            me.cursorPos.charPosInLine += 1
+        while .selBeg.charPosInLine and zapWordChar(line.chars[.selBeg.charPosInLine - 1]):
+            .selBeg.charPosInLine -= 1
+        while .cursorPos.charPosInLine < len and zapWordChar(line.chars[.cursorPos.charPosInLine]):
+            .cursorPos.charPosInLine += 1
     }
 
     mtd scrollLineUp()
     {
-        let pt   = me.scrollWnd.getScrollPos()
-        let size = me.getXExtent()
+        let pt   = .scrollWnd.getScrollPos()
+        let size = .getXExtent()
 
         var sy = (pt.y / size.y) * size.y
         sy -= size.y
 
-        me.scrollWnd.setScrollPos(pt.x, sy)
-        sy = me.scrollWnd.getScrollPos().y
+        .scrollWnd.setScrollPos(pt.x, sy)
+        sy = .scrollWnd.getScrollPos().y
 
-        let clientRect = me.edView.getClientRect()
-        var pos        = me.getCaretPos(me.cursorPos)
+        let clientRect = .edView.getClientRect()
+        var pos        = .getCaretPos(.cursorPos)
         while pos.bottom() > sy + clientRect.height
         {
-            if !me.moveCursorUp(&me.cursorPos):
+            if !.moveCursorUp(&.cursorPos):
                 break
-            me.clearSelection()
-            pos = me.getCaretPos(me.cursorPos)
+            .clearSelection()
+            pos = .getCaretPos(.cursorPos)
         }
     }
 
     mtd scrollLineDown()
     {
-        let pt   = me.scrollWnd.getScrollPos()
-        let size = me.getXExtent()
+        let pt   = .scrollWnd.getScrollPos()
+        let size = .getXExtent()
 
         var sy = (pt.y / size.y) * size.y
         sy += size.y
 
-        me.scrollWnd.setScrollPos(pt.x, sy)
-        sy = me.scrollWnd.getScrollPos().y
+        .scrollWnd.setScrollPos(pt.x, sy)
+        sy = .scrollWnd.getScrollPos().y
 
-        var pos = me.getCaretPos(me.cursorPos)
+        var pos = .getCaretPos(.cursorPos)
         while pos.y < sy
         {
-            if !me.moveCursorDown(&me.cursorPos):
+            if !.moveCursorDown(&.cursorPos):
                 break
-            me.clearSelection()
-            pos = me.getCaretPos(me.cursorPos)
+            .clearSelection()
+            pos = .getCaretPos(.cursorPos)
         }
     }
 }

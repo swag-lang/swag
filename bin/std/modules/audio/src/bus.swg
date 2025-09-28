@@ -26,7 +26,7 @@ public impl Bus
     // Destroy the bus (immediatly).
     mtd destroy() throw
     {
-        me.destroyNative()
+        .destroyNative()
 
         Sync.scopedLock(&g_Driver.mutexBuses)
         g_Driver.buses.remove(me)
@@ -36,12 +36,12 @@ public impl Bus
     // Set the playing bus volume in DB.
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
-        me.setVolume(convertDBToPercent(volumeDB), batchID)
+        .setVolume(convertDBToPercent(volumeDB), batchID)
     }
 
     // Returns the actual volume, in DB.
     mtd getVolumeDB()->f32 throw
     {
-        return convertPercentToDB(me.getVolume())
+        return convertPercentToDB(.getVolume())
     }
 }

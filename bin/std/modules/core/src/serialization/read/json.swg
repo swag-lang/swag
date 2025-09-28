@@ -31,55 +31,55 @@ public impl JSon
     {
         var err: retval
         err.message = val
-        err.line    = me.line
-        err.col     = me.col
-        err.seek    = me.stream.seek
+        err.line    = .line
+        err.col     = .col
+        err.seek    = .stream.seek
         return err
     }
 
     mtd zapBlanks()
     {
-        var c = me.stream.peekU8()
+        var c = .stream.peekU8()
         while c and Latin1.isSpace(c)
         {
-            me.stream.moveSeek()
+            .stream.moveSeek()
             if c == '\n'
             {
-                me.line += 1
-                me.col = 1
+                .line += 1
+                .col = 1
             }
             else:
-                me.col += 1
-            c = me.stream.peekU8()
+                .col += 1
+            c = .stream.peekU8()
         }
     }
 
     mtd startRead(input: const [..] u8)
     {
-        me.stream = ByteStream.openRead(input)
+        .stream = ByteStream.openRead(input)
     }
 
     mtd beginSequence(_typeElem: typeinfo, _data: *u8, _countElem: *u64)->bool throw
     {
-        me.zapBlanks()
-        let c = me.stream.readU8()
+        .zapBlanks()
+        let c = .stream.readU8()
         if c != '[':
-            throw me.getError("malformed array, missing opening [[[?]]")
+            throw .getError("malformed array, missing opening [[[?]]")
         return false
     }
 
     mtd endSequence() throw
     {
-        me.zapBlanks()
-        let c = me.stream.readU8()
+        .zapBlanks()
+        let c = .stream.readU8()
         if c != ']':
-            throw me.getError("malformed array; missing closing [[?]]]")
+            throw .getError("malformed array; missing closing [[?]]]")
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
-        me.zapBlanks()
-        let c = me.stream.peekU8()
+        .zapBlanks()
+        let c = .stream.peekU8()
         return c != ']'
     }
 
@@ -95,56 +95,56 @@ public impl JSon
 
     mtd beginSection(_kind: SectionKind) throw
     {
-        me.zapBlanks()
-        let c = me.stream.readU8()
+        .zapBlanks()
+        let c = .stream.readU8()
         if c != '{':
-            throw me.getError("malformed struct, missing opening [[{]]")
+            throw .getError("malformed struct, missing opening [[{]]")
     }
 
     mtd endSection() throw
     {
-        me.zapBlanks()
-        let c = me.stream.readU8()
+        .zapBlanks()
+        let c = .stream.readU8()
         if c != '}':
-            throw me.getError("malformed struct, missing closing [[}]]")
+            throw .getError("malformed struct, missing closing [[}]]")
     }
 
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool throw
     {
-        me.beginSection(.Ordered)
+        .beginSection(.Ordered)
         return false
     }
 
     mtd endStruct() throw
     {
-        me.endSection()
+        .endSection()
     }
 
     mtd beginElement(val: TypeValue)->bool throw
     {
-        me.zapBlanks()
-        var c = me.stream.readU8()
+        .zapBlanks()
+        var c = .stream.readU8()
         if c != '"':
-            throw me.getError("malformed property name, missing opening [[\"]]")
+            throw .getError("malformed property name, missing opening [[\"]]")
 
-        me.propName.clear()
-        c = me.stream.readU8()
+        .propName.clear()
+        c = .stream.readU8()
         while c and c != '"'
         {
-            me.propName += c
-            c = me.stream.readU8()
+            .propName += c
+            c = .stream.readU8()
         }
 
-        if me.propName != val.name:
-            throw me.getError("invalid property name")
+        if .propName != val.name:
+            throw .getError("invalid property name")
 
         if c != '"':
-            throw me.getError("malformed property name, missing closing [[\"]]")
+            throw .getError("malformed property name, missing closing [[\"]]")
 
-        me.zapBlanks()
-        c = me.stream.readU8()
+        .zapBlanks()
+        c = .stream.readU8()
         if c != ':':
-            throw me.getError("malformed property, missing [[:]] after name")
+            throw .getError("malformed property, missing [[:]] after name")
 
         return true
     }
@@ -161,10 +161,10 @@ public impl JSon
 
     mtd endValue() throw
     {
-        me.zapBlanks()
-        let c = me.stream.peekU8()
+        .zapBlanks()
+        let c = .stream.peekU8()
         if c == ',':
-            me.stream.moveSeek()
+            .stream.moveSeek()
     }
 
     /////////////////////////////////
@@ -173,103 +173,103 @@ public impl JSon
 
     mtd(NT) readNative()->NT throw
     {
-        me.zapBlanks()
+        .zapBlanks()
         #if NT == bool
         {
-            let val = StrConv.parseBool(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseBool(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f32
         {
-            let val = StrConv.parseF32(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseF32(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f64
         {
-            let val = StrConv.parseF64(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseF64(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s8
         {
-            let val = StrConv.parseS8(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS8(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s16
         {
-            let val = StrConv.parseS16(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS16(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s32
         {
-            let val = StrConv.parseS32(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS32(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s64
         {
-            let val = StrConv.parseS64(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS64(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u8
         {
-            let val = StrConv.parseU8(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU8(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u16
         {
-            let val = StrConv.parseU16(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU16(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u32
         {
-            let val = StrConv.parseU32(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU32(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u64
         {
-            let val = StrConv.parseU64(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU64(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == Core.String
         {
             var result: retval
 
-            me.zapBlanks()
-            var c = me.stream.readU8()
+            .zapBlanks()
+            var c = .stream.readU8()
             if c != '"'
             {
                 if c == 'n' and
-                   me.stream.readU8() == 'u' and
-                   me.stream.readU8() == 'l' and
-                   me.stream.readU8() == 'l'
+                   .stream.readU8() == 'u' and
+                   .stream.readU8() == 'l' and
+                   .stream.readU8() == 'l'
                 {
                     return result
                 }
 
-                throw me.getError("malformed string, missing opening [[\"]]")
+                throw .getError("malformed string, missing opening [[\"]]")
             }
 
-            c = me.stream.peekU8()
+            c = .stream.peekU8()
             while c and c != '"'
             {
-                c = me.stream.readU8()
+                c = .stream.readU8()
                 result += c
-                c = me.stream.peekU8()
+                c = .stream.peekU8()
             }
 
-            c = me.stream.readU8()
+            c = .stream.readU8()
             if c != '"':
-                throw me.getError("malformed string, missing closing [[\"]]")
+                throw .getError("malformed string, missing closing [[\"]]")
 
             return result
         }

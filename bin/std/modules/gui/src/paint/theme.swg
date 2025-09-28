@@ -61,15 +61,15 @@ impl Theme
 {
     internal mtd freeDefault()
     {
-        Memory.delete(me.res.icons24)
-        Memory.delete(me.res.icons64)
-        Memory.delete(me.res.spin)
+        Memory.delete(.res.icons24)
+        Memory.delete(.res.icons64)
+        Memory.delete(.res.spin)
     }
 
     internal mtd setupDefault(renderer: *RenderOgl)
     {
-        me.intialized = true
-        me.colors.setDark()
+        .intialized = true
+        .colors.setDark()
 
         with me.res
         {
@@ -114,10 +114,10 @@ impl Theme
     mtd createDefaultFontfamily(size: u32)->FontFamily
     {
         var result: retval
-        result.regular    = Font.create(me.res.defaultTypeFaceR, size)
-        result.bold       = Font.create(me.res.defaultTypeFaceB, size)
-        result.italic     = Font.create(me.res.defaultTypeFaceI, size)
-        result.boldItalic = Font.create(me.res.defaultTypeFaceBI, size)
+        result.regular    = Font.create(.res.defaultTypeFaceR, size)
+        result.bold       = Font.create(.res.defaultTypeFaceB, size)
+        result.italic     = Font.create(.res.defaultTypeFaceI, size)
+        result.boldItalic = Font.create(.res.defaultTypeFaceBI, size)
         return result
     }
 
@@ -128,13 +128,13 @@ impl Theme
         switch style
         {
         case Regular:
-            return Font.create(me.res.defaultTypeFaceR, size)
+            return Font.create(.res.defaultTypeFaceR, size)
         case Bold:
-            return Font.create(me.res.defaultTypeFaceB, size)
+            return Font.create(.res.defaultTypeFaceB, size)
         case Italic:
-            return Font.create(me.res.defaultTypeFaceI, size)
+            return Font.create(.res.defaultTypeFaceI, size)
         case BoldItalic:
-            return Font.create(me.res.defaultTypeFaceBI, size)
+            return Font.create(.res.defaultTypeFaceBI, size)
         }
 
         unreachable
@@ -147,13 +147,13 @@ impl Theme
         switch style
         {
         case Regular:
-            return Font.create(me.res.defaultFsTypeFaceR, size)
+            return Font.create(.res.defaultFsTypeFaceR, size)
         case Bold:
-            return Font.create(me.res.defaultFsTypeFaceB, size)
+            return Font.create(.res.defaultFsTypeFaceB, size)
         case Italic:
-            return Font.create(me.res.defaultFsTypeFaceI, size)
+            return Font.create(.res.defaultFsTypeFaceI, size)
         case BoldItalic:
-            return Font.create(me.res.defaultFsTypeFaceBI, size)
+            return Font.create(.res.defaultFsTypeFaceBI, size)
         }
 
         unreachable

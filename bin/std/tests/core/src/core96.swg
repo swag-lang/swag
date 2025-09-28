@@ -11,9 +11,9 @@ impl IConvert for TOTO
     func impl convert(me, buf: *ConcatBuffer, convFmt: StrConv.ConvertFormat, strFormat: string)
     {
         buf.addBytes("! x = ")
-        convertInt(buf, me.x, {}, null)
+        convertInt(buf, .x, {}, null)
         buf.addBytes(", y = ")
-        convertInt(buf, me.y, {}, null)
+        convertInt(buf, .y, {}, null)
         buf.addBytes(" !")
     }
 }

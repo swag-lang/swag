@@ -48,38 +48,38 @@ private impl Bot
 {
     mtd add(v: s32)
     {
-        me.val[me.count] = v
-        orderMinMax(&me.val[0], &me.val[1])
-        me.count += 1
+        .val[.count] = v
+        orderMinMax(&.val[0], &.val[1])
+        .count += 1
 
-        if me.count == 2 and me.val[0] == 17 and me.val[1] == 61
+        if .count == 2 and .val[0] == 17 and .val[1] == 61
         {
-            result = me.id
-            @assert(me.id == 47)
+            result = .id
+            @assert(.id == 47)
         }
     }
 
     mtd eatLow()->s32
     {
-        let v = me.val[0]
-        me.val[0] = me.val[1]
-        me.count -= 1
+        let v = .val[0]
+        .val[0] = .val[1]
+        .count -= 1
         return v
     }
 
     mtd eatHigh()->s32
     {
-        let v = me.count == 1 ? me.val[0] : me.val[1]
-        me.count -= 1
+        let v = .count == 1 ? .val[0] : .val[1]
+        .count -= 1
         return v
     }
 
     mtd execute()
     {
-        if me.count == 2 and me.pending.count
+        if .count == 2 and .pending.count
         {
-            let cpy = me.pending
-            me.pending.clear()
+            let cpy = .pending
+            .pending.clear()
             execute(cpy)
         }
     }

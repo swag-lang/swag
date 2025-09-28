@@ -45,30 +45,30 @@ impl Drop
 {
     mtd constructPath()
     {
-        me.lp.start(me.vertices[0].x, me.vertices[0].y)
-        foreach v in me.vertices:
-            me.lp.lineTo(v.x, v.y)
-        me.lp.close()
+        .lp.start(.vertices[0].x, .vertices[0].y)
+        foreach v in .vertices:
+            .lp.lineTo(v.x, v.y)
+        .lp.close()
     }
 
     mtd construct()
     {
-        for i in me.circleDetail
+        for i in .circleDetail
         {
-            let angle = map(cast(f32) i, 0.0, cast(f32) me.circleDetail, 0, ConstF32.TwoPi)
+            let angle = map(cast(f32) i, 0.0, cast(f32) .circleDetail, 0, ConstF32.TwoPi)
             var v     = Vector2{cos(angle), sin(angle)}
-            v *= me.r
-            v += me.center
-            me.vertices.add(v)
+            v *= .r
+            v += .center
+            .vertices.add(v)
         }
 
-        me.constructPath()
+        .constructPath()
     }
 
     mtd marble(other: Drop)
     {
         let otherr = other.r * other.r
-        foreach v in me.lp.polygon.points
+        foreach v in .lp.polygon.points
         {
             let p    = v - other.center
             let root = sqrt(1 + (otherr / p.lengthSquared()))
@@ -78,7 +78,7 @@ impl Drop
 
     mtd show(painter: *Painter)
     {
-        painter.fillPath(&me.lp, me.col)
+        painter.fillPath(&.lp, .col)
     }
 }
 

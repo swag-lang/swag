@@ -284,27 +284,27 @@ impl Ghost
 {
     mtd reset()
     {
-        me.x         = me.xInit
-        me.y         = me.yInit
-        me.dPos      = 0.1
-        me.texCount  = 0
-        me.reverse   = false
-        me.timeout   = -1
-        me.drawScore = false
+        .x         = .xInit
+        .y         = .yInit
+        .dPos      = 0.1
+        .texCount  = 0
+        .reverse   = false
+        .timeout   = -1
+        .drawScore = false
 
         // Reset starting direction and movement type based on colour
-        switch me.colour
+        switch .colour
         {
         case RED:
-            me.dir = .LEFT
-            me.ai  = g_Wave
+            .dir = .LEFT
+            .ai  = g_Wave
         case PINK:
-            me.dir = .DOWN
-            me.ai  = .LEAVE // PINK starts in LEAVE mode, leaving the SPAWN pen straight away
+            .dir = .DOWN
+            .ai  = .LEAVE // PINK starts in LEAVE mode, leaving the SPAWN pen straight away
         case BLUE, YELLOW:
             // YELLOW and BLUE both start facing UP, trapped within the SPAWN
-            me.dir = .UP
-            me.ai  = .SPAWN
+            .dir = .UP
+            .ai  = .SPAWN
         }
     }
 
@@ -315,19 +315,19 @@ impl Ghost
      */
     mtd setAI(newAI: Movement, switchDir: bool)
     {
-        me.ai      = newAI
-        me.reverse = switchDir
+        .ai      = newAI
+        .reverse = switchDir
 
         // Some AI modes have additional cases to account for
         if newAI == .FRIGHTENED
         {
-            me.setSpeed(40)
+            .setSpeed(40)
         }
         elif newAI == .DEAD
         {
-            me.setSpeed(200)
+            .setSpeed(200)
             // Flag also ensures the score for eating a ghost is displayed during the short pause
-            me.drawScore = true
+            .drawScore = true
         }
     }
 
@@ -346,7 +346,7 @@ impl Ghost
     mtd zeroTimeout()
     {
         // FRIGHTENED mode requires a timeout to ensure ghosts don't remain FRIGHTENED indefinitely
-        me.timeout = 0
+        .timeout = 0
     }
 
     /**
@@ -366,39 +366,39 @@ impl Ghost
     mtd checkSpecialCases()
     {
         // Timeout exceeds max time to be in FRIGHTENED mode
-        if me.timeout >= 600
+        if .timeout >= 600
         {
-            if me.ai == .FRIGHTENED
+            if .ai == .FRIGHTENED
             {
-                me.ai = g_Wave
-                me.setSpeed(100)
+                .ai = g_Wave
+                .setSpeed(100)
             }
 
-            me.timeout = -1
+            .timeout = -1
 
             // Reset eaten ghosts count to zero as effects of big pill have ended - score bonus should not carry
             g_GhostsEaten = 0
         }
 
         // If not at max timeout, increment counter
-        elif me.timeout != -1:
-            me.timeout += 1
+        elif .timeout != -1:
+            .timeout += 1
 
-        if me.ai == .DEAD
+        if .ai == .DEAD
         {
-            if me.x >= 13.4 and me.x <= 13.6 // Check X position to check centrality
+            if .x >= 13.4 and .x <= 13.6 // Check X position to check centrality
             {
                 // Check ghost is also directly above the SPAWN pen
-                if me.getY() == 19
+                if .getY() == 19
                 {
-                    me.x   = 13.5
-                    me.dir = .DOWN // Set ghost to enter the SPAWN pen
-                    me.setSpeed(50)
+                    .x   = 13.5
+                    .dir = .DOWN // Set ghost to enter the SPAWN pen
+                    .setSpeed(50)
                 }
-                elif me.getY() < 17 and me.getY() >= 15
+                elif .getY() < 17 and .getY() >= 15
                 {
                     // Once far enough into the pen, set AI to LEAVE to 'respawn' the ghost
-                    me.ai = .LEAVE
+                    .ai = .LEAVE
                 }
             }
         }
@@ -410,16 +410,16 @@ impl Ghost
      */
     mtd aiSpawn()
     {
-        me.setSpeed(50)
-        if cast(s32) (me.y * 10.0) % 10 == 5 and cast(s32) (me.x * 10.0) % 10 == 5 and isImpassible(me.getNextTile(me.dir))
+        .setSpeed(50)
+        if cast(s32) (.y * 10.0) % 10 == 5 and cast(s32) (.x * 10.0) % 10 == 5 and isImpassible(.getNextTile(.dir))
         {
             // Switch direction upon hitting a WALL
-            switch me.dir
+            switch .dir
             {
             case UP:
-                me.dir = DOWN
+                .dir = DOWN
             case DOWN:
-                me.dir = UP
+                .dir = UP
             }
         }
     }
@@ -433,30 +433,30 @@ impl Ghost
      */
     mtd aiLeave()
     {
-        if me.y < 19 and me.dir != .DOWN
+        if .y < 19 and .dir != .DOWN
         {
-            me.setSpeed(50)
+            .setSpeed(50)
 
             // Move towards the center
-            if me.x < 13.4:
-                me.dir = .RIGHT
-            elif me.x > 13.6:
-                me.dir = .LEFT
+            if .x < 13.4:
+                .dir = .RIGHT
+            elif .x > 13.6:
+                .dir = .LEFT
             else
             {
-                me.x   = 13.5
-                me.dir = .UP // Then set direction to move out of the SPAWN
+                .x   = 13.5
+                .dir = .UP // Then set direction to move out of the SPAWN
             }
         }
         // Once out of the SPAWN, act as a normal ghost
-        elif me.y >= 19
+        elif .y >= 19
         {
-            me.dir = .LEFT
-            me.ai  = g_Wave
-            me.setSpeed(100)
+            .dir = .LEFT
+            .ai  = g_Wave
+            .setSpeed(100)
         }
-        elif cast(s32) (me.y * 10.0) % 10 == 5 and isImpassible(me.getNextTile(me.dir)):
-            me.dir = .UP
+        elif cast(s32) (.y * 10.0) % 10 == 5 and isImpassible(.getNextTile(.dir)):
+            .dir = .UP
     }
 
     /**
@@ -471,7 +471,7 @@ impl Ghost
         var target: Dest
 
         // Each colour selects a unique corner to target
-        switch me.colour
+        switch .colour
         {
         case RED:
             target = {25, 33}
@@ -484,8 +484,8 @@ impl Ghost
         }
 
         // Set direction at junction to head towards SCATTER point
-        me.dir = me.targetTile(target)
-        me.setSpeed(100)
+        .dir = .targetTile(target)
+        .setSpeed(100)
     }
 
     /**
@@ -529,11 +529,11 @@ impl Ghost
     {
         var target: Dest = {g_PacMan.getX(), g_PacMan.getY()}
         // Default target for RED and (sometimes) YELLOW
-        let currentPos: Dest = {me.getX(), me.getY()}
+        let currentPos: Dest = {.getX(), .getY()}
         var dx, dy: s32
 
         // Determine ghost chasing behaviour based on their colour
-        switch me.colour
+        switch .colour
         {
         case PINK:
             // Update target to reflect offset in Pac-Man's direction of movement
@@ -551,8 +551,8 @@ impl Ghost
                 target = {0, -2}
         }
 
-        me.dir = me.targetTile(target)
-        me.setSpeed(100)
+        .dir = .targetTile(target)
+        .setSpeed(100)
     }
 
     /**
@@ -565,10 +565,10 @@ impl Ghost
             // Choose random direction from UP, RIGHT, DOWN or LEFT
             let newDir = cast(Direction) ((Random.shared().nextU32() % cast(u32) Direction.LEFT) + 1)
             // Ensure random direction is traversible
-            if !isImpassible(me.getNextTile(newDir))
+            if !isImpassible(.getNextTile(newDir))
             {
-                me.dir = newDir
-                me.setSpeed(40)
+                .dir = newDir
+                .setSpeed(40)
                 break
             }
         }
@@ -581,8 +581,8 @@ impl Ghost
     {
         // Coordinate directly above SPAWN entrance
         let target: Dest = {14, 19}
-        me.dir = me.targetTile(target)
-        me.setSpeed(200)
+        .dir = .targetTile(target)
+        .setSpeed(200)
     }
 
     /**
@@ -618,12 +618,12 @@ impl Ghost
 
         // Check UP exit
         // UP exits have an additional condition such that, at 4 specific intersections, the ghost cannot opt to travel UP
-        if !(me.getY() == 19 and (me.getX() == 12 or me.getX() == 15)) and !(me.getY() == 7 and (me.getX() == 12 or me.getX() == 15))
+        if !(.getY() == 19 and (.getX() == 12 or .getX() == 15)) and !(.getY() == 7 and (.getX() == 12 or .getX() == 15))
         {
             // Prevent direction reversing and ensure exit is traversible
-            if me.dir != .DOWN and !isImpassible(me.getNextTile(.UP))
+            if .dir != .DOWN and !isImpassible(.getNextTile(.UP))
             {
-                nextPos = {me.getX(), me.getY() + 1}
+                nextPos = {.getX(), .getY() + 1}
                 let d = distanceBetween(nextPos, target)
                 if d < distance
                 {
@@ -635,9 +635,9 @@ impl Ghost
         }
 
         // Check RIGHT exit
-        if me.dir != .LEFT and !isImpassible(me.getNextTile(.RIGHT))
+        if .dir != .LEFT and !isImpassible(.getNextTile(.RIGHT))
         {
-            nextPos = {me.getX() + 1, me.getY()}
+            nextPos = {.getX() + 1, .getY()}
             let d = distanceBetween(nextPos, target)
             if d < distance
             {
@@ -647,9 +647,9 @@ impl Ghost
         }
 
         // Check DOWN exit
-        if me.dir != .UP and !isImpassible(me.getNextTile(.DOWN))
+        if .dir != .UP and !isImpassible(.getNextTile(.DOWN))
         {
-            nextPos = {me.getX(), me.getY() - 1}
+            nextPos = {.getX(), .getY() - 1}
             let d = distanceBetween(nextPos, target)
             if d < distance
             {
@@ -659,9 +659,9 @@ impl Ghost
         }
 
         // Check LEFT exit
-        if me.dir != .RIGHT and !isImpassible(me.getNextTile(.LEFT))
+        if .dir != .RIGHT and !isImpassible(.getNextTile(.LEFT))
         {
-            nextPos = {me.getX() - 1, me.getY()}
+            nextPos = {.getX() - 1, .getY()}
             let d = distanceBetween(nextPos, target)
             if d < distance
             {
@@ -679,19 +679,19 @@ impl Ghost
      */
     mtd reverseDirection()
     {
-        switch me.dir
+        switch .dir
         {
         case UP:
-            me.dir = DOWN
+            .dir = DOWN
         case RIGHT:
-            me.dir = LEFT
+            .dir = LEFT
         case DOWN:
-            me.dir = UP
+            .dir = UP
         case LEFT:
-            me.dir = RIGHT
+            .dir = RIGHT
         }
 
-        me.reverse = false
+        .reverse = false
     }
 
     /**
@@ -699,14 +699,14 @@ impl Ghost
      */
     mtd turnCorner()
     {
-        if me.dir != .DOWN and !isImpassible(me.getNextTile(.UP)):
-            me.dir = .UP
-        elif me.dir != .LEFT and !isImpassible(me.getNextTile(.RIGHT)):
-            me.dir = .RIGHT
-        elif me.dir != .UP and !isImpassible(me.getNextTile(.DOWN)):
-            me.dir = .DOWN
-        elif me.dir != .RIGHT and !isImpassible(me.getNextTile(.LEFT)):
-            me.dir = .LEFT
+        if .dir != .DOWN and !isImpassible(.getNextTile(.UP)):
+            .dir = .UP
+        elif .dir != .LEFT and !isImpassible(.getNextTile(.RIGHT)):
+            .dir = .RIGHT
+        elif .dir != .UP and !isImpassible(.getNextTile(.DOWN)):
+            .dir = .DOWN
+        elif .dir != .RIGHT and !isImpassible(.getNextTile(.LEFT)):
+            .dir = .LEFT
     }
 
     /**
@@ -722,8 +722,8 @@ impl Ghost
      */
     mtd roundPosition()
     {
-        me.x = Math.round(me.x / me.dPos) * me.dPos
-        me.y = Math.round(me.y / me.dPos) * me.dPos
+        .x = Math.round(.x / .dPos) * .dPos
+        .y = Math.round(.y / .dPos) * .dPos
     }
 
     /**
@@ -733,8 +733,8 @@ impl Ghost
      */
     mtd setSpeed(percentage: f32)
     {
-        me.dPos = percentage / 1000
-        me.roundPosition()
+        .dPos = percentage / 1000
+        .roundPosition()
     }
 
     /**
@@ -750,15 +750,15 @@ impl Ghost
     mtd countExits()->s32
     {
         var exits = 0
-        if me.atTileCenter()
+        if .atTileCenter()
         {
-            if !isImpassible(me.getNextTile(.UP)):
+            if !isImpassible(.getNextTile(.UP)):
                 exits += 1
-            if !isImpassible(me.getNextTile(.RIGHT)):
+            if !isImpassible(.getNextTile(.RIGHT)):
                 exits += 1
-            if !isImpassible(me.getNextTile(.DOWN)):
+            if !isImpassible(.getNextTile(.DOWN)):
                 exits += 1
-            if !isImpassible(me.getNextTile(.LEFT)):
+            if !isImpassible(.getNextTile(.LEFT)):
                 exits += 1
         }
 
@@ -770,14 +770,14 @@ impl Ghost
      *
      * @return - integer, X coordinate of current tile
      */
-    mtd const getX() => cast(s32) Math.round(me.x)
+    mtd const getX() => cast(s32) Math.round(.x)
 
     /**
      * Determines and returns absolute Y coordinate of map tile on which ghost resides
      *
      * @return - integer, Y coordinate of current tile
      */
-    mtd const getY() => cast(s32) Math.round(me.y)
+    mtd const getY() => cast(s32) Math.round(.y)
 
     /**
      * Determines and returns the next tile in the given direction of movement
@@ -791,15 +791,15 @@ impl Ghost
         switch d
         {
         case UP:
-            return getTile(me.getX(), me.getY() + 1)
+            return getTile(.getX(), .getY() + 1)
         case RIGHT:
-            return getTile(me.getX() + 1, me.getY())
+            return getTile(.getX() + 1, .getY())
         case DOWN:
-            return getTile(me.getX(), me.getY() - 1)
+            return getTile(.getX(), .getY() - 1)
         case LEFT:
-            return getTile(me.getX() - 1, me.getY())
+            return getTile(.getX() - 1, .getY())
         default:
-            return getTile(me.getX(), me.getY())
+            return getTile(.getX(), .getY())
         }
     }
 
@@ -812,78 +812,78 @@ impl Ghost
      */
     mtd atTileCenter()->bool
     {
-        let mod = cast(s32) (1 / me.dPos)
-        return cast(s32) Math.round(me.y * mod) % mod == 0 and cast(s32) Math.round(me.x * mod) % mod == 0
+        let mod = cast(s32) (1 / .dPos)
+        return cast(s32) Math.round(.y * mod) % mod == 0 and cast(s32) Math.round(.x * mod) % mod == 0
     }
 
     mtd move(redGhost: Ghost)
     {
         // Check any special case AI behaviour
-        me.checkSpecialCases()
+        .checkSpecialCases()
 
         // Handle special case movement behaviours
 
         // Behaviour within SPAWN pen
-        if me.ai == .SPAWN:
-            me.aiSpawn()
+        if .ai == .SPAWN:
+            .aiSpawn()
         // AI to LEAVE SPAWN pen
-        elif me.ai == .LEAVE:
-            me.aiLeave()
+        elif .ai == .LEAVE:
+            .aiLeave()
         // Handle PORTAL collision - only teleport if at center of tile
-        elif me.atTileCenter() and getTile(me.getX(), me.getY()) == .P
+        elif .atTileCenter() and getTile(.getX(), .getY()) == .P
         {
-            if me.dir == .RIGHT:
-                me.x = 1
+            if .dir == .RIGHT:
+                .x = 1
             else:
-                me.x = 26
+                .x = 26
         }
         // If the a new AI mode has been set, reverse the current direction
-        elif me.reverse:
-            me.reverseDirection()
+        elif .reverse:
+            .reverseDirection()
         // If no special case exists, direction can only be changed when 2 or more exits exist
         // Ghost is at corner so must turn
-        elif me.countExits() == 2 and isImpassible(me.getNextTile(me.dir)):
-            me.turnCorner()
+        elif .countExits() == 2 and isImpassible(.getNextTile(.dir)):
+            .turnCorner()
         // Ghost is at junction - run targeting AI and update direction
-        elif me.countExits() > 2
+        elif .countExits() > 2
         {
-            switch me.ai
+            switch .ai
             {
             case SCATTER:
-                me.aiScatter()
+                .aiScatter()
             case CHASE:
-                me.aiChase(redGhost)
+                .aiChase(redGhost)
             case FRIGHTENED:
-                me.aiFrightened()
+                .aiFrightened()
             case DEAD:
-                me.aiDead()
+                .aiDead()
             }
         }
 
         // Half speed when travelling down PORTAL corridors
-        if me.getY() == 16 and (me.getX() < 6 or me.getX() > 21) and me.ai != .DEAD:
-            me.setSpeed(50)
+        if .getY() == 16 and (.getX() < 6 or .getX() > 21) and .ai != .DEAD:
+            .setSpeed(50)
 
         // Perform smooth movement between tiles in the current direction of movement
         // Round the unchanging position coordinate, preventing directional query mishaps
-        switch me.dir
+        switch .dir
         {
         case LEFT:
-            me.x -= me.dPos
-            if me.ai != .LEAVE:
-                me.y = Math.round(me.y)
+            .x -= .dPos
+            if .ai != .LEAVE:
+                .y = Math.round(.y)
         case RIGHT:
-            me.x += me.dPos
-            if me.ai != .LEAVE:
-                me.y = Math.round(me.y)
+            .x += .dPos
+            if .ai != .LEAVE:
+                .y = Math.round(.y)
         case UP:
-            me.y += me.dPos
-            if me.ai != .SPAWN and me.ai != .LEAVE and me.ai != .DEAD:
-                me.x = Math.round(me.x)
+            .y += .dPos
+            if .ai != .SPAWN and .ai != .LEAVE and .ai != .DEAD:
+                .x = Math.round(.x)
         case DOWN:
-            me.y -= me.dPos
-            if me.ai != .SPAWN and me.ai != .LEAVE and me.ai != .DEAD:
-                me.x = Math.round(me.x)
+            .y -= .dPos
+            if .ai != .SPAWN and .ai != .LEAVE and .ai != .DEAD:
+                .x = Math.round(.x)
         }
     }
 
@@ -892,11 +892,11 @@ impl Ghost
      */
     mtd drawEaten()
     {
-        if me.drawScore
+        if .drawScore
         {
             g_Painter.pushTransform()
             translateMapOrigin()
-            translateMapCoords(me.x, me.y)
+            translateMapCoords(.x, .y)
             g_Painter.translateTransform(-4 * Scale, 0) // Account for over-sized sprite (16x8 on 8x8 tile)
             g_Painter.translateTransform(8 * Scale, 4 * Scale)
             // Determine which score sprite to draw based on the number of ghosts eaten since the last big pill was eaten
@@ -907,38 +907,38 @@ impl Ghost
         else
         {
             // If the ghost hasn't just been eaten, draw it as normal
-            me.draw()
+            .draw()
         }
     }
 
     mtd draw()
     {
         // Reset drawScore flag - when eaten, drawEaten() is called during pause,: not draw score again
-        me.drawScore = false
+        .drawScore = false
 
         g_Painter.pushTransform()
         translateMapOrigin()
-        translateMapCoords(me.x, me.y)
+        translateMapCoords(.x, .y)
         g_Painter.translateTransform(-3 * Scale, -3 * Scale) // Account for over-sized sprite (14x14 on 8x8 tile)
         g_Painter.translateTransform(7 * Scale, 7 * Scale)
 
         // Determine which colour ghost to draw and whether it is the alternate texture (wiggle animation)
         var ghostTex: Texture
-        let ghostAlt  = cast(s32) Math.floor(me.texCount % 20 / 10.0)
+        let ghostAlt  = cast(s32) Math.floor(.texCount % 20 / 10.0)
 
         // If in FRIGHTENED mode, draw the correct skin
-        if me.ai == .FRIGHTENED
+        if .ai == .FRIGHTENED
         {
             // Draw white (flashing) skin when FRIGHTENED mode is nearing its end
-            if me.timeout >= 480 and me.texCount % 30 >= 15:
+            if .timeout >= 480 and .texCount % 30 >= 15:
                 ghostTex = g_GhostTexF[ghostAlt + 2]
             else:
                 ghostTex = g_GhostTexF[ghostAlt]
         }
-        elif me.ai != .DEAD
+        elif .ai != .DEAD
         {
             // If not in FRIGHTENED or DEAD AI, draw the ghost according to colour
-            switch me.colour
+            switch .colour
             {
             case RED:
                 ghostTex = g_GhostTexR[ghostAlt]
@@ -952,15 +952,15 @@ impl Ghost
         }
 
         // Draw ghost sprite with determined texture at current location only if not DEAD
-        if me.ai != .DEAD:
+        if .ai != .DEAD:
             g_Painter.drawTexture(-7, -7, 14, 14, ghostTex)
 
         // Only draw the ghost's eyes if it's not FRIGHTENED
-        if me.ai != .FRIGHTENED
+        if .ai != .FRIGHTENED
         {
             // Determine which way the ghost's eyes should be facing
             var eyesTex: Texture
-            switch me.dir
+            switch .dir
             {
             case LEFT:
                 eyesTex = g_EyeTexL
@@ -977,7 +977,7 @@ impl Ghost
         }
 
         // Increment texture counter every frame
-        me.texCount += 1
+        .texCount += 1
 
         g_Painter.popTransform()
     }
@@ -990,14 +990,14 @@ impl Pacman
      */
     mtd reset()
     {
-        me.x            = 13.5
-        me.y            = 7.0
-        me.angle        = 0.0
-        me.dir          = .NONE
-        me.tempDir      = .NONE
-        me.texCount     = 10
-        me.deadTexCount = 0
-        me.ready        = false
+        .x            = 13.5
+        .y            = 7.0
+        .angle        = 0.0
+        .dir          = .NONE
+        .tempDir      = .NONE
+        .texCount     = 10
+        .deadTexCount = 0
+        .ready        = false
     }
 
     /**
@@ -1009,7 +1009,7 @@ impl Pacman
      */
     mtd atTileCenter()->bool
     {
-        return cast(s32) Math.round(me.y * 10.0) % 10 == 0 and cast(s32) Math.round(me.x * 10.0) % 10 == 0
+        return cast(s32) Math.round(.y * 10.0) % 10 == 0 and cast(s32) Math.round(.x * 10.0) % 10 == 0
     }
 
     /**
@@ -1017,14 +1017,14 @@ impl Pacman
      *
      * @return - integer, X coordinate of current tile
      */
-    mtd const getX() => cast(s32) Math.round(me.x)
+    mtd const getX() => cast(s32) Math.round(.x)
 
     /**
      * Determines and returns absolute Y coordinate of map tile on which Pac-Man resides
      *
      * @return - integer, Y coordinate of current tile
      */
-    mtd const getY() => cast(s32) Math.round(me.y)
+    mtd const getY() => cast(s32) Math.round(.y)
 
     /**
      * "Eat" the current tile:
@@ -1037,10 +1037,10 @@ impl Pacman
      */
     mtd eat()->s32
     {
-        if !me.atTileCenter():
+        if !.atTileCenter():
             return 0
 
-        switch getTile(me.getX(), me.getY())
+        switch getTile(.getX(), .getY())
         {
         case o:
             if !g_VoiceChomp or !g_VoiceChomp.isPlaying()
@@ -1050,24 +1050,24 @@ impl Pacman
                 g_VoiceChomp = assume Audio.Voice.play(&g_SoundChomp)
             }
 
-            setTile(me.getX(), me.getY(), e)
+            setTile(.getX(), .getY(), e)
             g_PillsLeft -= 1
             return 10
 
         case O:
-            setTile(me.getX(), me.getY(), E)
+            setTile(.getX(), .getY(), E)
             g_PillsLeft -= 1
             return 50
 
         case P:
-            if me.dir == .RIGHT:
-                me.x = 1
+            if .dir == .RIGHT:
+                .x = 1
             else:
-                me.x = 26
+                .x = 26
             return 0
 
         case F:
-            setTile(me.getX(), me.getY(), .e)
+            setTile(.getX(), .getY(), .e)
             g_FruitSpawned = false
             g_Fruits += 1
             switch g_Fruits - 1
@@ -1112,15 +1112,15 @@ impl Pacman
         switch d
         {
         case UP:
-            return getTile(me.getX(), me.getY() + 1)
+            return getTile(.getX(), .getY() + 1)
         case RIGHT:
-            return getTile(me.getX() + 1, me.getY())
+            return getTile(.getX() + 1, .getY())
         case DOWN:
-            return getTile(me.getX(), me.getY() - 1)
+            return getTile(.getX(), .getY() - 1)
         case LEFT:
-            return getTile(me.getX() - 1, me.getY())
+            return getTile(.getX() - 1, .getY())
         default:
-            return getTile(me.getX(), me.getY())
+            return getTile(.getX(), .getY())
         }
     }
 
@@ -1128,46 +1128,46 @@ impl Pacman
     {
         // Ascertain whether direction can be changed
         // Direction can only be changed at the center of a tile
-        if me.atTileCenter()
+        if .atTileCenter()
         {
-            if !isImpassible(me.getNextTile(me.tempDir)):
-                me.dir = me.tempDir
-            elif isImpassible(me.getNextTile(me.dir)):
-                me.dir = .NONE
+            if !isImpassible(.getNextTile(.tempDir)):
+                .dir = .tempDir
+            elif isImpassible(.getNextTile(.dir)):
+                .dir = .NONE
         }
 
         // The only exception to the above rule is at game start (when ready=false), as Pac-Man starts between two tiles
-        if !me.ready and me.tempDir != .NONE and !isImpassible(me.getNextTile(me.tempDir))
+        if !.ready and .tempDir != .NONE and !isImpassible(.getNextTile(.tempDir))
         {
-            me.dir = me.tempDir
-            if !me.ready
+            .dir = .tempDir
+            if !.ready
             {
                 // Ready flag is set to true, enabling position rounding when dir=NONE and correct texture drawing
-                me.ready = true
+                .ready = true
             }
         }
 
         // Perform smooth movement between tiles in the current direction of movement
         // While moving, round the unchanging position coordinate, preventing directional query mishaps
-        switch me.dir
+        switch .dir
         {
         case LEFT:
-            me.x -= 0.1
-            me.y = Math.round(me.y)
+            .x -= 0.1
+            .y = Math.round(.y)
         case RIGHT:
-            me.x += 0.1
-            me.y = Math.round(me.y)
+            .x += 0.1
+            .y = Math.round(.y)
         case UP:
-            me.y += 0.1
-            me.x = Math.round(me.x)
+            .y += 0.1
+            .x = Math.round(.x)
         case DOWN:
-            me.y -= 0.1
-            me.x = Math.round(me.x)
+            .y -= 0.1
+            .x = Math.round(.x)
         default:
-            if me.ready
+            if .ready
             {
-                me.x = Math.round(me.x)
-                me.y = Math.round(me.y)
+                .x = Math.round(.x)
+                .y = Math.round(.y)
             }
         }
     }
@@ -1177,9 +1177,9 @@ impl Pacman
      */
     mtd stopChomping()
     {
-        me.saveDir = me.tempDir
-        me.tempDir = .NONE
-        me.ready   = false
+        .saveDir = .tempDir
+        .tempDir = .NONE
+        .ready   = false
     }
 
     /**
@@ -1187,9 +1187,9 @@ impl Pacman
      */
     mtd startChomping()
     {
-        if me.tempDir == .NONE:
-            me.tempDir = me.saveDir
-        me.ready = true
+        if .tempDir == .NONE:
+            .tempDir = .saveDir
+        .ready = true
     }
 
     /**
@@ -1200,20 +1200,20 @@ impl Pacman
         g_Painter.pushTransform()
 
         translateMapOrigin()
-        translateMapCoords(me.x, me.y)
+        translateMapCoords(.x, .y)
         g_Painter.translateTransform(-3 * Scale, -4 * Scale) // Account for over-sized sprite (15x15 on 8x8 tile)
         g_Painter.translateTransform(7.5 * Scale, 7.5 * Scale)
 
         // Determine which texture to draw based on tick-incremented counter
         // Draw current sprite of Pac-Man's death animation sequence
-        if me.deadTexCount < 55
+        if .deadTexCount < 55
         {
-            let deadFrame = cast(s32) Math.floor(me.deadTexCount / 5)
+            let deadFrame = cast(s32) Math.floor(.deadTexCount / 5)
             g_Painter.drawTexture(-7.5, -7.5, 15, 15, g_DeadTex[deadFrame])
         }
 
         // Increment dead texture counter
-        me.deadTexCount += 1
+        .deadTexCount += 1
 
         g_Painter.popTransform()
     }
@@ -1226,7 +1226,7 @@ impl Pacman
         g_Painter.pushTransform()
 
         translateMapOrigin()
-        translateMapCoords(me.x, me.y)
+        translateMapCoords(.x, .y)
         g_Painter.translateTransform(-6 * Scale, 0) // Account for over-sized sprite (20x8 on 8x8 tile)
         g_Painter.translateTransform(10 * Scale, 4 * Scale)
 
@@ -1240,30 +1240,30 @@ impl Pacman
     {
         g_Painter.pushTransform()
         translateMapOrigin()
-        translateMapCoords(me.x, me.y)
+        translateMapCoords(.x, .y)
         g_Painter.translateTransform(-2 * Scale, -2 * Scale)
         g_Painter.translateTransform(6.5 * Scale, 6.5 * Scale)
 
         // Determine rotation angle of sprite based on direction
-        switch me.dir
+        switch .dir
         {
         case UP:
-            me.angle = 270.0
+            .angle = 270.0
         case RIGHT:
-            me.angle = 180.0
+            .angle = 180.0
         case DOWN:
-            me.angle = 90.0
+            .angle = 90.0
         case LEFT:
-            me.angle = 0.0
+            .angle = 0.0
         }
 
-        g_Painter.rotateTransformInPlace(Math.toRadians(me.angle))
+        g_Painter.rotateTransformInPlace(Math.toRadians(.angle))
 
         // Determine which texture to draw based on tick-incremented counter
         var pacmanTex: Texture
-        if me.texCount % 20 < 5:
+        if .texCount % 20 < 5:
             pacmanTex = g_Pac0Tex
-        elif me.texCount % 20 < 10 or me.texCount % 20 >= 15:
+        elif .texCount % 20 < 10 or .texCount % 20 >= 15:
             pacmanTex = g_Pac1Tex
         else:
             pacmanTex = g_Pac2Tex
@@ -1273,8 +1273,8 @@ impl Pacman
 
         // Increment texture counter only if moving
         // If stationary, continue until sprite animation cycle is complete
-        if !(me.dir == .NONE and me.texCount % 20 < 5) and me.ready:
-            me.texCount += 1
+        if !(.dir == .NONE and .texCount % 20 < 5) and .ready:
+            .texCount += 1
 
         g_Painter.popTransform()
     }

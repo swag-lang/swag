@@ -7,7 +7,7 @@ impl Image
         let mec = cast #unconst (*Image) me
 
         #[Swag.Complete]
-        switch me.pf
+        switch .pf
         {
         case RGB8:
             break
@@ -37,7 +37,7 @@ impl Image
         let mec = cast #unconst (*Image) me
 
         #[Swag.Complete]
-        switch me.pf
+        switch .pf
         {
         case RGBA8:
             break
@@ -79,7 +79,7 @@ impl Image
         let mec = cast #unconst (*Image) me
 
         #[Swag.Complete]
-        switch me.pf
+        switch .pf
         {
         case BGR8:
             break
@@ -109,7 +109,7 @@ impl Image
         let mec = cast #unconst (*Image) me
 
         #[Swag.Complete]
-        switch me.pf
+        switch .pf
         {
         case BGRA8:
             break
@@ -152,39 +152,39 @@ impl Image
         switch dstImage.pf
         {
         case RGB8:
-            me.doRGB8(dstImage)
+            .doRGB8(dstImage)
         case RGBA8:
-            me.doRGBA8(dstImage)
+            .doRGBA8(dstImage)
         case BGR8:
-            me.doBGR8(dstImage)
+            .doBGR8(dstImage)
         case BGRA8:
-            me.doBGRA8(dstImage)
+            .doBGRA8(dstImage)
         }
     }
 
     // Change image pixel format
     public mtd setPixelFormat(newPf: PixelFormat)
     {
-        Debug.assert(me.pixels.buffer != null)
+        Debug.assert(.pixels.buffer != null)
 
-        if newPf == me.pf:
+        if newPf == .pf:
             return
 
-        me.allocWorkingBuffer(me.width, me.height, newPf)
-        me.doChangePf(me.workingBuffer)
-        me.applyWorkingBuffer()
+        .allocWorkingBuffer(.width, .height, newPf)
+        .doChangePf(.workingBuffer)
+        .applyWorkingBuffer()
     }
 
     // Change image pixel format
     public mtd const toSetPixelFormat(newPf: PixelFormat)->Image
     {
-        Debug.assert(me.pixels.buffer != null)
+        Debug.assert(.pixels.buffer != null)
 
-        if newPf == me.pf:
+        if newPf == .pf:
             return dref me
 
-        var result: retval = create(me.width, me.height, newPf)
-        me.doChangePf(&result)
+        var result: retval = create(.width, .height, newPf)
+        .doChangePf(&result)
         return result
     }
 }

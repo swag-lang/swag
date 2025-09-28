@@ -38,12 +38,12 @@ impl IWnd for PopupListView
         switch evt.kind
         {
         case KillFocus:
-            if evt.other != me.parent
+            if evt.other != .parent
             {
-                if me.list.sigSelected:
-                    me.list.sigSelected(me.list, Swag.U32.Max)
+                if .list.sigSelected:
+                    .list.sigSelected(.list, Swag.U32.Max)
                 else:
-                    me.list.destroy()
+                    .list.destroy()
             }
         }
     }
@@ -52,64 +52,64 @@ impl IWnd for PopupListView
     {
         var hit: u32
 
-        var surfaceRect = me.getSurfaceRect()
+        var surfaceRect = .getSurfaceRect()
         var mouseInRect = surfaceRect.contains(evt.surfacePos)
 
-        let pos = me.surfaceToLocal(evt.surfacePos)
+        let pos = .surfaceToLocal(evt.surfacePos)
         if evt.kind == .MouseLeave or !mouseInRect:
             hit = Swag.U32.Max
         else
         {
-            var y = pos.y + me.scrollPos.y
-            foreach v, i in me.list.items
+            var y = pos.y + .scrollPos.y
+            foreach v, i in .list.items
             {
                 if v.isSeparator
                 {
-                    if y <= me.list.heightSeparator
+                    if y <= .list.heightSeparator
                     {
                         hit = cast(u32) i
                         break
                     }
-                    y -= me.list.heightSeparator
+                    y -= .list.heightSeparator
                 }
                 else
                 {
-                    if y <= me.list.heightItem
+                    if y <= .list.heightItem
                     {
                         hit = cast(u32) i
                         break
                     }
-                    y -= me.list.heightItem
+                    y -= .list.heightItem
                 }
             }
 
-            if hit >= me.list.items.count or me.list.items[hit].isSeparator:
+            if hit >= .list.items.count or .list.items[hit].isSeparator:
                 hit = Swag.U32.Max
         }
 
-        if hit != me.hotIdx
+        if hit != .hotIdx
         {
-            me.hotIdx = hit
-            me.invalidate()
+            .hotIdx = hit
+            .invalidate()
         }
 
         if evt.kind == .MousePressed and evt.button == .Left and mouseInRect
         {
-            if me.list.sigSelected:
-                me.list.sigSelected(me.list, me.hotIdx)
-            me.releaseMouse()
-            me.list.destroy()
+            if .list.sigSelected:
+                .list.sigSelected(.list, .hotIdx)
+            .releaseMouse()
+            .list.destroy()
             return
         }
 
-        surfaceRect = me.parent.getSurfaceRect()
+        surfaceRect = .parent.getSurfaceRect()
         mouseInRect = surfaceRect.contains(evt.surfacePos)
         if evt.kind == .MousePressed and evt.button == .Left and !mouseInRect
         {
-            if me.list.sigSelected:
-                me.list.sigSelected(me.list, Swag.U32.Max)
-            me.releaseMouse()
-            me.list.destroy()
+            if .list.sigSelected:
+                .list.sigSelected(.list, Swag.U32.Max)
+            .releaseMouse()
+            .list.destroy()
             return
         }
 
@@ -123,24 +123,24 @@ impl IWnd for PopupListView
     {
         let painter = evt.bc.painter
 
-        let theme   = me.getTheme()
-        let colors  = me.getThemeColors()
-        let metrics = me.getThemeMetrics()
-        let rects   = me.getThemeRects()
+        let theme   = .getTheme()
+        let colors  = .getThemeColors()
+        let metrics = .getThemeMetrics()
+        let rects   = .getThemeRects()
 
-        var clientRect = me.getClientRect()
-        clientRect.offset(me.scrollPos)
+        var clientRect = .getClientRect()
+        clientRect.offset(.scrollPos)
 
         var labelPos:  Math.Rectangle = undefined
         var colorText: Color
 
         var y = 0'f32
-        foreach i, idx in me.list.items
+        foreach i, idx in .list.items
         {
             labelPos.x      = clientRect.x
             labelPos.y      = y
             labelPos.width  = clientRect.width
-            labelPos.height = me.list.heightItem
+            labelPos.height = .list.heightItem
 
             var format: RichStringFormat
             colorText = colors.popupList_Text
@@ -148,16 +148,16 @@ impl IWnd for PopupListView
             // Separator
             if i.isSeparator
             {
-                labelPos.height = me.list.heightSeparator
+                labelPos.height = .list.heightSeparator
                 painter.drawLine(labelPos.x + metrics.popupList_SeparatorPadding, labelPos.vertCenter(), labelPos.right() - metrics.popupList_SeparatorPadding, labelPos.vertCenter(), colors.popupList_Separator)
-                y += me.list.heightSeparator
+                y += .list.heightSeparator
                 continue
             }
 
             // Back selection
             var colorSel:  Color
             var colorCheck = colors.popupList_CheckMark
-            if me.hotIdx == idx
+            if .hotIdx == idx
             {
                 colorSel   = colors.popupList_HotBk
                 colorText  = colors.popupList_HotText
@@ -174,11 +174,11 @@ impl IWnd for PopupListView
                 i.icon.paint(painter, labelPos.x, labelPos.vertCenter() - i.icon.sizeY * 0.5, iconColor)
             }
 
-            if me.list.maxIconSize:
-                labelPos.moveLeft(me.list.maxIconSize + metrics.popupList_IconTextMargin)
+            if .list.maxIconSize:
+                labelPos.moveLeft(.list.maxIconSize + metrics.popupList_IconTextMargin)
 
-            let fntHeight = me.getFont().regular.height
-            if idx == me.list.selectedIdx:
+            let fntHeight = .getFont().regular.height
+            if idx == .list.selectedIdx:
                 labelPos.setRight(labelPos.right() - fntHeight - metrics.popupList_IconTextMargin)
 
             // Text
@@ -186,11 +186,11 @@ impl IWnd for PopupListView
             format.horzAlignment = .Left
             format.vertAlignment = .Center
             format.flags         = .Clip
-            format.font          = me.getFont()
+            format.font          = .getFont()
             painter.drawRichString(labelPos, &i.name, format)
 
             // Check mark
-            if idx == me.list.selectedIdx
+            if idx == .list.selectedIdx
             {
                 labelPos.x      = labelPos.right()
                 labelPos.y      = labelPos.vertCenter() - (fntHeight * 0.5)
@@ -199,7 +199,7 @@ impl IWnd for PopupListView
                 theme.drawSubRect(painter, labelPos, &rects.btnCheck_CheckedMark, colorCheck)
             }
 
-            y += me.list.heightItem
+            y += .list.heightItem
         }
     }
 }
@@ -229,23 +229,23 @@ impl PopupListCtrl
     // Show popup
     mtd show(x, y: f32, width: f32 = 10)
     {
-        me.scrollWnd.setScrollSize(0, cast(f32) me.items.count * me.heightItem)
+        .scrollWnd.setScrollSize(0, cast(f32) .items.count * .heightItem)
 
-        let pt  = me.parent.surfaceToLocal({x, y})
+        let pt  = .parent.surfaceToLocal({x, y})
         var pos = Math.Rectangle{pt.x, pt.y, 0, 0}
-        pos.width  = Math.max(width, me.minWidthPopup)
-        pos.height = Math.min(me.scrollWnd.scrollSize.y, me.maxHeightPopup)
-        pos.height += me.padding.y + me.padding.w
-        me.setPosition(pos)
-        let sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
-        me.fitPosInParent(sdw.z, sdw.w, me.simFitX, me.simFitY)
-        me.scrollWnd.view.captureMouse()
+        pos.width  = Math.max(width, .minWidthPopup)
+        pos.height = Math.min(.scrollWnd.scrollSize.y, .maxHeightPopup)
+        pos.height += .padding.y + .padding.w
+        .setPosition(pos)
+        let sdw = .getThemeMetrics().frameWnd_SmallShadowSize
+        .fitPosInParent(sdw.z, sdw.w, .simFitX, .simFitY)
+        .scrollWnd.view.captureMouse()
     }
 
     // Add a new item in the list
     mtd addItem(name: string, id: WndId = null, icon: Icon = {}, userData0: *void = null, userData1: *void = null)
     {
-        let item = me.items.newPtr()
+        let item = .items.newPtr()
         with item
         {
             .name      = name
@@ -256,15 +256,15 @@ impl PopupListCtrl
         }
 
         if item.icon.isValid():
-            me.maxIconSize = Math.max(me.maxIconSize, cast(s32) item.icon.sizeX)
-        me.items.add(item)
+            .maxIconSize = Math.max(.maxIconSize, cast(s32) item.icon.sizeX)
+        .items.add(item)
     }
 
     // Add a separator
     mtd addSeparator()
     {
-        let item = me.items.newPtr()
+        let item = .items.newPtr()
         item.isSeparator = true
-        me.items.add(item)
+        .items.add(item)
     }
 }

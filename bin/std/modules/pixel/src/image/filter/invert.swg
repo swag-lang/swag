@@ -6,7 +6,7 @@ impl Image
     public mtd invert()
     {
         // unsupported pixel format
-        if me.pf.channels() < 3 or me.pf.bitDepth() != 8:
+        if .pf.channels() < 3 or .pf.bitDepth() != 8:
             return
 
         var convArr: [256] u8 = undefined
@@ -14,7 +14,7 @@ impl Image
             convArr[i] = cast(u8) (255 - i)
 
         let f = &convArr[0]
-        me.visitPixels(f)
+        .visitPixels(f)
         {
             let arr = cast([*] u8) userData
             pix[0] = arr[pix[0]]

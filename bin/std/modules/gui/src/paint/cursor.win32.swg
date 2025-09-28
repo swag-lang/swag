@@ -37,7 +37,7 @@ impl Cursor
 
     public mtd clear()
     {
-        me.cursor = null
+        .cursor = null
     }
 
     public func apply(cursor: Cursor)

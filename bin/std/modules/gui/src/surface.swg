@@ -61,38 +61,38 @@ impl Surface
         // Cannot be changed at runtime
         Debug.assert(!(add & .Secondary) and !(remove & .Secondary))
 
-        me.flags.add(add)
-        me.flags.remove(remove)
-        me.applySurfaceFlags()
+        .flags.add(add)
+        .flags.remove(remove)
+        .applySurfaceFlags()
     }
 
     internal mtd applySurfaceFlags()
     {
-        if me.flags.has(.BigCaption):
-            me.wnd.padding.y = me.app.theme.metrics.wnd_BigCaptionCY
-        elif me.flags.has(.SmallCaption):
-            me.wnd.padding.y = me.app.theme.metrics.wnd_SmallCaptionCY
+        if .flags.has(.BigCaption):
+            .wnd.padding.y = .app.theme.metrics.wnd_BigCaptionCY
+        elif .flags.has(.SmallCaption):
+            .wnd.padding.y = .app.theme.metrics.wnd_SmallCaptionCY
         else:
-            me.wnd.padding.y = 0
+            .wnd.padding.y = 0
 
-        if me.flags.has(.Border)
+        if .flags.has(.Border)
         {
-            let size = me.app.theme.metrics.wnd_BorderSize
-            me.wnd.padding.x = size
-            me.wnd.padding.y = Math.max(me.wnd.padding.y, size)
-            me.wnd.padding.z = size
-            me.wnd.padding.w = size
+            let size = .app.theme.metrics.wnd_BorderSize
+            .wnd.padding.x = size
+            .wnd.padding.y = Math.max(.wnd.padding.y, size)
+            .wnd.padding.z = size
+            .wnd.padding.w = size
         }
         else
         {
-            me.wnd.padding.x = 0
-            me.wnd.padding.z = 0
-            me.wnd.padding.w = 0
+            .wnd.padding.x = 0
+            .wnd.padding.z = 0
+            .wnd.padding.w = 0
         }
 
-        me.applyNativeSurfaceFlags()
-        me.wnd.applySurfaceFlags()
-        me.wnd.sendResizeEvent()
+        .applyNativeSurfaceFlags()
+        .wnd.applySurfaceFlags()
+        .wnd.sendResizeEvent()
     }
 
     // Creates the surface
@@ -124,73 +124,73 @@ impl Surface
     // Destroy the surface
     mtd destroy()
     {
-        me.wnd.destroy()
-        me.hide()
+        .wnd.destroy()
+        .hide()
     }
 
     // Returns inside view
     mtd getView()->*Wnd
     {
-        return me.wnd.view
+        return .wnd.view
     }
 
     // Set the surface icon
     mtd setIcon(icon: Icon)
     {
-        me.wnd.icon = icon
-        me.invalidate()
+        .wnd.icon = icon
+        .invalidate()
     }
 
     // Set the surface title
     mtd setTitle(name: #null string)
     {
-        me.wnd.name = name
-        me.invalidate()
+        .wnd.name = name
+        .invalidate()
     }
 
     // Invalidate the full surface to be painted
     mtd invalidate()
     {
-        me.invalidateRect({0, 0, me.position.width, me.position.height})
+        .invalidateRect({0, 0, .position.width, .position.height})
     }
 
     // Invalidate one part of the surface to be painted
     mtd invalidateRect(rect: Math.Rectangle)
     {
-        if !me.isDirty
+        if !.isDirty
         {
-            me.dirtyRect = rect
-            me.isDirty   = true
+            .dirtyRect = rect
+            .isDirty   = true
             return
         }
 
-        let r = me.dirtyRect.right()
-        let b = me.dirtyRect.bottom()
-        me.dirtyRect.x = Math.min(me.dirtyRect.x, rect.x)
-        me.dirtyRect.y = Math.min(me.dirtyRect.y, rect.y)
-        me.dirtyRect.setRight(Math.max(r, rect.right()))
-        me.dirtyRect.setBottom(Math.max(b, rect.bottom()))
+        let r = .dirtyRect.right()
+        let b = .dirtyRect.bottom()
+        .dirtyRect.x = Math.min(.dirtyRect.x, rect.x)
+        .dirtyRect.y = Math.min(.dirtyRect.y, rect.y)
+        .dirtyRect.setRight(Math.max(r, rect.right()))
+        .dirtyRect.setBottom(Math.max(b, rect.bottom()))
     }
 
     // Center this surface relative to 'from'
     mtd center(from: *Surface)
     {
-        var pos = me.position
+        var pos = .position
         pos.x = from.position.horzCenter()
         pos.y = from.position.vertCenter()
-        pos.x -= me.position.width * 0.5
-        pos.y -= me.position.height * 0.5
-        me.setPosition(pos)
+        pos.x -= .position.width * 0.5
+        pos.y -= .position.height * 0.5
+        .setPosition(pos)
     }
 
     // Constraint a window position to be inside the closest monitor
     mtd constaintPositionToScreen(topLeft, bottomRight = true, margin = 0'f32)
     {
-        if me.isMaximized or me.isMinimized:
+        if .isMaximized or .isMinimized:
             return
 
-        let monitor = Env.getMonitorForPoint({me.position.x, me.position.y})
-        var np      = me.position
+        let monitor = Env.getMonitorForPoint({.position.x, .position.y})
+        var np      = .position
 
         if topLeft
         {
@@ -202,35 +202,35 @@ impl Surface
 
         if bottomRight
         {
-            np.x = Math.min(np.x, monitor.rect.right() - margin - me.position.width)
-            np.y = Math.min(np.y, monitor.rect.bottom() - margin - me.position.height)
+            np.x = Math.min(np.x, monitor.rect.right() - margin - .position.width)
+            np.y = Math.min(np.y, monitor.rect.bottom() - margin - .position.height)
         }
 
-        me.setPosition(np)
+        .setPosition(np)
     }
 
     internal mtd createRT()
     {
-        if !me.rt.colorBuffer.valid or me.rt.colorBuffer.width < me.rc.width or me.rt.colorBuffer.height < me.rc.height
+        if !.rt.colorBuffer.valid or .rt.colorBuffer.width < .rc.width or .rt.colorBuffer.height < .rc.height
         {
-            me.app.renderer.deleteRenderTarget(&me.rt)
-            let w = Math.roundUpToPowerOf2(cast(u32) me.rc.width)
-            let h = Math.roundUpToPowerOf2(cast(u32) me.rc.height)
-            me.rt = me.app.renderer.createRenderTarget(w, h)
-            me.invalidate()
+            .app.renderer.deleteRenderTarget(&.rt)
+            let w = Math.roundUpToPowerOf2(cast(u32) .rc.width)
+            let h = Math.roundUpToPowerOf2(cast(u32) .rc.height)
+            .rt = .app.renderer.createRenderTarget(w, h)
+            .invalidate()
         }
     }
 
     // Main surface paint function
     mtd paint()
     {
-        me.createRT()
+        .createRT()
 
-        if !me.isDirty:
+        if !.isDirty:
             return
-        let clipRect = me.dirtyRect
-        me.dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
-        me.isDirty   = false
+        let clipRect = .dirtyRect
+        .dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
+        .isDirty   = false
 
         with var cxt: PaintContext
         {
@@ -241,30 +241,30 @@ impl Surface
         }
 
         // Draw shadow around surface
-        var myRect = Math.Rectangle{0, 0, me.position.width, me.position.height}
-        if !me.flags.has(.NoShadow)
+        var myRect = Math.Rectangle{0, 0, .position.width, .position.height}
+        if !.flags.has(.NoShadow)
         {
-            let subRect = &me.app.theme.rects.surfaceWnd_Shadow
-            me.painter.pushClippingRect(clipRect)
-            me.painter.setColorMaskFull()
-            me.app.theme.drawSubRect(&me.painter, myRect, subRect, me.app.theme.colors.wnd_Shadow, false)
+            let subRect = &.app.theme.rects.surfaceWnd_Shadow
+            .painter.pushClippingRect(clipRect)
+            .painter.setColorMaskFull()
+            .app.theme.drawSubRect(&.painter, myRect, subRect, .app.theme.colors.wnd_Shadow, false)
         }
 
         // Hierarchy paint
-        me.painter.pushClippingRect(me.wnd.getSurfaceRect())
-        me.painter.setColorMaskColor()
-        me.wnd.paint(&cxt)
+        .painter.pushClippingRect(.wnd.getSurfaceRect())
+        .painter.setColorMaskColor()
+        .wnd.paint(&cxt)
 
-        if me.app.options.showClipRect
+        if .app.options.showClipRect
         {
             var dbgColor = Random.shared().nextU32() & 0x00FFFFFF
             dbgColor |= 0x55000000
-            me.painter.fillRect(clipRect, Color.fromArgb(dbgColor))
+            .painter.fillRect(clipRect, Color.fromArgb(dbgColor))
         }
 
-        me.painter.setColorMaskAlpha()
-        me.painter.clear(Argb.Black)
-        me.painter.end()
+        .painter.setColorMaskAlpha()
+        .painter.clear(Argb.Black)
+        .painter.end()
 
         // Paint to surface render target
         with cxt
@@ -277,74 +277,74 @@ impl Surface
         }
 
         // Paint render target to screen
-        me.painter.begin()
-        me.painter.setColorMaskFull()
-        me.painter.setInterpolationMode(.Pixel)
-        me.painter.setBlendingMode(.Copy)
+        .painter.begin()
+        .painter.setColorMaskFull()
+        .painter.setInterpolationMode(.Pixel)
+        .painter.setBlendingMode(.Copy)
 
         // If surface is disabled, blend to disabled blit color
         var color: Color
-        if me.isDisabled and me.app.fadeDisabledSurface
+        if .isDisabled and .app.fadeDisabledSurface
         {
-            me.colorDisabled = Color.getBlend(me.colorDisabled, me.app.theme.colors.surfaceDisabled, me.app.getDt())
-            color            = me.colorDisabled
-            me.isDirty       = true
-            me.dirtyRect.clear()
+            .colorDisabled = Color.getBlend(.colorDisabled, .app.theme.colors.surfaceDisabled, .app.getDt())
+            color          = .colorDisabled
+            .isDirty       = true
+            .dirtyRect.clear()
         }
         else
         {
-            color            = Argb.White
-            me.colorDisabled = Argb.White
+            color          = Argb.White
+            .colorDisabled = Argb.White
         }
 
-        let dstRect = Math.Rectangle{0, 0, cast(f32) me.rc.width, cast(f32) me.rc.height}
-        me.painter.drawTexture(dstRect, dstRect, me.rt.colorBuffer, color)
-        me.painter.end()
+        let dstRect = Math.Rectangle{0, 0, cast(f32) .rc.width, cast(f32) .rc.height}
+        .painter.drawTexture(dstRect, dstRect, .rt.colorBuffer, color)
+        .painter.end()
 
-        cxt.renderer.draw(&me.painter)
+        cxt.renderer.draw(&.painter)
         cxt.renderer.end()
     }
 
     internal mtd sendResizeEvent(width, height: f32)
     {
-        me.rc.width        = cast(s32) width
-        me.rc.height       = cast(s32) height
-        me.position.width  = width
-        me.position.height = height
+        .rc.width        = cast(s32) width
+        .rc.height       = cast(s32) height
+        .position.width  = width
+        .position.height = height
 
-        let sdw = me.flags.has(.NoShadow) ? 0 : me.app.theme.metrics.surfaceWnd_ShadowSize
-        me.wnd.setPosition({sdw, sdw, width - 2 * sdw, height - 2 * sdw})
+        let sdw = .flags.has(.NoShadow) ? 0 : .app.theme.metrics.surfaceWnd_ShadowSize
+        .wnd.setPosition({sdw, sdw, width - 2 * sdw, height - 2 * sdw})
     }
 
     mtd setView(view: *Wnd)
     {
-        if me.wnd.view:
-            me.wnd.view.destroy()
-        me.wnd.view = view
-        me.wnd.sendResizeEvent()
+        if .wnd.view:
+            .wnd.view.destroy()
+        .wnd.view = view
+        .wnd.sendResizeEvent()
     }
 
     internal mtd serializeState(ser: *Serializer) throw
     {
         // Save position and surface state
-        if me.wnd.view != null and me.wnd.view.id != null
+        if .wnd.view != null and .wnd.view.id != null
         {
-            catch ser.serialize(me.wnd.view.id, &me.state)
+            catch ser.serialize(.wnd.view.id, &.state)
             if @err == null and ser.isReading()
             {
-                if me.isMaximized
+                if .isMaximized
                 {
-                    me.setPosition(me.positionNotMaximized)
-                    me.isMaximized = false
-                    me.showMaximized()
+                    .setPosition(.positionNotMaximized)
+                    .isMaximized = false
+                    .showMaximized()
                 }
                 else
                 {
-                    me.setPosition(me.position)
+                    .setPosition(.position)
                 }
             }
         }
 
-        me.wnd.serializeState(ser)
+        .wnd.serializeState(ser)
     }
 }

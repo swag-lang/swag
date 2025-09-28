@@ -10,12 +10,12 @@ impl AA
     mtd(op: string) opAssign(t: T)
     {
         #assert((op == "+="))
-        me.arr.add(t)
+        .arr.add(t)
     }
 
     mtd call(params: ...)
     {
-        foreach fn in me.arr
+        foreach fn in .arr
         {
             #ast
             {

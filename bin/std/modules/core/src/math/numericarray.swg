@@ -12,14 +12,14 @@ impl NumericArray
     #[Inline]
     mtd const opIndex(idx: u64)->T
     {
-        return me.buf[idx]
+        return .buf[idx]
     }
 
     mtd const opEquals(other: NumericArray)->bool
     {
         for i in NumericArray.N
         {
-            if me.buf[i] != other.buf[i]:
+            if .buf[i] != other.buf[i]:
                 return false
         }
 
@@ -32,13 +32,13 @@ impl NumericArray
         for i in NumericArray.N
         {
             #if op == "+":
-                result.buf[i] = me.buf[i] + other.buf[i]
+                result.buf[i] = .buf[i] + other.buf[i]
             #elif op == "-":
-                result.buf[i] = me.buf[i] - other.buf[i]
+                result.buf[i] = .buf[i] - other.buf[i]
             #elif op == "*":
-                result.buf[i] = me.buf[i] * other.buf[i]
+                result.buf[i] = .buf[i] * other.buf[i]
             #elif op == "/":
-                result.buf[i] = me.buf[i] / other.buf[i]
+                result.buf[i] = .buf[i] / other.buf[i]
             #else:
                 #error("unsupported binary operation [[" ++ op ++ "]]")
         }
@@ -51,13 +51,13 @@ impl NumericArray
         for i in NumericArray.N
         {
             #if op == "+=":
-                me.buf[i] += value
+                .buf[i] += value
             #elif (op == "-="):
-                me.buf[i] -= value
+                .buf[i] -= value
             #elif (op == "*="):
-                me.buf[i] *= value
+                .buf[i] *= value
             #elif (op == "/="):
-                me.buf[i] /= value
+                .buf[i] /= value
             #else:
                 #error("unsupported assign operation [[" ++ op ++ "]]")
         }
@@ -69,13 +69,13 @@ impl NumericArray
         for i in NumericArray.N
         {
             #if op == "+=":
-                me.buf[i] += value.buf[i]
+                .buf[i] += value.buf[i]
             #elif (op == "-="):
-                me.buf[i] -= value.buf[i]
+                .buf[i] -= value.buf[i]
             #elif (op == "*="):
-                me.buf[i] *= value.buf[i]
+                .buf[i] *= value.buf[i]
             #elif (op == "/="):
-                me.buf[i] /= value.buf[i]
+                .buf[i] /= value.buf[i]
             #else:
                 #error("unsupported assign operation [[" ++ op ++ "]]")
         }
@@ -85,7 +85,7 @@ impl NumericArray
     mtd opAffect(what: T)
     {
         for i in NumericArray.N:
-            me.buf[i] = what
+            .buf[i] = what
     }
 
     #[Safety("boundcheck", false), Complete, Overload]
@@ -93,7 +93,7 @@ impl NumericArray
     {
         Debug.assert(@countof(what) == NumericArray.N)
         for i in NumericArray.N:
-            me.buf[i] = what[i]
+            .buf[i] = what[i]
     }
 
     #[Safety("boundcheck", false)]
@@ -112,7 +112,7 @@ impl NumericArray
     {
         Debug.assert(@countof(values) == NumericArray.N)
         for i in NumericArray.N:
-            me.buf[i] = values[i]
+            .buf[i] = values[i]
     }
 
     // Multiply & add
@@ -120,7 +120,7 @@ impl NumericArray
     mtd mulAdd(value1, value2: T)
     {
         for i in NumericArray.N:
-            me.buf[i] = (me.buf[i] * value1) + value2
+            .buf[i] = (.buf[i] * value1) + value2
     }
 
     // Multiply & Add
@@ -128,6 +128,6 @@ impl NumericArray
     mtd mulAdd(value1, value2: NumericArray)
     {
         for i in NumericArray.N:
-            me.buf[i] = (me.buf[i] * value1[i]) + value2.buf[i]
+            .buf[i] = (.buf[i] * value1[i]) + value2.buf[i]
     }
 }

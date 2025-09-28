@@ -5,12 +5,12 @@ impl Properties
         var data = cast(*String) item.data
         if item.editBox:
             dref data = item.editBox.getText()
-        me.hasChanged(item)
+        .hasChanged(item)
     }
 
     mtd constructDynamicString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = me.addItem(value, data, parentItem)
+        let item = .addItem(value, data, parentItem)
         with let ed = EditBox.create(item.line, dref cast(*String) data)
         {
             .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
@@ -18,7 +18,7 @@ impl Properties
                 .dockStyle = .CenterKeepSizeVert
             else:
                 .anchorStyle = .X
-            .sigLoseFocus += mtd|item|(ed) { me.validateDynamicString(item); }
+            .sigLoseFocus += mtd|item|(ed) { .validateDynamicString(item); }
         }
 
         item.editBox = ed
@@ -26,7 +26,7 @@ impl Properties
 
     mtd constructStaticString(value: Swag.TypeValue, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = me.addItem(value, data, parentItem)
+        let item = .addItem(value, data, parentItem)
 
         with let ed = EditBox.create(item.line, dref cast(*string) data)
         {

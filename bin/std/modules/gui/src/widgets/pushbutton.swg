@@ -25,10 +25,10 @@ impl IWnd for PushButton
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
-        let theme   = me.getTheme()
-        let metrics = me.getThemeMetrics()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
+        let theme   = .getTheme()
+        let metrics = .getThemeMetrics()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
 
         var subRectBk:     *ThemeImageRect
         var subRectBorder: *ThemeImageRect
@@ -36,7 +36,7 @@ impl IWnd for PushButton
         var colorBorder:   Color = undefined
         var colorText:     Color = undefined
 
-        if me.form == .Default
+        if .form == .Default
         {
             switch
             {
@@ -46,13 +46,13 @@ impl IWnd for PushButton
                 colorText     = colors.btnPushDefault_DisabledText
                 subRectBk     = &rects.btnPush_Disabled
                 subRectBorder = &rects.btnPush_DisabledBorder
-            case me.isPressed:
+            case .isPressed:
                 colorBk       = colors.btnPushDefault_PressedBk
                 colorBorder   = colors.btnPushDefault_PressedBorder
                 colorText     = colors.btnPushDefault_PressedText
                 subRectBk     = &rects.btnPush_Pressed
                 subRectBorder = &rects.btnPush_PressedBorder
-            case me.isHot:
+            case .isHot:
                 colorBk       = colors.btnPushDefault_HotBk
                 colorBorder   = colors.btnPushDefault_HotBorder
                 colorText     = colors.btnPushDefault_HotText
@@ -66,7 +66,7 @@ impl IWnd for PushButton
                 subRectBorder = &rects.btnPush_NormalBorder
             }
         }
-        elif me.form == .Flat
+        elif .form == .Flat
         {
             switch
             {
@@ -76,13 +76,13 @@ impl IWnd for PushButton
                 colorText     = colors.btnPushFlat_DisabledText
                 subRectBk     = &rects.btnPush_Disabled
                 subRectBorder = &rects.btnPush_DisabledBorder
-            case me.isPressed:
+            case .isPressed:
                 colorBk       = colors.btnPushFlat_PressedBk
                 colorBorder   = colors.btnPushFlat_PressedBorder
                 colorText     = colors.btnPushFlat_PressedText
                 subRectBk     = &rects.btnPush_Pressed
                 subRectBorder = &rects.btnPush_PressedBorder
-            case me.isHot:
+            case .isHot:
                 colorBk       = colors.btnPushFlat_HotBk
                 colorBorder   = colors.btnPushFlat_HotBorder
                 colorText     = colors.btnPushFlat_HotText
@@ -107,14 +107,14 @@ impl IWnd for PushButton
                 subRectBk     = &rects.btnPush_Disabled
                 subRectBorder = &rects.btnPush_DisabledBorder
 
-            case me.isPressed:
+            case .isPressed:
                 colorBk       = colors.btnPush_PressedBk
                 colorBorder   = colors.btnPush_PressedBorder
                 colorText     = colors.btnPush_PressedText
                 subRectBk     = &rects.btnPush_Pressed
                 subRectBorder = &rects.btnPush_PressedBorder
 
-            case me.isHot:
+            case .isHot:
                 colorBk       = colors.btnPush_HotBk
                 colorBorder   = colors.btnPush_HotBorder
                 colorText     = colors.btnPush_HotText
@@ -122,7 +122,7 @@ impl IWnd for PushButton
                 subRectBorder = &rects.btnPush_HotBorder
 
             default:
-                if me.form == .Strong
+                if .form == .Strong
                 {
                     colorBk     = colors.btnPush_StrongBk
                     colorBorder = colors.btnPush_StrongBorder
@@ -141,33 +141,33 @@ impl IWnd for PushButton
         }
 
         // Background
-        let clientRect = me.getClientRect()
-        me.aniBk.apply(me, colorBk)
-        theme.drawSubRect(bc.painter, clientRect, subRectBk, me.aniBk.cur())
+        let clientRect = .getClientRect()
+        .aniBk.apply(me, colorBk)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, .aniBk.cur())
 
         // Border
-        me.aniBorder.apply(me, colorBorder)
-        theme.drawSubRect(bc.painter, clientRect, subRectBorder, me.aniBorder.cur())
+        .aniBorder.apply(me, colorBorder)
+        theme.drawSubRect(bc.painter, clientRect, subRectBorder, .aniBorder.cur())
 
         // Content
         var format: RichStringFormat
-        me.aniText.apply(me, colorText)
-        theme.setTextColors(&format, me.aniText.cur())
+        .aniText.apply(me, colorText)
+        theme.setTextColors(&format, .aniText.cur())
         format.horzAlignment = .Center
         format.vertAlignment = .Center
         format.flags         = .Clip
-        format.font          = me.getFont()
-        if me.form == .Strong:
+        format.font          = .getFont()
+        if .form == .Strong:
             format.fontStyle = .Bold
         var labelPos = clientRect
         labelPos.inflate(-metrics.btnPush_Padding)
-        Theme.drawIconText(bc.painter, labelPos, me.icon, &me.name, format, metrics.iconText_Margin)
+        Theme.drawIconText(bc.painter, labelPos, .icon, &.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if me.processMouseEvent(evt):
-            me.postCommandEvent(me.id)
+        if .processMouseEvent(evt):
+            .postCommandEvent(.id)
     }
 }
 

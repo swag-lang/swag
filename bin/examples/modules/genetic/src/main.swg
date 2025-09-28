@@ -31,7 +31,7 @@ impl IWnd for MyView
 
         let best = genGo()
         if best:
-            me.surface.app.getRenderer().updateTexture(g_Texture2, best)
+            .surface.app.getRenderer().updateTexture(g_Texture2, best)
         painter.drawTexture({300, 20, 256, 256}, g_Texture2)
 
         painter.drawTexture({580, 20, 256, 256}, g_Texture1)
@@ -39,7 +39,7 @@ impl IWnd for MyView
         painter.drawString(20, 300, Format.toString("gen %", g_NumGen), g_Font, Argb.Black)
         painter.drawString(20, 340, Format.toString("score %", g_BestScore), g_Font, Argb.Black)
 
-        me.invalidate()
+        .invalidate()
     }
 }
 

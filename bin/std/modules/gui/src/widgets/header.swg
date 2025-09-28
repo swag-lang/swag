@@ -54,41 +54,41 @@ impl IWnd for Header
     {
         let painter = bc.painter
 
-        let clientRect = me.getClientRect()
+        let clientRect = .getClientRect()
         var labelPos   = clientRect
         labelPos.x     = x
         labelPos.width = item.width
 
-        let theme   = me.getTheme()
-        let metrics = me.getThemeMetrics()
-        let colors  = me.getThemeColors()
+        let theme   = .getTheme()
+        let metrics = .getThemeMetrics()
+        let colors  = .getThemeColors()
 
-        if me.hotIdx == idx and !me.hotSeparator
+        if .hotIdx == idx and !.hotSeparator
         {
             var labelPosBk = labelPos
             labelPosBk.x -= (metrics.header_Separator * 0.5)
             labelPosBk.width += metrics.header_Separator
-            painter.fillRect(labelPosBk, me.clicked ? colors.headerItem_ClickedBk : colors.headerItem_HotBk)
+            painter.fillRect(labelPosBk, .clicked ? colors.headerItem_ClickedBk : colors.headerItem_HotBk)
         }
 
-        labelPos.moveLeft(me.marginItems)
+        labelPos.moveLeft(.marginItems)
 
         var colorText: Color
         switch
         {
         case bc.isDisabled:
             colorText = colors.headerItem_DisabledText
-        case idx == me.hotIdx:
+        case idx == .hotIdx:
             colorText = colors.headerItem_HotText
         default:
             colorText = colors.headerItem_Text
         }
 
         // Sort mark
-        if me.sortMark != 0 and me.sortColumn == idx
+        if .sortMark != 0 and .sortColumn == idx
         {
             var icon: Icon = undefined
-            if me.sortMark == 1:
+            if .sortMark == 1:
                 icon = theme.getIcon24(ThemeIcons24.SortArrowDown)
             else:
                 icon = theme.getIcon24(ThemeIcons24.SortArrowUp)
@@ -107,22 +107,22 @@ impl IWnd for Header
         format.horzAlignment = .Left
         format.vertAlignment = .Center
         format.flags         = .Clip
-        format.font          = me.getFont()
+        format.font          = .getFont()
         Theme.drawIconText(painter, labelPos, item.icon, &item.name, format, metrics.iconText_Margin)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let painter = evt.bc.painter
-        let theme   = me.getTheme()
-        let metrics = me.getThemeMetrics()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
+        let theme   = .getTheme()
+        let metrics = .getThemeMetrics()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
 
         // Background bar
-        var clientRect = me.getClientRect()
-        clientRect.offset(me.scrollPos)
-        switch me.form
+        var clientRect = .getClientRect()
+        clientRect.offset(.scrollPos)
+        switch .form
         {
         case Flat:
             theme.drawSubRect(painter, clientRect, &rects.header_FlatBk, colors.header_Bk)
@@ -133,18 +133,18 @@ impl IWnd for Header
         }
 
         // Clipping, take care of padding
-        var clipRect = me.getSurfaceRect()
-        clipRect.applyPadding(me.padding)
+        var clipRect = .getSurfaceRect()
+        clipRect.applyPadding(.padding)
         painter.pushClippingSurfaceRect(clipRect)
         defer painter.popClippingRect()
 
         // Paint all except selected one, which will be painted last
-        clientRect = me.getClientRectPadding()
-        clientRect.offset(me.scrollPos)
-        var x = me.padding.x
-        foreach item, idx in me.items
+        clientRect = .getClientRectPadding()
+        clientRect.offset(.scrollPos)
+        var x = .padding.x
+        foreach item, idx in .items
         {
-            me.paintItem(evt.bc, item, cast(u32) idx, x)
+            .paintItem(evt.bc, item, cast(u32) idx, x)
             x += item.width
 
             var rect = clientRect
@@ -159,54 +159,54 @@ impl IWnd for Header
     {
         if evt.kind == .MouseReleased and evt.button == .Left
         {
-            if me.clicked and me.sigClicked
+            if .clicked and .sigClicked
             {
-                let (hit, ?) = me.hitTest(evt.surfacePos)
-                if hit == me.hotIdx:
-                    me.sigClicked(me, me.items[me.hotIdx].column)
+                let (hit, ?) = .hitTest(evt.surfacePos)
+                if hit == .hotIdx:
+                    .sigClicked(me, .items[.hotIdx].column)
             }
 
-            if me.moving or me.clicked
+            if .moving or .clicked
             {
-                me.moving, me.clicked = false
-                me.releaseMouse()
-                me.invalidate()
+                .moving, .clicked = false
+                .releaseMouse()
+                .invalidate()
             }
         }
 
-        if !me.moving and !me.clicked
+        if !.moving and !.clicked
         {
-            let (hitr, sep) = me.hitTest(evt.surfacePos)
+            let (hitr, sep) = .hitTest(evt.surfacePos)
             var hit = hitr
 
             // Hot, if not a separator, is disabled if item is not clickable
             if hit != Swag.U32.Max
             {
-                if !me.headerFlags.has(.Clickable) and !sep:
+                if !.headerFlags.has(.Clickable) and !sep:
                     hit = Swag.U32.Max
-                elif !me.items[hit].clickable:
+                elif !.items[hit].clickable:
                     hit = Swag.U32.Max
             }
 
-            if hit != me.hotIdx
+            if hit != .hotIdx
             {
-                me.hotIdx = hit
-                me.invalidate()
+                .hotIdx = hit
+                .invalidate()
             }
 
-            if me.hotSeparator != sep
+            if .hotSeparator != sep
             {
-                me.hotSeparator = sep
-                me.invalidate()
+                .hotSeparator = sep
+                .invalidate()
             }
 
-            if me.hotSeparator:
-                me.cursor = Cursor.from(CursorShape.SizeWE)
+            if .hotSeparator:
+                .cursor = Cursor.from(CursorShape.SizeWE)
             else:
-                me.cursor.clear()
+                .cursor.clear()
         }
 
-        if me.hotIdx == Swag.U32.Max
+        if .hotIdx == Swag.U32.Max
         {
             evt.accepted = false
             return
@@ -215,39 +215,39 @@ impl IWnd for Header
         switch evt.kind
         {
         case MouseMove:
-            if me.moving
+            if .moving
             {
-                var pos = me.surfaceToLocal(evt.surfacePos)
-                pos += me.scrollPos.x
-                var move = pos.x - me.getItemPosition(me.hotIdx) + me.padding.x
-                move -= me.correctMoving
-                me.setItemWidth(me.hotIdx, move)
+                var pos = .surfaceToLocal(evt.surfacePos)
+                pos += .scrollPos.x
+                var move = pos.x - .getItemPosition(.hotIdx) + .padding.x
+                move -= .correctMoving
+                .setItemWidth(.hotIdx, move)
             }
 
         case MouseLeave:
-            if me.hotIdx != Swag.U32.Max
+            if .hotIdx != Swag.U32.Max
             {
-                me.hotIdx = Swag.U32.Max
-                me.invalidate()
+                .hotIdx = Swag.U32.Max
+                .invalidate()
             }
 
         case MousePressed:
-            if evt.button == .Left and me.hotIdx != Swag.U32.Max
+            if evt.button == .Left and .hotIdx != Swag.U32.Max
             {
-                if me.hotSeparator
+                if .hotSeparator
                 {
-                    me.moving = true
-                    var pos = me.surfaceToLocal(evt.surfacePos)
-                    pos += me.scrollPos.x
-                    me.correctMoving = pos.x - me.getItemPosition(me.hotIdx) + me.padding.x
-                    me.correctMoving -= me.getItemWidth(me.hotIdx)
-                    me.captureMouse()
+                    .moving = true
+                    var pos = .surfaceToLocal(evt.surfacePos)
+                    pos += .scrollPos.x
+                    .correctMoving = pos.x - .getItemPosition(.hotIdx) + .padding.x
+                    .correctMoving -= .getItemWidth(.hotIdx)
+                    .captureMouse()
                 }
-                elif me.items[me.hotIdx].clickable
+                elif .items[.hotIdx].clickable
                 {
-                    me.clicked = true
-                    me.captureMouse()
-                    me.invalidate()
+                    .clicked = true
+                    .captureMouse()
+                    .invalidate()
                 }
             }
         }
@@ -258,11 +258,11 @@ internal impl Header
 {
     mtd hitTest(surfacePos: Math.Point)->{ idx: u32, sep: bool }
     {
-        let metrics = me.getThemeMetrics()
-        var pos     = me.surfaceToLocal(surfacePos)
-        pos += me.scrollPos.x
-        var x = me.padding.x
-        foreach item, idx in me.items
+        let metrics = .getThemeMetrics()
+        var pos     = .surfaceToLocal(surfacePos)
+        pos += .scrollPos.x
+        var x = .padding.x
+        foreach item, idx in .items
         {
             if pos.x >= x and pos.x < x + item.width:
                 return {cast(u32) idx, false}
@@ -297,28 +297,28 @@ impl Header
     #[Swag.Discardable]
     mtd addItem(tabName: string, width = 100'f32, icon: Icon = {})->*HeaderItem
     {
-        let item = me.items.newPtr()
+        let item = .items.newPtr()
         item.name   = tabName
         item.icon   = icon
         item.width  = width
-        item.column = cast() me.items.count
-        me.items.add(item)
+        item.column = cast() .items.count
+        .items.add(item)
         return item
     }
 
     // Returns the given item, by index
     mtd getItem(idx: u32)->*HeaderItem
     {
-        Debug.assert(idx < me.items.count)
-        return me.items[idx]
+        Debug.assert(idx < .items.count)
+        return .items[idx]
     }
 
     // Returns the given item, by column
     mtd getItemByCol(column: u32)->*HeaderItem
     {
-        Debug.assert(column < me.items.count)
+        Debug.assert(column < .items.count)
 
-        foreach item in me.items
+        foreach item in .items
         {
             if item.column == column:
                 return item
@@ -330,16 +330,16 @@ impl Header
     // Get an item width by index
     mtd getItemWidth(idx: u32)->f32
     {
-        Debug.assert(idx < me.items.count)
-        return me.getItemWidthByCol(me.items[idx].column)
+        Debug.assert(idx < .items.count)
+        return .getItemWidthByCol(.items[idx].column)
     }
 
     // Get an item width by column
     mtd getItemWidthByCol(column: u32)->f32
     {
-        Debug.assert(column < me.items.count)
+        Debug.assert(column < .items.count)
 
-        foreach item in me.items
+        foreach item in .items
         {
             if item.column == column:
                 return item.width
@@ -351,18 +351,18 @@ impl Header
     // Get an item position by index
     mtd getItemPosition(idx: u32)->f32
     {
-        Debug.assert(idx < cast(u32) me.items.count)
-        return me.getItemPositionByCol(me.items[idx].column)
+        Debug.assert(idx < cast(u32) .items.count)
+        return .getItemPositionByCol(.items[idx].column)
     }
 
     // Get an item position by column
     mtd getItemPositionByCol(column: u32)->f32
     {
-        Debug.assert(column < me.items.count)
+        Debug.assert(column < .items.count)
 
-        var x = me.padding.x
-        let m = me.getThemeMetrics().header_Separator
-        foreach item, i in me.items
+        var x = .padding.x
+        let m = .getThemeMetrics().header_Separator
+        foreach item, i in .items
         {
             if item.column == column:
                 return x
@@ -375,33 +375,33 @@ impl Header
     // Get the header total width
     mtd getTotalItemsWidth()->f32
     {
-        var w = me.getItemPosition(cast(u32) me.items.count - 1)
-        w += me.items.back().width
-        w += me.getThemeMetrics().header_Separator
+        var w = .getItemPosition(cast(u32) .items.count - 1)
+        w += .items.back().width
+        w += .getThemeMetrics().header_Separator
         return w
     }
 
     // Set an item width by index
     mtd setItemWidth(idx: u32, width: f32)
     {
-        Debug.assert(idx < me.items.count)
-        me.setItemWidthByCol(me.items[idx].column, width)
+        Debug.assert(idx < .items.count)
+        .setItemWidthByCol(.items[idx].column, width)
     }
 
     // Set an item width by column
     mtd setItemWidthByCol(column: u32, width: f32)
     {
-        Debug.assert(column < me.items.count)
+        Debug.assert(column < .items.count)
 
-        let item = me.getItemByCol(column)
+        let item = .getItemByCol(column)
         var move = Math.max(width, item.minWidth)
         if item.maxWidth > 0:
             move = Math.min(move, item.maxWidth)
         if item.width == move:
             return
         item.width = move
-        if me.sigLayoutChanged:
-            me.sigLayoutChanged(me)
-        me.invalidate()
+        if .sigLayoutChanged:
+            .sigLayoutChanged(me)
+        .invalidate()
     }
 }

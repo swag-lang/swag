@@ -14,7 +14,7 @@ impl IWnd for Dialog
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
         if evt.kind == .Close:
-            me.validateId(BtnCancel)
+            .validateId(BtnCancel)
         evt.accepted = true
     }
 
@@ -26,13 +26,13 @@ impl IWnd for Dialog
             switch evt.key
             {
             case Tab, Right:
-                foreach btn, idx in me.buttons
+                foreach btn, idx in .buttons
                 {
                     if btn.form == .Default
                     {
                         btn.form = .Normal
                         btn.invalidate()
-                        let nextBtn = me.buttons[(idx + 1) % me.buttons.count]
+                        let nextBtn = .buttons[(idx + 1) % .buttons.count]
                         nextBtn.form = .Default
                         nextBtn.invalidate()
                         break
@@ -40,13 +40,13 @@ impl IWnd for Dialog
                 }
 
             case Left:
-                foreach btn, idx in me.buttons
+                foreach btn, idx in .buttons
                 {
                     if btn.form == .Default
                     {
                         btn.form = .Normal
                         btn.invalidate()
-                        let prevBtn = idx ? me.buttons[idx - 1] : me.buttons.back()
+                        let prevBtn = idx ? .buttons[idx - 1] : .buttons.back()
                         prevBtn.form = .Default
                         prevBtn.invalidate()
                         break
@@ -54,27 +54,27 @@ impl IWnd for Dialog
                 }
 
             case Enter:
-                foreach btn in me.buttons
+                foreach btn in .buttons
                 {
                     if btn.form == .Default
                     {
-                        me.validateId(btn.id)
+                        .validateId(btn.id)
                         break
                     }
                 }
 
             case Escape:
-                if me.surface.flags.has(.CloseBtn)
+                if .surface.flags.has(.CloseBtn)
                 {
-                    me.validateId(BtnCancel)
+                    .validateId(BtnCancel)
                     break
                 }
 
-                foreach btn in me.buttons
+                foreach btn in .buttons
                 {
                     if btn.id == BtnNo or btn.id == BtnCancel
                     {
-                        me.validateId(btn.id)
+                        .validateId(btn.id)
                         break
                     }
                 }
@@ -110,7 +110,7 @@ impl Dialog
         let srf          = assume from.app.createSurface(x, y, width, height, surfaceFlags, me)
         srf.wnd.view.backgroundStyle = .Dialog
 
-        let metrics = me.getThemeMetrics()
+        let metrics = .getThemeMetrics()
         var h       = metrics.btnPush_Height
         h += 2 * metrics.dialog_Padding
         with me.wndBottom = Wnd.create'StackLayoutCtrl(srf.wnd.view, "", {0, 0, 0, h})
@@ -122,24 +122,24 @@ impl Dialog
             .setAllPaddings(metrics.dialog_Padding)
         }
 
-        me.setFocus()
+        .setFocus()
         return srf
     }
 
     // Returns the view where stuff can be put.
     mtd getView()->*Wnd
     {
-        return me.surface.wnd.view
+        return .surface.wnd.view
     }
 
     // Display dialog as modal, and returns the user selected window id
     mtd doModal()->string
     {
-        me.surface.bringToTop()
-        me.surface.show()
-        if me.fromSurface and me.fromSurface.isTopMost():
-            me.surface.setTopMost()
-        return me.surface.app.doModalLoop(me.surface)
+        .surface.bringToTop()
+        .surface.show()
+        if .fromSurface and .fromSurface.isTopMost():
+            .surface.setTopMost()
+        return .surface.app.doModalLoop(.surface)
     }
 
     // Add a button
@@ -152,7 +152,7 @@ impl Dialog
 
             .sigPressed += mtd||(btn)
             {
-                if !me.sigPressedButton or me.sigPressedButton(me, btn.id):
+                if !.sigPressedButton or .sigPressedButton(me, btn.id):
                     btn.getApp().exitModal(btn.id)
             }
 
@@ -160,14 +160,14 @@ impl Dialog
         }
 
         if id == BtnCancel or id == BtnNo:
-            me.surface.setSurfaceFlags(add: .CloseBtn)
+            .surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
     }
 
     mtd validateId(btnId: WndId)
     {
-        if !me.sigPressedButton or me.sigPressedButton(me, btnId):
-            me.getApp().exitModal(btnId)
+        if !.sigPressedButton or .sigPressedButton(me, btnId):
+            .getApp().exitModal(btnId)
     }
 }

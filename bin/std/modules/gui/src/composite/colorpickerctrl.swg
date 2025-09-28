@@ -51,21 +51,21 @@ impl IWnd for ColorPickerCtrl
 {
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        me.frameWnd.IWnd.onPaintEvent(evt)
+        .frameWnd.IWnd.onPaintEvent(evt)
 
-        var rect    = me.staticRes.position
+        var rect    = .staticRes.position
         let painter = evt.bc.painter
 
-        let brush = Brush.createHatch(.CheckBoardLarge, me.getThemeColors().colorPicker_BackAlpha)
+        let brush = Brush.createHatch(.CheckBoardLarge, .getThemeColors().colorPicker_BackAlpha)
 
-        if me.oldColor.a != 255:
+        if .oldColor.a != 255:
             painter.fillRect(rect, brush)
-        painter.fillRect(rect, me.oldColor)
+        painter.fillRect(rect, .oldColor)
 
         rect.x += rect.width
-        if me.color.a != 255:
+        if .color.a != 255:
             painter.fillRect(rect, brush)
-        painter.fillRect(rect, me.color)
+        painter.fillRect(rect, .color)
     }
 }
 
@@ -98,30 +98,30 @@ internal impl ColorPickerCtrl
 
     mtd updateEdits()
     {
-        var t = Format.toString("%", me.color.r)
-        me.editR.setText(t)
-        t = Format.toString("%", me.color.g)
-        me.editG.setText(t)
-        t = Format.toString("%", me.color.b)
-        me.editB.setText(t)
-        t = Format.toString("%", me.color.a)
-        me.editA.setText(t)
+        var t = Format.toString("%", .color.r)
+        .editR.setText(t)
+        t = Format.toString("%", .color.g)
+        .editG.setText(t)
+        t = Format.toString("%", .color.b)
+        .editB.setText(t)
+        t = Format.toString("%", .color.a)
+        .editA.setText(t)
 
-        if me.pickerFlags.has(.Alpha):
-            t = Format.toString("%{X08}", me.color.argb)
+        if .pickerFlags.has(.Alpha):
+            t = Format.toString("%{X08}", .color.argb)
         else:
-            t = Format.toString("%{X02}%{X02}%{X02}", me.color.r, me.color.g, me.color.b)
-        me.editH.setText(t)
+            t = Format.toString("%{X02}%{X02}%{X02}", .color.r, .color.g, .color.b)
+        .editH.setText(t)
 
-        me.staticRes.invalidate()
-        me.sigChanged.call(me)
+        .staticRes.invalidate()
+        .sigChanged.call(me)
     }
 
     mtd updateAll()
     {
-        me.updatePickers()
-        me.updateEdits()
-        me.updateMode()
+        .updatePickers()
+        .updateEdits()
+        .updateMode()
     }
 }
 
@@ -437,37 +437,37 @@ impl ColorPickerCtrl
     #[Swag.Inline]
     mtd getColor()->Color
     {
-        return me.color
+        return .color
     }
 
     // Set the selected color but does not change alpha
     mtd setColorKeepAlpha(color: Color)
     {
         var col = color
-        col.a = me.color.a
-        me.setColor(col)
+        col.a = .color.a
+        .setColor(col)
     }
 
     // Set the selected color
     mtd setColor(color: Color)
     {
         var col = color
-        if !me.pickerFlags.has(.Alpha):
+        if !.pickerFlags.has(.Alpha):
             col.a = 255
 
-        if !me.oldColorDone
+        if !.oldColorDone
         {
-            me.oldColor     = col
-            me.oldColorDone = true
+            .oldColor     = col
+            .oldColorDone = true
         }
-        elif me.color == col
+        elif .color == col
         {
             return
         }
 
-        me.color = col
-        me.sigChanged.call(me)
+        .color = col
+        .sigChanged.call(me)
 
-        me.updateAll()
+        .updateAll()
     }
 }

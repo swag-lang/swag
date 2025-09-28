@@ -77,21 +77,21 @@ impl Capture
 
     mtd opDrop()
     {
-        freeForms(me.forms)
+        freeForms(.forms)
     }
 
     mtd setup(view: *EditView)
     {
-        me.editView         = view
-        me.gizmo.sigChanged = mtd||(g, first, hitMove)
+        .editView         = view
+        .gizmo.sigChanged = mtd||(g, first, hitMove)
         {
-            var undo = me.newUndo(.MoveCapture)
-            undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / me.editView.zoom)
-            undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / me.editView.zoom)
-            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / me.editView.zoom)
-            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / me.editView.zoom)
-            me.pushUndo(undo)
-            me.editView.invalidate()
+            var undo = .newUndo(.MoveCapture)
+            undo.newPosX  = cast(s32) ((g.rect.x - g.movingRect.x) / .editView.zoom)
+            undo.newPosY  = cast(s32) ((g.rect.y - g.movingRect.y) / .editView.zoom)
+            undo.newSizeX = cast(s32) ((g.movingRect.width - g.rect.width) / .editView.zoom)
+            undo.newSizeY = cast(s32) ((g.movingRect.height - g.rect.height) / .editView.zoom)
+            .pushUndo(undo)
+            .editView.invalidate()
         }
     }
 
@@ -130,9 +130,9 @@ impl Capture
 
         if onlySel
         {
-            foreach sel in me.selection
+            foreach sel in .selection
             {
-                let f = me.forms[sel]
+                let f = .forms[sel]
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
                     continue
@@ -141,7 +141,7 @@ impl Capture
         }
         else
         {
-            foreach f in me.forms
+            foreach f in .forms
             {
                 let b = cast(*BaseForm) @dataof(f)
                 if b.subKind == .PixSel:
@@ -152,7 +152,7 @@ impl Capture
 
         painter.end()
 
-        render.begin(me.editView.surface.rc)
+        render.begin(.editView.surface.rc)
 
         let rt = render.getRenderTarget(cast(s32) rect.width, cast(s32) rect.height)
         with render
@@ -180,24 +180,24 @@ impl Capture
 
     mtd hasChanged()
     {
-        me.changed        = true
-        me.linkedUpToDate = false
-        me.editView.invalidate()
-        me.editView.main.captureHasChanged()
-        me.editView.main.updateRecent()
+        .changed        = true
+        .linkedUpToDate = false
+        .editView.invalidate()
+        .editView.main.captureHasChanged()
+        .editView.main.updateRecent()
     }
 
     mtd save() throw
     {
-        if !me.changed:
+        if !.changed:
             return
-        me.changed = false
+        .changed = false
 
         var buf:     ConcatBuffer
         var encoder: Encoder'Write.TagBin
 
         encoder.writeAll(&buf, dref me)
-        File.writeAllBytes(me.file, buf)
+        File.writeAllBytes(.file, buf)
     }
 
     func load(file: string, preview = false)->*Capture throw
@@ -232,7 +232,7 @@ impl Capture
     mtd copyAll()
     {
         Cursor.wait()
-        Clipboard.addImage(me.toImage())
+        Clipboard.addImage(.toImage())
     }
 
     mtd copy()
@@ -240,9 +240,9 @@ impl Capture
         var arr: Array'IForm
 
         var imgDone = false
-        foreach s in me.selection
+        foreach s in .selection
         {
-            let itf = me.forms[s]
+            let itf = .forms[s]
 
             // Add real image
             if !imgDone and @kindof(itf) == FormImage
@@ -263,8 +263,8 @@ impl Capture
 
     mtd cut()
     {
-        me.copy()
-        me.pushUndo(me.newUndo(.DeleteSelection))
+        .copy()
+        .pushUndo(.newUndo(.DeleteSelection))
     }
 
     mtd pasteImageInside()
@@ -273,17 +273,17 @@ impl Capture
         if !img.isValid():
             return
 
-        let undo = me.newUndo(.SetImageInside)
+        let undo = .newUndo(.SetImageInside)
         undo.oldImg = img
-        me.pushUndo(undo)
-        me.selectionHasChanged()
+        .pushUndo(undo)
+        .selectionHasChanged()
     }
 
     mtd clearImageInside()
     {
-        let undo = me.newUndo(.SetImageInside)
-        me.pushUndo(undo)
-        me.selectionHasChanged()
+        let undo = .newUndo(.SetImageInside)
+        .pushUndo(undo)
+        .selectionHasChanged()
     }
 
     mtd paste()
@@ -306,8 +306,8 @@ impl Capture
                 return
         }
 
-        let undo = me.newUndo(.CreateForm)
-        me.selection.clear()
+        let undo = .newUndo(.CreateForm)
+        .selection.clear()
 
         var boundRect: Math.Rectangle
 
@@ -324,13 +324,13 @@ impl Capture
         undo.oldForms = res
 
         // Move around mouse
-        var pt = me.editView.getApp().mouse.getPosition()
-        pt = me.editView.screenToSurface(pt)
-        pt = me.editView.surfaceToLocal(pt)
-        pt += me.editView.scrollPos
-        pt.x -= me.paintRect.x
-        pt.y -= me.paintRect.y
-        let zoom = me.paintRect.width / me.width
+        var pt = .editView.getApp().mouse.getPosition()
+        pt = .editView.screenToSurface(pt)
+        pt = .editView.surfaceToLocal(pt)
+        pt += .editView.scrollPos
+        pt.x -= .paintRect.x
+        pt.y -= .paintRect.y
+        let zoom = .paintRect.width / .width
         pt.x /= zoom
         pt.y /= zoom
 
@@ -341,15 +341,15 @@ impl Capture
             itf.moveForm(cast() dx, cast() dy)
         }
 
-        let countBefore = me.forms.count
-        me.pushUndo(undo)
+        let countBefore = .forms.count
+        .pushUndo(undo)
 
         // Select added forms
-        me.selection.clear()
+        .selection.clear()
         for i in undo.oldForms:
-            me.selection.add(countBefore + i)
+            .selection.add(countBefore + i)
 
-        me.selectionHasChanged()
+        .selectionHasChanged()
     }
 
     //////////////////////////////
@@ -584,44 +584,44 @@ impl Capture
 
     mtd paintBackImage(painter: *Painter, x, y: f32, z: f32)
     {
-        let renderer = me.editView.getApp().getRenderer()
+        let renderer = .editView.getApp().getRenderer()
 
         // Background image
-        if !me.backTexture.isValid() and me.backImg.width > 0
+        if !.backTexture.isValid() and .backImg.width > 0
         {
-            me.backTexture = renderer.addImage(me.backImg)
-            me.serialBackTexture += 1
+            .backTexture = renderer.addImage(.backImg)
+            .serialBackTexture += 1
         }
 
-        if me.backTexture.isValid()
+        if .backTexture.isValid()
         {
             // Background image has been changed
-            if me.dirtyBackImg
+            if .dirtyBackImg
             {
-                renderer.removeTexture(&me.backTexture)
-                me.backTexture  = renderer.addImage(me.backImg)
-                me.dirtyBackImg = false
-                me.serialBackTexture += 1
+                renderer.removeTexture(&.backTexture)
+                .backTexture  = renderer.addImage(.backImg)
+                .dirtyBackImg = false
+                .serialBackTexture += 1
             }
 
             var backRect: Math.Rectangle
-            if me.inPlaceEdit
+            if .inPlaceEdit
             {
                 backRect.x      = 0
                 backRect.y      = 0
-                backRect.width  = me.editView.position.width
-                backRect.height = me.editView.position.height
+                backRect.width  = .editView.position.width
+                backRect.height = .editView.position.height
             }
             else
             {
-                backRect.x      = (me.backImagePos.x * z) + x
-                backRect.y      = (me.backImagePos.y * z) + y
-                backRect.width  = me.backImg.width * z
-                backRect.height = me.backImg.height * z
+                backRect.x      = (.backImagePos.x * z) + x
+                backRect.y      = (.backImagePos.y * z) + y
+                backRect.width  = .backImg.width * z
+                backRect.height = .backImg.height * z
             }
 
             painter.setInterpolationMode(.Linear)
-            painter.drawTexture(backRect, me.backTexture)
+            painter.drawTexture(backRect, .backTexture)
         }
     }
 
@@ -631,15 +631,15 @@ impl Capture
         painter.fillRect(rect, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
         painter.setParams(.Antialiased)
 
-        me.paintRect = rect
-        let zoom = rect.width / me.width
+        .paintRect = rect
+        let zoom = rect.width / .width
 
         // Background image
         painter.setAntialiased(false)
-        me.paintBackImage(painter, rect.x, rect.y, zoom)
+        .paintBackImage(painter, rect.x, rect.y, zoom)
 
         // Shapes
-        foreach f in me.forms
+        foreach f in .forms
         {
             var pp = f.boundRect() * zoom
             if !pp.intersectWith(clip):
@@ -659,12 +659,12 @@ impl Capture
         }
 
         // Gizmos
-        foreach f, i in me.forms
+        foreach f, i in .forms
         {
             var flags = FormFlags.Zero
-            if i == me.hotForm:
+            if i == .hotForm:
                 flags.add(.Hot)
-            if me.selection.contains(i):
+            if .selection.contains(i):
                 flags.add(.Selected)
 
             painter.pushTransform()
@@ -674,7 +674,7 @@ impl Capture
         }
 
         // Selection rectangle
-        if me.drawSelRect
+        if .drawSelRect
         {
             with var r: Math.Rectangle
             {
@@ -684,16 +684,16 @@ impl Capture
                 .height = me.movingEnd.y - me.movingStart.y
             }
 
-            r.offset(me.paintRect.x, me.paintRect.y)
+            r.offset(.paintRect.x, .paintRect.y)
             painter.fillRect(r, Color.fromArgb(0x1f, Argb.Cyan))
             painter.drawRect(r, Argb.Cyan, 2)
         }
 
         // Snap
-        if me.snapX != -1:
-            painter.drawLine(rect.x + me.snapX * zoom, rect.y, rect.x + me.snapX * zoom, rect.bottom(), Argb.Purple, 2)
-        if me.snapY != -1:
-            painter.drawLine(rect.x, rect.y + me.snapY * zoom, rect.right(), rect.y + me.snapY * zoom, Argb.Purple, 2)
+        if .snapX != -1:
+            painter.drawLine(rect.x + .snapX * zoom, rect.y, rect.x + .snapX * zoom, rect.bottom(), Argb.Purple, 2)
+        if .snapY != -1:
+            painter.drawLine(rect.x, rect.y + .snapY * zoom, rect.right(), rect.y + .snapY * zoom, Argb.Purple, 2)
     }
 
     //////////////////////////////
@@ -710,17 +710,17 @@ impl Capture
         if editForm:
             form = editForm
         else:
-            form = me.forms[me.selection[0]]
+            form = .forms[.selection[0]]
 
         type = @kindof(form)
 
-        if me.selection.count == 1 and type == FormPolygon
+        if .selection.count == 1 and type == FormPolygon
         {
             let poly = cast(*FormPolygon) @dataof(form)
             result.x = poly.points[idxPt].x + nx
             result.y = poly.points[idxPt].y + ny
         }
-        elif (me.selection.count == 1 or editForm) and (type == FormLine or type == FormArrow)
+        elif (.selection.count == 1 or editForm) and (type == FormLine or type == FormArrow)
         {
             let line = cast(*FormLine) @dataof(form)
             if !right or !bottom
@@ -754,9 +754,9 @@ impl Capture
             return editForm.boundRect()
 
         var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
-        foreach s in me.selection
+        foreach s in .selection
         {
-            let f = me.forms[s]
+            let f = .forms[s]
             let r = f.boundRect()
             bound.x = Math.min(bound.x, r.x)
             bound.y = Math.min(bound.y, r.y)
@@ -772,32 +772,32 @@ impl Capture
         const SnapToler = 10
 
         if x:
-            me.snapX = -1
+            .snapX = -1
         if y:
-            me.snapY = -1
+            .snapY = -1
 
         let ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
-        if !me.editView.main.snap and !ctrlPressed:
+        if !.editView.main.snap and !ctrlPressed:
             return
 
         var nx = x ? dref x : 0
         var ny = y ? dref y : 0
 
-        let bound = me.getSelectionBoundRect(editForm)
+        let bound = .getSelectionBoundRect(editForm)
 
         var arrX: Array's32
         var arrY: Array's32
 
         arrX.add(0)
-        arrX.add(me.width)
-        arrX.add(me.width / 2)
+        arrX.add(.width)
+        arrX.add(.width / 2)
         arrY.add(0)
-        arrY.add(me.height)
-        arrY.add(me.height / 2)
+        arrY.add(.height)
+        arrY.add(.height / 2)
 
-        foreach f, i in me.forms
+        foreach f, i in .forms
         {
-            let autoSel = me.selection.contains(i) or @dataof(f) == @dataof(editForm)
+            let autoSel = .selection.contains(i) or @dataof(f) == @dataof(editForm)
             let form    = cast(*BaseForm) @dataof(f)
 
             switch f
@@ -854,7 +854,7 @@ impl Capture
         {
             foreach ax in arrX
             {
-                let p   = me.getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                let p   = .getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbX = Math.abs(p.x - ax)
                 if nbX < bestX
                 {
@@ -868,7 +868,7 @@ impl Capture
         {
             foreach ay in arrY
             {
-                let p   = me.getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
+                let p   = .getSnapPoint(bound, right, bottom, nx, ny, idxPt, editForm)
                 let nbY = Math.abs(p.y - ay)
                 if nbY < bestY
                 {
@@ -880,15 +880,15 @@ impl Capture
 
         if x and bestX < SnapToler
         {
-            me.snapX = bestCoordX
-            let p = me.getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
+            .snapX = bestCoordX
+            let p = .getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
             nx = cast(s32) (bestCoordX - p.x)
         }
 
         if y and bestY < SnapToler
         {
-            me.snapY = bestCoordY
-            let p = me.getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
+            .snapY = bestCoordY
+            let p = .getSnapPoint(bound, right, bottom, 0, 0, idxPt, editForm)
             ny = cast(s32) (bestCoordY - p.y)
         }
 
@@ -991,9 +991,9 @@ impl Capture
             }
 
             // Specific moves only if one single selection
-            if me.selection.count == 1
+            if .selection.count == 1
             {
-                let selForm = me.forms[me.selection[0]]
+                let selForm = .forms[.selection[0]]
                 let p       = cast(*BaseForm) @dataof(selForm)
                 if !view.main.freezeSel or !p.freeze
                 {
@@ -1019,7 +1019,7 @@ impl Capture
             }
             else
             {
-                var ht = me.hitTest(localPos)
+                var ht = .hitTest(localPos)
                 if ht != Swag.U64.Max
                 {
                     let p = cast(*BaseForm) @dataof(.forms[ht])
@@ -1090,7 +1090,7 @@ impl Capture
                         if !here
                         {
                             .lastSelectPos = evt.surfacePos
-                            .selection.add(me.hotForm)
+                            .selection.add(.hotForm)
                             .selectionHasChanged()
                         }
 
@@ -1254,7 +1254,7 @@ impl Capture
     {
         if g_App.keyb.isKeyPressed(Input.Key.O):
             return Swag.U64.Max
-        let res = me.hitTests(localPos, true)
+        let res = .hitTests(localPos, true)
         if res.isEmpty():
             return Swag.U64.Max
         return res[0]
@@ -1263,12 +1263,12 @@ impl Capture
     mtd hitTests(localPos: Math.Point, retFirst: bool)->Array'u64
     {
         var result: retval
-        if !me.forms.count:
+        if !.forms.count:
             return result
-        for #reverse i in me.forms
+        for #reverse i in .forms
         {
-            let f = me.forms[i]
-            if !f.hitTest(localPos, me.editView.zoom):
+            let f = .forms[i]
+            if !f.hitTest(localPos, .editView.zoom):
                 continue
             result.add(i)
             if retFirst:
@@ -1284,16 +1284,16 @@ impl Capture
 
     mtd getSelectedBaseForm()->#null *BaseForm
     {
-        if me.selection.count == 0:
+        if .selection.count == 0:
             return null
-        return cast(*BaseForm) @dataof(me.forms[me.selection.back()])
+        return cast(*BaseForm) @dataof(.forms[.selection.back()])
     }
 
     mtd getSelectedFormType()->#null typeinfo
     {
-        if me.selection.count == 0:
+        if .selection.count == 0:
             return null
-        let i = me.forms[me.selection.back()]
+        let i = .forms[.selection.back()]
         return @kindof(i)
     }
 
@@ -1340,14 +1340,14 @@ impl Capture
 
     mtd newUndo(kind: UndoKind, serial: u32 = 0)->*Undo
     {
-        let ptr = me.undos.newPtr()
+        let ptr = .undos.newPtr()
         ptr.kind = kind
         if serial:
             ptr.serial = serial
         else
         {
-            me.serialUndo += 1
-            ptr.serial = me.serialUndo
+            .serialUndo += 1
+            ptr.serial = .serialUndo
         }
 
         return ptr
@@ -1355,42 +1355,42 @@ impl Capture
 
     mtd canUndo()->bool
     {
-        return me.nextUndo != 0
+        return .nextUndo != 0
     }
 
     mtd canRedo()->bool
     {
-        return me.nextUndo != me.undos.count
+        return .nextUndo != .undos.count
     }
 
     mtd undo()
     {
-        if !me.canUndo():
+        if !.canUndo():
             return
 
-        let serial = me.undos[me.nextUndo - 1].serial
-        while me.nextUndo and me.undos[me.nextUndo - 1].serial == serial
+        let serial = .undos[.nextUndo - 1].serial
+        while .nextUndo and .undos[.nextUndo - 1].serial == serial
         {
-            me.nextUndo -= 1
-            me.undos[me.nextUndo].undoIt()
+            .nextUndo -= 1
+            .undos[.nextUndo].undoIt()
         }
 
-        me.editView.invalidate()
+        .editView.invalidate()
     }
 
     mtd redo()
     {
-        if !me.canRedo():
+        if !.canRedo():
             return
 
-        let serial = me.undos[me.nextUndo].serial
-        while me.nextUndo != me.undos.count and me.undos[me.nextUndo].serial == serial
+        let serial = .undos[.nextUndo].serial
+        while .nextUndo != .undos.count and .undos[.nextUndo].serial == serial
         {
-            me.undos[me.nextUndo].doIt()
-            me.nextUndo += 1
+            .undos[.nextUndo].doIt()
+            .nextUndo += 1
         }
 
-        me.editView.invalidate()
+        .editView.invalidate()
     }
 
     mtd pushUndo(u: *Undo)
@@ -1398,17 +1398,17 @@ impl Capture
         u.capture = me
 
         // Remove no more relevant undos
-        let countUndo = me.nextUndo
-        while me.nextUndo != me.undos.count
+        let countUndo = .nextUndo
+        while .nextUndo != .undos.count
         {
-            Memory.delete(me.undos[me.nextUndo])
-            me.nextUndo += 1
+            Memory.delete(.undos[.nextUndo])
+            .nextUndo += 1
         }
 
         // Add that one
-        me.undos.resize(countUndo)
-        me.undos.add(u)
-        me.nextUndo = me.undos.count
+        .undos.resize(countUndo)
+        .undos.add(u)
+        .nextUndo = .undos.count
 
         // Do it
         u.init()

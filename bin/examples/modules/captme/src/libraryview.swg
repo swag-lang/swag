@@ -18,7 +18,7 @@ impl LibraryItem
 {
     mtd opDrop()
     {
-        Memory.delete(me.capture)
+        Memory.delete(.capture)
     }
 }
 
@@ -47,20 +47,20 @@ impl IWnd for LibraryView
     {
         if evt.kind == .MouseLeave
         {
-            me.hotItem = Swag.U32.Max
-            me.invalidate()
+            .hotItem = Swag.U32.Max
+            .invalidate()
             return
         }
 
         if evt.kind == .MouseWheel:
             evt.accepted = false
 
-        var pos = me.surfaceToLocal(evt.surfacePos)
-        pos += me.scrollWnd.getScrollPos()
+        var pos = .surfaceToLocal(evt.surfacePos)
+        pos += .scrollWnd.getScrollPos()
 
         // Hit test
         var ht = Swag.U32.Max
-        foreach it, idx in me.items
+        foreach it, idx in .items
         {
             if it.rect.contains(pos)
             {
@@ -69,43 +69,43 @@ impl IWnd for LibraryView
             }
         }
 
-        if ht != me.hotItem
+        if ht != .hotItem
         {
-            me.invalidate()
-            me.hotItem = ht
+            .invalidate()
+            .hotItem = ht
         }
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
         let ctrlPressed  = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
 
-        if evt.kind == .MouseReleased and me.hotItem != Swag.U32.Max and evt.button == .Left
+        if evt.kind == .MouseReleased and .hotItem != Swag.U32.Max and evt.button == .Left
         {
             if !ctrlPressed and !shiftPressed:
-                me.selModel.unselectAll()
+                .selModel.unselectAll()
 
-            if shiftPressed and me.focusItem < me.items.count:
-                me.selModel.select(me.hotItem, me.focusItem, true)
-            elif ctrlPressed and me.selModel.isSelected(me.hotItem):
-                me.selModel.select(me.hotItem, false)
+            if shiftPressed and .focusItem < .items.count:
+                .selModel.select(.hotItem, .focusItem, true)
+            elif ctrlPressed and .selModel.isSelected(.hotItem):
+                .selModel.select(.hotItem, false)
             else:
-                me.selModel.select(me.hotItem, true)
+                .selModel.select(.hotItem, true)
 
-            me.focusItem = me.hotItem
-            me.invalidate()
-            me.setFocus()
+            .focusItem = .hotItem
+            .invalidate()
+            .setFocus()
         }
 
-        if evt.kind == .MouseDoubleClick and me.focusItem < me.items.count and evt.button == .Left
+        if evt.kind == .MouseDoubleClick and .focusItem < .items.count and evt.button == .Left
         {
-            let item = me.items[me.focusItem]
+            let item = .items[.focusItem]
             catch File.touch(item.fi.fullname)
-            me.mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true, linked: item.capture.linkedImage)
-            me.mainWnd.recentWnd.setScrollPos(0, 0)
-            me.mainWnd.swapLibraryMode()
-            me.mainWnd.updateState()
+            .mainWnd.recentWnd.addRecent(item.fi.fullname, item.capture.preview, front: true, sel: true, linked: item.capture.linkedImage)
+            .mainWnd.recentWnd.setScrollPos(0, 0)
+            .mainWnd.swapLibraryMode()
+            .mainWnd.updateState()
         }
 
-        if evt.kind == .MousePressed and evt.button == .Right and me.focusItem < me.items.count
+        if evt.kind == .MousePressed and evt.button == .Right and .focusItem < .items.count
         {
             with let menu = MenuCtrl.createPopup(me)
             {
@@ -124,41 +124,41 @@ impl IWnd for LibraryView
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         if !g_UpdatingLib:
-            me.imgSpin.hide()
+            .imgSpin.hide()
 
         let painter    = evt.bc.painter
-        let clientRect = me.getClientRectPadding()
+        let clientRect = .getClientRectPadding()
 
         var x = clientRect.x
         var y = clientRect.y
 
-        let (w, h) = me.getPreviewSize()
+        let (w, h) = .getPreviewSize()
         if g_DirtyList
         {
             g_DirtyList = false
-            me.filter()
+            .filter()
         }
 
-        let spos = me.scrollWnd.getScrollPos()
-        foreach it, i in me.items
+        let spos = .scrollWnd.getScrollPos()
+        foreach it, i in .items
         {
             it.visible = true
             if y + h < spos.y:
                 it.visible = false
-            if y > spos.y + me.position.height:
+            if y > spos.y + .position.height:
                 it.visible = false
 
             // Retrieve the loaded capture if it exists
-            me.mutexLoaded.lock()
+            .mutexLoaded.lock()
             let capture = it.capture
-            me.mutexLoaded.unlock()
+            .mutexLoaded.unlock()
 
             // We have a capture but not yet a texture. Create it.
             if capture and !it.texture.isValid():
                 it.texture = evt.bc.renderer.addImage(capture.preview)
 
             it.rect = Math.Rectangle{x, y, w, h}
-            let selected = me.selModel.isSelected(cast() i)
+            let selected = .selModel.isSelected(cast() i)
 
             with var infos: RecentInfos
             {
@@ -177,7 +177,7 @@ impl IWnd for LibraryView
             // Waiting for texture
             if !it.texture.isValid()
             {
-                let icon  = me.getTheme().getIcon64(.HourGlass, 48)
+                let icon  = .getTheme().getIcon64(.HourGlass, 48)
                 let color = Color.fromArgb(50, Argb.White)
                 icon.paint(painter, it.rect.horzCenter() - icon.sizeX * 0.5, it.rect.vertCenter() - icon.sizeY * 0.5, color)
             }
@@ -191,7 +191,7 @@ impl IWnd for LibraryView
             }
         }
 
-        me.scrollWnd.setScrollSize(0, y + h + ItemMargin)
+        .scrollWnd.setScrollSize(0, y + h + ItemMargin)
     }
 }
 
@@ -199,8 +199,8 @@ impl LibraryView
 {
     mtd const numImagesPerLine()->u32
     {
-        let (w, ?) = me.getPreviewSize()
-        let clientRect = me.getClientRectPadding()
+        let (w, ?) = .getPreviewSize()
+        let clientRect = .getClientRectPadding()
         let n          = clientRect.width / (w + ItemMargin)
         return cast(u32) n
     }
@@ -209,7 +209,7 @@ impl LibraryView
     {
         var H: f32 = 128.0
         var W: f32 = 0
-        switch me.libWnd.previewSize
+        switch .libWnd.previewSize
         {
         case Small:
             H = 128
@@ -227,14 +227,14 @@ impl LibraryView
 
     mtd updateRecent(capture: *Capture)
     {
-        foreach it in me.items
+        foreach it in .items
         {
             if capture.file == it.fi.fullname
             {
                 if it.capture and it.texture.isValid()
                 {
-                    me.getApp().getRenderer().removeTexture(&it.texture)
-                    it.texture = me.getApp().getRenderer().addImage(capture.preview)
+                    .getApp().getRenderer().removeTexture(&it.texture)
+                    it.texture = .getApp().getRenderer().addImage(capture.preview)
                 }
 
                 break
@@ -244,31 +244,31 @@ impl LibraryView
 
     mtd filter()
     {
-        me.items.clear()
-        foreach it in me.allItems
+        .items.clear()
+        foreach it in .allItems
         {
             it.filtered = true
 
-            me.mutexLoaded.lock()
+            .mutexLoaded.lock()
             let capture = it.capture
-            me.mutexLoaded.unlock()
+            .mutexLoaded.unlock()
 
             if !capture:
                 continue
-            if !capture.linkedImage.isEmpty() and !me.libWnd.showLinkedImage:
+            if !capture.linkedImage.isEmpty() and !.libWnd.showLinkedImage:
                 continue
-            if capture.linkedImage.isEmpty() and !me.libWnd.showUnLinkedImage:
+            if capture.linkedImage.isEmpty() and !.libWnd.showUnLinkedImage:
                 continue
-            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !me.libWnd.showUpToDateLinkedImage:
+            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !.libWnd.showUpToDateLinkedImage:
                 continue
-            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !me.libWnd.showUnSavedLinkedImage:
+            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !.libWnd.showUnSavedLinkedImage:
                 continue
 
             it.filtered = false
-            me.items.add(it)
+            .items.add(it)
         }
 
-        me.invalidate()
+        .invalidate()
     }
 
     #[Swag.Overload]
@@ -281,9 +281,9 @@ impl LibraryView
         capture.haar = ImageStatistics.extractHaarFeatures(capture.preview, 64)
         g_DirtyList  = true
 
-        me.mutexLoaded.lock()
+        .mutexLoaded.lock()
         it.capture = capture
-        me.mutexLoaded.unlock()
+        .mutexLoaded.unlock()
     }
 
     #[Swag.Overload]
@@ -291,7 +291,7 @@ impl LibraryView
     {
         // Work on a copy, as 'items' can be changed by sorting during loading
         var copy: Array'*LibraryItem
-        foreach it in me.allItems:
+        foreach it in .allItems:
             copy.add(it)
 
         for
@@ -317,28 +317,28 @@ impl LibraryView
 
             if visItem
             {
-                me.loadOne(visItem)
-                me.postInvalidateEvent()
+                .loadOne(visItem)
+                .postInvalidateEvent()
             }
             elif notVisItem
             {
-                me.loadOne(notVisItem)
+                .loadOne(notVisItem)
             }
             else:
                 break
         }
 
-        me.postInvalidateEvent()
+        .postInvalidateEvent()
         g_UpdatingLib = false
     }
 
     mtd sortSimilar()
     {
-        if me.items.isEmpty():
+        if .items.isEmpty():
             return
 
         var remaining: Array'*LibraryItem
-        foreach it in me.items:
+        foreach it in .items:
             remaining.add(it)
         if remaining.isEmpty():
             return
@@ -381,15 +381,15 @@ impl LibraryView
             }
         }
 
-        me.mutexLoaded.lock()
+        .mutexLoaded.lock()
         foreach it, i in nitems:
-            me.items[i] = nitems[i]
-        me.mutexLoaded.unlock()
+            .items[i] = nitems[i]
+        .mutexLoaded.unlock()
     }
 
     mtd sortFiles()
     {
-        me.items.sort(func|me.libWnd|(a, b)
+        .items.sort(func|me.libWnd|(a, b)
         {
             var value: s32
 
@@ -409,91 +409,91 @@ impl LibraryView
 
     mtd sort()
     {
-        if me.items.isEmpty():
+        if .items.isEmpty():
             return
 
         Cursor.wait()
 
-        if me.libWnd.sortMethod == .Similar:
-            me.sortSimilar()
+        if .libWnd.sortMethod == .Similar:
+            .sortSimilar()
         else:
-            me.sortFiles()
+            .sortFiles()
 
-        me.invalidate()
+        .invalidate()
     }
 
     mtd fill() throw
     {
-        if me.thread.isValid()
+        if .thread.isValid()
         {
-            me.thread.safeForceEnd()
-            me.thread.wait()
+            .thread.safeForceEnd()
+            .thread.wait()
         }
 
         // Filter
         var res: Array'File.FileInfo
         foreach fi in g_Library.files
         {
-            if (me.filterYear == 0 or fi.lastWriteTime.year == me.filterYear) and
-               (me.filterMonth == 0 or fi.lastWriteTime.month == me.filterMonth) and
-               (me.filterDay == 0 or fi.lastWriteTime.day == me.filterDay)
+            if (.filterYear == 0 or fi.lastWriteTime.year == .filterYear) and
+               (.filterMonth == 0 or fi.lastWriteTime.month == .filterMonth) and
+               (.filterDay == 0 or fi.lastWriteTime.day == .filterDay)
             {
                 res.add(fi)
             }
         }
 
-        let renderer = me.getApp().getRenderer()
-        foreach it in me.items:
+        let renderer = .getApp().getRenderer()
+        foreach it in .items:
             renderer.removeTexture(&it.texture)
 
         // Add items
-        me.allItems.clear()
-        me.allItems.reserve(res.count)
+        .allItems.clear()
+        .allItems.reserve(res.count)
         foreach fi in res
         {
-            let ptr = me.allItems.addNewPtr()
+            let ptr = .allItems.addNewPtr()
             ptr.fi = fi
         }
 
-        me.filter()
-        me.sort()
+        .filter()
+        .sort()
 
-        me.hotItem = Swag.U32.Max
-        me.clearSelection()
+        .hotItem = Swag.U32.Max
+        .clearSelection()
 
         g_UpdatingLib = true
-        me.imgSpin.show()
+        .imgSpin.show()
 
         // Launch thread to read all captures
         try
         {
-            me.thread.init(mtd||(th: Thread) { me.loadFiles(th); })
-            me.thread.start()
+            .thread.init(mtd||(th: Thread) { .loadFiles(th); })
+            .thread.start()
         }
 
-        me.invalidate()
+        .invalidate()
     }
 
     mtd clearSelection()
     {
-        me.focusItem = Swag.U32.Max
-        me.selModel.unselectAll()
+        .focusItem = Swag.U32.Max
+        .selModel.unselectAll()
     }
 
     mtd setFocusItem(focus: u32)
     {
-        me.selModel.unselectAll()
-        me.focusItem = focus
-        me.selModel.select(me.focusItem, me.focusItem, true)
-        me.invalidate()
+        .selModel.unselectAll()
+        .focusItem = focus
+        .selModel.select(.focusItem, .focusItem, true)
+        .invalidate()
     }
 
     mtd scrollToFocus()
     {
-        if me.focusItem == Swag.U32.Max:
+        if .focusItem == Swag.U32.Max:
             return
-        if me.items[me.focusItem].visible:
+        if .items[.focusItem].visible:
             return
-        me.scrollWnd.setScrollPos(0, me.items[me.focusItem].rect.y - 4)
+        .scrollWnd.setScrollPos(0, .items[.focusItem].rect.y - 4)
     }
 }

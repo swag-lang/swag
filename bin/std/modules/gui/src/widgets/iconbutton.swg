@@ -74,64 +74,64 @@ impl IWnd for IconButton
 {
     mtd hidePopup()
     {
-        if !me.popup:
+        if !.popup:
             return
 
-        me.getApp().unregisterHookEvents(me)
-        me.sigHidePopup.call(me)
-        me.popup.destroy()
-        me.popup     = null
-        me.isChecked = false
-        me.invalidate()
+        .getApp().unregisterHookEvents(me)
+        .sigHidePopup.call(me)
+        .popup.destroy()
+        .popup     = null
+        .isChecked = false
+        .invalidate()
     }
 
     mtd impl onHookEvent(evt: IEvent)
     {
-        if !me.popup:
+        if !.popup:
             return
 
         if let ptr = evt as MouseEvent where ptr.kind == .MousePressed
         {
-            if ptr.target == me or ptr.target == me.popup:
+            if ptr.target == me or ptr.target == .popup:
                 return
-            if ptr.target and me.popup.isParentOf(ptr.target):
+            if ptr.target and .popup.isParentOf(ptr.target):
                 return
-            me.hidePopup()
+            .hidePopup()
         }
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        me.hidePopup()
+        .hidePopup()
     }
 
     mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
-        if evt.id != me.id:
+        if evt.id != .id:
             return
 
         if evt.setFlags.has(.ToolTip)
         {
-            me.toolTip = evt.toolTip
+            .toolTip = evt.toolTip
         }
 
-        if evt.setFlags.has(.Checked) and me.isChecked != evt.checked
+        if evt.setFlags.has(.Checked) and .isChecked != evt.checked
         {
             evt.accepted = true
-            me.isChecked = evt.checked
-            me.invalidate()
+            .isChecked   = evt.checked
+            .invalidate()
         }
 
-        me.button.IWnd.onApplyStateEvent(evt)
+        .button.IWnd.onApplyStateEvent(evt)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
         let bc      = evt.bc
-        let theme   = me.getTheme()
-        let colors  = me.getThemeColors()
-        let rects   = me.getThemeRects()
-        let metrics = me.getThemeMetrics()
+        let theme   = .getTheme()
+        let colors  = .getThemeColors()
+        let rects   = .getThemeRects()
+        let metrics = .getThemeMetrics()
 
         var subRectBk:    *ThemeImageRect
         var colorBk:      Color = undefined
@@ -139,7 +139,7 @@ impl IWnd for IconButton
         var colorText:    Color = undefined
         var colorChecked: Color = undefined
 
-        switch me.form
+        switch .form
         {
         case Square:
             subRectBk = &rects.btnIcon_SquareBk
@@ -153,51 +153,51 @@ impl IWnd for IconButton
         switch
         {
         case bc.isDisabled:
-            colorBk      = me.isChecked ? colors.btnIcon_CheckedDisabledBk : colors.btnIcon_DisabledBk
-            colorIcon    = me.isChecked ? colors.btnIcon_CheckedDisabledIcon : colors.btnIcon_DisabledIcon
-            colorText    = me.isChecked ? colors.btnIcon_CheckedDisabledText : colors.btnIcon_DisabledText
+            colorBk      = .isChecked ? colors.btnIcon_CheckedDisabledBk : colors.btnIcon_DisabledBk
+            colorIcon    = .isChecked ? colors.btnIcon_CheckedDisabledIcon : colors.btnIcon_DisabledIcon
+            colorText    = .isChecked ? colors.btnIcon_CheckedDisabledText : colors.btnIcon_DisabledText
             colorChecked = colors.btnIcon_CheckedDisabledMark
-        case me.isPressed or (me.isChecked and me.checkedForm == .None):
-            colorBk      = me.isChecked ? colors.btnIcon_CheckedPressedBk : colors.btnIcon_PressedBk
-            colorIcon    = me.isChecked ? colors.btnIcon_CheckedPressedIcon : colors.btnIcon_PressedIcon
-            colorText    = me.isChecked ? colors.btnIcon_CheckedPressedText : colors.btnIcon_PressedText
+        case .isPressed or (.isChecked and .checkedForm == .None):
+            colorBk      = .isChecked ? colors.btnIcon_CheckedPressedBk : colors.btnIcon_PressedBk
+            colorIcon    = .isChecked ? colors.btnIcon_CheckedPressedIcon : colors.btnIcon_PressedIcon
+            colorText    = .isChecked ? colors.btnIcon_CheckedPressedText : colors.btnIcon_PressedText
             colorChecked = colors.btnIcon_CheckedPressedMark
-        case me.isHot:
-            colorBk      = me.isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
-            colorIcon    = me.isChecked ? colors.btnIcon_CheckedHotIcon : colors.btnIcon_HotIcon
-            colorText    = me.isChecked ? colors.btnIcon_CheckedHotText : colors.btnIcon_HotText
+        case .isHot:
+            colorBk      = .isChecked ? colors.btnIcon_CheckedHotBk : colors.btnIcon_HotBk
+            colorIcon    = .isChecked ? colors.btnIcon_CheckedHotIcon : colors.btnIcon_HotIcon
+            colorText    = .isChecked ? colors.btnIcon_CheckedHotText : colors.btnIcon_HotText
             colorChecked = colors.btnIcon_CheckedHotMark
         default:
-            colorBk      = me.isChecked ? colors.btnIcon_CheckedBk : colors.btnIcon_Bk
-            colorIcon    = me.isChecked ? colors.btnIcon_CheckedIcon : colors.btnIcon_Icon
-            colorText    = me.isChecked ? colors.btnIcon_CheckedText : colors.btnIcon_Text
+            colorBk      = .isChecked ? colors.btnIcon_CheckedBk : colors.btnIcon_Bk
+            colorIcon    = .isChecked ? colors.btnIcon_CheckedIcon : colors.btnIcon_Icon
+            colorText    = .isChecked ? colors.btnIcon_CheckedText : colors.btnIcon_Text
             colorChecked = colors.btnIcon_CheckedMark
         }
 
         if bc.isDisabled:
             paintFlags.add(.Disabled)
-        if me.isChecked:
+        if .isChecked:
             paintFlags.add(.Checked)
-        if me.isHot:
+        if .isHot:
             paintFlags.add(.Hot)
-        if me.isPressed:
+        if .isPressed:
             paintFlags.add(.Pressed)
 
-        if me.icon.color.a:
-            colorIcon = me.icon.color
-        if me.iconColor.a:
-            colorIcon = me.iconColor
-        if me.textColor.a:
-            colorText = me.textColor
+        if .icon.color.a:
+            colorIcon = .icon.color
+        if .iconColor.a:
+            colorIcon = .iconColor
+        if .textColor.a:
+            colorText = .textColor
 
         // Background
-        let clientRect = me.getClientRect()
-        me.aniBk.apply(me, colorBk)
-        theme.drawSubRect(bc.painter, clientRect, subRectBk, me.aniBk.cur())
+        let clientRect = .getClientRect()
+        .aniBk.apply(me, colorBk)
+        theme.drawSubRect(bc.painter, clientRect, subRectBk, .aniBk.cur())
 
-        if me.isChecked and me.checkedForm != .None
+        if .isChecked and .checkedForm != .None
         {
-            switch me.checkedForm
+            switch .checkedForm
             {
             case Bottom:
                 subRectBk = &rects.btnIcon_CheckedBottom
@@ -208,9 +208,9 @@ impl IWnd for IconButton
             case Right:
                 subRectBk = &rects.btnIcon_CheckedRight
             case Full:
-                if me.form == .Square:
+                if .form == .Square:
                     subRectBk = &rects.btnIcon_CheckedSquare
-                elif me.form == .Round:
+                elif .form == .Round:
                     subRectBk = &rects.btnIcon_CheckedRound
                 else:
                     subRectBk = &rects.btnIcon_CheckedRoundSquare
@@ -219,23 +219,23 @@ impl IWnd for IconButton
             theme.drawSubRect(bc.painter, clientRect, subRectBk, colorChecked)
         }
 
-        var pos     = me.getClientRectPadding()
-        let hasIcon = me.icon.isValid() or me.sigPaintIcon != null
+        var pos     = .getClientRectPadding()
+        let hasIcon = .icon.isValid() or .sigPaintIcon != null
 
-        if me.iconSizeX:
-            me.icon.sizeX = me.iconSizeX
-        if me.iconSizeY:
-            me.icon.sizeY = me.iconSizeY
+        if .iconSizeX:
+            .icon.sizeX = .iconSizeX
+        if .iconSizeY:
+            .icon.sizeY = .iconSizeY
 
         // Center everything
         var marginArrow = metrics.btnIcon_MarginArrow
-        if me.iconBtnFlags.has(.Center)
+        if .iconBtnFlags.has(.Center)
         {
             var nw, nh = 0'f32
             marginArrow = 0
 
             #[Swag.Complete]
-            switch me.arrowPos
+            switch .arrowPos
             {
             case Left, Right, RightUp, RightDown:
                 nw += metrics.btnIcon_WidthArrow + metrics.btnIcon_SpacingArrowH
@@ -245,22 +245,22 @@ impl IWnd for IconButton
                 break
             }
 
-            let fontR = me.getFont().regular
-            let sm    = Painter.measureString(me.name.raw.toString(), fontR)
+            let fontR = .getFont().regular
+            let sm    = Painter.measureString(.name.raw.toString(), fontR)
             nw += sm.width
             nh += fontR.height
 
             if hasIcon
             {
                 #[Swag.Complete]
-                switch me.textPos
+                switch .textPos
                 {
                 case Left, Right:
                     nw += metrics.btnIcon_SpacingTextH
-                    nw += me.icon.sizeX
+                    nw += .icon.sizeX
                 case Top, Bottom:
                     nh += metrics.btnIcon_SpacingTextV
-                    nh += me.icon.sizeY
+                    nh += .icon.sizeY
                 }
             }
 
@@ -271,13 +271,13 @@ impl IWnd for IconButton
         }
 
         // Arrow
-        if me.arrowPos != .None
+        if .arrowPos != .None
         {
             var posArrow = pos
             let w        = metrics.btnIcon_WidthArrow
             let h        = metrics.btnIcon_HeightArrow
 
-            switch me.arrowPos
+            switch .arrowPos
             {
             case Left:
                 subRectBk       = &rects.btnIcon_ArrowLeft
@@ -336,159 +336,159 @@ impl IWnd for IconButton
         }
 
         // Name
-        if !me.name.isEmpty() and !me.iconBtnFlags.has(.HideName)
+        if !.name.isEmpty() and !.iconBtnFlags.has(.HideName)
         {
             var sf: RichStringFormat
             theme.setTextColors(&sf, colorText)
-            sf.font          = me.getFont()
+            sf.font          = .getFont()
             sf.horzAlignment = .Center
             sf.vertAlignment = .Center
             sf.flags         = .DontAdaptSingleLineHeight
-            switch me.textPos
+            switch .textPos
             {
             case Left:
                 sf.horzAlignment = .Left
-                if !hasIcon and (me.arrowPos == .Top or me.arrowPos == .Bottom):
+                if !hasIcon and (.arrowPos == .Top or .arrowPos == .Bottom):
                     sf.horzAlignment = .Center
-                bc.painter.drawRichString(pos, &me.name, sf)
-                pos.moveLeft(me.name.boundRect.width + metrics.btnIcon_SpacingTextH)
+                bc.painter.drawRichString(pos, &.name, sf)
+                pos.moveLeft(.name.boundRect.width + metrics.btnIcon_SpacingTextH)
 
-                if !me.icon.isValid():
-                    me.icon.sizeX = pos.width
-                if pos.width < me.icon.sizeX
+                if !.icon.isValid():
+                    .icon.sizeX = pos.width
+                if pos.width < .icon.sizeX
                 {
-                    let ratio = me.icon.sizeX / me.icon.sizeY
-                    me.icon.sizeX = pos.width * ratio
-                    me.icon.sizeY = pos.width
+                    let ratio = .icon.sizeX / .icon.sizeY
+                    .icon.sizeX = pos.width * ratio
+                    .icon.sizeY = pos.width
                 }
                 else
                 {
-                    pos.x     = pos.right() - me.icon.sizeX
-                    pos.width = me.icon.sizeX
+                    pos.x     = pos.right() - .icon.sizeX
+                    pos.width = .icon.sizeX
                 }
 
             case Right:
                 sf.horzAlignment = .Right
-                if !hasIcon and (me.arrowPos == .Top or me.arrowPos == .Bottom):
+                if !hasIcon and (.arrowPos == .Top or .arrowPos == .Bottom):
                     sf.horzAlignment = .Center
-                bc.painter.drawRichString(pos, &me.name, sf)
-                pos.width -= me.name.boundRect.width + metrics.btnIcon_SpacingTextH
+                bc.painter.drawRichString(pos, &.name, sf)
+                pos.width -= .name.boundRect.width + metrics.btnIcon_SpacingTextH
 
-                if !me.icon.isValid():
-                    me.icon.sizeX = pos.width
-                if pos.width < me.icon.sizeX
+                if !.icon.isValid():
+                    .icon.sizeX = pos.width
+                if pos.width < .icon.sizeX
                 {
-                    let ratio = me.icon.sizeX / me.icon.sizeY
-                    me.icon.sizeX = pos.width * ratio
-                    me.icon.sizeY = pos.width
+                    let ratio = .icon.sizeX / .icon.sizeY
+                    .icon.sizeX = pos.width * ratio
+                    .icon.sizeY = pos.width
                 }
                 else
                 {
-                    pos.width = me.icon.sizeX
+                    pos.width = .icon.sizeX
                 }
 
             case Top:
                 sf.vertAlignment = .Top
-                bc.painter.drawRichString(pos, &me.name, sf)
+                bc.painter.drawRichString(pos, &.name, sf)
                 pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingTextV)
 
-                if !me.icon.isValid():
-                    me.icon.sizeY = pos.height
-                if pos.height < me.icon.sizeY
+                if !.icon.isValid():
+                    .icon.sizeY = pos.height
+                if pos.height < .icon.sizeY
                 {
-                    let ratio = me.icon.sizeX / me.icon.sizeY
-                    me.icon.sizeX = pos.height * ratio
-                    me.icon.sizeY = pos.height
+                    let ratio = .icon.sizeX / .icon.sizeY
+                    .icon.sizeX = pos.height * ratio
+                    .icon.sizeY = pos.height
                 }
                 else
                 {
-                    pos.y      = pos.bottom() - me.icon.sizeY
-                    pos.height = me.icon.sizeY
+                    pos.y      = pos.bottom() - .icon.sizeY
+                    pos.height = .icon.sizeY
                 }
 
             case Bottom:
                 sf.vertAlignment = .Bottom
-                bc.painter.drawRichString(pos, &me.name, sf)
+                bc.painter.drawRichString(pos, &.name, sf)
 
                 pos.height -= sf.font.regular.height + metrics.btnIcon_SpacingTextV
-                if !me.icon.isValid():
-                    me.icon.sizeY = pos.height
-                if pos.height < me.icon.sizeY
+                if !.icon.isValid():
+                    .icon.sizeY = pos.height
+                if pos.height < .icon.sizeY
                 {
-                    let ratio = me.icon.sizeX / me.icon.sizeY
-                    me.icon.sizeX = pos.height * ratio
-                    me.icon.sizeY = pos.height
+                    let ratio = .icon.sizeX / .icon.sizeY
+                    .icon.sizeX = pos.height * ratio
+                    .icon.sizeY = pos.height
                 }
                 else:
-                    pos.height = me.icon.sizeY
+                    pos.height = .icon.sizeY
             }
         }
 
         // Icon
-        if me.sigPaintIcon
+        if .sigPaintIcon
         {
-            me.sigPaintIcon(me, bc, pos, paintFlags)
+            .sigPaintIcon(me, bc, pos, paintFlags)
         }
-        elif me.name.isEmpty() or me.iconBtnFlags.has(.HideName)
+        elif .name.isEmpty() or .iconBtnFlags.has(.HideName)
         {
-            pos.x = pos.horzCenter() - me.icon.sizeX * 0.5
-            pos.y = pos.vertCenter() - me.icon.sizeY * 0.5
-            me.icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+            pos.x = pos.horzCenter() - .icon.sizeX * 0.5
+            pos.y = pos.vertCenter() - .icon.sizeY * 0.5
+            .icon.paint(bc.painter, pos.x, pos.y, colorIcon)
         }
         else
         {
-            switch me.textPos
+            switch .textPos
             {
             case Left:
-                pos.x = pos.right() - me.icon.sizeX
-                pos.y = pos.vertCenter() - me.icon.sizeY * 0.5
-                me.icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+                pos.x = pos.right() - .icon.sizeX
+                pos.y = pos.vertCenter() - .icon.sizeY * 0.5
+                .icon.paint(bc.painter, pos.x, pos.y, colorIcon)
             case Right:
-                pos.y = pos.vertCenter() - me.icon.sizeY * 0.5
-                me.icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+                pos.y = pos.vertCenter() - .icon.sizeY * 0.5
+                .icon.paint(bc.painter, pos.x, pos.y, colorIcon)
             case Top:
-                pos.x = pos.horzCenter() - me.icon.sizeX * 0.5
-                pos.y = pos.bottom() - me.icon.sizeY
-                me.icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+                pos.x = pos.horzCenter() - .icon.sizeX * 0.5
+                pos.y = pos.bottom() - .icon.sizeY
+                .icon.paint(bc.painter, pos.x, pos.y, colorIcon)
             case Bottom:
-                pos.x = pos.horzCenter() - me.icon.sizeX * 0.5
-                me.icon.paint(bc.painter, pos.x, pos.y, colorIcon)
+                pos.x = pos.horzCenter() - .icon.sizeX * 0.5
+                .icon.paint(bc.painter, pos.x, pos.y, colorIcon)
             }
         }
     }
 
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if me.processMouseEvent(evt)
+        if .processMouseEvent(evt)
         {
-            if me.iconBtnFlags.has(.CheckableToggle)
+            if .iconBtnFlags.has(.CheckableToggle)
             {
-                me.isChecked = !me.isChecked
-                me.postCommandEvent(me.id)
-                me.sigCheckChanged.call(me)
+                .isChecked = !.isChecked
+                .postCommandEvent(.id)
+                .sigCheckChanged.call(me)
             }
-            elif me.iconBtnFlags.has(.Checkable)
+            elif .iconBtnFlags.has(.Checkable)
             {
-                if !me.isChecked
+                if !.isChecked
                 {
-                    me.isChecked = true
-                    me.postCommandEvent(me.id)
-                    me.sigCheckChanged.call(me)
+                    .isChecked = true
+                    .postCommandEvent(.id)
+                    .sigCheckChanged.call(me)
                 }
             }
             else
             {
-                me.postCommandEvent(me.id)
+                .postCommandEvent(.id)
             }
 
             // Display/Hide popup
-            if me.iconBtnFlags.has(.Popup)
+            if .iconBtnFlags.has(.Popup)
             {
-                if !me.popup
+                if !.popup
                 {
-                    me.sigShowPopup.call(me)
-                    if me.popup:
-                        me.getApp().registerHookEvents(me)
+                    .sigShowPopup.call(me)
+                    if .popup:
+                        .getApp().registerHookEvents(me)
                 }
             }
         }
@@ -517,31 +517,31 @@ impl IconButton
     // Set the check state of the button (if the button is checkable)
     mtd setCheck(checked: bool)
     {
-        if !me.iconBtnFlags.has(.Checkable):
+        if !.iconBtnFlags.has(.Checkable):
             return
-        if me.isChecked == checked:
+        if .isChecked == checked:
             return
-        me.isChecked = checked
-        me.postCommandEvent(me.id)
-        me.invalidate()
+        .isChecked = checked
+        .postCommandEvent(.id)
+        .invalidate()
     }
 
     // Set the button form
     mtd setForm(form: IconButtonForm)
     {
-        me.form = form
-        me.invalidate()
+        .form = form
+        .invalidate()
     }
 
     // Creates a popup window linked to the button position.
     mtd createAnchorPopup(w, h: f32)->*FrameWnd
     {
-        let pos     = me.getSurfaceRect()
-        let topView = me.getTopView()
+        let pos     = .getSurfaceRect()
+        let topView = .getTopView()
         var pt      = topView.surfaceToLocal({pos.x, pos.bottom()})
-        pt.y += me.getThemeMetrics().frameWnd_AnchorHeight
+        pt.y += .getThemeMetrics().frameWnd_AnchorHeight
 
-        let sdw = me.getThemeMetrics().frameWnd_SmallShadowSize
+        let sdw = .getThemeMetrics().frameWnd_SmallShadowSize
 
         with let frame = Wnd.create'FrameWnd(topView, {pt.x, pt.y, w, h})
         {
@@ -554,7 +554,7 @@ impl IconButton
             .anchorPos = pos.horzCenter() - frame.getSurfaceRect().x
         }
 
-        me.popup = frame
+        .popup = frame
         return frame
     }
 }

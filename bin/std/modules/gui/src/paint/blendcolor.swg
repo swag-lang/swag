@@ -17,57 +17,57 @@ impl BlendColor
     // Apply the color lerp to reach 'target'
     mtd apply(wnd: *Wnd, target: Color)
     {
-        if wnd.getApp().dirtyTheme != me.themeCrc
+        if wnd.getApp().dirtyTheme != .themeCrc
         {
-            me.themeCrc = wnd.getApp().dirtyTheme
-            me.curVec4, me.startVec4, me.destVec4 = target.toVector4()
-            me.factor = 1.0
+            .themeCrc = wnd.getApp().dirtyTheme
+            .curVec4, .startVec4, .destVec4 = target.toVector4()
+            .factor = 1.0
             return
         }
 
         let vec4 = target.toVector4()
-        if me.destVec4 != vec4
+        if .destVec4 != vec4
         {
-            me.startVec4 = me.curVec4
-            me.destVec4  = vec4
-            me.factor    = 0
+            .startVec4 = .curVec4
+            .destVec4  = vec4
+            .factor    = 0
         }
-        elif me.factor >= 1.0
+        elif .factor >= 1.0
         {
-            me.curVec4, me.startVec4, me.destVec4 = target.toVector4()
+            .curVec4, .startVec4, .destVec4 = target.toVector4()
             return
         }
 
-        var startV = me.startVec4
-        var destV  = me.destVec4
+        var startV = .startVec4
+        var destV  = .destVec4
         if startV.w == 0
         {
-            startV.x = me.destVec4.x
-            startV.y = me.destVec4.y
-            startV.z = me.destVec4.z
+            startV.x = .destVec4.x
+            startV.y = .destVec4.y
+            startV.z = .destVec4.z
         }
 
         if destV.w == 0
         {
-            destV.x = me.startVec4.x
-            destV.y = me.startVec4.y
-            destV.z = me.startVec4.z
+            destV.x = .startVec4.x
+            destV.y = .startVec4.y
+            destV.z = .startVec4.z
         }
 
-        me.curVec4 = startV.lerpTo(destV, me.factor)
-        me.factor += wnd.getApp().getDt() * me.speed
+        .curVec4 = startV.lerpTo(destV, .factor)
+        .factor += wnd.getApp().getDt() * .speed
         wnd.invalidate()
     }
 
     // Reset the blend
     mtd reset()
     {
-        me.themeCrc = Swag.U32.Max
+        .themeCrc = Swag.U32.Max
     }
 
     // Get the current color
     mtd cur()->Color
     {
-        return Color.fromVector4(me.curVec4)
+        return Color.fromVector4(.curVec4)
     }
 }

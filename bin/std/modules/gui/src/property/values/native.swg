@@ -148,14 +148,14 @@ impl Properties
             }
         }
 
-        me.hasChanged(item)
+        .hasChanged(item)
     }
 
     mtd constructNative(value: Swag.TypeValue, typeNative: const *Swag.TypeInfoNative, data: *u8, parentItem: *PropertiesItem)
     {
-        let item = me.addItem(value, data, parentItem)
+        let item = .addItem(value, data, parentItem)
 
-        if Reflection.hasAttribute(value, me.SliderMinMax)
+        if Reflection.hasAttribute(value, .SliderMinMax)
         {
             with let slider = SliderCtrl.create(item.line, null)
             {
@@ -169,8 +169,8 @@ impl Properties
 
             item.sliderBox = slider
 
-            let minV = cast(f32) assume Reflection.getAttributeValue(value, me.SliderMinMax, "min")
-            let maxV = cast(f32) assume Reflection.getAttributeValue(value, me.SliderMinMax, "max")
+            let minV = cast(f32) assume Reflection.getAttributeValue(value, .SliderMinMax, "min")
+            let maxV = cast(f32) assume Reflection.getAttributeValue(value, .SliderMinMax, "max")
 
             switch typeNative.nativeKind
             {
@@ -184,7 +184,7 @@ impl Properties
         }
         else
         {
-            let unit = Reflection.getAttributeValue(value, me.Unit, "value")
+            let unit = Reflection.getAttributeValue(value, .Unit, "value")
 
             with let ed = EditBox.create(item.line, value.name)
             {
@@ -199,11 +199,11 @@ impl Properties
 
             var minV, maxV: s64
             var hasMinMax = false
-            if Reflection.hasAttribute(value, me.MinMax)
+            if Reflection.hasAttribute(value, .MinMax)
             {
                 hasMinMax = true
-                minV      = cast(s64) assume Reflection.getAttributeValue(value, me.MinMax, "min")
-                maxV      = cast(s64) assume Reflection.getAttributeValue(value, me.MinMax, "max")
+                minV      = cast(s64) assume Reflection.getAttributeValue(value, .MinMax, "min")
+                maxV      = cast(s64) assume Reflection.getAttributeValue(value, .MinMax, "max")
             }
 
             item.editBox = ed
@@ -265,7 +265,7 @@ impl Properties
         {
             item.sliderBox.sigChanged += mtd|item|(ed)
             {
-                me.validateNative(item)
+                .validateNative(item)
             }
         }
         elif item.editBox
@@ -273,7 +273,7 @@ impl Properties
             item.editBox.sigLoseFocus += mtd|item|(ed)
             {
                 if ed.isValid():
-                    me.validateNative(item)
+                    .validateNative(item)
                 else:
                     ed.restoreText()
             }

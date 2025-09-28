@@ -39,137 +39,137 @@ impl LibraryWnd
 {
     mtd setPreviewSize(size: PreviewSize)
     {
-        me.previewSize = size
-        me.invalidate()
+        .previewSize = size
+        .invalidate()
     }
 
     mtd setSortMethod(method: SortMethod)
     {
-        me.sortMethod = method
-        me.view.sort()
-        me.invalidate()
+        .sortMethod = method
+        .view.sort()
+        .invalidate()
     }
 
     mtd setSortOrder(invert: bool)
     {
-        me.invertSort = invert
-        me.view.sort()
-        me.invalidate()
+        .invertSort = invert
+        .view.sort()
+        .invalidate()
     }
 
     mtd getCapture()->#null *Capture
     {
-        if me.view.focusItem < me.view.items.count:
-            return me.view.items[me.view.focusItem].capture
+        if .view.focusItem < .view.items.count:
+            return .view.items[.view.focusItem].capture
         return null
     }
 
     mtd requestClose()
     {
-        if me.view.thread.isValid()
+        if .view.thread.isValid()
         {
-            me.view.thread.safeForceEnd()
-            me.view.thread.wait()
+            .view.thread.safeForceEnd()
+            .view.thread.wait()
         }
     }
 
     mtd const hasSelected()->bool
     {
-        return !me.view.selModel.isEmpty()
+        return !.view.selModel.isEmpty()
     }
 
     mtd removeSelected()
     {
-        foreach it, i in me.view.items
+        foreach it, i in .view.items
         {
             if it.filtered:
                 continue
 
-            if me.view.selModel.isSelected(cast() i):
+            if .view.selModel.isSelected(cast() i):
                 g_Library.removeFile(it.fi.fullname)
         }
     }
 
     mtd moveSelHome()
     {
-        if me.view.items.isEmpty():
+        if .view.items.isEmpty():
             return
-        me.view.setFocusItem(0)
-        me.view.scrollToFocus()
+        .view.setFocusItem(0)
+        .view.scrollToFocus()
     }
 
     mtd moveSelEnd()
     {
-        if me.view.items.isEmpty():
+        if .view.items.isEmpty():
             return
-        me.view.setFocusItem(cast(u32) me.view.items.count - 1)
-        me.view.scrollToFocus()
+        .view.setFocusItem(cast(u32) .view.items.count - 1)
+        .view.scrollToFocus()
     }
 
     mtd moveSelLeft()
     {
-        if me.view.items.isEmpty():
+        if .view.items.isEmpty():
             return
-        if me.view.focusItem == 0 or me.view.focusItem == Swag.U32.Max:
+        if .view.focusItem == 0 or .view.focusItem == Swag.U32.Max:
             return
-        me.view.focusItem -= 1
-        me.view.setFocusItem(me.view.focusItem)
-        me.view.scrollToFocus()
+        .view.focusItem -= 1
+        .view.setFocusItem(.view.focusItem)
+        .view.scrollToFocus()
     }
 
     mtd moveSelRight()
     {
-        if me.view.items.isEmpty():
+        if .view.items.isEmpty():
             return
-        if me.view.focusItem == me.view.items.count - 1 or me.view.focusItem == Swag.U32.Max:
+        if .view.focusItem == .view.items.count - 1 or .view.focusItem == Swag.U32.Max:
             return
-        me.view.focusItem += 1
-        me.view.setFocusItem(me.view.focusItem)
-        me.view.scrollToFocus()
+        .view.focusItem += 1
+        .view.setFocusItem(.view.focusItem)
+        .view.scrollToFocus()
     }
 
     mtd moveSelTop()
     {
-        if me.view.items.isEmpty():
+        if .view.items.isEmpty():
             return
-        let n = me.view.numImagesPerLine()
-        if me.view.focusItem < n or me.view.focusItem == Swag.U32.Max:
+        let n = .view.numImagesPerLine()
+        if .view.focusItem < n or .view.focusItem == Swag.U32.Max:
             return
-        me.view.focusItem -= n
-        me.view.setFocusItem(me.view.focusItem)
-        me.view.scrollToFocus()
+        .view.focusItem -= n
+        .view.setFocusItem(.view.focusItem)
+        .view.scrollToFocus()
     }
 
     mtd moveSelBottom()
     {
-        if me.view.items.isEmpty():
+        if .view.items.isEmpty():
             return
-        let n = me.view.numImagesPerLine()
-        if me.view.focusItem >= me.view.items.count - n or me.view.focusItem == Swag.U32.Max:
+        let n = .view.numImagesPerLine()
+        if .view.focusItem >= .view.items.count - n or .view.focusItem == Swag.U32.Max:
             return
-        me.view.focusItem += n
-        me.view.setFocusItem(me.view.focusItem)
-        me.view.scrollToFocus()
+        .view.focusItem += n
+        .view.setFocusItem(.view.focusItem)
+        .view.scrollToFocus()
     }
 
     mtd fill()
     {
-        if me.listCtrl.getLineCount():
+        if .listCtrl.getLineCount():
             return
         g_Library.onDeleteFile += mtd||(file)
         {
-            foreach it, i in me.view.items
+            foreach it, i in .view.items
             {
                 if it.fi.fullname == file
                 {
-                    me.view.selModel.select(cast() i, false)
-                    me.view.items.removeAtOrdered(i)
+                    .view.selModel.select(cast() i, false)
+                    .view.items.removeAtOrdered(i)
                     break
                 }
             }
         }
 
-        let line = me.listCtrl.createLine("All Captures", Icon.from(&me.main.icons24, 4))
+        let line = .listCtrl.createLine("All Captures", Icon.from(&.main.icons24, 4))
         var item = line.setItem(1, Format.toString("% ", g_Library.files.count))
         item.horzAlign = .Right
 
@@ -184,7 +184,7 @@ impl LibraryWnd
         var lastLineMonth: *ListLine
         var lastLineDay:   *ListLine
 
-        let icon1 = Icon.from(&me.main.icons24, 3)
+        let icon1 = Icon.from(&.main.icons24, 3)
 
         var cptYear, cptMonth, cptDay = 0
 
@@ -226,7 +226,7 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.year != lastDateTime.year)
             {
                 fillLastYear()
-                lastLine           = me.listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
+                lastLine           = .listCtrl.createLine(Format.toString("%", fi.lastWriteTime.year), icon1)
                 lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLineYear       = lastLine
             }
@@ -234,7 +234,7 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.month != lastDateTime.month)
             {
                 fillLastMonth()
-                lastLine           = me.listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
+                lastLine           = .listCtrl.createLine(Format.toString("%", DateTime.monthName(fi.lastWriteTime.month)), icon1, lastLineYear)
                 lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLine.userData1 = cast() cast(u64) fi.lastWriteTime.month
                 lastLineMonth      = lastLine
@@ -243,7 +243,7 @@ impl LibraryWnd
             if !lastDateTime or (fi.lastWriteTime.day != lastDateTime.day)
             {
                 fillLastDay()
-                lastLine           = me.listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
+                lastLine           = .listCtrl.createLine(Format.toString("%, %", DateTime.dayOfWeekName(fi.lastWriteTime.dayOfWeek()), fi.lastWriteTime.day), icon1, lastLineMonth)
                 lastLine.userData0 = cast() cast(u64) fi.lastWriteTime.year
                 lastLine.userData1 = cast() cast(u64) fi.lastWriteTime.month
                 lastLine.userData2 = cast() cast(u64) fi.lastWriteTime.day
@@ -258,8 +258,8 @@ impl LibraryWnd
         fillLastMonth()
         fillLastDay()
 
-        me.listCtrl.computeLayout()
-        catch me.view.fill()
+        .listCtrl.computeLayout()
+        catch .view.fill()
     }
 
     mtd registerActions()

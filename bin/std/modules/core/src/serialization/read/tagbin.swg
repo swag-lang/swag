@@ -69,42 +69,42 @@ internal impl TagBin
     // Returns a pointer to a section object, either reused from the free pool or newly allocated.
     mtd newSection()->*TagBinSection
     {
-        if me.freeSections.count
+        if .freeSections.count
         {
-            let ptr = me.freeSections.popBack()
+            let ptr = .freeSections.popBack()
             ptr.mapSeek.clear()
             ptr.version = 0
-            me.sections.add(ptr)
+            .sections.add(ptr)
             return ptr
         }
 
-        return me.sections.addNewPtr()
+        return .sections.addNewPtr()
     }
 
     // Release the current section back to the free pool.
     // Pops the most recent section from the active stack and returns it to the reuse pool.
     mtd releaseSection()
     {
-        let ptr = me.sections.popBack()
-        me.freeSections.add(ptr)
+        let ptr = .sections.popBack()
+        .freeSections.add(ptr)
     }
 
     mtd acquireTmpBuf()->*Buffer
     {
-        if me.tmpPool.count
+        if .tmpPool.count
         {
-            let b = me.tmpPool.popBack()
+            let b = .tmpPool.popBack()
             b.clear()
             return b
         }
 
-        return me.tmpPool.newPtr()
+        return .tmpPool.newPtr()
     }
 
     mtd releaseTmpBuf(b: *Buffer)
     {
         b.clear()
-        me.tmpPool.add(b)
+        .tmpPool.add(b)
     }
 
     // Check if type conversion is possible between 'fromType' and 'toType'.
@@ -127,7 +127,7 @@ internal impl TagBin
         // s64/float/bool/rune to s64/float/bool/rune
         if Reflection.isSimpleNative(toType) and Reflection.isSimpleNative(fromType)
         {
-            me.convertNextNative = cast(const *Swag.TypeInfoNative) fromType
+            .convertNextNative = cast(const *Swag.TypeInfoNative) fromType
             return true
         }
 
@@ -139,7 +139,7 @@ internal impl TagBin
             if Reflection.isStaticArray(toType)
             {
                 let toArr = cast(const *Swag.TypeInfoArray) toType
-                if me.canConvertType(toArr.pointedType, fromArr.pointedType):
+                if .canConvertType(toArr.pointedType, fromArr.pointedType):
                     return true
             }
 
@@ -148,22 +148,22 @@ internal impl TagBin
                 // Static array to dynamic array
                 if Reflection.isStructArray(toStruct)
                 {
-                    if me.canConvertType(Reflection.getStructArrayType(toStruct), fromArr.pointedType):
+                    if .canConvertType(Reflection.getStructArrayType(toStruct), fromArr.pointedType):
                         return true
                 }
 
                 // Static array to single struct value
-                elif me.canConvertType(toType, fromArr.pointedType)
+                elif .canConvertType(toType, fromArr.pointedType)
                 {
-                    me.convertArrayToVal = true
+                    .convertArrayToVal = true
                     return true
                 }
             }
 
             // Static array to single value
-            elif me.canConvertType(toType, fromArr.pointedType)
+            elif .canConvertType(toType, fromArr.pointedType)
             {
-                me.convertArrayToVal = true
+                .convertArrayToVal = true
                 return true
             }
         }
@@ -176,21 +176,21 @@ internal impl TagBin
                 if Reflection.isStaticArray(toType)
                 {
                     let toArr = cast(const *Swag.TypeInfoArray) toType
-                    if me.canConvertType(toArr.pointedType, Reflection.getStructArrayType(fromStruct)):
+                    if .canConvertType(toArr.pointedType, Reflection.getStructArrayType(fromStruct)):
                         return true
                 }
 
                 // Dynamic array to dynamic array
                 elif toStruct and toStruct.fromGeneric == Core.Array
                 {
-                    if me.canConvertType(Reflection.getStructArrayType(toStruct), Reflection.getStructArrayType(fromStruct)):
+                    if .canConvertType(Reflection.getStructArrayType(toStruct), Reflection.getStructArrayType(fromStruct)):
                         return true
                 }
 
                 // Dynamic array to single value
-                elif me.canConvertType(toType, Reflection.getStructArrayType(fromStruct))
+                elif .canConvertType(toType, Reflection.getStructArrayType(fromStruct))
                 {
-                    me.convertArrayToVal = true
+                    .convertArrayToVal = true
                     return true
                 }
             }
@@ -201,9 +201,9 @@ internal impl TagBin
             let toArr = cast(const *Swag.TypeInfoArray) toType
 
             // Conversion from simple value to array
-            if me.canConvertType(fromType, toArr.pointedType)
+            if .canConvertType(fromType, toArr.pointedType)
             {
-                me.convertValToArray = true
+                .convertValToArray = true
                 return true
             }
         }
@@ -213,9 +213,9 @@ internal impl TagBin
             if Reflection.isStructArray(toStruct)
             {
                 // Conversion from simple value to Core.Array
-                if (!fromStruct or !Reflection.isStructArray(fromStruct)) and me.canConvertType(fromType, Reflection.getStructArrayType(toStruct))
+                if (!fromStruct or !Reflection.isStructArray(fromStruct)) and .canConvertType(fromType, Reflection.getStructArrayType(toStruct))
                 {
-                    me.convertValToArray = true
+                    .convertValToArray = true
                     return true
                 }
             }
@@ -246,17 +246,17 @@ impl TagBin
     // Sets up the internal byte stream for reading from the provided data buffer.
     mtd startRead(input: const [..] u8) throw
     {
-        me.stream = ByteStream.openRead(input)
+        .stream = ByteStream.openRead(input)
     }
 
     // Begin reading the root container of the serialized data.
     // Validates the root signature to ensure the stream contains valid serialized data.
     mtd beginRoot() throw
     {
-        let sig = me.stream.readNative'u32()
+        let sig = .stream.readNative'u32()
         if sig != Write.TagBinSignatures.Root:
             throw SerializationError{"invalid root signature"}
-        me.version = me.stream.readNative'u32()
+        .version = .stream.readNative'u32()
     }
 
     // Finish reading the root container.
@@ -270,18 +270,18 @@ impl TagBin
     // Optionally skips reading the fat table if 'skipFat' is true for performance optimization.
     mtd beginSection(kind: SectionKind, skipFat = false) throw
     {
-        let sec = me.newSection()
+        let sec = .newSection()
         sec.kind    = kind
         sec.skipFat = skipFat
         if kind != .Unordered:
             return
 
         // Read fat position and count
-        var sig = me.stream.readNative'u32()
+        var sig = .stream.readNative'u32()
         if sig != Write.TagBinSignatures.Fat:
             throw SerializationError{"invalid fat signature"}
-        let fatSeek  = me.stream.readNative'u64()
-        var fatCount = me.stream.readNative'u64()
+        let fatSeek  = .stream.readNative'u64()
+        var fatCount = .stream.readNative'u64()
 
         // We have a fat, but we do not want it !
         if skipFat
@@ -296,20 +296,20 @@ impl TagBin
         else
         {
             // Seek to fat and read it
-            me.stream.setSeek(fatSeek)
-            sig = me.stream.readNative'u32()
+            .stream.setSeek(fatSeek)
+            sig = .stream.readNative'u32()
             if sig != Write.TagBinSignatures.Fat:
                 throw SerializationError{"invalid fat signature"}
 
             while fatCount
             {
-                let crc  = me.stream.readNative'u32()
-                let seek = me.stream.readNative'u64()
+                let crc  = .stream.readNative'u32()
+                let seek = .stream.readNative'u64()
                 sec.mapSeek.add(crc, seek)
                 fatCount -= 1
             }
 
-            sec.afterFatSeek = me.stream.getSeek()
+            sec.afterFatSeek = .stream.getSeek()
         }
     }
 
@@ -317,22 +317,22 @@ impl TagBin
     // Updates the stream position and releases the section back to the pool.
     mtd endSection() throw
     {
-        let sec = me.sections.back()
+        let sec = .sections.back()
 
         // Fat is after the datas. We need to be sure to point
         // to what's next, except in raw mode where we are already at
         // the correct offset
         if sec.kind != .Raw:
-            me.stream.setSeek(sec.afterFatSeek)
+            .stream.setSeek(sec.afterFatSeek)
 
-        me.releaseSection()
+        .releaseSection()
     }
 
     // Begin reading a struct of the given 'structType'.
     // Returns false for normal struct processing, true for special handling cases.
     mtd beginStruct(structType: typeinfo, _structData: const *u8)->bool throw
     {
-        var sig = me.stream.readNative'u32()
+        var sig = .stream.readNative'u32()
         if sig == Write.TagBinSignatures.Raw
         {
             // If the stream contains a 'raw' representation of the struct, and the requested
@@ -340,18 +340,18 @@ impl TagBin
             if !Reflection.hasAttribute(structType, Serialization.Final):
                 throw SerializationError{"cannot convert a type from final to non final"}
 
-            me.beginSection(.Raw)
+            .beginSection(.Raw)
         }
         else
         {
             // Skip array in case of an array to value conversion
             if sig == Write.TagBinSignatures.UnRaw:
-                sig = me.stream.readNative'u32()
+                sig = .stream.readNative'u32()
 
             // Read struct version
             if sig != Write.TagBinSignatures.Version:
                 throw SerializationError{"invalid version signature"}
-            let streamVersion = me.stream.readNative'u32()
+            let streamVersion = .stream.readNative'u32()
 
             // Deal with version
             var skipFat       = false
@@ -362,7 +362,7 @@ impl TagBin
 
                 // The stream version is more recent than the code that tries to read it.
                 // Specific error, except if we want to try forward compatibility
-                if !me.options.tryForward and curVersion < streamVersion:
+                if !.options.tryForward and curVersion < streamVersion:
                     throw InvalidVersion{wantedVersion: curVersion, foundVersion: streamVersion}
 
                 // If this is the exact same version, then no need to read the fat, because everything
@@ -371,7 +371,7 @@ impl TagBin
                     skipFat = true
             }
 
-            me.beginSection(.Unordered, skipFat)
+            .beginSection(.Unordered, skipFat)
         }
 
         return false
@@ -381,29 +381,29 @@ impl TagBin
     // Closes the current section that was opened by 'beginStruct'.
     mtd endStruct() throw
     {
-        me.endSection()
+        .endSection()
     }
 
     // Begin reading a field element identified by 'val'.
     // Returns true if the element exists in the stream and should be processed, false to skip it.
     mtd beginElement(val: TypeValue)->bool throw
     {
-        Debug.assert(me.sections.count != 0, "Missing a previous 'beginSection' call")
+        Debug.assert(.sections.count != 0, "Missing a previous 'beginSection' call")
 
         // If this name is in the ignore list, then skip it
-        if me.ignoreElements.contains(val.name)
+        if .ignoreElements.contains(val.name)
         {
-            me.elemStack.add({false, null})
+            .elemStack.add({false, null})
             return false
         }
 
         var reqCrcName = val.crc
-        let sec        = me.sections.back()
+        let sec        = .sections.back()
 
         // If section is raw, then we just have values without versionning
         if sec.kind == .Raw
         {
-            me.elemStack.add({false, null})
+            .elemStack.add({false, null})
             return true
         }
 
@@ -432,53 +432,53 @@ impl TagBin
             // The requested field is not there, just ignore it
             if !ent
             {
-                me.elemStack.add({false, null})
+                .elemStack.add({false, null})
                 return false
             }
 
             // Otherwise we seek to the field in the stream
-            me.stream.setSeek(ent.value)
+            .stream.setSeek(ent.value)
         }
 
         // Read the name signature.
-        let crcName = me.stream.readNative'u32()
+        let crcName = .stream.readNative'u32()
 
         // We should have a matching crc
         if crcName != reqCrcName:
             throw SerializationError{"bad field name", field: val}
 
         // Read the type signature.
-        let crcType = me.stream.readNative'u32()
+        let crcType = .stream.readNative'u32()
 
         // Read value flags
-        let flags = me.stream.readNative'Write.TagBinValueFlags()
+        let flags = .stream.readNative'Write.TagBinValueFlags()
         if flags.has(.Compressed)
         {
-            let uncompressedSize = me.stream.readNative'u64()
-            let compressedSize   = me.stream.readNative'u64()
+            let uncompressedSize = .stream.readNative'u64()
+            let compressedSize   = .stream.readNative'u64()
             if uncompressedSize == compressedSize:
-                me.elemStack.add({false, null})
+                .elemStack.add({false, null})
             else
             {
                 // push parent buffer on stack and switch current output
-                let decompressedBuffer = me.acquireTmpBuf()
+                let decompressedBuffer = .acquireTmpBuf()
                 decompressedBuffer.reserve(uncompressedSize)
 
                 // Here uncompress to 'tmp'
                 var decompressor: Core.Compress.Inflate
-                decompressor.decompress(decompressedBuffer, me.stream.remainReadToSlice())
+                decompressor.decompress(decompressedBuffer, .stream.remainReadToSlice())
 
                 // track this element context
-                me.elemStack.add({true, decompressedBuffer})
+                .elemStack.add({true, decompressedBuffer})
 
-                me.outStack.add({me.stream.readBuffer, me.stream.seek + compressedSize})
-                me.stream.readBuffer = decompressedBuffer.toSlice()
-                me.stream.seek       = 0
+                .outStack.add({.stream.readBuffer, .stream.seek + compressedSize})
+                .stream.readBuffer = decompressedBuffer.toSlice()
+                .stream.seek       = 0
             }
         }
         else
         {
-            me.elemStack.add({false, null})
+            .elemStack.add({false, null})
         }
 
         // If they do not match, we will try to convert the type from the one in the
@@ -494,18 +494,18 @@ impl TagBin
 
             // The type exists, but we do not have a way to convert it to the requested
             // type.
-            if !me.canConvertType(val.pointedType, streamType):
+            if !.canConvertType(val.pointedType, streamType):
                 throw SerializationError{"cannot convert field type", field: val}
 
             // It's an array in the stream, but now we want a single value.
             // Skip the sequence header
-            if me.convertArrayToVal
+            if .convertArrayToVal
             {
-                me.convertArrayToVal = false
-                let sig = me.stream.readNative'u32()
+                .convertArrayToVal = false
+                let sig = .stream.readNative'u32()
                 if sig != Write.TagBinSignatures.Sequence:
                     throw SerializationError{"stream is corrupted", field: val}
-                discard me.stream.readNative'u64()
+                discard .stream.readNative'u64()
             }
         }
 
@@ -516,21 +516,21 @@ impl TagBin
     // Clears any pending native type conversion state.
     mtd endElement(_val: TypeValue) throw
     {
-        me.convertNextNative = null
+        .convertNextNative = null
 
-        Debug.assert(me.elemStack.count != 0)
-        let ctx = me.elemStack.popBack()
+        Debug.assert(.elemStack.count != 0)
+        let ctx = .elemStack.popBack()
         if !ctx.compressed:
             return
 
         // We must have a previous buffer to append into
-        Debug.assert(me.outStack.count != 0)
-        let (parentOut, parentSeek) = me.outStack.popBack()
+        Debug.assert(.outStack.count != 0)
+        let (parentOut, parentSeek) = .outStack.popBack()
 
         // Switch current 'output' back to parent and recycle tmp
-        me.stream.readBuffer = parentOut
-        me.stream.seek       = parentSeek
-        me.releaseTmpBuf(ctx.tmpBuf)
+        .stream.readBuffer = parentOut
+        .stream.seek       = parentSeek
+        .releaseTmpBuf(ctx.tmpBuf)
     }
 
     // Begin reading a value within the current context.
@@ -552,31 +552,31 @@ impl TagBin
     mtd beginSequence(typeElem: typeinfo, data: *u8, countElem: *u64)->bool throw
     {
         let orgCount = dref countElem
-        if me.convertValToArray
+        if .convertValToArray
         {
             dref countElem = 1
         }
         else
         {
-            let sig = me.stream.readNative'u32()
+            let sig = .stream.readNative'u32()
             if sig != Write.TagBinSignatures.Sequence:
                 throw SerializationError{"stream is corrupted"}
 
             // 0 for a dynamic array, > 0 for a static array
-            dref countElem = me.stream.readNative'u64()
+            dref countElem = .stream.readNative'u64()
         }
 
         // If we need a value conversion, we must read element by element
-        if me.convertValToArray
+        if .convertValToArray
         {
-            me.convertValToArray = false
+            .convertValToArray = false
             return false
         }
 
         // If we need a type conversion, we must read element by element
-        if me.convertNextNative
+        if .convertNextNative
         {
-            let sig = me.stream.readNative'u32()
+            let sig = .stream.readNative'u32()
             if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw:
                 throw SerializationError{"stream is corrupted"}
 
@@ -589,7 +589,7 @@ impl TagBin
             let valueType = Reflection.getStructArrayType(typeElem)
             let (raw, sizeof) = isPodFinal(valueType)
 
-            let sig = me.stream.readNative'u32()
+            let sig = .stream.readNative'u32()
             if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw:
                 throw SerializationError{"stream is corrupted"}
 
@@ -601,7 +601,7 @@ impl TagBin
                 bufArr.count = dref countElem
                 bufArr.reserve(bufArr.count * sizeof)
                 bufArr.capacity = bufArr.count
-                me.stream.readBytes(bufArr.buffer, bufArr.count * sizeof)
+                .stream.readBytes(bufArr.buffer, bufArr.count * sizeof)
                 return true
             }
         }
@@ -612,14 +612,14 @@ impl TagBin
             dref countElem = Math.min(orgCount, dref countElem)
             let (raw, sizeof) = isPodFinal(typeElem)
 
-            let sig = me.stream.readNative'u32()
+            let sig = .stream.readNative'u32()
             if sig != Write.TagBinSignatures.Raw and sig != Write.TagBinSignatures.UnRaw:
                 throw SerializationError{"stream is corrupted"}
 
             // Static array of raw serializable types
             if raw
             {
-                me.stream.readBytes(data, dref countElem * sizeof)
+                .stream.readBytes(data, dref countElem * sizeof)
                 return true
             }
         }
@@ -657,9 +657,9 @@ impl TagBin
     // Returns 0 if no sections are active, otherwise returns the version of the most recent section.
     mtd getVersion()->u32
     {
-        if me.sections.isEmpty():
+        if .sections.isEmpty():
             return 0
-        return me.sections.back().version
+        return .sections.back().version
     }
 
     /////////////////////////////////
@@ -673,56 +673,56 @@ impl TagBin
         #if NT == Core.String
         {
             var result: retval
-            let count   = cast(u64) me.stream.readNative'u32()
+            let count   = cast(u64) .stream.readNative'u32()
             result.reserve(count)
-            me.stream.readBytes(result.buffer, count)
+            .stream.readBytes(result.buffer, count)
             result.length = count
             return result
         }
         #else
         {
-            if me.convertNextNative
+            if .convertNextNative
             {
                 #[Swag.Safety("", false)]
-                switch me.convertNextNative.nativeKind
+                switch .convertNextNative.nativeKind
                 {
                 case Bool:
-                    let v = me.stream.readNative'bool()
+                    let v = .stream.readNative'bool()
                     return cast(NT) v
                 case U8:
-                    let v = me.stream.readNative'u8()
+                    let v = .stream.readNative'u8()
                     return cast(NT) v
                 case U16:
-                    let v = me.stream.readNative'u16()
+                    let v = .stream.readNative'u16()
                     return cast(NT) v
                 case U32, Rune:
-                    let v = me.stream.readNative'u32()
+                    let v = .stream.readNative'u32()
                     return cast(NT) v
                 case U64:
-                    let v = me.stream.readNative'u64()
+                    let v = .stream.readNative'u64()
                     return cast(NT) v
                 case S8:
-                    let v = me.stream.readNative's8()
+                    let v = .stream.readNative's8()
                     return cast(NT) v
                 case S16:
-                    let v = me.stream.readNative's16()
+                    let v = .stream.readNative's16()
                     return cast(NT) v
                 case S32:
-                    let v = me.stream.readNative's32()
+                    let v = .stream.readNative's32()
                     return cast(NT) v
                 case S64:
-                    let v = me.stream.readNative's64()
+                    let v = .stream.readNative's64()
                     return cast(NT) v
                 case F32:
-                    let v = me.stream.readNative'f32()
+                    let v = .stream.readNative'f32()
                     return cast(NT) v
                 case F64:
-                    let v = me.stream.readNative'f64()
+                    let v = .stream.readNative'f64()
                     return cast(NT) v
                 }
             }
 
-            return me.stream.readNative'NT()
+            return .stream.readNative'NT()
         }
     }
 }

@@ -94,7 +94,7 @@ impl MainWnd
     mtd getPixSels()->Array'IForm
     {
         var result: retval
-        let capture = assume me.getCapture()
+        let capture = assume .getCapture()
         foreach s in capture.selection
         {
             let f = capture.forms[s]
@@ -108,11 +108,11 @@ impl MainWnd
 
     mtd pixSelClear()
     {
-        var forms = me.getPixSels()
+        var forms = .getPixSels()
         if forms.count == 0:
             return
 
-        let capture = assume me.getCapture()
+        let capture = assume .getCapture()
         let undo    = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg      = capture.backImg
@@ -146,11 +146,11 @@ impl MainWnd
 
     mtd pixSelFill()
     {
-        var forms = me.getPixSels()
+        var forms = .getPixSels()
         if forms.count == 0:
             return
 
-        let capture = assume me.getCapture()
+        let capture = assume .getCapture()
         let undo    = capture.newUndo(.SetImage)
         undo.newImagePos = capture.backImagePos
         undo.newImg      = capture.backImg
@@ -184,11 +184,11 @@ impl MainWnd
 
     mtd pixSelSmartFill(serial: u32 = 0, masks: *Array'Image = null)
     {
-        var forms = me.getPixSels()
+        var forms = .getPixSels()
         if forms.count == 0:
             return
 
-        let capture = assume me.getCapture()
+        let capture = assume .getCapture()
         let undo    = capture.newUndo(.SetImage, serial)
         undo.newImagePos = capture.backImagePos
         undo.newImg      = capture.backImg
@@ -309,11 +309,11 @@ impl MainWnd
 
     mtd pixSelSmartMove()
     {
-        let forms = me.getPixSels()
+        let forms = .getPixSels()
         if forms.count == 0:
             return
 
-        let capture = assume me.getCapture()
+        let capture = assume .getCapture()
 
         capture.serialUndo += 1
         let serial = capture.serialUndo
@@ -346,7 +346,7 @@ impl MainWnd
         capture.pushUndo(undo)
 
         var masks: Array'Image
-        me.pixSelSmartFill(serial, &masks)
+        .pixSelSmartFill(serial, &masks)
 
         foreach f, idx in undo.oldForms
         {

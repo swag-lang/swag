@@ -27,7 +27,7 @@ impl Painter
             return
         .sharedLinePath.start(startX, startY)
         .sharedLinePath.lineTo(endX, endY)
-        .drawPath(&me.sharedLinePath, pen)
+        .drawPath(&.sharedLinePath, pen)
     }
 
     #[Swag.Overload]
@@ -37,6 +37,6 @@ impl Painter
             return
         .sharedLinePath.start(startX, startY)
         .sharedLinePath.bezierTo(endX, endY, ptX, ptY)
-        .drawPath(&me.sharedLinePath, pen)
+        .drawPath(&.sharedLinePath, pen)
     }
 }

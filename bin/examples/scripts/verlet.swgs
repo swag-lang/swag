@@ -21,25 +21,25 @@ impl Verlet
 {
     mtd updatePosition(dt: f32)
     {
-        let velocity = me.positionCurrent - me.positionOld
-        me.positionOld     = me.positionCurrent
-        me.positionCurrent = me.positionCurrent + velocity + (me.acceleration * dt * dt)
-        me.acceleration.setZero()
+        let velocity = .positionCurrent - .positionOld
+        .positionOld     = .positionCurrent
+        .positionCurrent = .positionCurrent + velocity + (.acceleration * dt * dt)
+        .acceleration.setZero()
     }
 
     mtd accelerate(acc: Vector2)
     {
-        me.acceleration += acc
+        .acceleration += acc
     }
 
     mtd applyConstraint()
     {
-        let toObj = me.positionCurrent - PositionC
+        let toObj = .positionCurrent - PositionC
         let dist  = toObj.length()
-        if dist > RadC - me.radius
+        if dist > RadC - .radius
         {
             let n = toObj / dist
-            me.positionCurrent = PositionC + (n * (RadC - me.radius))
+            .positionCurrent = PositionC + (n * (RadC - .radius))
         }
     }
 }

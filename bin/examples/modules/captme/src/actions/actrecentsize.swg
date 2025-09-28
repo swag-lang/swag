@@ -106,17 +106,17 @@ impl MainWnd
 {
     mtd setBottomSize(bottomSize: BottomSize)
     {
-        me.bottomSize = bottomSize
-        switch me.bottomSize
+        .bottomSize = bottomSize
+        switch .bottomSize
         {
         case Small:
-            me.recentBar.resize(0, 80)
+            .recentBar.resize(0, 80)
         case Medium:
-            me.recentBar.resize(0, 128)
+            .recentBar.resize(0, 128)
         case Big:
-            me.recentBar.resize(0, 224)
+            .recentBar.resize(0, 224)
         }
 
-        me.applyLayout({me.position.width, me.position.height})
+        .applyLayout({.position.width, .position.height})
     }
 }

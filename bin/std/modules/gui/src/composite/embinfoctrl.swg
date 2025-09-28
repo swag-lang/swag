@@ -32,21 +32,21 @@ impl IWnd for EmbInfoCtrl
 {
     mtd impl onTimerEvent(evt: *TimerEvent)
     {
-        me.timer = null
-        me.destroy()
+        .timer = null
+        .destroy()
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if me.timer:
-            me.getApp().deleteTimer(me.timer)
+        if .timer:
+            .getApp().deleteTimer(.timer)
     }
 
     mtd impl onNotifyEvent(evt: *NotifyEvent)
     {
         if evt.ntfyKind == .ThemeChanged
         {
-            me.setColors()
+            .setColors()
         }
     }
 }
@@ -55,8 +55,8 @@ impl EmbInfoCtrl
 {
     mtd setColors()
     {
-        let theme  = me.getTheme()
-        let colors = me.getThemeColors()
+        let theme  = .getTheme()
+        let colors = .getThemeColors()
 
         with me.label
         {
@@ -82,7 +82,7 @@ impl EmbInfoCtrl
             }
         }
 
-        me.iconBtn.iconColor = me.label.textColor
+        .iconBtn.iconColor = .label.textColor
     }
 
     // Create the popup list, but do not display it

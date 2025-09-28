@@ -6,7 +6,7 @@ impl IHash32 for MyStruct115
 {
     mtd const impl compute()->u32
     {
-        return cast(u32) me.x
+        return cast(u32) .x
     }
 }
 
@@ -16,7 +16,7 @@ impl IHash64 for MyStruct115_64
 {
     mtd const impl compute()->u64
     {
-        return cast(u64) me.y
+        return cast(u64) .y
     }
 }
 

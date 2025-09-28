@@ -29,110 +29,110 @@ public impl Xml
 
     mtd readTag()->string throw
     {
-        me.zapBlanks()
+        .zapBlanks()
 
-        var c = me.stream.readU8()
+        var c = .stream.readU8()
         if c != '<':
-            throw me.getError("malformed tag, missing opening [[<]]")
+            throw .getError("malformed tag, missing opening [[<]]")
 
-        let start = me.stream.getSeek()
-        c = me.stream.readU8()
+        let start = .stream.getSeek()
+        c = .stream.readU8()
         while c and c != '>':
-            c = me.stream.readU8()
+            c = .stream.readU8()
         if c != '>':
-            throw me.getError("malformed tag, missing closing [[>]]")
+            throw .getError("malformed tag, missing closing [[>]]")
 
-        let end = me.stream.getSeek() - 1
-        return Latin1.trim(cast(string) me.stream.readBuffer[start..<end])
+        let end = .stream.getSeek() - 1
+        return Latin1.trim(cast(string) .stream.readBuffer[start..<end])
     }
 
     mtd readStartTag()->string throw
     {
-        let tag = me.readTag()
-        me.stackTags.add(tag)
+        let tag = .readTag()
+        .stackTags.add(tag)
         return tag
     }
 
     mtd readEndTag() throw
     {
-        let tag   = me.readTag()
-        let start = me.stackTags.popBack()
+        let tag   = .readTag()
+        let start = .stackTags.popBack()
         if tag[1..] != start:
-            throw me.getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
+            throw .getError(Format.toString("invalid end tag [[%]] for [[%]]", tag, start))
     }
 
     mtd getError(val: string)->SyntaxError
     {
         var err: retval
         err.message = Errors.mkString(val)
-        err.line    = me.line
-        err.col     = me.col
-        err.seek    = me.stream.seek
+        err.line    = .line
+        err.col     = .col
+        err.seek    = .stream.seek
         return err
     }
 
     mtd zapBlanks()
     {
-        var c = me.stream.peekU8()
+        var c = .stream.peekU8()
         while c and Latin1.isSpace(c)
         {
-            me.stream.moveSeek()
+            .stream.moveSeek()
             if c == '\n'
             {
-                me.line += 1
-                me.col = 1
+                .line += 1
+                .col = 1
             }
             else
             {
-                me.col += 1
+                .col += 1
             }
 
-            c = me.stream.peekU8()
+            c = .stream.peekU8()
         }
     }
 
     mtd startRead(input: const [..] u8)
     {
-        me.stream = ByteStream.openRead(input)
+        .stream = ByteStream.openRead(input)
     }
 
     mtd toNextSequenceElement(_countElem: *u64)->bool
     {
-        let c = me.stream.peekU8()
+        let c = .stream.peekU8()
         return c != '<'
     }
 
     mtd beginSection(_kind: SectionKind) throw
     {
-        discard me.readTag()
+        discard .readTag()
     }
 
     mtd endSection() throw
     {
-        discard me.readTag()
+        discard .readTag()
     }
 
     mtd beginRoot() throw
     {
-        discard me.readStartTag()
+        discard .readStartTag()
     }
 
     mtd endRoot() throw
     {
-        me.readEndTag()
+        .readEndTag()
     }
 
     mtd beginElement(val: TypeValue)->bool throw
     {
-        let tag = me.readStartTag()
+        let tag = .readStartTag()
         if tag != val.name:
-            throw me.getError("invalid property name")
+            throw .getError("invalid property name")
         return true
     }
 
     mtd endElement(_val: TypeValue) throw
     {
-        me.readEndTag()
+        .readEndTag()
     }
 
     #[Warning("Wrn0006", WarningLevel.Disable)]
@@ -151,82 +151,82 @@ public impl Xml
 
     mtd(NT) readNative()->NT throw
     {
-        me.zapBlanks()
+        .zapBlanks()
         #if NT == bool
         {
-            let val = StrConv.parseBool(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseBool(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f32
         {
-            let val = StrConv.parseF32(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseF32(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == f64
         {
-            let val = StrConv.parseF64(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseF64(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s8
         {
-            let val = StrConv.parseS8(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS8(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s16
         {
-            let val = StrConv.parseS16(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS16(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s32
         {
-            let val = StrConv.parseS32(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS32(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == s64
         {
-            let val = StrConv.parseS64(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseS64(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u8
         {
-            let val = StrConv.parseU8(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU8(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u16
         {
-            let val = StrConv.parseU16(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU16(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u32
         {
-            let val = StrConv.parseU32(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU32(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == u64
         {
-            let val = StrConv.parseU64(me.stream.remainReadToString())
-            me.stream.moveSeek(val.eat)
+            let val = StrConv.parseU64(.stream.remainReadToString())
+            .stream.moveSeek(val.eat)
             return val.value
         }
         #elif NT == Core.String
         {
             var result: retval
-            var c       = me.stream.peekU8()
+            var c       = .stream.peekU8()
             while c and c != '<'
             {
-                c = me.stream.readU8()
+                c = .stream.readU8()
                 result += c
-                c = me.stream.peekU8()
+                c = .stream.peekU8()
             }
 
             return result

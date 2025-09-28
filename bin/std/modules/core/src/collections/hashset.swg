@@ -31,47 +31,47 @@ impl HashSet
     #[Inline]
     mtd opCount()->u64
     {
-        return me.count
+        return .count
     }
 
     // Ensures the allocated memory is freed when the set goes out of scope.
     mtd opDrop()
     {
-        me.free()
+        .free()
     }
 
     // Replaces the content of the set with elements from a slice.
     mtd opAffect(slice: const [..] K)
     {
         foreach v in slice:
-            me.add(v)
+            .add(v)
     }
 
     // Handles the deep copy of the set when it is copied.
     // A new me.table is allocated and all entries are copied over.
     mtd opPostCopy()
     {
-        if !me.table:
+        if !.table:
             return
 
-        if me.allocator == null:
-            me.allocator = @getcontext().allocator
+        if .allocator == null:
+            .allocator = @getcontext().allocator
 
-        let newTable = cast([*] HashSetEntry) Memory.alloc(me.capacity * #sizeof(HashSetEntry), me.allocator)
+        let newTable = cast([*] HashSetEntry) Memory.alloc(.capacity * #sizeof(HashSetEntry), .allocator)
         #if Reflection.hasPostCopy(K)
         {
-            for i in me.capacity
+            for i in .capacity
             {
-                newTable[i].hash = me.table[i].hash
-                newTable[i].key  = #nodrop me.table[i].key
+                newTable[i].hash = .table[i].hash
+                newTable[i].key  = #nodrop .table[i].key
             }
         }
         #else
         {
-            Memory.copy(newTable, me.table, me.capacity * #sizeof(HashSetEntry))
+            Memory.copy(newTable, .table, .capacity * #sizeof(HashSetEntry))
         }
 
-        me.table = newTable
+        .table = newTable
     }
 
     // Provides a way to iterate over each key in the set.
@@ -80,14 +80,14 @@ impl HashSet
     #[Macro]
     mtd(ptr: bool, back: bool) const opVisit(stmt: #code void)
     {
-        if !me.count:
+        if !.count:
             return
 
-        var remain = me.count
+        var remain = .count
         #scope(Up)
-        for me.capacity
+        for .capacity
         {
-            if me.table[@index].hash < HashSet.HASH_FIRST:
+            if .table[@index].hash < HashSet.HASH_FIRST:
                 continue
 
             #scope(Down)
@@ -127,22 +127,22 @@ impl HashSet
     // If keys have destructors, they are called.
     mtd free()
     {
-        if !me.table:
+        if !.table:
             return
 
         // Need to drop every structs
         #if Reflection.hasDrop(#typeof(K))
         {
-            for i in me.capacity
+            for i in .capacity
             {
-                if me.table[i].hash >= HashSet.HASH_DELETED:
-                    @drop(&me.table[i].key)
+                if .table[i].hash >= HashSet.HASH_DELETED:
+                    @drop(&.table[i].key)
             }
         }
 
-        Memory.free(me.table, me.capacity * #sizeof(HashSetEntry), me.allocator)
-        me.table = null
-        me.count, me.capacity, me.deleted = 0
+        Memory.free(.table, .capacity * #sizeof(HashSetEntry), .allocator)
+        .table = null
+        .count, .capacity, .deleted = 0
     }
 
     // Checks if the me.table needs to be resized and triggers it if necessary.
@@ -150,40 +150,40 @@ impl HashSet
     mtd grow()
     {
         // We need to trigger the growing of the me.table is there's not enough room
-        if me.capacity != 0 and me.capacity - (me.count + me.deleted) > me.capacity / 4:
+        if .capacity != 0 and .capacity - (.count + .deleted) > .capacity / 4:
             return
 
-        let newCapacity = me.capacity * 2
-        me.reserve(newCapacity)
+        let newCapacity = .capacity * 2
+        .reserve(newCapacity)
     }
 
     // Resizes the hash me.table to a new me.capacity, rehashing all existing elements.
     mtd reserve(newCapacity: u64)
     {
         let reqCapacity = Math.max(newCapacity, 32)
-        if reqCapacity <= me.capacity:
+        if reqCapacity <= .capacity:
             return
 
-        let oldTable = me.table
-        me.count, me.deleted = 0
+        let oldTable = .table
+        .count, .deleted = 0
         let newCapacityBytes = reqCapacity * #sizeof(HashSetEntry)
 
-        if me.allocator == null:
-            me.allocator = @getcontext().allocator
-        me.table = cast() Memory.alloc(newCapacityBytes, me.allocator)
+        if .allocator == null:
+            .allocator = @getcontext().allocator
+        .table = cast() Memory.alloc(newCapacityBytes, .allocator)
 
         // Be sure hash entry is 0
-        Memory.clear(me.table, newCapacityBytes)
+        Memory.clear(.table, newCapacityBytes)
 
         // Copy the last me.table to the new me.table, removing me.deleted entries
-        let oldCapacity = me.capacity
-        me.capacity = reqCapacity
+        let oldCapacity = .capacity
+        .capacity = reqCapacity
         for i in oldCapacity
         {
             let h = oldTable[i].hash
             if h >= HashSet.HASH_FIRST
             {
-                me.emplaceInternal(h, &oldTable[i].key)
+                .emplaceInternal(h, &oldTable[i].key)
             }
             elif h == HashSet.HASH_DELETED
             {
@@ -191,7 +191,7 @@ impl HashSet
             }
         }
 
-        Memory.free(oldTable, oldCapacity * #sizeof(HashSetEntry), me.allocator)
+        Memory.free(oldTable, oldCapacity * #sizeof(HashSetEntry), .allocator)
     }
 
     // Finds the correct index for a new key, handling collisions and me.deleted slots.
@@ -202,17 +202,17 @@ impl HashSet
         var firstDeleted = Swag.U64.Max
         var index        = idx
 
-        while me.table[index].hash
+        while .table[index].hash
         {
-            if me.table[index].hash == HashSet.HASH_DELETED and firstDeleted == Swag.U64.Max:
+            if .table[index].hash == HashSet.HASH_DELETED and firstDeleted == Swag.U64.Max:
                 firstDeleted = index
-            elif me.table[index].hash == HashSet.HASH_FREE and firstFree == Swag.U64.Max:
+            elif .table[index].hash == HashSet.HASH_FREE and firstFree == Swag.U64.Max:
                 firstFree = index
 
-            if me.table[index].hash == hashVal and me.table[index].key == key:
+            if .table[index].hash == hashVal and .table[index].key == key:
                 return index
 
-            index = (index + 1) % me.capacity
+            index = (index + 1) % .capacity
         }
 
         if firstDeleted != Swag.U64.Max:
@@ -229,29 +229,29 @@ impl HashSet
     mtd add(key: K)->*HashSetEntry
         where Reflection.canCopy(#typeof(K))
     {
-        me.grow()
+        .grow()
 
         let hashVal = hashKey(key)
-        var index   = hashVal % me.capacity
+        var index   = hashVal % .capacity
 
-        index = me.getNewIndex(key, index, hashVal)
-        if me.table[index].hash >= HashSet.HASH_FIRST:
-            return me.table + index
+        index = .getNewIndex(key, index, hashVal)
+        if .table[index].hash >= HashSet.HASH_FIRST:
+            return .table + index
 
-        if me.table[index].hash == HashSet.HASH_FREE
+        if .table[index].hash == HashSet.HASH_FREE
         {
-            me.table[index].key = #nodrop key
+            .table[index].key = #nodrop key
         }
         else
         {
-            if me.table[index].hash == HashSet.HASH_DELETED:
-                me.deleted -= 1
-            me.table[index].key = key
+            if .table[index].hash == HashSet.HASH_DELETED:
+                .deleted -= 1
+            .table[index].key = key
         }
 
-        me.table[index].hash = hashVal
-        me.count += 1
-        return me.table + index
+        .table[index].hash = hashVal
+        .count += 1
+        return .table + index
     }
 
     // Adds a new key to the set by moving it.
@@ -259,29 +259,29 @@ impl HashSet
     #[Discardable, Overload]
     mtd add(key: &&K)->*HashSetEntry
     {
-        me.grow()
+        .grow()
 
         let hashVal = hashKey(key)
-        var index   = hashVal % me.capacity
+        var index   = hashVal % .capacity
 
-        index = me.getNewIndex(key, index, hashVal)
-        if me.table[index].hash >= HASH_FIRST:
-            return me.table + index
+        index = .getNewIndex(key, index, hashVal)
+        if .table[index].hash >= HASH_FIRST:
+            return .table + index
 
-        if me.table[index].hash == HASH_FREE
+        if .table[index].hash == HASH_FREE
         {
-            me.table[index].key = #nodrop #move key
+            .table[index].key = #nodrop #move key
         }
         else
         {
-            if me.table[index].hash == HASH_DELETED:
-                me.deleted -= 1
-            me.table[index].key = #move key
+            if .table[index].hash == HASH_DELETED:
+                .deleted -= 1
+            .table[index].key = #move key
         }
 
-        me.table[index].hash = hashVal
-        me.count += 1
-        return me.table + index
+        .table[index].hash = hashVal
+        .count += 1
+        return .table + index
     }
 
     // Internal helper to add a new element with a pre-computed hash.
@@ -289,68 +289,68 @@ impl HashSet
     mtd emplaceInternal(hashVal: u32, key: &K)->*HashSetEntry
         where Reflection.canCopy(#typeof(K))
     {
-        me.grow()
+        .grow()
 
-        var index = hashVal % me.capacity
+        var index = hashVal % .capacity
 
-        index = me.getNewIndex(key, index, hashVal)
-        if me.table[index].hash >= HashSet.HASH_FIRST:
-            return me.table + index
+        index = .getNewIndex(key, index, hashVal)
+        if .table[index].hash >= HashSet.HASH_FIRST:
+            return .table + index
 
-        if me.table[index].hash == HashSet.HASH_FREE
+        if .table[index].hash == HashSet.HASH_FREE
         {
-            me.table[index].key = #nodrop #moveraw key
+            .table[index].key = #nodrop #moveraw key
         }
         else
         {
-            if me.table[index].hash == HashSet.HASH_DELETED:
-                me.deleted -= 1
-            me.table[index].key = #moveraw key
+            if .table[index].hash == HashSet.HASH_DELETED:
+                .deleted -= 1
+            .table[index].key = #moveraw key
         }
 
-        me.table[index].hash = hashVal
-        me.count += 1
-        return me.table + index
+        .table[index].hash = hashVal
+        .count += 1
+        return .table + index
     }
 
     // Removes a key from the set.
     // If the key exists, its slot is marked as 'DELETED'. Does nothing if the key is not found.
     mtd remove(key: K)
     {
-        if !me.table:
+        if !.table:
             return
 
         let hashVal = hashKey(key)
-        var index   = hashVal % me.capacity
+        var index   = hashVal % .capacity
 
-        while me.table[index].hash
+        while .table[index].hash
         {
-            if me.table[index].hash == hashVal and me.table[index].key == key
+            if .table[index].hash == hashVal and .table[index].key == key
             {
-                me.table[index].hash = HashSet.HASH_DELETED
-                me.count -= 1
-                me.deleted += 1
+                .table[index].hash = HashSet.HASH_DELETED
+                .count -= 1
+                .deleted += 1
                 return
             }
 
-            index = (index + 1) % me.capacity
+            index = (index + 1) % .capacity
         }
     }
 
     // Returns 'true' if the set contains the given key.
     mtd const contains(key: K)->bool
     {
-        if !me.table:
+        if !.table:
             return false
 
         let hashVal = hashKey(key)
-        var index   = hashVal % me.capacity
+        var index   = hashVal % .capacity
 
-        while me.table[index].hash
+        while .table[index].hash
         {
-            if me.table[index].hash == hashVal and me.table[index].key == key:
+            if .table[index].hash == hashVal and .table[index].key == key:
                 return true
-            index = (index + 1) % me.capacity
+            index = (index + 1) % .capacity
         }
 
         return false
@@ -362,22 +362,22 @@ impl HashSet
     {
         // Need to put the 'hash' value of each entry to HASH_FREE
         // Drop the key and the value if necessary
-        if me.count or me.deleted
+        if .count or .deleted
         {
-            for i in me.capacity
+            for i in .capacity
             {
-                let hashval = me.table[i].hash
+                let hashval = .table[i].hash
                 if hashval >= HashSet.HASH_DELETED:
-                    @drop(&me.table[i].key)
+                    @drop(&.table[i].key)
 
                 if hashval == HashSet.HASH_DELETED:
-                    me.deleted -= 1
+                    .deleted -= 1
                 elif hashval >= HashSet.HASH_FIRST:
-                    me.count -= 1
-                me.table[i].hash = HashSet.HASH_FREE
+                    .count -= 1
+                .table[i].hash = HashSet.HASH_FREE
 
                 // We are done if there's no more valid value, and no more me.deleted value
-                if !me.count and !me.deleted:
+                if !.count and !.deleted:
                     break
             }
         }

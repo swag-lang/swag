@@ -16,19 +16,19 @@ impl Mouse
     // Compute the current state of the mouse
     mtd update()
     {
-        me.previousState = me.currentState
-        me.currentState.update()
+        .previousState = .currentState
+        .currentState.update()
 
         // Dbl click
         foreach v in MouseButton
         {
-            me.dblClk[v] = false
-            if me.currentState.pressed[v] and !me.previousState.pressed[v] and me.previousState.pressedTime[v]
+            .dblClk[v] = false
+            if .currentState.pressed[v] and !.previousState.pressed[v] and .previousState.pressedTime[v]
             {
-                if me.currentState.pressedTime[v] - me.previousState.pressedTime[v] < me.dblClkTimeMs
+                if .currentState.pressedTime[v] - .previousState.pressedTime[v] < .dblClkTimeMs
                 {
-                    if me.currentState.pressedPos[v] == me.previousState.pressedPos[v]:
-                        me.dblClk[v] = true
+                    if .currentState.pressedPos[v] == .previousState.pressedPos[v]:
+                        .dblClk[v] = true
                 }
             }
         }
@@ -37,13 +37,13 @@ impl Mouse
     // Reset the mouse state to its default value
     mtd clear()
     {
-        me.previousState.clear()
-        me.currentState.clear()
+        .previousState.clear()
+        .currentState.clear()
     }
 
     mtd isButtonDoubleClick(button: MouseButton)->bool
     {
-        return me.dblClk[button]
+        return .dblClk[button]
     }
 
     // Determins if one given mouse button is pressed or not
@@ -72,42 +72,42 @@ impl Mouse
     #[Swag.Overload]
     mtd isButtonPressed(button: MouseButton)->bool
     {
-        return me.currentState.pressed[button]
+        return .currentState.pressed[button]
     }
 
     // Determines whether the specified mouse button has just been pressed
     mtd isButtonJustPressed(button: MouseButton)->bool
     {
-        return me.currentState.pressed[button] and !me.previousState.pressed[button]
+        return .currentState.pressed[button] and !.previousState.pressed[button]
     }
 
     // Determines whether the specified mouse button is released
     mtd isButtonReleased(button: MouseButton)->bool
     {
-        return !me.currentState.pressed[button]
+        return !.currentState.pressed[button]
     }
 
     // Determines whether the specified mouse button has just been released
     mtd isButtonJustReleased(button: MouseButton)->bool
     {
-        return !me.currentState.pressed[button] and me.previousState.pressed[button]
+        return !.currentState.pressed[button] and .previousState.pressed[button]
     }
 
     // Returns the previous mouse position, before the last update
     mtd getPreviousPos()->Point
     {
-        return me.previousState.position
+        return .previousState.position
     }
 
     // Returns the mouse position
     mtd getPosition()->Point
     {
-        return me.currentState.position
+        return .currentState.position
     }
 
     // Returns the move between the current position and the previous one
     mtd getMove()->Point
     {
-        return me.currentState.position - me.previousState.position
+        return .currentState.position - .previousState.position
     }
 }

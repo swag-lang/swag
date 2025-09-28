@@ -59,9 +59,9 @@ impl Decoder
 {
     mtd readTypeValue(typedVal: TypeValue, data: [*] void) throw
     {
-        discard me.serializer.beginElement(typedVal)
-        me.readTypedContent(data, typedVal.pointedType)
-        me.serializer.endElement(typedVal)
+        discard .serializer.beginElement(typedVal)
+        .readTypedContent(data, typedVal.pointedType)
+        .serializer.endElement(typedVal)
     }
 
     mtd readTypedContent(data: [*] void, dataType: typeinfo) throw
@@ -69,8 +69,8 @@ impl Decoder
         var type = Reflection.makeConcreteAlias(dataType)
         type = Reflection.makeConcreteEnum(type)
 
-        me.serializer.beginValue()
-        defer #noerr me.serializer.endValue()
+        .serializer.beginValue()
+        defer #noerr .serializer.endValue()
 
         // Native
         if type.kind == .Native
@@ -79,27 +79,27 @@ impl Decoder
             switch typeNative.nativeKind
             {
             case Bool:
-                dref cast(*bool) data = me.serializer.readNative'bool()
+                dref cast(*bool) data = .serializer.readNative'bool()
             case U8:
-                dref cast(*u8) data = me.serializer.readNative'u8()
+                dref cast(*u8) data = .serializer.readNative'u8()
             case U16:
-                dref cast(*u16) data = me.serializer.readNative'u16()
+                dref cast(*u16) data = .serializer.readNative'u16()
             case U32, Rune:
-                dref cast(*u32) data = me.serializer.readNative'u32()
+                dref cast(*u32) data = .serializer.readNative'u32()
             case U64:
-                dref cast(*u64) data = me.serializer.readNative'u64()
+                dref cast(*u64) data = .serializer.readNative'u64()
             case S8:
-                dref cast(*s8) data = me.serializer.readNative's8()
+                dref cast(*s8) data = .serializer.readNative's8()
             case S16:
-                dref cast(*s16) data = me.serializer.readNative's16()
+                dref cast(*s16) data = .serializer.readNative's16()
             case S32:
-                dref cast(*s32) data = me.serializer.readNative's32()
+                dref cast(*s32) data = .serializer.readNative's32()
             case S64:
-                dref cast(*s64) data = me.serializer.readNative's64()
+                dref cast(*s64) data = .serializer.readNative's64()
             case F32:
-                dref cast(*f32) data = me.serializer.readNative'f32()
+                dref cast(*f32) data = .serializer.readNative'f32()
             case F64:
-                dref cast(*f64) data = me.serializer.readNative'f64()
+                dref cast(*f64) data = .serializer.readNative'f64()
             }
 
             return
@@ -107,7 +107,7 @@ impl Decoder
 
         if Reflection.isType(type)
         {
-            let crc      = me.serializer.readNative'u32()
+            let crc      = .serializer.readNative'u32()
             let typeType = Reflection.crcToType(crc)
             dref cast(*typeinfo) data = typeType
             return
@@ -117,24 +117,24 @@ impl Decoder
         {
             let itf = cast(*Swag.Interface) data
 
-            me.serializer.beginSection(.Raw)
-            defer #noerr me.serializer.endSection()
+            .serializer.beginSection(.Raw)
+            defer #noerr .serializer.endSection()
 
             var objType, itfType: typeinfo
             var typeVal: TypeValue
             typeVal.pointedType = typeinfo
 
-            me.readTypeValue(typeVal, &objType)
+            .readTypeValue(typeVal, &objType)
 
             if objType
             {
-                me.readTypeValue(typeVal, &itfType)
+                .readTypeValue(typeVal, &itfType)
 
                 itf.itable = @tableof(cast(const *Swag.TypeInfoStruct) objType, cast(const *Swag.TypeInfoStruct) itfType)
 
                 typeVal.pointedType = objType
                 itf.obj             = Memory.new(objType)
-                me.readTypeValue(typeVal, itf.obj)
+                .readTypeValue(typeVal, itf.obj)
             }
 
             return
@@ -146,7 +146,7 @@ impl Decoder
             if type == String
             {
                 let strBuf = cast(*String) data
-                dref strBuf = #nodrop me.serializer.readNative'String()
+                dref strBuf = #nodrop .serializer.readNative'String()
                 return
             }
 
@@ -155,16 +155,16 @@ impl Decoder
             if valueType
             {
                 var count   = 0'u64
-                let treated = me.serializer.beginSequence(type, data, &count)
-                defer #noerr me.serializer.endSequence()
+                let treated = .serializer.beginSequence(type, data, &count)
+                defer #noerr .serializer.endSequence()
 
                 if !treated
                 {
                     Reflection.clearStructArray(data, valueType)
-                    while me.serializer.toNextSequenceElement(&count)
+                    while .serializer.toNextSequenceElement(&count)
                     {
                         let bufArr = Reflection.appendValueStructArray(data, valueType)
-                        me.readTypedContent(bufArr, valueType)
+                        .readTypedContent(bufArr, valueType)
                     }
                 }
 
@@ -182,8 +182,8 @@ impl Decoder
 
             // Generic struct load
             let structType = cast(const *TypeInfoStruct) type
-            let treated    = me.serializer.beginStruct(structType, data)
-            defer #noerr me.serializer.endStruct()
+            let treated    = .serializer.beginStruct(structType, data)
+            defer #noerr .serializer.endStruct()
             if treated:
                 return
 
@@ -194,16 +194,16 @@ impl Decoder
 
                 if !itf or !itf.readElement(field, cast([*] u8) data + field.offset, idecoder)
                 {
-                    let doIt = catch me.serializer.beginElement(field)
-                    defer #noerr me.serializer.endElement(field)
+                    let doIt = catch .serializer.beginElement(field)
+                    defer #noerr .serializer.endElement(field)
 
-                    if @err != null and !(me.flags & .IgnoreStructFieldError):
+                    if @err != null and !(.flags & .IgnoreStructFieldError):
                         throw @err
                     if !doIt:
                         continue
 
-                    catch me.readTypedContent(cast([*] u8) data + field.offset, field.pointedType)
-                    if @err != null and !(me.flags & .IgnoreStructFieldError):
+                    catch .readTypedContent(cast([*] u8) data + field.offset, field.pointedType)
+                    if @err != null and !(.flags & .IgnoreStructFieldError):
                         throw @err
                 }
             }
@@ -220,15 +220,15 @@ impl Decoder
         {
             let typeArr = cast(const *TypeInfoArray) type
             var count   = typeArr.count
-            let treated = me.serializer.beginSequence(typeArr.pointedType, data, &count)
-            defer #noerr me.serializer.endSequence()
+            let treated = .serializer.beginSequence(typeArr.pointedType, data, &count)
+            defer #noerr .serializer.endSequence()
             if treated:
                 return
 
             var bufArr = cast([*] u8) data
             for count
             {
-                me.readTypedContent(bufArr, typeArr.pointedType)
+                .readTypedContent(bufArr, typeArr.pointedType)
                 bufArr += typeArr.pointedType.sizeof
             }
 
@@ -239,14 +239,14 @@ impl Decoder
     // Start reading
     mtd start(input: const [..] u8) throw
     {
-        me.serializer.startRead(input)
-        me.serializer.beginRoot()
+        .serializer.startRead(input)
+        .serializer.beginRoot()
     }
 
     // Finish reading
     mtd end() throw
     {
-        me.serializer.endRoot()
+        .serializer.endRoot()
     }
 
     // Read a full struct
@@ -254,14 +254,14 @@ impl Decoder
     {
         Debug.assert(Reflection.isStruct(TR))
 
-        me.start(input)
+        .start(input)
 
         let val = Memory.new'TR()
         defer #err Memory.delete(val)
 
-        me.readTypedContent(val, TR)
+        .readTypedContent(val, TR)
 
-        me.end()
+        .end()
         return val
     }
 }
@@ -270,52 +270,52 @@ impl IDecoder for Decoder
 {
     mtd impl start(input: const [..] u8) throw
     {
-        me.serializer.startRead(input)
-        me.serializer.beginRoot()
+        .serializer.startRead(input)
+        .serializer.beginRoot()
     }
 
     mtd impl end() throw
     {
-        me.serializer.endRoot()
+        .serializer.endRoot()
     }
 
     mtd impl beginField(val: Swag.TypeValue)->bool throw
     {
-        if !me.serializer.beginElement(val):
+        if !.serializer.beginElement(val):
             return false
-        me.serializer.beginValue()
+        .serializer.beginValue()
         return true
     }
 
     mtd impl endField(val: Swag.TypeValue) throw
     {
-        me.serializer.endValue()
-        me.serializer.endElement(val)
+        .serializer.endValue()
+        .serializer.endElement(val)
     }
 
     mtd impl beginSection(kind: SectionKind) throw
     {
-        me.serializer.beginSection(kind)
+        .serializer.beginSection(kind)
     }
 
     mtd impl endSection() throw
     {
-        me.serializer.endSection()
+        .serializer.endSection()
     }
 
     mtd impl getVersion()->u32
     {
-        return me.serializer.getVersion()
+        return .serializer.getVersion()
     }
 
     mtd impl isTextual()->bool
     {
-        return me.serializer.isTextual()
+        return .serializer.isTextual()
     }
 
     mtd impl read(data: *void, dataType: typeinfo) throw
     {
-        me.readTypedContent(data, dataType)
+        .readTypedContent(data, dataType)
     }
 
     mtd impl readBufferU8(count: u64)->*u8 throw
@@ -323,17 +323,17 @@ impl IDecoder for Decoder
         let data = cast([*] u8) Memory.alloc(count)
 
         var cpt     = count
-        let treated = me.serializer.beginSequence(u8, data, &cpt)
-        defer #noerr me.serializer.endSequence()
+        let treated = .serializer.beginSequence(u8, data, &cpt)
+        defer #noerr .serializer.endSequence()
 
         if !treated
         {
             var ptr = data
             for Math.min(cpt, count)
             {
-                me.serializer.beginValue()
-                dref ptr = me.serializer.readNative'u8()
-                me.serializer.endValue()
+                .serializer.beginValue()
+                dref ptr = .serializer.readNative'u8()
+                .serializer.endValue()
                 ptr += 1
             }
         }
@@ -341,16 +341,16 @@ impl IDecoder for Decoder
         return data
     }
 
-    mtd impl readBool()->bool throw     => me.serializer.readNative'bool()
-    mtd impl readS8()->s8 throw         => me.serializer.readNative's8()
-    mtd impl readS16()->s16 throw       => me.serializer.readNative's16()
-    mtd impl readS32()->s32 throw       => me.serializer.readNative's32()
-    mtd impl readS64()->s64 throw       => me.serializer.readNative's64()
-    mtd impl readU8()->u8 throw         => me.serializer.readNative'u8()
-    mtd impl readU16()->u16 throw       => me.serializer.readNative'u16()
-    mtd impl readU32()->u32 throw       => me.serializer.readNative'u32()
-    mtd impl readU64()->u64 throw       => me.serializer.readNative'u64()
-    mtd impl readF32()->f32 throw       => me.serializer.readNative'f32()
-    mtd impl readF64()->f64 throw       => me.serializer.readNative'f64()
-    mtd impl readString()->String throw => me.serializer.readNative'String()
+    mtd impl readBool()->bool throw     => .serializer.readNative'bool()
+    mtd impl readS8()->s8 throw         => .serializer.readNative's8()
+    mtd impl readS16()->s16 throw       => .serializer.readNative's16()
+    mtd impl readS32()->s32 throw       => .serializer.readNative's32()
+    mtd impl readS64()->s64 throw       => .serializer.readNative's64()
+    mtd impl readU8()->u8 throw         => .serializer.readNative'u8()
+    mtd impl readU16()->u16 throw       => .serializer.readNative'u16()
+    mtd impl readU32()->u32 throw       => .serializer.readNative'u32()
+    mtd impl readU64()->u64 throw       => .serializer.readNative'u64()
+    mtd impl readF32()->f32 throw       => .serializer.readNative'f32()
+    mtd impl readF64()->f64 throw       => .serializer.readNative'f64()
+    mtd impl readString()->String throw => .serializer.readNative'String()
 }

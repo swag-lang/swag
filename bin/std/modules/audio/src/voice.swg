@@ -54,29 +54,29 @@ internal impl Voice
 {
     mtd recycle()
     {
-        me.file              = null
-        me.playFlags         = .Zero
-        me.state             = .Zero
-        me.idxInList         = 0
-        me.streamCurSeek     = 0
-        me.decodedBufferIdx  = 0
-        me.requestedEncoding = .Unknown
-        me.destroyCodec()
+        .file              = null
+        .playFlags         = .Zero
+        .state             = .Zero
+        .idxInList         = 0
+        .streamCurSeek     = 0
+        .decodedBufferIdx  = 0
+        .requestedEncoding = .Unknown
+        .destroyCodec()
     }
 
     mtd hasState(st: VoiceState)->bool
     {
-        return Atomic.get(cast(*u32) &me.state) & cast(u32) st ? true : false
+        return Atomic.get(cast(*u32) &.state) & cast(u32) st ? true : false
     }
 
     mtd setState(st: VoiceState)
     {
-        Atomic.logicOr(cast(*u32) &me.state, cast(u32) st)
+        Atomic.logicOr(cast(*u32) &.state, cast(u32) st)
     }
 
     mtd resetState(st: VoiceState)
     {
-        Atomic.logicAnd(cast(*u32) &me.state, ~cast(u32) st)
+        Atomic.logicAnd(cast(*u32) &.state, ~cast(u32) st)
     }
 }
 
@@ -84,7 +84,7 @@ public impl Voice
 {
     mtd opDrop()
     {
-        me.destroyCodec()
+        .destroyCodec()
     }
 
     // Creates a new voice for a given sound file.
@@ -116,15 +116,15 @@ public impl Voice
     #[Swag.Overload]
     mtd play(playFlags = VoicePlayFlags.Zero) throw
     {
-        if me.hasState(.Playing):
+        if .hasState(.Playing):
             return
-        me.playFlags = playFlags
-        me.playNative()
-        me.setState(.Playing)
+        .playFlags = playFlags
+        .playNative()
+        .setState(.Playing)
 
-        if !me.hasState(.PlayedOnce)
+        if !.hasState(.PlayedOnce)
         {
-            me.setState(.PlayedOnce)
+            .setState(.PlayedOnce)
             g_Driver.updateVoice(me, .UpdateBuffers)
         }
     }
@@ -132,49 +132,49 @@ public impl Voice
     // Pause the playing voice
     mtd pause() throw
     {
-        if !me.hasState(.Playing):
+        if !.hasState(.Playing):
             return
-        me.stopNative()
-        me.resetState(.Playing)
+        .stopNative()
+        .resetState(.Playing)
     }
 
     // Stop the playing voice
     mtd stop() throw
     {
-        if !me.hasState(.Playing):
+        if !.hasState(.Playing):
             return
-        me.stopNative()
-        me.resetState(.Playing)
-        if me.playFlags.has(.DestroyOnStop):
-            me.destroy()
+        .stopNative()
+        .resetState(.Playing)
+        if .playFlags.has(.DestroyOnStop):
+            .destroy()
     }
 
     // Destroy the voice
     mtd destroy()
     {
-        if me.hasState(.PendingDestroy):
+        if .hasState(.PendingDestroy):
             return
-        me.setState(.PendingDestroy)
+        .setState(.PendingDestroy)
         g_Driver.updateVoice(me, .Destroy)
     }
 
     // Returns true if the voice is currently playing
     mtd isPlaying()->bool
     {
-        if !me.handle:
+        if !.handle:
             return false
-        return me.hasState(.Playing)
+        return .hasState(.Playing)
     }
 
     // Set the playing voice volume
     mtd setVolumeDB(volumeDB: f32, batchID: u32 = 0) throw
     {
-        me.setVolume(convertDBToPercent(volumeDB), batchID)
+        .setVolume(convertDBToPercent(volumeDB), batchID)
     }
 
     // Returns the actual volume, in DB
     mtd getVolumeDB()->f32 throw
     {
-        return convertPercentToDB(me.getVolume())
+        return convertPercentToDB(.getVolume())
     }
 }

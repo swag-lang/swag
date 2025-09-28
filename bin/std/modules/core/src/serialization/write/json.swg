@@ -33,16 +33,16 @@ impl JSon
     // Writes indentation based on the current indent level and settings.
     mtd writeIndent()
     {
-        if !me.options.saveBlanks:
+        if !.options.saveBlanks:
             return
-        for me.indent * me.options.indentLevel:
-            me.output.addNative(' ''u8)
+        for .indent * .options.indentLevel:
+            .output.addNative(' ''u8)
     }
 
     // Initializes the JSON writer with the given output buffer.
     mtd startWrite(buf: *ConcatBuffer)
     {
-        me.output = buf
+        .output = buf
     }
 
     // Begins the root element (no-op for JSON).
@@ -56,13 +56,13 @@ impl JSon
     // Begins a JSON array.
     mtd beginSequence(_typeElem: typeinfo, _data: const *void, _countElem: u64)->bool
     {
-        me.output.addBytes("[")
-        me.lastSeekValue = me.output.getSeek()
-        if me.options.saveBlanks
+        .output.addBytes("[")
+        .lastSeekValue = .output.getSeek()
+        if .options.saveBlanks
         {
-            me.output.addBytes("\n")
-            me.indent += 1
-            me.writeIndent()
+            .output.addBytes("\n")
+            .indent += 1
+            .writeIndent()
         }
 
         return false
@@ -71,67 +71,67 @@ impl JSon
     // Ends a JSON array.
     mtd endSequence()
     {
-        me.output.setEndSeek(me.lastSeekValue)
-        if me.options.saveBlanks
+        .output.setEndSeek(.lastSeekValue)
+        if .options.saveBlanks
         {
-            me.output.addBytes("\n")
-            me.indent -= 1
-            me.writeIndent()
+            .output.addBytes("\n")
+            .indent -= 1
+            .writeIndent()
         }
 
-        me.output.addBytes("]")
-        me.lastSeekValue = me.output.getSeek()
+        .output.addBytes("]")
+        .lastSeekValue = .output.getSeek()
     }
 
     // Begins a JSON object section.
     mtd beginSection(_kind: SectionKind)
     {
-        me.output.addBytes("{")
-        me.lastSeekValue = me.output.getSeek()
-        if me.options.saveBlanks
+        .output.addBytes("{")
+        .lastSeekValue = .output.getSeek()
+        if .options.saveBlanks
         {
-            me.output.addBytes("\n")
-            me.indent += 1
-            me.writeIndent()
+            .output.addBytes("\n")
+            .indent += 1
+            .writeIndent()
         }
     }
 
     // Ends a JSON object section.
     mtd endSection()
     {
-        me.output.setEndSeek(me.lastSeekValue)
-        if me.options.saveBlanks
+        .output.setEndSeek(.lastSeekValue)
+        if .options.saveBlanks
         {
-            me.output.addBytes("\n")
-            me.indent -= 1
-            me.writeIndent()
+            .output.addBytes("\n")
+            .indent -= 1
+            .writeIndent()
         }
 
-        me.output.addBytes("}")
-        me.lastSeekValue = me.output.getSeek()
+        .output.addBytes("}")
+        .lastSeekValue = .output.getSeek()
     }
 
     // Begins writing a struct (treated as a JSON object).
     mtd beginStruct(_structType: typeinfo, _structData: const *u8)->bool
     {
-        me.beginSection(.Ordered)
+        .beginSection(.Ordered)
         return false
     }
 
     // Ends writing a struct.
     mtd endStruct()
     {
-        me.endSection()
+        .endSection()
     }
 
     // Begins a named JSON element (a key-value pair).
     mtd beginElement(val: TypeValue)
     {
-        me.output.addNative('"''u8)
-        me.output.addBytes(val.name)
-        me.output.addBytes("\":")
-        if me.options.saveBlanks:
-            me.output.addBytes(" ")
+        .output.addNative('"''u8)
+        .output.addBytes(val.name)
+        .output.addBytes("\":")
+        if .options.saveBlanks:
+            .output.addBytes(" ")
     }
 
     // Ends a named JSON element (no-op).
@@ -145,11 +145,11 @@ impl JSon
     // Ends a JSON value and appends a comma and optional newline.
     mtd endValue()
     {
-        me.lastSeekValue = me.output.getSeek()
-        me.output.addBytes(",")
-        if me.options.saveBlanks:
-            me.output.addBytes("\n")
-        me.writeIndent()
+        .lastSeekValue = .output.getSeek()
+        .output.addBytes(",")
+        if .options.saveBlanks:
+            .output.addBytes("\n")
+        .writeIndent()
     }
 
     /////////////////////////////////
@@ -161,21 +161,21 @@ impl JSon
     {
         #if NT == bool
         {
-            me.output.addBytes(value ? "true" : "false")
+            .output.addBytes(value ? "true" : "false")
         }
         #elif Reflection.isFloat(NT)
         {
-            StrConv.convertFloat(me.output, value, me.fmtFloat)
+            StrConv.convertFloat(.output, value, .fmtFloat)
         }
         #elif Reflection.isInteger(NT)
         {
-            StrConv.convertInt(me.output, value, me.fmtInt)
+            StrConv.convertInt(.output, value, .fmtInt)
         }
         #elif NT == string
         {
-            me.output.addNative('"''u8)
-            me.output.addBytes(value)
-            me.output.addNative('"''u8)
+            .output.addNative('"''u8)
+            .output.addBytes(value)
+            .output.addNative('"''u8)
         }
         #else
         {

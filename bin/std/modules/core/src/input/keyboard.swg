@@ -22,38 +22,38 @@ impl Keyboard
     // Compute current state of the keyboard (all keys)
     mtd update()
     {
-        me.previousState = me.currentState
-        me.currentState.update()
+        .previousState = .currentState
+        .currentState.update()
 
         // Repetition
         let now = Time.nowMilliseconds()
         for i in @countof(Key)
         {
-            if !me.currentState.isKeyPressed(cast(Key) i)
+            if !.currentState.isKeyPressed(cast(Key) i)
             {
-                me.pressedRepeat[i] = false
-                me.pressedTime[i]   = 0
+                .pressedRepeat[i] = false
+                .pressedTime[i]   = 0
             }
-            elif me.canRepeat
+            elif .canRepeat
             {
                 // First pressed time
-                if !me.pressedTime[i]:
-                    me.pressedTime[i] = now
+                if !.pressedTime[i]:
+                    .pressedTime[i] = now
 
                 // First repetition
-                if !me.pressedRepeat[i]
+                if !.pressedRepeat[i]
                 {
-                    if now - me.pressedTime[i] >= me.pressedRepeatStartTimeMs
+                    if now - .pressedTime[i] >= .pressedRepeatStartTimeMs
                     {
-                        me.pressedRepeat[i]         = true
-                        me.pressedTime[i]           = now
-                        me.previousState.pressed[i] = false
+                        .pressedRepeat[i]         = true
+                        .pressedTime[i]           = now
+                        .previousState.pressed[i] = false
                     }
                 }
-                elif now - me.pressedTime[i] >= me.pressedRepeatTimeMs
+                elif now - .pressedTime[i] >= .pressedRepeatTimeMs
                 {
-                    me.pressedTime[i]           = now
-                    me.previousState.pressed[i] = false
+                    .pressedTime[i]           = now
+                    .previousState.pressed[i] = false
                 }
             }
         }
@@ -62,52 +62,52 @@ impl Keyboard
     // Reset the keyboard state
     mtd clear()
     {
-        me.previousState.clear()
-        me.currentState.clear()
-        Memory.clear(&me.pressedRepeat, #sizeof(me.pressedRepeat))
-        Memory.clear(&me.pressedTime, #sizeof(me.pressedTime))
+        .previousState.clear()
+        .currentState.clear()
+        Memory.clear(&.pressedRepeat, #sizeof(.pressedRepeat))
+        Memory.clear(&.pressedTime, #sizeof(.pressedTime))
     }
 
     // Determines whether given key is currently being pressed
     #[Swag.Overload]
     mtd isKeyPressed(key: Key)->bool
     {
-        return me.currentState.pressed[key]
+        return .currentState.pressed[key]
     }
 
     // Determines whether given key has just been pressed
     mtd isKeyJustPressed(key: Key)->bool
     {
-        return me.currentState.pressed[key] and !me.previousState.pressed[key]
+        return .currentState.pressed[key] and !.previousState.pressed[key]
     }
 
     // Determines whether given key is currently being released
     mtd isKeyReleased(key: Key)->bool
     {
-        return !me.currentState.pressed[key]
+        return !.currentState.pressed[key]
     }
 
     // Determines whether given key has just been released
     mtd isKeyJustReleased(key: Key)->bool
     {
-        return !me.currentState.pressed[key] and me.previousState.pressed[key]
+        return !.currentState.pressed[key] and .previousState.pressed[key]
     }
 
     // Returns the currently pressed key modifiers
     mtd getPressedModifiers()->KeyModifiers
     {
         var modifiers: Input.KeyModifiers = .Zero
-        if me.isKeyPressed(Input.Key.LShift):
+        if .isKeyPressed(Input.Key.LShift):
             modifiers |= .Shift
-        if me.isKeyPressed(Input.Key.RShift):
+        if .isKeyPressed(Input.Key.RShift):
             modifiers |= .Shift
-        if me.isKeyPressed(Input.Key.LControl):
+        if .isKeyPressed(Input.Key.LControl):
             modifiers |= .Control
-        if me.isKeyPressed(Input.Key.RControl):
+        if .isKeyPressed(Input.Key.RControl):
             modifiers |= .Control
-        if me.isKeyPressed(Input.Key.LMenu):
+        if .isKeyPressed(Input.Key.LMenu):
             modifiers |= .Alt
-        if me.isKeyPressed(Input.Key.RMenu):
+        if .isKeyPressed(Input.Key.RMenu):
             modifiers |= .Alt
         return modifiers
     }

@@ -25,31 +25,31 @@ impl C
     {
         let app = wnd.getApp()
 
-        me.speed += me.acc
-        me.pos += me.speed * app.getDt()
-        me.acc.setZero()
+        .speed += .acc
+        .pos += .speed * app.getDt()
+        .acc.setZero()
 
-        var v = me.target - me.pos
+        var v = .target - .pos
         var d = v.length()
         if d < 100:
             d = map(d, 0, 100, 0, 120)
         v.setLength(d)
-        var steer = v - me.speed
+        var steer = v - .speed
         d = min(steer.length(), 80)
         steer.setLengthSafe(d)
-        me.acc += steer
+        .acc += steer
 
         var pm = app.getMouse().getPosition()
         pm = wnd.screenToSurface(pm)
         pm = wnd.surfaceToLocal(pm)
-        v  = me.pos - Vector2{pm.x, pm.y}
+        v  = .pos - Vector2{pm.x, pm.y}
         d  = v.length()
         if d < 50
         {
             d = 50 - d
             d *= d
             v.setLength(d)
-            me.acc += v
+            .acc += v
         }
     }
 }

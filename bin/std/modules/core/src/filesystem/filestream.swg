@@ -20,12 +20,12 @@ impl FileStream
     // Returns true if the stream is currently open and valid
     func isOpen(const me)->bool
     {
-        return me.handle != null
+        return .handle != null
     }
 
     // Reads a value of type 'T' from the stream into 'buffer'; returns true if read was successful
     mtd(T) readValue(buffer: *T)->bool
     {
-        return me.read(buffer, #sizeof(T)) == #sizeof(T)
+        return .read(buffer, #sizeof(T)) == #sizeof(T)
     }
 }

@@ -40,60 +40,60 @@ public impl LinePath
 {
     mtd opDrop()
     {
-        me.clearCache()
+        .clearCache()
     }
 
     mtd opPostCopy()
     {
-        me.triangles.clear()
+        .triangles.clear()
     }
 
     // Clear internal cache
     mtd clearCache()
     {
-        me.triangles.release()
-        me.polygon.clear()
+        .triangles.release()
+        .polygon.clear()
     }
 
     // Reset the path
     mtd start(startX, startY: f32)
     {
-        me.elements.clear()
-        me.isClosed   = false
-        me.isDirty    = true
-        me.isPolyOnly = false
-        me.startPoint = Vector2{startX, startY}
-        me.endPoint   = me.startPoint
+        .elements.clear()
+        .isClosed   = false
+        .isDirty    = true
+        .isPolyOnly = false
+        .startPoint = Vector2{startX, startY}
+        .endPoint   = .startPoint
     }
 
     // Add a line from the previous point to 'pt'
     mtd lineTo(x, y: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(me.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint):
             return
 
         var elem: Element = undefined
         elem.type = .Line
         elem.position.set(x, y)
-        me.elements.add(elem)
-        me.endPoint = newEndPoint
-        me.isDirty  = true
+        .elements.add(elem)
+        .endPoint = newEndPoint
+        .isDirty  = true
     }
 
     // Add a curve from the previous point to 'pt'
     mtd curveTo(x, y: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(me.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint):
             return
 
         var elem: Element = undefined
         elem.type = .Curve
         elem.position.set(x, y)
-        me.elements.add(elem)
-        me.endPoint = newEndPoint
-        me.isDirty  = true
+        .elements.add(elem)
+        .endPoint = newEndPoint
+        .isDirty  = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -101,16 +101,16 @@ public impl LinePath
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(me.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint):
             return
 
         var elem: Element = undefined
         elem.type = .Bezier1
         elem.position.set(x, y)
         elem.p1.set(ctx, cty)
-        me.elements.add(elem)
-        me.endPoint = newEndPoint
-        me.isDirty  = true
+        .elements.add(elem)
+        .endPoint = newEndPoint
+        .isDirty  = true
     }
 
     // Add a curve from the previous point to 'pt'
@@ -118,7 +118,7 @@ public impl LinePath
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(me.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint):
             return
 
         var elem: Element = undefined
@@ -126,9 +126,9 @@ public impl LinePath
         elem.position.set(x, y)
         elem.p1.set(ct1x, ct1y)
         elem.p2.set(ct2x, ct2y)
-        me.elements.add(elem)
-        me.endPoint = newEndPoint
-        me.isDirty  = true
+        .elements.add(elem)
+        .endPoint = newEndPoint
+        .isDirty  = true
     }
 
     // Add an arc from the previous point
@@ -144,7 +144,7 @@ public impl LinePath
             ma += Math.ConstF32.TwoPi
 
         let newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
-        if newEndPoint.isEqualEpsilon(me.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint):
             return
 
         var elem: Element = undefined
@@ -156,29 +156,29 @@ public impl LinePath
 
         elem.p2.x = radiusX
         elem.p2.y = radiusY
-        me.elements.add(elem)
-        me.isDirty = true
+        .elements.add(elem)
+        .isDirty = true
 
-        me.endPoint = newEndPoint
+        .endPoint = newEndPoint
     }
 
     // Close the figure
     // Will add a line or a curve to the first point if necessary
     mtd close()
     {
-        if me.isClosed or !me.elements.count:
+        if .isClosed or !.elements.count:
             return
 
-        let v = me.endPoint - me.startPoint
+        let v = .endPoint - .startPoint
         if v.lengthSquared() >= 0.5 * 0.5
         {
-            if me.elements.backPtr().type == .Curve:
-                me.curveTo(me.startPoint.x, me.startPoint.y)
+            if .elements.backPtr().type == .Curve:
+                .curveTo(.startPoint.x, .startPoint.y)
             else:
-                me.lineTo(me.startPoint.x, me.startPoint.y)
+                .lineTo(.startPoint.x, .startPoint.y)
         }
 
-        me.isClosed = true
+        .isClosed = true
     }
 
     internal mtd setRectRaw(l, t, w, h: f32)
@@ -186,12 +186,12 @@ public impl LinePath
         let r = l + w
         let b = t + h
 
-        me.start(l, t)
-        me.lineTo(r, t)
-        me.lineTo(r, b)
-        me.lineTo(l, b)
-        me.lineTo(l, t)
-        me.close()
+        .start(l, t)
+        .lineTo(r, t)
+        .lineTo(r, b)
+        .lineTo(l, b)
+        .lineTo(l, t)
+        .close()
     }
 
     // Initialize the path with a rectangle
@@ -202,7 +202,7 @@ public impl LinePath
         let w = Math.round(width)
         let h = Math.round(height)
 
-        me.setRectRaw(l, t, w, h)
+        .setRectRaw(l, t, w, h)
     }
 
     // Initialize the path with a round rectangle
@@ -221,25 +221,25 @@ public impl LinePath
         rX = Math.round(rX)
         rY = Math.round(rY)
 
-        me.start(l, t + rY)
-        me.arcTo(l + rX, t + rY, rX, rY, 270'deg, 360'deg)
-        me.lineTo(r - rX, t)
-        me.arcTo(r - rX, t + rY, rX, rY, 0'deg, 90'deg)
-        me.lineTo(r, b - rY)
-        me.arcTo(r - rX, b - rY, rX, rY, 90'deg, 180'deg)
-        me.lineTo(l + rX, b)
-        me.arcTo(l + rX, b - rY, rX, rY, 180'deg, 270'deg)
-        me.close()
+        .start(l, t + rY)
+        .arcTo(l + rX, t + rY, rX, rY, 270'deg, 360'deg)
+        .lineTo(r - rX, t)
+        .arcTo(r - rX, t + rY, rX, rY, 0'deg, 90'deg)
+        .lineTo(r, b - rY)
+        .arcTo(r - rX, b - rY, rX, rY, 90'deg, 180'deg)
+        .lineTo(l + rX, b)
+        .arcTo(l + rX, b - rY, rX, rY, 180'deg, 270'deg)
+        .close()
     }
 
     internal mtd setEllipseRaw(cX, cY: f32, rX, rY: f32)
     {
-        me.start(cX, cY - rY)
-        me.arcTo(cX, cY, rX, rY, 0'deg, 90'deg)
-        me.arcTo(cX, cY, rX, rY, 90'deg, 180'deg)
-        me.arcTo(cX, cY, rX, rY, 180'deg, 270'deg)
-        me.arcTo(cX, cY, rX, rY, 270'deg, 360'deg)
-        me.close()
+        .start(cX, cY - rY)
+        .arcTo(cX, cY, rX, rY, 0'deg, 90'deg)
+        .arcTo(cX, cY, rX, rY, 90'deg, 180'deg)
+        .arcTo(cX, cY, rX, rY, 180'deg, 270'deg)
+        .arcTo(cX, cY, rX, rY, 270'deg, 360'deg)
+        .close()
     }
 
     // Initialize the path with an ellipse
@@ -250,7 +250,7 @@ public impl LinePath
         let rX = 0.5 * Math.round(radiusX * 2)
         let rY = 0.5 * Math.round(radiusY * 2)
 
-        me.setEllipseRaw(cX, cY, rX, rY)
+        .setEllipseRaw(cX, cY, rX, rY)
     }
 
     // Initialize the path with a circle
@@ -260,12 +260,12 @@ public impl LinePath
         let cY = Math.round(centerY)
         let r  = 0.5 * Math.round(radius * 2)
 
-        me.start(cX, cY - r)
-        me.arcTo(cX, cY, r, r, 0'deg, 90'deg)
-        me.arcTo(cX, cY, r, r, 90'deg, 180'deg)
-        me.arcTo(cX, cY, r, r, 180'deg, 270'deg)
-        me.arcTo(cX, cY, r, r, 270'deg, 360'deg)
-        me.close()
+        .start(cX, cY - r)
+        .arcTo(cX, cY, r, r, 0'deg, 90'deg)
+        .arcTo(cX, cY, r, r, 90'deg, 180'deg)
+        .arcTo(cX, cY, r, r, 180'deg, 270'deg)
+        .arcTo(cX, cY, r, r, 270'deg, 360'deg)
+        .close()
     }
 
     // Initialize the path with an arc
@@ -280,35 +280,35 @@ public impl LinePath
 
         var startPos = Math.Vector2{0, -r}
         startPos.rotateBy(startAngle)
-        me.start(cX + startPos.x, cY + startPos.y)
+        .start(cX + startPos.x, cY + startPos.y)
 
         var s = startAngle.rad
         var m = 0'f32
         if s < Math.ConstF32.PiBy2
         {
             m = Math.min(endAngle.rad, Math.ConstF32.PiBy2)
-            me.arcTo(cX, cY, r, r, s, m)
+            .arcTo(cX, cY, r, r, s, m)
             s = m
         }
 
         if s < Math.ConstF32.Pi
         {
             m = Math.min(endAngle.rad, Math.ConstF32.Pi)
-            me.arcTo(cX, cY, r, r, s, m)
+            .arcTo(cX, cY, r, r, s, m)
             s = m
         }
 
         if s < Math.ConstF32.Pi + Math.ConstF32.PiBy2
         {
             m = Math.min(endAngle.rad, Math.ConstF32.Pi + Math.ConstF32.PiBy2)
-            me.arcTo(cX, cY, r, r, s, m)
+            .arcTo(cX, cY, r, r, s, m)
             s = m
         }
 
         if s < Math.ConstF32.TwoPi
         {
             m = Math.min(endAngle.rad, Math.ConstF32.TwoPi)
-            me.arcTo(cX, cY, r, r, s, m)
+            .arcTo(cX, cY, r, r, s, m)
         }
     }
 
@@ -316,25 +316,25 @@ public impl LinePath
     mtd flatten(quality = PaintQuality.Normal)
     {
         // Already done ?
-        if me.isPolyOnly:
+        if .isPolyOnly:
             return
-        if !me.isDirty and me.flattenQuality == quality and me.isFlatten:
-            return
-
-        me.isDirty        = false
-        me.isFlatten      = true
-        me.flattenQuality = quality
-
-        me.bvMin, me.bvMax = me.startPoint
-        me.clearCache()
-
-        if !me.elements.count:
+        if !.isDirty and .flattenQuality == quality and .isFlatten:
             return
 
-        me.endPosBuffer = me.startPoint
-        me.polygon.points.add(me.endPosBuffer)
+        .isDirty        = false
+        .isFlatten      = true
+        .flattenQuality = quality
 
-        foreach elem, i in me.elements
+        .bvMin, .bvMax = .startPoint
+        .clearCache()
+
+        if !.elements.count:
+            return
+
+        .endPosBuffer = .startPoint
+        .polygon.points.add(.endPosBuffer)
+
+        foreach elem, i in .elements
         {
             let pos = elem.position
 
@@ -342,19 +342,19 @@ public impl LinePath
             switch elem.type
             {
             case Line:
-                me.flattenLine(pos)
+                .flattenLine(pos)
             case Bezier1:
-                me.flattenBezier(pos, elem.p1, quality)
+                .flattenBezier(pos, elem.p1, quality)
             case Bezier2:
-                me.flattenBezier(pos, elem.p1, elem.p2, quality)
+                .flattenBezier(pos, elem.p1, elem.p2, quality)
             case Curve:
-                me.flattenCurve(pos, i, quality)
+                .flattenCurve(pos, i, quality)
             case Arc:
-                me.flattenArc(pos, elem.p1, elem.p2, quality)
+                .flattenArc(pos, elem.p1, elem.p2, quality)
             }
         }
 
-        me.polygon.compute()
+        .polygon.compute()
     }
 }
 
@@ -376,44 +376,44 @@ impl LinePath
 
     mtd flattenLine(pos: Vector2)
     {
-        me.bvMin = Vector2.min(me.bvMin, pos)
-        me.bvMax = Vector2.max(me.bvMax, pos)
-        me.polygon.add(pos)
-        me.endPosBuffer = pos
+        .bvMin = Vector2.min(.bvMin, pos)
+        .bvMax = Vector2.max(.bvMax, pos)
+        .polygon.add(pos)
+        .endPosBuffer = pos
     }
 
     #[Swag.Overload]
     mtd flattenCurve(pos: Math.Vector2, i: u64, quality: PaintQuality)
     {
         var p0, p1, p2, p3: Vector2 = undefined
-        let lastElem = me.elements.count - 1
+        let lastElem = .elements.count - 1
 
         if lastElem <= 1
         {
-            me.flattenLine(pos)
+            .flattenLine(pos)
             return
         }
 
         if i == 0
         {
-            p0 = me.isClosed ? me.elements[lastElem - 1].position : (me.startPoint - pos) + me.startPoint
-            p1 = me.startPoint
+            p0 = .isClosed ? .elements[lastElem - 1].position : (.startPoint - pos) + .startPoint
+            p1 = .startPoint
             p2 = pos
-            p3 = me.elements[i + 1].position
+            p3 = .elements[i + 1].position
         }
         elif i < lastElem
         {
-            p0 = i == 1 ? me.startPoint : me.elements[i - 2].position
-            p1 = me.elements[i - 1].position
+            p0 = i == 1 ? .startPoint : .elements[i - 2].position
+            p1 = .elements[i - 1].position
             p2 = pos
-            p3 = me.elements[i + 1].position
+            p3 = .elements[i + 1].position
         }
         else
         {
-            p0 = me.elements[i - 2].position
-            p1 = me.elements[i - 1].position
+            p0 = .elements[i - 2].position
+            p1 = .elements[i - 1].position
             p2 = pos
-            p3 = me.isClosed ? me.elements[1].position : pos + (pos - p1)
+            p3 = .isClosed ? .elements[1].position : pos + (pos - p1)
         }
 
         const Alpha   = 0.5
@@ -430,14 +430,14 @@ impl LinePath
         let sb = -3.0 * (p1 - p2) - m1 - m1 - m2
         let sc = m1
         let sd = p1
-        me.flattenCurve(sa, sb, sc, sd, quality)
+        .flattenCurve(sa, sb, sc, sd, quality)
     }
 
     #[Swag.Overload]
     mtd flattenCurve(p0, p1, p2, p3: Vector2, quality: PaintQuality)
     {
         let minDist = getFlattenDistance(quality)
-        let startPt = me.endPosBuffer
+        let startPt = .endPosBuffer
         let endPt   = p0 + p1 + p2 + p3               // Point at t=1
 
         // Calculate optimal number of segments analytically
@@ -446,7 +446,7 @@ impl LinePath
         if numSegments <= 1
         {
             // Curve is flat enough, just draw direct line
-            me.flattenLine(endPt)
+            .flattenLine(endPt)
             return
         }
 
@@ -457,7 +457,7 @@ impl LinePath
         {
             let t     = stepSize * i
             let point = Math.Curve.evaluatePolynomial(p0, p1, p2, p3, t)
-            me.flattenLine(point)
+            .flattenLine(point)
         }
     }
 
@@ -501,7 +501,7 @@ impl LinePath
     #[Swag.Overload]
     mtd flattenBezier(pos, p1: Vector2, quality: PaintQuality)
     {
-        let startPt = me.endPosBuffer
+        let startPt = .endPosBuffer
         let minDist = getFlattenDistance(quality)
 
         // Calculate optimal number of segments analytically
@@ -510,7 +510,7 @@ impl LinePath
         if numSegments <= 1
         {
             // Curve is flat enough, just draw direct line
-            me.flattenLine(pos)
+            .flattenLine(pos)
             return
         }
 
@@ -521,7 +521,7 @@ impl LinePath
         {
             let t     = stepSize * i
             let point = Math.Curve.evaluateBezier(startPt, p1, pos, t)
-            me.flattenLine(point)
+            .flattenLine(point)
         }
     }
 
@@ -548,7 +548,7 @@ impl LinePath
     #[Swag.Overload]
     mtd flattenBezier(pos, p1, p2: Vector2, quality: PaintQuality)
     {
-        let startPt = me.endPosBuffer
+        let startPt = .endPosBuffer
         let minDist = getFlattenDistance(quality)
 
         // Calculate optimal number of segments analytically
@@ -557,7 +557,7 @@ impl LinePath
         if numSegments <= 1
         {
             // Curve is flat enough, just draw direct line
-            me.flattenLine(pos)
+            .flattenLine(pos)
             return
         }
 
@@ -568,7 +568,7 @@ impl LinePath
         {
             let t     = stepSize * i
             let point = Math.Curve.evaluateBezier(startPt, p1, p2, pos, t)
-            me.flattenLine(point)
+            .flattenLine(point)
         }
     }
 
@@ -621,7 +621,7 @@ impl LinePath
         {
             // Arc is small enough, just draw direct line to end
             let endPos = Vector2{x: pos.x + (Math.sin(p1.y) * p2.x), y: pos.y - (Math.cos(p1.y) * p2.y)}
-            me.flattenLine(endPos)
+            .flattenLine(endPos)
             return
         }
 
@@ -632,7 +632,7 @@ impl LinePath
         {
             let angle = p1.x + (angleStep * i)
             let point = Vector2{x: pos.x + (Math.sin(angle) * p2.x), y: pos.y - (Math.cos(angle) * p2.y)}
-            me.flattenLine(point)
+            .flattenLine(point)
         }
     }
 

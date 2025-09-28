@@ -26,7 +26,7 @@ impl IWnd for IconBar
     mtd impl onComputeStateEvent(evt: *CommandStateEvent)
     {
         evt.accepted = false
-        me.sigUpdateState.call(evt)
+        .sigUpdateState.call(evt)
     }
 }
 
@@ -34,20 +34,20 @@ impl IconBar
 {
     mtd computeLayout()
     {
-        foreach c in me.childs
+        foreach c in .childs
         {
-            if me.iconBarFlags.has(.Vertical):
+            if .iconBarFlags.has(.Vertical):
                 c.dockStyle = .Top
             else:
                 c.dockStyle = .Left
         }
 
-        let pad  = 2 * me.iconPadding
-        let size = cast(f32) (me.childs.count * (me.iconSize + pad))
-        if me.iconBarFlags.has(.Vertical):
-            me.resize(me.iconSize + pad, size)
+        let pad  = 2 * .iconPadding
+        let size = cast(f32) (.childs.count * (.iconSize + pad))
+        if .iconBarFlags.has(.Vertical):
+            .resize(.iconSize + pad, size)
         else:
-            me.resize(size, me.iconSize + pad)
+            .resize(size, .iconSize + pad)
     }
 
     #[Swag.Discardable]
@@ -66,32 +66,32 @@ impl IconBar
     mtd addItem(icon: Icon, btnId: WndId = null, iconBtnFlags = IconButtonFlags.Zero)->*IconButton
     {
         var iconT = icon
-        iconT.sizeX, iconT.sizeY = me.iconSize
+        iconT.sizeX, iconT.sizeY = .iconSize
 
-        let size = me.iconSize + 2 * me.iconPadding
+        let size = .iconSize + 2 * .iconPadding
         let b    = IconButton.create(me, iconT, {0, 0, size, size})
         b.iconBtnFlags.set(iconBtnFlags)
         b.id        = btnId
         b.dockStyle = .Left
         b.setForm(.RoundSquare)
-        me.computeLayout()
+        .computeLayout()
 
         if iconBtnFlags.has(.Checkable | .CheckableToggle)
         {
             b.sigCheckChanged += mtd||(btn)
             {
-                me.sigCheckChanged.call(btn)
+                .sigCheckChanged.call(btn)
             }
         }
         else
         {
             b.sigPressed += mtd||(btn)
             {
-                me.sigPressed.call(cast(*IconButton) btn)
+                .sigPressed.call(cast(*IconButton) btn)
             }
         }
 
-        me.updateCommandState()
+        .updateCommandState()
         return b
     }
 
@@ -99,28 +99,28 @@ impl IconBar
     #[Swag.Discardable]
     mtd addCheckableItem(icon: Icon, btnId: WndId = null)->*IconButton
     {
-        return me.addItem(icon, btnId, .Checkable)
+        return .addItem(icon, btnId, .Checkable)
     }
 
     // Add a new checkable button
     #[Swag.Discardable]
     mtd addCheckableToggleItem(icon: Icon, btnId: WndId = null)->*IconButton
     {
-        return me.addItem(icon, btnId, .CheckableToggle)
+        return .addItem(icon, btnId, .CheckableToggle)
     }
 
     // Change bar flags
     mtd setIconBarFlags(add, remove = IconBarFlags.Zero)
     {
-        me.iconBarFlags.add(add)
-        me.iconBarFlags.remove(remove)
-        me.computeLayout()
+        .iconBarFlags.add(add)
+        .iconBarFlags.remove(remove)
+        .computeLayout()
     }
 
     // Returns the button with the given id
     mtd getButton(btnId: string)->#null *IconButton
     {
-        let btn = me.getChildById(btnId)
+        let btn = .getChildById(btnId)
         if !btn:
             return null
         return cast(*IconButton) btn
