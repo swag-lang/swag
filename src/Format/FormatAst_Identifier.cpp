@@ -97,15 +97,15 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
     bool first = true;
     for (const auto it : node->children)
     {
+        const auto child = convertNode(context, it);
+        if (!child)
+            continue;
+
         /*if (it->token.text == "me" && !it->findParent(AstNodeKind::With) && it != node->children.back())
         {
             concat->addChar('.');
             continue;
-        }*/
-
-        const auto child = convertNode(context, it);
-        if (!child)
-            continue;
+        }*/        
 
         if (child->hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL))
         {

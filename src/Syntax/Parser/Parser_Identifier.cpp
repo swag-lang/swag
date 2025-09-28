@@ -403,6 +403,9 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
     AstNode* idRef;
     switch (tokenParse.token.id)
     {
+        case TokenId::SymDot:
+            SWAG_CHECK(doDottedIdentifierRef(parent, &idRef));
+            break;
         case TokenId::Identifier:
             SWAG_CHECK(doIdentifierRef(parent, &idRef));
             break;
