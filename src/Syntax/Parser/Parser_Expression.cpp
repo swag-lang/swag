@@ -1438,60 +1438,6 @@ void Parser::setForceTakeAddress(AstNode* node)
 
 bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFlags identifierFlags, VarDeclFlags varDeclFlags)
 {
-    // Helper: after we parsed an IdentifierRef into exprNode and detected that a leading dot
-    // requires a receiver, prepend either the nearest 'with' identifier(s) or an implicit 'me'
-    // when inside a method. Resets the 'prepend' toggle for the caller.
-    auto prependReceiverIfNeeded = [&](const TokenParse& tokenDot,
-                                       AstNode*&         exprNode,
-                                       const AstWith*&   withNode,
-                                       bool&             prepend,
-                                       const AstNode*    parentNode) -> bool {
-        if (!prepend)
-            return true;
-
-        prepend = false;
-        SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
-        exprNode->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE);
-
-        ParserPushFreezeFormat ff{this};
-
-        if (withNode)
-        {
-            // Prepend the 'with' identifier(s)
-            for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
-            {
-                const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), withNode->id[wi], this, exprNode);
-                id->addAstFlag(AST_GENERATED);
-                id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
-                id->allocateIdentifierExtension();
-                id->identifierExtension->fromAlternateVar = withNode->firstChild();
-                id->inheritTokenLocation(exprNode->token);
-                exprNode->children.pop_back();
-                Ast::addChildFront(exprNode, id);
-            }
-            return true;
-        }
-
-        // Implicit 'me' when in a method body and no 'with' was found
-        auto ownerFct = parentNode->ownerFct;
-        if (ownerFct->hasOwnerInline() && !ownerFct->ownerInline()->func->hasAttribute(ATTRIBUTE_MIXIN))
-            ownerFct = ownerFct->ownerInline()->func;
-        if (ownerFct && ownerFct->isFctWithMe())
-        {
-            const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), g_LangSpec->name_me, this, exprNode);
-            id->addAstFlag(AST_GENERATED);
-            id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
-            id->allocateIdentifierExtension();
-            id->identifierExtension->fromAlternateVar = nullptr;
-            id->inheritTokenLocation(exprNode->token);
-            exprNode->children.pop_back();
-            Ast::addChildFront(exprNode, id);
-            return true;
-        }
-
-        return error(tokenDot, toErr(Err0404));
-    };
-
     switch (tokenParse.token.id)
     {
         case TokenId::SymLeftParen:
@@ -1509,28 +1455,13 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             while (true)
             {
                 if (tokenParse.is(TokenId::SymDot))
+                    SWAG_CHECK(doDottedIdentifierRef(multi, &exprNode, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
+                else
                 {
-                    if (!withNode)
-                    {
-                        // Try to bind to the nearest 'with' first
-                        const auto parentWithNode = parent->findParent(AstNodeKind::With);
-                        if (parentWithNode)
-                            withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
-                    }
-
-                    tokenDot        = tokenParse;
-                    prependReceiver = true;
-                    eatToken();
+                    SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::SymQuestion), error(tokenParse, toErr(Err0660)));
+                    SWAG_CHECK(doIdentifierRef(multi, &exprNode, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
                 }
-
-                SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::SymQuestion), error(tokenParse, toErr(Err0660)));
-                SWAG_CHECK(doIdentifierRef(multi, &exprNode, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
-
-                if (prependReceiver)
-                {
-                    SWAG_CHECK(prependReceiverIfNeeded(tokenDot, exprNode, withNode, prependReceiver, parent));
-                }
-
+                
                 if (tokenParse.is(TokenId::SymRightParen))
                     break;
                 SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0114)));
@@ -1555,28 +1486,11 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             while (true)
             {
                 if (tokenParse.is(TokenId::SymDot))
-                {
-                    if (!withNode)
-                    {
-                        // Try to bind to the nearest 'with' first; if none, implicit 'me'
-                        const auto parentWithNode = parent->findParent(AstNodeKind::With);
-                        if (parentWithNode)
-                            withNode = castAst<AstWith>(parentWithNode, AstNodeKind::With);
-                    }
-
-                    tokenDot        = tokenParse;
-                    prependReceiver = true;
-                    eatToken();
-                }
-
-                SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
+                    SWAG_CHECK(doDottedIdentifierRef(multi, &exprNode, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
+                else
+                    SWAG_CHECK(doIdentifierRef(multi == nullptr ? parent : multi, &exprNode, identifierFlags));
                 if (multi == nullptr)
                     Ast::removeFromParent(exprNode);
-
-                if (prependReceiver)
-                {
-                    SWAG_CHECK(prependReceiverIfNeeded(tokenDot, exprNode, withNode, prependReceiver, parent));
-                }
 
                 if (tokenParse.isNot(TokenId::SymComma))
                     break;
