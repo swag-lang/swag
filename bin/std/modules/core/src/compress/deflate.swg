@@ -601,7 +601,7 @@ impl Deflate
     }
 
     #[Swag.Mixin]
-    func rlePrevCodeSize()
+    mtd rlePrevCodeSize()
     {
         if rleRepeatCount
         {
@@ -707,7 +707,7 @@ impl Deflate
             let codeSize = codeSizesToPack[i]
             if !codeSize
             {
-                rlePrevCodeSize()
+                me.rlePrevCodeSize()
                 rleZCount += 1
                 if rleZCount == 138
                 {
@@ -719,7 +719,7 @@ impl Deflate
                 me.rleZeroCodeSize()
                 if codeSize != prevCodeSize
                 {
-                    rlePrevCodeSize()
+                    me.rlePrevCodeSize()
                     d.huffCount[2, codeSize]            = cast(u16) (d.huffCount[2, codeSize] + 1)
                     packedCodeSizes[numPackedCodeSizes] = codeSize
                     numPackedCodeSizes += 1
@@ -729,7 +729,7 @@ impl Deflate
                     rleRepeatCount += 1
                     if rleRepeatCount == 6
                     {
-                        rlePrevCodeSize()
+                        me.rlePrevCodeSize()
                     }
                 }
             }
@@ -739,7 +739,7 @@ impl Deflate
 
         if rleRepeatCount
         {
-            rlePrevCodeSize()
+            me.rlePrevCodeSize()
         }
         else
         {
