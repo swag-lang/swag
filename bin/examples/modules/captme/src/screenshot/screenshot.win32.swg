@@ -8,7 +8,7 @@ private
     var g_Ignore:    HWND
     var g_Awareness: DPI_AWARENESS_CONTEXT
 
-        func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
+    func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
     {
         if !IsWindowVisible(hWnd):
             return TRUE

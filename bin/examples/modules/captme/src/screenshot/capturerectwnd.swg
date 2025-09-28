@@ -2,15 +2,15 @@ using Core, Win32, Gdi32, Pixel
 
 struct CaptureRectWnd
 {
-    using wnd:        Wnd
+    using wnd:         Wnd
 
-    main:             *MainWnd
-    startGrab:        bool
-    cancelGrag:       bool
-    tryStartGrab:     bool
-    autoGrab:         bool
-    lerpGrab:         Math.Rectangle
-    clickStartPos:    Math.Point  // Track where the click started
+    main:              *MainWnd
+    startGrab:         bool
+    cancelGrag:        bool
+    tryStartGrab:      bool
+    autoGrab:          bool
+    lerpGrab:          Math.Rectangle
+    clickStartPos:     Math.Point         // Track where the click started
 }
 
 impl IWnd for CaptureRectWnd
@@ -44,10 +44,10 @@ impl IWnd for CaptureRectWnd
             .startGrab    = false
             .tryStartGrab = false
             .cancelGrag   = true
-            .autoGrab     = true  // Return to auto grab mode
+            .autoGrab     = true // Return to auto grab mode
 
         case MousePressed where evt.button == .Left:
-            .tryStartGrab = true
+            .tryStartGrab    = true
             .clickStartPos.x = evt.surfacePos.x
             .clickStartPos.y = evt.surfacePos.y
 

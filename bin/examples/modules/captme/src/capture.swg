@@ -1189,14 +1189,14 @@ impl Capture
 
             if Math.abs(nx - newPosX) > Math.abs(nx1 - newPosX)
             {
-                .snapX  = saveSnapX
+                .snapX    = saveSnapX
                 u.newPosX = nx
             }
             else:
                 u.newPosX = nx1
             if Math.abs(ny - newPosY) > Math.abs(ny1 - newPosY)
             {
-                .snapY  = saveSnapY
+                .snapY    = saveSnapY
                 u.newPosY = ny
             }
             else:

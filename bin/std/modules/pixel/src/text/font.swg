@@ -226,7 +226,7 @@ public impl Font
 
         refr.atlasIndex = cast(u32) (.atlases.count - 1)
 
-        .dirty    = true
+        .dirty      = true
         atlas.dirty = true
 
         return refr
