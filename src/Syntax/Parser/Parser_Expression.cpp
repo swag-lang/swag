@@ -1446,10 +1446,8 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             *result             = multi;
             const auto startLoc = tokenParse.token.startLocation;
 
-            const AstWith* withNode        = nullptr;
-            AstNode*       exprNode        = nullptr;
-            bool           prependReceiver = false;
-            TokenParse     tokenDot;
+            AstNode*   exprNode = nullptr;
+            TokenParse tokenDot;
 
             SWAG_CHECK(eatToken());
             while (true)
@@ -1461,7 +1459,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                     SWAG_VERIFY(tokenParse.is(TokenId::Identifier) || tokenParse.is(TokenId::SymQuestion), error(tokenParse, toErr(Err0660)));
                     SWAG_CHECK(doIdentifierRef(multi, &exprNode, identifierFlags | IDENTIFIER_ACCEPT_QUESTION));
                 }
-                
+
                 if (tokenParse.is(TokenId::SymRightParen))
                     break;
                 SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0114)));
@@ -1476,12 +1474,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         case TokenId::Identifier:
         case TokenId::CompilerUp:
         {
-            AstNode*       multi           = nullptr;
-            const AstWith* withNode        = nullptr;
-            AstNode*       exprNode        = nullptr;
-            bool           prependReceiver = false;
-            TokenParse     tokenStart      = tokenParse;
-            TokenParse     tokenDot;
+            AstNode*   multi      = nullptr;
+            AstNode*   exprNode   = nullptr;
+            TokenParse tokenStart = tokenParse;
+            TokenParse tokenDot;
 
             while (true)
             {

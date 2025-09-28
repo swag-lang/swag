@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Format/FormatAst.h"
-#include "Main/CommandLine.h"
 #include "Semantic/Semantic.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
@@ -101,11 +100,16 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
         if (!child)
             continue;
 
-        /*if (it->token.text == "me" && !it->findParent(AstNodeKind::With) && it != node->children.back())
+        if (child->is(AstNodeKind::Identifier) &&
+            child->token.text == "me" &&
+            !child->findParent(AstNodeKind::With) &&
+            !child->findParent(AstNodeKind::CompilerMacro) &&
+            child != node->children.back())
         {
-            concat->addChar('.');
+            if (!node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE | AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE))
+                concat->addChar('.');
             continue;
-        }*/        
+        }
 
         if (child->hasSpecFlag(AstIdentifier::SPEC_FLAG_SILENT_CALL))
         {
