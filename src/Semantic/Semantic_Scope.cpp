@@ -33,13 +33,15 @@ bool Semantic::findIdentifierInScopes(SemanticContext* context, AstIdentifierRef
 
 bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<CollectedScope>& scopeHierarchy, AstIdentifierRef* identifierRef, AstIdentifier* identifier)
 {
+    // ENUM
+    ///////////////////////////////
+
     VectorNative<TypeInfoEnum*>                      typeEnum;
     VectorNative<std::pair<AstNode*, TypeInfoEnum*>> hasEnum;
     VectorNative<SymbolOverload*>                    testedOver;
     SWAG_CHECK(Semantic::findEnumTypeInContext(context, identifierRef, typeEnum, hasEnum, testedOver));
     YIELD();
 
-    // More than one match: ambiguous
     if (typeEnum.size() > 1)
     {
         Diagnostic err{identifierRef, formErr(Err0021, identifier->token.cstr())};
@@ -65,75 +67,47 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         identifierRef->previousScope = typeEnum[0]->scope;
         scopeHierarchy.clear();
         addCollectedScopeOnce(scopeHierarchy, typeEnum[0]->scope);
+        return true;
     }
 
-    // No match, we will try 'with' (or implicit 'me' if in a method)
-    else
+    // Find the first receiver
+    auto receiver = identifier->parent;
+    while (receiver != nullptr)
     {
-        const auto withNodeP = identifier->findParent(AstNodeKind::With);
-        if (!withNodeP)
+        if (receiver->is(AstNodeKind::With))
+            break;
+        if (receiver->is(AstNodeKind::FuncDecl))
+            break;
+
+        if (receiver->is(AstNodeKind::CompilerMacro))
         {
-            // Rule: only kick in when there is a method/instance function receiver.
-            //       This keeps precedence as: innermost 'with' > method receiver.
-            auto ownerFct = identifier->ownerFct;
-            if (identifier->hasOwnerInline() && identifier->ownerInline()->func->isFctWithMe())
-                ownerFct = identifier->ownerInline()->func;
-            if (ownerFct && ownerFct->isFctWithMe())
-            {
-                // Prepend a generated 'me' identifier and re-evaluate
-                // NOTE: we reuse the same lowering approach as 'with' so the rest
-                //       of the pipeline doesn't need to know about leading-dot sugar.
-                const auto id = Ast::newIdentifier(identifierRef, "me", nullptr, identifierRef);
-                id->addAstFlag(AST_GENERATED);
-                id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH); // reuse existing path
-                id->allocateIdentifierExtension();
-                id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
-                id->identifierExtension->fromAlternateVar = nullptr; // not from a 'with' variable
-                id->inheritTokenLocation(identifierRef->token);
-
-                // Replace the trailing bare name with 'me' . name
-                identifierRef->children.pop_back();
-                Ast::addChildFront(identifierRef, id);
-
-                // Mark as coming from an implicit receiver scope.
-                // If you prefer, define a dedicated flag, e.g. SPEC_FLAG_IMPLICIT_RECEIVER.
-                identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
-
-                context->baseJob->nodes.push_back(id);
-                context->result = ContextResult::NewChildren;
-                return true;
-            }
-
-            // No 'with', not in a method: fall back to existing diagnostics
-            if (!hasEnum.empty())
-            {
-                Diagnostic err{identifier, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
-                const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{.scope = hasEnum[0].second->scope, .flags = 0}}, IdentifierSearchFor::Whatever);
-                if (!closest.empty())
-                    err.addNote(closest);
-                if (hasEnum[0].first)
-                    err.addNote(hasEnum[0].first, hasEnum[0].first->token, Diagnostic::isType(hasEnum[0].first));
-                err.addNote(Diagnostic::hereIs(hasEnum[0].second->declNode));
-                return context->report(err);
-            }
-
-            Diagnostic err{identifier, identifier->token, formErr(Err0681, identifier->token.cstr())};
-
-            // Call to a function?
-            if (testedOver.size() == 1)
-                err.addNote(Diagnostic::hereIs(testedOver[0]));
-
-            return context->report(err);
+            while (receiver->isNot(AstNodeKind::Inline) && receiver->isNot(AstNodeKind::FuncDecl))
+                receiver = receiver->parent;
+            if (receiver->is(AstNodeKind::Inline))
+                receiver = receiver->parent;
+            continue;
         }
 
-        const auto withNode = castAst<AstWith>(withNodeP, AstNodeKind::With);
+        if (identifier->hasOwnerInline() && receiver == identifier->ownerInline())
+        {
+            receiver = identifier->ownerInline()->func;
+            break;
+        }
 
-        // Prepend the 'with' identifier, and reevaluate
+        receiver = receiver->parent;
+    }
+
+    // WITH
+    ///////////////////////////////
+
+    if (receiver && receiver->is(AstNodeKind::With))
+    {
+        const auto withNode = castAst<AstWith>(receiver, AstNodeKind::With);
         for (uint32_t wi = withNode->id.size() - 1; wi != UINT32_MAX; wi--)
         {
             const auto id = Ast::newIdentifier(identifierRef, withNode->id[wi], nullptr, identifierRef);
             id->addAstFlag(AST_GENERATED);
-            id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
+            id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_RECEIVER);
             id->allocateIdentifierExtension();
             id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
             id->identifierExtension->fromAlternateVar = withNode->firstChild();
@@ -141,13 +115,52 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
             identifierRef->children.pop_back();
             Ast::addChildFront(identifierRef, id);
             identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
+
             context->baseJob->nodes.push_back(id);
+            context->result = ContextResult::NewChildren;
         }
 
-        context->result = ContextResult::NewChildren;
+        return true;
     }
 
-    return true;
+    // ME
+    ///////////////////////////////
+
+    if (receiver && receiver->isFctWithMe())
+    {
+        const auto id = Ast::newIdentifier(identifierRef, g_LangSpec->name_me, nullptr, identifierRef);
+        id->addAstFlag(AST_GENERATED);
+        id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_RECEIVER);
+        id->allocateIdentifierExtension();
+        id->identifierExtension->alternateEnum    = hasEnum.empty() ? nullptr : hasEnum[0].second;
+        id->identifierExtension->fromAlternateVar = nullptr;
+        id->inheritTokenLocation(identifierRef->token);
+        identifierRef->children.pop_back();
+        Ast::addChildFront(identifierRef, id);
+        identifierRef->addSpecFlag(AstIdentifierRef::SPEC_FLAG_WITH_SCOPE);
+
+        context->baseJob->nodes.push_back(id);
+        context->result = ContextResult::NewChildren;
+        return true;
+    }
+
+    // No 'with', not in a method: fall back to existing diagnostics
+    if (!hasEnum.empty())
+    {
+        Diagnostic err{identifier, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
+        const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{.scope = hasEnum[0].second->scope, .flags = 0}}, IdentifierSearchFor::Whatever);
+        if (!closest.empty())
+            err.addNote(closest);
+        if (hasEnum[0].first)
+            err.addNote(hasEnum[0].first, hasEnum[0].first->token, Diagnostic::isType(hasEnum[0].first));
+        err.addNote(Diagnostic::hereIs(hasEnum[0].second->declNode));
+        return context->report(err);
+    }
+
+    Diagnostic err{identifier, identifier->token, formErr(Err0681, identifier->token.cstr())};
+    if (testedOver.size() == 1)
+        err.addNote(Diagnostic::hereIs(testedOver[0]));
+    return context->report(err);
 }
 
 

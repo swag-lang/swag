@@ -865,7 +865,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             else
                 err.addNote(identifier->token, form("the function [[%s]] already has the correct number of arguments, so [[%s]] was not used", identifier->token.cstr(), prev->token.cstr()));
 
-            if (prev->is(AstNodeKind::Identifier) && prev->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH))
+            if (prev->is(AstNodeKind::Identifier) && prev->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_RECEIVER))
             {
                 const auto prevIdentifier = castAst<AstIdentifier>(prev, AstNodeKind::Identifier);
                 const auto widthNode      = prevIdentifier->identifierExtension->fromAlternateVar;
