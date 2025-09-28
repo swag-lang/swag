@@ -140,7 +140,13 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
         const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         hint            = form("the array has [[%d]] elements of type [[%s]], which does not match a slice of type [[%s]]", from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
-    else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic())
+    else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
+    {
+        msg = formErr(Err0601, fromType->getDisplayNameC());
+        if (!fromType->isNative(NativeTypeKind::U64))
+            hint = "only [[u64]] may be cast to a pointer";
+    }    
+    else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic() && fromType->isPointer())
     {
         msg = formErr(Err0600, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
@@ -162,12 +168,6 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         hint = Diagnostic::isType(fromType);
         msg  = toErr(Err0529);
-    }
-    else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
-    {
-        msg = formErr(Err0601, fromType->getDisplayNameC());
-        if (!fromType->isNative(NativeTypeKind::U64))
-            hint = "the only accepted type for an integer to pointer conversion is [[u64]]";
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {

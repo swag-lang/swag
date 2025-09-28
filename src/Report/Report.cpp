@@ -107,8 +107,7 @@ namespace
                 {
                     if (!notes[i]->hint.empty())
                     {
-                        notes[i]->hint += "\n=> ";
-                        notes[i]->hint += notes[j]->textMsg;
+                        notes[i]->remarks.push_back(notes[j]->textMsg);
                         notes[j]->textMsg.clear();
                     }
                     continue;
