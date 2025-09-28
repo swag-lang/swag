@@ -220,7 +220,7 @@ struct Parser
     bool doExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doMoveExpression(const Token& forToken, TokenId tokenId, AstNode* parent, ExprFlags exprFlags, AstNode** result);
     bool doGenericDeclParameters(AstNode* parent, AstNode** result);
-    bool doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr);
+    bool doLambdaFuncDecl(AstNode* parent, AstNode** result, bool isMethod, bool acceptMissingType, bool* hasMissingType);
     bool doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId = TokenId::Invalid, FuncDeclFlags flags = FUNC_DECL_ZERO);
     bool doFuncDeclParameter(AstNode* parent, bool acceptMissingType = false, bool* hasMissingType = nullptr);
     bool doFuncDeclParameters(AstNode* parent, AstNode** result, bool acceptMissingType = false, bool* hasMissingType = nullptr, bool isMethod = false, bool isConstMethod = false, bool isItfMethod = false);

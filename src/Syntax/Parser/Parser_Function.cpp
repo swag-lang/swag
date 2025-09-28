@@ -1102,13 +1102,15 @@ bool Parser::doClosureCaptureBlock(TypeInfoFuncAttr* typeInfo, AstFuncCallParams
     return true;
 }
 
-bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool acceptMissingType, bool* hasMissingType)
+bool Parser::doLambdaFuncDecl(AstNode* parent, AstNode** result, bool isMethod, bool acceptMissingType, bool* hasMissingType)
 {
     ParserPushTryCatchAssume sc(this, nullptr);
     const auto               funcNode = Ast::newNode<AstFuncDecl>(AstNodeKind::FuncDecl, this, parent);
     *result                           = funcNode;
     funcNode->semanticFct             = Semantic::resolveFuncDecl;
     funcNode->addAstFlag(AST_GENERATED);
+    if (isMethod)
+        funcNode->addSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
 
     const uint32_t id    = g_UniqueID.fetch_add(1);
     funcNode->token.text = "__lambda" + std::to_string(id);
@@ -1248,7 +1250,7 @@ bool Parser::doLambdaExpression(AstNode* parent, ExprFlags exprFlags, AstNode** 
 
     {
         ParserPushBreakable sb(this, nullptr);
-        SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, acceptMissingType, &hasMissingType));
+        SWAG_CHECK(doLambdaFuncDecl(currentFct, &lambda, isMethod, acceptMissingType, &hasMissingType));
     }
 
     SourceLocation start, end;
