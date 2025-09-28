@@ -1452,6 +1452,8 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         SWAG_ASSERT(exprNode->is(AstNodeKind::IdentifierRef));
         exprNode->addSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE);
 
+        ParserPushFreezeFormat ff{this};
+
         if (withNode)
         {
             // Prepend the 'with' identifier(s)
@@ -1469,10 +1471,10 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
             return true;
         }
 
-        // NEW: implicit 'me' when in a method body and no 'with' was found
+        // Implicit 'me' when in a method body and no 'with' was found
         if (parentNode->ownerFct && parentNode->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
         {
-            const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), "me", this, exprNode);
+            const auto             id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), "me", this, exprNode);
             id->addAstFlag(AST_GENERATED);
             // Reuse the same path/flags as 'with' so the rest of the pipeline remains unchanged
             id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
