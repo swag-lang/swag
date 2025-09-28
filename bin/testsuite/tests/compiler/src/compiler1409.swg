@@ -1,6 +1,0 @@
-func toto()
-{
-	func titi()
-	{
-	}
-}
