@@ -312,43 +312,37 @@ private
             let base  = 5 + cast(s32) extra
             let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
- // 5-6
-
+ 
         case DCT_CAT2_TOKEN:
             let extra = readBits(bd, 2)
             let base  = 7 + cast(s32) extra
             let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
- // 7-10
-
+ 
         case DCT_CAT3_TOKEN:
             let extra = readBits(bd, 3)
             let base  = 11 + cast(s32) extra
             let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
- // 11-18
-
+ 
         case DCT_CAT4_TOKEN:
             let extra = readBits(bd, 4)
             let base  = 19 + cast(s32) extra
             let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
- // 19-34
-
+ 
         case DCT_CAT5_TOKEN:
             let extra = readBits(bd, 5)
             let base  = 35 + cast(s32) extra
             let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
- // 35-66
-
+ 
         case DCT_CAT6_TOKEN:
             let extra = readBits(bd, 11)
             let base  = 67 + cast(s32) extra
             let sign  = readBit(bd)
             return {sign != 0 ? -base : base, true}
- // 67-2048
-        }
+         }
 
         return {0, false}
     }
