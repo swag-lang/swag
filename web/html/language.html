@@ -814,7 +814,6 @@ code
 <span class="SCmp">#error</span>
 <span class="SCmp">#warning</span>
 <span class="SCmp">#import</span>
-<span class="SCmp">#placeholder</span>
 <span class="SCmp">#if</span>
 <span class="SCmp">#else</span>
 <span class="SCmp">#elif</span>
@@ -846,7 +845,7 @@ code
 <span class="SCmp">#module</span>
 <span class="SCmp">#file</span>
 <span class="SCmp">#line</span>
-<span class="SCmp">#self</span>
+<span class="SCmp">#me</span>
 <span class="SCmp">#curlocation</span>
 <span class="SCmp">#callerlocation</span>
 <span class="SCmp">#callerfunction</span>
@@ -950,14 +949,17 @@ code
 <span class="SItr">@trunc</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Modifiers </h4>
 <p>Modifiers can be applied to specific keywords or operators to alter their behavior. These modifiers allow developers to fine-tune operations, giving more control over how certain code constructs are executed. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#prom</span>
-<span class="SCmp">#wrap</span>
-<span class="SCmp">#nodrop</span>
-<span class="SCmp">#move</span>
-<span class="SCmp">#moveraw</span>
-<span class="SCmp">#reverse</span>
-<span class="SCmp">#ref</span>
-<span class="SCmp">#constref</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SItr">#prom</span>
+<span class="SItr">#wrap</span>
+<span class="SItr">#nodrop</span>
+<span class="SItr">#move</span>
+<span class="SItr">#moveraw</span>
+<span class="SItr">#reverse</span>
+<span class="SItr">#ref</span>
+<span class="SItr">#constref</span>
+<span class="SItr">#err</span>
+<span class="SItr">#noerr</span>
+<span class="SItr">#null</span></span></div>
 
 <h2 id="_003_000_fundamentals_swg">Fundamentals </h2>
 <h3 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Basic Types </h3><h4 id="_003_000_fundamentals_swg__003_001_basic_types_swg">Signed Integers </h4>
@@ -1756,8 +1758,8 @@ code
 <p>This means that an 8/16-bit operation (like an addition) can more easily overflow if you do not take care. In that case, you can use the <span class="code-inline"> #prom</span> modifier on the operation, which will promote the type to at least 32 bits. The operation will be done accordingly. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>)
-    <span class="SCmp">#assert</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span>) <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
+    <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SItr">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span>) == <span class="STpe">u32</span>)
+    <span class="SCmp">#assert</span>(<span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SItr">#prom</span> <span class="SNum">1</span>'<span class="STpe">u8</span> == <span class="SNum">256</span>) <span class="SCmt">// No overflow, because the operation is done in 32 bits.</span>
 }</span></div>
 <p>We'll see later how Swag deals with that kind of overflow, and more generally, with <b>safety</b>. </p>
 <h4 id="_003_000_fundamentals_swg__003_006_operators_swg">Operator Precedence </h4>
@@ -1826,22 +1828,22 @@ code
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> x: <span class="STpe">f32</span> = <span class="SNum">1.0</span>
-    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">u32</span>) x              <span class="SCmt">// Reinterpret the bits of 'x' as a 'u32'</span>
+    <span class="SKwd">let</span> y: <span class="STpe">u32</span> = <span class="SKwd">cast</span> <span class="SItr">#bit</span> (<span class="STpe">u32</span>) x              <span class="SCmt">// Reinterpret the bits of 'x' as a 'u32'</span>
     <span class="SItr">@assert</span>(y == <span class="SNum">0x3f800000</span>)                   <span class="SCmt">// 1.0 in IEEE 754 floating-point format equals 0x3f800000 in hex</span>
 
     <span class="SCmt">// Casting back to the original type should yield the original value</span>
-    <span class="SCmp">#assert</span>(<span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">u32</span>) <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>)
-    <span class="SCmp">#assert</span>(<span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">f32</span>) <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>)   <span class="SCmt">// Reinterpreting the bits back to 'f32' gives 1.0</span>
+    <span class="SCmp">#assert</span>(<span class="SKwd">cast</span> <span class="SItr">#bit</span> (<span class="STpe">u32</span>) <span class="SNum">1.0</span> == <span class="SNum">0x3f800000</span>)
+    <span class="SCmp">#assert</span>(<span class="SKwd">cast</span> <span class="SItr">#bit</span> (<span class="STpe">f32</span>) <span class="SNum">0x3f800000</span> == <span class="SNum">1.0</span>)   <span class="SCmt">// Reinterpreting the bits back to 'f32' gives 1.0</span>
 }</span></div>
 <p>This example demonstrates the reverse operation, where an integer representing a bit pattern is reinterpreted as a floating-point number. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">let</span> rawBits: <span class="STpe">u32</span> = <span class="SNum">0x40490FDB</span>              <span class="SCmt">// Hexadecimal representation of the float 3.1415927</span>
-    <span class="SKwd">let</span> pi: <span class="STpe">f32</span>      = <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">f32</span>) rawBits  <span class="SCmt">// Interpret the bit pattern as a floating-point number</span>
+    <span class="SKwd">let</span> pi: <span class="STpe">f32</span>      = <span class="SKwd">cast</span> <span class="SItr">#bit</span> (<span class="STpe">f32</span>) rawBits  <span class="SCmt">// Interpret the bit pattern as a floating-point number</span>
     <span class="SItr">@assert</span>(pi == <span class="SNum">3.1415927</span>)                   <span class="SCmt">// This now represents the value of pi as a floating-point number</span>
 
     <span class="SCmt">// Verifying that casting back to the original bit pattern restores the initial value</span>
-    <span class="SKwd">let</span> backToBits: <span class="STpe">u32</span> = <span class="SKwd">cast</span>&lt;bit&gt;(<span class="STpe">u32</span>) pi
+    <span class="SKwd">let</span> backToBits: <span class="STpe">u32</span> = <span class="SKwd">cast</span> <span class="SItr">#bit</span> (<span class="STpe">u32</span>) pi
     <span class="SItr">@assert</span>(backToBits == <span class="SNum">0x40490FDB</span>)
 }</span></div>
 <h4 id="_003_000_fundamentals_swg__003_007_cast_swg">Implicit Casts </h4>
@@ -1891,7 +1893,7 @@ code
 
     <span class="SCmt">// To perform this cast, an explicit cast is required:</span>
     <span class="SKwd">let</span> z0: <span class="STpe">s16</span> = <span class="SNum">256</span>
-    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) z0          <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
+    <span class="SKwd">let</span> z1: <span class="STpe">s8</span> = <span class="SKwd">cast</span> <span class="SItr">#wrap</span> (<span class="STpe">s8</span>) z0          <span class="SCmt">// Explicit cast needed to convert from s16 to s8</span>
     <span class="SItr">@assert</span>(z1 == <span class="SNum">0</span>)                            <span class="SCmt">// This may cause data loss as 256 cannot be represented in s8 (max is 127)</span>
 
     <span class="SCmt">// Implicit cast from unsigned to signed type where the value is out of range</span>
@@ -1899,7 +1901,7 @@ code
     <span class="SCmt">// let s_val: s16 = u_val                   // Error: Implicit cast from 'u16' to 's16' is not allowed due to potential data loss</span>
 
     <span class="SCmt">// To perform this cast, an explicit cast is required, with the risk of data loss:</span>
-    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s16</span>) u_val  <span class="SCmt">// This could result in an unexpected negative value</span>
+    <span class="SKwd">let</span> s_val: <span class="STpe">s16</span> = <span class="SKwd">cast</span> <span class="SItr">#wrap</span> (<span class="STpe">s16</span>) u_val  <span class="SCmt">// This could result in an unexpected negative value</span>
     <span class="SItr">@assert</span>(s_val == -<span class="SNum">1</span>)                        <span class="SCmt">// 65535 in u16 becomes -1 in s16 due to overflow</span>
 
     <span class="SCmt">// Implicit cast from f64 to f32, which can lose precision</span>
@@ -2022,7 +2024,7 @@ code
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Array dimension is deduced from the initialization with 2 elements</span>
-    <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>]
+    <span class="SKwd">var</span> array: [?] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>]
     <span class="SItr">@assert</span>(array[<span class="SNum">0</span>] == <span class="SNum">1</span>)
     <span class="SItr">@assert</span>(array[<span class="SNum">1</span>] == <span class="SNum">2</span>)
     <span class="SCmp">#assert</span>(<span class="SItr">@countof</span>(array) == <span class="SNum">2</span>)
@@ -2309,14 +2311,14 @@ code
 <p>Swag allows tuples to be unpacked, meaning their individual elements can be extracted into separate variables. This feature is particularly useful for disaggregating a tuple's data for specific operations or further processing. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}          <span class="SCmt">// A tuple with fields 'x' and 'y'.</span>
+    <span class="SKwd">let</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}          <span class="SCmt">// A tuple with fields 'x' and 'y'.</span>
 
     <span class="SCmt">// Unpacking the tuple: 'value0' gets the value of 'x', and 'value1' gets the value of 'y'.</span>
     <span class="SKwd">let</span> (value0, value1) = tuple1
     <span class="SItr">@assert</span>(value0 == <span class="SNum">1.0</span>)
     <span class="SItr">@assert</span>(value1 == <span class="SNum">2.0</span>)
 
-    <span class="SKwd">var</span> tuple2 = {<span class="SStr">"name"</span>, <span class="SKwd">true</span>}            <span class="SCmt">// A tuple containing a string and a boolean.</span>
+    <span class="SKwd">let</span> tuple2 = {<span class="SStr">"name"</span>, <span class="SKwd">true</span>}            <span class="SCmt">// A tuple containing a string and a boolean.</span>
     <span class="SKwd">let</span> (name, value) = tuple2             <span class="SCmt">// Unpacking into 'name' and 'value'.</span>
     <span class="SItr">@assert</span>(name == <span class="SStr">"name"</span>)
     <span class="SItr">@assert</span>(value == <span class="SKwd">true</span>)
@@ -2325,7 +2327,7 @@ code
 <p>When unpacking a tuple, you can choose to ignore specific fields using the <span class="code-inline">?</span> placeholder. This is particularly useful when only certain elements of a tuple are needed, allowing you to disregard others efficiently. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}          <span class="SCmt">// A tuple with fields 'x' and 'y'.</span>
+    <span class="SKwd">let</span> tuple1 = {x: <span class="SNum">1.0</span>, y: <span class="SNum">2.0</span>}          <span class="SCmt">// A tuple with fields 'x' and 'y'.</span>
     <span class="SKwd">let</span> (x, ?) = tuple1                    <span class="SCmt">// Unpacks 'x' and ignores the second field.</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">1.0</span>)
     <span class="SKwd">let</span> (?, y) = tuple1                    <span class="SCmt">// Ignores the first field and unpacks 'y'.</span>
@@ -2722,7 +2724,7 @@ code
 <p>In the provided example, the <span class="code-inline">switch</span> statement checks the value of <span class="code-inline">val</span> and executes different blocks of code depending on whether <span class="code-inline">val</span> is <span class="code-inline">R</span>, <span class="code-inline">G</span>, or <span class="code-inline">B</span>. This is particularly useful when you need to perform different actions based on the specific value of the enum, rather than treating all values the same. </p>
 
 <h3 id="_004_000_data_structures_swg__004_005_impl_swg">Impl </h3><h4 id="_004_000_data_structures_swg__004_005_impl_swg">Utilizing the <span class="code-inline">impl</span> Keyword with Enums in Swag </h4>
-<p>In Swag, the <span class="code-inline">impl</span> keyword allows you to define methods and functions within the scope of an enum.  This is particularly useful for associating specific behaviors directly with the enum values.  The <span class="code-inline">self</span> keyword within these methods refers to the current enum instance, providing a clean  and organized way to encapsulate logic related to the enum. </p>
+<p>In Swag, the <span class="code-inline">impl</span> keyword allows you to define methods and functions within the scope of an enum. This is particularly useful for associating specific behaviors directly with the enum values. The <span class="code-inline">me</span> keyword within these methods refers to the current enum instance, providing a clean and organized way to encapsulate logic related to the enum. </p>
 <div class="code-block"><span class="SCde"><span class="SCmt">// Define an enum RGB with three possible values</span>
 <span class="SKwd">enum</span> <span class="SCst">RGB</span>
 {
@@ -2731,14 +2733,14 @@ code
     <span class="SCst">B</span>   <span class="SCmt">// Represents the Blue color</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_005_impl_swg">Implementing Methods for an Enum </h4>
-<p>In the following example, we utilize the <span class="code-inline">impl enum</span> syntax to define methods for the <span class="code-inline">RGB</span> enum.  This syntax allows us to extend the functionality of the enum by associating methods with it.  The methods we define will operate on the enum's values, providing a clear and structured approach  to handling logic related to these values. </p>
+<p>In the following example, we utilize the <span class="code-inline">impl enum</span> syntax to define methods for the <span class="code-inline">RGB</span> enum. This syntax allows us to extend the functionality of the enum by associating methods with it. The methods we define will operate on the enum's values, providing a clear and structured approach to handling logic related to these values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SKwd">enum</span> <span class="SCst">RGB</span>
 {
     <span class="SCmt">// Method to check if the current enum value is `R`.</span>
-    <span class="SKwd">func</span> <span class="SFct">isRed</span>(<span class="STpe">self</span>) =&gt; <span class="STpe">self</span> == <span class="SCst">R</span>                        
+    <span class="SKwd">func</span> <span class="SFct">isRed</span>(<span class="STpe">me</span>) =&gt; <span class="STpe">me</span> == <span class="SCst">R</span>
 
     <span class="SCmt">// Method to check if the current enum value is either `R` or `B`.</span>
-    <span class="SKwd">func</span> <span class="SFct">isRedOrBlue</span>(<span class="STpe">self</span>) =&gt; <span class="STpe">self</span> == <span class="SCst">R</span> <span class="SLgc">or</span> <span class="STpe">self</span> == <span class="SCst">B</span>     
+    <span class="SKwd">func</span> <span class="SFct">isRedOrBlue</span>(<span class="STpe">me</span>) =&gt; <span class="STpe">me</span> == <span class="SCst">R</span> <span class="SLgc">or</span> <span class="STpe">me</span> == <span class="SCst">B</span>
 }
 
 <span class="SFct">#test</span>
@@ -2746,35 +2748,35 @@ code
     <span class="SCmt">// Testing the `RGB` enum methods</span>
 
     <span class="SCmt">// Verify if `RGB.R` is recognized as red</span>
-    <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SFct">isRed</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span>))                               
+    <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SFct">isRed</span>(<span class="SCst">RGB</span>.<span class="SCst">R</span>))
 
     <span class="SCmt">// Verify if `RGB.B` is recognized as either red or blue</span>
-    <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SFct">isRedOrBlue</span>(<span class="SCst">RGB</span>.<span class="SCst">B</span>))                          
+    <span class="SItr">@assert</span>(<span class="SCst">RGB</span>.<span class="SFct">isRedOrBlue</span>(<span class="SCst">RGB</span>.<span class="SCst">B</span>))
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_005_impl_swg">Applying the <span class="code-inline">using</span> Keyword with Enum Methods </h4>
-<p>The <span class="code-inline">using</span> keyword simplifies method calls by allowing you to omit the enum type when invoking  methods. This results in more concise and readable code, especially when the enum type is used  frequently within a block. </p>
+<p>The <span class="code-inline">using</span> keyword simplifies method calls by allowing you to omit the enum type when invoking methods. This results in more concise and readable code, especially when the enum type is used frequently within a block. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">using</span> <span class="SCst">RGB</span>
 
     <span class="SCmt">// Test the method without specifying the enum type</span>
-    <span class="SItr">@assert</span>(<span class="SFct">isRedOrBlue</span>(<span class="SCst">R</span>))                                 
-    <span class="SItr">@assert</span>(<span class="SFct">isRedOrBlue</span>(<span class="SCst">B</span>))      
+    <span class="SItr">@assert</span>(<span class="SFct">isRedOrBlue</span>(<span class="SCst">R</span>))
+    <span class="SItr">@assert</span>(<span class="SFct">isRedOrBlue</span>(<span class="SCst">B</span>))
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_005_impl_swg">Introduction to Uniform Function Call Syntax (UFCS) </h4>
-<p>Uniform Function Call Syntax (UFCS) in Swag enhances code readability by allowing methods to be  called directly on enum values. This feature leads to more intuitive and clean code, particularly  when working with enums. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span> 
+<p>Uniform Function Call Syntax (UFCS) in Swag enhances code readability by allowing methods to be called directly on enum values. This feature leads to more intuitive and clean code, particularly when working with enums. </p>
+<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">using</span> <span class="SCst">RGB</span>
-    
-    <span class="SItr">@assert</span>(<span class="SCst">R</span>.<span class="SFct">isRedOrBlue</span>())                                 
+
+    <span class="SItr">@assert</span>(<span class="SCst">R</span>.<span class="SFct">isRedOrBlue</span>())
 
     <span class="SCmt">// Verify that `RGB.G` is not recognized as either red or blue</span>
-    <span class="SItr">@assert</span>(!<span class="SCst">RGB</span>.<span class="SCst">G</span>.<span class="SFct">isRedOrBlue</span>())                            
+    <span class="SItr">@assert</span>(!<span class="SCst">RGB</span>.<span class="SCst">G</span>.<span class="SFct">isRedOrBlue</span>())
 }</span></div>
 
 <h3 id="_004_000_data_structures_swg__004_006_union_swg">Union </h3><h4 id="_004_000_data_structures_swg__004_006_union_swg">Understanding <span class="code-inline">union</span> in Swag </h4>
-<p>A <span class="code-inline">union</span> is a specialized type of struct where all fields share the same memory location, meaning  they all start at the same offset (0). This allows multiple fields to occupy the same space in memory,  making it possible to store different types of data in the same memory space at different times.  This feature is particularly useful for memory optimization in scenarios where only one of the  fields needs to be used at any given moment. </p>
+<p>A <span class="code-inline">union</span> is a specialized type of struct where all fields share the same memory location, meaning they all start at the same offset (0). This allows multiple fields to occupy the same space in memory, making it possible to store different types of data in the same memory space at different times. This feature is particularly useful for memory optimization in scenarios where only one of the fields needs to be used at any given moment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Define a union with three fields: x, y, and z, all of type f32.</span>
@@ -2784,14 +2786,14 @@ code
     }
 
     <span class="SCmt">// Initialize the union, setting the value of the 'x' field to 666.</span>
-    <span class="SKwd">var</span> v = <span class="SCst">MyUnion</span>{x: <span class="SNum">666</span>}                                       <span class="SCmt">// 'x' is set, and by extension, 'y' and 'z' as well</span>
+    <span class="SKwd">let</span> v = <span class="SCst">MyUnion</span>{x: <span class="SNum">666</span>}                                       <span class="SCmt">// 'x' is set, and by extension, 'y' and 'z' as well</span>
 
     <span class="SCmt">// Since all fields share the same memory, setting 'x' also sets 'y' and 'z' to the same value.</span>
     <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)                                           <span class="SCmt">// Assert that 'y' equals 666</span>
     <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>)                                           <span class="SCmt">// Assert that 'z' equals 666</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_006_union_swg">Explanation of Union Behavior </h4>
-<p>In this example, the <span class="code-inline">union</span> type allows you to define multiple fields (<span class="code-inline">x</span>, <span class="code-inline">y</span>, <span class="code-inline">z</span>), all of which  occupy the same memory location. Because these fields overlap in memory, changing the value of one  field automatically changes the others. This behavior is useful in situations where you need to  store and access different data types within the same memory space, albeit not simultaneously.  Here, <span class="code-inline">x</span>, <span class="code-inline">y</span>, and <span class="code-inline">z</span> are all of type <span class="code-inline">f32</span>, so when <span class="code-inline">x</span> is set to 666, both <span class="code-inline">y</span> and <span class="code-inline">z</span> reflect  this change, illustrating the shared memory concept inherent in unions. </p>
+<p>In this example, the <span class="code-inline">union</span> type allows you to define multiple fields (<span class="code-inline">x</span>, <span class="code-inline">y</span>, <span class="code-inline">z</span>), all of which occupy the same memory location. Because these fields overlap in memory, changing the value of one field automatically changes the others. This behavior is useful in situations where you need to store and access different data types within the same memory space, albeit not simultaneously. Here, <span class="code-inline">x</span>, <span class="code-inline">y</span>, and <span class="code-inline">z</span> are all of type <span class="code-inline">f32</span>, so when <span class="code-inline">x</span> is set to 666, both <span class="code-inline">y</span> and <span class="code-inline">z</span> reflect this change, illustrating the shared memory concept inherent in unions. </p>
 
 <h3 id="_004_000_data_structures_swg__004_007_pointers_swg">Pointers </h3><h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Single Value Pointers </h4>
 <p>A pointer to a <b>single element</b> is declared using the <span class="code-inline">*</span> symbol. This allows you to create a pointer that holds the address of one specific instance of a data type. Pointers can be used to reference any type of data, allowing for efficient memory management and manipulation of variables. </p>
@@ -2844,7 +2846,7 @@ code
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.Sanity(false)]</span>
 <span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> ptr: ^<span class="STpe">u8</span>                        <span class="SCmt">// Declaring a pointer to a memory block of 'u8' values</span>
+    <span class="SKwd">var</span> ptr: [*] <span class="STpe">u8</span>                        <span class="SCmt">// Declaring a pointer to a memory block of 'u8' values</span>
 
     <span class="SCmt">// Pointer arithmetic allows you to navigate through the memory block by modifying the pointer's address</span>
     ptr = ptr - <span class="SNum">1</span>                       <span class="SCmt">// Move the pointer back by one 'u8'</span>
@@ -2858,7 +2860,7 @@ code
 
     <span class="SCmt">// Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values</span>
     ptr = ptr - <span class="SNum">1</span>                       <span class="SCmt">// Move the pointer back to the first element</span>
-    <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(ptr) == ^<span class="STpe">s32</span>)        <span class="SCmt">// The type of 'ptr' is now a pointer to multiple 's32' values</span>
+    <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(ptr) == [*] <span class="STpe">s32</span>)        <span class="SCmt">// The type of 'ptr' is now a pointer to multiple 's32' values</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_007_pointers_swg">Dereferencing with Indexes </h4>
 <p>When pointer arithmetic is enabled, you can dereference the pointer using an index, allowing access to elements in an array-like manner. This is particularly useful when working with arrays through pointers, as it allows for flexible element access. </p>
@@ -2866,7 +2868,7 @@ code
 {
     <span class="SKwd">var</span> arr = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]             <span class="SCmt">// Declare and initialize an array of 's32' elements</span>
     <span class="SKwd">let</span> ptr = &arr[<span class="SNum">0</span>]                  <span class="SCmt">// Take the address of the first element</span>
-    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr) == ^<span class="STpe">s32</span>)      <span class="SCmt">// The pointer type allows pointer arithmetic</span>
+    <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(ptr) == [*] <span class="STpe">s32</span>)      <span class="SCmt">// The pointer type allows pointer arithmetic</span>
 
     <span class="SCmt">// Dereferencing by index to access the elements</span>
     <span class="SKwd">let</span> value1 = ptr[<span class="SNum">0</span>]                <span class="SCmt">// Access the first element</span>
@@ -2925,7 +2927,7 @@ code
 
     <span class="SCmt">// Here, we reassign 'myRef' to point to 'y' instead of 'x'.</span>
     <span class="SCmt">// The value of 'x' remains unchanged.</span>
-    myRef = <span class="SCmp">#ref</span> &y                  <span class="SCmt">// Reassign reference to point to 'y'</span>
+    myRef = <span class="SItr">#ref</span> &y                  <span class="SCmt">// Reassign reference to point to 'y'</span>
     <span class="SItr">@assert</span>(myRef == <span class="SNum">1000</span>)           <span class="SCmt">// Ensure the reference now points to 'y' (value 1000)</span>
 }</span></div>
 <h4 id="_004_000_data_structures_swg__004_008_references_swg">Passing References to Functions </h4>
@@ -3036,7 +3038,7 @@ code
 <p>You can create arrays containing multiple types using <span class="code-inline">any</span>. This allows you to maintain a heterogeneous collection where each element can be of a different type, enabling you to manage and manipulate data of various types within a single structure. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [] <span class="STpe">any</span> = [<span class="SKwd">true</span>, <span class="SNum">2</span>, <span class="SNum">3.0</span>, <span class="SStr">"4"</span>]  <span class="SCmt">// An array containing different types</span>
+    <span class="SKwd">var</span> array: [?] <span class="STpe">any</span> = [<span class="SKwd">true</span>, <span class="SNum">2</span>, <span class="SNum">3.0</span>, <span class="SStr">"4"</span>]  <span class="SCmt">// An array containing different types</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">0</span>]) == <span class="STpe">bool</span>)       <span class="SCmt">// The first element is a bool</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">1</span>]) == <span class="STpe">s32</span>)        <span class="SCmt">// The second element is an s32</span>
     <span class="SItr">@assert</span>(<span class="SItr">@kindof</span>(array[<span class="SNum">2</span>]) == <span class="STpe">f32</span>)        <span class="SCmt">// The third element is an f32</span>
@@ -3163,7 +3165,7 @@ code
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">retSomething</span>()-&gt;<span class="STpe">string</span>  =&gt; <span class="SStr">"string"</span>
-    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="SCmp">#null</span> <span class="STpe">string</span> =&gt; <span class="SKwd">null</span>
+    <span class="SKwd">func</span> <span class="SFct">retNothing</span>()-&gt;<span class="SItr">#null</span> <span class="STpe">string</span> =&gt; <span class="SKwd">null</span>
 
     <span class="SCmt">// The 'where' clause is only evaluated if 'str' is not null.</span>
     <span class="SLgc">if</span> <span class="SKwd">let</span> str = <span class="SFct">retSomething</span>() <span class="SLgc">where</span> str[<span class="SNum">0</span>] == <span class="SStr">'s'</span>:
@@ -3248,7 +3250,7 @@ code
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop in reverse order, starting from index 2 down to 0</span>
-    <span class="SLgc">for</span> <span class="SCmp">#reverse</span> <span class="SNum">3</span>
+    <span class="SLgc">for</span> <span class="SItr">#reverse</span> <span class="SNum">3</span>
     {
         <span class="SLgc">if</span> cpt == <span class="SNum">0</span>:
             <span class="SItr">@assert</span>(<span class="SItr">@index</span> == <span class="SNum">2</span>)     <span class="SCmt">// First iteration, index should be 2</span>
@@ -3326,15 +3328,15 @@ code
 <p>When using ranges, you can also iterate in reverse order by adding the <span class="code-inline">#reverse</span> modifier after the for statement. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SLgc">for</span> <span class="SCmp">#reverse</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>                <span class="SCmt">// Loop from 5 down to 0, inclusive</span>
+    <span class="SLgc">for</span> <span class="SItr">#reverse</span> <span class="SNum">0</span> <span class="SLgc">to</span> <span class="SNum">5</span>                <span class="SCmt">// Loop from 5 down to 0, inclusive</span>
     {
     }
 
-    <span class="SLgc">for</span> <span class="SCmp">#reverse</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>               <span class="SCmt">// Loop from 1 down to -1, inclusive</span>
+    <span class="SLgc">for</span> <span class="SItr">#reverse</span> -<span class="SNum">1</span> <span class="SLgc">to</span> <span class="SNum">1</span>               <span class="SCmt">// Loop from 1 down to -1, inclusive</span>
     {
     }
 
-    <span class="SLgc">for</span> <span class="SCmp">#reverse</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>            <span class="SCmt">// Loop from 1 down to -2, excluding 2</span>
+    <span class="SLgc">for</span> <span class="SItr">#reverse</span> -<span class="SNum">2</span> <span class="SLgc">until</span> <span class="SNum">2</span>            <span class="SCmt">// Loop from 1 down to -2, excluding 2</span>
     {
     }
 }</span></div>
@@ -3431,7 +3433,7 @@ code
     <span class="SKwd">var</span> reversedSum = <span class="SNum">0</span>
 
     <span class="SCmt">// Loop through the array in reverse order, summing only even values.</span>
-    <span class="SLgc">for</span> <span class="SCmp">#reverse</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
+    <span class="SLgc">for</span> <span class="SItr">#reverse</span> i <span class="SLgc">in</span> arr <span class="SLgc">where</span> arr[i] % <span class="SNum">2</span> == <span class="SNum">0</span>
     {
         reversedSum += arr[i]         <span class="SCmt">// Add the even values to 'reversedSum'</span>
     }
@@ -4107,7 +4109,7 @@ code
 {
     <span class="SCmt">// Visiting each byte in the string "ABC" in reverse order.</span>
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
-    <span class="SLgc">foreach</span> <span class="SCmp">#reverse</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
+    <span class="SLgc">foreach</span> <span class="SItr">#reverse</span> value <span class="SLgc">in</span> <span class="SStr">"ABC"</span>
     {
         <span class="SCmt">// '@index' still stores the loop index, even in reverse order.</span>
         <span class="SLgc">switch</span> cpt
@@ -4174,7 +4176,7 @@ code
 <p>The <span class="code-inline">where</span> clause can be used with <span class="code-inline">foreach</span> to filter the elements processed based on specific conditions. This approach is efficient for conditionally applying logic to only the elements that meet certain criteria. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> array: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]                       <span class="SCmt">// Define an array of integers</span>
+    <span class="SKwd">var</span> array: [?] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>]                       <span class="SCmt">// Define an array of integers</span>
     <span class="SKwd">var</span> result = <span class="SNum">0</span>
 
     <span class="SCmt">// Process only even values using `where`.</span>
@@ -4262,7 +4264,7 @@ code
         y: <span class="STpe">string</span> = <span class="SStr">"454"</span>    <span class="SCmt">// Field 'y' initialized with default value "454"</span>
     }
 
-    <span class="SKwd">var</span> v = <span class="SCst">MyStruct</span>{}       <span class="SCmt">// Initializing struct with default values</span>
+    <span class="SKwd">let</span> v = <span class="SCst">MyStruct</span>{}       <span class="SCmt">// Initializing struct with default values</span>
     <span class="SItr">@assert</span>(v.x == <span class="SNum">666</span>)      <span class="SCmt">// Asserting 'x' has the default value 666</span>
     <span class="SItr">@assert</span>(v.y == <span class="SStr">"454"</span>)    <span class="SCmt">// Asserting 'y' has the default value "454"</span>
 }</span></div>
@@ -4277,22 +4279,22 @@ code
     }
 
     <span class="SCmt">// Without parameters, all fields take their default values as defined in the struct</span>
-    <span class="SKwd">var</span> v0: <span class="SCst">MyStruct</span>         <span class="SCmt">// Struct with default initialization</span>
+    <span class="SKwd">let</span> v0: <span class="SCst">MyStruct</span>         <span class="SCmt">// Struct with default initialization</span>
     <span class="SItr">@assert</span>(v0.x == <span class="SNum">1</span>)       <span class="SCmt">// Asserting 'x' is 1</span>
     <span class="SItr">@assert</span>(v0.y == <span class="SNum">1</span>)       <span class="SCmt">// Asserting 'y' is 1</span>
 
     <span class="SCmt">// Initializing with parameters within {..}, in the order of field declarations</span>
-    <span class="SKwd">var</span> v1: <span class="SCst">MyStruct</span>{<span class="SNum">10</span>, <span class="SNum">20</span>}  <span class="SCmt">// Initializing 'x' with 10 and 'y' with 20</span>
+    <span class="SKwd">let</span> v1: <span class="SCst">MyStruct</span>{<span class="SNum">10</span>, <span class="SNum">20</span>}  <span class="SCmt">// Initializing 'x' with 10 and 'y' with 20</span>
     <span class="SItr">@assert</span>(v1.x == <span class="SNum">10</span>)       <span class="SCmt">// Asserting 'x' is 10</span>
     <span class="SItr">@assert</span>(v1.y == <span class="SNum">20</span>)       <span class="SCmt">// Asserting 'y' is 20</span>
 
     <span class="SCmt">// Named initialization of fields, allowing omission of some fields</span>
-    <span class="SKwd">var</span> v2 = <span class="SCst">MyStruct</span>{y: <span class="SNum">20</span>}  <span class="SCmt">// 'x' takes the default value, 'y' initialized to 20</span>
+    <span class="SKwd">let</span> v2 = <span class="SCst">MyStruct</span>{y: <span class="SNum">20</span>}  <span class="SCmt">// 'x' takes the default value, 'y' initialized to 20</span>
     <span class="SItr">@assert</span>(v2.x == <span class="SNum">1</span>)        <span class="SCmt">// Asserting 'x' is the default value 1</span>
     <span class="SItr">@assert</span>(v2.y == <span class="SNum">20</span>)       <span class="SCmt">// Asserting 'y' is 20</span>
 
     <span class="SCmt">// Initializing using a tuple, as long as types match</span>
-    <span class="SKwd">var</span> v3: <span class="SCst">MyStruct</span> = {<span class="SNum">10</span>, <span class="SNum">20</span>}  <span class="SCmt">// Initializing using a tuple</span>
+    <span class="SKwd">let</span> v3: <span class="SCst">MyStruct</span> = {<span class="SNum">10</span>, <span class="SNum">20</span>}  <span class="SCmt">// Initializing using a tuple</span>
     <span class="SItr">@assert</span>(v3.x == <span class="SNum">10</span>)          <span class="SCmt">// Asserting 'x' is 10</span>
     <span class="SItr">@assert</span>(v3.y == <span class="SNum">20</span>)          <span class="SCmt">// Asserting 'y' is 20</span>
 }</span></div>
@@ -4347,13 +4349,13 @@ code
 }</span></div>
 
 <h3 id="_006_000_structs_swg__006_002_impl_swg">Impl </h3><h4 id="_006_000_structs_swg__006_002_impl_swg">Struct Methods and Constants </h4>
-<p>In Swag, structs can encapsulate methods and constants within them using the <span class="code-inline">impl</span> block.  This encapsulation allows for better organization and modularity of the code, keeping  the functionality related to the struct within the struct itself. </p>
+<p>In Swag, structs can encapsulate methods and constants within them using the <span class="code-inline">impl</span> block. This encapsulation allows for better organization and modularity of the code, keeping the functionality related to the struct within the struct itself. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[Swag.ExportType("methods")]</span>           <span class="SCmt">// This attribute enables method reflection for this struct type</span>
 <span class="SKwd">struct</span> <span class="SCst">MyStruct</span>
 {
-    x:     <span class="STpe">s32</span> = <span class="SNum">5</span>   <span class="SCmt">// Field 'x' with a default value of 5                          </span>
-    y:     <span class="STpe">s32</span> = <span class="SNum">10</span>  <span class="SCmt">// Field 'y' with a default value of 10                         </span>
-    z:     <span class="STpe">s32</span> = <span class="SNum">20</span>  <span class="SCmt">// Field 'z' with a default value of 20                         </span>
+    x:     <span class="STpe">s32</span> = <span class="SNum">5</span>   <span class="SCmt">// Field 'x' with a default value of 5</span>
+    y:     <span class="STpe">s32</span> = <span class="SNum">10</span>  <span class="SCmt">// Field 'y' with a default value of 10</span>
+    z:     <span class="STpe">s32</span> = <span class="SNum">20</span>  <span class="SCmt">// Field 'z' with a default value of 20</span>
 }
 
 <span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
@@ -4369,23 +4371,21 @@ code
     <span class="SItr">@assert</span>(<span class="SCst">MyStruct</span>.<span class="SFct">returnTrue</span>())      <span class="SCmt">// Invoking the function 'returnTrue' within the struct's scope</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_002_impl_swg">Multiple <span class="code-inline">impl</span> Blocks </h4>
-<p>Swag allows multiple <span class="code-inline">impl</span> blocks for a single struct. This feature helps organize  methods logically. Within an <span class="code-inline">impl</span> block, <span class="code-inline">self</span> and <span class="code-inline">Self</span> are defined to refer to  the current instance and the struct type, respectively. </p>
+<p>Swag allows multiple <span class="code-inline">impl</span> blocks for a single struct. This feature helps organize methods logically. Within an <span class="code-inline">impl</span> block, <span class="code-inline">me</span> are defined to refer to the current instance and the struct type, respectively. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
-    <span class="SCmt">// 'self' is implicitly defined as 'var self: Self', where 'Self' refers to 'MyStruct'</span>
-    <span class="SKwd">func</span> <span class="SFct">returnX</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) =&gt; x       <span class="SCmt">// Method to return 'x', using 'self' implicitly</span>
+    <span class="SCmt">// 'me' is implicitly defined as 'var me: MyStruct'</span>
+    <span class="SKwd">func</span> <span class="SFct">returnX</span>(<span class="STpe">me</span>) =&gt; <span class="STpe">me</span>.x
+    <span class="SKwd">func</span> <span class="SFct">returnY</span>(<span class="STpe">me</span>) =&gt; <span class="STpe">me</span>.y
 
-    <span class="SKwd">func</span> <span class="SFct">returnY</span>(<span class="STpe">self</span>)       =&gt; <span class="STpe">self</span>.y  <span class="SCmt">// Method to return 'y', explicitly using 'self'</span>
-
-    <span class="SCmt">// 'Self' refers to the type 'MyStruct', used here as a type alias</span>
-    <span class="SKwd">func</span> <span class="SFct">returnZ</span>(me: <span class="STpe">Self</span>) =&gt; me.z      <span class="SCmt">// Method to return 'z', using 'me' as a type alias for 'Self'</span>
+    <span class="SKwd">func</span> <span class="SFct">returnZ</span>(self: <span class="SCst">MyStruct</span>) =&gt; self.z  <span class="SCmt">// Method to return 'z'</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_002_impl_swg">Method Syntax Sugar </h4>
-<p>Swag provides syntactic sugar for method definitions. If you use <span class="code-inline">mtd</span> (method) instead  of <span class="code-inline">func</span>, the first parameter is implicitly <span class="code-inline">using self</span>. If you use <span class="code-inline">mtd const</span>,  it becomes <span class="code-inline">const using self</span>. This feature simplifies method definitions,  especially for common cases where <span class="code-inline">self</span> is required. </p>
+<p>Swag provides syntactic sugar for method definitions. If you use <span class="code-inline">mtd</span> (method) instead of <span class="code-inline">func</span>, the first parameter is implicitly <span class="code-inline">me</span>. If you use 'mtd const', it becomes 'const me'. This feature simplifies method definitions, especially for common cases where <span class="code-inline">me</span> is required. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
-    <span class="SKwd">mtd</span> <span class="SFct">methodReturnX</span>()          =&gt; x  <span class="SCmt">// Equivalent to 'func methodReturnX(using self) =&gt; x'</span>
-    <span class="SKwd">func</span> <span class="SFct">funcReturnX</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) =&gt; x  <span class="SCmt">// Explicitly using 'self' to return 'x'</span>
+    <span class="SKwd">mtd</span> <span class="SFct">methodReturnX</span>()  =&gt; <span class="STpe">me</span>.x  <span class="SCmt">// Equivalent to 'func methodReturnX(me) =&gt; x'</span>
+    <span class="SKwd">func</span> <span class="SFct">funcReturnX</span>(<span class="STpe">me</span>) =&gt; <span class="STpe">me</span>.x  <span class="SCmt">// Using 'me' to return 'x'</span>
 }
 
 <span class="SFct">#test</span>
@@ -4398,7 +4398,7 @@ code
     <span class="SItr">@assert</span>(c.<span class="SFct">returnZ</span>() == <span class="SNum">20</span>)         <span class="SCmt">// Calling 'returnZ' method, expected to return 'z'</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_002_impl_swg">Method Reflection </h4>
-<p>To enable reflection on methods within an <span class="code-inline">impl</span> block, the struct must be annotated with  <span class="code-inline">#[Swag.ExportType("methods")]</span>. By default, methods are not exported for reflection,  but with this annotation, they can be accessed programmatically. </p>
+<p>To enable reflection on methods within an <span class="code-inline">impl</span> block, the struct must be annotated with <span class="code-inline">#[Swag.ExportType("methods")]</span>. By default, methods are not exported for reflection, but with this annotation, they can be accessed programmatically. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SCmt">// Define a type alias 'Lambda' for a function pointer taking 'MyStruct' and returning 's32'</span>
@@ -4425,7 +4425,7 @@ code
     }
 
     <span class="SCmt">// The function pointers 'fnX', 'fnY', and 'fnZ' are now callable</span>
-    <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>
+    <span class="SKwd">let</span> v: <span class="SCst">MyStruct</span>
     <span class="SItr">@assert</span>(<span class="SFct">fnX</span>(v) == <span class="SNum">5</span>)   <span class="SCmt">// Calling the function pointer 'fnX', expected to return 5</span>
     <span class="SItr">@assert</span>(<span class="SFct">fnY</span>(v) == <span class="SNum">10</span>)  <span class="SCmt">// Calling the function pointer 'fnY', expected to return 10</span>
     <span class="SItr">@assert</span>(<span class="SFct">fnZ</span>(v) == <span class="SNum">20</span>)  <span class="SCmt">// Calling the function pointer 'fnZ', expected to return 20</span>
@@ -4599,103 +4599,103 @@ code
 <span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
     <span class="SCmt">// Called whenever a variable of this struct is about to be destroyed (similar to a destructor in C++)</span>
-    <span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>) {}
 
     <span class="SCmt">// Invoked after a raw copy operation has been performed from one value to another</span>
-    <span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>) {}
 
     <span class="SCmt">// Called after a move semantic operation has been executed from one value to another</span>
-    <span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="STpe">me</span>) {}
 
     <span class="SCmt">// Access a value by slicing with the [low..up] notation. Returns a string or a slice.</span>
-    <span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, low, up: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span> { <span class="SLgc">return</span> <span class="SStr">"true"</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="STpe">me</span>, low, up: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span> { <span class="SLgc">return</span> <span class="SStr">"true"</span>; }
 
     <span class="SCmt">// Access a value by its index. The index is of type OneType, and it returns a WhateverType.</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="STpe">me</span>, index: <span class="SCst">OneType</span>)-&gt;<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
 
     <span class="SCmt">// Called when @countof is used, typically in a 'for' block, to return the count of elements</span>
-    <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Called when @dataof is used, returns a pointer to the underlying data of type WhateverType</span>
-    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCmp">#null</span> *<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="STpe">me</span>)-&gt;<span class="SItr">#null</span> *<span class="SCst">WhateverType</span> { <span class="SLgc">return</span> <span class="SKwd">null</span>; }
 
     <span class="SCmt">// Custom casting between the struct and another type, can be overloaded with different return types</span>
     <span class="SCmt">// Example usage: var x = cast(OneType) v</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">OneType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">OneType</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">AnotherType</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">AnotherType</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Compare the struct value with another, can be overloaded.</span>
     <span class="SCmt">// Returns true if equal, otherwise false. Used in '==', '!=' operations.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">me</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">me</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }
 
     <span class="SCmt">// Compares the struct value with another, returns -1, 0, or 1.</span>
     <span class="SCmt">// Used in comparison operations like '&lt;', '&gt;', '&lt;=', '&gt;=', '&lt;=&gt;'.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="STpe">me</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
+    <span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="STpe">me</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">s32</span> { <span class="SLgc">return</span> <span class="SNum">0</span>; }
 
     <span class="SCmt">// Assigns a value to the struct, can be overloaded.</span>
     <span class="SCmt">// This is triggered by the '=' operator.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, other: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, other: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Assign a literal value with a specific suffix to the struct.</span>
     <span class="SCmt">// This is a generic function and can be overloaded.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="STpe">me</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="STpe">me</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Assign a value to a specific index in the struct.</span>
-    <span class="SCmt">// Can be overloaded, used by '[] =' syntax.</span>
+    <span class="SCmt">// Can be overloaded, used by '[?] =' syntax.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Perform a binary operation, with 'op' representing the operator as a string.</span>
     <span class="SCmt">// This is a generic function that can be overloaded.</span>
     <span class="SCmt">// Examples include '+', '-', '*', '/', '%', '|', '&', '^', '&lt;&lt;', '&gt;&gt;'</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="STpe">me</span>, other: <span class="SCst">OneType</span>)-&gt;<span class="SCst">Struct</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="STpe">me</span>, other: <span class="SCst">AnotherType</span>)-&gt;<span class="SCst">Struct</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Perform a unary operation, with 'op' representing the operator as a string.</span>
     <span class="SCmt">// This is a generic function.</span>
     <span class="SCmt">// Examples include '!', '-', '~'</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">Self</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">Struct</span> { <span class="SLgc">return</span> {<span class="SNum">1</span>, <span class="SNum">2</span>}; }
 
     <span class="SCmt">// Perform an assignment operation, with 'op' representing the operator as a string.</span>
     <span class="SCmt">// This is a generic function that can be overloaded.</span>
     <span class="SCmt">// Examples include '+=', '-=', '*=', '/=', '%=', '|=', '&=', '^=', '&lt;&lt;=', '&gt;&gt;='</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, other: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, other: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Assign a value to an indexed position with an operator,</span>
     <span class="SCmt">// 'op' represents the operator as a string. Can be overloaded.</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="STpe">me</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">OneType</span>) {}
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
+    <span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="STpe">me</span>, index: <span class="SCst">OneType</span>, value: <span class="SCst">AnotherType</span>) {}
 
     <span class="SCmt">// Called in a 'foreach' block to iterate over the struct's elements.</span>
     <span class="SCmt">// Multiple versions can be defined by adding a name after 'opVisit'.</span>
     <span class="SAtr">#[Swag.Macro]</span>
     {
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) {}
-        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitWhatever</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) {}
+        <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitAnother</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>) {}
     }
 }</span></div>
 
@@ -4703,41 +4703,43 @@ code
 <p>The <span class="code-inline">opAffect</span> method in Swag allows you to define custom assignment behaviors for your struct using the <span class="code-inline">=</span> operator. By overloading <span class="code-inline">opAffect</span>, you can handle assignments of different types, enabling you to specify how your struct should behave when different types of values are assigned. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Struct</span>
 {
-    x, y, z: <span class="STpe">s32</span> = <span class="SNum">666</span>  <span class="SCmt">// Fields 'x', 'y', and 'z' with a default value of 666</span>
+    x, y, z: <span class="STpe">s32</span> = <span class="SNum">666</span> <span class="SCmt">// Fields 'x', 'y', and 'z' with a default value of 666</span>
 }
 
 <span class="SKwd">impl</span> <span class="SCst">Struct</span>
 {
     <span class="SCmt">// Overloaded `opAffect` to handle assignments of type `s32`</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">s32</span>) {
-        x, y = value  <span class="SCmt">// Assign the provided `value` to both 'x' and 'y'</span>
+    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">s32</span>)
+    {
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y = value <span class="SCmt">// Assign the provided `value` to both 'x' and 'y'</span>
     }
 
     <span class="SCmt">// Overloaded `opAffect` to handle assignments of type `bool`</span>
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">bool</span>) {
-        x, y = value ? <span class="SNum">1</span> : <span class="SNum">0</span>  <span class="SCmt">// Assign 1 if `value` is true, otherwise 0, to both 'x' and 'y'</span>
+    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">bool</span>)
+    {
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y = value ? <span class="SNum">1</span> : <span class="SNum">0</span> <span class="SCmt">// Assign 1 if `value` is true, otherwise 0, to both 'x' and 'y'</span>
     }
 }
 
 <span class="SFct">#test</span>
 {
     <span class="SCmt">// Initialize 'v' and invoke `opAffect(s32)` with the value '4'</span>
-    <span class="SKwd">var</span> v: <span class="SCst">Struct</span> = <span class="SNum">4</span>'<span class="STpe">s32</span>
-    <span class="SItr">@assert</span>(v.x == <span class="SNum">4</span>)    <span class="SCmt">// 'x' is set to 4</span>
-    <span class="SItr">@assert</span>(v.y == <span class="SNum">4</span>)    <span class="SCmt">// 'y' is set to 4</span>
-    <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>)  <span class="SCmt">// 'z' remains at its default value since `opAffect` doesn't modify it</span>
+    <span class="SKwd">let</span> v: <span class="SCst">Struct</span> = <span class="SNum">4</span>'<span class="STpe">s32</span>
+    <span class="SItr">@assert</span>(v.x == <span class="SNum">4</span>) <span class="SCmt">// 'x' is set to 4</span>
+    <span class="SItr">@assert</span>(v.y == <span class="SNum">4</span>) <span class="SCmt">// 'y' is set to 4</span>
+    <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>) <span class="SCmt">// 'z' remains at its default value since `opAffect` doesn't modify it</span>
 
     <span class="SCmt">// Initialize 'v1' and invoke `opAffect(bool)` with 'true'</span>
     <span class="SKwd">var</span> v1: <span class="SCst">Struct</span> = <span class="SKwd">true</span>
-    <span class="SItr">@assert</span>(v1.x == <span class="SNum">1</span>)   <span class="SCmt">// 'x' is set to 1 because 'true' was assigned</span>
-    <span class="SItr">@assert</span>(v1.y == <span class="SNum">1</span>)   <span class="SCmt">// 'y' is also set to 1 because 'true' was assigned</span>
+    <span class="SItr">@assert</span>(v1.x == <span class="SNum">1</span>) <span class="SCmt">// 'x' is set to 1 because 'true' was assigned</span>
+    <span class="SItr">@assert</span>(v1.y == <span class="SNum">1</span>) <span class="SCmt">// 'y' is also set to 1 because 'true' was assigned</span>
 
     <span class="SCmt">// Assign 'false' to 'v1', triggering `opAffect(bool)`</span>
     v1 = <span class="SKwd">false</span>
-    <span class="SItr">@assert</span>(v1.x == <span class="SNum">0</span>)   <span class="SCmt">// 'x' is set to 0 (false)</span>
-    <span class="SItr">@assert</span>(v1.y == <span class="SNum">0</span>)   <span class="SCmt">// 'y' is set to 0 (false)</span>
+    <span class="SItr">@assert</span>(v1.x == <span class="SNum">0</span>) <span class="SCmt">// 'x' is set to 0 (false)</span>
+    <span class="SItr">@assert</span>(v1.y == <span class="SNum">0</span>) <span class="SCmt">// 'y' is set to 0 (false)</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Optimizing Initialization with <span class="code-inline">Swag.Complete</span> </h4>
 <p>When <span class="code-inline">opAffect</span> fully initializes the struct, you can annotate it with <span class="code-inline">#[Swag.Complete]</span>. This prevents the struct from being initialized with default values before the assignment, enhancing performance by avoiding redundant assignments. </p>
@@ -4745,23 +4747,25 @@ code
 {
     <span class="SCmt">// Mark `opAffect` with `Swag.Complete` to ensure only one initialization step</span>
     <span class="SAtr">#[Swag.Complete, Swag.Overload]</span>
-    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">u64</span>) {
-        x, y, z = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) value  <span class="SCmt">// Convert `value` from u64 to s32 and assign it to 'x', 'y', and 'z'</span>
+    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">u64</span>)
+    {
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y, <span class="STpe">me</span>.z = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) value <span class="SCmt">// Convert `value` from u64 to s32 and assign it to 'x', 'y', and 'z'</span>
     }
 
     <span class="SCmt">// Implicit conversion example for u16 assignments</span>
     <span class="SAtr">#[Swag.Implicit, Swag.Overload]</span>
-    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">u16</span>) {
-        x, y = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) value  <span class="SCmt">// Convert `value` from u16 to s32 and assign it to 'x' and 'y'</span>
+    <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(value: <span class="STpe">u16</span>)
+    {
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y = <span class="SKwd">cast</span>(<span class="STpe">s32</span>) value <span class="SCmt">// Convert `value` from u16 to s32 and assign it to 'x' and 'y'</span>
     }
 }</span></div>
 <p>In this case, the struct <span class="code-inline">v</span> is directly initialized by <span class="code-inline">opAffect(u64)</span>, skipping the default initialization step. This optimization leads to more efficient code by reducing unnecessary initializations. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> v: <span class="SCst">Struct</span> = <span class="SNum">2</span>'<span class="STpe">u64</span>
-    <span class="SItr">@assert</span>(v.x == <span class="SNum">2</span>)    <span class="SCmt">// 'x' is directly set to 2</span>
-    <span class="SItr">@assert</span>(v.y == <span class="SNum">2</span>)    <span class="SCmt">// 'y' is directly set to 2</span>
-    <span class="SItr">@assert</span>(v.z == <span class="SNum">2</span>)    <span class="SCmt">// 'z' is directly set to 2</span>
+    <span class="SKwd">let</span> v: <span class="SCst">Struct</span> = <span class="SNum">2</span>'<span class="STpe">u64</span>
+    <span class="SItr">@assert</span>(v.x == <span class="SNum">2</span>) <span class="SCmt">// 'x' is directly set to 2</span>
+    <span class="SItr">@assert</span>(v.y == <span class="SNum">2</span>) <span class="SCmt">// 'y' is directly set to 2</span>
+    <span class="SItr">@assert</span>(v.z == <span class="SNum">2</span>) <span class="SCmt">// 'z' is directly set to 2</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Handling Function Arguments and Automatic Conversion </h4>
 <p>By default, function arguments do not automatically undergo conversion via <span class="code-inline">opAffect</span>. Explicit casting is necessary unless <span class="code-inline">Swag.Implicit</span> is used to allow automatic conversion. </p>
@@ -4771,25 +4775,25 @@ code
     {
         <span class="SItr">@assert</span>(v.x == <span class="SNum">5</span>)
         <span class="SItr">@assert</span>(v.y == <span class="SNum">5</span>)
-        <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>)  <span class="SCmt">// 'z' remains unchanged</span>
+        <span class="SItr">@assert</span>(v.z == <span class="SNum">666</span>) <span class="SCmt">// 'z' remains unchanged</span>
     }
 
     <span class="SKwd">func</span> <span class="SFct">titi</span>(v: <span class="SCst">Struct</span>)
     {
-        <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)  <span class="SCmt">// 'y' remains at its default value</span>
+        <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>) <span class="SCmt">// 'y' remains at its default value</span>
     }
 
     <span class="SCmt">// Explicit cast required to invoke `opAffect(s32)`</span>
     <span class="SFct">toto</span>(<span class="SKwd">cast</span>(<span class="SCst">Struct</span>) <span class="SNum">5</span>'<span class="STpe">s32</span>)
 
     <span class="SCmt">// With `#[Swag.Implicit]`, casting is not required, and automatic conversion occurs</span>
-    <span class="SFct">toto</span>(<span class="SNum">5</span>'<span class="STpe">u16</span>)  <span class="SCmt">// Implicitly calls `opAffect(u16)`</span>
+    <span class="SFct">toto</span>(<span class="SNum">5</span>'<span class="STpe">u16</span>) <span class="SCmt">// Implicitly calls `opAffect(u16)`</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_006_custom_assignment_swg">Using <span class="code-inline">opAffect</span> in Constant Expressions </h4>
 <p>To use <span class="code-inline">opAffect</span> in a context where the struct needs to be a constant, you can mark the method with <span class="code-inline">#[Swag.ConstExpr]</span>. This allows the struct to be initialized at compile-time via <span class="code-inline">opAffect</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Vector2</span>
 {
-    x, y: <span class="STpe">f32</span>  <span class="SCmt">// Fields of type f32 representing coordinates</span>
+    x, y: <span class="STpe">f32</span> <span class="SCmt">// Fields of type f32 representing coordinates</span>
 }
 
 <span class="SKwd">impl</span> <span class="SCst">Vector2</span>
@@ -4798,7 +4802,8 @@ code
     <span class="SAtr">#[Swag.ConstExpr]</span>
     <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(one: <span class="STpe">f32</span>)
     {
-        x, y = one  <span class="SCmt">// Assign the same value to both 'x' and 'y'</span>
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y = one
+        <span class="SCmt">// Assign the same value to both 'x' and 'y'</span>
     }
 }
 
@@ -4814,12 +4819,12 @@ code
 {
     <span class="SCmt">// Define 'opCount' to return the number of iterations for loops involving this struct.</span>
     <span class="SCmt">// Returns 4 as the count value, meaning any loop over this struct will run 4 times.</span>
-    <span class="SKwd">mtd</span> <span class="SFct">opCount</span>() =&gt; <span class="SNum">4</span>'<span class="STpe">u64</span>  
+    <span class="SKwd">mtd</span> <span class="SFct">opCount</span>() =&gt; <span class="SNum">4</span>'<span class="STpe">u64</span>
 }</span></div>
 <p>With <span class="code-inline">opCount</span> defined, an instance of <span class="code-inline">MyStruct</span> can be looped over similarly to an array or other iterable types. This allows you to use the struct in a loop context, where the loop will execute a number of times based on the value returned by <span class="code-inline">opCount</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">var</span> v = <span class="SCst">MyStruct</span>{}
+    <span class="SKwd">let</span> v = <span class="SCst">MyStruct</span>{}
 
     <span class="SCmt">// '@countof' utilizes 'opCount' to determine the number of elements (iterations)</span>
     <span class="SItr">@assert</span>(<span class="SItr">@countof</span>(v) == <span class="SNum">4</span>)  <span class="SCmt">// Verifies that the struct is considered to have 4 elements</span>
@@ -4849,7 +4854,7 @@ code
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">MyStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)
     {
         <span class="SCmt">// The `ptr` and `back` parameters offer flexibility, allowing for reference-based</span>
         <span class="SCmt">// or reverse-order iterations.</span>
@@ -4873,11 +4878,11 @@ code
                 <span class="SLgc">switch</span> <span class="SItr">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x'</span>
+                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.x  <span class="SCmt">// Accessing field 'x'</span>
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.y  <span class="SCmt">// Accessing field 'y'</span>
+                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.y  <span class="SCmt">// Accessing field 'y'</span>
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.z  <span class="SCmt">// Accessing field 'z'</span>
+                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.z  <span class="SCmt">// Accessing field 'z'</span>
                 }
 
                 <span class="SCmt">// `#alias1` holds the current index of the iteration.</span>
@@ -4932,11 +4937,11 @@ code
                 <span class="SLgc">switch</span> <span class="SItr">#up</span> idx
                 {
                 <span class="SLgc">case</span> <span class="SNum">0</span>:
-                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.z  <span class="SCmt">// Accessing field 'z' in reverse order</span>
+                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.z  <span class="SCmt">// Accessing field 'z' in reverse order</span>
                 <span class="SLgc">case</span> <span class="SNum">1</span>:
-                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.y  <span class="SCmt">// Accessing field 'y' in reverse order</span>
+                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.y  <span class="SCmt">// Accessing field 'y' in reverse order</span>
                 <span class="SLgc">case</span> <span class="SNum">2</span>:
-                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.x  <span class="SCmt">// Accessing field 'x' in reverse order</span>
+                    <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.x  <span class="SCmt">// Accessing field 'x' in reverse order</span>
                 }
 
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">@index</span>
@@ -4953,7 +4958,7 @@ code
     <span class="SKwd">var</span> cpt = <span class="SNum">0</span>
 
     <span class="SCmt">// Call the variant `opVisitReverse` to iterate over the fields in reverse order.</span>
-    <span class="SLgc">foreach</span>'<span class="SCst">Reverse</span> v, i <span class="SLgc">in</span> myStruct
+    <span class="SLgc">foreach</span> <span class="SCmp">#Reverse</span> v, i <span class="SLgc">in</span> myStruct
     {
         <span class="SLgc">switch</span> i
         {
@@ -4975,21 +4980,21 @@ code
 <p>For example, consider a struct with a slice: </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">SliceStruct</span>
 {
-    buffer: [] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]  <span class="SCmt">// A dynamic array (slice) initialized with values</span>
+    buffer: [?] <span class="STpe">s32</span> = [<span class="SNum">1</span>, <span class="SNum">2</span>, <span class="SNum">3</span>, <span class="SNum">4</span>, <span class="SNum">5</span>]  <span class="SCmt">// A dynamic array (slice) initialized with values</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_008_custom_iteration_swg">Custom <span class="code-inline">opVisit</span> for Dynamic Arrays </h4>
 <p>You could define an <span class="code-inline">opVisit</span> that iterates over the elements of the <span class="code-inline">buffer</span> rather than the struct's fields. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">SliceStruct</span>
 {
     <span class="SAtr">#[Swag.Macro]</span>
-    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)
+    <span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)
     {
-        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">self</span>.buffer)
+        <span class="SLgc">for</span> idx <span class="SLgc">in</span> <span class="SItr">@countof</span>(<span class="STpe">me</span>.buffer)
         {
             <span class="SCmp">#macro</span>
             {
                 <span class="SCmt">// #alias0 represents the value of the current buffer element.</span>
-                <span class="SKwd">var</span> <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">self</span>.buffer[<span class="SItr">#up</span> idx]
+                <span class="SKwd">var</span> <span class="SItr">#alias0</span> = <span class="SItr">#up</span> <span class="STpe">me</span>.buffer[<span class="SItr">#up</span> idx]
 
                 <span class="SCmt">// #alias1 represents the current index.</span>
                 <span class="SKwd">var</span> <span class="SItr">#alias1</span> = <span class="SItr">@index</span>
@@ -5028,14 +5033,14 @@ code
     <span class="SCmt">// It exemplifies "copy semantics" and can be customized for specific behaviors post-copy.</span>
     <span class="SKwd">mtd</span> <span class="SFct">opPostCopy</span>()
     {
-        x, y, z += <span class="SNum">1</span>    <span class="SCmt">// Increment all fields by 1 to signify a copy operation has occurred.</span>
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y, <span class="STpe">me</span>.z += <span class="SNum">1</span>    <span class="SCmt">// Increment all fields by 1 to signify a copy operation has occurred.</span>
     }
 
     <span class="SCmt">// This method is invoked following a move operation.</span>
     <span class="SCmt">// It represents "move semantics" and can be customized for specific behaviors post-move.</span>
     <span class="SKwd">mtd</span> <span class="SFct">opPostMove</span>()
     {
-        x, y, z += <span class="SNum">2</span>    <span class="SCmt">// Increment all fields by 2 to signify a move operation has occurred.</span>
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y, <span class="STpe">me</span>.z += <span class="SNum">2</span>    <span class="SCmt">// Increment all fields by 2 to signify a move operation has occurred.</span>
     }
 
     <span class="SCmt">// This method is invoked when an object is about to be destroyed.</span>
@@ -5065,7 +5070,7 @@ code
     <span class="SCmt">// 3. 'opPostMove' on 'a' is invoked to finalize the move operation.</span>
     <span class="SCmt">// 4. 'b' is reinitialized to default values (666) if 'opDrop' exists.</span>
 
-    a = <span class="SCmp">#move</span> b
+    a = <span class="SItr">#move</span> b
     <span class="SItr">@assert</span>(a.x == <span class="SNum">102</span>)       <span class="SCmt">// +2 due to 'opPostMove'.</span>
     <span class="SItr">@assert</span>(a.y == <span class="SNum">202</span>)
     <span class="SItr">@assert</span>(a.z == <span class="SNum">302</span>)
@@ -5076,15 +5081,15 @@ code
     <span class="SCmt">// The `#nodrop` modifier bypasses the initial 'opDrop' invocation.</span>
     <span class="SCmt">// Use this when 'a' is in an undefined state and does not require cleanup.</span>
 
-    a = <span class="SCmp">#nodrop</span> b                <span class="SCmt">// Copy 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
-    a = <span class="SCmp">#nodrop</span> <span class="SCmp">#move</span> b          <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
+    a = <span class="SItr">#nodrop</span> b                <span class="SCmt">// Copy 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
+    a = <span class="SItr">#nodrop</span> <span class="SItr">#move</span> b          <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first.</span>
 
     <span class="SCmt">// The `#moveraw` modifier prevents the reinitialization of 'b' after the move.</span>
-    <span class="SCmt">// This approach is risky and should be employed only when certain that 'b' won't be dropped or </span>
+    <span class="SCmt">// This approach is risky and should be employed only when certain that 'b' won't be dropped or</span>
     <span class="SCmt">// when reinitialization is handled manually.</span>
 
-    a = <span class="SCmp">#moveraw</span> b               <span class="SCmt">// Move 'b' to 'a' without resetting 'b'.</span>
-    a = <span class="SCmp">#nodrop</span> <span class="SCmp">#moveraw</span> b       <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first and without resetting 'b'.</span>
+    a = <span class="SItr">#moveraw</span> b               <span class="SCmt">// Move 'b' to 'a' without resetting 'b'.</span>
+    a = <span class="SItr">#nodrop</span> <span class="SItr">#moveraw</span> b       <span class="SCmt">// Move 'b' to 'a' without invoking 'opDrop' on 'a' first and without resetting 'b'.</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_009_custom_copy_and_move_swg">Move Semantics in Functions </h4>
 <p>Move semantics can be explicitly indicated in function parameters by utilizing <span class="code-inline">&&</span> instead of <span class="code-inline">&</span>. </p>
@@ -5096,7 +5101,7 @@ code
     <span class="SAtr">#[Swag.Overload]</span>
     <span class="SKwd">func</span> <span class="SFct">assign</span>(assignTo: &<span class="SCst">Vector3</span>, from: &&<span class="SCst">Vector3</span>)
     {
-        assignTo = <span class="SCmp">#move</span> from  <span class="SCmt">// Move 'from' into 'assignTo'.</span>
+        assignTo = <span class="SItr">#move</span> from  <span class="SCmt">// Move 'from' into 'assignTo'.</span>
     }
 
     <span class="SCmt">// This variant of 'assign' performs a copy instead of a move.</span>
@@ -5144,7 +5149,7 @@ code
     <span class="SAtr">#[Swag.ConstExpr, Swag.Implicit, Swag.Inline]</span>
     <span class="SKwd">mtd</span> <span class="SFct">opAffect</span>(valueMs: <span class="STpe">s32</span>)
     {
-        timeInSeconds = valueMs / <span class="SNum">1000.0</span>
+        <span class="STpe">me</span>.timeInSeconds = valueMs / <span class="SNum">1000.0</span>
     }
 }</span></div>
 <p>To convert a given value and suffix to another value, you will use the <span class="code-inline">opAffectLiteral</span> special function. </p>
@@ -5161,22 +5166,22 @@ code
         <span class="SCmt">// Check if the suffix is 's' (seconds)</span>
         <span class="SCmp">#if</span> suffix == <span class="SStr">"s"</span>:
             <span class="SCmt">// Directly assign the value as seconds</span>
-            timeInSeconds = value
+            <span class="STpe">me</span>.timeInSeconds = value
 
         <span class="SCmt">// Check if the suffix is 'ms' (milliseconds)</span>
         <span class="SCmp">#elif</span> suffix == <span class="SStr">"ms"</span>:
             <span class="SCmt">// Convert milliseconds to seconds and assign</span>
-            timeInSeconds = value / <span class="SNum">1000.0</span>
+            <span class="STpe">me</span>.timeInSeconds = value / <span class="SNum">1000.0</span>
 
         <span class="SCmt">// Check if the suffix is 'min' (minutes)</span>
         <span class="SCmp">#elif</span> suffix == <span class="SStr">"min"</span>:
             <span class="SCmt">// Convert minutes to seconds (1 min = 60 seconds)</span>
-            timeInSeconds = value * <span class="SNum">60.0</span>
+            <span class="STpe">me</span>.timeInSeconds = value * <span class="SNum">60.0</span>
 
         <span class="SCmt">// Check if the suffix is 'h' (hours)</span>
         <span class="SCmp">#elif</span> suffix == <span class="SStr">"h"</span>:
             <span class="SCmt">// Convert hours to seconds (1 hour = 3600 seconds)</span>
-            timeInSeconds = value * <span class="SNum">3600.0</span>
+            <span class="STpe">me</span>.timeInSeconds = value * <span class="SNum">3600.0</span>
 
         <span class="SCmt">// Handle unsupported or invalid suffixes</span>
         <span class="SCmp">#else</span>:
@@ -5203,21 +5208,21 @@ code
 <p>Unlike C++, the virtual table is not embedded within the struct. It is a <b>separate</b> object. This allows for implementing an interface for a given struct without altering the struct's definition. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point2</span>
 {
-    x, y: <span class="STpe">f32</span>  <span class="SCmt">// Represents the coordinates of a point in a 2D space</span>
+    x, y: <span class="STpe">f32</span> <span class="SCmt">// Represents the coordinates of a point in a 2D space</span>
 }
 
 <span class="SKwd">struct</span> <span class="SCst">Point3</span>
 {
-    x, y, z: <span class="STpe">f32</span>  <span class="SCmt">// Represents the coordinates of a point in a 3D space</span>
+    x, y, z: <span class="STpe">f32</span> <span class="SCmt">// Represents the coordinates of a point in a 3D space</span>
 }</span></div>
 <h4 id="_006_000_structs_swg__006_011_interface_swg">Interface Declaration </h4>
 <p>Here we declare an interface <span class="code-inline">IReset</span>, with two functions <span class="code-inline">set</span> and <span class="code-inline">reset</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">IReset</span>
 {
-    <span class="SCmt">// The first parameter must be 'self'</span>
-    <span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">self</span>, val: <span class="STpe">f32</span>);
+    <span class="SCmt">// The first parameter must be 'me'</span>
+    <span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, val: <span class="STpe">f32</span>);
 
-    <span class="SCmt">// You can also use the 'mtd' declaration to avoid specifying the 'self' yourself</span>
+    <span class="SCmt">// You can also use the 'mtd' declaration to avoid specifying the 'me' yourself</span>
     <span class="SKwd">mtd</span> <span class="SFct">reset</span>();
 }</span></div>
 <h4 id="_006_000_structs_swg__006_011_interface_swg">Implementing an Interface </h4>
@@ -5227,18 +5232,22 @@ code
     <span class="SCmt">// You must add 'impl' to indicate that you want to implement a function of the interface.</span>
     <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">set</span>(val: <span class="STpe">f32</span>)
     {
-        x = val              <span class="SCmt">// Set x to the given value</span>
-        y = val + <span class="SNum">1</span>          <span class="SCmt">// Set y to the value incremented by 1</span>
+        <span class="STpe">me</span>.x = val <span class="SCmt">// Set x to the given value</span>
+        <span class="STpe">me</span>.y = val + <span class="SNum">1</span> <span class="SCmt">// Set y to the value incremented by 1</span>
     }
 
     <span class="SCmt">// Don't forget that 'mtd' is just syntactic sugar. 'func' still works.</span>
-    <span class="SKwd">func</span> <span class="SKwd">impl</span> <span class="SFct">reset</span>(<span class="STpe">self</span>)
+    <span class="SKwd">func</span> <span class="SKwd">impl</span> <span class="SFct">reset</span>(<span class="STpe">me</span>)
     {
-        <span class="STpe">self</span>.x, <span class="STpe">self</span>.y = <span class="SNum">0</span>   <span class="SCmt">// Reset x and y to 0</span>
+        <span class="SCmt">// Reset x and y to 0</span>
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y = <span class="SNum">0</span>
     }
 
     <span class="SCmt">// Note that you can also declare 'normal' functions or methods in an 'impl' block.</span>
-    <span class="SKwd">mtd</span> <span class="SFct">myOtherMethod</span>() {}   <span class="SCmt">// Example of an additional method</span>
+    <span class="SKwd">mtd</span> <span class="SFct">myOtherMethod</span>()
+    {
+        <span class="SCmt">// Example of an additional method</span>
+    }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_011_interface_swg">Implementing the Interface for Another Struct </h4>
 <p>Similarly, we implement the <span class="code-inline">IReset</span> interface for struct <span class="code-inline">Point3</span>. </p>
@@ -5246,14 +5255,15 @@ code
 {
     <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">set</span>(val: <span class="STpe">f32</span>)
     {
-        x = val              <span class="SCmt">// Set x to the given value</span>
-        y = val + <span class="SNum">1</span>          <span class="SCmt">// Set y to the value incremented by 1</span>
-        z = val + <span class="SNum">2</span>          <span class="SCmt">// Set z to the value incremented by 2</span>
+        <span class="STpe">me</span>.x = val <span class="SCmt">// Set x to the given value</span>
+        <span class="STpe">me</span>.y = val + <span class="SNum">1</span> <span class="SCmt">// Set y to the value incremented by 1</span>
+        <span class="STpe">me</span>.z = val + <span class="SNum">2</span> <span class="SCmt">// Set z to the value incremented by 2</span>
     }
 
     <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">reset</span>()
     {
-        x, y, z = <span class="SNum">0</span>          <span class="SCmt">// Reset x, y, and z to 0</span>
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y, <span class="STpe">me</span>.z = <span class="SNum">0</span>
+        <span class="SCmt">// Reset x, y, and z to 0</span>
     }
 }</span></div>
 <h4 id="_006_000_structs_swg__006_011_interface_swg">Using the Interface </h4>
@@ -5318,12 +5328,20 @@ code
 <p>Just declare a body in the interface function to provide a default implementation. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">interface</span> <span class="SCst">ITest</span>
 {
-    <span class="SKwd">mtd</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">false</span>; }  <span class="SCmt">// Default implementation returns false</span>
+    <span class="SKwd">mtd</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span>
+    {
+        <span class="SLgc">return</span> <span class="SKwd">false</span>
+        <span class="SCmt">// Default implementation returns false</span>
+    }
 }</span></div>
 <p>Here we define a specific version of <span class="code-inline">isImplemented</span> for <span class="code-inline">Point2</span>, and no specific implementation for <span class="code-inline">Point3</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point2</span>
 {
-    <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span> { <span class="SLgc">return</span> <span class="SKwd">true</span>; }  <span class="SCmt">// Override to return true for Point2</span>
+    <span class="SKwd">mtd</span> <span class="SKwd">impl</span> <span class="SFct">isImplemented</span>()-&gt;<span class="STpe">bool</span>
+    {
+        <span class="SLgc">return</span> <span class="SKwd">true</span>
+        <span class="SCmt">// Override to return true for Point2</span>
+    }
 }
 
 <span class="SKwd">impl</span> <span class="SCst">ITest</span> <span class="SLgc">for</span> <span class="SCst">Point3</span>
@@ -5360,8 +5378,8 @@ code
 <p>For simple expressions, the return type can be inferred automatically using the <span class="code-inline">=&gt;</span> operator instead of explicitly declaring it with <span class="code-inline">-&gt;</span>. This reduces verbosity in cases where the type is obvious. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum</span>(x, y: <span class="STpe">s32</span>) =&gt; x + y                        <span class="SCmt">// Return type is inferred as s32</span></span></div>
 <h4 id="_007_000_functions_swg__007_001_declaration_swg">Shorter Syntax for Functions Without Return Values </h4>
-<p>When a function does not return a value, a concise syntax can be used. Instead of a full function body, a single expression can be provided after <span class="code-inline">=</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(val: <span class="STpe">string</span>) = <span class="SItr">@print</span>(val)               <span class="SCmt">// Prints the given string value</span></span></div>
+<p>When a function does not return a value, a concise syntax can be used also. Instead of a full function body, a single expression can be provided after <span class="code-inline">=&gt;</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(val: <span class="STpe">string</span>) =&gt; <span class="SItr">@print</span>(val)               <span class="SCmt">// Prints the given string value</span></span></div>
 <h4 id="_007_000_functions_swg__007_001_declaration_swg">Defining Parameters in Functions </h4>
 <p>Function parameters are defined within parentheses following the function name. Each parameter is declared with a name and type, separated by a colon. In this example, two parameters <span class="code-inline">x</span> and <span class="code-inline">y</span> of type <span class="code-inline">s32</span>, and an additional <span class="code-inline">unused</span> parameter of type <span class="code-inline">f32</span> are defined. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sum1</span>(x, y: <span class="STpe">s32</span>, unused: <span class="STpe">f32</span>) -&gt; <span class="STpe">s32</span>
@@ -5426,7 +5444,7 @@ code
         <span class="SLgc">return</span> {<span class="SNum">1.0</span>, <span class="SNum">2.0</span>}                          <span class="SCmt">// Returns a struct with two float values</span>
     }
 
-    <span class="SKwd">var</span> result = <span class="SFct">myFunction</span>()                      <span class="SCmt">// Stores the result in a variable</span>
+    <span class="SKwd">let</span> result = <span class="SFct">myFunction</span>()                      <span class="SCmt">// Stores the result in a variable</span>
     <span class="SItr">@assert</span>(result.item0 == <span class="SNum">1.0</span>)                   <span class="SCmt">// Asserts the first item</span>
     <span class="SItr">@assert</span>(result.item1 == <span class="SNum">2.0</span>)                   <span class="SCmt">// Asserts the second item</span>
 
@@ -6177,7 +6195,7 @@ code
 }</span></div>
 
 <h3 id="_007_000_functions_swg__007_007_ufcs_swg">Ufcs </h3><h4 id="_007_000_functions_swg__007_007_ufcs_swg">Introduction to Uniform Function Call Syntax (UFCS) </h4>
-<p><i>UFCS</i> stands for <i>Uniform Function Call Syntax</i>. It allows any function to be called using the  <span class="code-inline">param.func()</span> form when the first parameter of <span class="code-inline">func()</span> matches the type of <span class="code-inline">param</span>. This syntax  provides a way to call static functions as if they were methods on an instance, enhancing  readability and method-like behavior. </p>
+<p><i>UFCS</i> stands for <i>Uniform Function Call Syntax</i>. It allows any function to be called using the <span class="code-inline">param.func()</span> form when the first parameter of <span class="code-inline">func()</span> matches the type of <span class="code-inline">param</span>. This syntax provides a way to call static functions as if they were methods on an instance, enhancing readability and method-like behavior. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span> <span class="SFct">myFunc</span>(param: <span class="STpe">bool</span>) =&gt; param
@@ -6186,14 +6204,14 @@ code
     <span class="SItr">@assert</span>(<span class="SFct">myFunc</span>(b) == b.<span class="SFct">myFunc</span>()) <span class="SCmt">// Using UFCS to call 'myFunc' as if it were a method on 'b'.</span>
 }</span></div>
 <h4 id="_007_000_functions_swg__007_007_ufcs_swg">Static Functions as Methods </h4>
-<p>In Swag, all functions are <i>static</i>, meaning they are not inherently bound to instances of structs  or classes. However, UFCS allows these functions to be called in a method-like style, making  struct manipulation more intuitive and the code more readable. </p>
+<p>In Swag, all functions are <i>static</i>, meaning they are not inherently bound to instances of structs or classes. However, UFCS allows these functions to be called in a method-like style, making struct manipulation more intuitive and the code more readable. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Point</span> { x, y: <span class="STpe">s32</span> }
 
-    <span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> pt: *<span class="SCst">Point</span>, value: <span class="STpe">s32</span>)
+    <span class="SKwd">func</span> <span class="SFct">set</span>(pt: *<span class="SCst">Point</span>, value: <span class="STpe">s32</span>)
     {
-        x, y = value
+        pt.x, pt.y = value
     }
 
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
@@ -6207,15 +6225,15 @@ code
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">20</span> <span class="SLgc">and</span> pt.y == <span class="SNum">20</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_007_ufcs_swg">UFCS with Multiple Parameters </h4>
-<p>UFCS works seamlessly with functions that take multiple parameters, as long as the first parameter  matches the type of the instance. This allows for consistent and readable function calls, even with  more complex function signatures. </p>
+<p>UFCS works seamlessly with functions that take multiple parameters, as long as the first parameter matches the type of the instance. This allows for consistent and readable function calls, even with more complex function signatures. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Vector</span> { x, y: <span class="STpe">f32</span> }
 
-    <span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> vec: *<span class="SCst">Vector</span>, dx: <span class="STpe">f32</span>, dy: <span class="STpe">f32</span>)
+    <span class="SKwd">func</span> <span class="SFct">add</span>(vec: *<span class="SCst">Vector</span>, dx: <span class="STpe">f32</span>, dy: <span class="STpe">f32</span>)
     {
-        x += dx
-        y += dy
+        vec.x += dx
+        vec.y += dy
     }
 
     <span class="SKwd">var</span> v: <span class="SCst">Vector</span>
@@ -6229,7 +6247,7 @@ code
     <span class="SItr">@assert</span>(v.x == <span class="SNum">4.0</span> <span class="SLgc">and</span> v.y == <span class="SNum">6.0</span>)
 }</span></div>
 <h4 id="_007_000_functions_swg__007_007_ufcs_swg">UFCS and Function Overloading </h4>
-<p>UFCS supports function overloading, where the appropriate function is chosen based on the types  of the parameters provided. This feature ensures that UFCS remains versatile and applicable across  a wide range of function signatures, allowing for flexible and context-appropriate behavior. </p>
+<p>UFCS supports function overloading, where the appropriate function is chosen based on the types of the parameters provided. This feature ensures that UFCS remains versatile and applicable across a wide range of function signatures, allowing for flexible and context-appropriate behavior. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Complex</span> { real, imag: <span class="STpe">f32</span> }
@@ -6242,10 +6260,10 @@ code
     }
 
     <span class="SAtr">#[Swag.Overload]</span>
-    <span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> c: *<span class="SCst">Complex</span>, other: *<span class="SCst">Complex</span>)
+    <span class="SKwd">func</span> <span class="SFct">multiply</span>(c: *<span class="SCst">Complex</span>, other: *<span class="SCst">Complex</span>)
     {
-        real = (real * other.real) - (imag * other.imag)
-        imag = (real * other.imag) + (imag * other.real)
+        c.real = (c.real * other.real) - (c.imag * other.imag)
+        c.imag = (c.real * other.imag) + (c.imag * other.real)
     }
 
     <span class="SKwd">var</span> c1 = <span class="SCst">Complex</span>{<span class="SNum">2.0</span>, <span class="SNum">3.0</span>}
@@ -6813,7 +6831,7 @@ code
 
 <h2 id="_009_000_generics_swg">Generics </h2>
 <h3 id="_009_000_generics_swg__009_001_functions_swg">Functions </h3><h4 id="_009_000_generics_swg__009_001_functions_swg">Generic Functions </h4>
-<p>A function can be made generic by specifying type parameters after the <span class="code-inline">func</span> keyword. These type  parameters allow the function to operate on various types using the same implementation. The generic  type parameters are placed within parentheses after <span class="code-inline">func</span>. When calling the function, the generic  types are specified using <span class="code-inline">funcCall'(type1, type2, ...)</span>. If there is only one generic parameter,  you can omit the parentheses. </p>
+<p>A function can be made generic by specifying type parameters after the <span class="code-inline">func</span> keyword. These type parameters allow the function to operate on various types using the same implementation. The generic type parameters are placed within parentheses after <span class="code-inline">func</span>. When calling the function, the generic types are specified using <span class="code-inline">funcCall'(type1, type2, ...)</span>. If there is only one generic parameter, you can omit the parentheses. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     {
@@ -6852,7 +6870,7 @@ code
     }
 }</span></div>
 <h4 id="_009_000_generics_swg__009_001_functions_swg">Type Deduction </h4>
-<p>Generic types can often be deduced from the function's parameters, eliminating the need to specify  the type explicitly at the call site. </p>
+<p>Generic types can often be deduced from the function's parameters, eliminating the need to specify the type explicitly at the call site. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">myFunc</span>(val: <span class="SCst">T</span>) =&gt; <span class="SNum">2</span> * val
@@ -6865,26 +6883,26 @@ code
 <p>In the example below, <span class="code-inline">N</span> is a constant of type <span class="code-inline">s32</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span>(<span class="SKwd">const</span> <span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()                                <span class="SCmt">// Call the function with a constant value of 10.</span>
+    <span class="SKwd">func</span>(<span class="SKwd">const</span> <span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() =&gt; <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
+    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()
 }</span></div>
-<p><span class="code-inline">const</span> can be omitted when declaring constants, as an identifier followed by a type is considered  a constant. </p>
+<p><span class="code-inline">const</span> can be omitted when declaring constants, as an identifier followed by a type is considered a constant. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span>(<span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()                                <span class="SCmt">// Function called with a constant value of 10.</span>
+    <span class="SKwd">func</span>(<span class="SCst">N</span>: <span class="STpe">s32</span>) <span class="SFct">myFunc</span>() =&gt; <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
+    <span class="SFct">myFunc</span>'<span class="SNum">10</span>()
 }</span></div>
 <p>You can also assign a default value to a constant parameter. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span>(<span class="SCst">N</span>: <span class="STpe">s32</span> = <span class="SNum">10</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>()                                   <span class="SCmt">// Calls the function using the default value of 10.</span>
+    <span class="SKwd">func</span>(<span class="SCst">N</span>: <span class="STpe">s32</span> = <span class="SNum">10</span>) <span class="SFct">myFunc</span>() =&gt; <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
+    <span class="SFct">myFunc</span>()
 }</span></div>
-<p>If you declare the constant using <span class="code-inline">const</span>, the type can be omitted, and it will be deduced from  the assignment expression. </p>
+<p>If you declare the constant using <span class="code-inline">const</span>, the type can be omitted, and it will be deduced from the assignment expression. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span>(<span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">10</span>) <span class="SFct">myFunc</span>() = <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
-    <span class="SFct">myFunc</span>()                                   <span class="SCmt">// Constant value is deduced as 's32'.</span>
+    <span class="SKwd">func</span>(<span class="SKwd">const</span> <span class="SCst">N</span> = <span class="SNum">10</span>) <span class="SFct">myFunc</span>() =&gt; <span class="SItr">@assert</span>(<span class="SCst">N</span> == <span class="SNum">10</span>)
+    <span class="SFct">myFunc</span>()
 }</span></div>
 <h4 id="_009_000_generics_swg__009_001_functions_swg">Mixing Types and Constants </h4>
 <p>You can mix types and constants in generic parameters. </p>
@@ -6926,9 +6944,9 @@ code
             val: <span class="SCst">T</span>
         }
 
-        <span class="SKwd">var</span> x: <span class="SFct">Struct</span>'<span class="STpe">s32</span>
+        <span class="SKwd">let</span> x: <span class="SFct">Struct</span>'<span class="STpe">s32</span>
         <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x.val) == <span class="STpe">s32</span>)         <span class="SCmt">// The type of 'val' is deduced as 's32'.</span>
-        <span class="SKwd">var</span> x1: <span class="SFct">Struct</span>'<span class="STpe">f32</span>
+        <span class="SKwd">let</span> x1: <span class="SFct">Struct</span>'<span class="STpe">f32</span>
         <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x1.val) == <span class="STpe">f32</span>)        <span class="SCmt">// The type of 'val' is deduced as 'f32'.</span>
     }
 
@@ -6939,7 +6957,7 @@ code
             val: [<span class="SCst">N</span>] <span class="SCst">T</span>  <span class="SCmt">// An array of 'N' elements of type 'T'.</span>
         }
 
-        <span class="SKwd">var</span> x: <span class="SFct">Struct</span>'(<span class="STpe">bool</span>, <span class="SNum">10</span>)
+        <span class="SKwd">let</span> x: <span class="SFct">Struct</span>'(<span class="STpe">bool</span>, <span class="SNum">10</span>)
         <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x.val) == <span class="SItr">#type</span> [<span class="SNum">10</span>] <span class="STpe">bool</span>) <span class="SCmt">// The type is an array of 10 booleans.</span>
     }
 }</span></div>
@@ -7412,9 +7430,9 @@ code
 <p>A common use case for <span class="code-inline">defer</span> is in resource management, such as the creation and subsequent release of resources. By placing the release logic immediately after the creation logic, the code becomes more readable and ensures that resources are always properly managed, even in the event of an error or early exit. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                    =&gt; <span class="SKwd">true</span>
-    <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) = <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
-    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)          =&gt; b
+    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                 =&gt; <span class="SKwd">true</span>
+    <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) =&gt; <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
+    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)       =&gt; b
 
     <span class="SKwd">var</span> resource = <span class="SKwd">false</span>
     <span class="SLgc">for</span> <span class="SNum">10</span>
@@ -7436,9 +7454,9 @@ code
 <p>In more complex functions, <span class="code-inline">defer</span> proves invaluable for ensuring that resources are cleaned up reliably, even in the presence of errors or early returns. This pattern is essential for writing robust, error-resilient code that gracefully handles failure scenarios while ensuring that all necessary cleanup is performed. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                    =&gt; <span class="SKwd">true</span>
-    <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) = <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
-    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)          =&gt; b
+    <span class="SKwd">func</span> <span class="SFct">createResource</span>()                 =&gt; <span class="SKwd">true</span>
+    <span class="SKwd">func</span> <span class="SFct">releaseResource</span>(resource: *<span class="STpe">bool</span>) =&gt; <span class="SKwd">dref</span> resource = <span class="SKwd">false</span>
+    <span class="SKwd">func</span> <span class="SFct">isResourceCreated</span>(b: <span class="STpe">bool</span>)       =&gt; b
 
     <span class="SKwd">func</span> <span class="SFct">performTask</span>() -&gt; <span class="STpe">bool</span>
     {
@@ -7462,7 +7480,7 @@ code
 }</span></div>
 
 <h3 id="_011_000_scoping_swg__011_003_using_swg">Using </h3><h4 id="_011_000_scoping_swg__011_003_using_swg"><span class="code-inline">using</span> with Enums and Namespaces </h4>
-<p>The <span class="code-inline">using</span> statement allows you to bring the scope of a namespace, struct, or enum into the current  scope. This makes it possible to reference members directly without the need for full qualification.  For example, when working with enums, this can simplify the code by removing the need to constantly  prefix enum values with the enum type name. </p>
+<p>The <span class="code-inline">using</span> statement allows you to bring the scope of a namespace, struct, or enum into the current scope. This makes it possible to reference members directly without the need for full qualification. For example, when working with enums, this can simplify the code by removing the need to constantly prefix enum values with the enum type name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">enum</span> <span class="SCst">RGB</span> { <span class="SCst">R</span>, <span class="SCst">G</span>, <span class="SCst">B</span> }
@@ -7471,57 +7489,8 @@ code
     <span class="SKwd">using</span> <span class="SCst">RGB</span>             <span class="SCmt">// Bringing the enum members into the current scope.</span>
     <span class="SItr">@assert</span>(<span class="SCst">G</span> == <span class="SNum">1</span>)       <span class="SCmt">// 'G' is now directly accessible without the 'RGB.' prefix.</span>
 }</span></div>
-<h4 id="_011_000_scoping_swg__011_003_using_swg"><span class="code-inline">using</span> with Variables </h4>
-<p>The <span class="code-inline">using</span> statement can also be applied to variables, particularly those of struct types. This allows  you to access the fields of a struct directly within the current scope, eliminating the need to  reference the variable name each time you access a field. This is particularly useful for reducing  code verbosity and improving readability. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">Point</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
-
-    <span class="SKwd">var</span> pt: <span class="SCst">Point</span>         <span class="SCmt">// Declaring a variable of struct type 'Point.'</span>
-
-    <span class="SKwd">using</span> pt              <span class="SCmt">// Bringing the fields of 'pt' into the current scope.</span>
-    x = <span class="SNum">1</span>                 <span class="SCmt">// Direct access to 'x' without needing 'pt.x'.</span>
-    y = <span class="SNum">2</span>                 <span class="SCmt">// Direct access to 'y' without needing 'pt.y'.</span>
-
-    <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)    <span class="SCmt">// Verifying that 'x' was set correctly.</span>
-    <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)    <span class="SCmt">// Verifying that 'y' was set correctly.</span>
-}</span></div>
-<h4 id="_011_000_scoping_swg__011_003_using_swg">Declaring Variables with <span class="code-inline">using</span> </h4>
-<p>You can declare a variable with the <span class="code-inline">using</span> keyword, which immediately brings the variable’s fields  into the current scope. This approach can streamline your code by allowing direct access to struct  fields without the need to prefix them with the variable name, making the code cleaner and more  concise. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">Point</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
-    <span class="SKwd">using</span> <span class="SKwd">var</span> pt: <span class="SCst">Point</span>   <span class="SCmt">// Declare 'pt' and bring its fields into the current scope.</span>
-    x = <span class="SNum">1</span>                 <span class="SCmt">// Direct access to 'x' without specifying 'pt'.</span>
-    y = <span class="SNum">2</span>                 <span class="SCmt">// Direct access to 'y' without specifying 'pt'.</span>
-
-    <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)    <span class="SCmt">// Ensure that 'x' was correctly set.</span>
-    <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)    <span class="SCmt">// Ensure that 'y' was correctly set.</span>
-}</span></div>
-<h4 id="_011_000_scoping_swg__011_003_using_swg"><span class="code-inline">using</span> in Function Parameters </h4>
-<p>When applied to function parameters, <span class="code-inline">using</span> allows fields of a struct to be accessed directly within  the function, similar to how a <span class="code-inline">this</span> pointer works in C++. This can simplify function code by  eliminating the need to repeatedly dereference a pointer or reference a parameter name, making the  function logic clearer and easier to follow. </p>
-<div class="code-block"><span class="SCde"><span class="SFct">#test</span>
-{
-    <span class="SKwd">struct</span> <span class="SCst">Point</span> { x: <span class="STpe">s32</span>, y: <span class="STpe">s32</span> }
-
-    <span class="SKwd">func</span> <span class="SFct">setOne</span>(<span class="SKwd">using</span> point: *<span class="SCst">Point</span>)
-    {
-        <span class="SCmt">// Access the fields of 'point' directly without prefixing with 'point-&gt;'.</span>
-        x, y = <span class="SNum">1</span>
-    }
-
-    <span class="SKwd">var</span> pt: <span class="SCst">Point</span>
-    <span class="SFct">setOne</span>(&pt)           <span class="SCmt">// Call 'setOne' and modify 'pt' directly.</span>
-    <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)    <span class="SCmt">// Validate that 'x' was set correctly.</span>
-    <span class="SItr">@assert</span>(pt.y == <span class="SNum">1</span>)    <span class="SCmt">// Validate that 'y' was set correctly.</span>
-
-    <span class="SCmt">// UFCS (Uniform Function Call Syntax) allows calling the function as if it were a method.</span>
-    pt.<span class="SFct">setOne</span>()           <span class="SCmt">// Equivalent to 'setOne(&pt)'.</span>
-    <span class="SItr">@assert</span>(pt.x == <span class="SNum">1</span>)    <span class="SCmt">// Ensure 'x' remains correct.</span>
-    <span class="SItr">@assert</span>(pt.y == <span class="SNum">1</span>)    <span class="SCmt">// Ensure 'y' remains correct.</span>
-}</span></div>
 <h4 id="_011_000_scoping_swg__011_003_using_swg"><span class="code-inline">using</span> with Struct Fields </h4>
-<p>The <span class="code-inline">using</span> statement can also be applied to a field within a struct. This allows the fields of a  nested struct to be accessed as if they were part of the containing struct. This feature is especially  useful when working with inheritance or composition, enabling cleaner and more intuitive code by  removing unnecessary layers of field access. </p>
+<p>The <span class="code-inline">using</span> statement can also be applied to a field within a struct. This allows the fields of a nested struct to be accessed as if they were part of the containing struct. This feature is especially useful when working with inheritance or composition, enabling cleaner and more intuitive code by removing unnecessary layers of field access. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">struct</span> <span class="SCst">Point2</span>
@@ -7544,9 +7513,9 @@ code
     <span class="SItr">@assert</span>(&value.y == &value.base.y)  <span class="SCmt">// Validate that 'y' refers to the correct memory location.</span>
 
     <span class="SCmt">// The compiler can automatically cast 'Point3' to 'Point2' due to the `using` statement.</span>
-    <span class="SKwd">func</span> <span class="SFct">set1</span>(<span class="SKwd">using</span> ptr: *<span class="SCst">Point2</span>)
+    <span class="SKwd">func</span> <span class="SFct">set1</span>(ptr: *<span class="SCst">Point2</span>)
     {
-        x, y = <span class="SNum">1</span>          <span class="SCmt">// Direct access to 'x' and 'y' fields.</span>
+        ptr.x, ptr.y = <span class="SNum">1</span> <span class="SCmt">// Direct access to 'x' and 'y' fields.</span>
     }
 
     <span class="SFct">set1</span>(&value)          <span class="SCmt">// Automatic cast to 'Point2' and modify 'value'.</span>
@@ -7557,18 +7526,18 @@ code
 }</span></div>
 
 <h3 id="_011_000_scoping_swg__011_004_with_swg">With </h3><h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> Statement </h4>
-<p>The <span class="code-inline">with</span> statement is designed to reduce repetition by allowing you to access the fields and methods  of a variable or object within a specified scope. Inside a <span class="code-inline">with</span> block, you can use the <span class="code-inline">.</span> prefix to  refer to the fields or methods of the specified object, making the code more concise and easier to read. </p>
+<p>The <span class="code-inline">with</span> statement is designed to reduce repetition by allowing you to access the fields and methods of a variable or object within a specified scope. Inside a <span class="code-inline">with</span> block, you can use the <span class="code-inline">.</span> prefix to refer to the fields or methods of the specified object, making the code more concise and easier to read. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SCst">Point</span> { x, y: <span class="STpe">s32</span> }
 
 <span class="SKwd">impl</span> <span class="SCst">Point</span>
 {
     <span class="SKwd">mtd</span> <span class="SFct">setOne</span>()
     {
-        x, y = <span class="SNum">1</span>   <span class="SCmt">// Set both x and y to 1 within the Point instance.</span>
+        <span class="STpe">me</span>.x, <span class="STpe">me</span>.y = <span class="SNum">1</span>   <span class="SCmt">// Set both x and y to 1 within the Point instance.</span>
     }
 }</span></div>
 <h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> on a Variable </h4>
-<p>The <span class="code-inline">with</span> statement can be used with a variable to streamline access to its fields and methods,  eliminating the need to repeatedly reference the variable name. This makes the code cleaner and reduces  clutter, especially when working with objects that have multiple fields or methods. </p>
+<p>The <span class="code-inline">with</span> statement can be used with a variable to streamline access to its fields and methods, eliminating the need to repeatedly reference the variable name. This makes the code cleaner and reduces clutter, especially when working with objects that have multiple fields or methods. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>           <span class="SCmt">// Declare a variable of type Point.</span>
@@ -7582,7 +7551,7 @@ code
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)      <span class="SCmt">// Verify that y was set correctly.</span>
 }</span></div>
 <h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> with Function Calls </h4>
-<p>The <span class="code-inline">with</span> statement also simplifies function calls on an object or struct by allowing direct  invocation of methods and access to fields within the <span class="code-inline">with</span> block. This approach helps maintain  cleaner and more intuitive code by reducing the repetition of the object or variable name. </p>
+<p>The <span class="code-inline">with</span> statement also simplifies function calls on an object or struct by allowing direct invocation of methods and access to fields within the <span class="code-inline">with</span> block. This approach helps maintain cleaner and more intuitive code by reducing the repetition of the object or variable name. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>           <span class="SCmt">// Declare a variable of type Point.</span>
@@ -7598,7 +7567,7 @@ code
     <span class="SItr">@assert</span>(pt.y == <span class="SNum">2</span>)      <span class="SCmt">// Confirm that y remains correct after the with block.</span>
 }</span></div>
 <h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> with a Namespace </h4>
-<p>The <span class="code-inline">with</span> statement can also be applied to a namespace, allowing you to call functions or access  constants within that namespace without needing to fully qualify the names. This is particularly useful  when working with large namespaces or when multiple calls to namespace members are required. </p>
+<p>The <span class="code-inline">with</span> statement can also be applied to a namespace, allowing you to call functions or access constants within that namespace without needing to fully qualify the names. This is particularly useful when working with large namespaces or when multiple calls to namespace members are required. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">with</span> <span class="SCst">NameSpace</span>
@@ -7608,7 +7577,7 @@ code
     }
 }</span></div>
 <h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> with Variable Declaration </h4>
-<p>In addition to existing variables, the <span class="code-inline">with</span> statement can be used directly with variable declarations.  This allows you to immediately work with the fields of the newly declared variable within the scope of  the <span class="code-inline">with</span> block, streamlining initialization and setup tasks. </p>
+<p>In addition to existing variables, the <span class="code-inline">with</span> statement can be used directly with variable declarations. This allows you to immediately work with the fields of the newly declared variable within the scope of the <span class="code-inline">with</span> block, streamlining initialization and setup tasks. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">with</span> <span class="SKwd">var</span> pt = <span class="SCst">Point</span>{<span class="SNum">1</span>, <span class="SNum">2</span>}  <span class="SCmt">// Declare and initialize 'pt' with x=1, y=2.</span>
@@ -7631,7 +7600,7 @@ code
     <span class="SItr">@assert</span>(pt.x == <span class="SNum">10</span> <span class="SLgc">and</span> pt.y == <span class="SNum">20</span>)  <span class="SCmt">// Ensure fields are set as expected.</span>
 }</span></div>
 <h4 id="_011_000_scoping_swg__011_004_with_swg"><span class="code-inline">with</span> with an Assignment Statement </h4>
-<p>The <span class="code-inline">with</span> statement can also be used with an assignment, allowing you to immediately access and modify  the fields of the newly assigned value. This can be particularly helpful in scenarios where you want  to initialize or adjust an object’s fields immediately after creation or assignment. </p>
+<p>The <span class="code-inline">with</span> statement can also be used with an assignment, allowing you to immediately access and modify the fields of the newly assigned value. This can be particularly helpful in scenarios where you want to initialize or adjust an object’s fields immediately after creation or assignment. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> pt: <span class="SCst">Point</span>           <span class="SCmt">// Declare a variable of type Point.</span>
@@ -7931,8 +7900,8 @@ code
 <p>The <span class="code-inline">defer</span> statement schedules a block of code to be executed when the function exits, whether it's through a normal return or due to an error being thrown. Since throwing an error is functionally similar to returning, <span class="code-inline">defer</span> behaves consistently in both cases. </p>
 <p><span class="code-inline">defer</span> can be customized with specific modes (<span class="code-inline">#err</span> or <span class="code-inline">#noerr</span>) to control its execution based on the function's exit state: </p>
 <table class="table-markdown">
-<tr><td> <span class="code-inline">defer&lt;err&gt;</span>   </td><td> Executes only when an error is raised via <span class="code-inline">throw</span>.</td></tr>
-<tr><td> <span class="code-inline">defer&lt;noerr&gt;</span> </td><td> Executes only when the function returns normally without errors.</td></tr>
+<tr><td> <span class="code-inline">defer #err</span>   </td><td> Executes only when an error is raised via <span class="code-inline">throw</span>.</td></tr>
+<tr><td> <span class="code-inline">defer #noerr</span> </td><td> Executes only when the function returns normally without errors.</td></tr>
 <tr><td> <span class="code-inline">defer</span>        </td><td> Executes regardless of how the function exits (either by returning normally or by throwing an error).</td></tr>
 </table>
 <div class="code-block"><span class="SCde"><span class="SKwd">var</span> g_Defer = <span class="SNum">0</span>  <span class="SCmt">// A global variable to track the execution of defer statements</span>
@@ -7947,10 +7916,10 @@ code
 <span class="SKwd">func</span> <span class="SFct">testDefer</span>(err: <span class="STpe">bool</span>) <span class="SKwd">throw</span>
 {
     <span class="SCmt">// Schedules this block to execute only if an error is raised.</span>
-    <span class="SLgc">defer</span>&lt;err&gt; g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increment if an error occurs</span>
+    <span class="SLgc">defer</span> <span class="SItr">#err</span> g_Defer += <span class="SNum">1</span>  <span class="SCmt">// Increment if an error occurs</span>
 
     <span class="SCmt">// Schedules this block to execute only if the function exits without an error.</span>
-    <span class="SLgc">defer</span>&lt;noerr&gt; g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increment if no error occurs</span>
+    <span class="SLgc">defer</span> <span class="SItr">#noerr</span> g_Defer += <span class="SNum">2</span>  <span class="SCmt">// Increment if no error occurs</span>
 
     <span class="SCmt">// Schedules this block to execute regardless of whether an error occurs.</span>
     <span class="SLgc">defer</span> g_Defer += <span class="SNum">3</span>  <span class="SCmt">// Increment regardless of error state</span>
@@ -7964,12 +7933,12 @@ code
     <span class="SCmt">// Test case where an error is raised</span>
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">true</span>)  <span class="SCmt">// Execute the function with error condition</span>
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Expect g_Defer to be 4 (1 + 3) since only 'defer&lt;err&gt;' and the general 'defer' executed</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">4</span>)  <span class="SCmt">// Expect g_Defer to be 4 (1 + 3) since only 'defer #err' and the general 'defer' executed</span>
 
     <span class="SCmt">// Test case where no error is raised</span>
     g_Defer = <span class="SNum">0</span>
     <span class="SKwd">catch</span> <span class="SFct">testDefer</span>(<span class="SKwd">false</span>)  <span class="SCmt">// Execute the function without error condition</span>
-    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)   <span class="SCmt">// Expect g_Defer to be 5 (2 + 3) since only 'defer&lt;noerr&gt;' and the general 'defer' executed</span>
+    <span class="SItr">@assert</span>(g_Defer == <span class="SNum">5</span>)   <span class="SCmt">// Expect g_Defer to be 5 (2 + 3) since only 'defer #noerr' and the general 'defer' executed</span>
 }</span></div>
 
 <h3 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety </h3><h4 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Safety Checks in Swag </h4>
@@ -7993,7 +7962,7 @@ code
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SKwd">var</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span>                                <span class="SCmt">// Initialize x with the maximum value for u8</span>
-    x += <span class="SCmp">#wrap</span> <span class="SNum">1</span>                                  <span class="SCmt">// This will wrap around without causing a panic</span>
+    x += <span class="SItr">#wrap</span> <span class="SNum">1</span>                                  <span class="SCmt">// This will wrap around without causing a panic</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">0</span>)                               <span class="SCmt">// Assert that x has wrapped around to 0</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Global Overflow Safety Control </h5>
@@ -8009,7 +7978,7 @@ code
 <p>For operations involving 8-bit or 16-bit integers, you can use the <span class="code-inline">#prom</span> modifier to promote the operation to 32-bit, thereby avoiding overflow by widening the operand types. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
-    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SCmp">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
+    <span class="SKwd">let</span> x = <span class="SNum">255</span>'<span class="STpe">u8</span> + <span class="SItr">#prom</span> <span class="SNum">1</span>                      <span class="SCmt">// Promote the addition to 32-bit to avoid overflow</span>
     <span class="SItr">@assert</span>(x == <span class="SNum">256</span>)                             <span class="SCmt">// Assert that the result is 256</span>
     <span class="SItr">@assert</span>(<span class="SItr">#typeof</span>(x) == <span class="STpe">u32</span>)                    <span class="SCmt">// Assert that the type of x is u32</span>
 }</span></div>
@@ -8022,13 +7991,13 @@ code
     <span class="SCmt">// var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be</span>
                                                   <span class="SCmt">// represented as s8</span>
 
-    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #wrap to bypass safety checks and allow this</span>
+    <span class="SKwd">let</span> y1 = <span class="SKwd">cast</span> <span class="SItr">#wrap</span> (<span class="STpe">s8</span>) x1                    <span class="SCmt">// Use #wrap to bypass safety checks and allow this</span>
                                                   <span class="SCmt">// cast</span>
     <span class="SItr">@assert</span>(y1 == -<span class="SNum">1</span>)                             <span class="SCmt">// Assert that y1 is -1 after wrapping</span>
 
     <span class="SKwd">let</span> x2 = -<span class="SNum">1</span>'<span class="STpe">s8</span>                                <span class="SCmt">// Initialize x2 with the minimum value for s8</span>
     <span class="SCmt">// var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative</span>
-    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span>&lt;overflow&gt;(<span class="STpe">u8</span>) x2                    <span class="SCmt">// Use #wrap to bypass safety checks</span>
+    <span class="SKwd">let</span> y2 = <span class="SKwd">cast</span> <span class="SItr">#wrap</span> (<span class="STpe">u8</span>) x2                    <span class="SCmt">// Use #wrap to bypass safety checks</span>
     <span class="SItr">@assert</span>(y2 == <span class="SNum">255</span>)                            <span class="SCmt">// Assert that y2 is 255 after wrapping</span>
 }</span></div>
 <h5 id="_013_000_error_management_and_safety_swg__013_002_safety_swg">Disabling Overflow Safety Globally </h5>
@@ -8534,7 +8503,7 @@ code
         }
     }
 
-    <span class="SKwd">var</span> v: <span class="SCst">MyStruct</span>
+    <span class="SKwd">let</span> v: <span class="SCst">MyStruct</span>
     <span class="SItr">@assert</span>(v.x == <span class="SNum">666</span>)         <span class="SCmt">// Asserts that the generated field 'x' is correctly initialized to 666.</span>
     <span class="SItr">@assert</span>(v.y == <span class="SNum">666</span>)         <span class="SCmt">// Asserts that the generated field 'y' is correctly initialized to 666.</span>
 }</span></div>
@@ -8552,12 +8521,12 @@ code
         z: <span class="STpe">string</span>          <span class="SCmt">// Additional static declaration that adds a field 'z' of type string.</span>
     }
 
-    <span class="SKwd">var</span> v: <span class="SFct">MyStruct</span>'<span class="STpe">bool</span>
+    <span class="SKwd">let</span> v: <span class="SFct">MyStruct</span>'<span class="STpe">bool</span>
     <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(v.x) == <span class="STpe">bool</span>)     <span class="SCmt">// Asserts that the generated field 'x' is of type 'bool'.</span>
     <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(v.y) == <span class="STpe">bool</span>)     <span class="SCmt">// Asserts that the generated field 'y' is of type 'bool'.</span>
     <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(v.z) == <span class="STpe">string</span>)   <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
 
-    <span class="SKwd">var</span> v1: <span class="SFct">MyStruct</span>'<span class="STpe">f64</span>
+    <span class="SKwd">let</span> v1: <span class="SFct">MyStruct</span>'<span class="STpe">f64</span>
     <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(v1.x) == <span class="STpe">f64</span>)     <span class="SCmt">// Asserts that the generated field 'x' is of type 'f64'.</span>
     <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(v1.y) == <span class="STpe">f64</span>)     <span class="SCmt">// Asserts that the generated field 'y' is of type 'f64'.</span>
     <span class="SCmp">#assert</span>(<span class="SItr">#typeof</span>(v1.z) == <span class="STpe">string</span>)  <span class="SCmt">// Asserts that the static field 'z' is of type 'string'.</span>
@@ -8567,7 +8536,7 @@ code
 <div class="code-block"><span class="SCde"><span class="SFct">#test</span>
 {
     <span class="SAtr">#[Swag.Compiler]</span>
-    <span class="SKwd">func</span> <span class="SFct">append</span>(buf: ^<span class="STpe">u8</span>, val: <span class="STpe">string</span>)
+    <span class="SKwd">func</span> <span class="SFct">append</span>(buf: [*] <span class="STpe">u8</span>, val: <span class="STpe">string</span>)
     {
         <span class="SKwd">var</span> len = <span class="SNum">0</span>
         <span class="SLgc">while</span> buf[len]:
@@ -8590,7 +8559,7 @@ code
         }
     }
 
-    <span class="SKwd">var</span> v: <span class="SCst">Vector3</span>
+    <span class="SKwd">let</span> v: <span class="SCst">Vector3</span>
     <span class="SItr">@assert</span>(v.x == <span class="SNum">1</span>)           <span class="SCmt">// Asserts that the generated field 'x' is initialized to 1.</span>
     <span class="SItr">@assert</span>(v.y == <span class="SNum">2</span>)           <span class="SCmt">// Asserts that the generated field 'y' is initialized to 2.</span>
     <span class="SItr">@assert</span>(v.z == <span class="SNum">3</span>)           <span class="SCmt">// Asserts that the generated field 'z' is initialized to 3.</span>
@@ -8623,12 +8592,9 @@ code
 {
     <span class="SKwd">const</span> value = <span class="SNum">666</span>
     <span class="SLgc">return</span> <span class="SStr">"const myGeneratedConst = "</span> ++ value <span class="SCmt">// Generates a global constant 'myGeneratedConst' with the value 666.</span>
-}</span></div>
-<h4 id="_017_000_meta_programming_swg__017_001_ast_swg"><span class="code-inline">#placeholder</span> Usage </h4>
-<p>When generating global symbols that may be referenced elsewhere in the code, it is necessary to use <span class="code-inline">#placeholder</span>. This directive informs Swag that the symbol will be generated later, preventing compilation errors when the symbol is referenced before it exists. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#placeholder</span>(myGeneratedConst) <span class="SCmt">// Declares that the symbol `myGeneratedConst` will be generated.</span></span></div>
-<p>Here, thanks to the <span class="code-inline">#placeholder</span>, the <span class="code-inline">#assert</span> will wait for the symbol <span class="code-inline">myGeneratedConst</span> to be replaced with its actual value before performing the assertion. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#assert</span>(myGeneratedConst == <span class="SNum">666</span>) <span class="SCmt">// Asserts that the generated constant 'myGeneratedConst' equals 666.</span></span></div>
+}
+
+<span class="SCmp">#assert</span>(myGeneratedConst == <span class="SNum">666</span>) <span class="SCmt">// Asserts that the generated constant 'myGeneratedConst' equals 666.</span></span></div>
 
 <h3 id="_017_000_meta_programming_swg__017_002_compiler_interface_swg">Compiler Interface </h3><p>The <span class="code-inline">compileString()</span> function within the <span class="code-inline">@compiler</span> interface is another method to compile generated code. This function should be invoked at compile time, typically within a <span class="code-inline">#message</span> call. </p>
 <p>Below is an example from the <span class="code-inline">Std.Ogl</span> module (an OpenGL wrapper), which utilizes <span class="code-inline">#message</span> to identify functions annotated with a specific user attribute, <span class="code-inline">Ogl.Extension</span>, and subsequently generates code for each identified function. </p>
@@ -8667,8 +8633,6 @@ code
     <span class="SCmt">// Track all functions with the specified attribute</span>
     g_Functions.<span class="SFct">add</span>({msg.type, msg.name})
 }</span></div>
-<p>We will generate a <span class="code-inline">glInitExtensions</span> global function, so we register it as a placeholder. </p>
-<div class="code-block"><span class="SCde"><span class="SCmp">#placeholder</span>(glInitExtensions)</span></div>
 <p>This code is called once all functions of the module have been typed, and it handles the main code generation process. </p>
 <div class="code-block"><span class="SCde"><span class="SFct">#message</span>(<span class="SCst">CompilerMsgMask</span>.<span class="SCst">PassAfterSemantic</span>)
 {
@@ -9068,7 +9032,7 @@ code
 <h4 id="_018_000_documentation_md__018_003_pages_md">Use Case </h4>
 <p><span class="code-inline">Swag.DocKind.Pages</span> mode is particularly useful for generating individual web pages, as demonstrated in the <a href="https://github.com/swag-lang/swag/tree/master/bin/reference/tests/web">example directory</a>. This mode is ideal for creating standalone pages that can be linked together or accessed independently, making it a versatile option for web-based documentation projects. </p>
 <div class="swag-watermark">
-Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

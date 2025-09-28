@@ -943,7 +943,7 @@
 <span id="Libc__Exit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">_Exit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L46" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -955,7 +955,7 @@
 <span id="Libc_abort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">abort</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L35" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -967,7 +967,7 @@
 <span id="Libc_abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">abs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1039,7 +1039,7 @@
 <span id="Libc_aligned_alloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">aligned_alloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L38" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1183,7 +1183,7 @@
 <span id="Libc_atof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atof</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1195,7 +1195,7 @@
 <span id="Libc_atoi"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atoi</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L16" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1207,7 +1207,7 @@
 <span id="Libc_atol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L26" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L17" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1219,7 +1219,7 @@
 <span id="Libc_atoll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">atoll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L27" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1231,7 +1231,7 @@
 <span id="Libc_bsearch"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">bsearch</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L51" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1243,7 +1243,7 @@
 <span id="Libc_calloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">calloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L39" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1423,7 +1423,7 @@
 <span id="Libc_div"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">div</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L57" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1506,7 +1506,7 @@
 <span id="Libc_exit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">exit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -1914,7 +1914,7 @@
 <span id="Libc_free"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">free</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L31" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2046,7 +2046,7 @@
 <span id="Libc_getenv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">getenv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2392,7 +2392,7 @@
 <span id="Libc_labs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">labs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L55" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2428,7 +2428,7 @@
 <span id="Libc_ldiv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ldiv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2440,7 +2440,7 @@
 <span id="Libc_ldiv_t"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">ldiv_t</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L13" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2487,7 +2487,7 @@
 <span id="Libc_llabs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">llabs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L56" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L47" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2499,7 +2499,7 @@
 <span id="Libc_lldiv"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lldiv</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L59" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2511,7 +2511,7 @@
 <span id="Libc_lldiv_t"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">lldiv_t</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2762,7 +2762,7 @@
 <span id="Libc_malloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">malloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2774,7 +2774,7 @@
 <span id="Libc_mblen"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mblen</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2786,7 +2786,7 @@
 <span id="Libc_mbstowcs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mbstowcs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L56" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2798,7 +2798,7 @@
 <span id="Libc_mbtowc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">mbtowc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L62" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L53" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3062,7 +3062,7 @@
 <span id="Libc_qsort"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">qsort</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3074,7 +3074,7 @@
 <span id="Libc_quick_exit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">quick_exit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L39" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3086,7 +3086,7 @@
 <span id="Libc_rand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">rand</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3098,7 +3098,7 @@
 <span id="Libc_realloc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">realloc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3435,7 +3435,7 @@
 <span id="Libc_srand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">srand</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L36" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3463,7 +3463,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfprintf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfprintf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SItr">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SItr">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3475,7 +3475,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfscanf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vfscanf</span>(_Options: <span class="STpe">u64</span>, _Stream: *<span class="SCst"><a href="#Libc_FILE">FILE</a></span>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SItr">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SItr">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3487,7 +3487,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsprintf</span>(_Options: <span class="STpe">u64</span>, _Buffer: *<span class="STpe">u8</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsprintf</span>(_Options: <span class="STpe">u64</span>, _Buffer: *<span class="STpe">u8</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SItr">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SItr">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3499,7 +3499,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsscanf</span>(_Options: <span class="STpe">u64</span>, _Buffer: <span class="STpe">cstring</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SCmp">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SCmp">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stdio_common_vsscanf</span>(_Options: <span class="STpe">u64</span>, _Buffer: <span class="STpe">cstring</span>, _BufferCount: <a href="#Libc_size_t">size_t</a>, _Format: <span class="STpe">cstring</span>, _Locale: <span class="SItr">#null</span> *<span class="STpe">void</span>, _ArgList: <span class="SItr">#null</span> *<span class="STpe">void</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3699,7 +3699,7 @@
 <span id="Libc_strtod"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtod</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L28" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3711,7 +3711,7 @@
 <span id="Libc_strtof"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtof</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L20" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3735,7 +3735,7 @@
 <span id="Libc_strtol"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtol</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L21" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3747,7 +3747,7 @@
 <span id="Libc_strtoll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtoll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L31" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3759,7 +3759,7 @@
 <span id="Libc_strtoul"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtoul</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L32" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L23" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3771,7 +3771,7 @@
 <span id="Libc_strtoull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">strtoull</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -3795,7 +3795,7 @@
 <span id="Libc_system"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">system</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L49" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L40" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4143,7 +4143,7 @@
 <span id="Libc_wcstombs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">wcstombs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4155,13 +4155,13 @@
 <span id="Libc_wctomb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Libc.</span><span class="api-item-title-strong">wctomb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/libc\src\stdlib.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wctomb</span>(s: *<span class="STpe">u8</span>, wc: <a href="#Libc_wchar_t">wchar_t</a>)-&gt;<span class="STpe">s32</span></span></div>
 <div class="swag-watermark">
-Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

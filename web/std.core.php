@@ -198,7 +198,9 @@
 <li><a href="#Core_Hash_Adler32">Adler32</a></li>
 <li><a href="#Core_Hash_City32">City32</a></li>
 <li><a href="#Core_Hash_Crc32">Crc32</a></li>
+<li><a href="#Core_Hash_Crc64">Crc64</a></li>
 <li><a href="#Core_Hash_Md5">Md5</a></li>
+<li><a href="#Core_Hash_Sha1">Sha1</a></li>
 <li><a href="#Core_Hash_Sha256">Sha256</a></li>
 </ul>
 <h4>diagnostics</h4>
@@ -241,7 +243,6 @@
 <li><a href="#Core_Math_Point">Point</a></li>
 <li><a href="#Core_Math_Rectangle">Rectangle</a></li>
 <li><a href="#Core_Math_Transform2">Transform2</a></li>
-<li><a href="#Core_Math_Variant">Variant</a></li>
 <li><a href="#Core_Math_Vector2">Vector2</a></li>
 <li><a href="#Core_Math_Vector3">Vector3</a></li>
 <li><a href="#Core_Math_Vector4">Vector4</a></li>
@@ -328,6 +329,7 @@
 <h4>crypto</h4>
 <ul>
 <li><a href="#Core_Hash_IHash32">IHash32</a></li>
+<li><a href="#Core_Hash_IHash64">IHash64</a></li>
 </ul>
 <h4>diagnostics</h4>
 <ul>
@@ -356,6 +358,10 @@
 <li><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></li>
 <li><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></li>
 <li><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></li>
+</ul>
+<h4>crypto</h4>
+<ul>
+<li><a href="#Core_Hash_Crc64Kind">Crc64Kind</a></li>
 </ul>
 <h4>diagnostics</h4>
 <ul>
@@ -390,6 +396,7 @@
 <ul>
 <li><a href="#Core_Serialization_SectionKind">SectionKind</a></li>
 <li><a href="#Core_Serialization_Write_TagBinSignatures">TagBinSignatures</a></li>
+<li><a href="#Core_Serialization_Write_TagBinValueFlags">TagBinValueFlags</a></li>
 </ul>
 <h4>system</h4>
 <ul>
@@ -428,6 +435,10 @@
 <h4>rand</h4>
 <ul>
 <li><a href="#Core_Random_NN">NN</a></li>
+</ul>
+<h4>serialization/write</h4>
+<ul>
+<li><a href="#Core_Serialization_Write_TagBinVersion">TagBinVersion</a></li>
 </ul>
 <h4>system</h4>
 <ul>
@@ -488,6 +499,10 @@
 <li><a href="#Core_Math_ConstF32">ConstF32</a></li>
 <li><a href="#Core_Math_ConstF64">ConstF64</a></li>
 </ul>
+<h4>serialization/read</h4>
+<ul>
+<li><a href="#Core_Serialization_Read_Buffer">Buffer</a></li>
+</ul>
 <h4>system</h4>
 <ul>
 <li><a href="#Core_Env_ProcessHandle">ProcessHandle</a></li>
@@ -505,6 +520,7 @@
 <h4>serialization</h4>
 <ul>
 <li><a href="#Core_Serialization_Alias">Alias</a></li>
+<li><a href="#Core_Serialization_Compress">Compress</a></li>
 <li><a href="#Core_Serialization_Final">Final</a></li>
 <li><a href="#Core_Serialization_NoSerialize">NoSerialize</a></li>
 <li><a href="#Core_Serialization_Version">Version</a></li>
@@ -727,7 +743,10 @@
 <li><a href="#Core_Hash_Crc32_compute">Crc32.compute</a></li>
 <li><a href="#Core_Hash_Crc32_init">Crc32.init</a></li>
 <li><a href="#Core_Hash_Crc32_update">Crc32.update</a></li>
+<li><a href="#Core_Hash_Crc64_compute">Crc64.compute</a></li>
+<li><a href="#Core_Hash_Crc64_update">Crc64.update</a></li>
 <li><a href="#Core_Hash_hash32">Hash.hash32</a></li>
+<li><a href="#Core_Hash_hash64">Hash.hash64</a></li>
 <li><a href="#Core_Hash_jenkins">Hash.jenkins</a></li>
 <li><a href="#Core_Hash_murmur3">Hash.murmur3</a></li>
 <li><a href="#Core_Hash_Md5_compute">Md5.compute</a></li>
@@ -735,6 +754,10 @@
 <li><a href="#Core_Hash_Md5_init">Md5.init</a></li>
 <li><a href="#Core_Hash_Md5_toString">Md5.toString</a></li>
 <li><a href="#Core_Hash_Md5_update">Md5.update</a></li>
+<li><a href="#Core_Hash_Sha1_compute">Sha1.compute</a></li>
+<li><a href="#Core_Hash_Sha1_final">Sha1.final</a></li>
+<li><a href="#Core_Hash_Sha1_init">Sha1.init</a></li>
+<li><a href="#Core_Hash_Sha1_update">Sha1.update</a></li>
 <li><a href="#Core_Hash_Sha256_compute">Sha256.compute</a></li>
 <li><a href="#Core_Hash_Sha256_final">Sha256.final</a></li>
 <li><a href="#Core_Hash_Sha256_init">Sha256.init</a></li>
@@ -953,6 +976,7 @@
 <li><a href="#Core_Math_map">Math.map</a></li>
 <li><a href="#Core_Math_max">Math.max</a></li>
 <li><a href="#Core_Math_min">Math.min</a></li>
+<li><a href="#Core_Math_moveTowards">Math.moveTowards</a></li>
 <li><a href="#Core_Math_mulAdd">Math.mulAdd</a></li>
 <li><a href="#Core_Math_mulU64">Math.mulU64</a></li>
 <li><a href="#Core_Math_nativeToBigEndian">Math.nativeToBigEndian</a></li>
@@ -1057,16 +1081,6 @@
 <li><a href="#Core_Math_Transform2_setIdentity">Transform2.setIdentity</a></li>
 <li><a href="#Core_Math_Transform2_setTranslation">Transform2.setTranslation</a></li>
 <li><a href="#Core_Math_Transform2_transformPoint">Transform2.transformPoint</a></li>
-<li><a href="#Core_Math_Variant_checkValidType">Variant.checkValidType</a></li>
-<li><a href="#Core_Math_Variant_drop">Variant.drop</a></li>
-<li><a href="#Core_Math_Variant_get">Variant.get</a></li>
-<li><a href="#Core_Math_Variant_opAffect">Variant.opAffect</a></li>
-<li><a href="#Core_Math_Variant_opCmp">Variant.opCmp</a></li>
-<li><a href="#Core_Math_Variant_opDrop">Variant.opDrop</a></li>
-<li><a href="#Core_Math_Variant_opEquals">Variant.opEquals</a></li>
-<li><a href="#Core_Math_Variant_opPostCopy">Variant.opPostCopy</a></li>
-<li><a href="#Core_Math_Variant_opPostMove">Variant.opPostMove</a></li>
-<li><a href="#Core_Math_Variant_set">Variant.set</a></li>
 <li><a href="#Core_Math_Vector2_angle0To2Pi">Vector2.angle0To2Pi</a></li>
 <li><a href="#Core_Math_Vector2_angleTo">Vector2.angleTo</a></li>
 <li><a href="#Core_Math_Vector2_ceil">Vector2.ceil</a></li>
@@ -1338,7 +1352,7 @@
 <li><a href="#Core_Serialization_Decoder_end">Decoder.end</a></li>
 <li><a href="#Core_Serialization_Decoder_readAll">Decoder.readAll</a></li>
 <li><a href="#Core_Serialization_Decoder_readTypeValue">Decoder.readTypeValue</a></li>
-<li><a href="#Core_Serialization_Decoder_readValue">Decoder.readValue</a></li>
+<li><a href="#Core_Serialization_Decoder_readTypedContent">Decoder.readTypedContent</a></li>
 <li><a href="#Core_Serialization_Decoder_start">Decoder.start</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_beginField">IDecoder.beginField</a></li>
 <li><a href="#Core_Serialization_Decoder_IDecoder_beginSection">IDecoder.beginSection</a></li>
@@ -1524,6 +1538,8 @@
 <li><a href="#Core_Env_getDPIScale">Env.getDPIScale</a></li>
 <li><a href="#Core_Env_getExe">Env.getExe</a></li>
 <li><a href="#Core_Env_getMetric">Env.getMetric</a></li>
+<li><a href="#Core_Env_getMonitorForPoint">Env.getMonitorForPoint</a></li>
+<li><a href="#Core_Env_getMonitorForRect">Env.getMonitorForRect</a></li>
 <li><a href="#Core_Env_getMonitors">Env.getMonitors</a></li>
 <li><a href="#Core_Env_getSpecialDirectory">Env.getSpecialDirectory</a></li>
 <li><a href="#Core_Env_hasArg">Env.hasArg</a></li>
@@ -1628,6 +1644,8 @@
 <li><a href="#Core_StrConv_parseU8">StrConv.parseU8</a></li>
 <li><a href="#Core_StrConv_parseValue">StrConv.parseValue</a></li>
 <li><a href="#Core_StrConv_parseX64">StrConv.parseX64</a></li>
+<li><a href="#Core_StrConv_toDisplayBitrate">StrConv.toDisplayBitrate</a></li>
+<li><a href="#Core_StrConv_toDisplayDuration">StrConv.toDisplayDuration</a></li>
 <li><a href="#Core_StrConv_toDisplaySize">StrConv.toDisplaySize</a></li>
 <li><a href="#Core_StrConv_toF32">StrConv.toF32</a></li>
 <li><a href="#Core_StrConv_toF64">StrConv.toF64</a></li>
@@ -1932,6 +1950,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Core_Serialization_Write_TagBinVersion">TagBinVersion</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Core_StringSmallSize">StringSmallSize</td>
 <td class="code-type"><span class="STpe">u64</span></td>
 <td></td>
@@ -2145,6 +2168,11 @@
 <td></td>
 </tr>
 <tr>
+<td id="Core_Serialization_Read_Buffer">Buffer</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Read">Read</a></span>.<span class="SCst"><a href="#Core_Serialization_Read_Buffer">Buffer</a></span></span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Core_Threading_ThreadHandle">ThreadHandle</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Threading">Threading</a></span>.<span class="SCst"><a href="#Core_Threading_ThreadHandle">ThreadHandle</a></span></span></td>
 <td></td>
@@ -2181,7 +2209,7 @@
 </tr>
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></td>
 <td>Pointer to the contiguous memory block holding the elements. </td>
 </tr>
 <tr>
@@ -2192,22 +2220,22 @@
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>The total number of elements that can be stored in the allocated buffer. </td>
+<td>The total number of elements that can be stored in the allocated me.buffer. </td>
 </tr>
 </table>
 <p>It automatically manages memory and grows as needed. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Moves an element to the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>)</span></td>
 <td>Adds a copy of an element to the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Appends all elements from a slice to the end of the array. </td>
 </tr>
 <tr>
@@ -2224,7 +2252,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_clear">clear</a></span></td>
-<td>Removes all elements from the array, setting its count to 0. </td>
+<td>Removes all elements from the array, setting its me.count to 0. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_contains">contains</a></span></td>
@@ -2275,15 +2303,15 @@
 <td>Ensures the array contains at least <span class="code-inline">newCount</span> elements. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Inserts a moved value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
 <td>Inserts a copy of a value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Inserts elements from a slice at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
@@ -2296,7 +2324,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_realloc">realloc</a></span></td>
-<td>Reallocates the internal buffer to a new capacity. </td>
+<td>Reallocates the internal me.buffer to a new capacity. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_ref1">ref1</a></span></td>
@@ -2307,11 +2335,11 @@
 <td>Returns a mutable reference to an element using 2D coordinates and a width. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">V</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">V</span>)</span></td>
 <td>Removes the first occurrence of a given value from the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_remove">remove</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td>Removes a specified number of elements starting from a given index. </td>
 </tr>
 <tr>
@@ -2339,11 +2367,11 @@
 <td>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Sorts the array in ascending order using the default comparison operator. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_sort">sort</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
 <td>Sorts the array using a custom comparison function. </td>
 </tr>
 <tr>
@@ -2355,11 +2383,11 @@
 <td>Swaps two elements in the array by their indices. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns a mutable slice containing all elements of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns an immutable slice containing all elements of the array. </td>
 </tr>
 </table>
@@ -2370,11 +2398,11 @@
 <td>Replaces the content of the array with elements copied from a slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Allows the array to be implicitly cast to a mutable slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Allows the array to be implicitly cast to an immutable slice. </td>
 </tr>
 <tr>
@@ -2383,18 +2411,18 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opData">opData</a></span></td>
-<td>Returns a raw, constant pointer to the array's buffer. </td>
+<td>Returns a raw, constant pointer to the array's me.buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Array_opDrop">opDrop</a></span></td>
 <td>Ensures the allocated memory is freed when the array goes out of scope. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td>Returns a mutable reference to the element at the specified index. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Array_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td>Returns a constant reference to the element at the specified index. </td>
 </tr>
 <tr>
@@ -2429,7 +2457,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2442,11 +2470,11 @@
 </table>
 </p>
 <p>Adds a copy of an element to the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)</span></div>
 <p>Moves an element to the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, value: &&<span class="SCst">T</span>)</span></div>
 <p>Appends all elements from a slice to the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, values: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2459,7 +2487,7 @@
 </table>
 </p>
 <p>Adds an element to the end of the array, but only if it's not already present. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)</span></div>
 <p>This is slower than <span class="code-inline">add</span> due to the containment check. </p>
 <p>
 <table class="api-item">
@@ -2473,7 +2501,7 @@
 </table>
 </p>
 <p>Returns a copy of the last element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -2487,7 +2515,7 @@
 </table>
 </p>
 <p>Returns a pointer to the last element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="STpe">me</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -2500,8 +2528,8 @@
 </tr>
 </table>
 </p>
-<p>Removes all elements from the array, setting its count to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Removes all elements from the array, setting its me.count to 0. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>This calls the destructor for each element if one exists, but does not deallocate memory. </p>
 <p>
 <table class="api-item">
@@ -2515,7 +2543,7 @@
 </table>
 </p>
 <p>Returns <span class="code-inline">true</span> if the array contains the given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="STpe">me</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2529,7 +2557,7 @@
 </p>
 <p>Creates a new byte array of a given size. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">createBuffer</span>(size: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)</span></div>
-<p>Often used for raw memory buffers. </p>
+<p>Often used for raw memory me.buffers. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2556,7 +2584,7 @@
 </table>
 </p>
 <p>Reserves space for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the start of the new space. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="STpe">me</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;[*] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>The new memory is not initialized. </p>
 <p>
 <table class="api-item">
@@ -2570,7 +2598,7 @@
 </table>
 </p>
 <p>Moves elements from a slice at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, values: [..] <span class="SCst">T</span>)</span></div>
 <p>Order is preserved. </p>
 <p>
 <table class="api-item">
@@ -2584,7 +2612,7 @@
 </table>
 </p>
 <p>Reserves space for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the start of the new space. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="STpe">me</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;[*] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>The new memory is default-initialized. </p>
 <p>
 <table class="api-item">
@@ -2598,7 +2626,7 @@
 </table>
 </p>
 <p>Fills the entire array with the given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fill</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)</span></div>
 <p>All existing elements are overwritten. </p>
 <p>
 <table class="api-item">
@@ -2612,7 +2640,7 @@
 </table>
 </p>
 <p>Frees the array's memory and resets its state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="STpe">me</span>)</span></div>
 <p>If elements have destructors, they are called. </p>
 <p>
 <table class="api-item">
@@ -2626,7 +2654,7 @@
 </table>
 </p>
 <p>Returns a copy of the first element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -2640,7 +2668,7 @@
 </table>
 </p>
 <p>Returns a pointer to the first element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="STpe">me</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -2654,8 +2682,8 @@
 </table>
 </p>
 <p>Ensures the array has enough capacity to store at least <span class="code-inline">newCount</span> elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>If the current capacity is insufficient, it will be increased. The element count remains unchanged. See also [[reserve]]. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="STpe">me</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<p>If the current capacity is insufficient, it will be increased. The element me.count remains unchanged. See also [[reserve]]. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2668,8 +2696,8 @@
 </table>
 </p>
 <p>Ensures the array contains at least <span class="code-inline">newCount</span> elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">growResize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>If the current count is less than <span class="code-inline">newCount</span>, new elements are added and default-initialized. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">growResize</span>(<span class="STpe">me</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<p>If the current me.count is less than <span class="code-inline">newCount</span>, new elements are added and default-initialized. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2682,13 +2710,13 @@
 </table>
 </p>
 <p>Inserts a copy of a value at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>Order is preserved. </p>
 <p>Inserts a moved value at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: &&<span class="SCst">T</span>)</span></div>
 <p>Order is preserved. </p>
 <p>Inserts elements from a slice at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>Order is preserved. </p>
 <p>
 <table class="api-item">
@@ -2702,7 +2730,7 @@
 </table>
 </p>
 <p>Returns <span class="code-inline">true</span> if the array contains no elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2715,7 +2743,7 @@
 </table>
 </p>
 <p>Replaces the content of the array with elements copied from a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, arr: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, arr: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2728,9 +2756,9 @@
 </table>
 </p>
 <p>Allows the array to be implicitly cast to a mutable slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="STpe">me</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Allows the array to be implicitly cast to an immutable slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2743,7 +2771,7 @@
 </table>
 </p>
 <p>Returns the number of elements in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2755,8 +2783,8 @@
 </tr>
 </table>
 </p>
-<p>Returns a raw, constant pointer to the array's buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<p>Returns a raw, constant pointer to the array's me.buffer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2769,7 +2797,7 @@
 </table>
 </p>
 <p>Ensures the allocated memory is freed when the array goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2782,9 +2810,9 @@
 </table>
 </p>
 <p>Returns a constant reference to the element at the specified index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Returns a mutable reference to the element at the specified index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2797,7 +2825,7 @@
 </table>
 </p>
 <p>Assigns a new value to the element at the specified index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2810,7 +2838,7 @@
 </table>
 </p>
 <p>Handles compound assignment operators (e.g., <span class="code-inline">+=</span>, <span class="code-inline">-=</span>) for elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2823,8 +2851,8 @@
 </table>
 </p>
 <p>Handles the deep copy of the array when it is copied. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>A new buffer is allocated and the content is copied over. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>)</span></div>
+<p>A new me.buffer is allocated and the content is copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2837,7 +2865,7 @@
 </table>
 </p>
 <p>Creates a slice from a sub-part of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="STpe">me</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -2851,7 +2879,7 @@
 </p>
 <p>Provides a way to iterate over each element in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each element. Visiting by address and in reverse order is supported via parameters. Aliases: #alias0 for the element or a pointer to it, #alias1 for the index. </p>
 <p>
 <table class="api-item">
@@ -2865,7 +2893,7 @@
 </table>
 </p>
 <p>Removes the last element from the array and returns it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -2878,8 +2906,8 @@
 </tr>
 </table>
 </p>
-<p>Reallocates the internal buffer to a new capacity. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<p>Reallocates the internal me.buffer to a new capacity. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(<span class="STpe">me</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>This is a low-level memory operation that handles moving existing elements. </p>
 <p>
 <table class="api-item">
@@ -2893,7 +2921,7 @@
 </table>
 </p>
 <p>Returns a mutable reference to an element using a single coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref1</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref1</span>(<span class="STpe">me</span>, x: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>This can be used to treat the array as a 1D grid. </p>
 <p>
 <table class="api-item">
@@ -2907,7 +2935,7 @@
 </table>
 </p>
 <p>Returns a mutable reference to an element using 2D coordinates and a width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref2</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, w: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ref2</span>(<span class="STpe">me</span>, x, y, w: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>This can be used to treat the array as a 2D grid. </p>
 <p>
 <table class="api-item">
@@ -2921,10 +2949,10 @@
 </table>
 </p>
 <p>Removes a specified number of elements starting from a given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="STpe">me</span>, index, num: <span class="STpe">u64</span>)</span></div>
 <p>This is an unstable remove; the order of remaining elements is not preserved. </p>
 <p>Removes the first occurrence of a given value from the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="STpe">me</span>, value: <span class="SCst">V</span>)</span></div>
 <p>This is an unstable remove; order is not preserved. Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
@@ -2938,7 +2966,7 @@
 </table>
 </p>
 <p>Removes the element at a given index by swapping it with the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>)</span></div>
 <p>This is very fast, but the order of elements is not preserved. </p>
 <p>
 <table class="api-item">
@@ -2952,7 +2980,7 @@
 </table>
 </p>
 <p>Removes one or more elements at a given index, shifting subsequent elements to the left. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>This is slower than <span class="code-inline">removeAt</span>, but preserves the order of the remaining elements. </p>
 <p>
 <table class="api-item">
@@ -2966,7 +2994,7 @@
 </table>
 </p>
 <p>Removes the last element from the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="STpe">me</span>)</span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -2980,7 +3008,7 @@
 </table>
 </p>
 <p>Removes the first occurrence of a given value, preserving the order of remaining elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="STpe">me</span>, value: <span class="SCst">V</span>)</span></div>
 <p>Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
@@ -2994,7 +3022,7 @@
 </table>
 </p>
 <p>Sets the array's capacity to at least <span class="code-inline">newCapacity</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="STpe">me</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>This does not change the number of elements in the array. </p>
 <p>
 <table class="api-item">
@@ -3008,8 +3036,8 @@
 </table>
 </p>
 <p>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
-<p>If <span class="code-inline">newCount</span> is greater than the current count, new elements are default-initialized. If <span class="code-inline">newCount</span> is smaller, excess elements are dropped. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="STpe">me</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<p>If <span class="code-inline">newCount</span> is greater than the current me.count, new elements are default-initialized. If <span class="code-inline">newCount</span> is smaller, excess elements are dropped. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -3022,9 +3050,9 @@
 </table>
 </p>
 <p>Sorts the array in ascending order using the default comparison operator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="STpe">me</span>)</span></div>
 <p>Sorts the array using a custom comparison function. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="STpe">me</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3037,7 +3065,7 @@
 </table>
 </p>
 <p>Sorts the array in descending order. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3050,7 +3078,7 @@
 </table>
 </p>
 <p>Swaps two elements in the array by their indices. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">swap</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, idx0, idx1: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">swap</span>(<span class="STpe">me</span>, idx0, idx1: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3063,9 +3091,9 @@
 </table>
 </p>
 <p>Returns a mutable slice containing all elements of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="STpe">me</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>Returns an immutable slice containing all elements of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_Array">Array</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3129,7 +3157,7 @@
 </table>
 </p>
 <p>Allocates a new object, adds its pointer to the end of the array, and returns the pointer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addNewPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addNewPtr</span>(<span class="STpe">me</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3142,7 +3170,7 @@
 </table>
 </p>
 <p>Deallocates all objects pointed to by the elements in the array and clears the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>The array's count is set to 0, but the capacity is not changed. </p>
 <p>
 <table class="api-item">
@@ -3156,7 +3184,7 @@
 </table>
 </p>
 <p>Deallocates the memory for a single given pointer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deletePtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, item: *<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">deletePtr</span>(<span class="STpe">me</span>, item: *<span class="SCst">T</span>)</span></div>
 <p>The pointer is expected to have been allocated using this array's allocator. </p>
 <p>
 <table class="api-item">
@@ -3170,7 +3198,7 @@
 </table>
 </p>
 <p>Allocates memory for a new object of type T using the array's allocator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">newPtr</span>(<span class="STpe">me</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_ArrayPtr">ArrayPtr</a></span>.<span class="SCst">T</span></span></div>
 <p>Returns a pointer to the newly allocated memory. </p>
 <p>
 <table class="api-item">
@@ -3184,7 +3212,7 @@
 </table>
 </p>
 <p>Ensures that all pointed-to objects are deallocated when the array goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3197,7 +3225,7 @@
 </table>
 </p>
 <p>Handles the deep copy of the array and the objects it points to. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>)</span></div>
 <p>When the array is copied, new memory is allocated for each element, and the content is copied over, ensuring the new array owns its own set of objects. </p>
 <p>
 <table class="api-item">
@@ -3583,7 +3611,7 @@
 <table class="table-enumeration">
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">^<span class="STpe">u32</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="STpe">u32</span></span></td>
 <td>Internal buffer storing the bits packed into 32-bit integers. </td>
 </tr>
 <tr>
@@ -3614,11 +3642,11 @@
 <td>Returns the boolean value of the bit at a specific position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Inverts all bit values in the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_invert">invert</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td>Inverts the value of the bit at a specific position. </td>
 </tr>
 <tr>
@@ -3626,11 +3654,11 @@
 <td>Performs a bitwise OR operation between this array and another. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td>Reserves capacity for a given number of bits. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_BitArray_reserve">reserve</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="STpe">bool</span>)</span></td>
 <td>Reserves capacity for a given number of bits and initializes them to a specific value. </td>
 </tr>
 <tr>
@@ -3693,7 +3721,7 @@
 </table>
 </p>
 <p>Performs a bitwise AND operation between this array and another. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">andWith</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></div>
 <p>The current array is modified to store the result. Asserts that arrays are of the same size. </p>
 <p>
 <table class="api-item">
@@ -3707,7 +3735,7 @@
 </table>
 </p>
 <p>Returns the boolean value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3720,10 +3748,10 @@
 </table>
 </p>
 <p>Inverts the value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>)</span></div>
 <p>Changes a <span class="code-inline">true</span> bit to <span class="code-inline">false</span> and a <span class="code-inline">false</span> bit to <span class="code-inline">true</span>. </p>
 <p>Inverts all bit values in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="STpe">me</span>)</span></div>
 <p>Bits set to <span class="code-inline">true</span> are changed to <span class="code-inline">false</span>, and vice versa. </p>
 <p>
 <table class="api-item">
@@ -3737,7 +3765,7 @@
 </table>
 </p>
 <p>Replaces the content of the bit array with values from a slice of booleans. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3750,7 +3778,7 @@
 </table>
 </p>
 <p>Returns the number of bits in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3763,7 +3791,7 @@
 </table>
 </p>
 <p>Ensures the allocated memory is freed when the array goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3776,7 +3804,7 @@
 </table>
 </p>
 <p>Compares this bit array with another one for equality. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns <span class="code-inline">true</span> if both arrays have the same bit count and all bits are identical. </p>
 <p>
 <table class="api-item">
@@ -3790,7 +3818,7 @@
 </table>
 </p>
 <p>Returns the boolean value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3803,7 +3831,7 @@
 </table>
 </p>
 <p>Sets the value of the bit at a specific position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3816,7 +3844,7 @@
 </table>
 </p>
 <p>Handles the deep copy of the array when it is copied. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>)</span></div>
 <p>A new buffer is allocated and the content is copied over. </p>
 <p>
 <table class="api-item">
@@ -3831,7 +3859,7 @@
 </p>
 <p>Provides a way to iterate over each bit in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each bit. Aliases: #alias0 for the boolean value, #alias1 for the index. </p>
 <p>
 <table class="api-item">
@@ -3845,7 +3873,7 @@
 </table>
 </p>
 <p>Performs a bitwise OR operation between this array and another. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">orWith</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></div>
 <p>The current array is modified to store the result. Asserts that arrays are of the same size. </p>
 <p>
 <table class="api-item">
@@ -3859,10 +3887,10 @@
 </table>
 </p>
 <p>Reserves capacity for a given number of bits. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, maxBits: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="STpe">me</span>, maxBits: <span class="STpe">u64</span>)</span></div>
 <p>The allocated memory is not initialized. </p>
 <p>Reserves capacity for a given number of bits and initializes them to a specific value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, maxBits: <span class="STpe">u64</span>, initialValue: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="STpe">me</span>, maxBits: <span class="STpe">u64</span>, initialValue: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3875,7 +3903,7 @@
 </table>
 </p>
 <p>Sets the bit at a specific position to the specified value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3888,7 +3916,7 @@
 </table>
 </p>
 <p>Sets all bits in the array to the specified boolean value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAll</span>(<span class="STpe">me</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -3901,7 +3929,7 @@
 </table>
 </p>
 <p>Performs a bitwise XOR operation between this array and another. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xorWith</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_BitArray">BitArray</a></span>)</span></div>
 <p>The current array is modified to store the result. Asserts that arrays are of the same size. </p>
 <p>
 <table class="api-item">
@@ -4016,7 +4044,7 @@
 </table>
 </p>
 <p>Returns the current seek position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4029,7 +4057,7 @@
 </table>
 </p>
 <p>Returns true if the end of the buffer was reached during reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEof</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEof</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4042,7 +4070,7 @@
 </table>
 </p>
 <p>Returns the total length of the buffer (read or write). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4055,7 +4083,7 @@
 </table>
 </p>
 <p>Advances the seek by a specified offset (default is 1). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="STpe">me</span>, offset: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4094,7 +4122,7 @@
 </table>
 </p>
 <p>Peeks at a single byte without consuming it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekU8</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4107,7 +4135,7 @@
 </table>
 </p>
 <p>Reads <span class="code-inline">count</span> bytes from the stream into <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: *<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBytes</span>(<span class="STpe">me</span>, dest: *<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4120,7 +4148,7 @@
 </table>
 </p>
 <p>Returns a pointer to the underlying read or write buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readData</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [*] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4133,7 +4161,7 @@
 </table>
 </p>
 <p>Reads a native value of type <span class="code-inline">T</span> from the stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">T</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readNative</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">T</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4146,7 +4174,7 @@
 </table>
 </p>
 <p>Reads and consumes a single byte. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4159,7 +4187,7 @@
 </table>
 </p>
 <p>Returns a slice of unread bytes from the current seek to the end. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToSlice</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4172,7 +4200,7 @@
 </table>
 </p>
 <p>Returns a string of unread bytes from the current seek to the end. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remainReadToString</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4185,7 +4213,7 @@
 </table>
 </p>
 <p>Sets the seek to a specific offset. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="STpe">me</span>, offset: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4198,7 +4226,7 @@
 </table>
 </p>
 <p>Writes a slice of bytes to the stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBytes</span>(<span class="STpe">me</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4211,7 +4239,7 @@
 </table>
 </p>
 <p>Writes a native value of type <span class="code-inline">T</span> to the stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">writeNative</span>(<span class="STpe">me</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4423,7 +4451,7 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Compress_Deflate"><span class="SCst">Deflate</span></a></td>
-<td></td>
+<td>Main structure representing a Deflate compression context. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Compress_Inflate"><span class="SCst">Inflate</span></a></td>
@@ -4548,7 +4576,7 @@
 </table>
 </p>
 <p>Consumes <span class="code-inline">width</span> bits from the buffer (advances the bit position). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">consumeBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">consumeBits</span>(<span class="STpe">me</span>, width: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4561,7 +4589,7 @@
 </table>
 </p>
 <p>Returns a pointer to the current byte in the stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">curPtr</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [*] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4574,7 +4602,7 @@
 </table>
 </p>
 <p>Discards bits to align to the next byte boundary. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">discardToNextByte</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">discardToNextByte</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4587,7 +4615,7 @@
 </table>
 </p>
 <p>Initializes the bit stream with an input buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4600,7 +4628,7 @@
 </table>
 </p>
 <p>Peeks 4 bytes (little-endian) into <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32</span>(<span class="STpe">me</span>, dest: [*] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4613,7 +4641,7 @@
 </table>
 </p>
 <p>Peeks 4 bytes (big-endian) into <span class="code-inline">dest</span>, auto-switches based on platform. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32Be</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dest: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peek32Be</span>(<span class="STpe">me</span>, dest: [*] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4626,7 +4654,7 @@
 </table>
 </p>
 <p>Returns next <span class="code-inline">width</span> bits without consuming them (refills if needed). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBits</span>(<span class="STpe">me</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4639,7 +4667,7 @@
 </table>
 </p>
 <p>Like peekBits, but assumes enough bits are already available. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBitsNoRefill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBitsNoRefill</span>(<span class="STpe">me</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4652,7 +4680,7 @@
 </table>
 </p>
 <p>Peeks <span class="code-inline">width</span> bytes into <span class="code-inline">dest</span>, consuming bits after each byte. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>, dest: ^<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">peekBytes</span>(<span class="STpe">me</span>, width: <span class="STpe">u8</span>, dest: [*] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4665,7 +4693,7 @@
 </table>
 </p>
 <p>Reads and consumes <span class="code-inline">width</span> bits from the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBits</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBits</span>(<span class="STpe">me</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4678,7 +4706,7 @@
 </table>
 </p>
 <p>Reads and consumes <span class="code-inline">width</span> bits without checking buffer availability. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBitsNoRefill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBitsNoRefill</span>(<span class="STpe">me</span>, width: <span class="STpe">u8</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4691,7 +4719,7 @@
 </table>
 </p>
 <p>Refills the bit buffer until at least <span class="code-inline">width</span> bits are available. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, width = <span class="SNum">24</span>'<span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">refill</span>(<span class="STpe">me</span>, width = <span class="SNum">24</span>'<span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4704,7 +4732,7 @@
 </table>
 </p>
 <p>Reverts stream to last byte-aligned state (undo partial read). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">revert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">revert</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4717,7 +4745,7 @@
 </table>
 </p>
 <p>Returns the total size of the stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4730,7 +4758,7 @@
 </table>
 </p>
 <p>Returns a pointer to the beginning of the stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startPtr</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [*] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4738,10 +4766,11 @@
 <span id="Core_Compress_Deflate"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Compress.</span><span class="api-item-title-strong">Deflate</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L149" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Main structure representing a Deflate compression context. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -4771,18 +4800,19 @@
 </tr>
 </table>
 </p>
+<p>Flags controlling compression behavior. </p>
 <table class="table-enumeration">
 <tr>
 <td>Zero</td>
-<td></td>
+<td>No compression flags. </td>
 </tr>
 <tr>
 <td>ComputeAdler32</td>
-<td></td>
+<td>Compute Adler-32 checksum after compression. </td>
 </tr>
 <tr>
 <td>Default</td>
-<td></td>
+<td>Default flag: computes Adler-32. </td>
 </tr>
 </table>
 <p>
@@ -4792,30 +4822,31 @@
 <span id="Core_Compress_Deflate_CompressionLevel"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionLevel</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Compression level to use (mapped to number of probes and strategies). </p>
 <table class="table-enumeration">
 <tr>
 <td>NoCompression</td>
-<td></td>
+<td>Disables compression (raw storage). </td>
 </tr>
 <tr>
 <td>BestSpeed</td>
-<td></td>
+<td>Fastest compression, less effective. </td>
 </tr>
 <tr>
 <td>Default</td>
-<td></td>
+<td>Balanced default compression. </td>
 </tr>
 <tr>
 <td>BestCompression</td>
-<td></td>
+<td>High compression ratio, slower. </td>
 </tr>
 <tr>
 <td>UberCompression</td>
-<td></td>
+<td>Maximum compression effort. </td>
 </tr>
 </table>
 <p>
@@ -4825,30 +4856,31 @@
 <span id="Core_Compress_Deflate_CompressionStrategy"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">CompressionStrategy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Strategy for compression to influence algorithm behavior. </p>
 <table class="table-enumeration">
 <tr>
 <td>Default</td>
-<td></td>
+<td>Default compression strategy. </td>
 </tr>
 <tr>
 <td>Filtered</td>
-<td></td>
+<td>Filter out potentially poor matches. </td>
 </tr>
 <tr>
 <td>HuffmanOnly</td>
-<td></td>
+<td>Use only Huffman coding, no match search. </td>
 </tr>
 <tr>
 <td>Rle</td>
-<td></td>
+<td>Run-length encoding. </td>
 </tr>
 <tr>
 <td>Fixed</td>
-<td></td>
+<td>Use fixed Huffman codes. </td>
 </tr>
 </table>
 <p>
@@ -4858,12 +4890,12 @@
 <span id="Core_Compress_Deflate_compress"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">compress</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1140" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1142" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compress the source buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="STpe">me</span>, result: *<span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>, src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4871,12 +4903,12 @@
 <span id="Core_Compress_Deflate_init"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">init</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Initialize the compressor Can be called multiple times. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>, strategy = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span>.<span class="SCst">Default</span>, flags = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span>.<span class="SCst">Default</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>, strategy = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span>.<span class="SCst">Default</span>, flags = <span class="SCst"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span>.<span class="SCst">Default</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4884,11 +4916,11 @@
 <span id="Core_Compress_Deflate_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Deflate.</span><span class="api-item-title-strong">opDrop</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\compress\deflate.swg#L1123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4919,7 +4951,7 @@
 </table>
 </p>
 <p>Decompress the associated stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, winSize: <span class="STpe">u32</span> = <span class="SCst">InflateMaxDistance</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="STpe">me</span>, result: *<span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">u8</span>, buf: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, winSize: <span class="STpe">u32</span> = <span class="SCst">InflateMaxDistance</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4954,7 +4986,7 @@
 </table>
 </p>
 <p>Decompress stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compress</span>(<span class="STpe">me</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, level = <span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span>.<span class="SCst">Default</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -4967,7 +4999,7 @@
 </table>
 </p>
 <p>Decompress stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">decompress</span>(<span class="STpe">me</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5003,7 +5035,7 @@
 </tr>
 <tr>
 <td>currentSP</td>
-<td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="STpe">u8</span></span></td>
 <td>The current read/write pointer in the <span class="code-inline">curBucket</span>. </td>
 </tr>
 <tr>
@@ -5129,7 +5161,7 @@
 </table>
 </p>
 <p>Appends a slice of bytes to the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBytes</span>(<span class="STpe">me</span>, bytes: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, contiguous = <span class="SKwd">true</span>)</span></div>
 <p>If <span class="code-inline">contiguous</span> is false, the slice can be split across multiple buckets if necessary. </p>
 <p>
 <table class="api-item">
@@ -5143,7 +5175,7 @@
 </table>
 </p>
 <p>Appends a native type (like u8, s32, f64) to the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addNative</span>(<span class="STpe">me</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5156,7 +5188,7 @@
 </table>
 </p>
 <p>Appends the raw byte content of a struct to the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">addStruct</span>(<span class="STpe">me</span>, val: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5169,7 +5201,7 @@
 </table>
 </p>
 <p>Clears the buffer's content without deallocating memory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>This resets the buffer to be empty, allowing its allocated buckets to be reused. </p>
 <p>
 <table class="api-item">
@@ -5183,7 +5215,7 @@
 </table>
 </p>
 <p>Returns the total number of bytes currently stored in the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5209,7 +5241,7 @@
 </table>
 </p>
 <p>Returns a <span class="code-inline">ConcatBufferSeek</span> representing the current position in the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSeek</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5222,7 +5254,7 @@
 </table>
 </p>
 <p>Ensures that there is enough room to store at least <span class="code-inline">numBytes</span> more bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, numBytes: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="STpe">me</span>, numBytes: <span class="STpe">u64</span>)</span></div>
 <p>If the current bucket is full, a new one is allocated. </p>
 <p>
 <table class="api-item">
@@ -5236,7 +5268,7 @@
 </table>
 </p>
 <p>Merges all buckets into a single, contiguous memory block. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLinear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLinear</span>(<span class="STpe">me</span>)</span></div>
 <p>After this call, the buffer is guaranteed to be linear. </p>
 <p>
 <table class="api-item">
@@ -5250,7 +5282,7 @@
 </table>
 </p>
 <p>Moves the current seek pointer forward by <span class="code-inline">num</span> bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveSeek</span>(<span class="STpe">me</span>, num: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5263,7 +5295,7 @@
 </table>
 </p>
 <p>Moves the buffer's content into a new <span class="code-inline">String</span>, invalidating the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>If the buffer is linear (one bucket), this is a fast operation that avoids copying. Otherwise, it falls back to copying the data. </p>
 <p>
 <table class="api-item">
@@ -5277,7 +5309,7 @@
 </table>
 </p>
 <p>Returns the total number of bytes in the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5290,7 +5322,7 @@
 </table>
 </p>
 <p>Ensures all allocated memory is freed when the buffer goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5304,7 +5336,7 @@
 </p>
 <p>Provides a way to iterate over each bucket in the buffer. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each bucket. Alias: #alias0 for the bucket pointer. </p>
 <p>
 <table class="api-item">
@@ -5318,7 +5350,7 @@
 </table>
 </p>
 <p>Frees all memory associated with the buffer, including all buckets. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5331,7 +5363,7 @@
 </table>
 </p>
 <p>Associates a specific allocator with the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllocator</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAllocator</span>(<span class="STpe">me</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span>)</span></div>
 <p>This can only be called when the buffer is empty. </p>
 <p>
 <table class="api-item">
@@ -5345,7 +5377,7 @@
 </table>
 </p>
 <p>Sets the minimum size for new buckets allocated by the buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="STpe">me</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5358,7 +5390,7 @@
 </table>
 </p>
 <p>Sets the end of the buffer to a given <span class="code-inline">seek</span> position, effectively truncating it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setEndSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setEndSeek</span>(<span class="STpe">me</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5371,7 +5403,7 @@
 </table>
 </p>
 <p>Initializes the buffer to use an external, existing slice of data as its first bucket. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFirstBucket</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFirstBucket</span>(<span class="STpe">me</span>, data: [..] <span class="STpe">u8</span>)</span></div>
 <p>This is a "view" mode; the buffer does not own or free this data. </p>
 <p>
 <table class="api-item">
@@ -5385,7 +5417,7 @@
 </table>
 </p>
 <p>Sets the current read/write position to a given <span class="code-inline">seek</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSeek</span>(<span class="STpe">me</span>, seek: <span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5398,7 +5430,7 @@
 </table>
 </p>
 <p>Returns the buffer's content as a slice, but only if the buffer is <span class="code-inline">linear</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="STpe">me</span>)-&gt;[..] <span class="STpe">u8</span></span></div>
 <p>A buffer is linear if it consists of a single bucket. Returns <span class="code-inline">null</span> otherwise. See [[makeLinear]]. </p>
 <p>
 <table class="api-item">
@@ -5412,7 +5444,7 @@
 </table>
 </p>
 <p>Converts the buffer to a <span class="code-inline">String</span> by copying all its content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, alloc: <span class="SCst">Swag</span>.<span class="SCst">IAllocator</span> = <span class="SKwd">null</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>The buffer remains valid after this call. See [[moveToString]] for a more efficient version that avoids copying when possible. </p>
 <p>
 <table class="api-item">
@@ -5425,10 +5457,11 @@
 </tr>
 </table>
 </p>
+<p>Represents a single memory block (a bucket) within a ConcatBuffer. </p>
 <table class="table-enumeration">
 <tr>
 <td>datas</td>
-<td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="STpe">u8</span></span></td>
 <td>Pointer to the raw memory of the bucket. </td>
 </tr>
 <tr>
@@ -5472,7 +5505,7 @@
 </tr>
 <tr>
 <td>sp</td>
-<td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="STpe">u8</span></span></td>
 <td>The exact memory address of the position. </td>
 </tr>
 </table>
@@ -6175,7 +6208,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getArg">getArg</a></span></td>
-<td></td>
+<td>Get a given argument, or null. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getArgs">getArgs</a></span></td>
@@ -6192,6 +6225,14 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getMetric">getMetric</a></span></td>
 <td>Return system metrics. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_getMonitorForPoint">getMonitorForPoint</a></span></td>
+<td>Returns the monitor that contains <span class="code-inline">pt</span> Returns the nearest one if none contain it. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Env_getMonitorForRect">getMonitorForRect</a></span></td>
+<td>Returns the monitor corresponding to the surface position. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Env_getMonitors">getMonitors</a></span></td>
@@ -6233,7 +6274,7 @@
 <span id="Core_Env_Metrics"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">Metrics</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6365,7 +6406,7 @@
 </table>
 </p>
 <p>Wait for the process to be done. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">waitForExit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">waitForExit</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6453,7 +6494,7 @@
 <span id="Core_Env_associateFileExtension"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">associateFileExtension</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L169" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L179" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6496,6 +6537,7 @@
 </tr>
 </table>
 </p>
+<p>Get a given argument, or null. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getArg</span>(idx: <span class="STpe">u32</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -6517,7 +6559,7 @@
 <span id="Core_Env_getDPIScale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">getDPIScale</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L249" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6543,12 +6585,38 @@
 <span id="Core_Env_getMetric"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">getMetric</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L120" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Return system metrics. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMetric</span>(what: <span class="SCst"><a href="#Core_Env_Metrics">Metrics</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_getMonitorForPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">getMonitorForPoint</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.swg#L58" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the monitor that contains <span class="code-inline">pt</span> Returns the nearest one if none contain it. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMonitorForPoint</span>(pt: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Env">Env</a></span>.<span class="SCst"><a href="#Core_Env_Monitor">Monitor</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Env_getMonitorForRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">getMonitorForRect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.swg#L92" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the monitor corresponding to the surface position. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMonitorForRect</span>(rect: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Env">Env</a></span>.<span class="SCst"><a href="#Core_Env_Monitor">Monitor</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6595,7 +6663,7 @@
 <span id="Core_Env_locateInExplorer"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">locateInExplorer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L106" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6608,7 +6676,7 @@
 <span id="Core_Env_locateUrl"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Env.</span><span class="api-item-title-strong">locateUrl</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\environment.win32.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -6626,7 +6694,7 @@
 </table>
 </p>
 <p>Register an application in the system. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerApplication</span>(appName, appFriendly: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">registerApplication</span>(appName, appFriendly: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6927,7 +6995,7 @@
 </table>
 </p>
 <p>Make a string persistent for errors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mkString</span>(str: <span class="SCmp">#null</span> <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mkString</span>(str: <span class="SItr">#null</span> <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>That kind of string can be stored in an error struct. </p>
 <p>
 <table class="api-item">
@@ -7222,7 +7290,7 @@
 </table>
 </p>
 <p>Returns true if the file info represents a directory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDirectory</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDirectory</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7396,7 +7464,7 @@
 </table>
 </p>
 <p>Close the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7409,7 +7477,7 @@
 </table>
 </p>
 <p>Returns the current seek position of the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7422,7 +7490,7 @@
 </table>
 </p>
 <p>Returns the given file stream length on disk. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getSize</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7435,7 +7503,7 @@
 </table>
 </p>
 <p>Returns true if the stream is currently open and valid. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpen</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isOpen</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7447,7 +7515,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7460,7 +7528,7 @@
 </table>
 </p>
 <p>Read from the given file stream, and returns the number of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="STpe">me</span>, buffer: *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7473,7 +7541,7 @@
 </table>
 </p>
 <p>Reads a value of type <span class="code-inline">T</span> from the stream into <span class="code-inline">buffer</span>; returns true if read was successful. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: *<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">readValue</span>(<span class="STpe">me</span>, buffer: *<span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7486,7 +7554,7 @@
 </table>
 </p>
 <p>Set the current seek position of the given file stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, origin: <span class="SCst"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span>, seek: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPosition</span>(<span class="STpe">me</span>, origin: <span class="SCst"><a href="#Core_File_SeekOrigin">SeekOrigin</a></span>, seek: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7499,7 +7567,7 @@
 </table>
 </p>
 <p>Skip <span class="code-inline">bytes</span> from current position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">skipPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bytes: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">skipPosition</span>(<span class="STpe">me</span>, bytes: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7512,7 +7580,7 @@
 </table>
 </p>
 <p>Write to the given file stream, and returns the number of written bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="STpe">me</span>, buffer: <span class="SKwd">const</span> *<span class="STpe">void</span>, length: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7533,7 +7601,7 @@
 </tr>
 <tr>
 <td>data</td>
-<td class="code-type"><span class="SCde">^<span class="STpe">void</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="STpe">void</span></span></td>
 <td>Pointer to the actual structure instance. </td>
 </tr>
 </table>
@@ -7660,7 +7728,7 @@
 </table>
 </p>
 <p>Closes the reader and the associated stream. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">close</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7673,7 +7741,7 @@
 </table>
 </p>
 <p>Opens the reader with the specified text encoding (default is UTF-8). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">open</span>(<span class="STpe">me</span>, fullname: <span class="STpe">string</span>, encoding = <span class="SCst"><a href="#Core_File_TextEncoding">TextEncoding</a></span>.<span class="SCst"><a href="#Core_Utf8">Utf8</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7686,7 +7754,7 @@
 </table>
 </p>
 <p>Reads one line of text into the result string Returns false if the end of the stream has been reached. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readLine</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: &<span class="SCst"><a href="#Core_String">String</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readLine</span>(<span class="STpe">me</span>, result: &<span class="SCst"><a href="#Core_String">String</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7699,7 +7767,7 @@
 </table>
 </p>
 <p>Reads from the current position to the end of the stream and returns the content as a UTF-8 string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readToEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readToEnd</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7722,11 +7790,11 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SFct">Array</span>'(<span class="STpe">string</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SFct">Array</span>'(<span class="STpe">string</span>))</span></td>
 <td>Parses tweak content from an array of lines. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_File_TweakFile_parse">parse</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td>Parses tweak content from a string. </td>
 </tr>
 <tr>
@@ -7750,9 +7818,9 @@
 </table>
 </p>
 <p>Parses tweak content from a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="STpe">me</span>, content: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>Parses tweak content from an array of lines. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parse</span>(<span class="STpe">me</span>, lines: <span class="SFct"><a href="#Core_Array">Array</a></span>'<span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7765,7 +7833,7 @@
 </table>
 </p>
 <p>Reads and parses a tweak file from disk. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseFile</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">parseFile</span>(<span class="STpe">me</span>, fileName: <span class="STpe">string</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7778,7 +7846,7 @@
 </table>
 </p>
 <p>Registers a new structure to be parsed as a folder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerFolder</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, folder: *<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">registerFolder</span>(<span class="STpe">me</span>, folder: *<span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8147,7 +8215,7 @@
 <span id="Core_GUID128"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">GUID128</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8193,12 +8261,12 @@
 <span id="Core_GUID128_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L133" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert the GUID to its string representation for display. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>Uses the standard UUID format with hyphens. </p>
 <p>
 <table class="api-item">
@@ -8207,12 +8275,12 @@
 <span id="Core_GUID128_IHash32_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IHash32.</span><span class="api-item-title-strong">compute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compute a 32-bit hash value for the GUID. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Uses CRC32 algorithm on the entire 16-byte GUID data. </p>
 <p>
 <table class="api-item">
@@ -8221,12 +8289,12 @@
 <span id="Core_GUID128_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L60" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L60" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Clear id. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8234,7 +8302,7 @@
 <span id="Core_GUID128_getRandom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">getRandom</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L48" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8247,12 +8315,12 @@
 <span id="Core_GUID128_getString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">getString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L117" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert guid to a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8260,12 +8328,12 @@
 <span id="Core_GUID128_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compare two GUID128 instances for equality. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_GUID128">GUID128</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns <span class="code-inline">true</span> if both GUIDs have identical values. </p>
 <p>
 <table class="api-item">
@@ -8274,12 +8342,12 @@
 <span id="Core_GUID128_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID128.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L67" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid128.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert guid to a string of the form xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="STpe">me</span>, result: [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8287,7 +8355,7 @@
 <span id="Core_GUID64"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">GUID64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L153" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8349,12 +8417,12 @@
 <span id="Core_GUID64_IConvert_convert"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IConvert.</span><span class="api-item-title-strong">convert</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L318" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L194" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert the GUID to its hexadecimal string representation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>Produces a 16-character uppercase hex string without separators. </p>
 <p>
 <table class="api-item">
@@ -8363,12 +8431,12 @@
 <span id="Core_GUID64_IHash32_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IHash32.</span><span class="api-item-title-strong">compute</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L330" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L206" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compute a 32-bit hash value for the GUID. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Uses CRC32 algorithm on the 8-byte GUID data for consistent hashing. </p>
 <p>
 <table class="api-item">
@@ -8377,12 +8445,12 @@
 <span id="Core_GUID64_clear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">clear</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L228" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L104" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Clear GUID. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8390,7 +8458,7 @@
 <span id="Core_GUID64_getHighEntropy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getHighEntropy</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8403,7 +8471,7 @@
 <span id="Core_GUID64_getRandom"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getRandom</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L197" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L73" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8416,12 +8484,12 @@
 <span id="Core_GUID64_getString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L269" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L145" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert guid to a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getString</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8429,7 +8497,7 @@
 <span id="Core_GUID64_getTimestamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">getTimestamp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L169" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L45" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8442,12 +8510,12 @@
 <span id="Core_GUID64_isNull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">isNull</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L234" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Check if GUID is null/empty. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8455,12 +8523,12 @@
 <span id="Core_GUID64_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">opEquals</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L162" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L38" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Compare two GUID64 instances for equality. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_GUID64">GUID64</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns <span class="code-inline">true</span> if both GUIDs have identical values. </p>
 <p>
 <table class="api-item">
@@ -8469,7 +8537,7 @@
 <span id="Core_GUID64_parse"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">parse</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L279" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L155" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -8482,12 +8550,12 @@
 <span id="Core_GUID64_toString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">GUID64.</span><span class="api-item-title-strong">toString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid.swg#L240" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\system\guid64.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Convert GUID64 to hexadecimal string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="STpe">me</span>, result: [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8645,11 +8713,26 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><a href="#Core_Hash_Crc64"><span class="SCst">Crc64</span></a></td>
+<td>CRC-64 implementation as described in ECMA-182, Annex B. </td>
+</tr>
+<tr>
 <td class="code-type"><a href="#Core_Hash_Md5"><span class="SCst">Md5</span></a></td>
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><a href="#Core_Hash_Sha1"><span class="SCst">Sha1</span></a></td>
+<td>A SHA-1 cryptographic hash function implementation. </td>
+</tr>
+<tr>
 <td class="code-type"><a href="#Core_Hash_Sha256"><span class="SCst">Sha256</span></a></td>
+<td></td>
+</tr>
+</table>
+<h3>Enums</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><a href="#Core_Hash_Crc64Kind"><span class="SCst">Crc64Kind</span></a></td>
 <td></td>
 </tr>
 </table>
@@ -8660,11 +8743,19 @@
 <td>Hash the given value and returns the corresponding u32. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_hash64">hash64</a></span></td>
+<td>Hash the given value and returns the corresponding u64. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Hash_jenkins">jenkins</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Hash_jenkins">jenkins</a></span><span class="SCde">(<span class="STpe">u64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_murmur3">murmur3</a></span><span class="SCde">(<span class="SKwd">const</span> [*] <span class="STpe">u8</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -8742,7 +8833,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8755,7 +8846,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8814,7 +8905,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8827,7 +8918,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8886,7 +8977,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>, seed: <span class="STpe">u32</span> = <span class="SNum">0</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -8899,7 +8990,88 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, data: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Crc64"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Hash.</span><span class="api-item-title-strong">Crc64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\crc64.swg#L6" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>CRC-64 implementation as described in ECMA-182, Annex B. </p>
+<table class="table-enumeration">
+<tr>
+<td>crc</td>
+<td class="code-type"><span class="STpe">u64</span></td>
+<td></td>
+</tr>
+</table>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc64_compute">compute</a></span></td>
+<td>Returns the hash value for the given buffer. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Crc64_update">update</a></span></td>
+<td>Computes the CRC-64 hash of the provided data. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Crc64_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Crc64.</span><span class="api-item-title-strong">compute</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\crc64.swg#L140" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the hash value for the given buffer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, kind = <span class="SCst"><a href="#Core_Hash_Crc64Kind">Crc64Kind</a></span>.<span class="SCst">ECMA182</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Crc64_update"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Crc64.</span><span class="api-item-title-strong">update</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\crc64.swg#L88" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Computes the CRC-64 hash of the provided data. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, data: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, kind: <span class="SCst"><a href="#Core_Hash_Crc64Kind">Crc64Kind</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Crc64Kind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Hash.</span><span class="api-item-title-strong">Crc64Kind</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\crc64.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>ECMA182</td>
+<td></td>
+</tr>
+<tr>
+<td>ISO</td>
+<td></td>
+</tr>
+<tr>
+<td>ISOXZ</td>
+<td></td>
+</tr>
+</table>
 <p>
 <table class="api-item">
 <tr>
@@ -8915,6 +9087,24 @@
 <tr>
 <td>compute</td>
 <td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_IHash32">IHash32</a></span>)-&gt;<span class="STpe">u32</span></span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_IHash64"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Hash.</span><span class="api-item-title-strong">IHash64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\hash64.swg#L4" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<table class="table-enumeration">
+<tr>
+<td>compute</td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_IHash64">IHash64</a></span>)-&gt;<span class="STpe">u64</span></span></td>
 <td></td>
 </tr>
 </table>
@@ -8999,7 +9189,7 @@
 </table>
 </p>
 <p>Finalize the computation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, digest: <span class="SCst">Digest</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="STpe">me</span>, digest: <span class="SCst">Digest</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9012,7 +9202,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9038,7 +9228,117 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, data: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Sha1"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Hash.</span><span class="api-item-title-strong">Sha1</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\sha1.swg#L7" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>A SHA-1 cryptographic hash function implementation. </p>
+<table class="table-enumeration">
+<tr>
+<td>data</td>
+<td class="code-type"><span class="SCde">[<span class="SNum">64</span>] <span class="STpe">u8</span></span></td>
+<td>Internal data buffer for processing 512-bit blocks. </td>
+</tr>
+<tr>
+<td>state</td>
+<td class="code-type"><span class="SCde">[<span class="SNum">5</span>] <span class="STpe">u32</span></span></td>
+<td>Five 32-bit hash state values (A, B, C, D, E). </td>
+</tr>
+<tr>
+<td>datalen</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Current number of bytes in the data buffer. </td>
+</tr>
+<tr>
+<td>bitlen</td>
+<td class="code-type"><span class="STpe">u64</span></td>
+<td>Total number of bits processed so far. </td>
+</tr>
+</table>
+<p>Provides methods to compute 160-bit SHA-1 hash values from arbitrary data streams. Supports incremental hashing through <span class="code-inline">init</span>, <span class="code-inline">update</span>, and <span class="code-inline">final</span> operations. </p>
+<h3>Functions</h3>
+<table class="table-enumeration">
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha1_compute">compute</a></span></td>
+<td>Returns the SHA-1 hash value for the given buffer. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha1_final">final</a></span></td>
+<td>Finalize the computation and produce the final hash digest. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha1_init">init</a></span></td>
+<td>Initialize the hashing sequence with standard SHA-1 constants. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Hash_Sha1_update">update</a></span></td>
+<td>Update the hash value with <span class="code-inline">buffer</span> content. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Sha1_compute"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Sha1.</span><span class="api-item-title-strong">compute</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\sha1.swg#L182" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the SHA-1 hash value for the given buffer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Hash">Hash</a></span>.<span class="SCst"><a href="#Core_Hash_Sha1">Sha1</a></span>.<span class="SCst">Digest</span></span></div>
+<p>Convenience function that performs the complete hash operation in a single call. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Sha1_final"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Sha1.</span><span class="api-item-title-strong">final</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\sha1.swg#L100" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Finalize the computation and produce the final hash digest. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="STpe">me</span>, result: <span class="SCst">Digest</span>)</span></div>
+<p>Applies padding and length encoding, then stores the result in <span class="code-inline">result</span>. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Sha1_init"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Sha1.</span><span class="api-item-title-strong">init</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\sha1.swg#L149" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Initialize the hashing sequence with standard SHA-1 constants. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>)</span></div>
+<p>Sets up the initial state values and resets all counters to zero. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_Sha1_update"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Sha1.</span><span class="api-item-title-strong">update</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\sha1.swg#L161" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<p>Processes the input data in 512-bit blocks, buffering incomplete blocks for later processing. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9116,7 +9416,7 @@
 </table>
 </p>
 <p>Finalize the computation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: <span class="SCst">Digest</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">final</span>(<span class="STpe">me</span>, result: <span class="SCst">Digest</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9129,7 +9429,7 @@
 </table>
 </p>
 <p>Initialize the hashing sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9142,7 +9442,7 @@
 </table>
 </p>
 <p>Update the hash value with <span class="code-inline">buffer</span> content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, buffer: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9156,6 +9456,19 @@
 </p>
 <p>Hash the given value and returns the corresponding u32. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">hash32</span>(value: <span class="SCst">T</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Hash_hash64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Hash.</span><span class="api-item-title-strong">hash64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\hash64.swg#L11" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Hash the given value and returns the corresponding u64. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">hash64</span>(value: <span class="SCst">T</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9176,14 +9489,15 @@
 <span id="Core_Hash_murmur3"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Hash.</span><span class="api-item-title-strong">murmur3</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\murmur3.swg#L11" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\crypto\murmur3.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">murmur3</span>(h: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">murmur3</span>(h: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
 <span class="SKwd">func</span> <span class="SFct">murmur3</span>(a, b: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">murmur3</span>(a, b: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">murmur3</span>(a, b: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">murmur3</span>(key: <span class="SKwd">const</span> [*] <span class="STpe">u8</span>, len: <span class="STpe">u64</span>, seed: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9195,7 +9509,7 @@
 </tr>
 </table>
 </p>
-<p>A hash set implemented with an open-addressing hash table. </p>
+<p>A hash set implemented with an open-addressing hash me.table. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_HashSet">HashSet</a></span>(<span class="SCst">K</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -9206,7 +9520,7 @@
 <tr>
 <td>HASH_DELETED</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>The slot was previously occupied but has been deleted. </td>
+<td>The slot was previously occupied but has been me.deleted. </td>
 </tr>
 <tr>
 <td>HASH_FIRST</td>
@@ -9221,12 +9535,12 @@
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td>The allocator used for memory operations. </td>
+<td>The me.allocator used for memory operations. </td>
 </tr>
 <tr>
 <td>table</td>
-<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></td>
-<td>Pointer to the contiguous memory block for the hash table. </td>
+<td class="code-type"><span class="SCde">[*] <span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></td>
+<td>Pointer to the contiguous memory block for the hash me.table. </td>
 </tr>
 <tr>
 <td>count</td>
@@ -9236,7 +9550,7 @@
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>The total number of slots in the hash table. </td>
+<td>The total number of slots in the hash me.table. </td>
 </tr>
 <tr>
 <td>deleted</td>
@@ -9248,16 +9562,16 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, &&<span class="SCst">K</span>)</span></td>
 <td>Adds a new key to the set by moving it. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashSet_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">K</span>)</span></td>
 <td>Adds a new key to the set by copying it. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_clear">clear</a></span></td>
-<td>Removes all elements from the set without deallocating the table memory. </td>
+<td>Removes all elements from the set without deallocating the me.table memory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_contains">contains</a></span></td>
@@ -9273,11 +9587,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_getNewIndex">getNewIndex</a></span></td>
-<td>Finds the correct index for a new key, handling collisions and deleted slots. </td>
+<td>Finds the correct index for a new key, handling collisions and me.deleted slots. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_grow">grow</a></span></td>
-<td>Checks if the table needs to be resized and triggers it if necessary. </td>
+<td>Checks if the me.table needs to be resized and triggers it if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_hashKey">hashKey</a></span></td>
@@ -9289,7 +9603,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashSet_reserve">reserve</a></span></td>
-<td>Resizes the hash table to a new capacity, rehashing all existing elements. </td>
+<td>Resizes the hash me.table to a new me.capacity, rehashing all existing elements. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
@@ -9326,7 +9640,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9339,10 +9653,10 @@
 </table>
 </p>
 <p>Adds a new key to the set by copying it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>If the key already exists, does nothing. Returns a pointer to the entry. </p>
 <p>Adds a new key to the set by moving it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: &&<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, key: &&<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>If the key already exists, does nothing. Returns a pointer to the entry. </p>
 <p>
 <table class="api-item">
@@ -9355,8 +9669,8 @@
 </tr>
 </table>
 </p>
-<p>Removes all elements from the set without deallocating the table memory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Removes all elements from the set without deallocating the me.table memory. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>All slots are marked as <span class="code-inline">FREE</span>. </p>
 <p>
 <table class="api-item">
@@ -9370,7 +9684,7 @@
 </table>
 </p>
 <p>Returns <span class="code-inline">true</span> if the set contains the given key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9383,7 +9697,7 @@
 </table>
 </p>
 <p>Internal helper to add a new element with a pre-computed hash. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="STpe">me</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashSetEntry">HashSetEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashSetEntry">HashSetEntry</a></span>.<span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9396,7 +9710,7 @@
 </table>
 </p>
 <p>Frees the hash set's memory and resets its state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="STpe">me</span>)</span></div>
 <p>If keys have destructors, they are called. </p>
 <p>
 <table class="api-item">
@@ -9409,8 +9723,8 @@
 </tr>
 </table>
 </p>
-<p>Finds the correct index for a new key, handling collisions and deleted slots. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Finds the correct index for a new key, handling collisions and me.deleted slots. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Uses linear probing to find the next available slot. </p>
 <p>
 <table class="api-item">
@@ -9423,9 +9737,9 @@
 </tr>
 </table>
 </p>
-<p>Checks if the table needs to be resized and triggers it if necessary. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>Growth happens when the load factor (including deleted slots) exceeds 75%. </p>
+<p>Checks if the me.table needs to be resized and triggers it if necessary. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="STpe">me</span>)</span></div>
+<p>Growth happens when the load factor (including me.deleted slots) exceeds 75%. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9439,7 +9753,7 @@
 </p>
 <p>Computes the hash for a given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hashKey</span>(key: <span class="SCst">K</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p>Ensures the resulting hash is not one of the reserved values (FREE, DELETED). </p>
+<p>Ensures the resulting hash is not one of the reserved values (FREE, me.deleted). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9452,7 +9766,7 @@
 </table>
 </p>
 <p>Replaces the content of the set with elements from a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, slice: <span class="SKwd">const</span> [..] <span class="SCst">K</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9465,7 +9779,7 @@
 </table>
 </p>
 <p>Returns the number of elements in the set. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9478,7 +9792,7 @@
 </table>
 </p>
 <p>Ensures the allocated memory is freed when the set goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9491,8 +9805,8 @@
 </table>
 </p>
 <p>Handles the deep copy of the set when it is copied. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>A new table is allocated and all entries are copied over. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>)</span></div>
+<p>A new me.table is allocated and all entries are copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9506,7 +9820,7 @@
 </p>
 <p>Provides a way to iterate over each key in the set. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each key. Alias: #alias0 for the key or a pointer to it. </p>
 <p>
 <table class="api-item">
@@ -9520,7 +9834,7 @@
 </table>
 </p>
 <p>Removes a key from the set. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>)</span></div>
 <p>If the key exists, its slot is marked as <span class="code-inline">DELETED</span>. Does nothing if the key is not found. </p>
 <p>
 <table class="api-item">
@@ -9533,8 +9847,8 @@
 </tr>
 </table>
 </p>
-<p>Resizes the hash table to a new capacity, rehashing all existing elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<p>Resizes the hash me.table to a new me.capacity, rehashing all existing elements. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="STpe">me</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9571,7 +9885,7 @@
 </tr>
 </table>
 </p>
-<p>A hash table implemented with open-addressing that maps keys to values. </p>
+<p>A hash me.table implemented with open-addressing that maps keys to values. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_HashTable">HashTable</a></span>(<span class="SCst">K</span>, <span class="SCst">V</span>)</span></div>
 <table class="table-enumeration">
 <tr>
@@ -9582,7 +9896,7 @@
 <tr>
 <td>HASH_DELETED</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td>The slot was previously occupied but has been deleted. </td>
+<td>The slot was previously occupied but has been me.deleted. </td>
 </tr>
 <tr>
 <td>HASH_FIRST</td>
@@ -9597,47 +9911,47 @@
 <tr>
 <td>allocator</td>
 <td class="code-type"><span class="SCde"><span class="SCst">Swag</span>.<span class="SCst">IAllocator</span></span></td>
-<td>The allocator used for memory operations. </td>
+<td>The me.allocator used for memory operations. </td>
 </tr>
 <tr>
 <td>table</td>
-<td class="code-type"><span class="SCde">^<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></td>
-<td>Pointer to the contiguous memory block for the hash table. </td>
+<td class="code-type"><span class="SCde">[*] <span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></td>
+<td>Pointer to the contiguous memory block for the hash me.table. </td>
 </tr>
 <tr>
 <td>count</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>The number of valid key-value pairs currently in the table. </td>
+<td>The number of valid key-value pairs currently in the me.table. </td>
 </tr>
 <tr>
 <td>capacity</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>The total number of slots in the hash table. </td>
+<td>The total number of slots in the hash me.table. </td>
 </tr>
 <tr>
 <td>deleted</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td>The number of slots marked as deleted. </td>
+<td>The number of slots marked as me.deleted. </td>
 </tr>
 </table>
 <p>It provides fast lookups, additions, and removals of key-value pairs. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>, &&<span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
-<td>Adds a new key-value pair to the table, moving the value. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">K</span>, &&<span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
+<td>Adds a new key-value pair to the me.table, moving the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>, <span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
-<td>Adds a new key-value pair to the table by copying them. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">K</span>, <span class="SCst">V</span>, <span class="STpe">bool</span>)</span></td>
+<td>Adds a new key-value pair to the me.table by copying them. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_clear">clear</a></span></td>
-<td>Removes all elements from the table without deallocating the table memory. </td>
+<td>Removes all elements from the me.table without deallocating the me.table memory. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_contains">contains</a></span></td>
-<td>Returns <span class="code-inline">true</span> if the table contains the given key. </td>
+<td>Returns <span class="code-inline">true</span> if the me.table contains the given key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_emplaceInternal">emplaceInternal</a></span></td>
@@ -9653,7 +9967,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_free">free</a></span></td>
-<td>Frees the hash table's memory and resets its state. </td>
+<td>Frees the hash me.table's memory and resets its state. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_get">get</a></span></td>
@@ -9661,11 +9975,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_getNewIndex">getNewIndex</a></span></td>
-<td>Finds the correct index for a new key, handling collisions and deleted slots. </td>
+<td>Finds the correct index for a new key, handling collisions and me.deleted slots. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_grow">grow</a></span></td>
-<td>Checks if the table needs to be resized and triggers it if necessary. </td>
+<td>Checks if the me.table needs to be resized and triggers it if necessary. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_hashKey">hashKey</a></span></td>
@@ -9673,11 +9987,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_remove">remove</a></span></td>
-<td>Removes a key-value pair from the table by key. </td>
+<td>Removes a key-value pair from the me.table by key. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_reserve">reserve</a></span></td>
-<td>Resizes the hash table to a new capacity, rehashing all existing elements. </td>
+<td>Resizes the hash me.table to a new me.capacity, rehashing all existing elements. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_tryFind">tryFind</a></span></td>
@@ -9688,22 +10002,22 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opAffect">opAffect</a></span></td>
-<td>Replaces the content of the table with key-value pairs from a slice. </td>
+<td>Replaces the content of the me.table with key-value pairs from a slice. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opCount">opCount</a></span></td>
-<td>Returns the number of key-value pairs in the table. </td>
+<td>Returns the number of key-value pairs in the me.table. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opDrop">opDrop</a></span></td>
-<td>Ensures the allocated memory is freed when the table goes out of scope. </td>
+<td>Ensures the allocated memory is freed when the me.table goes out of scope. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">K</span>)</span></td>
 <td>Provides mutable access to the value associated with a key. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">K</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_HashTable_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">K</span>)</span></td>
 <td>Provides read-only access to the value associated with a key. </td>
 </tr>
 <tr>
@@ -9712,11 +10026,11 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opPostCopy">opPostCopy</a></span></td>
-<td>Handles the deep copy of the table when it is copied. </td>
+<td>Handles the deep copy of the me.table when it is copied. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_HashTable_opVisit">opVisit</a></span></td>
-<td>Provides a way to iterate over each key-value pair in the table. </td>
+<td>Provides a way to iterate over each key-value pair in the me.table. </td>
 </tr>
 </table>
 <p>
@@ -9730,7 +10044,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFmt: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9742,11 +10056,11 @@
 </tr>
 </table>
 </p>
-<p>Adds a new key-value pair to the table by copying them. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: <span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<p>Adds a new key-value pair to the me.table by copying them. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>, value: <span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>If the key already exists, the value is updated if <span class="code-inline">updateValue</span> is true. </p>
-<p>Adds a new key-value pair to the table, moving the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, value: &&<span class="STpe">self</span>.<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<p>Adds a new key-value pair to the me.table, moving the value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>, value: &&<span class="SCst">V</span>, updateValue = <span class="SKwd">true</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>If the key already exists, the value is updated if <span class="code-inline">updateValue</span> is true. </p>
 <p>
 <table class="api-item">
@@ -9759,8 +10073,8 @@
 </tr>
 </table>
 </p>
-<p>Removes all elements from the table without deallocating the table memory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Removes all elements from the me.table without deallocating the me.table memory. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>All slots are marked as <span class="code-inline">FREE</span>. </p>
 <p>
 <table class="api-item">
@@ -9773,8 +10087,8 @@
 </tr>
 </table>
 </p>
-<p>Returns <span class="code-inline">true</span> if the table contains the given key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns <span class="code-inline">true</span> if the me.table contains the given key. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9787,7 +10101,7 @@
 </table>
 </p>
 <p>Internal helper to add a new element with a pre-computed hash. Use with care. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="STpe">self</span>.<span class="SCst">K</span>, value: &<span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInternal</span>(<span class="STpe">me</span>, hashVal: <span class="STpe">u32</span>, key: &<span class="SCst">K</span>, value: &<span class="SCst">V</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9800,7 +10114,7 @@
 </table>
 </p>
 <p>Finds the entry for a given key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">find</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>Asserts and will likely crash if the key is not found. Use [[tryFind]] for safe searching. </p>
 <p>
 <table class="api-item">
@@ -9814,7 +10128,7 @@
 </table>
 </p>
 <p>Finds the entry for a key, or adds a new entry with a default-initialized value if not found. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">findOrAdd</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>Returns a pointer to the existing or new entry. </p>
 <p>
 <table class="api-item">
@@ -9827,8 +10141,8 @@
 </tr>
 </table>
 </p>
-<p>Frees the hash table's memory and resets its state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Frees the hash me.table's memory and resets its state. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="STpe">me</span>)</span></div>
 <p>If keys or values have destructors, they are called. </p>
 <p>
 <table class="api-item">
@@ -9842,7 +10156,7 @@
 </table>
 </p>
 <p>Gets the value associated with a key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, val: <span class="STpe">self</span>.<span class="SCst">V</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">get</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, key: <span class="SCst">K</span>, val: <span class="SCst">V</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
 <p>If the key does not exist, returns the provided default value <span class="code-inline">val</span> instead. </p>
 <p>
 <table class="api-item">
@@ -9855,8 +10169,8 @@
 </tr>
 </table>
 </p>
-<p>Finds the correct index for a new key, handling collisions and deleted slots. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Finds the correct index for a new key, handling collisions and me.deleted slots. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getNewIndex</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>, idx: <span class="STpe">u64</span>, hashVal: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Uses linear probing to find the next available slot. </p>
 <p>
 <table class="api-item">
@@ -9869,9 +10183,9 @@
 </tr>
 </table>
 </p>
-<p>Checks if the table needs to be resized and triggers it if necessary. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>Growth happens when the load factor (including deleted slots) exceeds 75%. </p>
+<p>Checks if the me.table needs to be resized and triggers it if necessary. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="STpe">me</span>)</span></div>
+<p>Growth happens when the load factor (including me.deleted slots) exceeds 75%. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9885,7 +10199,7 @@
 </p>
 <p>Computes the hash for a given key. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">hashKey</span>(key: <span class="SCst">K</span>)-&gt;<span class="STpe">u32</span></span></div>
-<p>Ensures the resulting hash is not one of the reserved values (FREE, DELETED). </p>
+<p>Ensures the resulting hash is not one of the reserved values (FREE, me.deleted). </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9897,10 +10211,11 @@
 </tr>
 </table>
 </p>
-<p>Replaces the content of the table with key-value pairs from a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: <span class="SKwd">const</span> [..] (<span class="SCst">K</span>, <span class="SCst">V</span>)
+<p>Replaces the content of the me.table with key-value pairs from a slice. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, slice: <span class="SKwd">const</span> [..] 
 {
-    k: <span class="STpe">self</span>.<span class="SCst">K</span>, v: <span class="STpe">self</span>.<span class="SCst">V</span>
+    k: <span class="SCst">K</span>
+    v: <span class="SCst">V</span>
 }
 )</span></div>
 <p>
@@ -9914,8 +10229,8 @@
 </tr>
 </table>
 </p>
-<p>Returns the number of key-value pairs in the table. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>Returns the number of key-value pairs in the me.table. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9927,8 +10242,8 @@
 </tr>
 </table>
 </p>
-<p>Ensures the allocated memory is freed when the table goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ensures the allocated memory is freed when the me.table goes out of scope. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9941,10 +10256,10 @@
 </table>
 </p>
 <p>Provides read-only access to the value associated with a key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
 <p>Asserts if the key is not found. </p>
 <p>Provides mutable access to the value associated with a key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_HashTable">HashTable</a></span>.<span class="SCst">V</span></span></div>
 <p>If the key does not exist, this will exhibit undefined behavior. Use with caution. See [[opIndexAffect]] for safe insertion/update. </p>
 <p>
 <table class="api-item">
@@ -9958,7 +10273,7 @@
 </table>
 </p>
 <p>Assigns a value to a key, updating it if it exists or adding it if it doesn't. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>, val: <span class="STpe">self</span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>, val: <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9970,9 +10285,9 @@
 </tr>
 </table>
 </p>
-<p>Handles the deep copy of the table when it is copied. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>A new table is allocated and all entries are copied over. </p>
+<p>Handles the deep copy of the me.table when it is copied. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>)</span></div>
+<p>A new me.table is allocated and all entries are copied over. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -9984,9 +10299,9 @@
 </tr>
 </table>
 </p>
-<p>Provides a way to iterate over each key-value pair in the table. </p>
+<p>Provides a way to iterate over each key-value pair in the me.table. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each pair. Aliases: #alias0 for the key, #alias1 for the value. </p>
 <p>
 <table class="api-item">
@@ -9999,8 +10314,8 @@
 </tr>
 </table>
 </p>
-<p>Removes a key-value pair from the table by key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)</span></div>
+<p>Removes a key-value pair from the me.table by key. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="STpe">me</span>, key: <span class="SCst">K</span>)</span></div>
 <p>If the key exists, its slot is marked as <span class="code-inline">DELETED</span>. Does nothing if the key is not found. </p>
 <p>
 <table class="api-item">
@@ -10013,8 +10328,8 @@
 </tr>
 </table>
 </p>
-<p>Resizes the hash table to a new capacity, rehashing all existing elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<p>Resizes the hash me.table to a new me.capacity, rehashing all existing elements. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="STpe">me</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10027,7 +10342,7 @@
 </table>
 </p>
 <p>Tries to find the entry for a given key. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryFind</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, key: <span class="STpe">self</span>.<span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryFind</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, key: <span class="SCst">K</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_HashTableEntry">HashTableEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">K</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_HashTableEntry">HashTableEntry</a></span>.<span class="SCst">V</span>)</span></div>
 <p>Returns a pointer to the <span class="code-inline">HashTableEntry</span> if found, otherwise returns <span class="code-inline">null</span>. </p>
 <p>
 <table class="api-item">
@@ -10070,6 +10385,7 @@
 </tr>
 </table>
 </p>
+<p>Interface for writing log output. </p>
 <table class="table-enumeration">
 <tr>
 <td>print</td>
@@ -10220,7 +10536,7 @@
 <td>Returns true if the corresponding <span class="code-inline">padIndex</span> is connected. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_setVibration">setVibration</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_GamePad_setVibration">setVibration</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Set the vibration motor speeds. </td>
 </tr>
 <tr>
@@ -10244,7 +10560,7 @@
 </table>
 </p>
 <p>Reset the previous and current state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10257,7 +10573,7 @@
 </table>
 </p>
 <p>Get the analog position of the given button. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10270,7 +10586,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button has just been pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10283,7 +10599,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button has just been released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10296,7 +10612,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button is pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10309,7 +10625,7 @@
 </table>
 </p>
 <p>Determines whether specified input device button is released (not pressed). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_GamePadButton">GamePadButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10337,7 +10653,7 @@
 <p>Set the left and right vibration of the given <span class="code-inline">padIndex</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVibration</span>(padIndex: <span class="STpe">u32</span>, left, right: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <p>Set the vibration motor speeds. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVibration</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, left, right: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setVibration</span>(<span class="STpe">me</span>, left, right: <span class="STpe">f32</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10350,7 +10666,7 @@
 </table>
 </p>
 <p>Update the GamePad current state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10512,7 +10828,7 @@
 </table>
 </p>
 <p>Reset state to its default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -10525,7 +10841,7 @@
 </table>
 </p>
 <p>Compute the current state of the given pad index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, padIndex: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>, padIndex: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11397,7 +11713,7 @@
 <td>Determines whether given key has just been released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">Key</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Keyboard_isKeyPressed">isKeyPressed</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">Key</span>)</span></td>
 <td>Determines whether given key is currently being pressed. </td>
 </tr>
 <tr>
@@ -11437,7 +11753,7 @@
 </table>
 </p>
 <p>Reset the keyboard state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11450,7 +11766,7 @@
 </table>
 </p>
 <p>Returns the currently pressed key modifiers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPressedModifiers</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_KeyModifiers">KeyModifiers</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPressedModifiers</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Input">Input</a></span>.<span class="SCst"><a href="#Core_Input_KeyModifiers">KeyModifiers</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11463,7 +11779,7 @@
 </table>
 </p>
 <p>Determines whether given key has just been pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustPressed</span>(<span class="STpe">me</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11476,7 +11792,7 @@
 </table>
 </p>
 <p>Determines whether given key has just been released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyJustReleased</span>(<span class="STpe">me</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11489,7 +11805,7 @@
 </table>
 </p>
 <p>Determines whether given key is currently being pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyPressed</span>(<span class="STpe">me</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns true if the given key is pressed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyPressed</span>(key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
@@ -11504,7 +11820,7 @@
 </table>
 </p>
 <p>Determines whether given key is currently being released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isKeyReleased</span>(<span class="STpe">me</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11517,7 +11833,7 @@
 </table>
 </p>
 <p>Try to transform the given key to the corresponding rune. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">keyToRune</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">rune</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">keyToRune</span>(<span class="STpe">me</span>, key: <span class="SCst"><a href="#Core_Input_Key">Key</a></span>)-&gt;<span class="STpe">rune</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11542,7 +11858,7 @@
 </table>
 </p>
 <p>Compute current state of the keyboard (all keys). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11602,7 +11918,7 @@
 </table>
 </p>
 <p>Reset keyboard state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11615,7 +11931,7 @@
 </table>
 </p>
 <p>Compute current keyboard state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11699,7 +12015,7 @@
 <td>Determines whether the specified mouse button has just been released. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">MouseButton</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Input_Mouse_isButtonPressed">isButtonPressed</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">MouseButton</span>)</span></td>
 <td>Determines whether the specified mouse button is pressed. </td>
 </tr>
 <tr>
@@ -11727,7 +12043,7 @@
 </table>
 </p>
 <p>Reset the mouse state to its default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11740,7 +12056,7 @@
 </table>
 </p>
 <p>Returns the move between the current position and the previous one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getMove</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11753,7 +12069,7 @@
 </table>
 </p>
 <p>Returns the mouse position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPosition</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11766,7 +12082,7 @@
 </table>
 </p>
 <p>Returns the previous mouse position, before the last update. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPreviousPos</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPreviousPos</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11778,7 +12094,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonDoubleClick</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonDoubleClick</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11791,7 +12107,7 @@
 </table>
 </p>
 <p>Determines whether the specified mouse button has just been pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustPressed</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11804,7 +12120,7 @@
 </table>
 </p>
 <p>Determines whether the specified mouse button has just been released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonJustReleased</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11819,7 +12135,7 @@
 <p>Determins if one given mouse button is pressed or not. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Determines whether the specified mouse button is pressed. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonPressed</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11832,7 +12148,7 @@
 </table>
 </p>
 <p>Determines whether the specified mouse button is released. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isButtonReleased</span>(<span class="STpe">me</span>, button: <span class="SCst"><a href="#Core_Input_MouseButton">MouseButton</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11845,7 +12161,7 @@
 </table>
 </p>
 <p>Compute the current state of the mouse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11936,7 +12252,7 @@
 </table>
 </p>
 <p>Reset the state to its default value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -11949,7 +12265,7 @@
 </table>
 </p>
 <p>Compute the actual state of the mouse. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12200,7 +12516,7 @@
 <span id="Core_Jobs_getNumWorkers"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">getNumWorkers</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12213,7 +12529,7 @@
 <span id="Core_Jobs_isSynchrone"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">isSynchrone</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12226,7 +12542,7 @@
 <span id="Core_Jobs_parallelFor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">parallelFor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L286" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L288" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12241,7 +12557,7 @@
 <span id="Core_Jobs_parallelVisit"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">parallelVisit</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L213" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L215" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12256,7 +12572,7 @@
 <span id="Core_Jobs_scheduleJob"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">scheduleJob</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L153" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L155" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12269,7 +12585,7 @@
 <span id="Core_Jobs_setNumWorkers"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">setNumWorkers</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12282,7 +12598,7 @@
 <span id="Core_Jobs_waitDone"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">waitDone</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L165" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L167" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12295,7 +12611,7 @@
 <span id="Core_Jobs_waitJob"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Jobs.</span><span class="api-item-title-strong">waitJob</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L174" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\job.swg#L176" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -12769,19 +13085,19 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">me</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Adds a new element to the back of the list by moving the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addBack">addBack</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>)</span></td>
 <td>Adds a new element to the back of the list by copying the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">me</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Adds a new element to the front of the list by moving the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_addFront">addFront</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>)</span></td>
 <td>Adds a new element to the front of the list by copying the value. </td>
 </tr>
 <tr>
@@ -12789,19 +13105,19 @@
 <td>Removes and deallocates all elements from the list. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">me</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
 <td>Inserts a new element after a specified node by moving the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertAfter">insertAfter</a></span><span class="SCde">(<span class="STpe">me</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
 <td>Inserts a new element after a specified node by copying the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">me</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), &&<span class="SCst">T</span>)</span></td>
 <td>Inserts a new element before a specified node by moving the value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">self</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_List_insertBefore">insertBefore</a></span><span class="SCde">(<span class="STpe">me</span>, *<span class="SFct">ListEntry</span>'(<span class="SCst">T</span>), <span class="SCst">T</span>)</span></td>
 <td>Inserts a new element before a specified node by copying the value. </td>
 </tr>
 </table>
@@ -12828,10 +13144,10 @@
 </table>
 </p>
 <p>Adds a new element to the back of the list by copying the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>Adds a new element to the back of the list by moving the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addBack</span>(<span class="STpe">me</span>, value: &&<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
@@ -12845,10 +13161,10 @@
 </table>
 </p>
 <p>Adds a new element to the front of the list by copying the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>Adds a new element to the front of the list by moving the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addFront</span>(<span class="STpe">me</span>, value: &&<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
@@ -12862,7 +13178,7 @@
 </table>
 </p>
 <p>Removes and deallocates all elements from the list. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12875,10 +13191,10 @@
 </table>
 </p>
 <p>Inserts a new element after a specified node by copying the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="STpe">me</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>Inserts a new element after a specified node by moving the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAfter</span>(<span class="STpe">me</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
@@ -12892,10 +13208,10 @@
 </table>
 </p>
 <p>Inserts a new element before a specified node by copying the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="STpe">me</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: <span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>Inserts a new element before a specified node by moving the value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertBefore</span>(<span class="STpe">me</span>, node: *<span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>, value: &&<span class="SCst">T</span>)-&gt;*<span class="SCst"></span><span class="SFct"><a href="#Core_ListEntry">ListEntry</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ListEntry">ListEntry</a></span>.<span class="SCst">T</span>)</span></div>
 <p>Returns a pointer to the newly created list node. </p>
 <p>
 <table class="api-item">
@@ -12909,7 +13225,7 @@
 </table>
 </p>
 <p>Ensures all nodes are deallocated when the list goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -12923,7 +13239,7 @@
 </p>
 <p>Provides a way to iterate over each element in the list. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each element. Visiting by pointer and in reverse order is supported. Aliases: - #alias0: The value of the element. - #alias1: A pointer to the list node (<span class="code-inline">ListEntry</span>). - #alias2: The index of the element. </p>
 <p>
 <table class="api-item">
@@ -12962,40 +13278,41 @@
 <span id="Core_Log"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">Log</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L24" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>A thread-safe logger that supports multiple output writers and customizable formatting. </p>
 <table class="table-enumeration">
 <tr>
 <td>lock</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Sync">Sync</a></span>.<span class="SCst"><a href="#Core_Sync_Mutex">Mutex</a></span></span></td>
-<td></td>
+<td>Lock for thread-safe access. </td>
 </tr>
 <tr>
 <td>buf</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_StringBuilder">StringBuilder</a></span></span></td>
-<td></td>
+<td>Internal buffer for building log messages. </td>
 </tr>
 <tr>
 <td>dt</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></td>
-<td></td>
+<td>Cached date/time at the moment of log call. </td>
 </tr>
 <tr>
 <td>writers</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></td>
-<td></td>
+<td>Registered writer interfaces. </td>
 </tr>
 <tr>
 <td>prefix</td>
 <td class="code-type"><span class="STpe">string</span></td>
-<td></td>
+<td>Optional prefix added to each log line. </td>
 </tr>
 <tr>
 <td>flags</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span></span></td>
-<td></td>
+<td>Bitwise flags controlling output format. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -13006,15 +13323,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Log_clearWriters">clearWriters</a></span></td>
-<td>Remove all writers. </td>
+<td>Remove all registered writers. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Log_create">create</a></span></td>
-<td>Create a new log. </td>
+<td>Create a new log instance. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Log_getFlags">getFlags</a></span></td>
-<td>Get the logger prefix. </td>
+<td>Get the logger flags. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Log_getPrefix">getPrefix</a></span></td>
@@ -13022,7 +13339,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Log_print">print</a></span></td>
-<td>Main print function. </td>
+<td>Print a message to the log with an optional source location. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Log_setFlags">setFlags</a></span></td>
@@ -13040,12 +13357,12 @@
 <span id="Core_Log_addWriter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">addWriter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L114" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Register a new writer interface. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addWriter</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, writer: <span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addWriter</span>(<span class="STpe">me</span>, writer: <span class="SCst"><a href="#Core_ILogWriter">ILogWriter</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13053,12 +13370,12 @@
 <span id="Core_Log_clearWriters"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">clearWriters</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L119" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Remove all writers. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearWriters</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Remove all registered writers. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clearWriters</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13066,11 +13383,11 @@
 <span id="Core_Log_create"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">create</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L77" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Create a new log. </p>
+<p>Create a new log instance. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">create</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Log">Log</a></span></span></div>
 <p>
 <table class="api-item">
@@ -13079,12 +13396,12 @@
 <span id="Core_Log_getFlags"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">getFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Get the logger prefix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFlags</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span></span></div>
+<p>Get the logger flags. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getFlags</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13092,12 +13409,12 @@
 <span id="Core_Log_getPrefix"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">getPrefix</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L91" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L93" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get the logger prefix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPrefix</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getPrefix</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13105,12 +13422,12 @@
 <span id="Core_Log_print"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">print</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Main print function. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, text: <span class="STpe">string</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<p>Print a message to the log with an optional source location. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">print</span>(<span class="STpe">me</span>, text: <span class="STpe">string</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13118,12 +13435,12 @@
 <span id="Core_Log_setFlags"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">setFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L98" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the logger flags. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFlags</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, flags: <span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFlags</span>(<span class="STpe">me</span>, flags: <span class="SCst"><a href="#Core_LogFlags">LogFlags</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13131,12 +13448,12 @@
 <span id="Core_Log_setPrefix"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Log.</span><span class="api-item-title-strong">setPrefix</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L84" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L86" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the logger prefix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPrefix</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, prefix: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPrefix</span>(<span class="STpe">me</span>, prefix: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -13144,46 +13461,47 @@
 <span id="Core_LogFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Core.</span><span class="api-item-title-strong">LogFlags</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L4" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\diagnostics\log.swg#L5" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Flags to control the format of log output. </p>
 <table class="table-enumeration">
 <tr>
 <td>Zero</td>
-<td></td>
+<td>No flags set. </td>
 </tr>
 <tr>
 <td>Prefix</td>
-<td></td>
+<td>Include custom prefix in log output. </td>
 </tr>
 <tr>
 <td>Date</td>
-<td></td>
+<td>Include date (YYYY/MM/DD). </td>
 </tr>
 <tr>
 <td>Time</td>
-<td></td>
+<td>Include time (HH:MM:SS:ms). </td>
 </tr>
 <tr>
 <td>ShortFileName</td>
-<td>Exclusive with LongFileName. </td>
+<td>Include only the file name (exclusive with LongFileName). </td>
 </tr>
 <tr>
 <td>LongFileName</td>
-<td></td>
+<td>Include full file path (exclusive with ShortFileName). </td>
 </tr>
 <tr>
 <td>Line</td>
-<td>Exclusive with FullLoc. </td>
+<td>Include only the start line number (exclusive with FullLoc). </td>
 </tr>
 <tr>
 <td>FullLoc</td>
-<td></td>
+<td>Include full location (line/col start and end). </td>
 </tr>
 <tr>
 <td>Default</td>
-<td></td>
+<td>Default logging configuration. </td>
 </tr>
 </table>
 <p>
@@ -13231,23 +13549,19 @@
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Transform2"><span class="SCst">Transform2</span></a></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><a href="#Core_Math_Variant"><span class="SCst">Variant</span></a></td>
-<td></td>
+<td>2D transformation matrix structure. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Vector2"><span class="SCst">Vector2</span></a></td>
-<td></td>
+<td>A 2D vector struct representing a point or direction in 2D space. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Vector3"><span class="SCst">Vector3</span></a></td>
-<td></td>
+<td>A 3D vector struct representing a point or direction in 3D space. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Math_Vector4"><span class="SCst">Vector4</span></a></td>
-<td></td>
+<td>A 4D vector struct representing a point or direction in 4D space. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -13661,6 +13975,14 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_moveTowards">moveTowards</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td>Interpolation at constant speed - moves a fixed distance per step. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_moveTowards">moveTowards</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td></td>
 </tr>
@@ -13939,7 +14261,7 @@
 </table>
 </p>
 <p>Assign a radian value directly to the angle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, valueRad: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, valueRad: <span class="STpe">f32</span>)</span></div>
 <p>Allows implicit conversion from floating-point values representing radians. </p>
 <p>
 <table class="api-item">
@@ -13953,7 +14275,7 @@
 </table>
 </p>
 <p>Assign angle values with unit suffixes (rad or deg). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Supports literal syntax like <span class="code-inline">90</span>deg' or <span class="code-inline">1.57</span>rad' for convenient angle creation. </p>
 <p>
 <table class="api-item">
@@ -13967,7 +14289,7 @@
 </table>
 </p>
 <p>Convert the angle from radians to degrees. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDegrees</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDegrees</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns the angle value in degrees as a floating-point number. </p>
 <p>
 <table class="api-item">
@@ -14095,7 +14417,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_evaluatePolynomial">evaluatePolynomial</a></span></td>
-<td></td>
+<td>Evaluate a cubic polynomial at parameter <span class="code-inline">t</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Curve_getBezierBoundingBox">getBezierBoundingBox</a></span><span class="SCde">(<span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
@@ -14134,7 +14456,9 @@
 </tr>
 </table>
 </p>
+<p>Evaluate a cubic polynomial at parameter <span class="code-inline">t</span>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluatePolynomial</span>(p0, p1, p2, p3: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, t: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<p>Uses Horner's method for efficient computation: P(t) = ((p0<i>t + p1)</i>t + p2)<i>t + p3.</i> </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14173,7 +14497,7 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_isInEllipse">isInEllipse</a></span></td>
-<td></td>
+<td>Test if a point is inside an ellipse. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_Geometry_isInTriangle">isInTriangle</a></span></td>
@@ -14208,7 +14532,7 @@
 </table>
 </p>
 <p>Calculate the perpendicular distance from a point to an infinite line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(me, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToLine</span>(self, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Projects the point onto the line and returns the distance to the projection. </p>
 <p>
 <table class="api-item">
@@ -14222,7 +14546,7 @@
 </table>
 </p>
 <p>Calculate the shortest distance from a point to a line segment. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(me, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSegment</span>(self, a, b: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Handles endpoints by clamping the projection to the segment bounds. </p>
 <p>
 <table class="api-item">
@@ -14235,7 +14559,9 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(me, center: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Test if a point is inside an ellipse. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInEllipse</span>(self, center: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, radiusX, radiusY: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Uses the standard ellipse equation: (x-cx)²/rx² + (y-cy)²/ry² ≤ 1. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -14248,7 +14574,7 @@
 </table>
 </p>
 <p>Test if a point is inside a triangle using cross product method. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(me, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isInTriangle</span>(self, a, b, c: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses barycentric coordinates by checking if all cross products have the same sign. </p>
 <p>
 <table class="api-item">
@@ -14375,7 +14701,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14387,7 +14713,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Int128">Int128</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14424,7 +14750,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14461,7 +14787,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14488,12 +14814,12 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), <span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
-<td>Multiply & Add. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
+<td>Multiply & add. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
-<td>Multiply & add. </td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_mulAdd">mulAdd</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>), <span class="SKwd">const</span> &<span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
+<td>Multiply & Add. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_set">set</a></span></td>
@@ -14503,19 +14829,19 @@
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAffect">opAffect</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_NumericArray_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SFct">NumericArray</span>'(<span class="SCst">T</span>, <span class="SCst">N</span>))</span></td>
 <td></td>
 </tr>
 <tr>
@@ -14550,14 +14876,14 @@
 <span id="Core_Math_NumericArray_mulAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">NumericArray.</span><span class="api-item-title-strong">mulAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L128" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Multiply & add. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value1, value2: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="STpe">me</span>, value1, value2: <span class="SCst">T</span>)</span></div>
 <p>Multiply & Add. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value1, value2: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">mulAdd</span>(<span class="STpe">me</span>, value1, value2: <span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14569,8 +14895,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="STpe">self</span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, what: <span class="SCst">T</span>)
+<span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, what: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14578,12 +14904,12 @@
 <span id="Core_Math_NumericArray_opAssign"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">NumericArray.</span><span class="api-item-title-strong">opAssign</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L67" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\numericarray.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">Self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14595,7 +14921,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SFct"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SFct"><a href="#Core_Math_NumericArray">NumericArray</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span>, <span class="SCst">N</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14607,7 +14933,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14619,7 +14945,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_NumericArray">NumericArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14632,7 +14958,7 @@
 </table>
 </p>
 <p>Set all values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="STpe">self</span>.<span class="SCst">T</span>...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, values: <span class="SCst">T</span>...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -14681,11 +15007,11 @@
 <td>Returns true if this point is at the origin within an epsilon tolerance. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset both coordinates by the same scalar value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_offset">offset</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset this point by separate x and y values. </td>
 </tr>
 <tr>
@@ -14704,19 +15030,19 @@
 <td>Set both coordinates to the same scalar value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Compound assignment operators for point-point operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Compound assignment operators for point-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Binary operators for point-point operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Point_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Binary operators for point-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
@@ -14736,7 +15062,7 @@
 </table>
 </p>
 <p>Round both coordinates up to the next integer values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="STpe">me</span>)</span></div>
 <p>Applies <span class="code-inline">Math.ceil</span> function to both x and y coordinates in-place. </p>
 <p>
 <table class="api-item">
@@ -14750,7 +15076,7 @@
 </table>
 </p>
 <p>Set both coordinates to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
@@ -14764,7 +15090,7 @@
 </table>
 </p>
 <p>Returns true if this point is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares each coordinate separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
@@ -14778,7 +15104,7 @@
 </table>
 </p>
 <p>Returns true if this point is exactly at the origin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
@@ -14792,7 +15118,7 @@
 </table>
 </p>
 <p>Returns true if this point is at the origin within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
@@ -14806,10 +15132,10 @@
 </table>
 </p>
 <p>Offset both coordinates by the same scalar value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Adds <span class="code-inline">value</span> to both x and y coordinates of this point. </p>
 <p>Offset this point by separate x and y values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>Adds the specified <span class="code-inline">x</span> and <span class="code-inline">y</span> offsets to the corresponding coordinates. </p>
 <p>
 <table class="api-item">
@@ -14823,7 +15149,7 @@
 </table>
 </p>
 <p>Set both coordinates to the same scalar value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>This allows assignment like 'point = 5.0' to set both coordinates to 5.0. </p>
 <p>
 <table class="api-item">
@@ -14837,10 +15163,10 @@
 </table>
 </p>
 <p>Compound assignment operators for point-point operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>Performs component-wise operations with another point. </p>
 <p>Compound assignment operators for point-scalar operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to both coordinates of the point. </p>
 <p>
 <table class="api-item">
@@ -14854,10 +15180,10 @@
 </table>
 </p>
 <p>Binary operators for point-point operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Performs component-wise operations between two points and returns the result. </p>
 <p>Binary operators for point-scalar operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to both coordinates and returns the result. </p>
 <p>
 <table class="api-item">
@@ -14871,7 +15197,7 @@
 </table>
 </p>
 <p>Apply unary operations to the point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Currently supports negation (-) to return a point with both coordinates negated. </p>
 <p>
 <table class="api-item">
@@ -14885,7 +15211,7 @@
 </table>
 </p>
 <p>Round both coordinates to the nearest integer values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="STpe">me</span>)</span></div>
 <p>Applies <span class="code-inline">Math.round</span> function to both x and y coordinates in-place. </p>
 <p>
 <table class="api-item">
@@ -14899,7 +15225,7 @@
 </table>
 </p>
 <p>Truncate both coordinates to integer values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="STpe">me</span>)</span></div>
 <p>Applies <span class="code-inline">Math.trunc</span> function to both x and y coordinates, removing fractional parts. </p>
 <p>
 <table class="api-item">
@@ -14979,15 +15305,15 @@
 <td>Set all rectangle components to zero. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Test if the specified point is contained within the rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
 <td>Test if the specified rectangle is entirely contained within this rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Test if the specified coordinates are contained within the rectangle. </td>
 </tr>
 <tr>
@@ -14999,11 +15325,11 @@
 <td>Get the distance from a point to the rectangle. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_expandToInclude">expandToInclude</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_expandToInclude">expandToInclude</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Expand the rectangle to include a point. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_expandToInclude">expandToInclude</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_expandToInclude">expandToInclude</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
 <td>Expand the rectangle to include another rectangle. </td>
 </tr>
 <tr>
@@ -15019,15 +15345,15 @@
 <td>Get the horizontal center coordinate. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Inflate the rectangle uniformly in all directions. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_inflate">inflate</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Inflate the rectangle by different amounts horizontally and vertically. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersect">intersect</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_intersect">intersect</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Rectangle</span>)</span></td>
 <td>Intersect this rectangle with another rectangle in-place. </td>
 </tr>
 <tr>
@@ -15083,15 +15409,15 @@
 <td>Normalize the rectangle to ensure positive width and height. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Point</span>)</span></td>
 <td>Offset the rectangle position by a point vector. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset the rectangle position by the same amount in both directions. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_offset">offset</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Offset the rectangle position by separate x and y amounts. </td>
 </tr>
 <tr>
@@ -15107,11 +15433,11 @@
 <td>Round all rectangle components to the nearest integer values. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Scale the rectangle dimensions uniformly. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Rectangle_scale">scale</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Scale the rectangle dimensions independently. </td>
 </tr>
 <tr>
@@ -15182,7 +15508,7 @@
 </table>
 </p>
 <p>Apply padding to all sides of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, padding: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">applyPadding</span>(<span class="STpe">me</span>, padding: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
 <p>Uses Vector4 components as left, top, right, bottom padding values respectively. </p>
 <p>
 <table class="api-item">
@@ -15196,7 +15522,7 @@
 </table>
 </p>
 <p>Get the area of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">area</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">area</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as width × height, may be negative for non-normalized rectangles. </p>
 <p>
 <table class="api-item">
@@ -15210,7 +15536,7 @@
 </table>
 </p>
 <p>Get the aspect ratio of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">aspectRatio</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">aspectRatio</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns width / height, or 0 if height is zero. </p>
 <p>
 <table class="api-item">
@@ -15224,7 +15550,7 @@
 </table>
 </p>
 <p>Get the bottom edge coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottom</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottom</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as y + height. </p>
 <p>
 <table class="api-item">
@@ -15238,7 +15564,7 @@
 </table>
 </p>
 <p>Get the bottom-left corner point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottomLeft</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottomLeft</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns a Point at (x, y + height). </p>
 <p>
 <table class="api-item">
@@ -15252,7 +15578,7 @@
 </table>
 </p>
 <p>Get the bottom-right corner point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottomRight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">bottomRight</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns a Point at (x + width, y + height). </p>
 <p>
 <table class="api-item">
@@ -15266,7 +15592,7 @@
 </table>
 </p>
 <p>Round all rectangle components up to the next integer values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="STpe">me</span>)</span></div>
 <p>Applies <span class="code-inline">Math.ceil</span> function to all components in-place. </p>
 <p>
 <table class="api-item">
@@ -15280,7 +15606,7 @@
 </table>
 </p>
 <p>Get the center point of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">center</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns a Point containing the horizontal and vertical center coordinates. </p>
 <p>
 <table class="api-item">
@@ -15294,7 +15620,7 @@
 </table>
 </p>
 <p>Clamp a point to be within the rectangle bounds. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampPoint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampPoint</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns the closest point inside or on the rectangle boundary. </p>
 <p>
 <table class="api-item">
@@ -15308,7 +15634,7 @@
 </table>
 </p>
 <p>Set all rectangle components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
@@ -15322,13 +15648,13 @@
 </table>
 </p>
 <p>Test if the specified coordinates are contained within the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses half-open interval [x, x+width) × [y, y+height) for containment test. </p>
 <p>Test if the specified point is contained within the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Delegates to the coordinate-based <span class="code-inline">contains</span> method. </p>
 <p>Test if the specified rectangle is entirely contained within this rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns true only if <span class="code-inline">rect</span> is completely inside the bounds of this rectangle. </p>
 <p>
 <table class="api-item">
@@ -15356,7 +15682,7 @@
 </table>
 </p>
 <p>Get the distance from a point to the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToPoint</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToPoint</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns 0 if the point is inside the rectangle, otherwise returns the shortest distance to the boundary. </p>
 <p>
 <table class="api-item">
@@ -15370,10 +15696,10 @@
 </table>
 </p>
 <p>Expand the rectangle to include a point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expandToInclude</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expandToInclude</span>(<span class="STpe">me</span>, pt: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>Grows the rectangle if necessary to contain the specified point. </p>
 <p>Expand the rectangle to include another rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expandToInclude</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">expandToInclude</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Grows the rectangle if necessary to contain the entire specified rectangle. </p>
 <p>
 <table class="api-item">
@@ -15387,7 +15713,7 @@
 </table>
 </p>
 <p>Fit this rectangle within bounds while maintaining aspect ratio. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitWithin</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, bounds: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitWithin</span>(<span class="STpe">me</span>, bounds: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Scales the rectangle to fit inside <span class="code-inline">bounds</span> without distortion. </p>
 <p>
 <table class="api-item">
@@ -15415,7 +15741,7 @@
 </table>
 </p>
 <p>Get the horizontal center coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">horzCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">horzCenter</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as x + width / 2. </p>
 <p>
 <table class="api-item">
@@ -15429,10 +15755,10 @@
 </table>
 </p>
 <p>Inflate the rectangle uniformly in all directions. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Expands the rectangle by <span class="code-inline">value</span> on all sides, moving position and increasing dimensions. </p>
 <p>Inflate the rectangle by different amounts horizontally and vertically. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">inflate</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>Expands by <span class="code-inline">x</span> horizontally and <span class="code-inline">y</span> vertically on all sides. </p>
 <p>
 <table class="api-item">
@@ -15446,7 +15772,7 @@
 </table>
 </p>
 <p>Intersect this rectangle with another rectangle in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Modifies this rectangle to contain only the overlapping area with <span class="code-inline">other</span>. </p>
 <p>Create a rectangle representing the intersection of two rectangles. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersect</span>(a, b: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
@@ -15463,7 +15789,7 @@
 </table>
 </p>
 <p>Test if this rectangle intersects with another rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">intersectWith</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, rect: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Returns true if there is any overlap between the two rectangles. </p>
 <p>
 <table class="api-item">
@@ -15477,7 +15803,7 @@
 </table>
 </p>
 <p>Returns true if the rectangle has zero area. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>A rectangle is empty if either width or height is zero. </p>
 <p>
 <table class="api-item">
@@ -15491,7 +15817,7 @@
 </table>
 </p>
 <p>Returns true if the rectangle has zero area within epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmptyEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmptyEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Checks if both width and height are zero within the specified tolerance. </p>
 <p>
 <table class="api-item">
@@ -15505,7 +15831,7 @@
 </table>
 </p>
 <p>Returns true if this rectangle equals <span class="code-inline">other</span> within epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares all four components separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
@@ -15519,7 +15845,7 @@
 </table>
 </p>
 <p>Returns true if the rectangle has non-negative dimensions. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNormalized</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNormalized</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>A normalized rectangle has width and height greater than or equal to zero. </p>
 <p>
 <table class="api-item">
@@ -15533,7 +15859,7 @@
 </table>
 </p>
 <p>Returns true if all rectangle components are exactly zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
@@ -15547,7 +15873,7 @@
 </table>
 </p>
 <p>Returns true if all rectangle components are zero within epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, eps = <span class="SCst"><a href="#Core_Math_ConstF32">ConstF32</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
@@ -15561,7 +15887,7 @@
 </table>
 </p>
 <p>Extend the bottom edge downward by the specified amount. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveBottom</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveBottom</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Increases <span class="code-inline">height</span> by <span class="code-inline">value</span>, extending the rectangle downward. </p>
 <p>
 <table class="api-item">
@@ -15575,7 +15901,7 @@
 </table>
 </p>
 <p>Move the left edge inward by the specified amount. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveLeft</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveLeft</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Increases <span class="code-inline">x</span> and decreases <span class="code-inline">width</span> by <span class="code-inline">value</span>, effectively shrinking from the left. </p>
 <p>
 <table class="api-item">
@@ -15589,7 +15915,7 @@
 </table>
 </p>
 <p>Extend the right edge outward by the specified amount. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveRight</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveRight</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Increases <span class="code-inline">width</span> by <span class="code-inline">value</span>, extending the rectangle to the right. </p>
 <p>
 <table class="api-item">
@@ -15603,7 +15929,7 @@
 </table>
 </p>
 <p>Move the top edge downward by the specified amount. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTop</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Increases <span class="code-inline">y</span> and decreases <span class="code-inline">height</span> by <span class="code-inline">value</span>, effectively shrinking from the top. </p>
 <p>
 <table class="api-item">
@@ -15617,7 +15943,7 @@
 </table>
 </p>
 <p>Normalize the rectangle to ensure positive width and height. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="STpe">me</span>)</span></div>
 <p>Adjusts position and dimensions if width or height are negative. </p>
 <p>
 <table class="api-item">
@@ -15631,13 +15957,13 @@
 </table>
 </p>
 <p>Offset the rectangle position by the same amount in both directions. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offsetXY: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">me</span>, offsetXY: <span class="STpe">f32</span>)</span></div>
 <p>Adds <span class="code-inline">offsetXY</span> to both x and y coordinates without changing dimensions. </p>
 <p>Offset the rectangle position by separate x and y amounts. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offsetX, offsetY: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">me</span>, offsetX, offsetY: <span class="STpe">f32</span>)</span></div>
 <p>Adds <span class="code-inline">offsetX</span> to x coordinate and <span class="code-inline">offsetY</span> to y coordinate. </p>
 <p>Offset the rectangle position by a point vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, offset: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">offset</span>(<span class="STpe">me</span>, offset: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>Adds the point's x and y components to the rectangle's position. </p>
 <p>
 <table class="api-item">
@@ -15651,7 +15977,7 @@
 </table>
 </p>
 <p>Scale the rectangle by a scalar value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
 <p>Multiplies all components (position and dimensions) by the given <span class="code-inline">value</span>. </p>
 <p>
 <table class="api-item">
@@ -15665,7 +15991,7 @@
 </table>
 </p>
 <p>Check if this rectangle is exactly equal to another rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Performs exact floating-point comparison of all four components. </p>
 <p>
 <table class="api-item">
@@ -15679,7 +16005,7 @@
 </table>
 </p>
 <p>Get the perimeter of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perimeter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perimeter</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as 2 × (width + height). </p>
 <p>
 <table class="api-item">
@@ -15693,7 +16019,7 @@
 </table>
 </p>
 <p>Get the right edge coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">right</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">right</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as x + width. </p>
 <p>
 <table class="api-item">
@@ -15707,7 +16033,7 @@
 </table>
 </p>
 <p>Round all rectangle components to the nearest integer values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="STpe">me</span>)</span></div>
 <p>Applies <span class="code-inline">Math.round</span> function to position and dimension components in-place. </p>
 <p>
 <table class="api-item">
@@ -15721,10 +16047,10 @@
 </table>
 </p>
 <p>Scale the rectangle dimensions uniformly. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Multiplies both width and height by <span class="code-inline">value</span> without changing position. </p>
 <p>Scale the rectangle dimensions independently. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scale</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>Multiplies width by <span class="code-inline">x</span> and height by <span class="code-inline">y</span> without changing position. </p>
 <p>
 <table class="api-item">
@@ -15738,7 +16064,7 @@
 </table>
 </p>
 <p>Initialize the rectangle using two corner points. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, topLeft, bottomRight: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, topLeft, bottomRight: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>Automatically handles the case where points are not in top-left/bottom-right order. </p>
 <p>
 <table class="api-item">
@@ -15752,7 +16078,7 @@
 </table>
 </p>
 <p>Set the bottom edge coordinate by adjusting the height. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBottom</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBottom</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Modifies <span class="code-inline">height</span> to make the bottom edge equal to <span class="code-inline">value</span>. </p>
 <p>
 <table class="api-item">
@@ -15766,7 +16092,7 @@
 </table>
 </p>
 <p>Set the right edge coordinate by adjusting the width. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRight</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setRight</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Modifies <span class="code-inline">width</span> to make the right edge equal to <span class="code-inline">value</span>. </p>
 <p>
 <table class="api-item">
@@ -15780,7 +16106,7 @@
 </table>
 </p>
 <p>Set the size of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newSize: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setSize</span>(<span class="STpe">me</span>, newSize: <span class="SCst"><a href="#Core_Math_Point">Point</a></span>)</span></div>
 <p>Modifies width and height without changing position. </p>
 <p>
 <table class="api-item">
@@ -15794,7 +16120,7 @@
 </table>
 </p>
 <p>Set this rectangle to the union with another rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setUnion</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span>)</span></div>
 <p>Modifies this rectangle to be the smallest rectangle containing both this and <span class="code-inline">other</span>. </p>
 <p>
 <table class="api-item">
@@ -15808,7 +16134,7 @@
 </table>
 </p>
 <p>Get the size of the rectangle as a point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">size</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns a Point containing width and height values. </p>
 <p>
 <table class="api-item">
@@ -15822,7 +16148,7 @@
 </table>
 </p>
 <p>Get a normalized copy of the rectangle. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Rectangle">Rectangle</a></span></span></div>
 <p>Returns a new rectangle with positive width and height without modifying the original. </p>
 <p>
 <table class="api-item">
@@ -15836,7 +16162,7 @@
 </table>
 </p>
 <p>Get the top-left corner point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">topLeft</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">topLeft</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns a Point containing the x and y coordinates. </p>
 <p>
 <table class="api-item">
@@ -15850,7 +16176,7 @@
 </table>
 </p>
 <p>Get the top-right corner point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">topRight</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">topRight</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Point">Point</a></span></span></div>
 <p>Returns a Point at (x + width, y). </p>
 <p>
 <table class="api-item">
@@ -15864,7 +16190,7 @@
 </table>
 </p>
 <p>Truncate all rectangle components to integer values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(<span class="STpe">me</span>)</span></div>
 <p>Applies <span class="code-inline">Math.trunc</span> function to all components, removing fractional parts. </p>
 <p>
 <table class="api-item">
@@ -15878,7 +16204,7 @@
 </table>
 </p>
 <p>Get the vertical center coordinate. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vertCenter</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">vertCenter</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as y + height / 2. </p>
 <p>
 <table class="api-item">
@@ -15891,6 +16217,7 @@
 </tr>
 </table>
 </p>
+<p>2D transformation matrix structure. </p>
 <table class="table-enumeration">
 <tr>
 <td>m11</td>
@@ -15997,7 +16324,7 @@
 <span id="Core_Math_Transform2_createScale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">createScale</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L64" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L63" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16010,7 +16337,7 @@
 <span id="Core_Math_Transform2_createTranslation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">createTranslation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L79" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -16023,12 +16350,12 @@
 <span id="Core_Math_Transform2_getTranslation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">getTranslation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L102" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Gets the translation components. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTranslation</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTranslation</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16041,7 +16368,7 @@
 </table>
 </p>
 <p>Checks if the transform is the identity matrix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isIdentity</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isIdentity</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16049,12 +16376,12 @@
 <span id="Core_Math_Transform2_multiply"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">multiply</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Multiplies the current transform by another transformation matrix. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, matrix2: <span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">multiply</span>(<span class="STpe">me</span>, matrix2: <span class="SCst"><a href="#Core_Math_Transform2">Transform2</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16067,7 +16394,7 @@
 </table>
 </p>
 <p>Set transform to identity. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setIdentity</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16075,12 +16402,12 @@
 <span id="Core_Math_Transform2_setTranslation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">setTranslation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L96" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L95" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Sets the translation components directly. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTranslation</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, translation: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setTranslation</span>(<span class="STpe">me</span>, translation: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16088,210 +16415,12 @@
 <span id="Core_Math_Transform2_transformPoint"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Transform2.</span><span class="api-item-title-strong">transformPoint</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\transform2.swg#L108" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Applies the transform to a 2D point. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">transformPoint</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, point: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">Variant</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L4" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">struct</span> <span class="SFct"><a href="#Core_Math_Variant">Variant</a></span>(<span class="SCst">T</span>: <span class="SKwd">const</span> [..] <span class="STpe">typeinfo</span>)</span></div>
-<table class="table-enumeration">
-<tr>
-<td>type</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span></span></td>
-<td></td>
-</tr>
-<tr>
-<td>buffer</td>
-<td class="code-type"><span class="SCde">[?] <span class="STpe">u8</span></span></td>
-<td></td>
-</tr>
-<tr>
-<td>AllFlags</td>
-<td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
-</tr>
-</table>
-<h3>Functions</h3>
-<table class="table-enumeration">
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_checkValidType">checkValidType</a></span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_drop">drop</a></span></td>
-<td>Drop the variant content (if necessary). </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_get">get</a></span></td>
-<td>Get the variant value of the given type Will assert if the current type does not match. </td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_set">set</a></span></td>
-<td>Set the variant value. </td>
-</tr>
-</table>
-<h3>Special Functions</h3>
-<table class="table-enumeration">
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opAffect">opAffect</a></span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opCmp">opCmp</a></span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opDrop">opDrop</a></span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opEquals">opEquals</a></span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opPostCopy">opPostCopy</a></span></td>
-<td></td>
-</tr>
-<tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Variant_opPostMove">opPostMove</a></span></td>
-<td></td>
-</tr>
-</table>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_checkValidType"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">checkValidType</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L14" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">checkValidType</span>(t: <span class="SKwd">const</span> [..] <span class="STpe">typeinfo</span>, tn: <span class="STpe">typeinfo</span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_drop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">drop</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L71" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Drop the variant content (if necessary). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">drop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_get"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">get</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L97" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Get the variant value of the given type Will assert if the current type does not match. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">get</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">TN</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_opAffect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">opAffect</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L27" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">TN</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_opCmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">opCmp</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L39" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">TN</span>)-&gt;<span class="STpe">s32</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_opDrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">opDrop</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L22" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_opEquals"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">opEquals</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L32" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst">TN</span>)-&gt;<span class="STpe">bool</span></span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_opPostCopy"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">opPostCopy</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L46" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_opPostMove"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">opPostMove</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L58" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
-<p>
-<table class="api-item">
-<tr>
-<td class="api-item">
-<span id="Core_Math_Variant_set"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Variant.</span><span class="api-item-title-strong">set</span></span>
-</td>
-<td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\variant.swg#L85" class="src">[src]</a></td>
-</tr>
-</table>
-</p>
-<p>Set the variant value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TN</span>) <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">TN</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">transformPoint</span>(<span class="STpe">me</span>, point: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -16303,6 +16432,7 @@
 </tr>
 </table>
 </p>
+<p>A 2D vector struct representing a point or direction in 2D space. </p>
 <table class="table-enumeration">
 <tr>
 <td>x</td>
@@ -16315,6 +16445,7 @@
 <td></td>
 </tr>
 </table>
+<p>Contains x and y components as 32-bit floating point values. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -16346,11 +16477,11 @@
 <td>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
 <td>Returns the Z component of the cross product (scalar cross product in 2D). </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_cross">cross</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Returns the perpendicular vector in the 2D plane scaled by <span class="code-inline">axis</span>. </td>
 </tr>
 <tr>
@@ -16521,19 +16652,19 @@
 <td>Set both components to the same scalar value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
 <td>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector2</span>)</span></td>
 <td>Binary operators for vector-vector operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector2_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
@@ -16553,7 +16684,7 @@
 </table>
 </p>
 <p>Returns the angle between this vector and <span class="code-inline">other</span> in the range [0, 2π]. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angle0To2Pi</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Uses the cross product to determine the sign and adjust the angle accordingly. </p>
 <p>
 <table class="api-item">
@@ -16567,7 +16698,7 @@
 </table>
 </p>
 <p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
@@ -16581,7 +16712,7 @@
 </table>
 </p>
 <p>Apply ceiling function to both components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component up to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -16595,7 +16726,7 @@
 </table>
 </p>
 <p>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="STpe">me</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
 <p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
@@ -16609,7 +16740,7 @@
 </table>
 </p>
 <p>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="STpe">me</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
 <p>Preserves the vector's direction while constraining its magnitude. </p>
 <p>
 <table class="api-item">
@@ -16623,7 +16754,7 @@
 </table>
 </p>
 <p>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Preserves the vector's direction while constraining its magnitude. </p>
 <p>
 <table class="api-item">
@@ -16637,7 +16768,7 @@
 </table>
 </p>
 <p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
 <p>
 <table class="api-item">
@@ -16651,10 +16782,10 @@
 </table>
 </p>
 <p>Returns the perpendicular vector in the 2D plane scaled by <span class="code-inline">axis</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, axis: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>The <span class="code-inline">axis</span> parameter determines the sign and scale of the result. </p>
 <p>Returns the Z component of the cross product (scalar cross product in 2D). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculates the determinant of the 2x2 matrix formed by the two vectors. </p>
 <p>
 <table class="api-item">
@@ -16668,7 +16799,7 @@
 </table>
 </p>
 <p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, dest: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
@@ -16682,7 +16813,7 @@
 </table>
 </p>
 <p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, dest: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -16696,7 +16827,7 @@
 </table>
 </p>
 <p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂). </p>
 <p>
 <table class="api-item">
@@ -16710,7 +16841,7 @@
 </table>
 </p>
 <p>Apply floor function to both components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component down to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -16738,7 +16869,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
@@ -16752,7 +16883,7 @@
 </table>
 </p>
 <p>Returns true if all components are finite (not infinite or NaN). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Useful for validating vector values after calculations. </p>
 <p>
 <table class="api-item">
@@ -16766,7 +16897,7 @@
 </table>
 </p>
 <p>Returns true if any component is NaN (Not a Number). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Useful for detecting invalid vector values after calculations. </p>
 <p>
 <table class="api-item">
@@ -16780,7 +16911,7 @@
 </table>
 </p>
 <p>Returns true if this vector is exactly zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
@@ -16794,7 +16925,7 @@
 </table>
 </p>
 <p>Returns true if this vector is zero within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
@@ -16808,7 +16939,7 @@
 </table>
 </p>
 <p>Returns the length (magnitude) of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the Euclidean distance formula: sqrt(x² + y²). </p>
 <p>
 <table class="api-item">
@@ -16822,7 +16953,7 @@
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">length()</span> when only comparing magnitudes since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -16836,7 +16967,7 @@
 </table>
 </p>
 <p>Perform linear interpolation between two vectors. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerpTo</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, dst: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lerpTo</span>(<span class="STpe">me</span>, dst: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Interpolates each component separately using the given <span class="code-inline">factor</span> (0.0 to 1.0). When <span class="code-inline">factor</span> is 0.0, returns <span class="code-inline">src</span>; when 1.0, returns <span class="code-inline">dst</span>. </p>
 <p>
 <table class="api-item">
@@ -16850,7 +16981,7 @@
 </table>
 </p>
 <p>Apply absolute value to both components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="STpe">me</span>)</span></div>
 <p>Makes both components positive by removing their sign. </p>
 <p>
 <table class="api-item">
@@ -16892,7 +17023,7 @@
 </table>
 </p>
 <p>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="STpe">me</span>, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
 <p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, moves directly to target. </p>
 <p>
 <table class="api-item">
@@ -16906,7 +17037,7 @@
 </table>
 </p>
 <p>Negate the vector in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="STpe">me</span>)</span></div>
 <p>Multiplies both components by -1, effectively reversing the vector direction. </p>
 <p>
 <table class="api-item">
@@ -16920,7 +17051,7 @@
 </table>
 </p>
 <p>Normalize this vector in-place to unit length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="STpe">me</span>)</span></div>
 <p>Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -16934,7 +17065,7 @@
 </table>
 </p>
 <p>Normalize this vector in-place safely. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="STpe">me</span>)</span></div>
 <p>Sets the vector to unit length, or to zero if the original length is near zero. </p>
 <p>
 <table class="api-item">
@@ -16948,7 +17079,7 @@
 </table>
 </p>
 <p>Set both components to the same scalar value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>This allows assignment like 'vec = 5.0' to set both components to 5.0. </p>
 <p>
 <table class="api-item">
@@ -16962,10 +17093,10 @@
 </table>
 </p>
 <p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)</span></div>
 <p>Performs component-wise operations with another vector. </p>
 <p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to both components of the vector. </p>
 <p>
 <table class="api-item">
@@ -16979,10 +17110,10 @@
 </table>
 </p>
 <p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Performs component-wise operations between two vectors and returns the result. </p>
 <p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to both components and returns the result. </p>
 <p>
 <table class="api-item">
@@ -16996,7 +17127,7 @@
 </table>
 </p>
 <p>Apply unary operations to the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Currently supports negation (-) to return a vector with both components negated. </p>
 <p>
 <table class="api-item">
@@ -17010,7 +17141,7 @@
 </table>
 </p>
 <p>Rotate the vector by a given angle around the origin. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateBy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">rotateBy</span>(<span class="STpe">me</span>, angle: <span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Angle">Angle</a></span>)</span></div>
 <p>Uses standard 2D rotation matrix transformation with the specified <span class="code-inline">angle</span>. </p>
 <p>
 <table class="api-item">
@@ -17024,7 +17155,7 @@
 </table>
 </p>
 <p>Apply rounding function to both components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -17038,7 +17169,7 @@
 </table>
 </p>
 <p>Set both components of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)</span></div>
 <p>Parameters <span class="code-inline">x</span> and <span class="code-inline">y</span> specify the new component values. </p>
 <p>
 <table class="api-item">
@@ -17052,7 +17183,7 @@
 </table>
 </p>
 <p>Rotate this vector to face the specified <span class="code-inline">angle</span> in radians. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAngle</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, angle: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setAngle</span>(<span class="STpe">me</span>, angle: <span class="STpe">f32</span>)</span></div>
 <p>Preserves the vector's magnitude while changing its direction. </p>
 <p>
 <table class="api-item">
@@ -17066,7 +17197,7 @@
 </table>
 </p>
 <p>Set the vector to the specified length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="STpe">me</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>First normalizes the vector, then scales it to <span class="code-inline">newLength</span>. Assumes the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -17080,7 +17211,7 @@
 </table>
 </p>
 <p>Set the vector to the specified length safely. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="STpe">me</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>First normalizes the vector safely, then scales it to <span class="code-inline">newLength</span>. Handles zero-length vectors. </p>
 <p>
 <table class="api-item">
@@ -17094,7 +17225,7 @@
 </table>
 </p>
 <p>Set both vector components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="STpe">me</span>)</span></div>
 <p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
@@ -17122,7 +17253,7 @@
 </table>
 </p>
 <p>Returns the absolute value of each component. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Creates a new vector where each component is its absolute value. </p>
 <p>
 <table class="api-item">
@@ -17136,7 +17267,7 @@
 </table>
 </p>
 <p>Returns the angle of this vector in radians. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAngle</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAngle</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The angle is measured from the positive X-axis, counter-clockwise. </p>
 <p>
 <table class="api-item">
@@ -17150,7 +17281,7 @@
 </table>
 </p>
 <p>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
@@ -17164,7 +17295,7 @@
 </table>
 </p>
 <p>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, target: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, returns the target directly. </p>
 <p>
 <table class="api-item">
@@ -17178,7 +17309,7 @@
 </table>
 </p>
 <p>Returns this vector normalized to unit length without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -17192,7 +17323,7 @@
 </table>
 </p>
 <p>Returns this vector normalized safely without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
 <p>
 <table class="api-item">
@@ -17206,7 +17337,7 @@
 </table>
 </p>
 <p>Returns a vector perpendicular to this one (rotated 90 degrees counter-clockwise). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPerp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPerp</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>The perpendicular vector has the same length but is rotated 90° CCW. </p>
 <p>
 <table class="api-item">
@@ -17220,7 +17351,7 @@
 </table>
 </p>
 <p>Returns a vector perpendicular to this one (rotated 90 degrees clockwise). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPerpCW</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPerpCW</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>The perpendicular vector has the same length but is rotated 90° CW. </p>
 <p>
 <table class="api-item">
@@ -17234,7 +17365,7 @@
 </table>
 </p>
 <p>Convert this vector to polar coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPolar</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{angle:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toPolar</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;{angle:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>}</span></div>
 <p>Returns angle in radians and radius (magnitude) as a tuple-like struct. </p>
 <p>
 <table class="api-item">
@@ -17248,7 +17379,7 @@
 </table>
 </p>
 <p>Project this vector onto <span class="code-inline">other</span> vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Returns the component of this vector in the direction of <span class="code-inline">other</span>. </p>
 <p>
 <table class="api-item">
@@ -17262,7 +17393,7 @@
 </table>
 </p>
 <p>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, normal: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, normal: <span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>The <span class="code-inline">normal</span> should be a unit vector pointing away from the surface. </p>
 <p>
 <table class="api-item">
@@ -17276,7 +17407,7 @@
 </table>
 </p>
 <p>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Each component becomes -1 if negative, 0 if zero, or 1 if positive. </p>
 <p>
 <table class="api-item">
@@ -17289,6 +17420,7 @@
 </tr>
 </table>
 </p>
+<p>A 3D vector struct representing a point or direction in 3D space. </p>
 <table class="table-enumeration">
 <tr>
 <td>x</td>
@@ -17306,6 +17438,7 @@
 <td></td>
 </tr>
 </table>
+<p>Contains x, y, and z components as 32-bit floating point values. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -17492,19 +17625,19 @@
 <td>Set all components to the same scalar value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
 <td>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector3</span>)</span></td>
 <td>Binary operators for vector-vector operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector3_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
@@ -17524,7 +17657,7 @@
 </table>
 </p>
 <p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
@@ -17538,7 +17671,7 @@
 </table>
 </p>
 <p>Apply ceiling function to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component up to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -17552,7 +17685,7 @@
 </table>
 </p>
 <p>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="STpe">me</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)</span></div>
 <p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
@@ -17566,7 +17699,7 @@
 </table>
 </p>
 <p>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="STpe">me</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
 <p>Preserves the vector's direction while constraining its magnitude. </p>
 <p>
 <table class="api-item">
@@ -17580,7 +17713,7 @@
 </table>
 </p>
 <p>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Preserves the vector's direction while constraining its magnitude. </p>
 <p>
 <table class="api-item">
@@ -17594,7 +17727,7 @@
 </table>
 </p>
 <p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
 <p>
 <table class="api-item">
@@ -17608,7 +17741,7 @@
 </table>
 </p>
 <p>Returns the cross product between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cross</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>The cross product produces a vector perpendicular to both input vectors. </p>
 <p>
 <table class="api-item">
@@ -17622,7 +17755,7 @@
 </table>
 </p>
 <p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, dest: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
@@ -17636,7 +17769,7 @@
 </table>
 </p>
 <p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, dest: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -17650,7 +17783,7 @@
 </table>
 </p>
 <p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂). </p>
 <p>
 <table class="api-item">
@@ -17664,7 +17797,7 @@
 </table>
 </p>
 <p>Apply floor function to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component down to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -17706,7 +17839,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
@@ -17720,7 +17853,7 @@
 </table>
 </p>
 <p>Returns true if all components are finite (not infinite or NaN). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Useful for validating vector values after calculations. </p>
 <p>
 <table class="api-item">
@@ -17734,7 +17867,7 @@
 </table>
 </p>
 <p>Returns true if any component is NaN (Not a Number). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Useful for detecting invalid vector values after calculations. </p>
 <p>
 <table class="api-item">
@@ -17748,7 +17881,7 @@
 </table>
 </p>
 <p>Returns true if this vector is exactly zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
@@ -17762,7 +17895,7 @@
 </table>
 </p>
 <p>Returns true if this vector is zero within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
@@ -17776,7 +17909,7 @@
 </table>
 </p>
 <p>Returns the length (magnitude) of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the Euclidean distance formula: sqrt(x² + y² + z²). </p>
 <p>
 <table class="api-item">
@@ -17790,7 +17923,7 @@
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">length()</span> when only comparing magnitudes since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -17818,7 +17951,7 @@
 </table>
 </p>
 <p>Apply absolute value to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="STpe">me</span>)</span></div>
 <p>Makes all components positive by removing their sign. </p>
 <p>
 <table class="api-item">
@@ -17860,7 +17993,7 @@
 </table>
 </p>
 <p>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="STpe">me</span>, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
 <p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, moves directly to target. </p>
 <p>
 <table class="api-item">
@@ -17874,7 +18007,7 @@
 </table>
 </p>
 <p>Negate the vector in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="STpe">me</span>)</span></div>
 <p>Multiplies all components by -1, effectively reversing the vector direction. </p>
 <p>
 <table class="api-item">
@@ -17888,7 +18021,7 @@
 </table>
 </p>
 <p>Normalize this vector in-place to unit length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="STpe">me</span>)</span></div>
 <p>Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -17902,7 +18035,7 @@
 </table>
 </p>
 <p>Normalize this vector in-place safely. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="STpe">me</span>)</span></div>
 <p>Sets the vector to unit length, or to zero if the original length is near zero. </p>
 <p>
 <table class="api-item">
@@ -17916,7 +18049,7 @@
 </table>
 </p>
 <p>Set all components to the same scalar value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>This allows assignment like 'vec = 5.0' to set all components to 5.0. </p>
 <p>
 <table class="api-item">
@@ -17930,10 +18063,10 @@
 </table>
 </p>
 <p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)</span></div>
 <p>Performs component-wise operations with another vector. </p>
 <p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to all components of the vector. </p>
 <p>
 <table class="api-item">
@@ -17947,10 +18080,10 @@
 </table>
 </p>
 <p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Performs component-wise operations between two vectors and returns the result. </p>
 <p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to all components and returns the result. </p>
 <p>
 <table class="api-item">
@@ -17964,7 +18097,7 @@
 </table>
 </p>
 <p>Apply unary operations to the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Currently supports negation (-) to return a vector with all components negated. </p>
 <p>
 <table class="api-item">
@@ -17978,7 +18111,7 @@
 </table>
 </p>
 <p>Apply rounding function to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -17992,7 +18125,7 @@
 </table>
 </p>
 <p>Set all three components of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, z: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, x, y, z: <span class="STpe">f32</span>)</span></div>
 <p>Parameters <span class="code-inline">x</span>, <span class="code-inline">y</span>, and <span class="code-inline">z</span> specify the new component values. </p>
 <p>
 <table class="api-item">
@@ -18006,7 +18139,7 @@
 </table>
 </p>
 <p>Set the vector to the specified length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="STpe">me</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>First normalizes the vector, then scales it to <span class="code-inline">newLength</span>. Assumes the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -18020,7 +18153,7 @@
 </table>
 </p>
 <p>Set the vector to the specified length safely. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="STpe">me</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>First normalizes the vector safely, then scales it to <span class="code-inline">newLength</span>. Handles zero-length vectors. </p>
 <p>
 <table class="api-item">
@@ -18034,7 +18167,7 @@
 </table>
 </p>
 <p>Set all vector components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="STpe">me</span>)</span></div>
 <p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
@@ -18062,7 +18195,7 @@
 </table>
 </p>
 <p>Returns the absolute value of each component. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Creates a new vector where each component is its absolute value. </p>
 <p>
 <table class="api-item">
@@ -18076,7 +18209,7 @@
 </table>
 </p>
 <p>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
@@ -18090,7 +18223,7 @@
 </table>
 </p>
 <p>Convert this vector to cylindrical coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toCylindrical</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{theta:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>,height:<span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toCylindrical</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;{theta:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>,height:<span class="STpe">f32</span>}</span></div>
 <p>Returns theta (angle in radians), radius (distance from z-axis) and height (z-component) as a tuple-like struct. </p>
 <p>
 <table class="api-item">
@@ -18104,7 +18237,7 @@
 </table>
 </p>
 <p>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, target: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, returns the target directly. </p>
 <p>
 <table class="api-item">
@@ -18118,7 +18251,7 @@
 </table>
 </p>
 <p>Returns this vector normalized to unit length without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -18132,7 +18265,7 @@
 </table>
 </p>
 <p>Returns this vector normalized safely without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
 <p>
 <table class="api-item">
@@ -18146,7 +18279,7 @@
 </table>
 </p>
 <p>Project this vector onto <span class="code-inline">other</span> vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Returns the component of this vector in the direction of <span class="code-inline">other</span>. </p>
 <p>
 <table class="api-item">
@@ -18160,7 +18293,7 @@
 </table>
 </p>
 <p>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, normal: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, normal: <span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>The <span class="code-inline">normal</span> should be a unit vector pointing away from the surface. </p>
 <p>
 <table class="api-item">
@@ -18174,7 +18307,7 @@
 </table>
 </p>
 <p>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Each component becomes -1 if negative, 0 if zero, or 1 if positive. </p>
 <p>
 <table class="api-item">
@@ -18188,7 +18321,7 @@
 </table>
 </p>
 <p>Convert this vector to spherical coordinates. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSpherical</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;{theta:<span class="STpe">f32</span>,phi:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSpherical</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;{theta:<span class="STpe">f32</span>,phi:<span class="STpe">f32</span>,radius:<span class="STpe">f32</span>}</span></div>
 <p>Returns theta (azimuthal angle), phi (polar angle) in radians and radius (magnitude) as a tuple-like struct. </p>
 <p>
 <table class="api-item">
@@ -18201,6 +18334,7 @@
 </tr>
 </table>
 </p>
+<p>A 4D vector struct representing a point or direction in 4D space. </p>
 <table class="table-enumeration">
 <tr>
 <td>x</td>
@@ -18223,6 +18357,7 @@
 <td></td>
 </tr>
 </table>
+<p>Contains x, y, z, and w components as 32-bit floating point values. Commonly used for homogeneous coordinates in 3D graphics or RGBA color values. </p>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
@@ -18409,19 +18544,19 @@
 <td>Set all components to the same scalar value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
 <td>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> &<span class="SCst">Vector4</span>)</span></td>
 <td>Binary operators for vector-vector operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_Vector4_opBinary">opBinary</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
 <td>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </td>
 </tr>
 <tr>
@@ -18441,7 +18576,7 @@
 </table>
 </p>
 <p>Returns the angle between this vector and <span class="code-inline">other</span> in radians. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">angleTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The result is in the range [0, π] using the arc cosine of the normalized dot product. </p>
 <p>
 <table class="api-item">
@@ -18455,7 +18590,7 @@
 </table>
 </p>
 <p>Apply ceiling function to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component up to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -18469,7 +18604,7 @@
 </table>
 </p>
 <p>Clamp this vector's components between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clamp</span>(<span class="STpe">me</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
 <p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
@@ -18483,7 +18618,7 @@
 </table>
 </p>
 <p>Clamp this vector's length to be within <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampLength</span>(<span class="STpe">me</span>, minLength, maxLength: <span class="STpe">f32</span>)</span></div>
 <p>Preserves the vector's direction while constraining its magnitude. </p>
 <p>
 <table class="api-item">
@@ -18497,7 +18632,7 @@
 </table>
 </p>
 <p>Returns a new vector with length clamped between <span class="code-inline">minLength</span> and <span class="code-inline">maxLength</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clampedLength</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, minLength, maxLength: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Preserves the vector's direction while constraining its magnitude. </p>
 <p>
 <table class="api-item">
@@ -18511,7 +18646,7 @@
 </table>
 </p>
 <p>Returns the cosine of the angle between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">cosAngleTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the dot product formula: dot(a,b) / (|a| * |b|). </p>
 <p>
 <table class="api-item">
@@ -18525,7 +18660,7 @@
 </table>
 </p>
 <p>Returns the Euclidean distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceTo</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, dest: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated as the length of the difference vector between the two positions. </p>
 <p>
 <table class="api-item">
@@ -18539,7 +18674,7 @@
 </table>
 </p>
 <p>Returns the squared distance between this vector and <span class="code-inline">dest</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, dest: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">distanceToSquared</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, dest: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">distance()</span> when only comparing distances since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -18553,7 +18688,7 @@
 </table>
 </p>
 <p>Returns the dot product between this vector and <span class="code-inline">other</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dot</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>The dot product is calculated as: (x₁ × x₂) + (y₁ × y₂) + (z₁ × z₂) + (w₁ × w₂). </p>
 <p>
 <table class="api-item">
@@ -18567,7 +18702,7 @@
 </table>
 </p>
 <p>Apply floor function to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component down to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -18609,7 +18744,7 @@
 </table>
 </p>
 <p>Returns true if this vector is equal to <span class="code-inline">other</span> within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEqualEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Compares each component separately using the specified <span class="code-inline">eps</span> tolerance. </p>
 <p>
 <table class="api-item">
@@ -18623,7 +18758,7 @@
 </table>
 </p>
 <p>Returns true if all components are finite (not infinite or NaN). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isFinite</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Useful for validating vector values after calculations. </p>
 <p>
 <table class="api-item">
@@ -18637,7 +18772,7 @@
 </table>
 </p>
 <p>Returns true if any component is NaN (Not a Number). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNaN</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Useful for detecting invalid vector values after calculations. </p>
 <p>
 <table class="api-item">
@@ -18651,7 +18786,7 @@
 </table>
 </p>
 <p>Returns true if this vector is exactly zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZero</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Performs exact floating-point comparison, which may not work well with computed values. </p>
 <p>
 <table class="api-item">
@@ -18665,7 +18800,7 @@
 </table>
 </p>
 <p>Returns true if this vector is zero within an epsilon tolerance. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isZeroEpsilon</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, eps = <span class="SKwd">cast</span>(<span class="STpe">f32</span>) <span class="SCst"><a href="#Core_Math_ConstF64">ConstF64</a></span>.<span class="SCst">Epsilon</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Uses <span class="code-inline">eps</span> parameter to handle floating-point precision issues. </p>
 <p>
 <table class="api-item">
@@ -18679,7 +18814,7 @@
 </table>
 </p>
 <p>Returns the length (magnitude) of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">length</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Calculated using the Euclidean distance formula: sqrt(x² + y² + z² + w²). </p>
 <p>
 <table class="api-item">
@@ -18693,7 +18828,7 @@
 </table>
 </p>
 <p>Returns the squared length of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthSquared</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Faster than <span class="code-inline">length()</span> when only comparing magnitudes since it avoids the square root operation. </p>
 <p>
 <table class="api-item">
@@ -18721,7 +18856,7 @@
 </table>
 </p>
 <p>Apply absolute value to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeAbs</span>(<span class="STpe">me</span>)</span></div>
 <p>Makes all components positive by removing their sign. </p>
 <p>
 <table class="api-item">
@@ -18763,7 +18898,7 @@
 </table>
 </p>
 <p>Move this vector towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(<span class="STpe">me</span>, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, maxDistance: <span class="STpe">f32</span>)</span></div>
 <p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, moves directly to target. </p>
 <p>
 <table class="api-item">
@@ -18777,7 +18912,7 @@
 </table>
 </p>
 <p>Negate the vector in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">negate</span>(<span class="STpe">me</span>)</span></div>
 <p>Multiplies all components by -1, effectively reversing the vector direction. </p>
 <p>
 <table class="api-item">
@@ -18791,7 +18926,7 @@
 </table>
 </p>
 <p>Normalize this vector in-place to unit length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalize</span>(<span class="STpe">me</span>)</span></div>
 <p>Sets the vector's length to 1 while preserving its direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -18805,7 +18940,7 @@
 </table>
 </p>
 <p>Normalize this vector in-place safely. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">normalizeSafe</span>(<span class="STpe">me</span>)</span></div>
 <p>Sets the vector to unit length, or to zero if the original length is near zero. </p>
 <p>
 <table class="api-item">
@@ -18819,7 +18954,7 @@
 </table>
 </p>
 <p>Set all components to the same scalar value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>This allows assignment like 'vec = 5.0' to set all components to 5.0. </p>
 <p>
 <table class="api-item">
@@ -18833,10 +18968,10 @@
 </table>
 </p>
 <p>Compound assignment operators for vector-vector operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)</span></div>
 <p>Performs component-wise operations with another vector. </p>
 <p>Compound assignment operators for vector-scalar operations (+=, -=, <i>=, /=).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to all components of the vector. </p>
 <p>
 <table class="api-item">
@@ -18850,10 +18985,10 @@
 </table>
 </p>
 <p>Binary operators for vector-vector operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Performs component-wise operations between two vectors and returns the result. </p>
 <p>Binary operators for vector-scalar operations (+, -, <i>, /).</i> </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opBinary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, value: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Applies the scalar <span class="code-inline">value</span> to all components and returns the result. </p>
 <p>
 <table class="api-item">
@@ -18867,7 +19002,7 @@
 </table>
 </p>
 <p>Apply unary operations to the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opUnary</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Currently supports negation (-) to return a vector with all components negated. </p>
 <p>
 <table class="api-item">
@@ -18881,7 +19016,7 @@
 </table>
 </p>
 <p>Apply rounding function to all components in-place. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">round</span>(<span class="STpe">me</span>)</span></div>
 <p>Rounds each component to the nearest integer value. </p>
 <p>
 <table class="api-item">
@@ -18895,7 +19030,7 @@
 </table>
 </p>
 <p>Set all four components of the vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, x, y, z, w: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(<span class="STpe">me</span>, x, y, z, w: <span class="STpe">f32</span>)</span></div>
 <p>Parameters <span class="code-inline">x</span>, <span class="code-inline">y</span>, <span class="code-inline">z</span>, and <span class="code-inline">w</span> specify the new component values. </p>
 <p>
 <table class="api-item">
@@ -18909,7 +19044,7 @@
 </table>
 </p>
 <p>Set the vector to the specified length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLength</span>(<span class="STpe">me</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>First normalizes the vector, then scales it to <span class="code-inline">newLength</span>. Assumes the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -18923,7 +19058,7 @@
 </table>
 </p>
 <p>Set the vector to the specified length safely. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newLength: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setLengthSafe</span>(<span class="STpe">me</span>, newLength: <span class="STpe">f32</span>)</span></div>
 <p>First normalizes the vector safely, then scales it to <span class="code-inline">newLength</span>. Handles zero-length vectors. </p>
 <p>
 <table class="api-item">
@@ -18937,7 +19072,7 @@
 </table>
 </p>
 <p>Set all vector components to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setZero</span>(<span class="STpe">me</span>)</span></div>
 <p>Equivalent to assigning the <span class="code-inline">Zero</span> constant but modifies the current instance. </p>
 <p>
 <table class="api-item">
@@ -18965,7 +19100,7 @@
 </table>
 </p>
 <p>Returns the absolute value of each component. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toAbs</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Creates a new vector where each component is its absolute value. </p>
 <p>
 <table class="api-item">
@@ -18979,7 +19114,7 @@
 </table>
 </p>
 <p>Returns a new vector with components clamped between <span class="code-inline">min</span> and <span class="code-inline">max</span> values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toClamped</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, min, max: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Each component is independently clamped to stay within the specified range. </p>
 <p>
 <table class="api-item">
@@ -18993,7 +19128,7 @@
 </table>
 </p>
 <p>Returns a vector moved towards <span class="code-inline">target</span> by a maximum distance of <span class="code-inline">maxDistance</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMovedTowards</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, target: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>, maxDistance: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>If the distance to <span class="code-inline">target</span> is less than <span class="code-inline">maxDistance</span>, returns the target directly. </p>
 <p>
 <table class="api-item">
@@ -19007,7 +19142,7 @@
 </table>
 </p>
 <p>Returns this vector normalized to unit length without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalized</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Creates a new vector with length 1 in the same direction. Asserts that the vector is not zero. </p>
 <p>
 <table class="api-item">
@@ -19021,7 +19156,7 @@
 </table>
 </p>
 <p>Returns this vector normalized safely without modifying the original. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNormalizedSafe</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Returns a unit vector in the same direction, or the zero vector if length is near zero. </p>
 <p>
 <table class="api-item">
@@ -19035,7 +19170,7 @@
 </table>
 </p>
 <p>Project this vector onto <span class="code-inline">other</span> vector. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toProject</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Returns the component of this vector in the direction of <span class="code-inline">other</span>. </p>
 <p>
 <table class="api-item">
@@ -19049,7 +19184,7 @@
 </table>
 </p>
 <p>Reflect this vector across a surface with the given <span class="code-inline">normal</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, normal: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toReflect</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, normal: <span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>The <span class="code-inline">normal</span> should be a unit vector pointing away from the surface. </p>
 <p>
 <table class="api-item">
@@ -19063,7 +19198,7 @@
 </table>
 </p>
 <p>Returns the component-wise sign of the vector (-1, 0, or 1 for each component). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSign</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector4">Vector4</a></span></span></div>
 <p>Each component becomes -1 if negative, 0 if zero, or 1 if positive. </p>
 <p>
 <table class="api-item">
@@ -19077,7 +19212,7 @@
 </table>
 </p>
 <p>Convert homogeneous coordinates to 3D by dividing x, y, z by w. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toVector3</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toVector3</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Returns a Vector3 representing the 3D position when w != 0. Handles w = 0 case safely. </p>
 <p>
 <table class="api-item">
@@ -19091,7 +19226,7 @@
 </table>
 </p>
 <p>Extract the XY components as a Vector2, ignoring Z and W components. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xy</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xy</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector2">Vector2</a></span></span></div>
 <p>Useful for 2D projections or when using Vector4 for padding. </p>
 <p>
 <table class="api-item">
@@ -19105,7 +19240,7 @@
 </table>
 </p>
 <p>Extract the XYZ components as a Vector3, ignoring the W component. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xyz</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">xyz</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Math">Math</a></span>.<span class="SCst"><a href="#Core_Math_Vector3">Vector3</a></span></span></div>
 <p>Useful when Vector4 is used for color (RGBA) and you need just RGB. </p>
 <p>
 <table class="api-item">
@@ -19114,7 +19249,7 @@
 <span id="Core_Math_abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">abs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L223" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L240" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19131,7 +19266,7 @@
 <span id="Core_Math_acos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">acos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L202" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L219" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19144,7 +19279,7 @@
 <span id="Core_Math_asin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">asin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L217" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19157,7 +19292,7 @@
 <span id="Core_Math_atan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L204" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L221" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19170,7 +19305,7 @@
 <span id="Core_Math_atan2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L197" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19213,7 +19348,7 @@
 <span id="Core_Math_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L216" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L233" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19240,7 +19375,7 @@
 <span id="Core_Math_cos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L188" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L205" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19253,7 +19388,7 @@
 <span id="Core_Math_cosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cosh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L195" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L212" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19297,7 +19432,7 @@
 <span id="Core_Math_exp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L226" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L243" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19310,7 +19445,7 @@
 <span id="Core_Math_exp2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L228" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L245" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19323,7 +19458,7 @@
 <span id="Core_Math_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L231" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19407,7 +19542,7 @@
 <span id="Core_Math_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L109" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19421,7 +19556,7 @@
 <span id="Core_Math_isFinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isFinite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L120" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L137" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19438,7 +19573,7 @@
 <span id="Core_Math_isNaN"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isNaN</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L131" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19467,7 +19602,7 @@
 <span id="Core_Math_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L105" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19539,7 +19674,7 @@
 <span id="Core_Math_log"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L224" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19552,7 +19687,7 @@
 <span id="Core_Math_log10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L211" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19565,7 +19700,7 @@
 <span id="Core_Math_log2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L209" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L226" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19630,7 +19765,7 @@
 <span id="Core_Math_map"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">map</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L150" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L167" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19697,10 +19832,24 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_Math_moveTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">moveTowards</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L58" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Interpolation at constant speed - moves a fixed distance per step. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveTowards</span>(current, target, speed: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">moveTowards</span>(current, target, speed: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_Math_mulAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">mulAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L233" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L250" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19739,7 +19888,7 @@
 <span id="Core_Math_pow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">pow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L230" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19752,7 +19901,7 @@
 <span id="Core_Math_powerOf10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">powerOf10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L163" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L180" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19823,7 +19972,7 @@
 <span id="Core_Math_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L220" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L237" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19894,7 +20043,7 @@
 <span id="Core_Math_sin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L186" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L203" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19907,7 +20056,7 @@
 <span id="Core_Math_sinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sinh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L193" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L210" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19920,7 +20069,7 @@
 <span id="Core_Math_smoothDamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothDamp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L78" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19934,7 +20083,7 @@
 <span id="Core_Math_smoothstep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothstep</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L137" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L154" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19948,7 +20097,7 @@
 <span id="Core_Math_sqrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sqrt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L183" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L200" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19961,7 +20110,7 @@
 <span id="Core_Math_tan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L190" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19974,7 +20123,7 @@
 <span id="Core_Math_tanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tanh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L197" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19987,7 +20136,7 @@
 <span id="Core_Math_toDegrees"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toDegrees</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L99" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20001,7 +20150,7 @@
 <span id="Core_Math_toRadians"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toRadians</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L100" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L117" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20031,7 +20180,7 @@
 <span id="Core_Math_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L218" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L235" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20049,7 +20198,7 @@
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Memory_align">align</a></span><span class="SCde">(<span class="SKwd">const</span> ^<span class="STpe">void</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Memory_align">align</a></span><span class="SCde">(<span class="SKwd">const</span> [*] <span class="STpe">void</span>, <span class="STpe">u32</span>)</span></td>
 <td>Align a pointer to the given amount. </td>
 </tr>
 <tr>
@@ -20085,7 +20234,7 @@
 <td>Drop and release memory of the given type. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Memory_delete">delete</a></span><span class="SCde">(^<span class="SCst">T</span>, <span class="STpe">u64</span>, <span class="SCst">IAllocator</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> &<span class="SCst">SourceCodeLocation</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Memory_delete">delete</a></span><span class="SCde">([*] <span class="SCst">T</span>, <span class="STpe">u64</span>, <span class="SCst">IAllocator</span>, <span class="STpe">string</span>, <span class="SKwd">const</span> &<span class="SCst">SourceCodeLocation</span>)</span></td>
 <td>Drop and release memory of an array of the given type. </td>
 </tr>
 <tr>
@@ -20155,7 +20304,7 @@
 <p>Align a value to the given amount. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">align</span>(value: <span class="STpe">u64</span>, alignment: <span class="STpe">u32</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Align a pointer to the given amount. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">align</span>(value: <span class="SKwd">const</span> ^<span class="STpe">void</span>, alignment: <span class="STpe">u32</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">void</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">align</span>(value: <span class="SKwd">const</span> [*] <span class="STpe">void</span>, alignment: <span class="STpe">u32</span>)-&gt;<span class="SKwd">const</span> [*] <span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20168,7 +20317,7 @@
 </table>
 </p>
 <p>Allocate a given amount of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(size: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;^<span class="STpe">void</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">alloc</span>(size: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;[*] <span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20181,7 +20330,7 @@
 </table>
 </p>
 <p>Check if a given pointer is allocated. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(buffer: ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">assertIsAllocated</span>(buffer: [*] <span class="STpe">void</span>, size: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20194,7 +20343,7 @@
 </table>
 </p>
 <p>Clear one block of memory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(dest: ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(dest: [*] <span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20207,7 +20356,7 @@
 </table>
 </p>
 <p>Compare two blocks of memory. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compare</span>(dest, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compare</span>(dest, src: <span class="SKwd">const</span> [*] <span class="STpe">void</span>, size: <span class="STpe">u64</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20220,7 +20369,7 @@
 </table>
 </p>
 <p>Copy one block of memory to a given address. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copy</span>(dest: ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copy</span>(dest: [*] <span class="STpe">void</span>, src: <span class="SKwd">const</span> [*] <span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20233,7 +20382,7 @@
 </table>
 </p>
 <p>Move one block of memory to a given address. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copyOver</span>(dest: ^<span class="STpe">void</span>, src: <span class="SKwd">const</span> ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">copyOver</span>(dest: [*] <span class="STpe">void</span>, src: <span class="SKwd">const</span> [*] <span class="STpe">void</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20249,7 +20398,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">delete</span>(ptr: *<span class="SCst">T</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)
 <span class="SKwd">func</span> <span class="SFct">delete</span>(ptr: *<span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>Drop and release memory of an array of the given type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">delete</span>(ptr: ^<span class="SCst">T</span>, num: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">delete</span>(ptr: [*] <span class="SCst">T</span>, num: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20275,7 +20424,7 @@
 </table>
 </p>
 <p>Free the specified memory block. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(buffer: ^<span class="STpe">void</span>, size: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(buffer: [*] <span class="STpe">void</span>, size: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20317,7 +20466,7 @@
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">new</span>(type: <span class="STpe">typeinfo</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;*<span class="STpe">u8</span>
 <span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">new</span>(allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;*<span class="SCst">T</span></span></div>
 <p>Allocate and initialize an array of the given type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">new</span>(num: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;^<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">new</span>(num: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;[*] <span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20358,7 +20507,7 @@
 </table>
 </p>
 <p>Reallocate/allocate a given amount of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(buffer: ^<span class="STpe">void</span>, newSize: <span class="STpe">u64</span>, oldSize: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u16</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;^<span class="STpe">void</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">realloc</span>(buffer: [*] <span class="STpe">void</span>, newSize: <span class="STpe">u64</span>, oldSize: <span class="STpe">u64</span>, allocator: <span class="SCst">IAllocator</span> = <span class="SKwd">null</span>, alignment: <span class="STpe">u16</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;[*] <span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20371,7 +20520,7 @@
 </table>
 </p>
 <p>Set the content of one block of memory to a specific byte value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(dest: ^<span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">set</span>(dest: [*] <span class="STpe">void</span>, value: <span class="STpe">u8</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20384,7 +20533,7 @@
 </table>
 </p>
 <p>Allocate a given amount of bytes in the temporary allocator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tempAlloc</span>(size: <span class="STpe">u64</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;^<span class="STpe">void</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tempAlloc</span>(size: <span class="STpe">u64</span>, alignment: <span class="STpe">u32</span> = <span class="SNum">0</span>, hint: <span class="STpe">string</span> = <span class="SKwd">null</span>, loc = <span class="SCmp">#callerlocation</span>)-&gt;[*] <span class="STpe">void</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20398,25 +20547,25 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Noise_FastNoise"><span class="SCst">FastNoise</span></a></td>
-<td></td>
+<td>FastNoise structure for generating different types of noise based on user-defined parameters. </td>
 </tr>
 </table>
 <h3>Enums</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Noise_FastNoiseKind"><span class="SCst">FastNoiseKind</span></a></td>
-<td></td>
+<td>Types of noise that can be generated by FastNoise. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_perlin">perlin</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">s32</span>)</span></td>
-<td></td>
+<td>Perlin noise in 3D. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_perlin">perlin</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>, <span class="STpe">s32</span>)</span></td>
-<td>Perlin noise. </td>
+<td>Perlin noise in 2D. </td>
 </tr>
 </table>
 <p>
@@ -20426,20 +20575,21 @@
 <span id="Core_Noise_FastNoise"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">FastNoise</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L22" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>FastNoise structure for generating different types of noise based on user-defined parameters. </p>
 <table class="table-enumeration">
 <tr>
 <td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Noise">Noise</a></span>.<span class="SCst"><a href="#Core_Noise_FastNoiseKind">FastNoiseKind</a></span></span></td>
-<td></td>
+<td>Type of noise to generate. </td>
 </tr>
 <tr>
 <td>seed</td>
 <td class="code-type"><span class="STpe">s32</span></td>
-<td></td>
+<td>Seed value for noise generation. </td>
 </tr>
 <tr>
 <td>octaves</td>
@@ -20464,7 +20614,7 @@
 <tr>
 <td>fractalBounding</td>
 <td class="code-type"><span class="STpe">f32</span></td>
-<td></td>
+<td>Normalization factor used to keep the noise within bounds for fractal types. </td>
 </tr>
 </table>
 <h3>Functions</h3>
@@ -20475,15 +20625,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_perlinFractalBillow">perlinFractalBillow</a></span></td>
-<td></td>
+<td>Computes billow-style fractal using Perlin noise. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_perlinFractalFBM">perlinFractalFBM</a></span></td>
-<td></td>
+<td>Computes fractal Brownian Motion using Perlin noise. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_perlinFractalRigidMulti">perlinFractalRigidMulti</a></span></td>
-<td></td>
+<td>Computes rigid multi-fractal using Perlin noise. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_update">update</a></span></td>
@@ -20491,15 +20641,15 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_valueFractalBillow">valueFractalBillow</a></span></td>
-<td></td>
+<td>Computes billow-style fractal using value noise. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_valueFractalFBM">valueFractalFBM</a></span></td>
-<td></td>
+<td>Computes fractal Brownian Motion using value noise. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Noise_FastNoise_valueFractalRigidMulti">valueFractalRigidMulti</a></span></td>
-<td></td>
+<td>Computes rigid multi-fractal using value noise. </td>
 </tr>
 </table>
 <p>
@@ -20509,12 +20659,12 @@
 <span id="Core_Noise_FastNoise_noise"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">noise</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L166" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L175" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get a noise result. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">noise</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">noise</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20522,11 +20672,12 @@
 <span id="Core_Noise_FastNoise_perlinFractalBillow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">perlinFractalBillow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L85" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Computes billow-style fractal using Perlin noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalBillow</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20534,11 +20685,12 @@
 <span id="Core_Noise_FastNoise_perlinFractalFBM"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">perlinFractalFBM</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L63" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Computes fractal Brownian Motion using Perlin noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalFBM</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20546,11 +20698,12 @@
 <span id="Core_Noise_FastNoise_perlinFractalRigidMulti"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">perlinFractalRigidMulti</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L97" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L103" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Computes rigid multi-fractal using Perlin noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlinFractalRigidMulti</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20558,12 +20711,12 @@
 <span id="Core_Noise_FastNoise_update"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">update</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Update internal values. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>)</span></div>
 <p>Should be called each time an internal parameter has been changed. </p>
 <p>
 <table class="api-item">
@@ -20572,11 +20725,12 @@
 <span id="Core_Noise_FastNoise_valueFractalBillow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">valueFractalBillow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalBillow</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Computes billow-style fractal using value noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalBillow</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20584,11 +20738,12 @@
 <span id="Core_Noise_FastNoise_valueFractalFBM"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">valueFractalFBM</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalFBM</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Computes fractal Brownian Motion using value noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalFBM</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20596,11 +20751,12 @@
 <span id="Core_Noise_FastNoise_valueFractalRigidMulti"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">FastNoise.</span><span class="api-item-title-strong">valueFractalRigidMulti</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L148" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L157" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalRigidMulti</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Computes rigid multi-fractal using value noise. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">valueFractalRigidMulti</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20608,42 +20764,43 @@
 <span id="Core_Noise_FastNoiseKind"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">FastNoiseKind</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L10" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\fastnoise.swg#L11" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Types of noise that can be generated by FastNoise. </p>
 <table class="table-enumeration">
 <tr>
 <td>Perlin</td>
-<td></td>
+<td>Basic Perlin noise. </td>
 </tr>
 <tr>
 <td>PerlinFractalFBM</td>
-<td></td>
+<td>Fractal Brownian Motion using Perlin noise. </td>
 </tr>
 <tr>
 <td>PerlinFractalBillow</td>
-<td></td>
+<td>Billow-style fractal using Perlin noise. </td>
 </tr>
 <tr>
 <td>PerlinFractalRigidMulti</td>
-<td></td>
+<td>Rigid multi-fractal using Perlin noise. </td>
 </tr>
 <tr>
 <td>Value</td>
-<td></td>
+<td>Basic value noise. </td>
 </tr>
 <tr>
 <td>ValueFractalFBM</td>
-<td></td>
+<td>Fractal Brownian Motion using value noise. </td>
 </tr>
 <tr>
 <td>ValueFractalBillow</td>
-<td></td>
+<td>Billow-style fractal using value noise. </td>
 </tr>
 <tr>
 <td>ValueFractalRigidMulti</td>
-<td></td>
+<td>Rigid multi-fractal using value noise. </td>
 </tr>
 </table>
 <p>
@@ -20653,14 +20810,16 @@
 <span id="Core_Noise_perlin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Noise.</span><span class="api-item-title-strong">perlin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L155" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\noise.swg#L163" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Perlin noise. </p>
+<p>Perlin noise in 2D. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlin</span>(x, y: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Result range is [-1, 1] </p>
+<p>Perlin noise in 3D. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">perlin</span>(x, y, z: <span class="STpe">f32</span>, seed: <span class="STpe">s32</span> = <span class="SNum">1337</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Result range is [-1, 1] </p>
 <p>
 <table class="api-item">
 <tr>
@@ -20752,7 +20911,7 @@
 <td>Returns all the captured strings, in order. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grep">grep</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grep">grep</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td>Find the first occurence in the string. </td>
 </tr>
 <tr>
@@ -20760,7 +20919,7 @@
 <td>Find the first occurence in the string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grepAll">grepAll</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_grepAll">grepAll</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td>Find all the occurences in the string. </td>
 </tr>
 <tr>
@@ -20768,11 +20927,11 @@
 <td>Find all the occurences in the string. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td>Returns true if <span class="code-inline">str</span> matches the regexp. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Parser_RegExp_match">match</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="STpe">bool</span>)</span></td>
 <td>Compile and match the expression. </td>
 </tr>
 <tr>
@@ -20803,7 +20962,7 @@
 </table>
 </p>
 <p>Clear content. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20816,7 +20975,7 @@
 </table>
 </p>
 <p>Compile the expression. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compile</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, expr: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compile</span>(<span class="STpe">me</span>, expr: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20842,7 +21001,7 @@
 </table>
 </p>
 <p>Returns the parsed string associated with a given captured group. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCapture</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, rank: <span class="STpe">u32</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCapture</span>(<span class="STpe">me</span>, rank: <span class="STpe">u32</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20855,7 +21014,7 @@
 </table>
 </p>
 <p>Returns all the captured strings, in order. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaptures</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getCaptures</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20869,7 +21028,7 @@
 </p>
 <p>Find the first occurence in the string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grep</span>(expr, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">grep</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">grep</span>(<span class="STpe">me</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20883,7 +21042,7 @@
 </p>
 <p>Find all the occurences in the string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grepAll</span>(expr, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>) <span class="SKwd">throw</span>
-<span class="SKwd">func</span> <span class="SFct">grepAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">grepAll</span>(<span class="STpe">me</span>, str: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20896,9 +21055,9 @@
 </table>
 </p>
 <p>Compile and match the expression. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, expr, str: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="STpe">me</span>, expr, str: <span class="STpe">string</span>, ignoreCase = <span class="SKwd">false</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>Returns true if <span class="code-inline">str</span> matches the regexp. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">match</span>(<span class="STpe">me</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Should have been compiled before. </p>
 <p>
 <table class="api-item">
@@ -20911,7 +21070,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20924,7 +21083,7 @@
 </table>
 </p>
 <p>You can get a capture group value by using the derefence syntax. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="STpe">me</span>, idx: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>Returns <span class="code-inline">null</span> if the capture group does not exist </p>
 <p>
 <table class="api-item">
@@ -20938,7 +21097,7 @@
 </table>
 </p>
 <p>Try to match the start of the string, and returns the matched value or null. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">partialMatch</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">partialMatch</span>(<span class="STpe">me</span>, str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21253,7 +21412,7 @@
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Random_CMWC4096"><span class="SCst">CMWC4096</span></a></td>
-<td></td>
+<td>George Marsaglia's CMWC (Complementary Multiply With Carry) 4096 random number generator. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Random_MWC"><span class="SCst">MWC</span></a></td>
@@ -21286,32 +21445,33 @@
 </tr>
 </table>
 </p>
+<p>George Marsaglia's CMWC (Complementary Multiply With Carry) 4096 random number generator. </p>
 <table class="table-enumeration">
 <tr>
 <td>q</td>
 <td class="code-type"><span class="SCde">[<span class="SNum">4096</span>] <span class="STpe">u32</span></span></td>
-<td></td>
+<td>State array of 4096 32-bit unsigned integers. </td>
 </tr>
 <tr>
 <td>c</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Carry value. </td>
 </tr>
 <tr>
 <td>i</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td>special invalid value (&gt; 4095) to force the seed on first get. </td>
+<td>Current index into the state array (initialized to an invalid value to trigger seeding). </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_CMWC4096_nextU32">nextU32</a></span></td>
-<td></td>
+<td>Generates the next 32-bit unsigned random number. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Random_CMWC4096_seedU32">seedU32</a></span></td>
-<td></td>
+<td>Seeds the generator with a 32-bit unsigned value. </td>
 </tr>
 </table>
 <p>
@@ -21321,11 +21481,12 @@
 <span id="Core_Random_CMWC4096_nextU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CMWC4096.</span><span class="api-item-title-strong">nextU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\cmwc.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\cmwc.swg#L27" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Generates the next 32-bit unsigned random number. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21333,11 +21494,12 @@
 <span id="Core_Random_CMWC4096_seedU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">CMWC4096.</span><span class="api-item-title-strong">seedU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\cmwc.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\rand\cmwc.swg#L15" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u32</span>)</span></div>
+<p>Seeds the generator with a 32-bit unsigned value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="STpe">me</span>, value: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21368,11 +21530,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_MWC_seedU32">seedU32</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -21387,7 +21549,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21399,8 +21561,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u32</span>)
-<span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value1, value2: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="STpe">me</span>, value: <span class="STpe">u32</span>)
+<span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="STpe">me</span>, value1, value2: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21431,11 +21593,11 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Mt64_seedU64">seedU64</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 </table>
@@ -21450,7 +21612,7 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21462,8 +21624,8 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="STpe">u64</span>)
-<span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="STpe">me</span>, seed: <span class="STpe">u64</span>)
+<span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="STpe">me</span>, seed: <span class="SKwd">const</span> [..] <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21495,51 +21657,51 @@
 <td>Returns a random bool. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Range is [0..1[, so 1.0 will never be returned. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF32">nextF32</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Range is [0..1[, so 1.0 will never be returned. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextF64">nextF64</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
 <td>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns a signed 32 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS32">nextS32</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">s32</span>, <span class="STpe">s32</span>)</span></td>
 <td>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns a signed 64 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextS64">nextS64</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">s64</span>, <span class="STpe">s64</span>)</span></td>
 <td>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns an unsigned 32 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU32">nextU32</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u32</span>, <span class="STpe">u32</span>)</span></td>
 <td>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns an unsigned 64 bits random value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Random_Rng_nextU64">nextU64</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </td>
 </tr>
 <tr>
@@ -21571,7 +21733,7 @@
 </table>
 </p>
 <p>Returns a random bool. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextBool</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextBool</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21584,9 +21746,9 @@
 </table>
 </p>
 <p>Range is [0..1[, so 1.0 will never be returned. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF32</span>(<span class="STpe">me</span>, min, max: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21599,9 +21761,9 @@
 </table>
 </p>
 <p>Range is [0..1[, so 1.0 will never be returned. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>Returns a float value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextF64</span>(<span class="STpe">me</span>, min, max: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21614,9 +21776,9 @@
 </table>
 </p>
 <p>Returns a signed 32 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS32</span>(<span class="STpe">me</span>, min, max: <span class="STpe">s32</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21629,9 +21791,9 @@
 </table>
 </p>
 <p>Returns a signed 64 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>Returns a signed random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextS64</span>(<span class="STpe">me</span>, min, max: <span class="STpe">s64</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21644,9 +21806,9 @@
 </table>
 </p>
 <p>Returns an unsigned 32 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU32</span>(<span class="STpe">me</span>, min, max: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21659,9 +21821,9 @@
 </table>
 </p>
 <p>Returns an unsigned 64 bits random value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>Returns an unsigned random value in a given range <span class="code-inline">max</span> is excluded. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, min, max: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">nextU64</span>(<span class="STpe">me</span>, min, max: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21674,7 +21836,7 @@
 </table>
 </p>
 <p>Seed the rng with the current time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedNow</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21687,7 +21849,7 @@
 </table>
 </p>
 <p>Seed random generator with a 32 bits value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU32</span>(<span class="STpe">me</span>, seed: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21700,7 +21862,7 @@
 </table>
 </p>
 <p>Seed random generator with a 64 bits value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seed: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">seedU64</span>(<span class="STpe">me</span>, seed: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -21713,7 +21875,7 @@
 </table>
 </p>
 <p>Randomly change the order of a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">shuffle</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, slice: [..] <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">shuffle</span>(<span class="STpe">me</span>, slice: [..] <span class="SCst">V</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22663,6 +22825,10 @@
 <td>Accept this other name for the struct field or the struct itself. </td>
 </tr>
 <tr>
+<td class="code-type"><a href="#Core_Serialization_Compress"><span class="SCst">Compress</span></a></td>
+<td>Compress a struct or a field. </td>
+</tr>
+<tr>
 <td class="code-type"><a href="#Core_Serialization_Final"><span class="SCst">Final</span></a></td>
 <td>The struct does not need versionning. </td>
 </tr>
@@ -22690,6 +22856,21 @@
 <div class="api-additional-infos"><b>Usage</b>: struct struct-var multi 
 </div>
 <div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SFct"><a href="#Core_Serialization_Alias">Alias</a></span>(name: <span class="STpe">string</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Serialization_Compress"><span class="api-item-title-kind">attr</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">Compress</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L23" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Compress a struct or a field. </p>
+<div class="api-additional-infos"><b>Usage</b>: struct struct-var 
+</div>
+<div class="code-block"><span class="SCde"><span class="SKwd">attr</span> <span class="SCst"><a href="#Core_Serialization_Compress">Compress</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22734,7 +22915,7 @@
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readValue">readValue</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Decoder_readTypedContent">readTypedContent</a></span></td>
 <td></td>
 </tr>
 <tr>
@@ -22749,11 +22930,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_beginField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">beginField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L284" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L282" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="STpe">me</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22761,11 +22942,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L298" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L296" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22773,11 +22954,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L279" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L277" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22785,11 +22966,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_endField"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">endField</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L292" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L290" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="STpe">me</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22797,11 +22978,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L303" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L301" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22809,11 +22990,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L308" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L306" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22821,11 +23002,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">isTextual</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L313" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L311" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22833,11 +23014,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_read"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">read</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L318" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L316" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: *<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="STpe">me</span>, data: *<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22845,11 +23026,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readBool"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readBool</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L346" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L344" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBool</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBool</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22857,11 +23038,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readBufferU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readBufferU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L323" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L321" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBufferU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, count: <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readBufferU8</span>(<span class="STpe">me</span>, count: <span class="STpe">u64</span>)-&gt;*<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22869,11 +23050,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readF32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readF32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L355" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L353" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22881,11 +23062,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readF64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readF64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L356" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L354" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readF64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22893,11 +23074,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readS16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L348" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS16</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">s16</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22905,11 +23086,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L349" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L347" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">s32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22917,11 +23098,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L350" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L348" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">s64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22929,11 +23110,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readS8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readS8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L347" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L345" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readS8</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">s8</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22941,11 +23122,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readString"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readString</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L357" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L355" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readString</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22953,11 +23134,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readU16"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU16</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L352" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L350" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU16</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u16</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22965,11 +23146,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readU32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU32</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L353" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L351" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU32</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22977,11 +23158,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readU64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU64</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L354" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L352" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU64</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -22989,11 +23170,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_readU8"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">readU8</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L351" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L349" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readU8</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u8</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23001,11 +23182,11 @@
 <span id="Core_Serialization_Decoder_IDecoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IDecoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L273" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L271" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="STpe">me</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23013,12 +23194,12 @@
 <span id="Core_Serialization_Decoder_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L249" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23026,12 +23207,12 @@
 <span id="Core_Serialization_Decoder_readAll"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">readAll</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L255" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Read a full struct. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TR</span>) <span class="SFct">readAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst">TR</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">TR</span>) <span class="SFct">readAll</span>(<span class="STpe">me</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;*<span class="SCst">TR</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23043,19 +23224,19 @@
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTypeValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeVal: <span class="SCst">TypeValue</span>, data: ^<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTypeValue</span>(<span class="STpe">me</span>, typedVal: <span class="SCst">TypeValue</span>, data: [*] <span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
 <td class="api-item">
-<span id="Core_Serialization_Decoder_readValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">readValue</span></span>
+<span id="Core_Serialization_Decoder_readTypedContent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">readTypedContent</span></span>
 </td>
 <td class="api-item-title-src-ref">
 <a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L67" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: ^<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTypedContent</span>(<span class="STpe">me</span>, data: [*] <span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23063,12 +23244,12 @@
 <span id="Core_Serialization_Decoder_start"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Decoder.</span><span class="api-item-title-strong">start</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L242" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\decoder.swg#L240" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Start reading. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="STpe">me</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23168,7 +23349,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginField</span>(<span class="STpe">me</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23180,7 +23361,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23193,7 +23374,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>End serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23205,7 +23386,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endField</span>(<span class="STpe">me</span>, val: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23217,7 +23398,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23229,7 +23410,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23242,7 +23423,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="STpe">me</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23254,7 +23435,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="STpe">me</span>, data: <span class="SKwd">const</span> [*] <span class="STpe">void</span>, type: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23266,7 +23447,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBool</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">bool</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBool</span>(<span class="STpe">me</span>, value: <span class="STpe">bool</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23278,7 +23459,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBufferU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeBufferU8</span>(<span class="STpe">me</span>, data: <span class="SKwd">const</span> [*] <span class="STpe">u8</span>, count: <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23290,7 +23471,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF32</span>(<span class="STpe">me</span>, value: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23302,7 +23483,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">f64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeF64</span>(<span class="STpe">me</span>, value: <span class="STpe">f64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23314,7 +23495,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS16</span>(<span class="STpe">me</span>, value: <span class="STpe">s16</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23326,7 +23507,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS32</span>(<span class="STpe">me</span>, value: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23338,7 +23519,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS64</span>(<span class="STpe">me</span>, value: <span class="STpe">s64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23350,7 +23531,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeS8</span>(<span class="STpe">me</span>, value: <span class="STpe">s8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23362,7 +23543,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeString</span>(<span class="STpe">me</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23374,7 +23555,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU16</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u16</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU16</span>(<span class="STpe">me</span>, value: <span class="STpe">u16</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23386,7 +23567,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU32</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU32</span>(<span class="STpe">me</span>, value: <span class="STpe">u32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23398,7 +23579,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU64</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU64</span>(<span class="STpe">me</span>, value: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23410,7 +23591,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU8</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeU8</span>(<span class="STpe">me</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23423,7 +23604,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>End serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23436,7 +23617,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Start serialization. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="STpe">me</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23449,7 +23630,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Write a full struct. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAll</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeAll</span>(<span class="STpe">me</span>, result: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>) <span class="SKwd">throw</span></span></div>
 <p>Will call <a href="#Core_Serialization_Encoder_start">Encoder.start</a>, <a href="#Core_Serialization_Encoder_writeValue">Encoder.writeValue</a> and <a href="#Core_Serialization_Encoder_end">Encoder.end</a> </p>
 <p>
 <table class="api-item">
@@ -23463,7 +23644,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Write a given Swag.TypeValue. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeTypeValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeVal: <span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeTypeValue</span>(<span class="STpe">me</span>, typeVal: <span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> [*] <span class="STpe">void</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23476,7 +23657,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Write a given value with a given type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: <span class="SKwd">const</span> ^<span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeValue</span>(<span class="STpe">me</span>, data: <span class="SKwd">const</span> [*] <span class="STpe">void</span>, dataType: <span class="STpe">typeinfo</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23531,7 +23712,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>endField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -23649,7 +23830,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>endField</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -23664,12 +23845,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td>write</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> [*] <span class="STpe">void</span>, <span class="SKwd">const</span> *<span class="SCst">Swag</span>.<span class="SCst">TypeInfo</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
 <td>writeBufferU8</td>
-<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> ^<span class="STpe">u8</span>, <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></td>
+<td class="code-type"><span class="SCde"><span class="SKwd">func</span>(*<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, <span class="SKwd">const</span> [*] <span class="STpe">u8</span>, <span class="STpe">u64</span>) <span class="SKwd">throw</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -23740,7 +23921,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_ISerialize"><span class="api-item-title-kind">interface</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">ISerialize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L21" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L25" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -23943,7 +24124,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23955,7 +24136,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23967,7 +24148,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23979,7 +24160,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="STpe">me</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -23991,7 +24172,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="STpe">me</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24003,7 +24184,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24015,7 +24196,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="STpe">me</span>, _val: <span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24027,7 +24208,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24039,7 +24220,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24051,7 +24232,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24063,7 +24244,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24075,7 +24256,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24087,7 +24268,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="STpe">me</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24099,7 +24280,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24111,7 +24292,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24123,7 +24304,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24135,7 +24316,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="STpe">me</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24147,7 +24328,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="STpe">me</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24159,7 +24340,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24167,12 +24348,17 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L32" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Binary serializer with forward/backward compatibility. </p>
 <table class="table-enumeration">
+<tr>
+<td>version</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td>Version of the tagbin in the stream. </td>
+</tr>
 <tr>
 <td>ignoreElements</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>)</span></td>
@@ -24212,6 +24398,21 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>convertArrayToVal</td>
 <td class="code-type"><span class="STpe">bool</span></td>
 <td>Flag indicating next array should be converted to single value. </td>
+</tr>
+<tr>
+<td>outStack</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'({buf:<span class="SKwd">const</span> [..] <span class="STpe">u8</span>,seek:<span class="STpe">u64</span>})</span></td>
+<td></td>
+</tr>
+<tr>
+<td>elemStack</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'({compressed:<span class="STpe">bool</span>,tmpBuf:*<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>)})</span></td>
+<td></td>
+</tr>
+<tr>
+<td>tmpPool</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">u8</span>))</span></td>
+<td></td>
 </tr>
 </table>
 <p>Changes that are supported from V to V+1 are : </p>
@@ -24314,12 +24515,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L363" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L389" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Begin reading a field element identified by <span class="code-inline">val</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>Returns true if the element exists in the stream and should be processed, false to skip it. </p>
 <p>
 <table class="api-item">
@@ -24328,12 +24529,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L229" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L254" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Begin reading the root container of the serialized data. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Validates the root signature to ensure the stream contains valid serialized data. </p>
 <p>
 <table class="api-item">
@@ -24342,12 +24543,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L245" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L271" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Begin reading a new section with the specified <span class="code-inline">kind</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>, skipFat = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>Optionally skips reading the fat table if <span class="code-inline">skipFat</span> is true for performance optimization. </p>
 <p>
 <table class="api-item">
@@ -24356,12 +24557,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L469" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L552" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Begin reading a sequence (array) of elements of type <span class="code-inline">typeElem</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: *<span class="STpe">u8</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="STpe">me</span>, typeElem: <span class="STpe">typeinfo</span>, data: *<span class="STpe">u8</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>Updates <span class="code-inline">countElem</span> with the actual number of elements and returns true for bulk reading optimization. </p>
 <p>
 <table class="api-item">
@@ -24370,12 +24571,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L307" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L333" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Begin reading a struct of the given <span class="code-inline">structType</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="STpe">me</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>Returns false for normal struct processing, true for special handling cases. </p>
 <p>
 <table class="api-item">
@@ -24384,12 +24585,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L456" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L539" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Begin reading a value within the current context. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Currently no special processing is required, but this maintains the symmetric API. </p>
 <p>
 <table class="api-item">
@@ -24398,12 +24599,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L448" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L517" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading the current field element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="STpe">me</span>, _val: <span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>Clears any pending native type conversion state. </p>
 <p>
 <table class="api-item">
@@ -24412,12 +24613,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L239" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading the root container. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Currently no cleanup is required, but this maintains the symmetric begin/end API. </p>
 <p>
 <table class="api-item">
@@ -24426,12 +24627,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L292" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L318" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading the current section. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Updates the stream position and releases the section back to the pool. </p>
 <p>
 <table class="api-item">
@@ -24440,12 +24641,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L550" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L633" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading the current sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Currently no cleanup is required, but this maintains the symmetric API. </p>
 <p>
 <table class="api-item">
@@ -24454,12 +24655,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L356" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L382" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading the current struct. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Closes the current section that was opened by <span class="code-inline">beginStruct</span>. </p>
 <p>
 <table class="api-item">
@@ -24468,12 +24669,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L463" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L546" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Finish reading a value within the current context. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>Currently no cleanup is required, but this maintains the symmetric API. </p>
 <p>
 <table class="api-item">
@@ -24482,12 +24683,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_getVersion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">getVersion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L575" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L658" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Get the version number of the current section. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>Returns 0 if no sections are active, otherwise returns the version of the most recent section. </p>
 <p>
 <table class="api-item">
@@ -24496,12 +24697,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">isTextual</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L568" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L651" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Check if this serializer uses textual representation. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Always returns false since this is a binary serializer. </p>
 <p>
 <table class="api-item">
@@ -24510,12 +24711,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_readNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">readNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L588" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L671" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Read a native type value from the stream with automatic type conversion support. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
 <p>Handles string types specially and performs type conversions when <span class="code-inline">convertNextNative</span> is set. </p>
 <p>
 <table class="api-item">
@@ -24524,12 +24725,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L222" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Initialize the deserializer with the given input byte array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="STpe">me</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>Sets up the internal byte stream for reading from the provided data buffer. </p>
 <p>
 <table class="api-item">
@@ -24538,12 +24739,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBin_toNextSequenceElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">toNextSequenceElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L557" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L640" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Advance to the next element in the current sequence. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="STpe">me</span>, countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>Decrements <span class="code-inline">countElem</span> and returns false when no more elements remain. </p>
 <p>
 <table class="api-item">
@@ -24552,7 +24753,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBinOptions"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBinOptions</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L61" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24571,7 +24772,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Read_TagBinSection"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Read.</span><span class="api-item-title-strong">TagBinSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L43" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\read\tagbin.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -24740,7 +24941,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24752,7 +24953,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24764,7 +24965,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24776,7 +24977,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="STpe">me</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: *<span class="STpe">u8</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24788,7 +24989,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="STpe">me</span>, structType: <span class="STpe">typeinfo</span>, structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24800,7 +25001,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24812,7 +25013,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="STpe">me</span>, _val: <span class="SCst">TypeValue</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24824,7 +25025,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24836,7 +25037,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24848,7 +25049,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24860,7 +25061,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24872,7 +25073,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24884,7 +25085,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getError</span>(<span class="STpe">me</span>, val: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Errors">Errors</a></span>.<span class="SCst"><a href="#Core_Errors_SyntaxError">SyntaxError</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24896,7 +25097,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getVersion</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24908,7 +25109,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24920,7 +25121,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readEndTag</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readEndTag</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24932,7 +25133,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">readNative</span>(<span class="STpe">me</span>)-&gt;<span class="SCst">NT</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24944,7 +25145,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readStartTag</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readStartTag</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24956,7 +25157,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTag</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readTag</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">string</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24968,7 +25169,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="STpe">me</span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24980,7 +25181,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toNextSequenceElement</span>(<span class="STpe">me</span>, _countElem: *<span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -24992,7 +25193,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zapBlanks</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25025,7 +25226,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Serialization.</span><span class="api-item-title-strong">Serializer</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L30" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25069,11 +25270,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, *<span class="SCst">MT</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>, *<span class="SCst">MT</span>)</span></td>
 <td>Serialize one value. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">u32</span>, *<span class="SCst">MT</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_Serialization_Serializer_serialize">serialize</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>, <span class="STpe">u32</span>, *<span class="SCst">MT</span>)</span></td>
 <td>Serialize one value. </td>
 </tr>
 <tr>
@@ -25092,12 +25293,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L74" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Start a new section. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind = <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>.<span class="SCst">Unordered</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, kind = <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>.<span class="SCst">Unordered</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25105,12 +25306,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_end"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">end</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L65" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>End encoding/decoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">end</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25118,12 +25319,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L79" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>End the previous section. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25131,11 +25332,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_isReading"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">isReading</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L42" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L46" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isReading</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isReading</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25143,11 +25344,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_isWriting"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">isWriting</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L40" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L44" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isWriting</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isWriting</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25155,14 +25356,14 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_serialize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">serialize</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L161" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L165" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Serialize one value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, name: <span class="STpe">string</span>, crc: <span class="STpe">u32</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="STpe">me</span>, name: <span class="STpe">string</span>, crc: <span class="STpe">u32</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span>
 <span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, name: <span class="STpe">string</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span></span></div>
+<span class="SKwd">func</span>(<span class="SCst">MT</span>) <span class="SFct">serialize</span>(<span class="STpe">me</span>, name: <span class="STpe">string</span>, res: *<span class="SCst">MT</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25170,12 +25371,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_startRead"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">startRead</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L53" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Start decoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startRead</span>(<span class="STpe">me</span>, decoder: <span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>, input: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25183,12 +25384,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Serializer_startWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Serializer.</span><span class="api-item-title-strong">startWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L45" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\serialize.swg#L49" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Start encoding. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, output: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="STpe">me</span>, encoder: <span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>, output: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25221,22 +25422,26 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Write_JSonOptions"><span class="SCst">JSonOptions</span></a></td>
-<td></td>
+<td>Options for customizing JSON formatting. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Write_TagBin"><span class="SCst">TagBin</span></a></td>
-<td></td>
+<td>Binary writer for serialized data with support for structured and raw output. </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Write_TagBinSection"><span class="SCst">TagBinSection</span></a></td>
-<td></td>
+<td>Internal state for a binary serialization section. </td>
 </tr>
 </table>
 <h3>Enums</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><a href="#Core_Serialization_Write_TagBinSignatures"><span class="SCst">TagBinSignatures</span></a></td>
-<td></td>
+<td>Signatures used to tag different sections and elements in the binary serialization format. </td>
+</tr>
+<tr>
+<td class="code-type"><a href="#Core_Serialization_Write_TagBinValueFlags"><span class="SCst">TagBinValueFlags</span></a></td>
+<td>Additional signature for each value, stored after the value description (crcs). </td>
 </tr>
 </table>
 <p>
@@ -25246,7 +25451,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">JSon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L15" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L14" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -25255,99 +25460,99 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>options</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_JSonOptions">JSonOptions</a></span></span></td>
-<td></td>
+<td>Formatting options. </td>
 </tr>
 <tr>
 <td>output</td>
 <td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
-<td></td>
+<td>Output buffer for generated JSON. </td>
 </tr>
 <tr>
 <td>indent</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Current indentation level. </td>
 </tr>
 <tr>
 <td>fmtInt</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormatInt">ConvertFormatInt</a></span></span></td>
-<td></td>
+<td>Format used for converting integers. </td>
 </tr>
 <tr>
 <td>fmtFloat</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></span></span></td>
-<td></td>
+<td>Format used for converting floating-point numbers. </td>
 </tr>
 <tr>
 <td>lastSeekValue</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></td>
-<td></td>
+<td>Seek position used for rollback of trailing commas. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginElement">beginElement</a></span></td>
-<td></td>
+<td>Begins a named JSON element (a key-value pair). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginRoot">beginRoot</a></span></td>
-<td></td>
+<td>Begins the root element (no-op for JSON). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginSection">beginSection</a></span></td>
-<td></td>
+<td>Begins a JSON object section. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginSequence">beginSequence</a></span></td>
-<td></td>
+<td>Begins a JSON array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginStruct">beginStruct</a></span></td>
-<td></td>
+<td>Begins writing a struct (treated as a JSON object). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_beginValue">beginValue</a></span></td>
-<td></td>
+<td>Begins a JSON value (no-op). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endElement">endElement</a></span></td>
-<td></td>
+<td>Ends a named JSON element (no-op). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endRoot">endRoot</a></span></td>
-<td></td>
+<td>Ends the root element (no-op for JSON). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endSection">endSection</a></span></td>
-<td></td>
+<td>Ends a JSON object section. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endSequence">endSequence</a></span></td>
-<td></td>
+<td>Ends a JSON array. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endStruct">endStruct</a></span></td>
-<td></td>
+<td>Ends writing a struct. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_endValue">endValue</a></span></td>
-<td></td>
+<td>Ends a JSON value and appends a comma and optional newline. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_isTextual">isTextual</a></span></td>
-<td></td>
+<td>Returns true indicating this writer produces textual output. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_startWrite">startWrite</a></span></td>
-<td></td>
+<td>Initializes the JSON writer with the given output buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_writeIndent">writeIndent</a></span></td>
-<td></td>
+<td>Writes indentation based on the current indent level and settings. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_JSon_writeNative">writeNative</a></span></td>
-<td></td>
+<td>Writes a native value (bool, float, int, string) as a JSON value. </td>
 </tr>
 </table>
 <p>
@@ -25357,11 +25562,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)</span></div>
+<p>Begins a named JSON element (a key-value pair). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25369,11 +25575,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L50" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Begins the root element (no-op for JSON). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25381,11 +25588,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L80" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L87" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
+<p>Begins a JSON object section. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, _kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25393,11 +25601,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L52" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L57" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: <span class="SKwd">const</span> *<span class="STpe">void</span>, _countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Begins a JSON array. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="STpe">me</span>, _typeElem: <span class="STpe">typeinfo</span>, _data: <span class="SKwd">const</span> *<span class="STpe">void</span>, _countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25405,11 +25614,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L106" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L115" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Begins writing a struct (treated as a JSON object). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="STpe">me</span>, _structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25417,11 +25627,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L130" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L143" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Begins a JSON value (no-op). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25429,11 +25640,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L127" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L139" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends a named JSON element (no-op). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25441,11 +25653,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L50" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends the root element (no-op for JSON). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25453,11 +25666,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L92" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L100" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends a JSON object section. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25465,11 +25679,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L66" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L72" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends a JSON array. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25477,11 +25692,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L122" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends writing a struct. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25489,11 +25705,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L146" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends a JSON value and appends a comma and optional newline. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25505,7 +25722,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Returns true indicating this writer produces textual output. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25513,11 +25731,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_startWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">startWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
+<p>Initializes the JSON writer with the given output buffer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25525,11 +25744,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_writeIndent"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">writeIndent</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L33" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L34" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeIndent</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Writes indentation based on the current indent level and settings. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeIndent</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25537,11 +25757,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSon_writeNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">JSon.</span><span class="api-item-title-strong">writeNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L145" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L160" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">NT</span>)</span></div>
+<p>Writes a native value (bool, float, int, string) as a JSON value. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="STpe">me</span>, value: <span class="SCst">NT</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25549,20 +25770,21 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_JSonOptions"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">JSonOptions</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\json.swg#L7" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Options for customizing JSON formatting. </p>
 <table class="table-enumeration">
 <tr>
 <td>indentLevel</td>
 <td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
+<td>Number of spaces per indentation level. </td>
 </tr>
 <tr>
 <td>saveBlanks</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>Whether to include indentation and line breaks. </td>
 </tr>
 </table>
 <p>
@@ -25572,24 +25794,25 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">TagBin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L37" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Binary writer for serialized data with support for structured and raw output. </p>
 <table class="table-enumeration">
 <tr>
-<td>output</td>
-<td class="code-type"><span class="SCde">*<span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span></span></td>
+<td>compressionFlags</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization_Compress">Compress</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionFlags">CompressionFlags</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>freeSections</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td>compressionLevel</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization_Compress">Compress</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionLevel">CompressionLevel</a></span></span></td>
 <td></td>
 </tr>
 <tr>
-<td>sections</td>
-<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_ArrayPtr">ArrayPtr</a></span>'(<span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_Write">Write</a></span>.<span class="SCst"><a href="#Core_Serialization_Write_TagBinSection">TagBinSection</a></span>)</span></td>
+<td>compressionStrategy</td>
+<td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization_Compress">Compress</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate">Deflate</a></span>.<span class="SCst"><a href="#Core_Compress_Deflate_CompressionStrategy">CompressionStrategy</a></span></span></td>
 <td></td>
 </tr>
 </table>
@@ -25597,63 +25820,63 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginElement">beginElement</a></span></td>
-<td></td>
+<td>Begins a new element inside the current section and records its metadata. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginRoot">beginRoot</a></span></td>
-<td></td>
+<td>Begins the root section of the serialization structure. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginSection">beginSection</a></span></td>
-<td></td>
+<td>Begins a new section of the specified kind. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginSequence">beginSequence</a></span></td>
-<td></td>
+<td>Begins a sequence and determines if elements can be written in bulk as raw data. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginStruct">beginStruct</a></span></td>
-<td></td>
+<td>Begins a new struct, writing versioning and section metadata. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_beginValue">beginValue</a></span></td>
-<td></td>
+<td>Begins a value (stubbed out). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endElement">endElement</a></span></td>
-<td></td>
+<td>Ends the current element (stubbed out). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endRoot">endRoot</a></span></td>
-<td></td>
+<td>Ends the root section and asserts that all subsections have been closed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endSection">endSection</a></span></td>
-<td></td>
+<td>Ends the current section and writes out any required metadata. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endSequence">endSequence</a></span></td>
-<td></td>
+<td>Ends a sequence (stubbed out). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endStruct">endStruct</a></span></td>
-<td></td>
+<td>Ends the current struct section. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_endValue">endValue</a></span></td>
-<td></td>
+<td>Ends a value (stubbed out). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_isTextual">isTextual</a></span></td>
-<td></td>
+<td>Always returns true; indicates that output is textual (overridden stub). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_startWrite">startWrite</a></span></td>
-<td></td>
+<td>Begins writing to a specified output buffer. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Serialization_Write_TagBin_writeNative">writeNative</a></span></td>
-<td></td>
+<td>Writes a native value to the output buffer, with special handling for strings. </td>
 </tr>
 </table>
 <p>
@@ -25663,11 +25886,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L144" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L202" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, val: <span class="SCst">TypeValue</span>)</span></div>
+<p>Begins a new element inside the current section and records its metadata. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25675,11 +25899,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L65" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L116" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Begins the root section of the serialization structure. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginRoot</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25687,11 +25912,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L75" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L129" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
+<p>Begins a new section of the specified kind. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSection</span>(<span class="STpe">me</span>, kind: <span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25699,11 +25925,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L175" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L300" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, typeElem: <span class="STpe">typeinfo</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Begins a sequence and determines if elements can be written in bulk as raw data. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginSequence</span>(<span class="STpe">me</span>, typeElem: <span class="STpe">typeinfo</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, countElem: <span class="STpe">u64</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25711,11 +25938,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L114" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L170" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Begins a new struct, writing versioning and section metadata. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginStruct</span>(<span class="STpe">me</span>, structType: <span class="STpe">typeinfo</span>, _structData: <span class="SKwd">const</span> *<span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25723,11 +25951,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_beginValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">beginValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L170" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L293" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Begins a value (stubbed out). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">beginValue</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25735,11 +25964,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endElement"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endElement</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L167" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L247" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends the current element (stubbed out). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endElement</span>(<span class="STpe">me</span>, val: <span class="SCst">TypeValue</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25747,11 +25977,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endRoot"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endRoot</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L70" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L123" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends the root section and asserts that all subsections have been closed. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endRoot</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25759,11 +25990,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endSection"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L89" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L144" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends the current section and writes out any required metadata. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSection</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25771,11 +26003,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endSequence"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endSequence</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L220" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L346" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends a sequence (stubbed out). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endSequence</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25783,11 +26016,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endStruct"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endStruct</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L139" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L196" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends the current struct section. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endStruct</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25795,11 +26029,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_endValue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">endValue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L173" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L297" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Ends a value (stubbed out). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endValue</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25807,11 +26042,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_isTextual"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">isTextual</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L55" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<p>Always returns true; indicates that output is textual (overridden stub). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isTextual</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25819,11 +26055,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_startWrite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">startWrite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L60" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L107" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
+<p>Begins writing to a specified output buffer. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startWrite</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25831,11 +26068,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBin_writeNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TagBin.</span><span class="api-item-title-strong">writeNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L226" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L353" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">NT</span>)</span></div>
+<p>Writes a native value to the output buffer, with special handling for strings. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">NT</span>) <span class="SFct">writeNative</span>(<span class="STpe">me</span>, value: <span class="SCst">NT</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -25843,25 +26081,26 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBinSection"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">TagBinSection</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L16" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L29" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Internal state for a binary serialization section. </p>
 <table class="table-enumeration">
 <tr>
 <td>startSeek</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span></span></td>
-<td></td>
+<td>Seek position in the output buffer where the section starts. </td>
 </tr>
 <tr>
 <td>mapSeek</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SFct"><a href="#Core_HashTable">HashTable</a></span>'(<span class="STpe">u32</span>, <span class="SCst"></span><span class="SCst"><a href="#Core_ConcatBufferSeek">ConcatBufferSeek</a></span>)</span></td>
-<td></td>
+<td>Maps CRC keys to their position in the output buffer. </td>
 </tr>
 <tr>
 <td>kind</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_SectionKind">SectionKind</a></span></span></td>
-<td></td>
+<td>Type of section (e.g., Raw or Unordered). </td>
 </tr>
 </table>
 <p>
@@ -25871,33 +26110,56 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Serialization_Write_TagBinSignatures"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">TagBinSignatures</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L6" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L10" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
+<p>Signatures used to tag different sections and elements in the binary serialization format. </p>
 <table class="table-enumeration">
 <tr>
 <td>Root</td>
-<td></td>
+<td>Root element of the serialization structure. </td>
 </tr>
 <tr>
 <td>Fat</td>
-<td></td>
+<td>FAT table identifier for unordered sections. </td>
 </tr>
 <tr>
 <td>Sequence</td>
-<td></td>
+<td>Start of a sequence (array or list). </td>
 </tr>
 <tr>
 <td>Version</td>
-<td></td>
+<td>Indicates that a version number is present. </td>
 </tr>
 <tr>
 <td>Raw</td>
-<td></td>
+<td>Indicates raw POD data with no structure. </td>
 </tr>
 <tr>
 <td>UnRaw</td>
+<td>Indicates non-POD structured data. </td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Serialization_Write_TagBinValueFlags"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Write.</span><span class="api-item-title-strong">TagBinValueFlags</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\serialization\write\tagbin.swg#L22" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Additional signature for each value, stored after the value description (crcs). </p>
+<table class="table-enumeration">
+<tr>
+<td>Zero</td>
+<td></td>
+</tr>
+<tr>
+<td>Compressed</td>
 <td></td>
 </tr>
 </table>
@@ -25913,7 +26175,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Determin if a type can be serialized by a simple copy. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPodFinal</span>(type: <span class="SCmp">#null</span> <span class="STpe">typeinfo</span>)-&gt;{raw:<span class="STpe">bool</span>,sizeof:<span class="STpe">u64</span>}</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isPodFinal</span>(type: <span class="SItr">#null</span> <span class="STpe">typeinfo</span>)-&gt;{raw:<span class="STpe">bool</span>,sizeof:<span class="STpe">u64</span>}</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26052,7 +26314,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given slice contains the <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">contains</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">contains</span>(values: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26065,7 +26327,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given slice contains the <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">containsSorted</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">containsSorted</span>(values: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>The slice must be sorted in ascending order </p>
 <p>
 <table class="api-item">
@@ -26079,7 +26341,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if two slices are equal. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">equals</span>(dst, src: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">equals</span>(dst, src: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26092,7 +26354,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">value</span> in a slice by performing a linear search. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findLinear</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findLinear</span>(values: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>O^n, but slice does not have to be sorted. Returns Swag.U64.Max if not found. </p>
 <p>
 <table class="api-item">
@@ -26106,7 +26368,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the given slice contains the sub slice <span class="code-inline">value</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">findSlice</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">findSlice</span>(values: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26119,7 +26381,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">value</span> in a slice by performing a binary search. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findSorted</span>(values: <span class="SCmp">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>, <span class="SCst">V</span>) <span class="SFct">findSorted</span>(values: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="SCst">T</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>The slice must be sorted in ascending order Returns Swag.U64.Max if not found. </p>
 <p>
 <table class="api-item">
@@ -26298,7 +26560,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>buffer</td>
 <td class="code-type"><span class="SCde">[?] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></td>
-<td>The fixed-size buffer that holds the elements. </td>
+<td>The fixed-size me.buffer that holds the elements. </td>
 </tr>
 <tr>
 <td>count</td>
@@ -26310,15 +26572,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Moves an element to the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">T</span>)</span></td>
 <td>Adds a copy of an element to the end of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_add">add</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Appends all elements from a slice to the end of the array. </td>
 </tr>
 <tr>
@@ -26335,7 +26597,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_clear">clear</a></span></td>
-<td>Removes all elements from the array, setting its count to 0. </td>
+<td>Removes all elements from the array, setting its me.count to 0. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_contains">contains</a></span></td>
@@ -26355,7 +26617,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_free">free</a></span></td>
-<td>Drops all elements in the array, setting its count to 0. </td>
+<td>Drops all elements in the array, setting its me.count to 0. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StaticArray_front">front</a></span></td>
@@ -26366,15 +26628,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Returns a pointer to the first element of the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, &&<span class="SCst">T</span>)</span></td>
 <td>Inserts a moved value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="SCst">T</span>)</span></td>
 <td>Inserts a copy of a value at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_insertAt">insertAt</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></td>
 <td>Inserts elements from a slice at a specific index, shifting existing elements to the right. </td>
 </tr>
 <tr>
@@ -26386,11 +26648,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Removes the last element from the array and returns it. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">V</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">V</span>)</span></td>
 <td>Removes the first occurrence of a given value from the array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_remove">remove</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="STpe">u64</span>)</span></td>
 <td>Removes a specified number of elements starting from a given index. </td>
 </tr>
 <tr>
@@ -26414,11 +26676,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Sorts the array in ascending order using the default comparison operator. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_sort">sort</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">func</span>(*<span class="STpe">void</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)-><span class="STpe">s32</span>)</span></td>
 <td>Sorts the array using a custom comparison function. </td>
 </tr>
 <tr>
@@ -26437,11 +26699,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Replaces the content of the array with elements copied from a slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Allows the array to be implicitly cast to a mutable slice. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Allows the array to be implicitly cast to an immutable slice. </td>
 </tr>
 <tr>
@@ -26457,11 +26719,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Ensures that if elements have destructors, they are called when the array goes out of scope. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td>Returns a mutable reference to the element at the specified index. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_StaticArray_opIndex">opIndex</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>)</span></td>
 <td>Returns a constant reference to the element at the specified index. </td>
 </tr>
 <tr>
@@ -26493,13 +26755,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Adds a copy of an element to the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)</span></div>
 <p>Asserts if the array is full. </p>
 <p>Moves an element to the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, value: &&<span class="SCst">T</span>)</span></div>
 <p>Asserts if the array is full. </p>
 <p>Appends all elements from a slice to the end of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">add</span>(<span class="STpe">me</span>, values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>Asserts if the array does not have enough capacity. </p>
 <p>
 <table class="api-item">
@@ -26513,7 +26775,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Adds an element to the end of the array, but only if it's not already present. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addOnce</span>(<span class="STpe">me</span>, value: <span class="SCst">T</span>)</span></div>
 <p>Asserts if the array is full. </p>
 <p>
 <table class="api-item">
@@ -26527,7 +26789,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a copy of the last element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -26541,7 +26803,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a pointer to the last element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">backPtr</span>(<span class="STpe">me</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -26554,8 +26816,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Removes all elements from the array, setting its count to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Removes all elements from the array, setting its me.count to 0. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>This calls the destructor for each element if one exists. </p>
 <p>
 <table class="api-item">
@@ -26569,7 +26831,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns <span class="code-inline">true</span> if the array contains the given value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">contains</span>(<span class="STpe">me</span>, value: <span class="SCst">V</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26582,7 +26844,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Makes room for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the new space. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAddress</span>(<span class="STpe">me</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;[*] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>The new memory is not initialized. Asserts if the array does not have enough capacity. </p>
 <p>
 <table class="api-item">
@@ -26596,7 +26858,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Moves elements from a slice at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, values: [..] <span class="SCst">T</span>)</span></div>
 <p>Asserts if the array does not have enough capacity. Order is preserved. </p>
 <p>
 <table class="api-item">
@@ -26610,7 +26872,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Makes room for <span class="code-inline">num</span> elements at the end of the array and returns a pointer to the new space. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;^<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">emplaceInitAddress</span>(<span class="STpe">me</span>, num: <span class="STpe">u32</span> = <span class="SNum">1</span>)-&gt;[*] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>The new memory is default-initialized. Asserts if the array does not have enough capacity. </p>
 <p>
 <table class="api-item">
@@ -26623,8 +26885,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Drops all elements in the array, setting its count to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Drops all elements in the array, setting its me.count to 0. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">free</span>(<span class="STpe">me</span>)</span></div>
 <p>This is equivalent to <span class="code-inline">clear</span> for this type. </p>
 <p>
 <table class="api-item">
@@ -26638,7 +26900,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a copy of the first element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">front</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -26652,7 +26914,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a pointer to the first element of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">frontPtr</span>(<span class="STpe">me</span>)-&gt;*<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -26666,13 +26928,13 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Inserts a copy of a value at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>Asserts if the array is full. Order is preserved. </p>
 <p>Inserts a moved value at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: &&<span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: &&<span class="SCst">T</span>)</span></div>
 <p>Asserts if the array is full. Order is preserved. </p>
 <p>Inserts elements from a slice at a specific index, shifting existing elements to the right. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insertAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, values: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>Asserts if the array does not have enough capacity. Order is preserved. </p>
 <p>
 <table class="api-item">
@@ -26686,7 +26948,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns <span class="code-inline">true</span> if the array contains no elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26699,7 +26961,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Replaces the content of the array with elements copied from a slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, arr: <span class="SKwd">const</span> [..] <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, arr: <span class="SKwd">const</span> [..] <span class="SCst">T</span>)</span></div>
 <p>Asserts if the slice is larger than the array's capacity. </p>
 <p>
 <table class="api-item">
@@ -26713,9 +26975,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Allows the array to be implicitly cast to a mutable slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="STpe">me</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Allows the array to be implicitly cast to an immutable slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26728,7 +26990,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the number of elements in the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26741,7 +27003,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a raw, constant pointer to the array's buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> *<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26754,7 +27016,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Ensures that if elements have destructors, they are called when the array goes out of scope. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26767,9 +27029,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a constant reference to the element at the specified index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;<span class="SKwd">const</span> &<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Returns a mutable reference to the element at the specified index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;&<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26782,7 +27044,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Assigns a new value to the element at the specified index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26795,7 +27057,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Handles compound assignment operators (e.g., <span class="code-inline">+=</span>, <span class="code-inline">-=</span>) for elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">self</span>.<span class="SCst">T</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="SCst">T</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26808,7 +27070,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Creates a slice from a sub-part of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="STpe">me</span>, lower, upper: <span class="STpe">u64</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26822,7 +27084,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Provides a way to iterate over each element in the array. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>This is a macro that accepts a code block to execute for each element. Visiting by pointer and in reverse order is supported. </p>
 <p>
 <table class="api-item">
@@ -26836,7 +27098,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes the last element from the array and returns it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">popBack</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -26850,10 +27112,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes a specified number of elements starting from a given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index, num: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="STpe">me</span>, index, num: <span class="STpe">u64</span>)</span></div>
 <p>This is an unstable remove; the order of remaining elements is not preserved. </p>
 <p>Removes the first occurrence of a given value from the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">remove</span>(<span class="STpe">me</span>, value: <span class="SCst">V</span>)</span></div>
 <p>This is an unstable remove; order is not preserved. Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
@@ -26867,7 +27129,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes the element at a given index by swapping it with the last element. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAt</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>)</span></div>
 <p>This is very fast, but the order of elements is not preserved. </p>
 <p>
 <table class="api-item">
@@ -26881,7 +27143,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes one or more elements at a given index, shifting subsequent elements to the left. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeAtOrdered</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, numValues: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>This is slower than <span class="code-inline">removeAt</span>, but preserves the order of the remaining elements. </p>
 <p>
 <table class="api-item">
@@ -26895,7 +27157,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes the last element from the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="STpe">me</span>)</span></div>
 <p>Asserts if the array is empty. </p>
 <p>
 <table class="api-item">
@@ -26909,7 +27171,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes the first occurrence of a given value, preserving the order of remaining elements. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCst">V</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">V</span>) <span class="SFct">removeOrdered</span>(<span class="STpe">me</span>, value: <span class="SCst">V</span>)</span></div>
 <p>Does nothing if the value is not found. </p>
 <p>
 <table class="api-item">
@@ -26923,7 +27185,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Changes the number of elements in the array to <span class="code-inline">newCount</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCount: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">resize</span>(<span class="STpe">me</span>, newCount: <span class="STpe">u64</span>)</span></div>
 <p>Asserts if <span class="code-inline">newCount</span> exceeds the static capacity. </p>
 <p>
 <table class="api-item">
@@ -26937,9 +27199,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Sorts the array in ascending order using the default comparison operator. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="STpe">me</span>)</span></div>
 <p>Sorts the array using a custom comparison function. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, cb: <span class="SKwd">func</span>||(<span class="STpe">self</span>.<span class="SCst">T</span>, <span class="STpe">self</span>.<span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sort</span>(<span class="STpe">me</span>, cb: <span class="SKwd">func</span>||(<span class="SCst">T</span>, <span class="SCst">T</span>)-&gt;<span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26952,7 +27214,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Sorts the array in descending order. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">sortReverse</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -26965,7 +27227,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a mutable slice containing all valid elements of the array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="STpe">me</span>)-&gt;[..] <span class="SCst"></span><span class="SCst"><a href="#Core_StaticArray">StaticArray</a></span>.<span class="SCst">T</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27101,8 +27363,16 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Convert an utf8 buffer in hexadecimal to an unsigned integer value. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_toDisplayBitrate">toDisplayBitrate</a></span></td>
+<td>Converts a bit rate value into a readable format with Kbps, Mbps, or Gbps. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_StrConv_toDisplayDuration">toDisplayDuration</a></span></td>
+<td>Converts a duration in milliseconds into a string formatted as "Xd Yh Zm Ws". </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StrConv_toDisplaySize">toDisplaySize</a></span></td>
-<td>Convert a size in a displayable format (with Kb, Mb and so on). </td>
+<td>Converts a size in bytes into a human-readable string with units (bytes, Kb, Mb, Gb, Tb). </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_StrConv_toF32">toF32</a></span></td>
@@ -27248,7 +27518,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="STpe">me</span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>Format is <span class="code-inline">[+][fmt][precision]</span> </p>
 <div class="description-list-title"><p><span class="code-inline">+</span></p></div>
 <div class="description-list-block">
@@ -27319,7 +27589,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set some format options with a given user string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setFormat</span>(<span class="STpe">me</span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>The format is <span class="code-inline">[+][fmt][padding][width]'</code> </p>
 <div class="description-list-title"><p><span class="code-inline">+'</code></p></div>
 <div class="description-list-block">
@@ -27485,7 +27755,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a value. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendAny</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">any</span>, strFormat: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendAny</span>(<span class="STpe">me</span>, value: <span class="STpe">any</span>, strFormat: <span class="STpe">string</span> = <span class="SKwd">null</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27498,7 +27768,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a end of line. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendEOL</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendEOL</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27511,7 +27781,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a formatted string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fmt: <span class="STpe">string</span>, values: ...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="STpe">me</span>, fmt: <span class="STpe">string</span>, values: ...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27524,7 +27794,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a rune. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendRune</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendRune</span>(<span class="STpe">me</span>, value: <span class="STpe">rune</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27537,7 +27807,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendString</span>(<span class="STpe">me</span>, value: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27550,7 +27820,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Clear the content of the builder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27563,7 +27833,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the number of characters. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">count</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27576,7 +27846,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return the content as a string by eating the content of the string builder (if possible). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">moveToString</span>(<span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27589,7 +27859,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set sizes of buckets of the string builder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, size: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setBucketSize</span>(<span class="STpe">me</span>, size: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27602,7 +27872,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return the content as a string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27615,7 +27885,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Force a ending 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zeroTerminate</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">zeroTerminate</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27628,7 +27898,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Templated version. Convert a value of type <span class="code-inline">T</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">convert</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="SCst">T</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">convert</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="SCst">T</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27641,7 +27911,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert a value to an utf8 string, and append the result in a ConcatBuffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertAny</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertAny</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27668,7 +27938,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert a float to an utf8 string, and put the result in a ConcatBuffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertFloat</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, fmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormatFloat">ConvertFormatFloat</a></span>)
-<span class="SKwd">func</span> <span class="SFct">convertFloat</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">convertFloat</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27682,7 +27952,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Convert an integer to an utf8 string, and put the result in a ConcatBuffer. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertInt</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, fmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormatInt">ConvertFormatInt</a></span>)
-<span class="SKwd">func</span> <span class="SFct">convertInt</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<span class="SKwd">func</span> <span class="SFct">convertInt</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27708,7 +27978,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert a structure content to an utf8 string, and put the result in a ConcatBuffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertStruct</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SCmp">#null</span> <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convertStruct</span>(buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, value: <span class="STpe">any</span>, convFmt: <span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="SItr">#null</span> <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -27946,6 +28216,32 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Core_StrConv_toDisplayBitrate"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toDisplayBitrate</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\to.swg#L24" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Converts a bit rate value into a readable format with Kbps, Mbps, or Gbps. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDisplayBitrate</span>(value: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_StrConv_toDisplayDuration"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toDisplayDuration</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\to.swg#L40" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Converts a duration in milliseconds into a string formatted as "Xd Yh Zm Ws". </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDisplayDuration</span>(ms: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Core_StrConv_toDisplaySize"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">StrConv.</span><span class="api-item-title-strong">toDisplaySize</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -27953,7 +28249,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Convert a size in a displayable format (with Kb, Mb and so on). </p>
+<p>Converts a size in bytes into a human-readable string with units (bytes, Kb, Mb, Gb, Tb). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDisplaySize</span>(value: <span class="STpe">u64</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
@@ -28112,7 +28408,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td>buffer</td>
-<td class="code-type"><span class="SCde">^<span class="STpe">u8</span></span></td>
+<td class="code-type"><span class="SCde">[*] <span class="STpe">u8</span></span></td>
 <td></td>
 </tr>
 <tr>
@@ -28139,15 +28435,15 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">rune</span>)</span></td>
 <td>Append a rune to the String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td>Append a string to the String. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_append">append</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u8</span>)</span></td>
 <td>Append a byte to the String. </td>
 </tr>
 <tr>
@@ -28163,19 +28459,19 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Set the length of the String to 0. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_contains">contains</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u8</span>)</span></td>
 <td>Returns true if the string contains <span class="code-inline">what</span>. </td>
 </tr>
 <tr>
@@ -28191,19 +28487,19 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Ensure the String is big enough to store a given amount of bytes. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>, <span class="STpe">u64</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">rune</span>, <span class="STpe">u64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">u64</span>, <span class="SCst">ComparisonType</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_indexOf">indexOf</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>, <span class="STpe">u64</span>, <span class="SCst">ComparisonType</span>)</span></td>
 <td>Find <span class="code-inline">what</span>, and returns the byte index of it. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="STpe">string</span>)</span></td>
 <td>Insert a substring at the given position. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_insert">insert</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u64</span>, <span class="STpe">u8</span>)</span></td>
 <td>Insert an ascii byte at the given position. </td>
 </tr>
 <tr>
@@ -28243,11 +28539,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Remove some bytes at the end. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">rune</span>, <span class="STpe">string</span>)</span></td>
 <td>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="SCst">ComparisonType</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_replace">replace</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>, <span class="STpe">string</span>, <span class="SCst">ComparisonType</span>)</span></td>
 <td>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </td>
 </tr>
 <tr>
@@ -28259,7 +28555,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Return true if the string starts with <span class="code-inline">str</span>. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toLower">toLower</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">CharacterSet</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toLower">toLower</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">CharacterSet</span>)</span></td>
 <td>Returns a new String in lower case. </td>
 </tr>
 <tr>
@@ -28271,11 +28567,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Convert string to a 32 bits character array. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns a slice type. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toSlice">toSlice</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td>Returns a slice type. </td>
 </tr>
 <tr>
@@ -28283,7 +28579,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td>Returns a string type. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_toUpper">toUpper</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SCst">CharacterSet</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_toUpper">toUpper</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SCst">CharacterSet</span>)</span></td>
 <td>Returns a new String in upper case. </td>
 </tr>
 <tr>
@@ -28310,39 +28606,39 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">rune</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">rune</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">string</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">string</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">self</span>, <span class="STpe">u8</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opAssign">opAssign</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">u8</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td></td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">self</span>)</span></td>
+<td class="code-type"><span class="SFct"><a href="#Core_String_opCast">opCast</a></span><span class="SCde">(<span class="STpe">me</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -28413,7 +28709,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">compute</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28426,11 +28722,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a byte to the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="STpe">me</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>Append a rune to the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="STpe">me</span>, value: <span class="STpe">rune</span>)</span></div>
 <p>Append a string to the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">append</span>(<span class="STpe">me</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28443,7 +28739,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Append a formatted string. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, format: <span class="STpe">string</span>, values: ...)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">appendFormat</span>(<span class="STpe">me</span>, format: <span class="STpe">string</span>, values: ...)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28456,7 +28752,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Get the last byte. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">back</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28469,7 +28765,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set the length of the String to 0. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">clear</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28482,10 +28778,10 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the string contains <span class="code-inline">what</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
-<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, what: <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, what: <span class="STpe">rune</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, what: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span>
+<span class="SKwd">func</span> <span class="SFct">contains</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, what: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28498,7 +28794,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Transform a null string in an empty one. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureNotNull</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureNotNull</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28511,7 +28807,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert a literal string to a String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(value: <span class="SCmp">#null</span> <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(value: <span class="SItr">#null</span> <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28524,7 +28820,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Ensure the String is big enough to store a given amount of bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, wantedCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">grow</span>(<span class="STpe">me</span>, wantedCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28537,8 +28833,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Find <span class="code-inline">what</span>, and returns the byte index of it. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span>
-<span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, what: <span class="STpe">string</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">indexOf</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, what: <span class="STpe">rune</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28551,9 +28847,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Insert an ascii byte at the given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="STpe">me</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>Insert a substring at the given position. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">insert</span>(<span class="STpe">me</span>, byteIndex: <span class="STpe">u64</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28566,7 +28862,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the String has zero length. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isEmpty</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28579,7 +28875,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the String is null (undefined). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNull</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28592,7 +28888,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the String is null or empty. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNullOrEmpty</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isNullOrEmpty</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28631,7 +28927,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert the string inplace to lower case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLower</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeLower</span>(<span class="STpe">me</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28644,7 +28940,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert the string inplace to upper case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeUpper</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">makeUpper</span>(<span class="STpe">me</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28656,7 +28952,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, value: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28668,12 +28964,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">string</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">string</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">rune</span>)
-<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">string</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">string</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">rune</span>)
+<span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opAssign</span>(<span class="STpe">me</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28685,9 +28981,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">cstring</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span>
-<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">cstring</span>
+<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">string</span>
+<span class="SKwd">func</span> <span class="SFct">opCast</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28699,7 +28995,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28711,7 +29007,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCount</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28723,7 +29019,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> ^<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opData</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [*] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28735,7 +29031,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28747,7 +29043,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="STpe">string</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28760,7 +29056,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the byte at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndex</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, index: <span class="STpe">u64</span>)-&gt;<span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28772,7 +29068,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opIndexAffect</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28784,7 +29080,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(op: <span class="STpe">string</span>) <span class="SFct">opIndexAssign</span>(<span class="STpe">me</span>, index: <span class="STpe">u64</span>, value: <span class="STpe">u8</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28796,7 +29092,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostCopy</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28808,7 +29104,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opPostMove</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28820,7 +29116,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, lower, upper: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opSlice</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, lower, upper: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28834,7 +29130,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Default foreach, by bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisit</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28848,7 +29144,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String utf8 bytes. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitBytes</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <ul>
 <li><span class="code-inline">#alias0</span> will contain the byte or the pointer to the byte</li>
 <li><span class="code-inline">#alias1</span> will contain the byte index</li>
@@ -28866,7 +29162,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <p>Visit the String runes See <a href="#Core_Utf8_visitRunes">Utf8.visitRunes</a> for aliases. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
-<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
+<span class="SKwd">func</span>(ptr: <span class="STpe">bool</span>, back: <span class="STpe">bool</span>) <span class="SFct">opVisitRunes</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, stmt: <span class="SItr">#code</span> <span class="STpe">void</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28879,7 +29175,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove some bytes at the given index. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteIndex: <span class="STpe">u64</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">remove</span>(<span class="STpe">me</span>, byteIndex: <span class="STpe">u64</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28892,7 +29188,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove some bytes at the end. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">removeBack</span>(<span class="STpe">me</span>, byteCount: <span class="STpe">u64</span> = <span class="SNum">1</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28905,8 +29201,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Replace all occurences of <span class="code-inline">what</span> with <span class="code-inline">by</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what: <span class="STpe">rune</span>, by: <span class="STpe">string</span>)
-<span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, what, by: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="STpe">me</span>, what: <span class="STpe">rune</span>, by: <span class="STpe">string</span>)
+<span class="SKwd">func</span> <span class="SFct">replace</span>(<span class="STpe">me</span>, what, by: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28919,7 +29215,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reserve room for at least <span class="code-inline">newCapacity</span> bytes. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reserve</span>(<span class="STpe">me</span>, newCapacity: <span class="STpe">u64</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28932,7 +29228,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return true if the string starts with <span class="code-inline">str</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startsWith</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startsWith</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8">Utf8</a></span>.<span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28945,8 +29241,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a new String in lower case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toLower</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>
-<span class="SKwd">func</span> <span class="SFct">toLower</span>(str: <span class="SCmp">#null</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toLower</span>(<span class="STpe">me</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span>
+<span class="SKwd">func</span> <span class="SFct">toLower</span>(str: <span class="SItr">#null</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28959,7 +29255,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Convert string to a 32 bits character array. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRuneArray</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toRuneArray</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">rune</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28972,8 +29268,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a slice type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;[..] <span class="STpe">u8</span>
-<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="STpe">me</span>)-&gt;[..] <span class="STpe">u8</span>
+<span class="SKwd">func</span> <span class="SFct">toSlice</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SKwd">const</span> [..] <span class="STpe">u8</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28986,7 +29282,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a string type. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">string</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -28999,9 +29295,9 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns a new String in upper case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(<span class="STpe">me</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>Returns a new String in lower case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(str: <span class="SCmp">#null</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toUpper</span>(str: <span class="SItr">#null</span> <span class="STpe">string</span>, set = <span class="SCst"><a href="#Core_CharacterSet">CharacterSet</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29014,7 +29310,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Removes all leading and trailing white-space characters from the current String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trim</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trim</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29027,7 +29323,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove whitespaces at the end of the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimEnd</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29040,7 +29336,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Remove whitespaces at the start of the String. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimStart</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trimStart</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29157,7 +29453,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, manual, initState = <span class="SKwd">false</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>, manual, initState = <span class="SKwd">false</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29170,7 +29466,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the event is valid. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29182,7 +29478,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29195,7 +29491,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Destroy an existing event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29208,7 +29504,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reset the event state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29221,7 +29517,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Signal the event. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">signal</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">signal</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29234,7 +29530,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Wait for the event to be signaled. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29280,7 +29576,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Lock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29293,7 +29589,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLock</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29306,7 +29602,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Unlock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29371,7 +29667,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lock</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29379,12 +29675,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_lockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">lockExclusive</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L30" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Lock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockExclusive</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockExclusive</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29392,12 +29688,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_lockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">lockShared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L41" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L48" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Lock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockShared</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lockShared</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29405,12 +29701,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_tryLockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">tryLockExclusive</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L17" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L24" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockExclusive</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockExclusive</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29418,12 +29714,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_tryLockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">tryLockShared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L35" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L42" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Try to lock the mutex, and return <span class="code-inline">true</span> if it's the case. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockShared</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">tryLockShared</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29431,11 +29727,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_unlock"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">unlock</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L14" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L18" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlock</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29443,12 +29739,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_unlockExclusive"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">unlockExclusive</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L29" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L36" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Unlock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockExclusive</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockExclusive</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29456,12 +29752,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Sync_RWLock_unlockShared"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RWLock.</span><span class="api-item-title-strong">unlockShared</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L47" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\thread\rwlock.win32.swg#L54" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Unlock mutex. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockShared</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unlockShared</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29654,7 +29950,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize a thread in pause state. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, lambda: <span class="SKwd">func</span>||(<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>), userParam: *<span class="STpe">void</span> = <span class="SKwd">null</span>, priority = <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>.<span class="SCst">Normal</span>, tempAllocSize: <span class="STpe">s32</span> = -<span class="SNum">1</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>, lambda: <span class="SKwd">func</span>||(<span class="SCst"><a href="#Core_Threading_Thread">Thread</a></span>), userParam: *<span class="STpe">void</span> = <span class="SKwd">null</span>, priority = <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>.<span class="SCst">Normal</span>, tempAllocSize: <span class="STpe">s32</span> = -<span class="SNum">1</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29667,7 +29963,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the thread has finished. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDone</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isDone</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29680,7 +29976,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if the thread is valid. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29692,7 +29988,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opDrop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29705,7 +30001,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Force the thread to safely exist User code needs to check for <span class="code-inline">requestEnd</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safeForceEnd</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">safeForceEnd</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29718,7 +30014,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Set the thread priority. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPriority</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, priority: <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPriority</span>(<span class="STpe">me</span>, priority: <span class="SCst"><a href="#Core_Threading_ThreadPriority">ThreadPriority</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29744,7 +30040,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Resume the given thread, if it was paused. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="STpe">me</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29757,7 +30053,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Wait for the given thread to be done, and close it After that call, isValid() will return false. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">wait</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -29846,7 +30142,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Time_TimeSpan"><span class="SCst">TimeSpan</span></a></td>
-<td>Represents an interval of time, stored as a 64 bits integer. </td>
+<td>Represents an interval of time, stored as a 64-bit integer (in ticks). </td>
 </tr>
 <tr>
 <td class="code-type"><a href="#Core_Time_Timer"><span class="SCst">Timer</span></a></td>
@@ -30014,7 +30310,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Converts a DateTime to a string using a single-character format specifier (for use with Format.toString). </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">convert</span>(<span class="STpe">me</span>, buf: *<span class="SCst"><a href="#Core_ConcatBuffer">ConcatBuffer</a></span>, convFormat: <span class="SCst"><a href="#Core_StrConv">StrConv</a></span>.<span class="SCst"><a href="#Core_StrConv_ConvertFormat">ConvertFormat</a></span>, strFormat: <span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30026,7 +30322,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postRead</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">postRead</span>(<span class="STpe">me</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30039,7 +30335,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Reads a DateTime from a textual encoder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">read</span>(<span class="STpe">me</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30051,7 +30347,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">readElement</span>(<span class="STpe">me</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IDecoder">IDecoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30064,7 +30360,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Writes a DateTime to a textual encoder. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, encoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">write</span>(<span class="STpe">me</span>, encoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30076,7 +30372,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">writeElement</span>(<span class="STpe">me</span>, type: <span class="SCst">Swag</span>.<span class="SCst">TypeValue</span>, data: <span class="SKwd">const</span> *<span class="STpe">void</span>, decoder: <span class="SCst"><a href="#Core_Serialization">Serialization</a></span>.<span class="SCst"><a href="#Core_Serialization_IEncoder">IEncoder</a></span>)-&gt;<span class="STpe">bool</span> <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30089,7 +30385,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the day of the week for the current date. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dayOfWeek</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">dayOfWeek</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DayOfWeek">DayOfWeek</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30115,7 +30411,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns true if this is a valid DateTime. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isValid</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30136,7 +30432,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_now"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">now</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.win32.swg#L23" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.win32.swg#L22" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -30154,7 +30450,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Compares two DateTime values. Returns -1, 0, or 1. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="STpe">s32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30167,7 +30463,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Compares if two DateTime instances are equal. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opEquals</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30188,12 +30484,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_DateTime_setNow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">DateTime.</span><span class="api-item-title-strong">setNow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.win32.swg#L34" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\datetime.win32.swg#L33" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Initialize the structure with the current local date and time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30206,7 +30502,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Converts the DateTime to a string using the given format. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, fmt = <span class="SCst"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toString</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, fmt = <span class="SCst"><a href="#Core_Time_DateTimeFormat">DateTimeFormat</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_String">String</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30368,7 +30664,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, valueMs: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opAffect</span>(<span class="STpe">me</span>, valueMs: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30380,7 +30676,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, value: <span class="STpe">s32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span>(suffix: <span class="STpe">string</span>) <span class="SFct">opAffectLiteral</span>(<span class="STpe">me</span>, value: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30393,7 +30689,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the value in milliseconds. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMs</span>(<span class="SKwd">using</span> <span class="SKwd">const</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toMs</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30465,7 +30761,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Pauses frame timing and frame count. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">pause</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30478,7 +30774,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Resumes frame timing and resets the tick reference. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unpause</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">unpause</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30491,7 +30787,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Updates the delta time and frame count. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">update</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30508,56 +30804,56 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <tr>
 <td>isStarted</td>
 <td class="code-type"><span class="STpe">bool</span></td>
-<td></td>
+<td>True if the stopwatch is currently running. </td>
 </tr>
 <tr>
 <td>startTimeStamp</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Timestamp when the stopwatch was last started. </td>
 </tr>
 <tr>
 <td>elapsedTicks</td>
 <td class="code-type"><span class="STpe">u64</span></td>
-<td></td>
+<td>Accumulated elapsed time in ticks. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMicroseconds">elapsedMicroseconds</a></span></td>
-<td>Gets the total elapsed time in microseconds, after a call to <span class="code-inline">stop</span>. </td>
+<td>Returns the total elapsed time in microseconds, after calling <span class="code-inline">stop</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMicrosecondsNow">elapsedMicrosecondsNow</a></span></td>
-<td>Gets the current elapsed time in milliseconds since the start. </td>
+<td>Returns the current elapsed time in microseconds since the last start. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMilliseconds">elapsedMilliseconds</a></span></td>
-<td>Gets the total elapsed time in milliseconds, after a call to <span class="code-inline">stop</span>. </td>
+<td>Returns the total elapsed time in milliseconds, after calling <span class="code-inline">stop</span>. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_elapsedMillisecondsNow">elapsedMillisecondsNow</a></span></td>
-<td>Gets the current elapsed time in milliseconds since the start. </td>
+<td>Returns the current elapsed time in milliseconds since the last start. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_reset">reset</a></span></td>
-<td>Stops time interval measurement and resets the elapsed time to zero. </td>
+<td>Resets the stopwatch and clears the elapsed time. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_restart">restart</a></span></td>
-<td>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </td>
+<td>Resets the stopwatch and immediately starts measuring elapsed time. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_scopeMeasure">scopeMeasure</a></span></td>
-<td>Measure until the end of the scope, and print the result in the console. </td>
+<td>Measures elapsed time for the current scope and prints the result when the scope ends. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_start">start</a></span></td>
-<td>Starts, or resumes, measuring elapsed time for an interval. </td>
+<td>Starts or resumes measuring elapsed time. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_Stopwatch_stop">stop</a></span></td>
-<td>Stops measuring elapsed time for an interval. </td>
+<td>Stops measuring elapsed time and accumulates the result. </td>
 </tr>
 </table>
 <p>
@@ -30571,8 +30867,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Gets the total elapsed time in microseconds, after a call to <span class="code-inline">stop</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicroseconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Returns the total elapsed time in microseconds, after calling <span class="code-inline">stop</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicroseconds</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30584,8 +30880,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Gets the current elapsed time in milliseconds since the start. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicrosecondsNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Returns the current elapsed time in microseconds since the last start. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMicrosecondsNow</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30597,8 +30893,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Gets the total elapsed time in milliseconds, after a call to <span class="code-inline">stop</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMilliseconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Returns the total elapsed time in milliseconds, after calling <span class="code-inline">stop</span>. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMilliseconds</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30610,8 +30906,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Gets the current elapsed time in milliseconds since the start. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMillisecondsNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">u32</span></span></div>
+<p>Returns the current elapsed time in milliseconds since the last start. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">elapsedMillisecondsNow</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">u32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30623,8 +30919,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Stops time interval measurement and resets the elapsed time to zero. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Resets the stopwatch and clears the elapsed time. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">reset</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30636,8 +30932,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Stops time interval measurement, resets the elapsed time to zero, and starts measuring elapsed time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">restart</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Resets the stopwatch and immediately starts measuring elapsed time. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">restart</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30649,7 +30945,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Measure until the end of the scope, and print the result in the console. </p>
+<p>Measures elapsed time for the current scope and prints the result when the scope ends. </p>
 <div class="code-block"><span class="SCde"><span class="SAtr">#[<a href="swag.runtime.php#Swag_Macro">Swag.Macro</a>]</span>
 <span class="SKwd">func</span> <span class="SFct">scopeMeasure</span>(name: <span class="STpe">string</span> = <span class="SStr">"stopwatch"</span>)</span></div>
 <p>
@@ -30663,8 +30959,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Starts, or resumes, measuring elapsed time for an interval. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Starts or resumes measuring elapsed time. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">start</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30676,8 +30972,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Stops measuring elapsed time for an interval. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Stops measuring elapsed time and accumulates the result. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">stop</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30689,86 +30985,86 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Represents an interval of time, stored as a 64 bits integer. </p>
+<p>Represents an interval of time, stored as a 64-bit integer (in ticks). </p>
 <table class="table-enumeration">
 <tr>
 <td>ticks</td>
 <td class="code-type"><span class="SCde"><span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_Ticks">Ticks</a></span></span></td>
-<td></td>
+<td>Duration represented in ticks. </td>
 </tr>
 </table>
 <h3>Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addDays">addDays</a></span></td>
-<td>Add or remove the given amount of days to the TimeSpan. </td>
+<td>Adds or subtracts a number of days to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addHours">addHours</a></span></td>
-<td>Add or remove the given amount of hours to the TimeSpan. </td>
+<td>Adds or subtracts a number of hours to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMilliSeconds">addMilliSeconds</a></span></td>
-<td>Add or remove the given amount of minutes to the TimeSpan. </td>
+<td>Adds or subtracts a number of milliseconds to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMinutes">addMinutes</a></span></td>
-<td>Add or remove the given amount of minutes to the TimeSpan. </td>
+<td>Adds or subtracts a number of minutes to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addMonths">addMonths</a></span></td>
-<td>Add or remove the given amount of months to the TimeSpan. </td>
+<td>Adds or subtracts a number of months to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addSeconds">addSeconds</a></span></td>
-<td>Add or remove the given amount of minutes to the TimeSpan. </td>
+<td>Adds or subtracts a number of seconds to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_addYears">addYears</a></span></td>
-<td>Add or remove the given amount of years to the TimeSpan. </td>
+<td>Adds or subtracts a number of years to the TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_from">from</a></span></td>
-<td>Creates a TimeSpan with the given DateTime. </td>
+<td>Creates a TimeSpan from a DateTime. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_now">now</a></span></td>
-<td>Returns the current date and time. </td>
+<td>Returns the current time as a TimeSpan. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_setNow">setNow</a></span></td>
-<td>Initialize the TimeSpan with the current date and time. </td>
+<td>Sets the TimeSpan to the current time. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_toDateTime">toDateTime</a></span></td>
-<td>Converts a TimeSpan to a DateTime. </td>
+<td>Converts the TimeSpan to a DateTime. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalDays">totalDays</a></span></td>
-<td></td>
+<td>Returns the total duration in days. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalHours">totalHours</a></span></td>
-<td></td>
+<td>Returns the total duration in hours. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalMilliSeconds">totalMilliSeconds</a></span></td>
-<td></td>
+<td>Returns the total duration in milliseconds. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalMinutes">totalMinutes</a></span></td>
-<td></td>
+<td>Returns the total duration in minutes. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_totalSeconds">totalSeconds</a></span></td>
-<td></td>
+<td>Returns the total duration in seconds. </td>
 </tr>
 </table>
 <h3>Special Functions</h3>
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Time_TimeSpan_opCmp">opCmp</a></span></td>
-<td></td>
+<td>Compares two TimeSpan values. </td>
 </tr>
 </table>
 <p>
@@ -30778,12 +31074,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addDays"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addDays</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L85" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L83" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of days to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addDays</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, days: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of days to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addDays</span>(<span class="STpe">me</span>, days: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30791,12 +31087,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addHours"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addHours</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L94" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L92" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of hours to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHours</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, hours: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of hours to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addHours</span>(<span class="STpe">me</span>, hours: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30804,12 +31100,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addMilliSeconds"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addMilliSeconds</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L121" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L119" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of minutes to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMilliSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, milliSeconds: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of milliseconds to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMilliSeconds</span>(<span class="STpe">me</span>, milliSeconds: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30817,12 +31113,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addMinutes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addMinutes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L103" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L101" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of minutes to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMinutes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, minutes: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of minutes to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMinutes</span>(<span class="STpe">me</span>, minutes: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30830,12 +31126,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addMonths"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addMonths</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L61" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L59" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of months to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMonths</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, months: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of months to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addMonths</span>(<span class="STpe">me</span>, months: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30843,12 +31139,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addSeconds"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addSeconds</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L112" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L110" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of minutes to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, seconds: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of seconds to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addSeconds</span>(<span class="STpe">me</span>, seconds: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30856,12 +31152,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_addYears"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">addYears</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L54" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L52" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Add or remove the given amount of years to the TimeSpan. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addYears</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, years: <span class="STpe">s32</span>)</span></div>
+<p>Adds or subtracts a number of years to the TimeSpan. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">addYears</span>(<span class="STpe">me</span>, years: <span class="STpe">s32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30873,7 +31169,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Creates a TimeSpan with the given DateTime. </p>
+<p>Creates a TimeSpan from a DateTime. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">from</span>(dateTime: <span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_TimeSpan">TimeSpan</a></span></span></div>
 <p>
 <table class="api-item">
@@ -30882,11 +31178,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_now"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">now</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L18" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L19" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns the current date and time. </p>
+<p>Returns the current time as a TimeSpan. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">now</span>()-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_TimeSpan">TimeSpan</a></span></span></div>
 <p>
 <table class="api-item">
@@ -30895,11 +31191,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_opCmp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">opCmp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L12" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L13" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, other: <span class="STpe">Self</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>Compares two TimeSpan values. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">opCmp</span>(<span class="STpe">me</span>, other: <span class="SCst"><a href="#Core_Time_TimeSpan">TimeSpan</a></span>)-&gt;<span class="STpe">s32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30907,12 +31204,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_setNow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">setNow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L25" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L26" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Initialize the TimeSpan with the current date and time. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<p>Sets the TimeSpan to the current time. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setNow</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30920,12 +31217,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_toDateTime"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">toDateTime</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L44" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L43" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Converts a TimeSpan to a DateTime. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDateTime</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></div>
+<p>Converts the TimeSpan to a DateTime. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toDateTime</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Core_Time">Time</a></span>.<span class="SCst"><a href="#Core_Time_DateTime">DateTime</a></span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30933,11 +31230,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_totalDays"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">totalDays</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L129" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L128" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalDays</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>Returns the total duration in days. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalDays</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30949,7 +31247,8 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalHours</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>Returns the total duration in hours. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalHours</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30957,11 +31256,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_totalMilliSeconds"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">totalMilliSeconds</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L133" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L136" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMilliSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>Returns the total duration in milliseconds. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMilliSeconds</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30969,11 +31269,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_totalMinutes"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">totalMinutes</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L132" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMinutes</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>Returns the total duration in minutes. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalMinutes</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -30981,11 +31282,12 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Time_TimeSpan_totalSeconds"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">TimeSpan.</span><span class="api-item-title-strong">totalSeconds</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L132" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\time\timespan.swg#L134" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalSeconds</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>Returns the total duration in seconds. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">totalSeconds</span>(<span class="STpe">me</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -31054,7 +31356,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Initialize timer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="SKwd">using</span> <span class="STpe">self</span>, elapsedTimeMs: <span class="STpe">u32</span>, lambda: <span class="SKwd">func</span>(<span class="SCst"><a href="#Core_Time_Timer">Timer</a></span>), periodic = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">init</span>(<span class="STpe">me</span>, elapsedTimeMs: <span class="STpe">u32</span>, lambda: <span class="SKwd">func</span>(<span class="SCst"><a href="#Core_Time_Timer">Timer</a></span>), periodic = <span class="SKwd">false</span>) <span class="SKwd">throw</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -31067,7 +31369,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Release the timer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="SKwd">using</span> <span class="STpe">self</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">release</span>(<span class="STpe">me</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -31211,47 +31513,47 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <table class="table-enumeration">
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_eatCount">eatCount</a></span></td>
-<td>Eat <span class="code-inline">count</span> bytes, and returns the remaining string. </td>
+<td>Eats <span class="code-inline">count</span> bytes from the beginning of the string and returns the remaining string. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_eatQuotes">eatQuotes</a></span></td>
-<td>Remove "". </td>
+<td>Removes surrounding double quotes from the string, if present. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_eatSpaces">eatSpaces</a></span></td>
-<td>Eat all spaces, and returns the remaining string (trim left). </td>
+<td>Removes leading space characters from the string and returns the trimmed result. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_getTo">getTo</a></span></td>
-<td>Returns a sub string starting at <span class="code-inline">startByteIndex</span> and ending with <span class="code-inline">delimiter</span>. </td>
+<td>Returns a substring of <span class="code-inline">src</span> starting at <span class="code-inline">startByteIndex</span> and ending at the first occurrence of <span class="code-inline">delimiter</span> Includes the delimiter if <span class="code-inline">includeDelimiter</span> is true. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_getToSpace">getToSpace</a></span></td>
-<td>Returns the first substring of <span class="code-inline">str</span> stopping at the first blank character. </td>
+<td>Returns the first substring of <span class="code-inline">str</span> stopping at the first whitespace character. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_getWhileAlnum">getWhileAlnum</a></span></td>
-<td>Returns the first substring of <span class="code-inline">str</span> containing only digits and letters. </td>
+<td>Returns the first substring of <span class="code-inline">str</span> that contains only alphanumeric characters. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_split">split</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">rune</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)</span></td>
-<td>Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
+<td>Splits the string into substrings using a rune as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_split">split</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">string</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)</span></td>
-<td>Split string into sub strings, given a string separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
+<td>Splits the string into substrings using another string as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_split">split</a></span><span class="SCde">(<span class="STpe">string</span>, <span class="STpe">u8</span>, <span class="STpe">u32</span>, <span class="STpe">bool</span>)</span></td>
-<td>Split string into sub strings, given a byte separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
+<td>Splits the string into substrings using a byte as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_splitAny">splitAny</a></span></td>
-<td>Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
+<td>Splits the string into substrings using any rune from the given array as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Tokenize_splitLines">splitLines</a></span></td>
-<td>Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
+<td>Splits the string into an array of lines using newline or carriage return as delimiters Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </td>
 </tr>
 </table>
 <p>
@@ -31265,7 +31567,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Eat <span class="code-inline">count</span> bytes, and returns the remaining string. </p>
+<p>Eats <span class="code-inline">count</span> bytes from the beginning of the string and returns the remaining string. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">eatCount</span>(str: <span class="STpe">string</span>, count: <span class="STpe">u64</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -31278,7 +31580,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Remove "". </p>
+<p>Removes surrounding double quotes from the string, if present. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">eatQuotes</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -31291,7 +31593,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Eat all spaces, and returns the remaining string (trim left). </p>
+<p>Removes leading space characters from the string and returns the trimmed result. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">eatSpaces</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -31300,11 +31602,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 <span id="Core_Tokenize_getTo"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Tokenize.</span><span class="api-item-title-strong">getTo</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L263" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\text\tokenize.swg#L264" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
-<p>Returns a sub string starting at <span class="code-inline">startByteIndex</span> and ending with <span class="code-inline">delimiter</span>. </p>
+<p>Returns a substring of <span class="code-inline">src</span> starting at <span class="code-inline">startByteIndex</span> and ending at the first occurrence of <span class="code-inline">delimiter</span> Includes the delimiter if <span class="code-inline">includeDelimiter</span> is true. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getTo</span>(src: <span class="STpe">string</span>, delimiter: <span class="STpe">u8</span>, startByteIndex = <span class="SNum">0</span>'<span class="STpe">u64</span>, includeDelimiter = <span class="SKwd">true</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -31317,7 +31619,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Returns the first substring of <span class="code-inline">str</span> stopping at the first blank character. </p>
+<p>Returns the first substring of <span class="code-inline">str</span> stopping at the first whitespace character. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getToSpace</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -31330,7 +31632,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Returns the first substring of <span class="code-inline">str</span> containing only digits and letters. </p>
+<p>Returns the first substring of <span class="code-inline">str</span> that contains only alphanumeric characters. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getWhileAlnum</span>(str: <span class="STpe">string</span>)-&gt;<span class="STpe">string</span></span></div>
 <p>
 <table class="api-item">
@@ -31343,11 +31645,11 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Split string into sub strings, given a byte separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
+<p>Splits the string into substrings using a byte as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">u8</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
-<p>Split string into sub strings, given a string separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
+<p>Splits the string into substrings using another string as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">string</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
-<p>Split string into sub strings, given a rune separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
+<p>Splits the string into substrings using a rune as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">split</span>(src: <span class="STpe">string</span>, separator: <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -31360,7 +31662,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Split string into sub strings, given an array of rune separators Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
+<p>Splits the string into substrings using any rune from the given array as separator Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> String is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitAny</span>(src: <span class="STpe">string</span>, separators: <span class="SKwd">const</span> [..] <span class="STpe">rune</span>, maxSplit: <span class="STpe">u32</span> = <span class="SNum">0</span>, removeEmpty = <span class="SKwd">true</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -31373,7 +31675,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </tr>
 </table>
 </p>
-<p>Split the string into an array of lines Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
+<p>Splits the string into an array of lines using newline or carriage return as delimiters Note that this returns an array of native strings, not copies. All strings will be invalid if <span class="code-inline">src</span> is destroyed. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">splitLines</span>(src: <span class="STpe">string</span>)-&gt;<span class="SCst"></span><span class="SFct"><a href="#Core_Array">Array</a></span>'(<span class="STpe">string</span>)</span></div>
 <p>
 <table class="api-item">
@@ -31828,7 +32130,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Compute the string length of a zero terminated utf16 buffer. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthZeroTerminated</span>(buf: <span class="SKwd">const</span> ^<span class="STpe">u16</span>)-&gt;<span class="STpe">u64</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lengthZeroTerminated</span>(buf: <span class="SKwd">const</span> [*] <span class="STpe">u16</span>)-&gt;<span class="STpe">u64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -32447,7 +32749,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

@@ -120,7 +120,7 @@
 <div class="container">
 <div class="right">
 <div class="right-page">
-<p><img src="imgs/flappy.png" alt=""> </p>
+<p><img src="imgs/flappy.png" alt="?"> </p>
 <p>Here is a very simple script that implements the <a href="https://en.wikipedia.org/wiki/Flappy_Bird">Flappy Bird</a> game. To have some fun and play with it, go to the <span class="code-inline">bin/examples/scripts</span> folder, and type : </p>
 <div class="code-block"><span class="SCde">$ swag flappy.swgs</span></div>
 <p>The goal here is to comment a real-life example of Swag usage. However, it's better to read the basic language <a href="language.php">documentation</a> first, as we will not go too deep into the details. </p>
@@ -194,7 +194,7 @@
 
     <span class="SCmt">// From the command line, if the script is run with '--arg:swag.test', then we force the application</span>
     <span class="SCmt">// to exit after 100 frames. This is usefull for batch testing.</span>
-    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) = <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>):
+    <span class="SKwd">func</span> <span class="SFct">test</span>(app: *<span class="SCst">Application</span>) =&gt; <span class="SLgc">if</span> <span class="SCst">Env</span>.<span class="SFct">hasArg</span>(<span class="SStr">"swag.test"</span>):
         app.maxRunFrame = <span class="SNum">100</span>
 
     <span class="SCmt">// Creates and run one surface (i.e. window) at the given position and with the given size and title.</span>
@@ -289,7 +289,7 @@
         g_Rect = wnd.<span class="SFct">getClientRect</span>()
 
     <span class="SLgc">case</span> <span class="SCst">PaintEvent</span> <span class="SLgc">as</span> paintEvt:
-        <span class="SKwd">let</span> painter  = paintEvt.bc.painter
+        <span class="SKwd">let</span> painter = paintEvt.bc.painter
 
         <span class="SCmt">// This is the elapsed time between two 'frames', in seconds.</span>
         g_Dt = wnd.<span class="SFct">getApp</span>().<span class="SFct">getDt</span>()
@@ -320,7 +320,7 @@
         painter.<span class="SFct">pushState</span>()
         <span class="SLgc">defer</span> painter.<span class="SFct">popState</span>()
 
-        <span class="SKwd">var</span> trf = painter.<span class="SFct">getTransform</span>()
+        <span class="SKwd">let</span> trf = painter.<span class="SFct">getTransform</span>()
 
         painter.<span class="SFct">resetTransform</span>()
         <span class="SKwd">let</span> speed = <span class="SCst">Math</span>.<span class="SFct">clamp</span>(g_Bird.speed.y, -<span class="SNum">200</span>, <span class="SNum">200</span>)
@@ -369,7 +369,7 @@
     <span class="SLgc">if</span> g_GameOver
     {
         <span class="SCmt">// This is another way of initializing a struct variable or constant.</span>
-        <span class="SKwd">var</span> pt = <span class="SCst">Math</span>.<span class="SCst">Point</span>{g_Rect.<span class="SFct">horzCenter</span>() - g_OverTexture.width / <span class="SNum">2</span>, g_Rect.<span class="SFct">vertCenter</span>() - g_OverTexture.height / <span class="SNum">2</span>}
+        <span class="SKwd">let</span> pt = <span class="SCst">Math</span>.<span class="SCst">Point</span>{g_Rect.<span class="SFct">horzCenter</span>() - g_OverTexture.width / <span class="SNum">2</span>, g_Rect.<span class="SFct">vertCenter</span>() - g_OverTexture.height / <span class="SNum">2</span>}
 
         painter.<span class="SFct">drawTexture</span>(pt.x, pt.y, g_OverTexture)
     }
@@ -565,7 +565,7 @@
     g_Font = <span class="SCst">Font</span>.<span class="SFct">create</span>(<span class="SCst">Path</span>.<span class="SFct">combine</span>(dataPath, <span class="SStr">"FlappyBirdy.ttf"</span>), <span class="SNum">50</span>)
 }</span></div>
 <div class="swag-watermark">
-Generated on 08-08-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.44.0</div>
+Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>
