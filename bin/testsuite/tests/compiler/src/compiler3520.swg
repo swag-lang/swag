@@ -38,5 +38,5 @@ const X7 = """this is
     @assert(X4 == "ABC(\"A\")")
     @assert(X5[0] == 'A''u8)
     @assert(X6 == """ABC""")
-    @assert(X7[0..6] == "this is")
+    @assert(X7[0 to 6] == "this is")
 }

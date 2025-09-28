@@ -57,7 +57,8 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
 
     AstNode* firstExpr = nullptr;
 
-    if (tokenParse.is(TokenId::SymDotDot) || tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
+    // Slicing
+    if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
     {
         const auto literal = Ast::newNode<AstLiteral>(AstNodeKind::Literal, this, nullptr);
         firstExpr          = literal;
@@ -72,8 +73,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_NONE, &firstExpr));
     }
 
-    // Slicing
-    if (tokenParse.is(TokenId::SymDotDot) || tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
+    if (tokenParse.is(TokenId::KwdTo) || tokenParse.is(TokenId::KwdUntil))
     {
         const auto arrayNode   = Ast::newNode<AstArrayPointerSlicing>(AstNodeKind::ArrayPointerSlicing, this, nullptr);
         arrayNode->semanticFct = Semantic::resolveArrayPointerSlicing;
@@ -84,7 +84,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         if (tokenParse.is(TokenId::KwdUntil))
             arrayNode->addSpecFlag(AstArrayPointerSlicing::SPEC_FLAG_EXCLUDE_UP);
         SWAG_CHECK(eatToken());
-
+        
         if (tokenParse.isNot(TokenId::SymRightSquare))
         {
             SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->upperBound));
@@ -109,44 +109,41 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         *exprNode = arrayNode;
         FormatAst::inheritFormatAfter(this, arrayNode, &tokenParse);
         SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
+        return true;
     }
 
     // Deref by index
-    else
+    while (true)
     {
-        while (true)
+        const auto arrayNode   = Ast::newNode<AstArrayPointerIndex>(AstNodeKind::ArrayPointerIndex, this, nullptr);
+        arrayNode->token       = firstExpr ? firstExpr->token : tokenParse.token;
+        arrayNode->semanticFct = Semantic::resolveArrayPointerIndex;
+
+        Ast::addChildBack(arrayNode, *exprNode);
+        arrayNode->array = *exprNode;
+        if (arrayNode->array->is(AstNodeKind::ArrayPointerIndex))
+            arrayNode->array->addSpecFlag(AstArrayPointerIndex::SPEC_FLAG_MULTI_ACCESS);
+
+        if (firstExpr)
         {
-            const auto arrayNode   = Ast::newNode<AstArrayPointerIndex>(AstNodeKind::ArrayPointerIndex, this, nullptr);
-            arrayNode->token       = firstExpr ? firstExpr->token : tokenParse.token;
-            arrayNode->semanticFct = Semantic::resolveArrayPointerIndex;
-
-            Ast::addChildBack(arrayNode, *exprNode);
-            arrayNode->array = *exprNode;
-            if (arrayNode->array->is(AstNodeKind::ArrayPointerIndex))
-                arrayNode->array->addSpecFlag(AstArrayPointerIndex::SPEC_FLAG_MULTI_ACCESS);
-
-            if (firstExpr)
-            {
-                arrayNode->access = firstExpr;
-                Ast::addChildBack(arrayNode, firstExpr);
-                firstExpr = nullptr;
-            }
-            else
-            {
-                SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->access));
-            }
-
-            *exprNode = arrayNode;
-            if (tokenParse.is(TokenId::SymRightSquare))
-                break;
-            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0108)));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0109)));
+            arrayNode->access = firstExpr;
+            Ast::addChildBack(arrayNode, firstExpr);
+            firstExpr = nullptr;
+        }
+        else
+        {
+            SWAG_CHECK(doExpression(arrayNode, EXPR_FLAG_NONE, &arrayNode->access));
         }
 
-        FormatAst::inheritFormatAfter(this, (*exprNode)->lastChild(), &tokenParse);
-        SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
+        *exprNode = arrayNode;
+        if (tokenParse.is(TokenId::SymRightSquare))
+            break;
+        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0108)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0109)));
     }
 
+    FormatAst::inheritFormatAfter(this, (*exprNode)->lastChild(), &tokenParse);
+    SWAG_CHECK(eatCloseToken(TokenId::SymRightSquare, startToken));
     return true;
 }
 

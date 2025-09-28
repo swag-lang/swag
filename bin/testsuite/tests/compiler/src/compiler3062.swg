@@ -7,5 +7,5 @@ struct AA
 #test
 {
     var a = AA{}
-    var b = a[0..1]
+    var b = a[0 to 1]
 }

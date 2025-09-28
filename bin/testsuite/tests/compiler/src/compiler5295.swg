@@ -24,7 +24,7 @@ impl Array
     var g = 0
     foreach arr
     {
-        foreach arr[1..]
+        foreach arr[1 to ]
         {
             g += 1
             break

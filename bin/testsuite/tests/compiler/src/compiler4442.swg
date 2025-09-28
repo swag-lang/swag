@@ -13,5 +13,5 @@ func titi(x: [..] A) {}
 #test
 {
     var a: [2] A
-    titi(&a[..])
+    titi(&a[ to ])
 }

@@ -8,5 +8,5 @@ alias A = string
 #test
 {
     var x: A
-    var y = x[1..2]
+    var y = x[1 to 2]
 }

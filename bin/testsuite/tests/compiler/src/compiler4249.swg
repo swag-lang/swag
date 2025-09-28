@@ -2,7 +2,7 @@
 {
     {
         let x = "abcd"
-        let y = x[..1]
+        let y = x[ to 1]
         @assert(y == "ab")
     }
 

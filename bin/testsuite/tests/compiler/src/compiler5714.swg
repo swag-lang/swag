@@ -9,7 +9,7 @@ alias A = string
 func toto(b: s32)
 {
     var x: A
-    var y = x[b..1]
+    var y = x[b to 1]
 }
 
 #test

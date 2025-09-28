@@ -4,5 +4,5 @@
 #test
 {
     var a = "toto"
-    var c = a[4.."1.5"]
+    var c = a[4 to "1.5"]
 }

@@ -17,7 +17,7 @@ func sendWords(text: string)
         //@print("stop:", stop, "\n")
         if stop == Swag.U64.Max:
             break
-        let word = text[start..stop]
+        let word = text[start to stop]
         sendMessage(word)
         //@breakpoint()
         start = stop + 1

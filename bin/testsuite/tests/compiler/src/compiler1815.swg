@@ -7,5 +7,5 @@
 {
     let a = "toto"
     #[Swag.Safety("", true)]
-    let c = a[0..4]
+    let c = a[0 to 4]
 }

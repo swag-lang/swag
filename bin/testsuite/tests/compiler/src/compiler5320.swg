@@ -27,5 +27,5 @@ func(T, R) map(values: const [..] T, cb: func(T)->R)->Array'R
 
     const A = [0, 1, 0, 0, 1]
 
-    let res = map'(s32,bool)(A[..], func(x) => x != 0)
+    let res = map'(s32,bool)(A[ to ], func(x) => x != 0)
 }

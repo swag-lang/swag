@@ -3,7 +3,7 @@ struct A { x, y: s32; }
 #test
 {
     var arr: [4] A
-    let slice = arr[..]
+    let slice = arr[ to ]
     foreach v in slice
     {
         v = A{1, 2}
