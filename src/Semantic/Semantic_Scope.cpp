@@ -76,7 +76,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
             // Rule: only kick in when there is a method/instance function receiver.
             //       This keeps precedence as: innermost 'with' > method receiver.
             auto ownerFct = identifier->ownerFct;
-            if (identifier->hasOwnerInline() && !identifier->ownerInline()->func->hasAttribute(ATTRIBUTE_MIXIN))
+            if (identifier->hasOwnerInline() && identifier->ownerInline()->func->isFctWithMe())
                 ownerFct = identifier->ownerInline()->func;
             if (ownerFct && ownerFct->isFctWithMe())
             {
