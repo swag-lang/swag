@@ -1,0 +1,27 @@
+//using Swag
+
+struct(T) A
+{
+}
+
+var G = 0
+
+impl A
+{
+    func opDrop(me)
+    {
+        G = 1
+    }
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    {
+        G = 0
+        var x: A's32
+        //x.opDrop()
+    }
+
+    @assert(G == 1)
+}

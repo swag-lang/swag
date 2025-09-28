@@ -1,0 +1,5 @@
+/*#test
+{
+    @print(#curlocation.funcName)
+}
+*/

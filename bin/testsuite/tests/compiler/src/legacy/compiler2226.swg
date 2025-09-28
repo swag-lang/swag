@@ -1,0 +1,13 @@
+#[Swag.Inline]
+func toto1()->[2] s32
+{
+    var result = [1, 2]
+    return result
+}
+
+#test
+{
+    var res = toto1()
+    @assert(res[0] == 1)
+    @assert(res[1] == 2)
+}

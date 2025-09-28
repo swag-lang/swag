@@ -1,0 +1,20 @@
+struct TOTO
+{
+    //CPT: s32 = 666
+    print1: func(me, string)
+	print: func(me, string)
+}
+
+func print1(s: *TOTO, x: string)
+{
+    //@assert(s.CPT == 666)
+    @assert(x == "true")
+}
+
+//#[Swag.PrintBc]
+#test
+{
+    var x: TOTO
+    x.print = &print1
+    x.print("true")
+}

@@ -1,0 +1,6 @@
+#test
+{
+    #if #safety("boundcheck")
+    {
+    }
+}
