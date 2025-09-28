@@ -344,7 +344,8 @@ struct AstNode
     bool isSpecialFunctionName() const;
     bool isSpecialFunctionGenerated() const;
     bool isGeneratedMe() const;
-    bool isEmptyFct();
+    bool isFctWithMe() const;
+    bool isEmptyFct() const;
     bool isForeign() const;
     bool isSilentCall() const;
     bool isPublic() const;

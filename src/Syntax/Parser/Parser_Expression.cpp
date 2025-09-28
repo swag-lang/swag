@@ -1473,9 +1473,9 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
         }
 
         // Implicit 'me' when in a method body and no 'with' was found
-        if (parentNode->ownerFct && parentNode->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+        if (parentNode->ownerFct && parentNode->ownerFct->isFctWithMe())
         {
-            const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), "me", this, exprNode);
+            const auto id = Ast::newIdentifier(castAst<AstIdentifierRef>(exprNode), g_LangSpec->name_me, this, exprNode);
             id->addAstFlag(AST_GENERATED);
             id->addSpecFlag(AstIdentifier::SPEC_FLAG_FROM_WITH);
             id->allocateIdentifierExtension();

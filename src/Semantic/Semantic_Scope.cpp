@@ -73,10 +73,9 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         const auto withNodeP = identifier->findParent(AstNodeKind::With);
         if (!withNodeP)
         {
-            // NEW: implicit 'me' receiver inside a method body
             // Rule: only kick in when there is a method/instance function receiver.
             //       This keeps precedence as: innermost 'with' > method receiver.
-            if (identifier->ownerFct && identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+            if (identifier->ownerFct && identifier->ownerFct->isFctWithMe())
             {
                 // Prepend a generated 'me' identifier and re-evaluate
                 // NOTE: we reuse the same lowering approach as 'with' so the rest

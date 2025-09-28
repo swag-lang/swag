@@ -170,9 +170,6 @@ bool Semantic::resolveIdentifierRef(SemanticContext* context)
 
 void Semantic::setConst(AstNode* node)
 {
-    if (node->token.text == "a")
-        int a = 0;
-    
     if (node->parent->typeInfo && node->parent->typeInfo->isConst())
     {
         node->addAstFlag(AST_CONST);

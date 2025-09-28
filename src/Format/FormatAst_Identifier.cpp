@@ -94,26 +94,14 @@ bool FormatAst::outputIdentifierRef(FormatContext& context, AstNode* node)
         concat->addChar('.');
     }
 
-    bool     first = true;
-    uint32_t idx   = 0;
+    bool first = true;
     for (const auto it : node->children)
     {
-        if (g_CommandLine.patchMode)
+        /*if (it->token.text == "me" && !it->findParent(AstNodeKind::With) && it != node->children.back())
         {
-            if (!node->hasSpecFlag(AstIdentifierRef::SPEC_FLAG_AUTO_SCOPE | AstIdentifierRef::SPEC_FLAG_AUTO_WITH_SCOPE))
-            {
-                idx++;
-                if (idx == 1 &&
-                        it->hasAstFlag(AST_GENERATED) &&
-                         it->resolvedSymbolOverload() &&
-                         it->resolvedSymbolOverload()->flags.has(OVERLOAD_VAR_FUNC_PARAM) && 
-                         it->is(AstNodeKind::Identifier))
-                {
-                    concat->addString(it->token.text);
-                    concat->addChar('.');
-                }
-            }
-        }
+            concat->addChar('.');
+            continue;
+        }*/
 
         const auto child = convertNode(context, it);
         if (!child)

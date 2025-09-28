@@ -6,6 +6,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Parser/Parser.h"
+#include "Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
 void AstNode::inheritAstFlagsOr(const AstNodeFlags& flag)
@@ -293,7 +294,17 @@ bool AstNode::isGeneratedMe() const
     return is(AstNodeKind::FuncDeclParam) && hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERATED_ME);
 }
 
-bool AstNode::isEmptyFct()
+bool AstNode::isFctWithMe() const
+{
+    if (isNot(AstNodeKind::FuncDecl))
+        return false;
+    const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
+    return funcDecl->parameters &&
+           funcDecl->parameters->childCount() >= 1 &&
+           funcDecl->parameters->firstChild()->token.is(g_LangSpec->name_me);
+}
+
+bool AstNode::isEmptyFct() const
 {
     if (isNot(AstNodeKind::FuncDecl))
         return false;
