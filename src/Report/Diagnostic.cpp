@@ -887,7 +887,8 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Title)
             {
                 log->setColor(errorColor);
-                logCxt->colorHighlight = Log::colorToVTS(errorColorHighLight);
+                if (logCxt)
+                    logCxt->colorHighlight = Log::colorToVTS(errorColorHighLight);
             }
             else
                 log->setColor(errorColorHint);
@@ -902,7 +903,8 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Title)
             {
                 log->setColor(warningColor);
-                logCxt->colorHighlight = Log::colorToVTS(warningColorHighLight);
+                if (logCxt)
+                    logCxt->colorHighlight = Log::colorToVTS(warningColorHighLight);
             }
             else
                 log->setColor(warningColorHint);
@@ -917,7 +919,8 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
             else if (part == HintPart::Title)
             {
                 log->setColor(noteColor);
-                logCxt->colorHighlight = Log::colorToVTS(noteColorHighLight);
+                if (logCxt)
+                    logCxt->colorHighlight = Log::colorToVTS(noteColorHighLight);
             }
             else
                 log->setColor(noteColorHint);
@@ -1167,15 +1170,14 @@ void Diagnostic::report(Log* log)
         else
             log->setColor(sourceFileColor);
 
-        if (errorLevel == DiagnosticLevel::Error ||
-            errorLevel == DiagnosticLevel::Panic ||
-            errorLevel == DiagnosticLevel::Exception ||
-            errorLevel == DiagnosticLevel::Warning)
+        if (hasErrorId(textMsg))
         {
-            printErrorLevel(log);
+            log->print(Utf8(textMsg.buffer, 9));
+            log->print(" ");
         }
-
+        
         printSourceLine(log);
+
         log->writeEol();
     }
 
