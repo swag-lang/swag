@@ -103,7 +103,8 @@ namespace
         {
             for (uint32_t j = i + 1; j < notes.size(); j++)
             {
-                if (notes[j]->startLocation.line == notes[i]->startLocation.line && notes[j]->startLocation.column == notes[i]->startLocation.column)
+                if ((notes[j]->startLocation.line == notes[i]->startLocation.line && notes[j]->startLocation.column == notes[i]->startLocation.column) ||
+                    !notes[j]->hasLocation)
                 {
                     if (!notes[i]->hint.empty())
                     {

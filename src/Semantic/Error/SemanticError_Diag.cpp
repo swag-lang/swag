@@ -75,7 +75,9 @@ namespace
 
         const size_t other = errorParam.oneTry->symMatchContext.badSignatureInfos.badSignatureNum1;
         SWAG_ASSERT(other < errorParam.oneTry->callParameters->childCount());
-        const auto note = Diagnostic::note(errorParam.oneTry->callParameters->children[other], "this is the first usage");
+        const auto otherNode = errorParam.oneTry->callParameters->children[other];
+        const auto isNamed2  = otherNode->extraPointer<AstNode>(ExtraPointerKind::IsNamed);
+        const auto note      = Diagnostic::note(isNamed2 ? isNamed2 : otherNode, "this is the first usage");
         errorParam.addNote(note);
     }
 
@@ -299,7 +301,7 @@ namespace
             destParamNode = errorParam.destParameters->children[bi.badSignatureParameterIdx];
         const auto callParamNode = match.parameters[bi.badSignatureParameterIdx];
 
-        Diagnostic* err                = nullptr;
+        Diagnostic* err             = nullptr;
         bool        addCastErrorMsg = true;
         if (overload->typeInfo->isStruct())
         {
@@ -311,8 +313,8 @@ namespace
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {
-            const auto msg     = formErr(Err0579, bi.badSignatureGivenType->getDisplayNameC());
-            err                = new Diagnostic{callParamNode, callParamNode->token, msg};
+            const auto msg  = formErr(Err0579, bi.badSignatureGivenType->getDisplayNameC());
+            err             = new Diagnostic{callParamNode, callParamNode->token, msg};
             addCastErrorMsg = false;
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)

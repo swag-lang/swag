@@ -150,23 +150,25 @@ void initErrors()
     SWAG_ERROR(Err0001, "%s");
     SWAG_ERROR(Err0002, "%s");
     SWAG_ERROR(Err0003, "%s");
-    SWAG_ERROR(Err0004, "already defined %s                                $ cannot redefine the %s [[%s]] because it already exists %s                                                                               $ ");
-    SWAG_ERROR(Err0005, "already defined [[#global export]]                $ cannot have more than one [[#global export]] per file                                                                                    $ ");
-    SWAG_ERROR(Err0006, "already defined [[#main]]                         $ cannot have more than one [[#main]] function per module                                                                                  $ ");
-    SWAG_ERROR(Err0007, "already defined [[default]]                       $ cannot have more than one [[default]] statement per [[switch]]                                                                           $ ");
-    SWAG_ERROR(Err0008, "already defined access specifier                  $ cannot use the access specifier [[%s]] after [[%s]]                                                                                      $ ");
-    SWAG_ERROR(Err0009, "already defined enum                              $ cannot redefine the enum [[%s]] because it already exists                                                                                $ ");
-    SWAG_ERROR(Err0010, "already defined enum value                        $ cannot redefine the enum value [[%s]] because it already exists with the same underlying value                                           $ ");
-    SWAG_ERROR(Err0011, "already defined field name                        $ cannot redefine the field name [[%s]] because it already exists                                                                          $ ");
-    SWAG_ERROR(Err0012, "already defined generic symbol                    $ cannot redefine the generic symbol [[%s]] because it already exists                                                                      $ ");
-    SWAG_ERROR(Err0013, "already defined switch value                      $ cannot use the [[switch]] value [[%d]] because it already exists                                                                         $ ");
-    SWAG_ERROR(Err0014, "already defined switch value                      $ cannot use the [[switch]] value [[%f]] because it already exists                                                                         $ ");
-    SWAG_ERROR(Err0015, "already defined switch value                      $ cannot use the [[switch]] value [[%s]] because it already exists                                                                         $ ");
-    SWAG_ERROR(Err0016, "already defined switch value                      $ cannot use the [[switch]] value [[\"%s\"]] because it already exists in another [[case]]                                                 $ ");
-    SWAG_ERROR(Err0017, "already defined switch value                      $ cannot use the [[switch]] value [[null]] because it already exists                                                                       $ ");
-    SWAG_ERROR(Err0018, "already defined symbol                            $ cannot redefine the %s [[%s]] because it already exists                                                                                  $ ");
-    SWAG_ERROR(Err0019, "ambiguous [[using]]                               $ cannot use [[using]] on two variables of the same type ([[%s]])                                                                          $ ");
-    SWAG_ERROR(Err0020, "ambiguous cast                                    $ cannot cast from the type [[%s]] to the type [[%s]] because it is ambiguous                                                              $ ");
+    
+SWAG_ERROR(Err0004, "%s redefined                  $ %s [[%s]] already exists %s                                    $ ");
+SWAG_ERROR(Err0005, "duplicate [[#global export]]  $ [[#global export]] must be unique per file                     $ ");
+SWAG_ERROR(Err0006, "duplicate [[#main]]           $ [[#main]] function must be unique per module                   $ ");
+SWAG_ERROR(Err0007, "duplicate [[default]]         $ [[default]] must be unique per [[switch]]                      $ ");
+SWAG_ERROR(Err0008, "invalid access specifier      $ access specifier [[%s]] not valid after [[%s]]                 $ ");
+SWAG_ERROR(Err0009, "enum redefined                $ enum [[%s]] already exists                                     $ ");
+SWAG_ERROR(Err0010, "enum value redefined          $ enum value [[%s]] already exists with same value               $ ");
+SWAG_ERROR(Err0011, "field redefined               $ field [[%s]] already exists                                    $ ");
+SWAG_ERROR(Err0012, "generic redefined             $ generic symbol [[%s]] already exists                           $ ");
+SWAG_ERROR(Err0013, "duplicate switch value        $ [[switch]] value [[%d]] already exists                         $ ");
+SWAG_ERROR(Err0014, "duplicate switch value        $ [[switch]] value [[%f]] already exists                         $ ");
+SWAG_ERROR(Err0015, "duplicate switch value        $ [[switch]] value [[%s]] already exists                         $ ");
+SWAG_ERROR(Err0016, "duplicate switch value        $ [[switch]] value [[\"%s\"]] already exists                     $ ");
+SWAG_ERROR(Err0017, "duplicate switch value        $ [[switch]] value [[null]] already exists                       $ ");
+SWAG_ERROR(Err0018, "symbol redefined              $ %s [[%s]] already exists                                       $ ");
+SWAG_ERROR(Err0019, "ambiguous [[using]]           $ [[using]] on two variables of type [[%s]] is ambiguous         $ ");
+SWAG_ERROR(Err0020, "ambiguous cast                $ cast from [[%s]] to [[%s]] is ambiguous                        $ ");
+
     SWAG_ERROR(Err0021, "ambiguous enum resolution                         $ cannot resolve the enum value [[%s]] because it is ambiguous                                                                             $ ");
     SWAG_ERROR(Err0022, "ambiguous interface conversion                    $ cannot cast from the type [[%s]] to the interface [[%s]] because it is ambiguous                                                         $ ");
     SWAG_ERROR(Err0023, "ambiguous resolution                              $ cannot resolve [[%s]] because it is ambiguous                                                                                            $ ");
@@ -311,7 +313,6 @@ void initErrors()
     SWAG_ERROR(Err0164, "invalid bit-cast                                  $ cannot bit-cast from the type [[%s]]                                                                                                     $ expected an integer, rune, float, or pointer");
     SWAG_ERROR(Err0165, "invalid bit-cast                                  $ cannot bit-cast from the type [[%s]] to the larger type [[%s]]                                                                           $ ");
     SWAG_ERROR(Err0166, "invalid bit-cast                                  $ cannot bit-cast to the type [[%s]]                                                                                                       $ expected an integer, rune, or float");
-    SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0168, "invalid capture                                   $ cannot capture [[%s]] because it is %s                                                                                                   $ capturing %s type is not possible");
     SWAG_ERROR(Err0169, "invalid capture                                   $ cannot capture [[%s]] because it is not a plain old data struct                                                                          $ a struct is not plain old data if it contains [[opDrop]], [[opPostCopy]], or [[opPostMove]]");
     SWAG_ERROR(Err0170, "invalid character literal                         $ cannot convert [['%s']] to a character literal                                                                                           $ this looks like a string and not a character");
@@ -347,8 +348,8 @@ void initErrors()
     SWAG_ERROR(Err0200, "invalid identifier                                $ expected an identifier, found $$TKN$$ instead                                                                                            $ ");
     SWAG_ERROR(Err0201, "invalid initialization                            $ cannot initialize a constant array (the type is [[%s]]) with one single value                                                            $ only variables can be initialized that way");
     SWAG_ERROR(Err0202, "invalid interface conversion                      $ cannot cast from [[%s]] to [[%s]] because of a missing implementation                                                                    $ ");
-    SWAG_ERROR(Err0203, "invalid interface function                        $ expected [[me]] as the first parameter, but type [[%s]] instead                                                                          $ consider declaring the interface function with [[mtd]] instead of [[func]]");
-    SWAG_ERROR(Err0204, "invalid interface function                        $ expected at least [[me]] as the first parameter of the interface function [[%s]]                                                         $ consider declaring the interface function with [[mtd]] instead of [[func]]");
+    SWAG_ERROR(Err0203, "invalid interface function signature              $ expected [[me]] as the first parameter, found type [[%s]] instead                                                                        $ consider declaring the interface function with [[mtd]] instead of [[func]]");
+    SWAG_ERROR(Err0204, "invalid interface function signature              $ expected at least [[me]] as the first parameter of the interface function [[%s]]                                                         $ consider declaring the interface function with [[mtd]] instead of [[func]]");
     SWAG_ERROR(Err0205, "invalid lambda call                               $ cannot make that lambda call because [[%s]] is not a variable, it is %s                                                                  $ ");
     SWAG_ERROR(Err0206, "invalid literal suffix                            $ cannot use the symbol [[%s]] as a literal suffix because it is [[%s]]                                                                    $ this should be a type");
     SWAG_ERROR(Err0207, "invalid literal suffix                            $ cannot use the type [[%s]] as a float literal suffix                                                                                     $ only [[f32]] and [[f64]] are accepted");
@@ -930,6 +931,7 @@ void initErrors()
     
     SWAG_ERROR(Err0310, "invalid top level call                            $ function [[%s]] is not marked with [[#[Swag.Mixin]]]                                                                                     $ only call to mixin functions are permitted at top level");
     
+    SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0421, nullptr);
     SWAG_ERROR(Err0309, nullptr);
     SWAG_ERROR(Err0422, nullptr);

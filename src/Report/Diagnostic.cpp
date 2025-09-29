@@ -55,7 +55,7 @@ namespace
                     continue;
                 }
 
-                if (SWAG_IS_EOL(*pz)) 
+                if (SWAG_IS_EOL(*pz))
                 {
                     tokens.push_back(one);
                     one.clear();
@@ -70,7 +70,7 @@ namespace
                     continue;
                 }
 
-                if (*pz == ',' && one.length() > (maxLength - (maxLength / 3))) 
+                if (*pz == ',' && one.length() > (maxLength - (maxLength / 3)))
                 {
                     one += ",";
                     tokens.push_back(one);
@@ -84,7 +84,7 @@ namespace
                         i--;
                     }
                     continue;
-                }                
+                }
 
                 one += *pz++;
                 i--;
@@ -133,19 +133,19 @@ void Diagnostic::setupColors()
     noteColorHintHighLight = LogColor::Gray;
     noteHeaderColor        = LogColor::White;
 
-    marginBorderColor        = LogColor::Cyan;
+    marginBorderColor        = LogColor::Gray;
     marginBorderColorContext = LogColor::Gray;
 
-    codeLineNoColor        = LogColor::Cyan;
-    codeLineNoColorContext = LogColor::Gray;
+    codeLineNoColor        = LogColor::LegitGray;
+    codeLineNoColorContext = LogColor::LegitGray;
 
-    sourceFileColor        = LogColor::Cyan;
+    sourceFileColor        = LogColor::Gray;
     sourceFileColorContext = LogColor::Gray;
 
     stackColor = LogColor::DarkYellow;
 
     preRemarkColor  = LogColor::White;
-    remarkColor     = LogColor::Gray;
+    remarkColor     = LogColor::White;
     autoRemarkColor = LogColor::Gray;
 }
 
@@ -427,9 +427,7 @@ void Diagnostic::printSourceLine(Log* log) const
 
     log->print(path);
     if (hasLocation)
-        log->print(form(":%d:%d:%d:%d: ", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
-    else
-        log->write(": ");
+        log->print(form(":%d:%d:%d:%d", startLocation.line + 1, startLocation.column + 1, endLocation.line + 1, endLocation.column + 1));
 }
 
 void Diagnostic::printMarginLineNo(Log* log, uint32_t lineNo) const
@@ -496,24 +494,19 @@ void Diagnostic::printErrorLevel(Log* log)
     switch (errorLevel)
     {
         case DiagnosticLevel::Error:
-            log->setColor(errorColor);
             log->write("error: ");
             break;
 
         case DiagnosticLevel::Panic:
-            log->setColor(errorColor);
             log->write("panic: ");
             break;
 
         case DiagnosticLevel::Warning:
-            log->setColor(warningColor);
             log->write("warning: ");
             break;
 
         case DiagnosticLevel::Note:
-            log->setColor(noteHeaderColor);
             log->write("note: ");
-            log->setColor(noteColor);
             break;
     }
 
@@ -674,9 +667,42 @@ void Diagnostic::collectRanges()
     if (!showSourceCode)
         return;
 
-    // The main hint is transformed to a range
-    if (hasLocation)
+    if (hasLocation && errorLevel != DiagnosticLevel::Note)
     {
+        // Main title as a hint
+        Vector<Utf8> tokens;
+        tokenizeError(textMsg, tokens);
+        if (!tokens.empty())
+        {
+            removeErrorId(tokens[0]);
+            switch (errorLevel)
+            {
+                case DiagnosticLevel::Error:
+                    tokens[0].insert(0, "error: ");
+                    break;
+
+                case DiagnosticLevel::Panic:
+                    tokens[0].insert(0, "panic: ");
+                    break;
+
+                case DiagnosticLevel::Warning:
+                    tokens[0].insert(0, "warning: ");
+                    break;
+
+                case DiagnosticLevel::Note:
+                    tokens[0].insert(0, "note: ");
+                    break;
+            }
+
+            ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = tokens[0], .errorLevel = errorLevel});
+            remarks.insert(remarks.begin(), hint);
+            hint.clear();
+        }
+    }
+
+    if (hasLocation && !hint.empty())
+    {
+        // The main hint is transformed to a range
         ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = hint, .errorLevel = errorLevel});
         hint.clear();
     }
@@ -937,17 +963,17 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
     const auto& r          = ranges.back();
     const auto  leftColumn = curColumn;
 
-    Vector<Utf8>   tokens;
+    Vector<Utf8>   lines;
     const uint32_t maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
-    wordWrap(r.hint, tokens, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
+    wordWrap(r.hint, lines, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
 
-    for (uint32_t i = 0; i < tokens.size(); i++)
+    for (uint32_t lineNo = 0; lineNo < lines.size(); lineNo++)
     {
         LogWriteContext logCxt;
 
-        if (r.errorLevel == DiagnosticLevel::Error)
+        /*if (r.errorLevel == DiagnosticLevel::Error)
         {
-            if (i == 0)
+            if (lineNo == 0)
             {
                 setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
                 log->print(LogSymbol::Cross);
@@ -957,12 +983,12 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
             {
                 log->print("   ");
             }
-        }
+        }*/
 
-        setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
-        log->print(tokens[i], &logCxt);
+        setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
+        log->print(lines[lineNo], &logCxt);
 
-        if (i != tokens.size() - 1)
+        if (lineNo != lines.size() - 1)
         {
             curColumn = printRangesVerticalBars(log, ranges.size() - 1);
             alignRangeColumn(log, curColumn, leftColumn, false);
@@ -1083,6 +1109,7 @@ void Diagnostic::reportCompact(Log* log)
     textMsg = preprocess(textMsg);
 
     setupColors();
+    setColorRanges(log, errorLevel, HintPart::Title);
     printErrorLevel(log);
 
     Vector<Utf8> tokens;
@@ -1092,6 +1119,7 @@ void Diagnostic::reportCompact(Log* log)
     log->print(": ");
 
     printSourceLine(log);
+    log->write(": ");
 
     if (tokens.size() > 1)
     {
@@ -1106,68 +1134,6 @@ void Diagnostic::reportCompact(Log* log)
 void Diagnostic::report(Log* log)
 {
     textMsg = preprocess(textMsg);
-
-    // Message level
-    if (showErrorLevel)
-    {
-        if (errorLevel == DiagnosticLevel::Note)
-        {
-            printMargin(log, false, true);
-            printErrorLevel(log);
-
-            Vector<Utf8> tokens;
-            wordWrap(textMsg, tokens, g_CommandLine.errorRightColumn);
-            for (uint32_t i = 0; i < tokens.size(); i++)
-            {
-                log->setColor(noteColorHint);
-                log->print(tokens[i]);
-                if (i != tokens.size() - 1)
-                {
-                    log->writeEol();
-                    printMargin(log, false, true);
-                }
-            }
-
-            showErrorLevel = false;
-            log->writeEol();
-            if (hasContent)
-            {
-                printMargin(log, false, true);
-                log->writeEol();
-            }
-        }
-        else
-        {
-            printErrorLevel(log);
-
-            LogWriteContext logCxt;
-            setColorRanges(log, errorLevel, HintPart::Title, &logCxt);
-            log->print(textMsg, &logCxt);
-            log->writeEol();
-        }
-    }
-
-    // Source file and location on their own line
-    if (showFileName)
-    {
-        if (showErrorLevel)
-            log->writeEol();
-        printMarginLineNo(log, 0);
-        if (fromContext)
-        {
-            log->setColor(marginBorderColorContext);
-            log->print(LogSymbol::VerticalLineDot);
-        }
-        else
-        {
-            log->setColor(marginBorderColor);
-            log->print(LogSymbol::VerticalLine);
-        }
-        log->write(" ");
-        printSourceLine(log);
-        log->writeEol();
-        printMargin(log, false, true);
-    }
 
     // Code pre remarks
     if (!preRemarks.empty())
@@ -1188,6 +1154,29 @@ void Diagnostic::report(Log* log)
     {
         printMargin(log, true, true);
         printRemarks(log);
+    }
+
+    // Source file and location on their own line
+    if (showFileName)
+    {
+        printMargin(log, true, true);
+        printMargin(log, false, true);
+
+        if (fromContext)
+            log->setColor(sourceFileColorContext);
+        else
+            log->setColor(sourceFileColor);
+
+        if (errorLevel == DiagnosticLevel::Error ||
+            errorLevel == DiagnosticLevel::Panic ||
+            errorLevel == DiagnosticLevel::Exception ||
+            errorLevel == DiagnosticLevel::Warning)
+        {
+            printErrorLevel(log);
+        }
+
+        printSourceLine(log);
+        log->writeEol();
     }
 
     log->setDefaultColor();
