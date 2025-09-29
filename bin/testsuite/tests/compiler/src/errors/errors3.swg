@@ -1,4 +1,4 @@
-#global testerror "Err0601"
+#global testerror "Err0600"
 #test
 {
     // Integer literal → pointer
