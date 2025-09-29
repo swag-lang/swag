@@ -133,7 +133,7 @@ void Diagnostic::setupColors()
     noteColorHintHighLight = LogColor::Gray;
     noteHeaderColor        = LogColor::White;
 
-    marginBorderColor        = LogColor::Gray;
+    marginBorderColor        = LogColor::Cyan;
     marginBorderColorContext = LogColor::Gray;
 
     codeLineNoColor        = LogColor::LegitGray;
@@ -974,21 +974,27 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
     {
         LogWriteContext logCxt;
 
-        /*if (r.errorLevel == DiagnosticLevel::Error)
+        if (r.errorLevel == DiagnosticLevel::Error)
         {
             if (lineNo == 0)
             {
                 setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
                 log->print(LogSymbol::Cross);
-                log->print("  ");
+                log->print(" ");
             }
             else
             {
-                log->print("   ");
+                log->print("  ");
             }
-        }*/
+        }
 
-        setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
+        if (r.errorLevel == DiagnosticLevel::Error ||
+            r.errorLevel == DiagnosticLevel::Panic ||
+            r.errorLevel == DiagnosticLevel::Exception ||
+            r.errorLevel == DiagnosticLevel::Warning)
+            setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
+        else
+            setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
         log->print(lines[lineNo], &logCxt);
 
         if (lineNo != lines.size() - 1)
@@ -1100,8 +1106,8 @@ void Diagnostic::printRanges(Log* log)
 
         ranges.pop_back();
 
-        if (!ranges.empty())
-            printRangesVerticalBars(log, ranges.size());
+        //if (!ranges.empty())
+        //    printRangesVerticalBars(log, ranges.size());
     }
 
     log->writeEol();
@@ -1175,7 +1181,7 @@ void Diagnostic::report(Log* log)
             log->print(Utf8(textMsg.buffer, 9));
             log->print(" ");
         }
-        
+
         printSourceLine(log);
 
         log->writeEol();
