@@ -11,6 +11,7 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 #include "Wmf/Workspace.h"
+#pragma optimize("", off)
 
 thread_local int  g_SilentError = 0;
 thread_local Utf8 g_SilentErrorMsg;
@@ -106,7 +107,7 @@ namespace
                 if ((notes[j]->startLocation.line == notes[i]->startLocation.line && notes[j]->startLocation.column == notes[i]->startLocation.column) ||
                     !notes[j]->hasLocation)
                 {
-                    if (!notes[i]->hint.empty())
+                    if (!notes[j]->textMsg.empty())
                     {
                         notes[i]->remarks.push_back(notes[j]->textMsg);
                         notes[j]->textMsg.clear();

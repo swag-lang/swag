@@ -10,6 +10,7 @@
 #include "Syntax/Tokenizer/Tokenizer.h"
 #include "Wmf/SourceFile.h"
 #include <winternl.h>
+#pragma optimize("", off)
 
 constexpr int MAX_INDENT_BLANKS = 10;
 
@@ -695,7 +696,8 @@ void Diagnostic::collectRanges()
             }
 
             ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = tokens[0], .errorLevel = errorLevel});
-            remarks.insert(remarks.begin(), hint);
+            if (!hint.empty())
+                remarks.insert(remarks.begin(), hint);
             hint.clear();
         }
     }
