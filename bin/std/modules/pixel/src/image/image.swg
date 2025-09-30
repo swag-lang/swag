@@ -299,4 +299,18 @@ impl Image
 
         return {}
     }
+
+    // Returns the image aspect ratio
+    mtd const getAspectRatio()->f32
+    {
+        return cast(f32) .width / cast(f32) .height
+    }
+
+    // Returns true if the image is square
+    mtd const isSquare()->bool
+    {
+        if !.isValid():
+            return false
+        return .width == .height
+    }
 }
