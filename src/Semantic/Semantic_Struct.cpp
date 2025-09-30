@@ -585,7 +585,16 @@ bool Semantic::checkImplScopes(SemanticContext* context, AstImpl* node, const Sc
     {
         Diagnostic err{node, node->token, formErr(Err0300, node->token.cstr())};
         err.addNote(Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
-        err.addNote(form("the parent scope for [[impl]] is [[%s]], but the parent scope for [[%s]] is [[%s]]", scopeImpl->parentScope->getFullName().cstr(), node->token.cstr(), scope->parentScope->getFullName().cstr()));
+
+        auto curName = scopeImpl->parentScope->getFullName();
+        if (curName.empty() && scopeImpl->parentScope->is(ScopeKind::Module))
+            curName = context->sourceFile->module->nameNormalized;
+
+        auto parentName = scope->parentScope->getFullName();
+        if (parentName.empty() && scope->parentScope->is(ScopeKind::Module))
+            parentName = context->sourceFile->module->nameNormalized;
+
+        err.addNote(form("[[impl]] has [[%s]] as parent scope, but [[%s]] has [[%s]]", curName.cstr(), node->token.cstr(), parentName.cstr()));
         return context->report(err);
     }
 
