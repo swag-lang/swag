@@ -882,11 +882,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
         case DiagnosticLevel::Panic:
             if (logCxt)
                 logCxt->colorHighlight = Log::colorToVTS(errorColorHintHighLight);
-            if (part == HintPart::Underline)
-                log->setColor(errorColor);
-            else if (part == HintPart::Arrow)
-                log->setColor(errorColor);
-            else if (part == HintPart::Title)
+            if (part == HintPart::ErrorLevel)
             {
                 log->setColor(errorColor);
                 if (logCxt)
@@ -898,11 +894,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
         case DiagnosticLevel::Warning:
             if (logCxt)
                 logCxt->colorHighlight = Log::colorToVTS(warningColorHintHighLight);
-            if (part == HintPart::Underline)
-                log->setColor(warningColor);
-            else if (part == HintPart::Arrow)
-                log->setColor(noteColor);
-            else if (part == HintPart::Title)
+            if (part == HintPart::ErrorLevel)
             {
                 log->setColor(warningColor);
                 if (logCxt)
@@ -914,11 +906,7 @@ void Diagnostic::setColorRanges(Log* log, DiagnosticLevel level, HintPart part, 
         case DiagnosticLevel::Note:
             if (logCxt)
                 logCxt->colorHighlight = Log::colorToVTS(noteColorHintHighLight);
-            if (part == HintPart::Underline)
-                log->setColor(noteColor);
-            else if (part == HintPart::Arrow)
-                log->setColor(noteColor);
-            else if (part == HintPart::Title)
+            if (part == HintPart::ErrorLevel)
             {
                 log->setColor(noteColor);
                 if (logCxt)
@@ -955,7 +943,7 @@ uint32_t Diagnostic::printRangesVerticalBars(Log* log, size_t maxMarks)
         auto& rr  = ranges[ii];
         rr.hasBar = true;
         alignRangeColumn(log, curColumn, rr.mid);
-        setColorRanges(log, rr.errorLevel, HintPart::Arrow);
+        setColorRanges(log, rr.errorLevel, HintPart::ErrorLevel);
         log->print(LogSymbol::VerticalLine);
         curColumn++;
     }
@@ -980,7 +968,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
         {
             if (lineNo == 0)
             {
-                setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
+                setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
                 log->print(LogSymbol::Cross);
                 log->print(" ");
             }
@@ -990,13 +978,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
             }
         }
 
-        if (r.errorLevel == DiagnosticLevel::Error ||
-            r.errorLevel == DiagnosticLevel::Panic ||
-            r.errorLevel == DiagnosticLevel::Exception ||
-            r.errorLevel == DiagnosticLevel::Warning)
-            setColorRanges(log, r.errorLevel, HintPart::Title, &logCxt);
-        else
-            setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
+        setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
         log->print(lines[lineNo], &logCxt);
 
         if (lineNo != lines.size() - 1)
@@ -1019,11 +1001,11 @@ void Diagnostic::printRanges(Log* log)
     for (uint32_t i = 0; i < ranges.size(); i++)
     {
         const auto& r = ranges[i];
-        setColorRanges(log, r.errorLevel, HintPart::Underline);
+        setColorRanges(log, r.errorLevel, HintPart::ErrorLevel);
         alignRangeColumn(log, curColumn, r.startLocation.column);
 
         if (i != ranges.size() - 1 && r.mergeNext)
-            setColorRanges(log, ranges[i + 1].errorLevel, HintPart::Underline);
+            setColorRanges(log, ranges[i + 1].errorLevel, HintPart::ErrorLevel);
 
         while (curColumn < r.startLocation.column + r.width && curColumn <= lineCode.length() + 1)
         {
@@ -1058,7 +1040,7 @@ void Diagnostic::printRanges(Log* log)
             unFormatLen = std::max(unFormatLen, static_cast<int>(token.length()));
 
         curColumn = printRangesVerticalBars(log, ranges.size() - 1);
-        setColorRanges(log, r.errorLevel, HintPart::Arrow);
+        setColorRanges(log, r.errorLevel, HintPart::ErrorLevel);
 
         const bool notEnoughRoomRight = mid + 3 + unFormatLen > static_cast<int>(g_CommandLine.errorRightColumn) || orgNumRanges >= 2;
         const bool enoughRoomLeft     = mid - 2 - unFormatLen >= 0;
@@ -1067,10 +1049,9 @@ void Diagnostic::printRanges(Log* log)
         if (ranges.size() == 1 && notEnoughRoomRight && enoughRoomLeft && tokens.size() == 1)
         {
             alignRangeColumn(log, curColumn, r.mid - 2 - unFormatLen);
-            setColorRanges(log, r.errorLevel, HintPart::Text);
+            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel);
             log->print(r.hint);
             log->write(" ");
-            setColorRanges(log, r.errorLevel, HintPart::Arrow);
             log->print(LogSymbol::HorizontalLine);
             log->print(LogSymbol::DownLeft);
         }
@@ -1082,7 +1063,7 @@ void Diagnostic::printRanges(Log* log)
             if (!ranges.back().hasBar)
             {
                 alignRangeColumn(log, curColumn, r.mid);
-                setColorRanges(log, r.errorLevel, HintPart::Arrow);
+                setColorRanges(log, r.errorLevel, HintPart::ErrorLevel);
                 log->print(LogSymbol::VerticalLineUp);
                 log->writeEol();
                 printMargin(log, false, true);
@@ -1098,7 +1079,7 @@ void Diagnostic::printRanges(Log* log)
         else
         {
             alignRangeColumn(log, curColumn, r.mid);
-            setColorRanges(log, r.errorLevel, HintPart::Arrow);
+            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel);
             log->print(LogSymbol::DownRight);
             log->print(LogSymbol::HorizontalLine);
             log->write(" ");
@@ -1120,7 +1101,7 @@ void Diagnostic::reportCompact(Log* log)
     textMsg = preprocess(textMsg);
 
     setupColors();
-    setColorRanges(log, errorLevel, HintPart::Title);
+    setColorRanges(log, errorLevel, HintPart::ErrorLevel);
     printErrorLevel(log);
 
     Vector<Utf8> tokens;

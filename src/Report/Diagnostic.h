@@ -21,10 +21,8 @@ enum class DiagnosticLevel
 
 enum class HintPart
 {
-    Title,
-    Underline,
-    Arrow,
-    Text
+    ErrorLevel,
+    Text,
 };
 
 struct Diagnostic
