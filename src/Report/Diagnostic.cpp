@@ -552,7 +552,6 @@ void Diagnostic::printPreRemarks(Log* log) const
     }
 }
 
-
 void Diagnostic::printRemarks(Log* log) const
 {
     // Auto remarks
