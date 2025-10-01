@@ -16,7 +16,7 @@ public impl Image
         edge:           f32
     }
 
-    // === Tunables ===
+    // Tunables
     private const SALIENCY_RADIUS = 5
     private const THIRDS_SIGMA = 0.08
     private const DEFAULT_WEIGHTS = SaliencyWeights{contrast: 1.0, thirds: 0.8, saturation: 0.6, edge: 0.8}
@@ -24,58 +24,105 @@ public impl Image
     // Compute the largest in-bounds rectangle with target aspect ratio, positioned by saliency.
     // This only TRANSLATES the window and possibly CROPS to match aspect; it never requests scaling.
     // Compute the largest in-bounds rectangle with target aspect ratio, positioned by saliency sum.
+    // Compute the largest in-bounds rectangle with target aspect ratio, positioned by the *sum of
+    // (lightly blurred) saliency*.
+    // Tie-break equal scores by preferring crops nearer the image center.
     private mtd const calculateReframeRect(targetWidth, targetHeight: f32)->Math.Rectangle
     {
-        // 1) Desired aspect
+        // --- aspect & maximal in-bounds crop ---
         let aspect    = targetWidth / targetHeight
         let W         = .width
         let H         = .height
         let imgAspect = cast(f32) W / cast(f32) H
 
-        // 2) Maximal crop that matches aspect and fits inside the image
         var cropW: s32
         var cropH: s32
         if imgAspect > aspect
         {
-            // Image is wider than target aspect: limit width
             cropH = H
             cropW = cast(s32) Math.floor(aspect * cast(f32) cropH + 0.5)
         }
         else
         {
-            // Image is taller than target aspect: limit height
             cropW = W
             cropH = cast(s32) Math.floor(cast(f32) cropW / aspect + 0.5)
         }
 
-        // 3) Build saliency map (unchanged) and its integral image
-        var saliencyMap: Array'f32
-        saliencyMap.resize(cast(u64) (W * H))
-        .computeSaliencyMap(&saliencyMap, DEFAULT_WEIGHTS)
+        // build saliency map as-is
+        var S: Array'f32
+        S.resize(cast(u64) (W * H))
+        .computeSaliencyMap(&S, DEFAULT_WEIGHTS)
 
-        // Integral image with +1 padding
-        var ii: Array'f64
-        ii.resize(cast(u64) ((W + 1) * (H + 1)))
-        // zero-initialized padding row/col assumed
+        // quick de-spike: tiny box blur of S using an integral image
+        const BLUR_RADIUS: s32 = 2 // very small, keeps structure, kills single-pixel spikes
 
+        // integral of original S (with +1 padding)
+        var ii0: Array'f64
+        ii0.resize(cast(u64) ((W + 1) * (H + 1)))
         for y in 1 to H
         {
             var rowSum = 0.0'f64
             for x in 1 to W
             {
-                let s = cast(f64) saliencyMap[cast(u64) ((y - 1) * W + (x - 1))]
+                let s = cast(f64) S[cast(u64) ((y - 1) * W + (x - 1))]
+                rowSum += s
+                let idx = cast(u64) (y * (W + 1) + x)
+                ii0[idx] = ii0[idx - cast(u64) (W + 1)] + rowSum
+            }
+        }
+
+        // produce blurred S into Sb (same size as S)
+        var Sb: Array'f32
+        Sb.resize(cast(u64) (W * H))
+
+        for y in 0 to (H - 1)
+        {
+            let y0 = Math.max(0, y - BLUR_RADIUS)
+            let y1 = Math.min(H - 1, y + BLUR_RADIUS)
+            for x in 0 to (W - 1)
+            {
+                let x0 = Math.max(0, x - BLUR_RADIUS)
+                let x1 = Math.min(W - 1, x + BLUR_RADIUS)
+
+                // +1 padding for integral coords
+                let A = cast(u64) (y0 * (W + 1) + x0)
+                let B = cast(u64) (y0 * (W + 1) + (x1 + 1))
+                let C = cast(u64) ((y1 + 1) * (W + 1) + x0)
+                let D = cast(u64) ((y1 + 1) * (W + 1) + (x1 + 1))
+
+                let sum = ii0[D] - ii0[B] - ii0[C] + ii0[A]
+                let n   = cast(f32) ((x1 - x0 + 1) * (y1 - y0 + 1))
+                Sb[cast(u64) (y * W + x)] = cast(f32) (sum / cast(f64) n)
+            }
+        }
+
+        // integral of blurred saliency (this is what we optimize over)
+        var ii: Array'f64
+        ii.resize(cast(u64) ((W + 1) * (H + 1)))
+        for y in 1 to H
+        {
+            var rowSum = 0.0'f64
+            for x in 1 to W
+            {
+                let s = cast(f64) Sb[cast(u64) ((y - 1) * W + (x - 1))]
                 rowSum += s
                 let idx = cast(u64) (y * (W + 1) + x)
                 ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum
             }
         }
 
-        // 4) Argmax over all legal top-lefts for the crop window using the integral image
+        // argmax: summed blurred saliency in the crop window
         var bestX, bestY = 0's32
         var bestSum = -1.0'f64
 
         let maxX = W - cropW
         let maxY = H - cropH
+
+        // center tie-breaker
+        let cxImg           = 0.5'f64 * cast(f64) W
+        let cyImg           = 0.5'f64 * cast(f64) H
+        var bestCenterDist2 = 1.0e30'f64
+        const EPS           = 1.0e-7'f64
 
         for y0 in 0 to maxY
         {
@@ -84,23 +131,40 @@ public impl Image
             {
                 let x1 = x0 + cropW
 
-                // Convert to integral-image coords (+1 offset)
+                // integral coords (+1 offset)
                 let A = cast(u64) (y0 * (W + 1) + x0)
                 let B = cast(u64) (y0 * (W + 1) + x1)
                 let C = cast(u64) (y1 * (W + 1) + x0)
                 let D = cast(u64) (y1 * (W + 1) + x1)
 
                 let sum = ii[D] - ii[B] - ii[C] + ii[A]
-                if sum > bestSum
+
+                if sum > bestSum + EPS
                 {
                     bestSum = sum
                     bestX   = x0
                     bestY   = y0
+                    // update tiebreak values
+                    let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
+                    let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
+                    bestCenterDist2 = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
+                }
+                elif Math.abs(sum - bestSum) <= EPS
+                {
+                    // tie-break: prefer nearer to image center
+                    let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
+                    let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
+                    let d2  = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
+                    if d2 < bestCenterDist2
+                    {
+                        bestX           = x0
+                        bestY           = y0
+                        bestCenterDist2 = d2
+                    }
                 }
             }
         }
 
-        // 5) Return the crop positioned at (bestX, bestY)
         var r: retval
         r.x      = bestX
         r.y      = bestY
