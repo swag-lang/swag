@@ -23,14 +23,15 @@ public impl Image
     // Smart placement + scale search
     private struct SearchOpts
     {
-        minCoverage:      f32     // min crop area fraction (e.g. 0.55)
+        minCoverage:      f32     // min crop area fraction (e.g. 0.45)
         blurRadius:       s32     // saliency blur radius (2–3)
         strideFrac:       f32     // scan stride as fraction of crop size
         thirdsWeight:     f32     // soft rule-of-thirds prior (placement only)
-        centerWeight:     f32     // tiny center bias on near ties
+        centerWeight:     f32     // center bias (normalized by image diagonal^2)
+        shrinkPrior:      f32     // gentle bias toward smaller crops (0 = off)
     }
 
-    private const DEFAULT_OPTS = SearchOpts{minCoverage: 0.55, blurRadius: 2, strideFrac: 0.06, thirdsWeight: 0.12, centerWeight: 0.05}
+    private const DEFAULT_OPTS = SearchOpts{minCoverage: 0.45, blurRadius: 2, strideFrac: 0.05, thirdsWeight: 0.18, centerWeight: 0.08, shrinkPrior: 0.12}
 
     // sRGB -> linear (approx exact sRGB EOTF)
     private mtd const srgbToLinear(c: f32)->f32
@@ -313,8 +314,10 @@ public impl Image
         var iiS = .buildIntegral(&Sb, W, H)
         var iiT = .buildIntegral(&T, W, H)
 
-        let cx = 0.5'f64 * cast(f64) W
-        let cy = 0.5'f64 * cast(f64) H
+        // Center metrics for normalized center bonus
+        let cx    = 0.5'f64 * cast(f64) W
+        let cy    = 0.5'f64 * cast(f64) H
+        let d2Max = cast(f64) W * cast(f64) W + cast(f64) H * cast(f64) H
 
         // 3) Multi-scale search
         let imgArea = cast(f64) (W * H)
@@ -323,10 +326,6 @@ public impl Image
         var bestX, bestY, bestW, bestH = 0's32
         var bestScore    = -1.0e30'f64
         var bestCenterD2 = 1.0e30'f64
-
-        // pre-scan to estimate dynamic range of mean-saliency to scale center bias on near-ties
-        var meanMin = 1.0e30'f64
-        var meanMax = -1.0e30'f64
 
         const STEPS = 12's32
         for step in 0 to (STEPS - 1)
@@ -367,15 +366,21 @@ public impl Image
                     let sumT = .sumRect(&iiT, W, H, x0, y0, x1, y1)
                     let area = cast(f64) (cw * ch)
 
+                    // base terms (scale-normalized)
                     let meanS = (sumS / area)
-                    meanMin = Math.min(meanMin, meanS)
-                    meanMax = Math.max(meanMax, meanS)
-
                     var score = meanS + cast(f64) opts.thirdsWeight * (sumT / area)
 
-                    let cwx = cast(f64) x0 + 0.5 * cw
-                    let cwy = cast(f64) y0 + 0.5 * ch
-                    let d2  = (cwx - cx) * (cwx - cx) + (cwy - cy) * (cwy - cy)
+                    // scale prior: gentle preference for smaller windows that still have good mean saliency
+                    let areaFrac   = area / imgArea
+                    let scaleBonus = cast(f64) opts.shrinkPrior * (1.0 - areaFrac)
+                    score += scaleBonus
+
+                    // center bonus (normalized)
+                    let cwx         = cast(f64) x0 + 0.5 * cw
+                    let cwy         = cast(f64) y0 + 0.5 * ch
+                    let d2          = (cwx - cx) * (cwx - cx) + (cwy - cy) * (cwy - cy)
+                    let centerBonus = cast(f64) opts.centerWeight * (1.0 - (d2 / d2Max))
+                    score += centerBonus
 
                     if score > bestScore + EPS_TIE
                     {
@@ -395,7 +400,7 @@ public impl Image
         if bestW == 0 or bestH == 0:
             return .calculateReframeRect(targetWidth, targetHeight)
 
-        // 5) Local refinement (position, stride 1) around best window; also one-step scale tweak
+        // 5) Local refinement (position, stride 1) around best window; then multi-rung scale tweak
         {
             let maxX = W - bestW
             let maxY = H - bestH
@@ -414,56 +419,92 @@ public impl Image
                     let y1 = y0 + bestH
                     for x0 in rx0 to rx1
                     {
-                        let x1    = x0 + bestW
-                        let sumS  = .sumRect(&iiS, W, H, x0, y0, x1, y1)
-                        let sumT  = .sumRect(&iiT, W, H, x0, y0, x1, y1)
-                        let area  = cast(f64) (bestW * bestH)
+                        let x1   = x0 + bestW
+                        let sumS = .sumRect(&iiS, W, H, x0, y0, x1, y1)
+                        let sumT = .sumRect(&iiT, W, H, x0, y0, x1, y1)
+                        let area = cast(f64) (bestW * bestH)
+
                         var score = (sumS / area) + cast(f64) opts.thirdsWeight * (sumT / area)
+
+                        // add priors here too
+                        let areaFrac = area / imgArea
+                        score += cast(f64) opts.shrinkPrior * (1.0 - areaFrac)
+
+                        let cwx = cast(f64) x0 + 0.5 * bestW
+                        let cwy = cast(f64) y0 + 0.5 * bestH
+                        let d2  = (cwx - cx) * (cwx - cx) + (cwy - cy) * (cwy - cy)
+                        score += cast(f64) opts.centerWeight * (1.0 - (d2 / d2Max))
+
                         if score > bestScore + EPS_TIE
                         {
-                            bestScore = score; bestX     = x0; bestY     = y0; improved  = true; }
+                            bestScore    = score; bestX        = x0; bestY        = y0; bestCenterD2 = d2; improved     = true; }
                     }
                 }
             }
 
-            // quick +/- one scale rung test at the same aspect
+            // multi-rung scale test around the winner (keep aspect exact)
             {
-                let bigger = 1.06'f64, smaller = 1.0 / 1.06'f64
-                for scaleTest in 0 to 1
+                let scales: [5] f64 = [0.88, 0.94, 1.00, 1.06, 1.12]
+                for i in 0 to 4
                 {
-                    let sf = (scaleTest == 0) ? bigger : smaller
-                    var cw = cast(s32) Math.round(cast(f64) bestW * sf)
-                    var ch = cast(s32) Math.round(cast(f64) bestH * sf)
+                    if i == 2:
+                        continue // skip 1.0 (already evaluated)
+                    var cw = cast(s32) Math.round(cast(f64) bestW * scales[i])
+                    var ch = cast(s32) Math.round(cast(f64) bestH * scales[i])
                     if cw < 4 or ch < 4:
                         continue
                     if cw > W or ch > H:
                         continue
+
                     // keep aspect exact
                     if imgAspect > aspect:
-                        cw = cast(s32) Math.round(cast(f64) ch * cast(f64) aspect)
+                        ch = Math.min(H, Math.max(4, cast(s32) Math.round(cast(f64) cw / cast(f64) aspect)))
                     else:
-                        ch = cast(s32) Math.round(cast(f64) cw / cast(f64) aspect)
+                        cw = Math.min(W, Math.max(4, cast(s32) Math.round(cast(f64) ch * cast(f64) aspect)))
 
                     let maxX2 = W - cw
                     let maxY2 = H - ch
-                    let x0    = Math.clamp(bestX + (bestW - cw) / 2, 0, maxX2)
-                    let y0    = Math.clamp(bestY + (bestH - ch) / 2, 0, maxY2)
-                    let x1    = x0 + cw
-                    let y1    = y0 + ch
+                    if maxX2 < 0 or maxY2 < 0:
+                        continue
 
-                    let sumS  = .sumRect(&iiS, W, H, x0, y0, x1, y1)
-                    let sumT  = .sumRect(&iiT, W, H, x0, y0, x1, y1)
-                    let area  = cast(f64) (cw * ch)
-                    let score = (sumS / area) + cast(f64) opts.thirdsWeight * (sumT / area)
+                    // re-center around previous best, clamped
+                    let x0 = Math.clamp(bestX + (bestW - cw) / 2, 0, maxX2)
+                    let y0 = Math.clamp(bestY + (bestH - ch) / 2, 0, maxY2)
+                    let x1 = x0 + cw
+                    let y1 = y0 + ch
+
+                    let sumS = .sumRect(&iiS, W, H, x0, y0, x1, y1)
+                    let sumT = .sumRect(&iiT, W, H, x0, y0, x1, y1)
+                    let area = cast(f64) (cw * ch)
+
+                    var score = (sumS / area) + cast(f64) opts.thirdsWeight * (sumT / area)
+
+                    let areaFrac = area / imgArea
+                    score += cast(f64) opts.shrinkPrior * (1.0 - areaFrac)
+
+                    let cwx = cast(f64) x0 + 0.5 * cw
+                    let cwy = cast(f64) y0 + 0.5 * ch
+                    let d2  = (cwx - cx) * (cwx - cx) + (cwy - cy) * (cwy - cy)
+                    score += cast(f64) opts.centerWeight * (1.0 - (d2 / d2Max))
+
                     if score > bestScore + EPS_TIE
                     {
-                        bestScore = score; bestX     = x0; bestY     = y0; bestW     = cw; bestH     = ch; }
+                        bestScore    = score
+                        bestX        = x0
+                        bestY        = y0
+                        bestW        = cw
+                        bestH        = ch
+                        bestCenterD2 = d2
+                    }
                 }
             }
         }
 
         var r: retval
-        r.x      = bestX; r.y      = bestY; r.width  = bestW; r.height = bestH
+        r.x      = bestX
+        r.y      = bestY
+        r.width  = bestW
+        r.height = bestH
         return r
     }
 
