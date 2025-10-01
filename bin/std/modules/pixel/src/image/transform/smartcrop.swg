@@ -2,11 +2,9 @@ using Core
 
 public impl Image
 {
-    // ===== Data types =====
-
     private struct InterestPoint
     {
-        x, y:      f32     // 0–1 normalized
+        x, y:      f32
         score:     f32
     }
 
@@ -15,7 +13,6 @@ public impl Image
         contrast:       f32
         saturation:     f32
         edge:           f32
-        faces:          f32     // face detection weight
     }
 
     private struct ScoreCtx
@@ -33,32 +30,13 @@ public impl Image
         d2Max:       f64
     }
 
-    // ===== Enhanced Tunables =====
-
     private const SALIENCY_RADIUS = 6
     private const THIRDS_SIGMA = 0.075
     private const EPS_TIE = 1.0e-9'f64
     private const EDGE_DIST_SCALE = 0.15
 
-    private const ENHANCED_WEIGHTS = SaliencyWeights{
-        contrast: 1.0,
-        saturation: 0.55,
-        edge: 1.2,
-        faces: 2.0
-    }
-
-    private const FAST_OPTS = SearchOpts{
-        minCoverage: 0.50,
-        blurRadius: 2,
-        strideFrac: 0.08,
-        thirdsWeight: 0.15,
-        centerWeight: 0.08,
-        shrinkPrior: 0.10,
-        edgePenalty: 0.10,
-        faceWeight: 0.0
-    }
-
-    // ===== Utilities =====
+    private const ENHANCED_WEIGHTS = SaliencyWeights{contrast: 1.0, saturation: 0.55, edge: 1.2}
+    private const FAST_OPTS = SearchOpts{minCoverage: 0.50, blurRadius: 2, strideFrac: 0.08, thirdsWeight: 0.15, centerWeight: 0.08, shrinkPrior: 0.10, edgePenalty: 0.10, faceWeight: 0.0}
 
     private mtd const srgbToLinear(c: f32)->f32
     {
@@ -87,10 +65,10 @@ public impl Image
 
     private mtd const sumRect(ii: &Array'f64, W, H, x0, y0, x1, y1: s32)->f64
     {
-        let A = cast(u64) (y0 * (W + 1) + x0)
-        let B = cast(u64) (y0 * (W + 1) + x1)
-        let C = cast(u64) (y1 * (W + 1) + x0)
-        let D = cast(u64) (y1 * (W + 1) + x1)
+        let A = y0 * (W + 1) + x0
+        let B = y0 * (W + 1) + x1
+        let C = y1 * (W + 1) + x0
+        let D = y1 * (W + 1) + x1
         return ii[D] - ii[B] - ii[C] + ii[A]
     }
 
@@ -262,7 +240,10 @@ public impl Image
                 let r = .scoreWindow(ctx, x0, y0, bestW, bestH)
                 if r.score > bScore + EPS_TIE or (Math.abs(r.score - bScore) <= EPS_TIE and r.d2 < bD2)
                 {
-                    bx     = x0; by     = y0; bScore = r.score; bD2    = r.d2
+                    bx     = x0
+                    by     = y0
+                    bScore = r.score
+                    bD2    = r.d2
                 }
             }
         }
@@ -308,7 +289,12 @@ public impl Image
 
             if r.score > bScore + EPS_TIE or (Math.abs(r.score - bScore) <= EPS_TIE and r.d2 < bD2)
             {
-                bx     = x0; by     = y0; bw     = fw; bh     = fh; bScore = r.score; bD2    = r.d2
+                bx     = x0
+                by     = y0
+                bw     = fw
+                bh     = fh
+                bScore = r.score
+                bD2    = r.d2
             }
         }
         return {bx, by, bw, bh, bScore, bD2}
@@ -810,8 +796,8 @@ public impl Image
                 if score > maxScore
                 {
                     maxScore = score
-                    maxX = x
-                    maxY = y
+                    maxX     = x
+                    maxY     = y
                 }
             }
         }
