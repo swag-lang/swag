@@ -32,6 +32,7 @@ public impl Image
 
     private const SALIENCY_RADIUS = 6
     private const THIRDS_SIGMA = 0.075
+    private const EPS_TIE = 1.0e-9'f64
     private const EDGE_DIST_SCALE = 0.15
 
     private const ENHANCED_WEIGHTS = SaliencyWeights{contrast: 1.0, saturation: 0.55, edge: 1.2}
@@ -48,16 +49,15 @@ public impl Image
     {
         var ii: Array'f64
         ii.resize(cast(u64) ((W + 1) * (H + 1)))
-
         for y in 1 to H
         {
             var rowSum = 0.0'f64
             for x in 1 to W
             {
-                let s   = cast(f64) src[(y - 1) * W + (x - 1)]
-                let idx = y * (W + 1) + x
+                let s = cast(f64) src[cast(u64) ((y - 1) * W + (x - 1))]
                 rowSum += s
-                ii[idx] = ii[idx - W + 1] + rowSum
+                let idx = cast(u64) (y * (W + 1) + x)
+                ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum
             }
         }
         return ii
@@ -238,7 +238,7 @@ public impl Image
             for x0 in rx0 to rx1
             {
                 let r = .scoreWindow(ctx, x0, y0, bestW, bestH)
-                if r.score > bScore + Math.ConstF64.Epsilon or (Math.abs(r.score - bScore) <= Math.ConstF64.Epsilon and r.d2 < bD2)
+                if r.score > bScore + EPS_TIE or (Math.abs(r.score - bScore) <= EPS_TIE and r.d2 < bD2)
                 {
                     bx     = x0
                     by     = y0
@@ -287,7 +287,7 @@ public impl Image
             let y0 = Math.clamp(bestY + (bestH - fh) / 2, 0, maxY)
             let r  = .scoreWindow(ctx, x0, y0, fw, fh)
 
-            if r.score > bScore + Math.ConstF64.Epsilon or (Math.abs(r.score - bScore) <= Math.ConstF64.Epsilon and r.d2 < bD2)
+            if r.score > bScore + EPS_TIE or (Math.abs(r.score - bScore) <= EPS_TIE and r.d2 < bD2)
             {
                 bx     = x0
                 by     = y0
@@ -358,14 +358,14 @@ public impl Image
                 let x1  = x0 + cropW
                 let sum = .sumRect(&ii, W, H, x0, y0, x1, y1)
 
-                if sum > bestSum + Math.ConstF64.Epsilon
+                if sum > bestSum + EPS_TIE
                 {
                     bestSum = sum; bestX   = x0; bestY   = y0
                     let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
                     let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
                     bestCenterDist2 = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
                 }
-                elif Math.abs(sum - bestSum) <= Math.ConstF64.Epsilon
+                elif Math.abs(sum - bestSum) <= EPS_TIE
                 {
                     let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
                     let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
@@ -390,7 +390,7 @@ public impl Image
                 for x0 in rx0 to rx1
                 {
                     let sum = .sumRect(&ii, W, H, x0, y0, x0 + cropW, y0 + cropH)
-                    if sum > bestSum + Math.ConstF64.Epsilon
+                    if sum > bestSum + EPS_TIE
                     {
                         bestSum = sum
                         bestX   = x0
@@ -495,7 +495,7 @@ public impl Image
                 for var x0 = 0; x0 <= maxX; x0 += strideX
                 {
                     let r = .scoreWindow(&ctx, x0, y0, cw, ch)
-                    if r.score > bestScore + Math.ConstF64.Epsilon
+                    if r.score > bestScore + EPS_TIE
                     {
                         bestScore    = r.score
                         bestX        = x0
@@ -504,7 +504,7 @@ public impl Image
                         bestH        = ch
                         bestCenterD2 = r.d2
                     }
-                    elif Math.abs(r.score - bestScore) <= Math.ConstF64.Epsilon and r.d2 < bestCenterD2
+                    elif Math.abs(r.score - bestScore) <= EPS_TIE and r.d2 < bestCenterD2
                     {
                         bestX        = x0
                         bestY        = y0
@@ -523,7 +523,7 @@ public impl Image
             foreach range in [4, 2, 1]
             {
                 let rr = .refinePosition(&ctx, bestX, bestY, bestW, bestH, cast() range)
-                if rr.score > bestScore + Math.ConstF64.Epsilon
+                if rr.score > bestScore + EPS_TIE
                 {
                     bestScore    = rr.score
                     bestX        = rr.x
@@ -533,7 +533,7 @@ public impl Image
             }
 
             let sr = .tryScaledVariants(&ctx, aspect, imgAspect, bestX, bestY, bestW, bestH)
-            if sr.score > bestScore + Math.ConstF64.Epsilon
+            if sr.score > bestScore + EPS_TIE
             {
                 bestScore    = sr.score
                 bestX        = sr.x
@@ -544,7 +544,7 @@ public impl Image
             }
 
             let rr2 = .refinePosition(&ctx, bestX, bestY, bestW, bestH, 1)
-            if rr2.score > bestScore + Math.ConstF64.Epsilon
+            if rr2.score > bestScore + EPS_TIE
             {
                 bestX = rr2.x
                 bestY = rr2.y
