@@ -2,15 +2,15 @@ using Core
 
 public impl Image
 {
-    struct InterestPoint
+    private struct InterestPoint
     {
         x, y:      f32     // Interest point position (0-1 normalized)
         score:     f32     // Aggregate saliency score at that point
     }
 
-    struct CropRect { x, y: s32, width, height: s32 }
+    private struct CropRect { x, y: s32, width, height: s32 }
 
-    struct SaliencyWeights
+    private struct SaliencyWeights
     {
         contrast:       f32
         thirds:         f32
@@ -19,74 +19,13 @@ public impl Image
     }
 
     // === Tunables ===
-    const SALIENCY_RADIUS = 5's32
-    const THIRDS_SIGMA    = 0.08'f32
-    const DEFAULT_WEIGHTS = SaliencyWeights{contrast: 1.0'f32, thirds: 0.8'f32, saturation: 0.6'f32, edge: 0.8'f32}
-
-    // Reframe to target aspect by cropping only (no resize / no zoom)
-    // Returns a new image cropped to the largest rectangle of the requested aspect,
-    // positioned so the interest point is near the center, but NEVER scaled up.
-    mtd const toSmartCrop(targetWidth, targetHeight: s32)->Image
-    {
-        Debug.assert(targetWidth > 0 and targetHeight > 0)
-
-        let rect = .calculateReframeRect(targetWidth, targetHeight)
-        return .toCrop(rect.x, rect.y, rect.width, rect.height)
-    }
-
-    // Reframe + optional downscale (still no upscaling). If the crop is larger than
-    // the requested size, we downscale to that exact size; if smaller, we keep its size.
-    mtd const reframeDownscaleOnly(targetWidth, targetHeight: s32, resizeMode = ResizeMode.Bicubic)->Image
-    {
-        Debug.assert(targetWidth > 0 and targetHeight > 0)
-
-        let rect = .calculateReframeRect(targetWidth, targetHeight)
-        var img  = .toCrop(rect.x, rect.y, rect.width, rect.height)
-
-        // Downscale only (no upscaling)
-        if img.width > targetWidth or img.height > targetHeight
-        {
-            img.resize(targetWidth, targetHeight, resizeMode)
-        }
-        return img
-    }
-
-    // Reframe + letterbox to exact dimensions without upscaling content:
-    // - If crop is larger: downscale to fit.
-    // - If crop is smaller: center it on a canvas with padding (bars).
-    mtd const reframeLetterbox(targetWidth, targetHeight: s32, bg: Color = Argb.Black, resizeMode = ResizeMode.Bicubic)->Image
-    {
-        Debug.assert(targetWidth > 0 and targetHeight > 0)
-
-        let rect = .calculateReframeRect(targetWidth, targetHeight)
-        var crop = .toCrop(rect.x, rect.y, rect.width, rect.height)
-
-        // If crop is bigger, downscale to exactly target; if smaller, keep then pad.
-        var output = Image.create(targetWidth, targetHeight, .pf)
-
-        // Compute fit scale without upscaling above 1.0
-        let sx    = cast(f32) targetWidth / cast(f32) crop.width
-        let sy    = cast(f32) targetHeight / cast(f32) crop.height
-        var scale = Math.min(sx, sy)
-        scale = Math.min(scale, 1.0'f32) // no upscaling
-
-        let newW = Math.max(1's32, cast(s32) Math.floor(cast(f32) crop.width * scale + 0.5'f32))
-        let newH = Math.max(1's32, cast(s32) Math.floor(cast(f32) crop.height * scale + 0.5'f32))
-
-        if newW != crop.width or newH != crop.height
-        {
-            crop.resize(newW, newH, resizeMode)
-        }
-
-        let offX = (targetWidth - crop.width) / 2
-        let offY = (targetHeight - crop.height) / 2
-        output.mix(crop, offX, offY)
-        return output
-    }
+    private const SALIENCY_RADIUS = 5's32
+    private const THIRDS_SIGMA    = 0.08'f32
+    private const DEFAULT_WEIGHTS = SaliencyWeights{contrast: 1.0'f32, thirds: 0.8'f32, saturation: 0.6'f32, edge: 0.8'f32}
 
     // Compute the largest in-bounds rectangle with target aspect ratio, positioned by saliency.
     // This only TRANSLATES the window and possibly CROPS to match aspect; it never requests scaling.
-    mtd const calculateReframeRect(targetWidth, targetHeight: s32)->CropRect
+    private mtd const calculateReframeRect(targetWidth, targetHeight: s32)->CropRect
     {
         // 1) Desired aspect
         let aspect    = cast(f32) targetWidth / cast(f32) targetHeight
@@ -132,7 +71,7 @@ public impl Image
         return r
     }
 
-    mtd const findInterestPoint()->InterestPoint
+    private mtd const findInterestPoint()->InterestPoint
     {
         var saliencyMap: Array'f32
         saliencyMap.resize(cast(u64) (.width * .height))
@@ -163,14 +102,13 @@ public impl Image
         return out
     }
 
-    // ===== Optimized saliency (1x getPixelColor per pixel, O(1) contrast) =====
-    mtd const computeSaliencyMap(saliencyMap: *Array'f32, weights: SaliencyWeights)
+    private mtd const computeSaliencyMap(saliencyMap: *Array'f32, weights: SaliencyWeights)
     {
         let W = .width
         let H = .height
         let N = cast(u64) (W * H)
 
-        // --- Per-pixel caches (exactly 1 getPixelColor per pixel) ---
+        // Per-pixel caches (exactly 1 getPixelColor per pixel)
         var lum: Array'f32
         lum.resize(N) // luminance
         var sat: Array'f32
@@ -198,7 +136,7 @@ public impl Image
             }
         }
 
-        // --- Integral images over luminance for O(1) local variance (contrast) ---
+        // Integral images over luminance for O(1) local variance (contrast)
         var ii: Array'f64
         ii.resize(cast(u64) ((W + 1) * (H + 1)))
         var iiSq: Array'f64
@@ -219,7 +157,7 @@ public impl Image
             }
         }
 
-        // --- Precompute rule-of-thirds weights (separable) ---
+        // Precompute rule-of-thirds weights (separable)
         var thirdsX: Array'f32
         thirdsX.resize(cast(u64) W)
         var thirdsY: Array'f32
@@ -241,7 +179,7 @@ public impl Image
             }
         }
 
-        // --- Sobel edges from cached luminance ---
+        // Sobel edges from cached luminance
         var edge: Array'f32
         edge.resize(N)
         for y in H
@@ -275,7 +213,7 @@ public impl Image
             }
         }
 
-        // --- Feature ranges (for normalization) ---
+        // Feature ranges (for normalization)
         var cMin = 1e30'f32
         var cMax = -1e30'f32
         var tMin = 1e30'f32
@@ -346,17 +284,25 @@ public impl Image
             for x in W
             {
                 let i = cast(u64) (y * W + x)
-
                 let cn = (contrast.buffer[i] - cMin) / cDen
                 let tn = (thirds.buffer[i] - tMin) / tDen
                 let sn = (sat.buffer[i] - sMin) / sDen
                 let en = (edge.buffer[i] - eMin) / eDen
-
-                saliencyMap.buffer[i] = weights.contrast * cn +
-                                        weights.thirds * tn +
-                                        weights.saturation * sn +
-                                        weights.edge * en
+                saliencyMap.buffer[i] = weights.contrast * cn + weights.thirds * tn + weights.saturation * sn + weights.edge * en
             }
         }
+    }
+}
+
+public impl Image
+{
+    // Reframe to target aspect by cropping only (no resize / no zoom)
+    // Returns a new image cropped to the largest rectangle of the requested aspect,
+    // positioned so the interest point is near the center, but NEVER scaled up.
+    mtd const toSmartCrop(targetWidth, targetHeight: s32)->Image
+    {
+        Debug.assert(targetWidth > 0 and targetHeight > 0)
+        let rect = .calculateReframeRect(targetWidth, targetHeight)
+        return .toCrop(rect.x, rect.y, rect.width, rect.height)
     }
 }
