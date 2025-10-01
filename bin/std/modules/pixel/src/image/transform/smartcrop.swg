@@ -20,9 +20,17 @@ public impl Image
     private const THIRDS_SIGMA = 0.08
     private const DEFAULT_WEIGHTS = SaliencyWeights{contrast: 1.0, saturation: 0.65, edge: 0.85}
 
-    // === Utilities ===
-    private mtd const clampS32(v, minv, maxv: s32)->s32 { return Math.max(minv, Math.min(maxv, v)); }
-    private mtd const clamp01f(v: f32)->f32 { return Math.max(0.0, Math.min(1.0, v)); }
+    // Smart placement + scale search
+    private struct SearchOpts
+    {
+        minCoverage:      f32     // min crop area fraction (e.g. 0.55)
+        blurRadius:       s32     // saliency blur radius (2–3)
+        strideFrac:       f32     // scan stride as fraction of crop size
+        thirdsWeight:     f32     // soft rule-of-thirds prior (placement only)
+        centerWeight:     f32     // tiny center bias on near ties
+    }
+
+    private const DEFAULT_OPTS = SearchOpts{minCoverage: 0.55, blurRadius: 2, strideFrac: 0.06, thirdsWeight: 0.12, centerWeight: 0.05}
 
     // sRGB -> linear (approx exact sRGB EOTF)
     private mtd const srgbToLinear(c: f32)->f32
@@ -31,6 +39,9 @@ public impl Image
             return c / 12.92
         return Math.pow((c + 0.055) / 1.055, 2.4)
     }
+
+    // shared tiny epsilon for tie-breaks / comparisons
+    private const EPS_TIE = 1.0e-9'f64
 
     // === Largest in-bounds crop at fixed aspect, positioned by blurred saliency sum ===
     private mtd const calculateReframeRect(targetWidth, targetHeight: f32)->Math.Rectangle
@@ -121,9 +132,8 @@ public impl Image
         let cxImg           = 0.5'f64 * cast(f64) W
         let cyImg           = 0.5'f64 * cast(f64) H
         var bestCenterDist2 = 1.0e30'f64
-        const EPS           = 1.0e-7'f64
 
-        // >>> FIX: include borders (<=), not just < <<<
+        // include borders
         for y0 in 0 to maxY
         {
             let y1 = y0 + cropH
@@ -136,7 +146,7 @@ public impl Image
                 let D   = cast(u64) (y1 * (W + 1) + x1)
                 let sum = ii[D] - ii[B] - ii[C] + ii[A]
 
-                if sum > bestSum + EPS
+                if sum > bestSum + EPS_TIE
                 {
                     bestSum = sum
                     bestX   = x0
@@ -145,7 +155,7 @@ public impl Image
                     let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
                     bestCenterDist2 = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
                 }
-                elif Math.abs(sum - bestSum) <= EPS
+                elif Math.abs(sum - bestSum) <= EPS_TIE
                 {
                     let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
                     let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
@@ -162,10 +172,10 @@ public impl Image
 
         // small refinement sweep (unit stride) around the winner
         {
-            let rx0 = .clampS32(bestX - 2, 0, maxX)
-            let ry0 = .clampS32(bestY - 2, 0, maxY)
-            let rx1 = .clampS32(bestX + 2, 0, maxX)
-            let ry1 = .clampS32(bestY + 2, 0, maxY)
+            let rx0 = Math.clamp(bestX - 2, 0, maxX)
+            let ry0 = Math.clamp(bestY - 2, 0, maxY)
+            let rx1 = Math.clamp(bestX + 2, 0, maxX)
+            let ry1 = Math.clamp(bestY + 2, 0, maxY)
             for y0 in ry0 to ry1
             {
                 let y1 = y0 + cropH
@@ -177,7 +187,7 @@ public impl Image
                     let C   = cast(u64) (y1 * (W + 1) + x0)
                     let D   = cast(u64) (y1 * (W + 1) + x1)
                     let sum = ii[D] - ii[B] - ii[C] + ii[A]
-                    if sum > bestSum + 1e-12
+                    if sum > bestSum + EPS_TIE
                     {
                         bestSum = sum; bestX   = x0; bestY   = y0
                     }
@@ -192,18 +202,6 @@ public impl Image
         r.height = cropH
         return r
     }
-
-    // === Smart placement + scale search ===
-    private struct SearchOpts
-    {
-        minCoverage:      f32     // min crop area fraction (e.g. 0.55)
-        blurRadius:       s32     // saliency blur radius (2–3)
-        strideFrac:       f32     // scan stride as fraction of crop size
-        thirdsWeight:     f32     // soft rule-of-thirds prior (placement only)
-        centerWeight:     f32     // tiny center bias on near ties
-    }
-
-    private const DEFAULT_OPTS = SearchOpts{minCoverage: 0.55, blurRadius: 2, strideFrac: 0.06, thirdsWeight: 0.12, centerWeight: 0.05}
 
     // === Helpers: integral image, summed area, blur, thirds map ===
     private mtd const buildIntegral(src: &Array'f32, W, H: s32)->Array'f64
@@ -379,11 +377,10 @@ public impl Image
                     let cwy = cast(f64) y0 + 0.5 * ch
                     let d2  = (cwx - cx) * (cwx - cx) + (cwy - cy) * (cwy - cy)
 
-                    // center only breaks near ties later; don't subtract yet
-                    if score > bestScore
+                    if score > bestScore + EPS_TIE
                     {
                         bestScore    = score; bestX        = x0; bestY        = y0; bestW        = cw; bestH        = ch; bestCenterD2 = d2; }
-                    elif Math.abs(score - bestScore) <= 1e-12
+                    elif Math.abs(score - bestScore) <= EPS_TIE
                     {
                         // near-tie → prefer closer to center
                         if d2 < bestCenterD2
@@ -393,9 +390,6 @@ public impl Image
                 }
             }
         }
-
-        // 3b) Apply a tiny center bias only if very close in score (scale by observed range)
-        // (already handled during scan via tie-break; optional: no-op here)
 
         // 4) Fallback
         if bestW == 0 or bestH == 0:
@@ -411,10 +405,10 @@ public impl Image
             while improved and iter < 3
             {
                 improved = false; iter += 1
-                let rx0 = .clampS32(bestX - 2, 0, maxX)
-                let ry0 = .clampS32(bestY - 2, 0, maxY)
-                let rx1 = .clampS32(bestX + 2, 0, maxX)
-                let ry1 = .clampS32(bestY + 2, 0, maxY)
+                let rx0 = Math.clamp(bestX - 2, 0, maxX)
+                let ry0 = Math.clamp(bestY - 2, 0, maxY)
+                let rx1 = Math.clamp(bestX + 2, 0, maxX)
+                let ry1 = Math.clamp(bestY + 2, 0, maxY)
                 for y0 in ry0 to ry1
                 {
                     let y1 = y0 + bestH
@@ -425,7 +419,7 @@ public impl Image
                         let sumT  = .sumRect(&iiT, W, H, x0, y0, x1, y1)
                         let area  = cast(f64) (bestW * bestH)
                         var score = (sumS / area) + cast(f64) opts.thirdsWeight * (sumT / area)
-                        if score > bestScore + 1e-12
+                        if score > bestScore + EPS_TIE
                         {
                             bestScore = score; bestX     = x0; bestY     = y0; improved  = true; }
                     }
@@ -452,8 +446,8 @@ public impl Image
 
                     let maxX2 = W - cw
                     let maxY2 = H - ch
-                    let x0    = .clampS32(bestX + (bestW - cw) / 2, 0, maxX2)
-                    let y0    = .clampS32(bestY + (bestH - ch) / 2, 0, maxY2)
+                    let x0    = Math.clamp(bestX + (bestW - cw) / 2, 0, maxX2)
+                    let y0    = Math.clamp(bestY + (bestH - ch) / 2, 0, maxY2)
                     let x1    = x0 + cw
                     let y1    = y0 + ch
 
@@ -461,7 +455,7 @@ public impl Image
                     let sumT  = .sumRect(&iiT, W, H, x0, y0, x1, y1)
                     let area  = cast(f64) (cw * ch)
                     let score = (sumS / area) + cast(f64) opts.thirdsWeight * (sumT / area)
-                    if score > bestScore + 1e-12
+                    if score > bestScore + EPS_TIE
                     {
                         bestScore = score; bestX     = x0; bestY     = y0; bestW     = cw; bestH     = ch; }
                 }
@@ -529,10 +523,11 @@ public impl Image
             M = w
         }
 
-        tmp.sortReverse()
+        // sort ascending for proper percentile indexing
+        tmp.sort()
 
-        let il = Math.max(0, Math.min(M - 1, cast(s32) Math.round(pLow * cast(f32) (M - 1))))
-        let ih = Math.max(0, Math.min(M - 1, cast(s32) Math.round(pHigh * cast(f32) (M - 1))))
+        let il = Math.max(0, Math.min(M - 1, cast(s32) Math.floor(pLow * cast(f32) (M - 1))))
+        let ih = Math.max(0, Math.min(M - 1, cast(s32) Math.floor(pHigh * cast(f32) (M - 1))))
         let lo = tmp[cast(u64) il]
         let hi = tmp[cast(u64) ih]
         if hi <= lo:
@@ -540,7 +535,7 @@ public impl Image
         return {lo, hi}
     }
 
-    // === Core saliency (contrast, saturation, edge). Thirds removed here. ===
+    // Core saliency (contrast, saturation, edge). Thirds removed here.
     private mtd const computeSaliencyMap(saliencyMap: &Array'f32, weights: SaliencyWeights)
     {
         let W  = .width
@@ -552,26 +547,27 @@ public impl Image
         lum.resize(cast(u64) N)
         sat.resize(cast(u64) N)
 
-        // one pass: cache linear luminance + saturation (HSV-ish, ε-stable)
+        // one pass: cache linear luminance + saturation (HSV-ish on sRGB, ε-stable)
         var f   = {lum: &lum, sat: &sat}
         let mec = cast #unconst (*Image) me
         mec.visitPixels(&f)
         {
             let p = image.getPixelColor(x, y)
-            // assume p.r/g/b in [0,1] sRGB. Convert to linear
-            let r = image.srgbToLinear(cast(f32) p.r)
-            let g = image.srgbToLinear(cast(f32) p.g)
-            let b = image.srgbToLinear(cast(f32) p.b)
 
+            // luminance from linearized RGB (BT.709-ish)
+            let r_lin  = image.srgbToLinear(p.r / 255.0)
+            let g_lin  = image.srgbToLinear(p.g / 255.0)
+            let b_lin  = image.srgbToLinear(p.b / 255.0)
+            let L      = r_lin * 0.2126 + g_lin * 0.7152 + b_lin * 0.0722
             let params = cast(*#decltype(f)) userData
-
-            // luminance (BT.709-ish)
-            let L = r * 0.2126 + g * 0.7152 + b * 0.0722
             params.lum.buffer[index] = L
 
-            // saturation (HSV-like), ε-stable
-            let maxC = Math.max(Math.max(r, g), b)
-            let minC = Math.min(Math.min(r, g), b)
+            // saturation on sRGB (more perceptual than using linear)
+            let rs   = p.r / 255.0
+            let gs   = p.g / 255.0
+            let bs   = p.b / 255.0
+            let maxC = Math.max(Math.max(rs, gs), bs)
+            let minC = Math.min(Math.min(rs, gs), bs)
             let eps  = 1e-6'f32
             params.sat.buffer[index] = (maxC > 0.0) ? ((maxC - minC) / (maxC + eps)) : 0.0
         }
@@ -601,25 +597,26 @@ public impl Image
         // Sobel edges from blurred luminance
         var edge: Array'f32
         edge.resize(cast(u64) N)
-        for y in 0 until H
+        for y in 0 to (H - 1)
         {
-            for x in 0 until W
+            for x in 0 to (W - 1)
             {
                 let i = cast(u64) (y * W + x)
                 if x == 0 or y == 0 or x == W - 1 or y == H - 1
                 {
-                    edge[i] = 0.0; continue
+                    edge[i] = 0.0
+                    continue
                 }
 
                 // neighbors from lumBlur
-                let Lm1m1 = lumBlur[cast(u64) ((y - 1) * W + (x - 1))]
-                let Lp1m1 = lumBlur[cast(u64) ((y - 1) * W + (x + 1))]
-                let Lm10  = lumBlur[cast(u64) (y * W + (x - 1))]
-                let Lp10  = lumBlur[cast(u64) (y * W + (x + 1))]
-                let Lm1p1 = lumBlur[cast(u64) ((y + 1) * W + (x - 1))]
-                let Lp1p1 = lumBlur[cast(u64) ((y + 1) * W + (x + 1))]
-                let L0m1  = lumBlur[cast(u64) ((y - 1) * W + x)]
-                let L0p1  = lumBlur[cast(u64) ((y + 1) * W + x)]
+                let Lm1m1 = lumBlur[((y - 1) * W + (x - 1))]
+                let Lp1m1 = lumBlur[((y - 1) * W + (x + 1))]
+                let Lm10  = lumBlur[(y * W + (x - 1))]
+                let Lp10  = lumBlur[(y * W + (x + 1))]
+                let Lm1p1 = lumBlur[((y + 1) * W + (x - 1))]
+                let Lp1p1 = lumBlur[((y + 1) * W + (x + 1))]
+                let L0m1  = lumBlur[((y - 1) * W + x)]
+                let L0p1  = lumBlur[((y + 1) * W + x)]
 
                 let gx = -1.0 * Lm1m1 + 1.0 * Lp1m1 + -2.0 * Lm10 + 2.0 * Lp10 + -1.0 * Lm1p1 + 1.0 * Lp1p1
                 let gy = -1.0 * Lm1m1 - 2.0 * L0m1 - 1.0 * Lp1m1 + 1.0 * Lm1p1 + 2.0 * L0p1 + 1.0 * Lp1p1
@@ -633,9 +630,9 @@ public impl Image
         var contrast: Array'f32
         contrast.resize(cast(u64) N)
 
-        for y in 0 until H
+        for y in 0 to (H - 1)
         {
-            for x in 0 until W
+            for x in 0 to (W - 1)
             {
                 let i  = cast(u64) (y * W + x)
                 let x0 = Math.max(0, x - R)
@@ -668,9 +665,9 @@ public impl Image
 
         for i in 0 to (N - 1)
         {
-            let cn = .clamp01f((contrast[cast(u64) i] - cLo) / cDen)
-            let sn = .clamp01f((sat[cast(u64) i] - sLo) / sDen)
-            let en = .clamp01f((edge[cast(u64) i] - eLo) / eDen)
+            let cn = Math.saturate((contrast[cast(u64) i] - cLo) / cDen)
+            let sn = Math.saturate((sat[cast(u64) i] - sLo) / sDen)
+            let en = Math.saturate((edge[cast(u64) i] - eLo) / eDen)
             saliencyMap[cast(u64) i] = weights.contrast * cn + weights.saturation * sn + weights.edge * en
         }
     }
