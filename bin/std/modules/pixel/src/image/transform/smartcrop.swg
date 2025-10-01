@@ -18,11 +18,12 @@ public impl Image
 
     // === Tunables ===
     private const SALIENCY_RADIUS = 5
-    private const THIRDS_SIGMA    = 0.08
+    private const THIRDS_SIGMA = 0.08
     private const DEFAULT_WEIGHTS = SaliencyWeights{contrast: 1.0, thirds: 0.8, saturation: 0.6, edge: 0.8}
 
     // Compute the largest in-bounds rectangle with target aspect ratio, positioned by saliency.
     // This only TRANSLATES the window and possibly CROPS to match aspect; it never requests scaling.
+    // Compute the largest in-bounds rectangle with target aspect ratio, positioned by saliency sum.
     private mtd const calculateReframeRect(targetWidth, targetHeight: f32)->Math.Rectangle
     {
         // 1) Desired aspect
@@ -47,25 +48,64 @@ public impl Image
             cropH = cast(s32) Math.floor(cast(f32) cropW / aspect + 0.5)
         }
 
-        // 3) Place the crop so that the interest point is near its center (clamped to bounds)
-        let ip = .findInterestPoint()
-        let cx = cast(s32) (Math.saturate(ip.x) * cast(f32) W)
-        let cy = cast(s32) (Math.saturate(ip.y) * cast(f32) H)
+        // 3) Build saliency map (unchanged) and its integral image
+        var saliencyMap: Array'f32
+        saliencyMap.resize(cast(u64) (W * H))
+        .computeSaliencyMap(&saliencyMap, DEFAULT_WEIGHTS)
 
-        var x = cx - cropW / 2
-        var y = cy - cropH / 2
+        // Integral image with +1 padding
+        var ii: Array'f64
+        ii.resize(cast(u64) ((W + 1) * (H + 1)))
+        // zero-initialized padding row/col assumed
 
-        if x < 0:
-            x = 0
-        if y < 0:
-            y = 0
-        if x + cropW > W:
-            x = W - cropW
-        if y + cropH > H:
-            y = H - cropH
+        for y in 1 to H
+        {
+            var rowSum = 0.0'f64
+            for x in 1 to W
+            {
+                let s = cast(f64) saliencyMap[cast(u64) ((y - 1) * W + (x - 1))]
+                rowSum += s
+                let idx = cast(u64) (y * (W + 1) + x)
+                ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum
+            }
+        }
 
+        // 4) Argmax over all legal top-lefts for the crop window using the integral image
+        var bestX, bestY = 0's32
+        var bestSum = -1.0'f64
+
+        let maxX = W - cropW
+        let maxY = H - cropH
+
+        for y0 in 0 to maxY
+        {
+            let y1 = y0 + cropH
+            for x0 in 0 to maxX
+            {
+                let x1 = x0 + cropW
+
+                // Convert to integral-image coords (+1 offset)
+                let A = cast(u64) (y0 * (W + 1) + x0)
+                let B = cast(u64) (y0 * (W + 1) + x1)
+                let C = cast(u64) (y1 * (W + 1) + x0)
+                let D = cast(u64) (y1 * (W + 1) + x1)
+
+                let sum = ii[D] - ii[B] - ii[C] + ii[A]
+                if sum > bestSum
+                {
+                    bestSum = sum
+                    bestX   = x0
+                    bestY   = y0
+                }
+            }
+        }
+
+        // 5) Return the crop positioned at (bestX, bestY)
         var r: retval
-        r.x      = x; r.y      = y; r.width  = cropW; r.height = cropH
+        r.x      = bestX
+        r.y      = bestY
+        r.width  = cropW
+        r.height = cropH
         return r
     }
 
@@ -111,32 +151,32 @@ public impl Image
         lum.resize(N) // luminance
         sat.resize(N) // saturation
 
-        for y in H
+        var f   = {lum: &lum, sat: &sat}
+        let mec = cast #unconst (*Image) me
+        mec.visitPixels(&f)
         {
-            for x in W
-            {
-                let idx = cast(u64) y * cast(u64) W + cast(u64) x
-                let p   = .getPixelColor(x, y)                        // SINGLE call per pixel
+            let p = image.getPixelColor(x, y)
 
-                let rf = cast(f32) p.r
-                let gf = cast(f32) p.g
-                let bf = cast(f32) p.b
+            let rf = cast(f32) p.r
+            let gf = cast(f32) p.g
+            let bf = cast(f32) p.b
 
-                // Luminance cache
-                let L = rf * 0.299 + gf * 0.587 + bf * 0.114
-                lum[idx] = L
+            let params = cast(*#decltype(f)) userData
 
-                // Saturation cache (HSV-like)
-                let maxC = Math.max(Math.max(rf, gf), bf)
-                let minC = Math.min(Math.min(rf, gf), bf)
-                sat[idx] = (maxC > 0.0) ? ((maxC - minC) / maxC) : 0.0
-            }
+            // Luminance cache
+            let L = rf * 0.299 + gf * 0.587 + bf * 0.114
+            params.lum.buffer[index] = L
+
+            // Saturation cache (HSV-like)
+            let maxC = Math.max(Math.max(rf, gf), bf)
+            let minC = Math.min(Math.min(rf, gf), bf)
+            params.sat.buffer[index] = (maxC > 0.0) ? ((maxC - minC) / maxC) : 0.0
         }
 
         // Integral images over luminance for O(1) local variance (contrast)
         var ii, iiSq: Array'f64
-        ii.resize(cast(u64) ((W + 1) * (H + 1)))
-        iiSq.resize(cast(u64) ((W + 1) * (H + 1)))
+        ii.resize((W + 1) * (H + 1))
+        iiSq.resize((W + 1) * (H + 1))
 
         for y in 1 to H
         {
@@ -155,23 +195,23 @@ public impl Image
 
         // Precompute rule-of-thirds weights (separable)
         var thirdsX, thirdsY: Array'f32
-        thirdsX.resize(cast(u64) W)
-        thirdsY.resize(cast(u64) H)
+        thirdsX.resize(W)
+        thirdsY.resize(H)
+
+        let t1 = 1.0 / 3.0
+        let t2 = 2.0 / 3.0
+        for x in W
         {
-            let t1 = 1.0 / 3.0
-            let t2 = 2.0 / 3.0
-            for x in W
-            {
-                let fx = cast(f32) x / cast(f32) W
-                let dx = Math.min(Math.abs(fx - t1), Math.abs(fx - t2))
-                thirdsX[cast(u64) x] = Math.exp(-(dx * dx) / (2.0 * THIRDS_SIGMA * THIRDS_SIGMA))
-            }
-            for y in H
-            {
-                let fy = cast(f32) y / cast(f32) H
-                let dy = Math.min(Math.abs(fy - t1), Math.abs(fy - t2))
-                thirdsY[cast(u64) y] = Math.exp(-(dy * dy) / (2.0 * THIRDS_SIGMA * THIRDS_SIGMA))
-            }
+            let fx = cast(f32) x / cast(f32) W
+            let dx = Math.min(Math.abs(fx - t1), Math.abs(fx - t2))
+            thirdsX[cast(u64) x] = Math.exp(-(dx * dx) / (2.0 * THIRDS_SIGMA * THIRDS_SIGMA))
+        }
+
+        for y in H
+        {
+            let fy = cast(f32) y / cast(f32) H
+            let dy = Math.min(Math.abs(fy - t1), Math.abs(fy - t2))
+            thirdsY[cast(u64) y] = Math.exp(-(dy * dy) / (2.0 * THIRDS_SIGMA * THIRDS_SIGMA))
         }
 
         // Sobel edges from cached luminance
@@ -220,27 +260,27 @@ public impl Image
         {
             for x in W
             {
-                let i = cast(u64) (y * W + x)
+                let i = y * W + x
 
                 // Box bounds
-                let x0 = Math.max(0's32, x - R)
-                let y0 = Math.max(0's32, y - R)
+                let x0 = Math.max(0, x - R)
+                let y0 = Math.max(0, y - R)
                 let x1 = Math.min(W - 1, x + R)
                 let y1 = Math.min(H - 1, y + R)
 
                 // Integral indices (with +1 padding)
-                let A = cast(u64) (y0 * (W + 1) + x0)
-                let B = cast(u64) (y0 * (W + 1) + (x1 + 1))
-                let C = cast(u64) ((y1 + 1) * (W + 1) + x0)
-                let D = cast(u64) ((y1 + 1) * (W + 1) + (x1 + 1))
+                let A = y0 * (W + 1) + x0
+                let B = y0 * (W + 1) + (x1 + 1)
+                let C = (y1 + 1) * (W + 1) + x0
+                let D = (y1 + 1) * (W + 1) + (x1 + 1)
 
-                let n     = cast(f32) ((x1 - x0 + 1) * (y1 - y0 + 1))
-                let sum   = cast(f32) (ii[D] - ii[B] - ii[C] + ii[A])
-                let sumSq = cast(f32) (iiSq[D] - iiSq[B] - iiSq[C] + iiSq[A])
+                let n     = (x1 - x0 + 1) * (y1 - y0 + 1)
+                let sum   = ii[D] - ii[B] - ii[C] + ii[A]
+                let sumSq = iiSq[D] - iiSq[B] - iiSq[C] + iiSq[A]
 
                 let mean = sum / n
                 let ovar = Math.max(0.0, (sumSq / n) - mean * mean)
-                let c    = Math.sqrt(ovar)
+                let c    = cast(f32) Math.sqrt(ovar)
 
                 let t = thirdsX[x] + thirdsY[y]
 
@@ -268,7 +308,7 @@ public impl Image
         {
             for x in W
             {
-                let i = cast(u64) (y * W + x)
+                let i  = cast(u64) (y * W + x)
                 let cn = (contrast[i] - cMin) / cDen
                 let tn = (thirds[i] - tMin) / tDen
                 let sn = (sat[i] - sMin) / sDen
