@@ -240,6 +240,11 @@ alias ConstF64 = Const'f64
     func abs(x: f32) => @abs(x)
     func abs(x: f64) => @abs(x)
 
+    func min(x, y: f32) => @min(x, y)
+    func min(x, y: f64) => @min(x, y)
+    func max(x, y: f32) => @max(x, y)
+    func max(x, y: f64) => @max(x, y)
+
     func exp(x: f32)    => @exp(x)
     func exp(x: f64)    => @exp(x)
     func exp2(x: f32)   => @exp2(x)
