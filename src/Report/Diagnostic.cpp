@@ -129,7 +129,7 @@ void Diagnostic::setupColors()
     warningColorHintHighLight = LogColor::Gray;
 
     noteColor              = LogColor::White;
-    noteColorHighLight     = LogColor::White;
+    noteColorHighLight     = LogColor::Gray;
     noteColorHint          = LogColor::White;
     noteColorHintHighLight = LogColor::Gray;
     noteHeaderColor        = LogColor::White;
