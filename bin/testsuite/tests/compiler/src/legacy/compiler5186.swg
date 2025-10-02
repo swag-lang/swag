@@ -13,7 +13,7 @@ impl A
 
     mtd titi(x, y: string)
     {
-        @print(x)
+        //@print(x)
     }
 
     //#[Swag.PrintBc]
