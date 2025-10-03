@@ -8,17 +8,17 @@ public impl Image
 
     private struct ScoreCtx
     {
-        iiS:         *Array'f64     // Integral image of saliency values (blurred/combined)
-        iiT:         *Array'f64     // Integral image of rule-of-thirds weights
-        iiE:         *Array'f64     // Integral image of edge distance values (high away from edges)
+        iiS:         *Array'f32     // Integral image of saliency values (blurred/combined)
+        iiT:         *Array'f32     // Integral image of rule-of-thirds weights
+        iiE:         *Array'f32     // Integral image of edge distance values (high away from edges)
         w, h:        s32
-        imgArea:     f64
-        thirdsW:     f64
-        centerW:     f64
-        shrinkW:     f64
-        edgePen:     f64
-        cx, cy:      f64
-        d2Max:       f64            // (W/2)^2 + (H/2)^2
+        imgArea:     f32
+        thirdsW:     f32
+        centerW:     f32
+        shrinkW:     f32
+        edgePen:     f32
+        cx, cy:      f32
+        d2Max:       f32            // (W/2)^2 + (H/2)^2
     }
 
     // Pack of precomputed features + integrals to avoid recomputation
@@ -27,14 +27,14 @@ public impl Image
         Sblur:     Array'f32     // blurred saliency (and may contain thirds blended in fast paths)
         T:         Array'f32     // thirds map (may be zero if disabled)
         E:         Array'f32     // edge distance map (high away from edges; 1 at far, 0 at edges)
-        iiS:       Array'f64
-        iiT:       Array'f64
-        iiE:       Array'f64
+        iiS:       Array'f32
+        iiT:       Array'f32
+        iiE:       Array'f32
     }
 
     private const SALIENCY_RADIUS = 4
     private const THIRDS_SIGMA = 0.075
-    private const EPS_TIE = 1.0e-9'f64
+    private const EPS_TIE = 1.0e-9'f32
     private const EDGE_DIST_SCALE = 0.15
     private const ENHANCED_WEIGHTS = SaliencyWeights{contrast: 1.0, saturation: 0.55, edge: 1.2}
 
@@ -46,27 +46,27 @@ public impl Image
         return Math.pow((c + 0.055) / 1.055, 2.4)
     }
 
-    private func buildIntegral(src: Array'f32, W, H: s32)->Array'f64
+    private func buildIntegral(src: Array'f32, W, H: s32)->Array'f32
     {
         var ii: retval
         ii.resize(cast(u64) ((W + 1) * (H + 1)))
 
         for y in 1 to H
         {
-            var rowSum = 0.0'f64
+            var rowSum = 0.0'f32
             for x in 1 to W
             {
-                let s = cast(f64) src[cast(u64) ((y - 1) * W + (x - 1))]
+                let s = cast(f32) src[(y - 1) * W + (x - 1)]
                 rowSum += s
-                let idx = cast(u64) (y * (W + 1) + x)
-                ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum
+                let idx = (y * (W + 1) + x)
+                ii[idx] = ii[idx - (W + 1)] + rowSum
             }
         }
 
         return ii
     }
 
-    private func sumRect(ii: &Array'f64, W, H, x0, y0, x1, y1: s32)->f64
+    private func sumRect(ii: &Array'f32, W, H, x0, y0, x1, y1: s32)->f32
     {
         let A = y0 * (W + 1) + x0
         let B = y0 * (W + 1) + x1
@@ -83,7 +83,7 @@ public impl Image
         var ii = buildIntegral(src, W, H)
 
         var dst: retval
-        dst.resize(cast(u64) (W * H))
+        dst.resize(W * H)
         for y in 0 to (H - 1)
         {
             let y0 = Math.max(0, y - radius)
@@ -93,8 +93,8 @@ public impl Image
                 let x0 = Math.max(0, x - radius)
                 let x1 = Math.min(W - 1, x + radius)
                 let S  = sumRect(&ii, W, H, x0, y0, x1 + 1, y1 + 1)
-                let n  = cast(f64) ((x1 - x0 + 1) * (y1 - y0 + 1))
-                dst[cast(u64) (y * W + x)] = cast(f32) (S / n)
+                let n  = cast(f32) ((x1 - x0 + 1) * (y1 - y0 + 1))
+                dst[y * W + x] = cast(f32) (S / n)
             }
         }
         return dst
@@ -103,8 +103,8 @@ public impl Image
     private func buildThirdsMap(W, H: s32, sigma: f32)->Array'f32
     {
         var tx, ty: Array'f32
-        tx.resize(cast(u64) W)
-        ty.resize(cast(u64) H)
+        tx.resize(W)
+        ty.resize(H)
 
         let t1:  f32 = 1.0 / 3.0
         let t2:  f32 = 2.0 / 3.0
@@ -114,20 +114,20 @@ public impl Image
         {
             let fx = cast(f32) x / cast(f32) W
             let dx = Math.min(Math.abs(fx - t1), Math.abs(fx - t2))
-            tx[cast(u64) x] = Math.exp(-(dx * dx) / (2.0 * sig2))
+            tx[x] = Math.exp(-(dx * dx) / (2.0 * sig2))
         }
         for y in 0 to (H - 1)
         {
             let fy = cast(f32) y / cast(f32) H
             let dy = Math.min(Math.abs(fy - t1), Math.abs(fy - t2))
-            ty[cast(u64) y] = Math.exp(-(dy * dy) / (2.0 * sig2))
+            ty[y] = Math.exp(-(dy * dy) / (2.0 * sig2))
         }
 
         var T: retval
-        T.resize(cast(u64) (W * H))
+        T.resize(W * H)
         for y in 0 to (H - 1):
             for x in 0 to (W - 1):
-                T[cast(u64) (y * W + x)] = Math.pow(tx[cast(u64) x] * ty[cast(u64) y], 1.5)
+                T[y * W + x] = Math.pow(tx[cast(u64) x] * ty[cast(u64) y], 1.5)
         return T
     }
 
@@ -197,13 +197,13 @@ public impl Image
 
         // invert & gently sharpen far-from-edge regions
         var D: retval
-        D.resize(cast(u64) (W * H))
+        D.resize(W * H)
         for i in 0 to (W * H - 1)
         {
             let e = Math.saturate(B[cast(u64) i])
             // either power inversion:
             let inv = 1.0 - e
-            D[cast(u64) i] = Math.pow(inv, 0.75)
+            D[i] = Math.pow(inv, 0.75)
             // or exponential alternative (commented):
             // D[i] = Math.exp(-EDGE_DIST_SCALE * e)
         }
@@ -215,22 +215,23 @@ public impl Image
         const K  = 4096's32
         var tmp: Array'f32
         var M    = Math.min(K, N)
-        tmp.resize(cast(u64) M)
+        tmp.resize(M)
 
         if N <= K
         {
             for i in 0 to (N - 1):
-                tmp[cast(u64) i] = buf[cast(u64) i]
+                tmp[i] = buf[i]
         }
         else
         {
-            let step = cast(s32) Math.floor(cast(f32) N / cast(f32) M)
+            let step = cast(s32) Math.floor(cast(f32) N / M)
             var w    = 0's32
             for var i = 0; i < N; i += step
             {
                 if w >= M:
                     break
-                tmp[cast(u64) w] = buf[cast(u64) i]; w += 1
+                tmp[w] = buf[i]
+                w += 1
             }
 
             M = w
@@ -253,25 +254,26 @@ public impl Image
         let N = cast(s32) (W * H)
 
         var lum, sat: Array'f32
-        lum.resize(cast(u64) N)
-        sat.resize(cast(u64) N)
+        lum.resize(N)
+        sat.resize(N)
         .extractLumSat(&lum, &sat)
 
         // integral images of luminance for local contrast
-        var ii, iiSq: Array'f64
-        ii.resize(cast(u64) ((W + 1) * (H + 1)))
-        iiSq.resize(cast(u64) ((W + 1) * (H + 1)))
+        var ii, iiSq: Array'f32
+        ii.resize((W + 1) * (H + 1))
+        iiSq.resize((W + 1) * (H + 1))
         for y in 1 to H
         {
-            var rowSum = 0.0'f64, rowSumSq = 0.0'f64
+            var rowSum   = 0.0
+            var rowSumSq = 0.0
             for x in 1 to W
             {
-                let Ld = cast(f64) lum[cast(u64) ((y - 1) * W + (x - 1))]
+                let Ld = cast(f32) lum[(y - 1) * W + (x - 1)]
                 rowSum += Ld
                 rowSumSq += Ld * Ld
-                let idxI = cast(u64) (y * (W + 1) + x)
-                ii[idxI]   = ii[idxI - cast(u64) (W + 1)] + rowSum
-                iiSq[idxI] = iiSq[idxI - cast(u64) (W + 1)] + rowSumSq
+                let idxI = (y * (W + 1) + x)
+                ii[idxI]   = ii[idxI - (W + 1)] + rowSum
+                iiSq[idxI] = iiSq[idxI - (W + 1)] + rowSumSq
             }
         }
 
@@ -290,18 +292,18 @@ public impl Image
         {
             for var x = 0; x < W; x += sampleStep
             {
-                let i  = cast(u64) (y * W + x)
+                let i  = y * W + x
                 let x0 = Math.max(0, x - R)
                 let y0 = Math.max(0, y - R)
                 let x1 = Math.min(W - 1, x + R)
                 let y1 = Math.min(H - 1, y + R)
 
-                let A = cast(u64) (y0 * (W + 1) + x0)
-                let B = cast(u64) (y0 * (W + 1) + (x1 + 1))
-                let C = cast(u64) ((y1 + 1) * (W + 1) + x0)
-                let D = cast(u64) ((y1 + 1) * (W + 1) + (x1 + 1))
+                let A = y0 * (W + 1) + x0
+                let B = y0 * (W + 1) + (x1 + 1)
+                let C = (y1 + 1) * (W + 1) + x0
+                let D = (y1 + 1) * (W + 1) + (x1 + 1)
 
-                let n     = cast(f64) ((x1 - x0 + 1) * (y1 - y0 + 1))
+                let n     = cast(f32) ((x1 - x0 + 1) * (y1 - y0 + 1))
                 let sum   = ii[D] - ii[B] - ii[C] + ii[A]
                 let sumSq = iiSq[D] - iiSq[B] - iiSq[C] + iiSq[A]
 
@@ -313,9 +315,9 @@ public impl Image
                     contrast[i + 1] = contrast[i]
                 if y + 1 < H
                 {
-                    contrast[i + cast(u64) W] = contrast[i]
+                    contrast[i + W] = contrast[i]
                     if x + 1 < W:
-                        contrast[i + cast(u64) W + 1] = contrast[i]
+                        contrast[i + W + 1] = contrast[i]
                 }
             }
         }
@@ -330,17 +332,17 @@ public impl Image
         let eDen = Math.max(1e-6, eHi - eLo)
 
         var S: Array'f32
-        S.resize(cast(u64) N)
+        S.resize(N)
         for i in 0 to (N - 1)
         {
-            let cn = Math.saturate((contrast[cast(u64) i] - cLo) / cDen)
-            let sn = Math.saturate((sat[cast(u64) i] - sLo) / sDen)
-            let en = Math.saturate((edgeMag[cast(u64) i] - eLo) / eDen)
+            let cn = Math.saturate((contrast[i] - cLo) / cDen)
+            let sn = Math.saturate((sat[i] - sLo) / sDen)
+            let en = Math.saturate((edgeMag[i] - eLo) / eDen)
 
             let combined = weights.contrast * Math.pow(cn, 0.9) +
                            weights.saturation * Math.pow(sn, 1.1) +
                            weights.edge * Math.pow(en, 0.85)
-            S[cast(u64) i] = combined
+            S[i] = combined
         }
 
         return {S, edgeMag}
@@ -397,10 +399,10 @@ public impl Image
         return pack
     }
 
-    private func prepareScoreCtx(W, H: s32, pack: &FeaturePack, imgArea: f64, opts: SmartCropSearchOpts, shrinkW: f64)->ScoreCtx
+    private func prepareScoreCtx(W, H: s32, pack: &FeaturePack, imgArea: f32, opts: SmartCropSearchOpts, shrinkW: f32)->ScoreCtx
     {
-        let cx   = 0.5'f64 * cast(f64) W
-        let cy   = 0.5'f64 * cast(f64) H
+        let cx   = 0.5'f32 * cast(f32) W
+        let cy   = 0.5'f32 * cast(f32) H
         let d2Mx = cx * cx + cy * cy         // correct normalization
 
         var ctx: ScoreCtx
@@ -410,21 +412,21 @@ public impl Image
         ctx.w       = W
         ctx.h       = H
         ctx.imgArea = imgArea
-        ctx.thirdsW = cast(f64) opts.thirdsWeight
-        ctx.centerW = cast(f64) opts.centerWeight
+        ctx.thirdsW = cast(f32) opts.thirdsWeight
+        ctx.centerW = cast(f32) opts.centerWeight
         ctx.shrinkW = shrinkW
-        ctx.edgePen = cast(f64) opts.edgePenalty
+        ctx.edgePen = cast(f32) opts.edgePenalty
         ctx.cx      = cx
         ctx.cy      = cy
         ctx.d2Max   = d2Mx
         return ctx
     }
 
-    private func scoreWindow(ctx: &ScoreCtx, x0, y0, cw, ch: s32)->{ score: f64, d2: f64 }
+    private func scoreWindow(ctx: &ScoreCtx, x0, y0, cw, ch: s32)->{ score: f32, d2: f32 }
     {
         let x1   = x0 + cw
         let y1   = y0 + ch
-        let area = cast(f64) (cw * ch)
+        let area = cast(f32) (cw * ch)
 
         let sumS = sumRect(ctx.iiS, ctx.w, ctx.h, x0, y0, x1, y1)
         let sumT = sumRect(ctx.iiT, ctx.w, ctx.h, x0, y0, x1, y1)
@@ -440,8 +442,8 @@ public impl Image
         s += ctx.shrinkW * areaFrac
 
         // Center bonus (normalized by corrected d2Max)
-        let cwx = cast(f64) x0 + 0.5 * cast(f64) cw
-        let cwy = cast(f64) y0 + 0.5 * cast(f64) ch
+        let cwx = cast(f32) x0 + 0.5 * cast(f32) cw
+        let cwy = cast(f32) y0 + 0.5 * cast(f32) ch
         let d2  = (cwx - ctx.cx) * (cwx - ctx.cx) + (cwy - ctx.cy) * (cwy - ctx.cy)
         s += ctx.centerW * (1.0 - (d2 / ctx.d2Max))
 
@@ -454,24 +456,24 @@ public impl Image
         if imgAspect > aspect
         {
             h = Math.min(H, Math.max(4, h))
-            w = Math.min(W, Math.max(4, cast(s32) Math.round(cast(f64) h * cast(f64) aspect)))
+            w = Math.min(W, Math.max(4, cast(s32) Math.round(cast(f32) h * cast(f32) aspect)))
         }
         else
         {
             w = Math.min(W, Math.max(4, w))
-            h = Math.min(H, Math.max(4, cast(s32) Math.round(cast(f64) w / cast(f64) aspect)))
+            h = Math.min(H, Math.max(4, cast(s32) Math.round(cast(f32) w / cast(f32) aspect)))
         }
 
         return {w, h}
     }
 
-    private func refinePosition(ctx: &ScoreCtx, bestX, bestY, bestW, bestH: s32, range: s32 = 2)->{ x: s32, y: s32, score: f64, d2: f64 }
+    private func refinePosition(ctx: &ScoreCtx, bestX, bestY, bestW, bestH: s32, range: s32 = 2)->{ x: s32, y: s32, score: f32, d2: f32 }
     {
         let maxX   = ctx.w - bestW
         let maxY   = ctx.h - bestH
         var bx = bestX, by = bestY
-        var bScore = -1.0e30'f64
-        var bD2    = 1.0e30'f64
+        var bScore = -1.0e30'f32
+        var bD2    = 1.0e30'f32
 
         let r0 = scoreWindow(ctx, bx, by, bestW, bestH)
         bScore = r0.score; bD2    = r0.d2
@@ -498,13 +500,13 @@ public impl Image
         return {bx, by, bScore, bD2}
     }
 
-    private func tryScaledVariants(ctx: &ScoreCtx, aspect, imgAspect: f32, bestX, bestY, bestW, bestH: s32)->{ x: s32, y: s32, w: s32, h: s32, score: f64, d2: f64 }
+    private func tryScaledVariants(ctx: &ScoreCtx, aspect, imgAspect: f32, bestX, bestY, bestW, bestH: s32)->{ x: s32, y: s32, w: s32, h: s32, score: f32, d2: f32 }
     {
-        let scales: [5] f64 = [0.88, 0.94, 1.00, 1.06, 1.12]
+        let scales: [5] f32 = [0.88, 0.94, 1.00, 1.06, 1.12]
 
         var bx = bestX, by = bestY, bw = bestW, bh = bestH
-        var bScore = -1.0e30'f64
-        var bD2    = 1.0e30'f64
+        var bScore = -1.0e30'f32
+        var bD2    = 1.0e30'f32
 
         {
             let r0 = scoreWindow(ctx, bestX, bestY, bestW, bestH)
@@ -515,8 +517,8 @@ public impl Image
         {
             if i == 2:
                 continue
-            let cw = cast(s32) Math.round(cast(f64) bestW * scales[i])
-            let ch = cast(s32) Math.round(cast(f64) bestH * scales[i])
+            let cw = cast(s32) Math.round(cast(f32) bestW * scales[i])
+            let ch = cast(s32) Math.round(cast(f32) bestH * scales[i])
             if cw < 4 or ch < 4:
                 continue
             if cw > ctx.w or ch > ctx.h:
@@ -567,12 +569,12 @@ public impl Image
         // Features (no shrink prior, still want edges if edgePenalty>0)
         var pack = .buildFeaturePack(W, H, opts, (opts.edgePenalty > 0.01))
 
-        let imgArea = cast(f64) (W * H)
+        let imgArea = cast(f32) (W * H)
         var ctx     = prepareScoreCtx(W, H, &pack, imgArea, opts, 0.0)     // single-scale ignores shrink prior
 
         var bestX, bestY = 0's32
-        var bestScore = -1.0e30'f64
-        var bestD2    = 1.0e30'f64
+        var bestScore = -1.0e30'f32
+        var bestD2    = 1.0e30'f32
 
         let maxX   = W - cropW
         let maxY   = H - cropH
@@ -625,32 +627,32 @@ public impl Image
         // Full feature pack (with edges if enabled)
         var pack = .buildFeaturePack(W, H, opts, true)
 
-        let imgArea = cast(f64) (W * H)
-        var ctx     = prepareScoreCtx(W, H, &pack, imgArea, opts, cast(f64) opts.shrinkPrior)
+        let imgArea = cast(f32) (W * H)
+        var ctx     = prepareScoreCtx(W, H, &pack, imgArea, opts, cast(f32) opts.shrinkPrior)
 
-        let minArea = cast(f64) opts.minCoverage * imgArea
+        let minArea = cast(f32) opts.minCoverage * imgArea
         let STEPS   = opts.maxSearchSteps
 
         var bestX, bestY, bestW, bestH = 0's32
-        var bestScore    = -1.0e30'f64
-        var bestCenterD2 = 1.0e30'f64
+        var bestScore    = -1.0e30'f32
+        var bestCenterD2 = 1.0e30'f32
 
         for step in 0 to (STEPS - 1)
         {
-            let t          = cast(f64) step / cast(f64) (STEPS - 1)
-            let frac       = 1.0 - Math.pow(t, 1.3) * (1.0 - cast(f64) opts.minCoverage)
+            let t          = cast(f32) step / cast(f32) (STEPS - 1)
+            let frac       = 1.0 - Math.pow(t, 1.3) * (1.0 - cast(f32) opts.minCoverage)
             let targetArea = Math.max(frac * imgArea, minArea)
 
             var cw, ch: s32
             if imgAspect > aspect
             {
-                ch = Math.min(H, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea / cast(f64) aspect))))
-                cw = Math.min(W, cast(s32) Math.round(cast(f64) ch * cast(f64) aspect))
+                ch = Math.min(H, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea / cast(f32) aspect))))
+                cw = Math.min(W, cast(s32) Math.round(cast(f32) ch * cast(f32) aspect))
             }
             else
             {
-                cw = Math.min(W, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea * cast(f64) aspect))))
-                ch = Math.min(H, cast(s32) Math.round(cast(f64) cw / cast(f64) aspect))
+                cw = Math.min(W, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea * cast(f32) aspect))))
+                ch = Math.min(H, cast(s32) Math.round(cast(f32) cw / cast(f32) aspect))
             }
 
             if cw < 4 or ch < 4:
@@ -738,7 +740,7 @@ public impl Image
         return .calculateMultiScale(aspect, imgAspect, W, H, opts)
     }
 
-    private mtd const evaluateCropScoreFast(rect: Math.Rectangle, opts: SmartCropSearchOpts)->f64
+    private mtd const evaluateCropScoreFast(rect: Math.Rectangle, opts: SmartCropSearchOpts)->f32
     {
         let W = .width, H = .height
 
@@ -755,18 +757,18 @@ public impl Image
         }
 
         var ii   = buildIntegral(&pack.Sblur, W, H)
-        let area = cast(f64) (rect.width * rect.height)
+        let area = cast(f32) (rect.width * rect.height)
         let sumS = sumRect(&ii, W, H, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
         return sumS / area
     }
 
-    private mtd const evaluateCropScoreFull(rect: Math.Rectangle, opts: SmartCropSearchOpts)->f64
+    private mtd const evaluateCropScoreFull(rect: Math.Rectangle, opts: SmartCropSearchOpts)->f32
     {
         let W = .width, H = .height
         var pack = .buildFeaturePack(W, H, opts, true)
 
-        let imgArea = cast(f64) (W * H)
-        var ctx     = prepareScoreCtx(W, H, &pack, imgArea, opts, cast(f64) opts.shrinkPrior)
+        let imgArea = cast(f32) (W * H)
+        var ctx     = prepareScoreCtx(W, H, &pack, imgArea, opts, cast(f32) opts.shrinkPrior)
 
         let r = scoreWindow(&ctx, cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
         return r.score
@@ -775,12 +777,6 @@ public impl Image
 
 public impl Image
 {
-    struct InterestPoint
-    {
-        x, y:      f32
-        score:     f32
-    }
-
     struct SaliencyWeights
     {
         contrast:       f32
@@ -794,112 +790,145 @@ public impl Image
         // Minimum fraction of the original image area the crop must keep.
         // Range: 0.0–1.0. Lower allows tighter crops; higher preserves more context.
         // Special: >= 0.95 triggers fast single-scale mode (no multi-scale search).
-        minCoverage:   f32 = 0.4
+        minCoverage: f32 = 0.4
 
         // Blur radius (in pixels) applied to the saliency map for smoothing.
         // Range: 0–5 (typical 2–4). Higher = smoother gradients, less fine detail.
-        blurRadius:    s32 = 3
+        blurRadius: s32 = 3
 
         // Search stride as a fraction of the crop size (per axis).
         // Range: 0.01–0.20 (typical 0.06–0.12). Lower = slower, higher quality.
-        strideFrac:    f32 = 0.10
+        strideFrac: f32 = 0.10
 
         // Weight for the rule-of-thirds compositional bonus.
         // Range: 0.0–0.5 (typical 0.15–0.25). 0.0 disables thirds influence.
-        thirdsWeight:  f32 = 0.22
+        thirdsWeight: f32 = 0.22
 
         // Weight for proximity to the image center (center bias).
         // Range: 0.0–0.3 (typical 0.05–0.15). 0.0 removes center preference.
-        centerWeight:  f32 = 0.06
+        centerWeight: f32 = 0.06
 
         // Prior favoring larger crops (adds an area-proportional bonus).
         // Range: 0.0–0.3 (typical 0.05–0.15). 0.0 means no size preference.
-        shrinkPrior:   f32 = 0.08
+        shrinkPrior: f32 = 0.08
 
         // Penalty for crops that cut through strong edges (uses edge-distance map).
         // Range: 0.0–0.5 (typical 0.10–0.25). 0.0 disables the edge term.
-        edgePenalty:   f32 = 0.15
+        edgePenalty: f32 = 0.15
 
         // Reserved for future face detection bonus when faces are inside the crop.
         // Range: 0.0–1.0 (currently unused).
-        faceWeight:    f32 = 0.0
+        faceWeight: f32 = 0.0
 
         // Number of scale steps in multi-scale search.
         // Range: 5–20 (typical 8–12). More = more thorough but slower.
-        maxSearchSteps:s32 = 10
-    }
+        maxSearchSteps: s32 = 10
 
-    mtd const findInterestPoint()->InterestPoint
-    {
-        var saliencyMap: Array'f32
-        saliencyMap.resize(cast(u64) (.width * .height))
-
-        // reuse the unified saliency core
-        let (S, ?) = .buildSaliencyAndEdges(.width, .height, ENHANCED_WEIGHTS)
-        saliencyMap = S
-
-        var maxScore = -1.0'f32
-        var maxX, maxY = 0's32
-
-        for y in 0 to (.height - 1)
-        {
-            for x in 0 to (.width - 1)
-            {
-                let idx   = cast(u64) y * cast(u64) .width + cast(u64) x
-                let score = saliencyMap[idx]
-                if score > maxScore
-                {
-                    maxScore = score
-                    maxX     = x
-                    maxY     = y
-                }
-            }
-        }
-
-        var out: retval
-        out.x     = cast(f32) maxX / cast(f32) .width
-        out.y     = cast(f32) maxY / cast(f32) .height
-        out.score = maxScore
-        return out
+        // Maximum working image size (pixels) for the longest side when
+        // computing crops/scores. 0 (or <=0) disables downscaling.
+        // The original image is always used for the final crop.
+        maxSize: s32 = 0
     }
 
     // Kept as a public helper; now delegates to unified core
     mtd const computeSaliencyMap(saliencyMap: &Array'f32, weights: SaliencyWeights)
     {
-        let (S, ?) = .buildSaliencyAndEdges(.width, .height, weights)
-        saliencyMap = S
+        (saliencyMap, ?) = .buildSaliencyAndEdges(.width, .height, weights)
     }
 
     #[Swag.Overload]
-    mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f64
+    mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f32
     {
+        // If a max working size is set and we’re larger, evaluate on a resized copy
+        if opts.maxSize > 0
+        {
+            let W0      = .width
+            let H0      = .height
+            let maxSide = Math.max(W0, H0)
+            if maxSide > opts.maxSize
+            {
+                let scale = cast(f32) opts.maxSize / maxSide
+                let w2    = Math.max(1, cast(s32) Math.round(scale * W0))
+                let h2    = Math.max(1, cast(s32) Math.round(scale * H0))
+
+                var work = dref me
+                work.resize(w2, h2)
+
+                // Scale the input rect down to the working copy
+                var rs: Math.Rectangle
+                rs.x      = Math.clamp(cast(s32) Math.round(rect.x * scale), 0, w2 - 1)
+                rs.y      = Math.clamp(cast(s32) Math.round(rect.y * scale), 0, h2 - 1)
+                rs.width  = Math.max(1, cast(s32) Math.round(rect.width * scale))
+                rs.height = Math.max(1, cast(s32) Math.round(rect.height * scale))
+                rs.width  = Math.min(rs.width, w2 - rs.x)
+                rs.height = Math.min(rs.height, h2 - rs.y)
+
+                // Evaluate on the working copy (it won’t downscale again since it’s <= maxSize)
+                return work.evaluateCropScore(rs, opts)
+            }
+        }
+
+        // Original (no-downscale) path remains unchanged
         if opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
             return .evaluateCropScoreFast(rect, opts)
         return .evaluateCropScoreFull(rect, opts)
     }
 
     #[Swag.Overload]
-    mtd const evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts, precomputedSaliency: Array'f32)->f64
+    mtd const evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts, precomputedSaliency: Array'f32)->f32
     {
         var sb = boxBlurViaIntegral(precomputedSaliency, .width, .height, opts.blurRadius)
         if opts.thirdsWeight > 0.01
         {
             let t = buildThirdsMap(.width, .height, THIRDS_SIGMA)
-            for i in 0 until .width * .height
-            {
-                let idx = cast(u64) i
-                sb[idx] = sb[idx] + opts.thirdsWeight * t[idx]
-            }
+            for i in 0 until .width * .height:
+                sb[i] = sb[i] + opts.thirdsWeight * t[i]
         }
 
         var ii   = buildIntegral(&sb, .width, .height)
-        let area = cast(f64) (rect.width * rect.height)
+        let area = cast(f32) (rect.width * rect.height)
         let sumS = sumRect(&ii, .width, .height, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
         return sumS / area
     }
 
     mtd smartCrop(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})
     {
+        Debug.assert(rect.width > 0 and rect.height > 0)
+
+        let W0 = .width
+        let H0 = .height
+
+        // If a max working size is set and we’re larger, compute on a resized copy
+        if opts.maxSize > 0
+        {
+            let maxSide = Math.max(W0, H0)
+            if maxSide > opts.maxSize
+            {
+                let scale = cast(f32) opts.maxSize / maxSide
+                let w2    = Math.max(1, cast(s32) Math.round(scale * W0))
+                let h2    = Math.max(1, cast(s32) Math.round(scale * H0))
+
+                // Working copy (resized) — use it only to compute the rectangle
+                var work = dref me
+                work.resize(w2, h2)
+
+                let rSmall = work.calculateReframeRect(rect.width, rect.height, opts)
+
+                // Map the rectangle back to original coordinates
+                var r: Math.Rectangle
+                r.x      = Math.clamp(cast(s32) Math.round(rSmall.x / scale), 0, W0 - 1)
+                r.y      = Math.clamp(cast(s32) Math.round(rSmall.y / scale), 0, H0 - 1)
+                r.width  = Math.max(1, cast(s32) Math.round(rSmall.width / scale))
+                r.height = Math.max(1, cast(s32) Math.round(rSmall.height / scale))
+                r.width  = Math.min(r.width, W0 - r.x)
+                r.height = Math.min(r.height, H0 - r.y)
+
+                .crop(r) // Final crop is performed on the ORIGINAL image
+                return
+            }
+        }
+
+        // No downscaling needed — use the existing path
         .crop(.calculateReframeRect(rect.width, rect.height, opts))
     }
 }
