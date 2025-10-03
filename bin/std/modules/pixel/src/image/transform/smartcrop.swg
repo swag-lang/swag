@@ -27,7 +27,7 @@ public impl Image
     // Pack of precomputed features + integrals to avoid recomputation
     private struct FeaturePack
     {
-        Sblur:     Array'f32     // blurred saliency (and may contain thirds blended in fast paths)
+        sblur:     Array'f32     // blurred saliency (and may contain thirds blended in fast paths)
         T:         Array'f32     // thirds map (may be zero if disabled)
         E:         Array'f32     // edge distance map (high away from edges; 1 at far, 0 at edges)
         iiS:       Array'f32
@@ -369,7 +369,7 @@ public impl Image
         var (S, Eedge) = .buildSaliencyAndEdges(w, h, ENHANCED_WEIGHTS)
 
         // Blur saliency
-        var Sb = boxBlurViaIntegral(&S, w, h, opts.blurRadius)
+        var sb = boxBlurViaIntegral(&S, w, h, opts.blurRadius)
 
         // Thirds map (or zero)
         var T = getThirdsOrZero(w, h, opts.thirdsWeight > 0.01)
@@ -388,12 +388,12 @@ public impl Image
         }
 
         // Build integrals
-        let iiS = buildIntegral(&Sb, w, h)
+        let iiS = buildIntegral(&sb, w, h)
         let iiT = buildIntegral(&T, w, h)
         let iiE = buildIntegral(&E, w, h)
 
         var pack: retval
-        pack.Sblur = Sb
+        pack.sblur = sb
         pack.E     = E
         pack.T     = T
         pack.iiS   = iiS
@@ -404,21 +404,21 @@ public impl Image
 
     private func prepareScoreCtx(w, h: s32, pack: &FeaturePack, imgArea: f32, opts: SmartCropSearchOpts, shrinkW: f32)->ScoreCtx
     {
-        let cx   = 0.5'f32 * cast(f32) w
-        let cy   = 0.5'f32 * cast(f32) h
-        let d2Mx = cx * cx + cy * cy         // correct normalization
+        let cx   = w * 0.5
+        let cy   = h * 0.5
+        let d2Mx = cx * cx + cy * cy     // correct normalization
 
-        var ctx: ScoreCtx
+        var ctx: retval
         ctx.iiS     = &pack.iiS
         ctx.iiT     = &pack.iiT
         ctx.iiE     = &pack.iiE
         ctx.w       = w
         ctx.h       = h
         ctx.imgArea = imgArea
-        ctx.thirdsW = cast(f32) opts.thirdsWeight
-        ctx.centerW = cast(f32) opts.centerWeight
+        ctx.thirdsW = opts.thirdsWeight
+        ctx.centerW = opts.centerWeight
         ctx.shrinkW = shrinkW
-        ctx.edgePen = cast(f32) opts.edgePenalty
+        ctx.edgePen = opts.edgePenalty
         ctx.cx      = cx
         ctx.cy      = cy
         ctx.d2Max   = d2Mx
@@ -445,8 +445,8 @@ public impl Image
         s += ctx.shrinkW * areaFrac
 
         // Center bonus (normalized by corrected d2Max)
-        let cwx = cast(f32) x0 + 0.5 * cast(f32) cw
-        let cwy = cast(f32) y0 + 0.5 * cast(f32) ch
+        let cwx = x0 + 0.5 * cw
+        let cwy = y0 + 0.5 * ch
         let d2  = (cwx - ctx.cx) * (cwx - ctx.cx) + (cwy - ctx.cy) * (cwy - ctx.cy)
         s += ctx.centerW * (1.0 - (d2 / ctx.d2Max))
 
@@ -459,12 +459,12 @@ public impl Image
         if imgAspect > aspect
         {
             h0 = Math.min(h, Math.max(4, h0))
-            w0 = Math.min(w, Math.max(4, cast(s32) Math.round(cast(f32) h0 * cast(f32) aspect)))
+            w0 = Math.min(w, Math.max(4, cast(s32) Math.round(cast(f32) h0 * aspect)))
         }
         else
         {
             w0 = Math.min(w, Math.max(4, w0))
-            h0 = Math.min(h, Math.max(4, cast(s32) Math.round(cast(f32) w0 / cast(f32) aspect)))
+            h0 = Math.min(h, Math.max(4, cast(s32) Math.round(cast(f32) w0 / aspect)))
         }
 
         return {w0, h0}
@@ -475,8 +475,8 @@ public impl Image
         let maxX   = ctx.w - bestW
         let maxY   = ctx.h - bestH
         var bx = bestX, by = bestY
-        var bScore = -1.0e30'f32
-        var bD2    = 1.0e30'f32
+        var bScore = -1.0e30
+        var bD2    = 1.0e30
 
         let r0 = scoreWindow(ctx, bx, by, bestW, bestH)
         bScore = r0.score; bD2    = r0.d2
@@ -508,8 +508,8 @@ public impl Image
         let scales: [5] f32 = [0.88, 0.94, 1.00, 1.06, 1.12]
 
         var bx = bestX, by = bestY, bw = bestW, bh = bestH
-        var bScore = -1.0e30'f32
-        var bD2    = 1.0e30'f32
+        var bScore = -1.0e30
+        var bD2    = 1.0e30
 
         {
             let r0 = scoreWindow(ctx, bestX, bestY, bestW, bestH)
@@ -520,8 +520,8 @@ public impl Image
         {
             if i == 2:
                 continue
-            let cw = cast(s32) Math.round(cast(f32) bestW * scales[i])
-            let ch = cast(s32) Math.round(cast(f32) bestH * scales[i])
+            let cw = cast(s32) Math.round(bestW * scales[i])
+            let ch = cast(s32) Math.round(bestH * scales[i])
             if cw < 4 or ch < 4:
                 continue
             if cw > ctx.w or ch > ctx.h:
@@ -575,9 +575,9 @@ public impl Image
         let imgArea = cast(f32) (w * h)
         var ctx     = prepareScoreCtx(w, h, &pack, imgArea, opts, 0.0)     // single-scale ignores shrink prior
 
-        var bestX, bestY = 0's32
-        var bestScore = -1.0e30'f32
-        var bestD2    = 1.0e30'f32
+        var bestX, bestY = 0
+        var bestScore = -1.0e30
+        var bestD2    = 1.0e30
 
         let maxX   = w - cropW
         let maxY   = h - cropH
@@ -634,28 +634,28 @@ public impl Image
         var ctx     = prepareScoreCtx(w, h, &pack, imgArea, opts, cast(f32) opts.shrinkPrior)
 
         let minArea = opts.minCoverage * imgArea
-        let STEPS   = opts.maxSearchSteps
+        let steps   = opts.maxSearchSteps
 
         var bestX, bestY, bestW, bestH = 0
         var bestScore    = -1.0e30
         var bestCenterD2 = 1.0e30
 
-        for step in 0 to (STEPS - 1)
+        for step in 0 to (steps - 1)
         {
-            let t          = cast(f32) step / cast(f32) (STEPS - 1)
-            let frac       = 1.0 - Math.pow(t, 1.3) * (1.0 - cast(f32) opts.minCoverage)
+            let t          = step / cast(f32) (steps - 1)
+            let frac       = 1.0 - Math.pow(t, 1.3) * (1.0 - opts.minCoverage)
             let targetArea = Math.max(frac * imgArea, minArea)
 
             var cw, ch: s32
             if imgAspect > aspect
             {
-                ch = Math.min(h, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea / cast(f32) aspect))))
-                cw = Math.min(w, cast(s32) Math.round(cast(f32) ch * cast(f32) aspect))
+                ch = Math.min(h, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea / aspect))))
+                cw = Math.min(w, cast(s32) Math.round(ch * aspect))
             }
             else
             {
-                cw = Math.min(w, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea * cast(f32) aspect))))
-                ch = Math.min(h, cast(s32) Math.round(cast(f32) cw / cast(f32) aspect))
+                cw = Math.min(w, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea * aspect))))
+                ch = Math.min(h, cast(s32) Math.round(cw / aspect))
             }
 
             if cw < 4 or ch < 4:
@@ -665,8 +665,8 @@ public impl Image
             if maxX < 0 or maxY < 0:
                 continue
 
-            let strideX = Math.max(1, cast(s32) Math.round(opts.strideFrac * cast(f32) cw))
-            let strideY = Math.max(1, cast(s32) Math.round(opts.strideFrac * cast(f32) ch))
+            let strideX = Math.max(1, cast(s32) Math.round(opts.strideFrac * cw))
+            let strideY = Math.max(1, cast(s32) Math.round(opts.strideFrac * ch))
 
             for var y0 = 0; y0 <= maxY; y0 += strideY
             {
@@ -758,11 +758,11 @@ public impl Image
             for i in 0 to (w * h - 1)
             {
                 let idx = cast(u64) i
-                pack.Sblur[idx] = pack.Sblur[idx] + opts.thirdsWeight * pack.T[idx]
+                pack.sblur[idx] = pack.sblur[idx] + opts.thirdsWeight * pack.T[idx]
             }
         }
 
-        var ii   = buildIntegral(&pack.Sblur, w, h)
+        var ii   = buildIntegral(&pack.sblur, w, h)
         let area = cast(f32) (rect.width * rect.height)
         let sumS = sumRect(&ii, w, h, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
         return sumS / area
@@ -772,11 +772,8 @@ public impl Image
     {
         let w = .width, h = .height
         var pack = .buildFeaturePack(w, h, opts, true)
-
-        let imgArea = cast(f32) (w * h)
-        var ctx     = prepareScoreCtx(w, h, &pack, imgArea, opts, cast(f32) opts.shrinkPrior)
-
-        let r = scoreWindow(&ctx, cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
+        var ctx  = prepareScoreCtx(w, h, &pack, cast(f32) (w * h), opts, cast(f32) opts.shrinkPrior)
+        let r    = scoreWindow(&ctx, cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
         return r.score
     }
 }
