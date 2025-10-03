@@ -46,7 +46,7 @@ public impl Image
         return Math.pow((c + 0.055) / 1.055, 2.4)
     }
 
-    private func buildIntegral(src: &Array'f32, W, H: s32)->Array'f64
+    private func buildIntegral(src: Array'f32, W, H: s32)->Array'f64
     {
         var ii: retval
         ii.resize(cast(u64) ((W + 1) * (H + 1)))
@@ -62,6 +62,7 @@ public impl Image
                 ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum
             }
         }
+
         return ii
     }
 
@@ -74,7 +75,7 @@ public impl Image
         return ii[D] - ii[B] - ii[C] + ii[A]
     }
 
-    private func boxBlurViaIntegral(src: &Array'f32, W, H, radius: s32)->Array'f32
+    private func boxBlurViaIntegral(src: Array'f32, W, H, radius: s32)->Array'f32
     {
         if radius <= 0:
             return src
@@ -345,18 +346,16 @@ public impl Image
         return {S, edgeMag}
     }
 
-    private func getThirdsOrZero(W, H: s32, enabled: bool)->Array'f32
+    private func getThirdsOrZero(w, h: s32, enabled: bool)->Array'f32
     {
-        var T: retval
-        T.resize(cast(u64) (W * H))
+        var tmp: retval
+        tmp.resize(w * h)
 
-        if enabled
-        {
-            let Tb = buildThirdsMap(W, H, THIRDS_SIGMA)
-            return Tb
-        }
+        if enabled:
+            return buildThirdsMap(w, h, THIRDS_SIGMA)
 
-        return T
+        tmp.fill(0)
+        return tmp
     }
 
     private mtd const buildFeaturePack(W, H: s32, opts: SmartCropSearchOpts, needEdges: bool)->FeaturePack
@@ -368,7 +367,7 @@ public impl Image
         var Sb = boxBlurViaIntegral(&S, W, H, opts.blurRadius)
 
         // Thirds map (or zero)
-        var T = getThirdsOrZero(W, H, opts.computeThirds)
+        var T = getThirdsOrZero(W, H, opts.thirdsWeight > 0.01)
 
         // Edge distance (or ones if disabled)
         var E: Array'f32
@@ -746,7 +745,7 @@ public impl Image
         // No edge penalty, light-third blending if requested
         var pack = .buildFeaturePack(W, H, opts, false)
 
-        if opts.computeThirds and opts.thirdsWeight > 0.01
+        if opts.thirdsWeight > 0.01
         {
             for i in 0 to (W * H - 1)
             {
@@ -789,18 +788,45 @@ public impl Image
         edge:           f32
     }
 
+    // Smart crop search parameters
     struct SmartCropSearchOpts
     {
-        minCoverage:        f32 = 0.4
-        blurRadius:         s32 = 3
-        strideFrac:         f32 = 0.10
-        thirdsWeight:       f32 = 0.22
-        centerWeight:       f32 = 0.06
-        shrinkPrior:        f32 = 0.08
-        edgePenalty:        f32 = 0.15
-        faceWeight:         f32 = 0.0
-        maxSearchSteps:     s32 = 10
-        computeThirds:      bool = true
+        // Minimum fraction of the original image area the crop must keep.
+        // Range: 0.0–1.0. Lower allows tighter crops; higher preserves more context.
+        // Special: >= 0.95 triggers fast single-scale mode (no multi-scale search).
+        minCoverage:   f32 = 0.4
+
+        // Blur radius (in pixels) applied to the saliency map for smoothing.
+        // Range: 0–5 (typical 2–4). Higher = smoother gradients, less fine detail.
+        blurRadius:    s32 = 3
+
+        // Search stride as a fraction of the crop size (per axis).
+        // Range: 0.01–0.20 (typical 0.06–0.12). Lower = slower, higher quality.
+        strideFrac:    f32 = 0.10
+
+        // Weight for the rule-of-thirds compositional bonus.
+        // Range: 0.0–0.5 (typical 0.15–0.25). 0.0 disables thirds influence.
+        thirdsWeight:  f32 = 0.22
+
+        // Weight for proximity to the image center (center bias).
+        // Range: 0.0–0.3 (typical 0.05–0.15). 0.0 removes center preference.
+        centerWeight:  f32 = 0.06
+
+        // Prior favoring larger crops (adds an area-proportional bonus).
+        // Range: 0.0–0.3 (typical 0.05–0.15). 0.0 means no size preference.
+        shrinkPrior:   f32 = 0.08
+
+        // Penalty for crops that cut through strong edges (uses edge-distance map).
+        // Range: 0.0–0.5 (typical 0.10–0.25). 0.0 disables the edge term.
+        edgePenalty:   f32 = 0.15
+
+        // Reserved for future face detection bonus when faces are inside the crop.
+        // Range: 0.0–1.0 (currently unused).
+        faceWeight:    f32 = 0.0
+
+        // Number of scale steps in multi-scale search.
+        // Range: 5–20 (typical 8–12). More = more thorough but slower.
+        maxSearchSteps:s32 = 10
     }
 
     mtd const findInterestPoint()->InterestPoint
@@ -847,42 +873,33 @@ public impl Image
     #[Swag.Overload]
     mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f64
     {
-        Debug.assert(.isValid())
-        Debug.assert(rect.width > 0 and rect.height > 0)
-        Debug.assert(rect.x >= 0 and rect.y >= 0)
-        Debug.assert(rect.x + rect.width <= .width)
-        Debug.assert(rect.y + rect.height <= .height)
-
         if opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
             return .evaluateCropScoreFast(rect, opts)
         return .evaluateCropScoreFull(rect, opts)
     }
 
     #[Swag.Overload]
-    mtd const evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts, precomputedSaliency: &Array'f32)->f64
+    mtd const evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts, precomputedSaliency: Array'f32)->f64
     {
-        let W = .width, H = .height
-
-        var Sb = boxBlurViaIntegral(precomputedSaliency, W, H, opts.blurRadius)
-        if opts.computeThirds and opts.thirdsWeight > 0.01
+        var sb = boxBlurViaIntegral(precomputedSaliency, .width, .height, opts.blurRadius)
+        if opts.thirdsWeight > 0.01
         {
-            let T = buildThirdsMap(W, H, THIRDS_SIGMA)
-            for i in 0 to (W * H - 1)
+            let t = buildThirdsMap(.width, .height, THIRDS_SIGMA)
+            for i in 0 until .width * .height
             {
                 let idx = cast(u64) i
-                Sb[idx] = Sb[idx] + opts.thirdsWeight * T[idx]
+                sb[idx] = sb[idx] + opts.thirdsWeight * t[idx]
             }
         }
 
-        var ii   = buildIntegral(&Sb, W, H)
+        var ii   = buildIntegral(&sb, .width, .height)
         let area = cast(f64) (rect.width * rect.height)
-        let sumS = sumRect(&ii, W, H, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
+        let sumS = sumRect(&ii, .width, .height, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
         return sumS / area
     }
 
     mtd smartCrop(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})
     {
-        Debug.assert(rect.width > 0 and rect.height > 0)
         .crop(.calculateReframeRect(rect.width, rect.height, opts))
     }
 }
