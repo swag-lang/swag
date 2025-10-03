@@ -612,6 +612,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 if (funcParam->assignment->typeInfo->sizeOf && !funcParam->assignment->typeInfo->isPointerNull())
                 {
                     varNode->assignment = funcParam->assignment->clone(cloneContext);
+                    varNode->assignment->addAlternativeScope(funcParam->assignment->ownerScope);
                     varNode->assignment->inheritOwners(identifier);
                 }
 
