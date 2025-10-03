@@ -581,6 +581,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 const auto varNode = Ast::newVarDecl(form(R"(__3tmp_%d)", g_UniqueID.fetch_add(1)), nullptr, identifier);
                 varNode->addAstFlag(AST_GENERATED);
                 varNode->addSpecFlag(AstVarDecl::SPEC_FLAG_POST_STACK);
+                varNode->inheritTokenLocation(identifier->token);
 
                 // Put child front, because emitCall wants the parameters to be the last
                 Ast::removeFromParent(varNode);
@@ -595,6 +596,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 if (funcParam->type)
                 {
                     varNode->type = funcParam->type->clone(cloneContext);
+                    varNode->type->addAlternativeScope(funcParam->type->ownerScope);
 
                     // Need to have the real type for the variable
                     if (funcParam->type->typeInfo->isPointerRef())
@@ -614,6 +616,7 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
                 }
 
                 const auto newParam = Ast::newFuncCallParam(nullptr, identifier->callParameters);
+                newParam->inheritTokenLocation(identifier->token);
 
                 // Make it a named param, in case some other default "normal" parameters are before (because in that case
                 // we let the emitCall to deal with those default parameters)
@@ -621,7 +624,8 @@ bool Semantic::setSymbolMatchCallParams(SemanticContext* context, const OneMatch
 
                 newParam->indexParam = i;
                 newParam->addAstFlag(AST_GENERATED);
-                (void) Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
+                const auto refId = Ast::newIdentifierRef(varNode->token.text, nullptr, newParam);
+                refId->inheritTokenLocation(identifier->token);
 
                 // Add the 2 nodes to the semantic
                 context->baseJob->nodes.push_back(newParam);

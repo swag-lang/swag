@@ -164,7 +164,7 @@ namespace Semantic
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2);
     bool           evaluateConstExpression(SemanticContext* context, AstNode* node1, AstNode* node2, AstNode* node3);
     bool           executeCompilerNode(SemanticContext* context, AstNode* node, bool onlyConstExpr);
-    bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* identifier, const SymbolOverload* overload, AstNode* ufcsFirstParam);
+    bool           fillMatchContextCallParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, const AstIdentifier* identifier, const SymbolOverload* overload, AstNode* ufcsFirstParam);
     bool           fillMatchContextGenericParameters(SemanticContext* context, SymbolMatchContext& symMatchContext, AstIdentifier* node, const SymbolOverload* overload);
     bool           findEnumTypeInCallContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);
     bool           findEnumTypeInContext(SemanticContext* context, const AstNode* node, VectorNative<TypeInfoEnum*>& result, VectorNative<std::pair<AstNode*, TypeInfoEnum*>>& has, VectorNative<SymbolOverload*>& testedOver);

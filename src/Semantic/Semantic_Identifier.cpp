@@ -75,8 +75,8 @@ bool Semantic::resolveTopLevelIdentifier(SemanticContext* context)
     const auto node = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     SWAG_CHECK(resolveIdentifier(context));
     YIELD();
-    
-    if(!node->resolvedSymbolName()->is(SymbolKind::Function))
+
+    if (!node->resolvedSymbolName()->is(SymbolKind::Function))
     {
         const Diagnostic err{node, node->token, formErr(Err0310, node->token.cstr())};
         return context->report(err);
@@ -88,12 +88,12 @@ bool Semantic::resolveTopLevelIdentifier(SemanticContext* context)
         const Diagnostic err{node, node->token, formErr(Err0310, node->token.cstr())};
         return context->report(err);
     }
-    
-    for (const auto p: node->callParameters->children)
+
+    for (const auto p : node->callParameters->children)
     {
         SWAG_CHECK(checkIsConstExpr(context, p));
     }
-    
+
     return true;
 }
 
@@ -176,7 +176,7 @@ void Semantic::setConst(AstNode* node)
         if (node->typeInfo && node->typeInfo->isStruct())
             node->typeInfo = g_TypeMgr->makeConst(node->typeInfo);
     }
-    
+
     const auto overload = node->resolvedSymbolOverload();
     if (overload && overload->hasFlag(OVERLOAD_CONST_ASSIGN))
         node->addSemFlag(SEMFLAG_CONST_ASSIGN);
@@ -544,7 +544,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
 
 bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
                                               SymbolMatchContext&   symMatchContext,
-                                              AstIdentifier*        identifier,
+                                              const AstIdentifier*  identifier,
                                               const SymbolOverload* overload,
                                               AstNode*              ufcsFirstParam)
 {
