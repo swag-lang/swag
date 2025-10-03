@@ -80,18 +80,12 @@ public impl Image
     // Averages all pixels within square radius around each pixel
     private mtd const boxBlurViaIntegral(src: &Array'f32, W, H, radius: s32)->Array'f32
     {
-        if radius <= 0
-        {
-            // No blur requested, return copy of source
-            var copy: Array'f32
-            copy.resize(cast(u64) (W * H))
-            for i in 0 to (W * H - 1):
-                copy[cast(u64) i] = src[cast(u64) i]
-            return copy
-        }
+        if radius <= 0:
+            return src
 
-        var ii   = .buildIntegral(src, W, H)
-        var dst: Array'f32
+        var ii = .buildIntegral(src, W, H)
+
+        var dst: retval
         dst.resize(cast(u64) (W * H))
         for y in 0 to (H - 1)
         {
@@ -106,6 +100,7 @@ public impl Image
                 dst[cast(u64) (y * W + x)] = cast(f32) (S / n)
             }
         }
+
         return dst
     }
 
@@ -136,7 +131,7 @@ public impl Image
         }
 
         // Combine horizontal and vertical with power for sharper peaks
-        var T: Array'f32
+        var T: retval
         T.resize(cast(u64) (W * H))
         for y in 0 to (H - 1):
             for x in 0 to (W - 1):
@@ -303,15 +298,10 @@ public impl Image
         return {bx, by, bw, bh, bScore, bD2}
     }
 
-    // Fast single-scale cropping algorithm
-    // Simpler and faster than smart mode, suitable for real-time applications
-    private mtd const calculateReframeRect(targetWidth, targetHeight: f32, opts: SmartCropSearchOpts)->Math.Rectangle
+    // Fast single-scale cropping algorithm - used when minCoverage >= 0.95
+    // Simpler and faster than multi-scale mode, suitable for real-time applications
+    private mtd const calculateSingleScale(aspect, imgAspect: f32, W, H: s32, Sb: &Array'f32, opts: SmartCropSearchOpts)->Math.Rectangle
     {
-        let aspect    = targetWidth / targetHeight
-        let W         = .width
-        let H         = .height
-        let imgAspect = cast(f32) W / cast(f32) H
-
         // Determine crop dimensions to match target aspect ratio
         var cropW: s32
         var cropH: s32
@@ -326,24 +316,19 @@ public impl Image
             cropH = cast(s32) Math.floor(cast(f32) cropW / aspect + 0.5)
         }
 
-        // Compute saliency map
-        var S: Array'f32
-        S.resize(cast(u64) (W * H))
-        .computeSaliencyMap(&S, ENHANCED_WEIGHTS)
-
-        // Blur saliency for smoother results
-        var Sb = .boxBlurViaIntegral(&S, W, H, opts.blurRadius)
-
-        // Add rule-of-thirds bonus directly to saliency
-        var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
-        for i in 0 to (W * H - 1)
+        // Add rule-of-thirds bonus directly to saliency if enabled
+        if opts.computeThirds and opts.thirdsWeight > 0.01
         {
-            let idx = cast(u64) i
-            Sb[idx] = Sb[idx] + 0.15 * T[idx] // 15% rule-of-thirds weight
+            var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+            for i in 0 to (W * H - 1)
+            {
+                let idx = cast(u64) i
+                Sb[idx] = Sb[idx] + opts.thirdsWeight * T[idx]
+            }
         }
 
         // Build integral image for fast region sum queries
-        var ii = .buildIntegral(&Sb, W, H)
+        var ii = .buildIntegral(Sb, W, H)
 
         var bestX, bestY = 0's32
         var bestSum = -1.0'f64
@@ -355,8 +340,8 @@ public impl Image
         let cyImg           = 0.5'f64 * cast(f64) H
         var bestCenterDist2 = 1.0e30'f64
 
-        // OPTIMIZED: Increased stride for faster coarse search
-        let stride = Math.max(1, Math.min(cropW, cropH) / 15)
+        // Adaptive stride based on strideFrac parameter
+        let stride = Math.max(1, cast(s32) Math.round(opts.strideFrac * cast(f32) Math.min(cropW, cropH)))
 
         for var y0 = 0; y0 <= maxY; y0 += stride
         {
@@ -388,12 +373,13 @@ public impl Image
             }
         }
 
-        // Fine refinement pass in ±3 pixel neighborhood
+        // Fine refinement pass (adaptive range based on stride)
+        let refineRange = Math.max(1, Math.min(3, stride / 2))
         {
-            let rx0 = Math.clamp(bestX - 3, 0, maxX)
-            let ry0 = Math.clamp(bestY - 3, 0, maxY)
-            let rx1 = Math.clamp(bestX + 3, 0, maxX)
-            let ry1 = Math.clamp(bestY + 3, 0, maxY)
+            let rx0 = Math.clamp(bestX - refineRange, 0, maxX)
+            let ry0 = Math.clamp(bestY - refineRange, 0, maxY)
+            let rx1 = Math.clamp(bestX + refineRange, 0, maxX)
+            let ry1 = Math.clamp(bestY + refineRange, 0, maxY)
             for y0 in ry0 to ry1
             {
                 for x0 in rx0 to rx1
@@ -417,35 +403,40 @@ public impl Image
         return r
     }
 
-    // OPTIMIZED: Advanced multi-scale cropping with reduced iterations
-    private mtd const calculateReframeRectSmart(targetWidth, targetHeight: f32, opts: SmartCropSearchOpts)->Math.Rectangle
+    // Multi-scale cropping with full feature set
+    private mtd const calculateMultiScale(aspect, imgAspect: f32, W, H: s32, Sb: &Array'f32, imgArea: f64, opts: SmartCropSearchOpts)->Math.Rectangle
     {
-        let W = .width, H = .height
-        Debug.assert(W > 0 and H > 0)
+        // Build rule-of-thirds map if enabled
+        var T: Array'f32
+        if opts.computeThirds
+        {
+            T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+        }
+        else
+        {
+            T.resize(cast(u64) (W * H))
+            for i in 0 to (W * H - 1):
+                T[cast(u64) i] = 0.0
+        }
 
-        let aspect    = targetWidth / targetHeight
-        let imgAspect = cast(f32) W / cast(f32) H
-        let imgArea   = cast(f64) (W * H)
-
-        // Compute saliency map
-        var S: Array'f32
-        S.resize(cast(u64) (W * H))
-        .computeSaliencyMap(&S, ENHANCED_WEIGHTS)
-
-        // Apply blur for smoother gradients
-        var Sb = .boxBlurViaIntegral(&S, W, H, opts.blurRadius)
-
-        // Build rule-of-thirds map
-        var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
-
-        // Build edge map and distance transform
-        var edges: Array'f32
-        edges.resize(cast(u64) (W * H))
-        .computeEdgeMap(&edges)
-        var E = .buildEdgeDistanceMap(&edges, W, H)
+        // Build edge map and distance transform if enabled
+        var E: Array'f32
+        if opts.computeEdges and opts.edgePenalty > 0.01
+        {
+            var edges: Array'f32
+            edges.resize(cast(u64) (W * H))
+            .computeEdgeMap(&edges)
+            E = .buildEdgeDistanceMap(&edges, W, H)
+        }
+        else
+        {
+            E.resize(cast(u64) (W * H))
+            for i in 0 to (W * H - 1):
+                E[cast(u64) i] = 1.0 // Maximum distance (no penalty)
+        }
 
         // Create integral images for all features
-        var iiS = .buildIntegral(&Sb, W, H)
+        var iiS = .buildIntegral(Sb, W, H)
         var iiT = .buildIntegral(&T, W, H)
         var iiE = .buildIntegral(&E, W, H)
 
@@ -470,7 +461,7 @@ public impl Image
         ctx.d2Max   = d2Mx
 
         let minArea = cast(f64) opts.minCoverage * imgArea
-        const STEPS = 10's32                                   // OPTIMIZED: Reduced from 16 to 10 steps
+        let STEPS   = opts.maxSearchSteps
 
         var bestX, bestY, bestW, bestH = 0's32
         var bestScore    = -1.0e30'f64
@@ -536,11 +527,18 @@ public impl Image
             }
         }
 
-        // Fallback to fast mode if search failed
-        if bestW == 0 or bestH == 0:
-            return .calculateReframeRect(targetWidth, targetHeight, opts)
+        // Fallback if search failed
+        if bestW == 0 or bestH == 0
+        {
+            var r: retval
+            r.x      = 0
+            r.y      = 0
+            r.width  = W
+            r.height = H
+            return r
+        }
 
-        // OPTIMIZED: Reduced refinement passes for speed
+        // Refinement passes
         {
             // Single refinement at range 2
             let rr = .refinePosition(&ctx, bestX, bestY, bestW, bestH, 2)
@@ -579,6 +577,33 @@ public impl Image
         r.width  = bestW
         r.height = bestH
         return r
+    }
+
+    // UNIFIED: Single adaptive cropping function that chooses strategy based on options
+    private mtd const calculateReframeRect(targetWidth, targetHeight: f32, opts: SmartCropSearchOpts)->Math.Rectangle
+    {
+        let W = .width, H = .height
+        Debug.assert(W > 0 and H > 0)
+
+        let aspect    = targetWidth / targetHeight
+        let imgAspect = cast(f32) W / cast(f32) H
+        let imgArea   = cast(f64) (W * H)
+
+        // Compute saliency map (shared by all modes)
+        var S: Array'f32
+        S.resize(cast(u64) (W * H))
+        .computeSaliencyMap(&S, ENHANCED_WEIGHTS)
+
+        // Apply blur for smoother gradients
+        var Sb = .boxBlurViaIntegral(&S, W, H, opts.blurRadius)
+
+        // FAST PATH: Single-scale mode when no scaling desired
+        // Triggered when minCoverage >= 0.95 (essentially full coverage)
+        if opts.minCoverage >= 0.95:
+            return .calculateSingleScale(aspect, imgAspect, W, H, &Sb, opts)
+
+        // SMART PATH: Multi-scale search for optimal crop
+        return .calculateMultiScale(aspect, imgAspect, W, H, &Sb, imgArea, opts)
     }
 
     // Estimate percentiles using sampled subset for efficiency
@@ -833,114 +858,40 @@ public impl Image
             }
         }
     }
-}
 
-public impl Image
-{
-    struct InterestPoint
+    // Fast evaluation when only basic features are needed
+    private mtd const evaluateCropScoreFast(rect: Math.Rectangle, opts: SmartCropSearchOpts)->f64
     {
-        x, y:      f32     // Normalized coordinates (0.0 to 1.0) of the most salient point
-        score:     f32     // Saliency score at this point
-    }
+        let W = .width, H = .height
 
-    // Smart crop search parameters
-    struct SmartCropSearchOpts
-    {
-        // Minimum fraction of original image to preserve (range: 0.0-1.0, typically 0.4-0.7)
-        // Lower values allow tighter crops, higher values preserve more context
-        // Example: 0.4 = crop can be as small as 40% of original image area
-        minCoverage: f32 = 0.4
+        // Only compute saliency (skip edges, distance maps)
+        var S: Array'f32
+        S.resize(cast(u64) (W * H))
+        .computeSaliencyMap(&S, ENHANCED_WEIGHTS)
+        var Sb = .boxBlurViaIntegral(&S, W, H, opts.blurRadius)
 
-        // Blur radius for smoothing saliency map (range: 0-5 pixels)
-        // Higher values create smoother saliency gradients but lose detail
-        // 0 = no blur, 2 = fast/subtle, 3 = balanced, 5 = very smooth
-        blurRadius: s32 = 3
-
-        // Stride fraction for position search (range: 0.01-0.15)
-        // Controls spacing between tested positions as fraction of crop size
-        // Lower = more thorough but slower, higher = faster but may miss optimal position
-        // Example: 0.04 = test positions every 4% of crop dimension
-        // OPTIMIZED: Default increased to 0.10 for 2-3x speedup with minimal quality loss
-        strideFrac: f32 = 0.10
-
-        // Weight for rule-of-thirds bonus (range: 0.0-0.5, typically 0.15-0.25)
-        // Higher values strongly favor crops aligned with compositional thirds
-        // 0.0 = ignore rule of thirds, 0.22 = balanced, 0.5 = very strong preference
-        thirdsWeight: f32 = 0.22
-
-        // Weight for center proximity bonus (range: 0.0-0.3, typically 0.05-0.15)
-        // Higher values favor crops centered on the image center
-        // 0.0 = no center bias, 0.06 = subtle, 0.15 = strong center preference
-        centerWeight: f32 = 0.06
-
-        // Prior favoring larger crops (range: 0.0-0.3, typically 0.05-0.15)
-        // Penalizes small crops to preserve more context when possible
-        // 0.0 = no size preference, 0.08 = subtle, 0.2 = strong preference for full image
-        shrinkPrior: f32 = 0.08
-
-        // Penalty for cutting through edges (range: 0.0-0.5, typically 0.1-0.25)
-        // Higher values avoid cropping that slices through detected edges
-        // 0.0 = ignore edges, 0.15 = balanced, 0.3 = strongly avoid edge cuts
-        edgePenalty: f32 = 0.15
-
-        // Weight for face detection bonus (range: 0.0-1.0, currently unused)
-        // Reserved for future face detection integration
-        // Would increase score for crops containing detected faces
-        faceWeight: f32 = 0.0
-    }
-
-    // Find the most salient (visually important) point in the image
-    mtd const findInterestPoint()->InterestPoint
-    {
-        var saliencyMap: Array'f32
-        saliencyMap.resize(cast(u64) (.width * .height))
-        .computeSaliencyMap(&saliencyMap, ENHANCED_WEIGHTS)
-
-        var maxScore = -1.0'f32
-        var maxX, maxY = 0's32
-
-        // Find pixel with maximum saliency
-        for y in 0 to (.height - 1)
+        // Only build thirds map if weight is significant
+        if opts.computeThirds and opts.thirdsWeight > 0.01
         {
-            for x in 0 to (.width - 1)
+            var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+            for i in 0 to (W * H - 1)
             {
-                let idx   = cast(u64) y * cast(u64) .width + cast(u64) x
-                let score = saliencyMap[idx]
-                if score > maxScore
-                {
-                    maxScore = score
-                    maxX     = x
-                    maxY     = y
-                }
+                let idx = cast(u64) i
+                Sb[idx] = Sb[idx] + opts.thirdsWeight * T[idx]
             }
         }
 
-        var out: retval
-        out.x     = cast(f32) maxX / cast(f32) .width // Normalized X coordinate
-        out.y     = cast(f32) maxY / cast(f32) .height // Normalized Y coordinate
-        out.score = maxScore
-        return out
+        var ii   = .buildIntegral(&Sb, W, H)
+        let area = cast(f64) (rect.width * rect.height)
+        let sumS = .sumRect(&ii, W, H, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
+
+        return sumS / area
     }
 
-    // Evaluate the quality score of a specific crop rectangle
-    // Returns a score where higher values indicate better crops
-    // rect: The crop rectangle to evaluate (x, y, width, height in pixels)
-    // opts: Optional search parameters controlling weight of different factors
-    //
-    // Use this to compare multiple crop candidates:
-    //   let score1 = image.evaluateCropScore(rect1, opts)
-    //   let score2 = image.evaluateCropScore(rect2, opts)
-    //   if score2 > score1: use rect2, else use rect1
-    mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f64
+    // Full evaluation with all features
+    private mtd const evaluateCropScoreFull(rect: Math.Rectangle, opts: SmartCropSearchOpts)->f64
     {
-        let W = .width
-        let H = .height
-        Debug.assert(W > 0 and H > 0)
-        Debug.assert(rect.width > 0 and rect.height > 0)
-        Debug.assert(rect.x >= 0 and rect.y >= 0)
-        Debug.assert(rect.x + rect.width <= W)
-        Debug.assert(rect.y + rect.height <= H)
-
+        let W = .width, H = .height
         let imgArea = cast(f64) (W * H)
 
         // Compute saliency map
@@ -951,14 +902,34 @@ public impl Image
         // Apply blur for smoother gradients
         var Sb = .boxBlurViaIntegral(&S, W, H, opts.blurRadius)
 
-        // Build rule-of-thirds map
-        var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+        // Build rule-of-thirds map if enabled
+        var T: Array'f32
+        if opts.computeThirds
+        {
+            T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+        }
+        else
+        {
+            T.resize(cast(u64) (W * H))
+            for i in 0 to (W * H - 1):
+                T[cast(u64) i] = 0.0
+        }
 
-        // Build edge map and distance transform
-        var edges: Array'f32
-        edges.resize(cast(u64) (W * H))
-        .computeEdgeMap(&edges)
-        var E = .buildEdgeDistanceMap(&edges, W, H)
+        // Build edge map and distance transform if enabled
+        var E: Array'f32
+        if opts.computeEdges and opts.edgePenalty > 0.01
+        {
+            var edges: Array'f32
+            edges.resize(cast(u64) (W * H))
+            .computeEdgeMap(&edges)
+            E = .buildEdgeDistanceMap(&edges, W, H)
+        }
+        else
+        {
+            E.resize(cast(u64) (W * H))
+            for i in 0 to (W * H - 1):
+                E[cast(u64) i] = 1.0
+        }
 
         // Create integral images for all features
         var iiS = .buildIntegral(&Sb, W, H)
@@ -989,16 +960,156 @@ public impl Image
         let result = .scoreWindow(&ctx, cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
         return result.score
     }
+}
+
+public impl Image
+{
+    struct InterestPoint
+    {
+        x, y:      f32     // Normalized coordinates (0.0 to 1.0) of the most salient point
+        score:     f32     // Saliency score at this point
+    }
+
+    // Smart crop search parameters
+    struct SmartCropSearchOpts
+    {
+        // Minimum fraction of original image to preserve (range: 0.0-1.0)
+        // Lower values allow tighter crops, higher values preserve more context
+        // Example: 0.4 = crop can be as small as 40% of original image area
+        // Special: >= 0.95 triggers fast single-scale mode (no multi-scale search)
+        minCoverage: f32 = 0.4
+
+        // Blur radius for smoothing saliency map (range: 0-5 pixels)
+        // Higher values create smoother saliency gradients but lose detail
+        // 0 = no blur, 2 = fast/subtle, 3 = balanced, 5 = very smooth
+        blurRadius: s32 = 3
+
+        // Stride fraction for position search (range: 0.01-0.20)
+        // Controls spacing between tested positions as fraction of crop size
+        // Lower = more thorough but slower, higher = faster but may miss optimal position
+        // Example: 0.04 = test positions every 4% of crop dimension
+        // Default: 0.10 for good balance between speed and quality
+        strideFrac: f32 = 0.10
+
+        // Weight for rule-of-thirds bonus (range: 0.0-0.5, typically 0.15-0.25)
+        // Higher values strongly favor crops aligned with compositional thirds
+        // 0.0 = ignore rule of thirds, 0.22 = balanced, 0.5 = very strong preference
+        thirdsWeight: f32 = 0.22
+
+        // Weight for center proximity bonus (range: 0.0-0.3, typically 0.05-0.15)
+        // Higher values favor crops centered on the image center
+        // 0.0 = no center bias, 0.06 = subtle, 0.15 = strong center preference
+        centerWeight: f32 = 0.06
+
+        // Prior favoring larger crops (range: 0.0-0.3, typically 0.05-0.15)
+        // Penalizes small crops to preserve more context when possible
+        // 0.0 = no size preference, 0.08 = subtle, 0.2 = strong preference for full image
+        shrinkPrior: f32 = 0.08
+
+        // Penalty for cutting through edges (range: 0.0-0.5, typically 0.1-0.25)
+        // Higher values avoid cropping that slices through detected edges
+        // 0.0 = ignore edges, 0.15 = balanced, 0.3 = strongly avoid edge cuts
+        edgePenalty: f32 = 0.15
+
+        // Weight for face detection bonus (range: 0.0-1.0, currently unused)
+        // Reserved for future face detection integration
+        // Would increase score for crops containing detected faces
+        faceWeight: f32 = 0.0
+
+        // Maximum number of scale steps to test in multi-scale mode (range: 5-20)
+        // More steps = more thorough search but slower
+        // Default: 10 for good balance
+        maxSearchSteps: s32 = 10
+
+        // Enable rule-of-thirds computation (default: true)
+        // Set to false to skip thirds map generation for faster processing
+        computeThirds: bool = true
+
+        // Enable edge detection and distance map (default: true)
+        // Set to false to skip edge processing for faster evaluation
+        computeEdges: bool = true
+    }
+
+    // Find the most salient (visually important) point in the image
+    mtd const findInterestPoint()->InterestPoint
+    {
+        var saliencyMap: Array'f32
+        saliencyMap.resize(cast(u64) (.width * .height))
+        .computeSaliencyMap(&saliencyMap, ENHANCED_WEIGHTS)
+
+        var maxScore = -1.0'f32
+        var maxX, maxY = 0's32
+
+        // Find pixel with maximum saliency
+        for y in 0 to (.height - 1)
+        {
+            for x in 0 to (.width - 1)
+            {
+                let idx   = cast(u64) y * cast(u64) .width + cast(u64) x
+                let score = saliencyMap[idx]
+                if score > maxScore
+                {
+                    maxScore = score
+                    maxX     = x
+                    maxY     = y
+                }
+            }
+        }
+
+        var out: retval
+        out.x     = cast(f32) maxX / cast(f32) .width
+        out.y     = cast(f32) maxY / cast(f32) .height
+        out.score = maxScore
+        return out
+    }
+
+    // Evaluate the quality score of a specific crop rectangle
+    // Returns a score where higher values indicate better crops
+    // rect: The crop rectangle to evaluate (x, y, width, height in pixels)
+    // opts: Optional search parameters controlling weight of different factors
+    //
+    // Use this to compare multiple crop candidates:
+    //   let score1 = image.evaluateCropScore(rect1, opts)
+    //   let score2 = image.evaluateCropScore(rect2, opts)
+    //   if score2 > score1: use rect2, else use rect1
+    mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f64
+    {
+        Debug.assert(.isValid())
+        Debug.assert(rect.width > 0 and rect.height > 0)
+        Debug.assert(rect.x >= 0 and rect.y >= 0)
+        Debug.assert(rect.x + rect.width <= .width)
+        Debug.assert(rect.y + rect.height <= .height)
+
+        // FAST PATH: Simplified scoring when advanced features not needed
+        if !opts.computeEdges and opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
+            return .evaluateCropScoreFast(rect, opts)
+
+        // FULL PATH: Complete feature-based scoring
+        return .evaluateCropScoreFull(rect, opts)
+    }
 
     // Perform content-aware smart crop to target rectangle
     // rect: Target dimensions (width and height define aspect ratio and reference size)
-    // enableScaling: If true, uses advanced multi-scale algorithm; if false, uses fast single-scale
-    mtd smartCrop(rect: Math.Rectangle, enableScaling: bool = false, opts: SmartCropSearchOpts = {})
+    // opts: Optional parameters controlling the cropping algorithm behavior
+    //
+    // The algorithm automatically selects between fast single-scale mode and
+    // advanced multi-scale mode based on opts.minCoverage:
+    //   - minCoverage >= 0.95: Fast single-scale (for when you want full or nearly full image)
+    //   - minCoverage < 0.95: Multi-scale search (for finding optimal crops at any size)
+    //
+    // Example usage:
+    //   // Fast mode (no scaling, just find best position for 16:9 crop)
+    //   image.smartCrop(Math.Rectangle{0, 0, 1920, 1080}, SmartCropSearchOpts{minCoverage: 0.95})
+    //
+    //   // Smart mode (allow crop down to 40% of original)
+    //   image.smartCrop(Math.Rectangle{0, 0, 1920, 1080}, SmartCropSearchOpts{minCoverage: 0.4})
+    //
+    //   // Ultra-fast mode (skip edge detection, use large stride)
+    //   image.smartCrop(Math.Rectangle{0, 0, 1920, 1080},
+    //                   SmartCropSearchOpts{minCoverage: 0.95, computeEdges: false, strideFrac: 0.15})
+    mtd smartCrop(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})
     {
         Debug.assert(rect.width > 0 and rect.height > 0)
-        if enableScaling:
-            .crop(.calculateReframeRectSmart(rect.width, rect.height, opts))
-        else:
-            .crop(.calculateReframeRect(rect.width, rect.height, opts))
+        .crop(.calculateReframeRect(rect.width, rect.height, opts))
     }
 }
