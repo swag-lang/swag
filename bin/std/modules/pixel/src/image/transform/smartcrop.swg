@@ -2,9 +2,12 @@ using Core
 
 public impl Image
 {
-    // =========================
-    // Shared constants & types
-    // =========================
+    private struct SaliencyWeights
+    {
+        contrast:       f32
+        saturation:     f32
+        edge:           f32
+    }
 
     private struct ScoreCtx
     {
@@ -777,13 +780,6 @@ public impl Image
 
 public impl Image
 {
-    struct SaliencyWeights
-    {
-        contrast:       f32
-        saturation:     f32
-        edge:           f32
-    }
-
     // Smart crop search parameters
     struct SmartCropSearchOpts
     {
@@ -830,12 +826,6 @@ public impl Image
         maxSize: s32 = 0
     }
 
-    // Kept as a public helper; now delegates to unified core
-    mtd const computeSaliencyMap(saliencyMap: &Array'f32, weights: SaliencyWeights)
-    {
-        (saliencyMap, ?) = .buildSaliencyAndEdges(.width, .height, weights)
-    }
-
     #[Swag.Overload]
     mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f32
     {
@@ -872,23 +862,6 @@ public impl Image
         if opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
             return .evaluateCropScoreFast(rect, opts)
         return .evaluateCropScoreFull(rect, opts)
-    }
-
-    #[Swag.Overload]
-    mtd const evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts, precomputedSaliency: Array'f32)->f32
-    {
-        var sb = boxBlurViaIntegral(precomputedSaliency, .width, .height, opts.blurRadius)
-        if opts.thirdsWeight > 0.01
-        {
-            let t = buildThirdsMap(.width, .height, THIRDS_SIGMA)
-            for i in 0 until .width * .height:
-                sb[i] = sb[i] + opts.thirdsWeight * t[i]
-        }
-
-        var ii   = buildIntegral(&sb, .width, .height)
-        let area = cast(f32) (rect.width * rect.height)
-        let sumS = sumRect(&ii, .width, .height, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
-        return sumS / area
     }
 
     mtd smartCrop(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})
