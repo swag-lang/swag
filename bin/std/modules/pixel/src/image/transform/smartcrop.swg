@@ -297,95 +297,122 @@ public impl Image
     // Simpler and faster than multi-scale mode, suitable for real-time applications
     private mtd const calculateSingleScale(aspect, imgAspect: f32, W, H: s32, Sb: &Array'f32, opts: SmartCropSearchOpts)->Math.Rectangle
     {
-        // Determine crop dimensions to match target aspect ratio
+        // Calculate crop dimensions...
         var cropW: s32
         var cropH: s32
-        if imgAspect > aspect // Image wider than target
+        if imgAspect > aspect
         {
-            cropH = H // Use full height
+            cropH = H
             cropW = cast(s32) Math.floor(aspect * cast(f32) cropH + 0.5)
         }
         else
         {
-            cropW = W // Use full width
+            cropW = W
             cropH = cast(s32) Math.floor(cast(f32) cropW / aspect + 0.5)
         }
 
-        // Add rule-of-thirds bonus directly to saliency if enabled
-        if opts.computeThirds and opts.thirdsWeight > 0.01
+        // Build all feature maps if needed (like multi-scale does)
+        var T: Array'f32
+        if opts.computeThirds
         {
-            var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
-            for i in 0 to (W * H - 1)
-            {
-                let idx = cast(u64) i
-                Sb[idx] = Sb[idx] + opts.thirdsWeight * T[idx]
-            }
+            T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+        }
+        else
+        {
+            T.resize(cast(u64) (W * H))
+            for i in 0 to (W * H - 1):
+                T[cast(u64) i] = 0.0
         }
 
-        // Build integral image for fast region sum queries
-        var ii = .buildIntegral(Sb, W, H)
+        var E: Array'f32
+        if opts.edgePenalty > 0.01
+        {
+            var edges: Array'f32
+            edges.resize(cast(u64) (W * H))
+            .computeEdgeMap(&edges)
+            E = .buildEdgeDistanceMap(&edges, W, H)
+        }
+        else
+        {
+            E.resize(cast(u64) (W * H))
+            for i in 0 to (W * H - 1):
+                E[cast(u64) i] = 1.0
+        }
+
+        // Create integral images
+        var iiS = .buildIntegral(Sb, W, H)
+        var iiT = .buildIntegral(&T, W, H)
+        var iiE = .buildIntegral(&E, W, H)
+
+        // Build scoring context
+        let imgArea = cast(f64) (W * H)
+        let cx      = 0.5'f64 * cast(f64) W
+        let cy      = 0.5'f64 * cast(f64) H
+        let d2Mx    = cast(f64) W * cast(f64) W + cast(f64) H * cast(f64) H
+
+        var ctx: ScoreCtx
+        ctx.iiS     = &iiS
+        ctx.iiT     = &iiT
+        ctx.iiE     = &iiE
+        ctx.w       = W
+        ctx.h       = H
+        ctx.imgArea = imgArea
+        ctx.thirdsW = cast(f64) opts.thirdsWeight
+        ctx.centerW = cast(f64) opts.centerWeight
+        ctx.shrinkW = 0.0 // Not used in single-scale
+        ctx.edgePen = cast(f64) opts.edgePenalty
+        ctx.cx      = cx
+        ctx.cy      = cy
+        ctx.d2Max   = d2Mx
 
         var bestX, bestY = 0's32
-        var bestSum = -1.0'f64
+        var bestScore = -1.0e30'f64
+        var bestD2    = 1.0e30'f64
 
         let maxX = W - cropW
         let maxY = H - cropH
 
-        let cxImg           = 0.5'f64 * cast(f64) W
-        let cyImg           = 0.5'f64 * cast(f64) H
-        var bestCenterDist2 = 1.0e30'f64
-
-        // Adaptive stride based on strideFrac parameter
+        // Adaptive stride
         let stride = Math.max(1, cast(s32) Math.round(opts.strideFrac * cast(f32) Math.min(cropW, cropH)))
 
+        // Grid search using full scoring
         for var y0 = 0; y0 <= maxY; y0 += stride
         {
-            let y1 = y0 + cropH
             for var x0 = 0; x0 <= maxX; x0 += stride
             {
-                let x1  = x0 + cropW
-                let sum = .sumRect(&ii, W, H, x0, y0, x1, y1)
-
-                if sum > bestSum + EPS_TIE
+                let result = .scoreWindow(&ctx, x0, y0, cropW, cropH)
+                if result.score > bestScore + EPS_TIE
                 {
-                    bestSum = sum; bestX   = x0; bestY   = y0
-                    let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
-                    let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
-                    bestCenterDist2 = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
+                    bestScore = result.score
+                    bestX     = x0
+                    bestY     = y0
+                    bestD2    = result.d2
                 }
-                elif Math.abs(sum - bestSum) <= EPS_TIE // Tie: prefer more centered
+                elif Math.abs(result.score - bestScore) <= EPS_TIE and result.d2 < bestD2
                 {
-                    let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
-                    let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
-                    let d2  = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
-                    if d2 < bestCenterDist2
-                    {
-                        bestX           = x0
-                        bestY           = y0
-                        bestCenterDist2 = d2
-                    }
+                    bestX  = x0
+                    bestY  = y0
+                    bestD2 = result.d2
                 }
             }
         }
 
-        // Fine refinement pass (adaptive range based on stride)
+        // Fine refinement
         let refineRange = Math.max(1, Math.min(3, stride / 2))
+        let rx0         = Math.clamp(bestX - refineRange, 0, maxX)
+        let ry0         = Math.clamp(bestY - refineRange, 0, maxY)
+        let rx1         = Math.clamp(bestX + refineRange, 0, maxX)
+        let ry1         = Math.clamp(bestY + refineRange, 0, maxY)
+        for y0 in ry0 to ry1
         {
-            let rx0 = Math.clamp(bestX - refineRange, 0, maxX)
-            let ry0 = Math.clamp(bestY - refineRange, 0, maxY)
-            let rx1 = Math.clamp(bestX + refineRange, 0, maxX)
-            let ry1 = Math.clamp(bestY + refineRange, 0, maxY)
-            for y0 in ry0 to ry1
+            for x0 in rx0 to rx1
             {
-                for x0 in rx0 to rx1
+                let result = .scoreWindow(&ctx, x0, y0, cropW, cropH)
+                if result.score > bestScore + EPS_TIE
                 {
-                    let sum = .sumRect(&ii, W, H, x0, y0, x0 + cropW, y0 + cropH)
-                    if sum > bestSum + EPS_TIE
-                    {
-                        bestSum = sum
-                        bestX   = x0
-                        bestY   = y0
-                    }
+                    bestScore = result.score
+                    bestX     = x0
+                    bestY     = y0
                 }
             }
         }
@@ -416,7 +443,7 @@ public impl Image
 
         // Build edge map and distance transform if enabled
         var E: Array'f32
-        if opts.computeEdges and opts.edgePenalty > 0.01
+        if opts.edgePenalty > 0.01
         {
             var edges: Array'f32
             edges.resize(cast(u64) (W * H))
@@ -734,7 +761,7 @@ public impl Image
 
         // Compute saliency map
         var S: Array'f32
-        S.resize(cast(u64) (W * H))
+        S.resize(W * H)
         .computeSaliencyMap(&S, ENHANCED_WEIGHTS)
 
         // Apply blur for smoother gradients
@@ -748,25 +775,25 @@ public impl Image
         }
         else
         {
-            T.resize(cast(u64) (W * H))
+            T.resize(W * H)
             for i in 0 to (W * H - 1):
                 T[cast(u64) i] = 0.0
         }
 
         // Build edge map and distance transform if enabled
         var E: Array'f32
-        if opts.computeEdges and opts.edgePenalty > 0.01
+        if opts.edgePenalty > 0.01
         {
             var edges: Array'f32
-            edges.resize(cast(u64) (W * H))
+            edges.resize(W * H)
             .computeEdgeMap(&edges)
             E = .buildEdgeDistanceMap(&edges, W, H)
         }
         else
         {
-            E.resize(cast(u64) (W * H))
+            E.resize(W * H)
             for i in 0 to (W * H - 1):
-                E[cast(u64) i] = 1.0
+                E[i] = 1.0
         }
 
         // Create integral images for all features
@@ -870,10 +897,6 @@ public impl Image
         // Enable rule-of-thirds computation (default: true)
         // Set to false to skip thirds map generation for faster processing
         computeThirds: bool = true
-
-        // Enable edge detection and distance map (default: true)
-        // Set to false to skip edge processing for faster evaluation
-        computeEdges: bool = true
     }
 
     // Find the most salient (visually important) point in the image
@@ -1085,7 +1108,7 @@ public impl Image
         Debug.assert(rect.y + rect.height <= .height)
 
         // FAST PATH: Simplified scoring when advanced features not needed
-        if !opts.computeEdges and opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
+        if opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
             return .evaluateCropScoreFast(rect, opts)
 
         // FULL PATH: Complete feature-based scoring
@@ -1126,17 +1149,6 @@ public impl Image
     // advanced multi-scale mode based on opts.minCoverage:
     //   - minCoverage >= 0.95: Fast single-scale (for when you want full or nearly full image)
     //   - minCoverage < 0.95: Multi-scale search (for finding optimal crops at any size)
-    //
-    // Example usage:
-    //   // Fast mode (no scaling, just find best position for 16:9 crop)
-    //   image.smartCrop(Math.Rectangle{0, 0, 1920, 1080}, SmartCropSearchOpts{minCoverage: 0.95})
-    //
-    //   // Smart mode (allow crop down to 40% of original)
-    //   image.smartCrop(Math.Rectangle{0, 0, 1920, 1080}, SmartCropSearchOpts{minCoverage: 0.4})
-    //
-    //   // Ultra-fast mode (skip edge detection, use large stride)
-    //   image.smartCrop(Math.Rectangle{0, 0, 1920, 1080},
-    //                   SmartCropSearchOpts{minCoverage: 0.95, computeEdges: false, strideFrac: 0.15})
     mtd smartCrop(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})
     {
         Debug.assert(rect.width > 0 and rect.height > 0)
