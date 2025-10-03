@@ -12,7 +12,7 @@ public impl A74
 
     mtd titi74(a: Toto74 = {})
     {
-        @print("a")
+        //@print("a")
     }
 }
 

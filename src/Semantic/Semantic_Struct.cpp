@@ -648,7 +648,7 @@ bool Semantic::preResolveGeneratedStruct(SemanticContext* context)
 
     // The generated struct could need the user attributes of the original struct or function where it belongs.
     // So we must be sure that the original parent has collected its attributes.
-    if (parent->ownerStructScope)
+    if (parent->ownerStructScope && !parent->ownerStructScope->is(ScopeKind::Impl))
     {
         const auto parentStruct = castAst<AstStruct>(parent->ownerStructScope->owner, AstNodeKind::StructDecl, AstNodeKind::InterfaceDecl);
         ScopedLock lk(parentStruct->mutex);
