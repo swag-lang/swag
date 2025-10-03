@@ -2,18 +2,12 @@ using Core
 
 public impl Image
 {
-    private struct InterestPoint
-    {
-        x, y:      f32  // Normalized coordinates (0.0 to 1.0) of the most salient point
-        score:     f32  // Saliency score at this point
-    }
-
     // Weights for combining different saliency factors
     private struct SaliencyWeights
     {
-        contrast:       f32  // Weight for local luminance variation (typically 1.0)
-        saturation:     f32  // Weight for color intensity (typically 0.55)
-        edge:           f32  // Weight for edge strength (typically 1.2)
+        contrast:       f32     // Weight for local luminance variation (typically 1.0)
+        saturation:     f32     // Weight for color intensity (typically 0.55)
+        edge:           f32     // Weight for edge strength (typically 1.2)
     }
 
     // Context passed to scoring functions to avoid repeated parameter passing
@@ -56,7 +50,7 @@ public impl Image
     private mtd const buildIntegral(src: &Array'f32, W, H: s32)->Array'f64
     {
         var ii: Array'f64
-        ii.resize(cast(u64) ((W + 1) * (H + 1)))  // Extra row/col of zeros for boundary handling
+        ii.resize(cast(u64) ((W + 1) * (H + 1))) // Extra row/col of zeros for boundary handling
         for y in 1 to H
         {
             var rowSum = 0.0'f64
@@ -65,7 +59,7 @@ public impl Image
                 let s = cast(f64) src[cast(u64) ((y - 1) * W + (x - 1))]
                 rowSum += s
                 let idx = cast(u64) (y * (W + 1) + x)
-                ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum  // Current cell = above + row sum
+                ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum // Current cell = above + row sum
             }
         }
         return ii
@@ -108,7 +102,7 @@ public impl Image
                 let x0 = Math.max(0, x - radius)
                 let x1 = Math.min(W - 1, x + radius)
                 let S  = .sumRect(&ii, W, H, x0, y0, x1 + 1, y1 + 1)
-                let n  = cast(f64) ((x1 - x0 + 1) * (y1 - y0 + 1))  // Number of pixels averaged
+                let n  = cast(f64) ((x1 - x0 + 1) * (y1 - y0 + 1))       // Number of pixels averaged
                 dst[cast(u64) (y * W + x)] = cast(f32) (S / n)
             }
         }
@@ -130,8 +124,8 @@ public impl Image
         // Create 1D Gaussian peaks at third positions
         for x in 0 to (W - 1)
         {
-            let fx = cast(f32) x / cast(f32) W  // Normalized position
-            let dx = Math.min(Math.abs(fx - t1), Math.abs(fx - t2))  // Distance to nearest third
+            let fx = cast(f32) x / cast(f32) W                          // Normalized position
+            let dx = Math.min(Math.abs(fx - t1), Math.abs(fx - t2))     // Distance to nearest third
             tx[cast(u64) x] = Math.exp(-(dx * dx) / (2.0 * sig2))
         }
         for y in 0 to (H - 1)
@@ -185,12 +179,12 @@ public impl Image
         s += ctx.shrinkW * (1.0 - areaFrac)
 
         // Bonus for crops centered near image center
-        let cwx = cast(f64) x0 + 0.5 * cast(f64) cw  // Window center X
-        let cwy = cast(f64) y0 + 0.5 * cast(f64) ch  // Window center Y
+        let cwx = cast(f64) x0 + 0.5 * cast(f64) cw                                     // Window center X
+        let cwy = cast(f64) y0 + 0.5 * cast(f64) ch                                     // Window center Y
         let d2  = (cwx - ctx.cx) * (cwx - ctx.cx) + (cwy - ctx.cy) * (cwy - ctx.cy)
         s += ctx.centerW * (1.0 - (d2 / ctx.d2Max))
 
-        return {s, d2}  // Return score and squared distance for tie-breaking
+        return {s, d2}
     }
 
     // Adjust crop dimensions to match target aspect ratio
@@ -198,13 +192,13 @@ public impl Image
     private mtd const fitAspect(cw, ch, W, H: s32, aspect, imgAspect: f32)->{ w: s32, h: s32 }
     {
         var w = cw, h = ch
-        if imgAspect > aspect  // Image is wider than target
+        if imgAspect > aspect // Image is wider than target
         {
             // Fix height, adjust width to match aspect
             h = Math.min(H, Math.max(4, h))
             w = Math.min(W, Math.max(4, cast(s32) Math.round(cast(f64) h * cast(f64) aspect)))
         }
-        else  // Image is taller than target
+        else
         {
             // Fix width, adjust height to match aspect
             w = Math.min(W, Math.max(4, w))
@@ -271,7 +265,7 @@ public impl Image
 
         for i in 0 to 4
         {
-            if i == 2:  // Skip 100% since we already tested it
+            if i == 2: // Skip 100% since we already tested it
                 continue
             var cw = cast(s32) Math.round(cast(f64) bestW * scales[i])
             var ch = cast(s32) Math.round(cast(f64) bestH * scales[i])
@@ -311,7 +305,7 @@ public impl Image
 
     // Fast single-scale cropping algorithm
     // Simpler and faster than smart mode, suitable for real-time applications
-    private mtd const calculateReframeRect(targetWidth, targetHeight: f32, opts: SearchOpts)->Math.Rectangle
+    private mtd const calculateReframeRect(targetWidth, targetHeight: f32, opts: SmartCropSearchOpts)->Math.Rectangle
     {
         let aspect    = targetWidth / targetHeight
         let W         = .width
@@ -321,14 +315,14 @@ public impl Image
         // Determine crop dimensions to match target aspect ratio
         var cropW: s32
         var cropH: s32
-        if imgAspect > aspect  // Image wider than target
+        if imgAspect > aspect // Image wider than target
         {
-            cropH = H  // Use full height
+            cropH = H // Use full height
             cropW = cast(s32) Math.floor(aspect * cast(f32) cropH + 0.5)
         }
-        else  // Image taller than target
+        else
         {
-            cropW = W  // Use full width
+            cropW = W // Use full width
             cropH = cast(s32) Math.floor(cast(f32) cropW / aspect + 0.5)
         }
 
@@ -345,7 +339,7 @@ public impl Image
         for i in 0 to (W * H - 1)
         {
             let idx = cast(u64) i
-            Sb[idx] = Sb[idx] + 0.15 * T[idx]  // 15% rule-of-thirds weight
+            Sb[idx] = Sb[idx] + 0.15 * T[idx] // 15% rule-of-thirds weight
         }
 
         // Build integral image for fast region sum queries
@@ -379,7 +373,7 @@ public impl Image
                     let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
                     bestCenterDist2 = (cwx - cxImg) * (cwx - cxImg) + (cwy - cyImg) * (cwy - cyImg)
                 }
-                elif Math.abs(sum - bestSum) <= EPS_TIE  // Tie: prefer more centered
+                elif Math.abs(sum - bestSum) <= EPS_TIE // Tie: prefer more centered
                 {
                     let cwx = cast(f64) x0 + 0.5 * cast(f64) cropW
                     let cwy = cast(f64) y0 + 0.5 * cast(f64) cropH
@@ -424,7 +418,7 @@ public impl Image
     }
 
     // OPTIMIZED: Advanced multi-scale cropping with reduced iterations
-    private mtd const calculateReframeRectSmart(targetWidth, targetHeight: f32, opts: SearchOpts)->Math.Rectangle
+    private mtd const calculateReframeRectSmart(targetWidth, targetHeight: f32, opts: SmartCropSearchOpts)->Math.Rectangle
     {
         let W = .width, H = .height
         Debug.assert(W > 0 and H > 0)
@@ -476,7 +470,7 @@ public impl Image
         ctx.d2Max   = d2Mx
 
         let minArea = cast(f64) opts.minCoverage * imgArea
-        const STEPS = 10's32  // OPTIMIZED: Reduced from 16 to 10 steps
+        const STEPS = 10's32                                   // OPTIMIZED: Reduced from 16 to 10 steps
 
         var bestX, bestY, bestW, bestH = 0's32
         var bestScore    = -1.0e30'f64
@@ -485,7 +479,7 @@ public impl Image
         // Multi-scale search: test progressively smaller crops
         for step in 0 to (STEPS - 1)
         {
-            let t          = cast(f64) step / cast(f64) (STEPS - 1)
+            let t = cast(f64) step / cast(f64) (STEPS - 1)
             // Non-linear progression: more steps near full coverage
             let frac       = 1.0 - Math.pow(t, 1.3) * (1.0 - cast(f64) opts.minCoverage)
             let targetArea = Math.max(frac * imgArea, minArea)
@@ -591,7 +585,7 @@ public impl Image
     // Samples up to 4096 values to avoid sorting entire arrays
     private mtd const estimatePercentiles(buf: &Array'f32, N: s32, pLow, pHigh: f32)->{ a: f32, b: f32 }
     {
-        const K  = 4096's32  // Maximum sample size
+        const K  = 4096's32           // Maximum sample size
         var tmp: Array'f32
         var M    = Math.min(K, N)
         tmp.resize(cast(u64) M)
@@ -624,7 +618,7 @@ public impl Image
         let lo = tmp[cast(u64) il]
         let hi = tmp[cast(u64) ih]
         if hi <= lo:
-            return {lo, lo + 1e-6}  // Avoid division by zero
+            return {lo, lo + 1e-6}
         return {lo, hi}
     }
 
@@ -644,11 +638,11 @@ public impl Image
         let mec = cast #unconst (*Image) me
         mec.visitPixels(&f)
         {
-            let p      = image.getPixelColor(x, y)
+            let p = image.getPixelColor(x, y)
             // Convert to linear RGB for perceptually accurate luminance
-            let r_lin  = image.srgbToLinear(p.r / 255.0)
-            let g_lin  = image.srgbToLinear(p.g / 255.0)
-            let b_lin  = image.srgbToLinear(p.b / 255.0)
+            let r_lin = image.srgbToLinear(p.r / 255.0)
+            let g_lin = image.srgbToLinear(p.g / 255.0)
+            let b_lin = image.srgbToLinear(p.b / 255.0)
             // Rec. 709 luminance weights
             let L      = r_lin * 0.2126 + g_lin * 0.7152 + b_lin * 0.0722
             let params = cast(*#decltype(f)) userData
@@ -695,7 +689,7 @@ public impl Image
                 let i = cast(u64) (y * W + x)
                 if x == 0 or y == 0 or x == W - 1 or y == H - 1
                 {
-                    edge[i] = 0.0  // No edges at borders
+                    edge[i] = 0.0 // No edges at borders
                     continue
                 }
 
@@ -717,7 +711,7 @@ public impl Image
         }
 
         // OPTIMIZED: Compute contrast only for subset of pixels, then interpolate
-        const R = SALIENCY_RADIUS
+        const R       = SALIENCY_RADIUS
         var contrast: Array'f32
         contrast.resize(cast(u64) N)
 
@@ -839,9 +833,64 @@ public impl Image
             }
         }
     }
+}
+
+public impl Image
+{
+    struct InterestPoint
+    {
+        x, y:      f32     // Normalized coordinates (0.0 to 1.0) of the most salient point
+        score:     f32     // Saliency score at this point
+    }
+
+    // Smart crop search parameters
+    struct SmartCropSearchOpts
+    {
+        // Minimum fraction of original image to preserve (range: 0.0-1.0, typically 0.4-0.7)
+        // Lower values allow tighter crops, higher values preserve more context
+        // Example: 0.4 = crop can be as small as 40% of original image area
+        minCoverage: f32 = 0.4
+
+        // Blur radius for smoothing saliency map (range: 0-5 pixels)
+        // Higher values create smoother saliency gradients but lose detail
+        // 0 = no blur, 2 = fast/subtle, 3 = balanced, 5 = very smooth
+        blurRadius: s32 = 3
+
+        // Stride fraction for position search (range: 0.01-0.15)
+        // Controls spacing between tested positions as fraction of crop size
+        // Lower = more thorough but slower, higher = faster but may miss optimal position
+        // Example: 0.04 = test positions every 4% of crop dimension
+        // OPTIMIZED: Default increased to 0.10 for 2-3x speedup with minimal quality loss
+        strideFrac: f32 = 0.10
+
+        // Weight for rule-of-thirds bonus (range: 0.0-0.5, typically 0.15-0.25)
+        // Higher values strongly favor crops aligned with compositional thirds
+        // 0.0 = ignore rule of thirds, 0.22 = balanced, 0.5 = very strong preference
+        thirdsWeight: f32 = 0.22
+
+        // Weight for center proximity bonus (range: 0.0-0.3, typically 0.05-0.15)
+        // Higher values favor crops centered on the image center
+        // 0.0 = no center bias, 0.06 = subtle, 0.15 = strong center preference
+        centerWeight: f32 = 0.06
+
+        // Prior favoring larger crops (range: 0.0-0.3, typically 0.05-0.15)
+        // Penalizes small crops to preserve more context when possible
+        // 0.0 = no size preference, 0.08 = subtle, 0.2 = strong preference for full image
+        shrinkPrior: f32 = 0.08
+
+        // Penalty for cutting through edges (range: 0.0-0.5, typically 0.1-0.25)
+        // Higher values avoid cropping that slices through detected edges
+        // 0.0 = ignore edges, 0.15 = balanced, 0.3 = strongly avoid edge cuts
+        edgePenalty: f32 = 0.15
+
+        // Weight for face detection bonus (range: 0.0-1.0, currently unused)
+        // Reserved for future face detection integration
+        // Would increase score for crops containing detected faces
+        faceWeight: f32 = 0.0
+    }
 
     // Find the most salient (visually important) point in the image
-    private mtd const findInterestPoint()->InterestPoint
+    mtd const findInterestPoint()->InterestPoint
     {
         var saliencyMap: Array'f32
         saliencyMap.resize(cast(u64) (.width * .height))
@@ -867,65 +916,84 @@ public impl Image
         }
 
         var out: retval
-        out.x     = cast(f32) maxX / cast(f32) .width   // Normalized X coordinate
-        out.y     = cast(f32) maxY / cast(f32) .height  // Normalized Y coordinate
+        out.x     = cast(f32) maxX / cast(f32) .width // Normalized X coordinate
+        out.y     = cast(f32) maxY / cast(f32) .height // Normalized Y coordinate
         out.score = maxScore
         return out
     }
-}
 
-public impl Image
-{
-    // Smart crop search parameters
-    struct SearchOpts
+    // Evaluate the quality score of a specific crop rectangle
+    // Returns a score where higher values indicate better crops
+    // rect: The crop rectangle to evaluate (x, y, width, height in pixels)
+    // opts: Optional search parameters controlling weight of different factors
+    //
+    // Use this to compare multiple crop candidates:
+    //   let score1 = image.evaluateCropScore(rect1, opts)
+    //   let score2 = image.evaluateCropScore(rect2, opts)
+    //   if score2 > score1: use rect2, else use rect1
+    mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f64
     {
-        // Minimum fraction of original image to preserve (range: 0.0-1.0, typically 0.4-0.7)
-        // Lower values allow tighter crops, higher values preserve more context
-        // Example: 0.4 = crop can be as small as 40% of original image area
-        minCoverage:      f32 = 0.4
+        let W = .width
+        let H = .height
+        Debug.assert(W > 0 and H > 0)
+        Debug.assert(rect.width > 0 and rect.height > 0)
+        Debug.assert(rect.x >= 0 and rect.y >= 0)
+        Debug.assert(rect.x + rect.width <= W)
+        Debug.assert(rect.y + rect.height <= H)
 
-        // Blur radius for smoothing saliency map (range: 0-5 pixels)
-        // Higher values create smoother saliency gradients but lose detail
-        // 0 = no blur, 2 = fast/subtle, 3 = balanced, 5 = very smooth
-        blurRadius:       s32 = 3
+        let imgArea = cast(f64) (W * H)
 
-        // Stride fraction for position search (range: 0.01-0.15)
-        // Controls spacing between tested positions as fraction of crop size
-        // Lower = more thorough but slower, higher = faster but may miss optimal position
-        // Example: 0.04 = test positions every 4% of crop dimension
-        // OPTIMIZED: Default increased to 0.10 for 2-3x speedup with minimal quality loss
-        strideFrac:       f32 = 0.10
+        // Compute saliency map
+        var S: Array'f32
+        S.resize(cast(u64) (W * H))
+        .computeSaliencyMap(&S, ENHANCED_WEIGHTS)
 
-        // Weight for rule-of-thirds bonus (range: 0.0-0.5, typically 0.15-0.25)
-        // Higher values strongly favor crops aligned with compositional thirds
-        // 0.0 = ignore rule of thirds, 0.22 = balanced, 0.5 = very strong preference
-        thirdsWeight:     f32 = 0.22
+        // Apply blur for smoother gradients
+        var Sb = .boxBlurViaIntegral(&S, W, H, opts.blurRadius)
 
-        // Weight for center proximity bonus (range: 0.0-0.3, typically 0.05-0.15)
-        // Higher values favor crops centered on the image center
-        // 0.0 = no center bias, 0.06 = subtle, 0.15 = strong center preference
-        centerWeight:     f32 = 0.06
+        // Build rule-of-thirds map
+        var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
 
-        // Prior favoring larger crops (range: 0.0-0.3, typically 0.05-0.15)
-        // Penalizes small crops to preserve more context when possible
-        // 0.0 = no size preference, 0.08 = subtle, 0.2 = strong preference for full image
-        shrinkPrior:      f32 = 0.08
+        // Build edge map and distance transform
+        var edges: Array'f32
+        edges.resize(cast(u64) (W * H))
+        .computeEdgeMap(&edges)
+        var E = .buildEdgeDistanceMap(&edges, W, H)
 
-        // Penalty for cutting through edges (range: 0.0-0.5, typically 0.1-0.25)
-        // Higher values avoid cropping that slices through detected edges
-        // 0.0 = ignore edges, 0.15 = balanced, 0.3 = strongly avoid edge cuts
-        edgePenalty:      f32 = 0.15
+        // Create integral images for all features
+        var iiS = .buildIntegral(&Sb, W, H)
+        var iiT = .buildIntegral(&T, W, H)
+        var iiE = .buildIntegral(&E, W, H)
 
-        // Weight for face detection bonus (range: 0.0-1.0, currently unused)
-        // Reserved for future face detection integration
-        // Would increase score for crops containing detected faces
-        faceWeight:       f32 = 0.0
+        // Prepare scoring context
+        let cx   = 0.5'f64 * cast(f64) W
+        let cy   = 0.5'f64 * cast(f64) H
+        let d2Mx = cast(f64) W * cast(f64) W + cast(f64) H * cast(f64) H
+
+        var ctx: ScoreCtx
+        ctx.iiS     = &iiS
+        ctx.iiT     = &iiT
+        ctx.iiE     = &iiE
+        ctx.w       = W
+        ctx.h       = H
+        ctx.imgArea = imgArea
+        ctx.thirdsW = cast(f64) opts.thirdsWeight
+        ctx.centerW = cast(f64) opts.centerWeight
+        ctx.shrinkW = cast(f64) opts.shrinkPrior
+        ctx.edgePen = cast(f64) opts.edgePenalty
+        ctx.cx      = cx
+        ctx.cy      = cy
+        ctx.d2Max   = d2Mx
+
+        // Score the provided rectangle
+        let result = .scoreWindow(&ctx, cast() rect.x, cast() rect.y, cast() rect.width, cast() rect.height)
+        return result.score
     }
 
     // Perform content-aware smart crop to target rectangle
     // rect: Target dimensions (width and height define aspect ratio and reference size)
     // enableScaling: If true, uses advanced multi-scale algorithm; if false, uses fast single-scale
-    mtd smartCrop(rect: Math.Rectangle, enableScaling: bool = false, opts: SearchOpts = {})
+    mtd smartCrop(rect: Math.Rectangle, enableScaling: bool = false, opts: SmartCropSearchOpts = {})
     {
         Debug.assert(rect.width > 0 and rect.height > 0)
         if enableScaling:
