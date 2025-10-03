@@ -52,7 +52,7 @@ public impl Image
     private func buildIntegral(src: Array'f32, W, H: s32)->Array'f32
     {
         var ii: retval
-        ii.resize(cast(u64) ((W + 1) * (H + 1)))
+        ii.resize((W + 1) * (H + 1))
 
         for y in 1 to H
         {
@@ -453,21 +453,21 @@ public impl Image
         return {s, d2}
     }
 
-    private func fitAspect(cw, ch, W, H: s32, aspect, imgAspect: f32)->{ w: s32, h: s32 }
+    private func fitAspect(cw, ch, W, H: s32, aspect, imgAspect: f32)->{ w0: s32, h0: s32 }
     {
-        var w = cw, h = ch
+        var w0 = cw, h0 = ch
         if imgAspect > aspect
         {
-            h = Math.min(H, Math.max(4, h))
-            w = Math.min(W, Math.max(4, cast(s32) Math.round(cast(f32) h * cast(f32) aspect)))
+            h0 = Math.min(H, Math.max(4, h0))
+            w0 = Math.min(W, Math.max(4, cast(s32) Math.round(cast(f32) h0 * cast(f32) aspect)))
         }
         else
         {
-            w = Math.min(W, Math.max(4, w))
-            h = Math.min(H, Math.max(4, cast(s32) Math.round(cast(f32) w / cast(f32) aspect)))
+            w0 = Math.min(W, Math.max(4, w0))
+            h0 = Math.min(H, Math.max(4, cast(s32) Math.round(cast(f32) w0 / cast(f32) aspect)))
         }
 
-        return {w, h}
+        return {w0, h0}
     }
 
     private func refinePosition(ctx: &ScoreCtx, bestX, bestY, bestW, bestH: s32, range: s32 = 2)->{ x: s32, y: s32, score: f32, d2: f32 }
