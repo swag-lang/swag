@@ -49,8 +49,9 @@ public impl Image
     // Each cell (x,y) contains sum of all values in rectangle from (0,0) to (x,y)
     private mtd const buildIntegral(src: &Array'f32, W, H: s32)->Array'f64
     {
-        var ii: Array'f64
+        var ii: retval
         ii.resize(cast(u64) ((W + 1) * (H + 1))) // Extra row/col of zeros for boundary handling
+
         for y in 1 to H
         {
             var rowSum = 0.0'f64
@@ -62,6 +63,7 @@ public impl Image
                 ii[idx] = ii[idx - cast(u64) (W + 1)] + rowSum // Current cell = above + row sum
             }
         }
+
         return ii
     }
 
