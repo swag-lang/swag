@@ -2,14 +2,6 @@ using Core
 
 public impl Image
 {
-    // Weights for combining different saliency factors
-    private struct SaliencyWeights
-    {
-        contrast:       f32     // Weight for local luminance variation (typically 1.0)
-        saturation:     f32     // Weight for color intensity (typically 0.55)
-        edge:           f32     // Weight for edge strength (typically 1.2)
-    }
-
     // Context passed to scoring functions to avoid repeated parameter passing
     private struct ScoreCtx
     {
@@ -38,6 +30,7 @@ public impl Image
     private const ENHANCED_WEIGHTS = SaliencyWeights{contrast: 1.0, saturation: 0.55, edge: 1.2}
 
     // Convert sRGB color value to linear RGB for perceptually accurate calculations
+    #[Swag.Inline]
     private mtd const srgbToLinear(c: f32)->f32
     {
         if c <= 0.04045:
@@ -649,163 +642,6 @@ public impl Image
         return {lo, hi}
     }
 
-    // OPTIMIZED: Compute saliency with downsampled contrast calculation for speed
-    private mtd const computeSaliencyMap(saliencyMap: &Array'f32, weights: SaliencyWeights)
-    {
-        let W = .width
-        let H = .height
-        let N = cast(s32) (W * H)
-
-        // Extract luminance and saturation for each pixel
-        var lum, sat: Array'f32
-        lum.resize(cast(u64) N)
-        sat.resize(cast(u64) N)
-
-        var f   = {lum: &lum, sat: &sat}
-        let mec = cast #unconst (*Image) me
-        mec.visitPixels(&f)
-        {
-            let p = image.getPixelColor(x, y)
-            // Convert to linear RGB for perceptually accurate luminance
-            let r_lin = image.srgbToLinear(p.r / 255.0)
-            let g_lin = image.srgbToLinear(p.g / 255.0)
-            let b_lin = image.srgbToLinear(p.b / 255.0)
-            // Rec. 709 luminance weights
-            let L      = r_lin * 0.2126 + g_lin * 0.7152 + b_lin * 0.0722
-            let params = cast(*#decltype(f)) userData
-            params.lum.buffer[index] = L
-
-            // Calculate saturation in sRGB space
-            let rs   = p.r / 255.0
-            let gs   = p.g / 255.0
-            let bs   = p.b / 255.0
-            let maxC = Math.max(Math.max(rs, gs), bs)
-            let minC = Math.min(Math.min(rs, gs), bs)
-            let eps  = 1e-6'f32
-            params.sat.buffer[index] = (maxC > 0.0) ? ((maxC - minC) / (maxC + eps)) : 0.0
-        }
-
-        // Build integral images for fast local statistics
-        var ii, iiSq: Array'f64
-        ii.resize(cast(u64) ((W + 1) * (H + 1)))
-        iiSq.resize(cast(u64) ((W + 1) * (H + 1)))
-        for y in 1 to H
-        {
-            var rowSum = 0.0'f64, rowSumSq = 0.0'f64
-            for x in 1 to W
-            {
-                let Ld = cast(f64) lum[cast(u64) ((y - 1) * W + (x - 1))]
-                rowSum += Ld
-                rowSumSq += Ld * Ld
-                let idxI = cast(u64) (y * (W + 1) + x)
-                ii[idxI]   = ii[idxI - cast(u64) (W + 1)] + rowSum
-                iiSq[idxI] = iiSq[idxI - cast(u64) (W + 1)] + rowSumSq
-            }
-        }
-
-        // Blur luminance for edge detection
-        var lumBlur = .boxBlurViaIntegral(&lum, W, H, 1)
-        var edge:   Array'f32
-        edge.resize(cast(u64) N)
-
-        // Compute edge strength using Sobel operator
-        for y in 0 to (H - 1)
-        {
-            for x in 0 to (W - 1)
-            {
-                let i = cast(u64) (y * W + x)
-                if x == 0 or y == 0 or x == W - 1 or y == H - 1
-                {
-                    edge[i] = 0.0 // No edges at borders
-                    continue
-                }
-
-                // 3x3 Sobel kernel neighbors
-                let Lm1m1 = lumBlur[((y - 1) * W + (x - 1))]
-                let Lp1m1 = lumBlur[((y - 1) * W + (x + 1))]
-                let Lm10  = lumBlur[(y * W + (x - 1))]
-                let Lp10  = lumBlur[(y * W + (x + 1))]
-                let Lm1p1 = lumBlur[((y + 1) * W + (x - 1))]
-                let Lp1p1 = lumBlur[((y + 1) * W + (x + 1))]
-                let L0m1  = lumBlur[((y - 1) * W + x)]
-                let L0p1  = lumBlur[((y + 1) * W + x)]
-
-                // Sobel X and Y gradients
-                let gx = -Lm1m1 + Lp1m1 - 2.0 * Lm10 + 2.0 * Lp10 - Lm1p1 + Lp1p1
-                let gy = -Lm1m1 - 2.0 * L0m1 - Lp1m1 + Lm1p1 + 2.0 * L0p1 + Lp1p1
-                edge[i] = cast(f32) Math.sqrt(gx * gx + gy * gy)
-            }
-        }
-
-        // OPTIMIZED: Compute contrast only for subset of pixels, then interpolate
-        const R       = SALIENCY_RADIUS
-        var contrast: Array'f32
-        contrast.resize(cast(u64) N)
-
-        // Sample contrast every 2 pixels for speed
-        let sampleStep = 2
-        for var y = 0; y < H; y += sampleStep
-        {
-            for var x = 0; x < W; x += sampleStep
-            {
-                let i  = cast(u64) (y * W + x)
-                let x0 = Math.max(0, x - R)
-                let y0 = Math.max(0, y - R)
-                let x1 = Math.min(W - 1, x + R)
-                let y1 = Math.min(H - 1, y + R)
-
-                // Query integral images for rectangle stats
-                let A = cast(u64) (y0 * (W + 1) + x0)
-                let B = cast(u64) (y0 * (W + 1) + (x1 + 1))
-                let C = cast(u64) ((y1 + 1) * (W + 1) + x0)
-                let D = cast(u64) ((y1 + 1) * (W + 1) + (x1 + 1))
-
-                let n     = cast(f64) ((x1 - x0 + 1) * (y1 - y0 + 1))
-                let sum   = ii[D] - ii[B] - ii[C] + ii[A]
-                let sumSq = iiSq[D] - iiSq[B] - iiSq[C] + iiSq[A]
-
-                // Variance = E[X²] - E[X]²
-                let mean = sum / n
-                let ovar = Math.max(0.0, (sumSq / n) - mean * mean)
-                contrast[i] = cast(f32) Math.sqrt(ovar)
-
-                // Fill neighboring pixels with same value (simple interpolation)
-                if x + 1 < W:
-                    contrast[i + 1] = contrast[i]
-                if y + 1 < H
-                {
-                    contrast[i + cast(u64) W] = contrast[i]
-                    if x + 1 < W:
-                        contrast[i + cast(u64) W + 1] = contrast[i]
-                }
-            }
-        }
-
-        // Normalize each feature to [0,1] using percentiles (robust to outliers)
-        let (cLo, cHi) = .estimatePercentiles(&contrast, N, 0.01, 0.99)
-        let (sLo, sHi) = .estimatePercentiles(&sat, N, 0.01, 0.99)
-        let (eLo, eHi) = .estimatePercentiles(&edge, N, 0.01, 0.99)
-
-        let cDen = Math.max(1e-6, cHi - cLo)
-        let sDen = Math.max(1e-6, sHi - sLo)
-        let eDen = Math.max(1e-6, eHi - eLo)
-
-        // Combine features with power curves for perceptual tuning
-        for i in 0 to (N - 1)
-        {
-            let cn = Math.saturate((contrast[cast(u64) i] - cLo) / cDen)
-            let sn = Math.saturate((sat[cast(u64) i] - sLo) / sDen)
-            let en = Math.saturate((edge[cast(u64) i] - eLo) / eDen)
-
-            // Power curves: contrast^0.9, saturation^1.1, edge^0.85
-            let combined = weights.contrast * Math.pow(cn, 0.9) +
-                           weights.saturation * Math.pow(sn, 1.1) +
-                           weights.edge * Math.pow(en, 0.85)
-
-            saliencyMap[i] = combined
-        }
-    }
-
     // Compute edge magnitude map for edge-aware cropping
     private mtd const computeEdgeMap(edgeMap: &Array'f32)
     {
@@ -972,6 +808,14 @@ public impl Image
         score:     f32     // Saliency score at this point
     }
 
+    // Weights for combining different saliency factors
+    struct SaliencyWeights
+    {
+        contrast:       f32     // Weight for local luminance variation (typically 1.0)
+        saturation:     f32     // Weight for color intensity (typically 0.55)
+        edge:           f32     // Weight for edge strength (typically 1.2)
+    }
+
     // Smart crop search parameters
     struct SmartCropSearchOpts
     {
@@ -1065,6 +909,163 @@ public impl Image
         return out
     }
 
+    // Compute saliency with downsampled contrast calculation for speed
+    mtd const computeSaliencyMap(saliencyMap: &Array'f32, weights: SaliencyWeights)
+    {
+        let W = .width
+        let H = .height
+        let N = cast(s32) (W * H)
+
+        // Extract luminance and saturation for each pixel
+        var lum, sat: Array'f32
+        lum.resize(cast(u64) N)
+        sat.resize(cast(u64) N)
+
+        var f   = {lum: &lum, sat: &sat}
+        let mec = cast #unconst (*Image) me
+        mec.visitPixels(&f)
+        {
+            let p = image.getPixelColor(x, y)
+            // Convert to linear RGB for perceptually accurate luminance
+            let r_lin = image.srgbToLinear(p.r / 255.0)
+            let g_lin = image.srgbToLinear(p.g / 255.0)
+            let b_lin = image.srgbToLinear(p.b / 255.0)
+            // Rec. 709 luminance weights
+            let L      = r_lin * 0.2126 + g_lin * 0.7152 + b_lin * 0.0722
+            let params = cast(*#decltype(f)) userData
+            params.lum.buffer[index] = L
+
+            // Calculate saturation in sRGB space
+            let rs   = p.r / 255.0
+            let gs   = p.g / 255.0
+            let bs   = p.b / 255.0
+            let maxC = Math.max(Math.max(rs, gs), bs)
+            let minC = Math.min(Math.min(rs, gs), bs)
+            let eps  = 1e-6'f32
+            params.sat.buffer[index] = (maxC > 0.0) ? ((maxC - minC) / (maxC + eps)) : 0.0
+        }
+
+        // Build integral images for fast local statistics
+        var ii, iiSq: Array'f64
+        ii.resize(cast(u64) ((W + 1) * (H + 1)))
+        iiSq.resize(cast(u64) ((W + 1) * (H + 1)))
+        for y in 1 to H
+        {
+            var rowSum = 0.0'f64, rowSumSq = 0.0'f64
+            for x in 1 to W
+            {
+                let Ld = cast(f64) lum[cast(u64) ((y - 1) * W + (x - 1))]
+                rowSum += Ld
+                rowSumSq += Ld * Ld
+                let idxI = cast(u64) (y * (W + 1) + x)
+                ii[idxI]   = ii[idxI - cast(u64) (W + 1)] + rowSum
+                iiSq[idxI] = iiSq[idxI - cast(u64) (W + 1)] + rowSumSq
+            }
+        }
+
+        // Blur luminance for edge detection
+        var lumBlur = .boxBlurViaIntegral(&lum, W, H, 1)
+        var edge:   Array'f32
+        edge.resize(cast(u64) N)
+
+        // Compute edge strength using Sobel operator
+        for y in 0 to (H - 1)
+        {
+            for x in 0 to (W - 1)
+            {
+                let i = cast(u64) (y * W + x)
+                if x == 0 or y == 0 or x == W - 1 or y == H - 1
+                {
+                    edge[i] = 0.0 // No edges at borders
+                    continue
+                }
+
+                // 3x3 Sobel kernel neighbors
+                let Lm1m1 = lumBlur[((y - 1) * W + (x - 1))]
+                let Lp1m1 = lumBlur[((y - 1) * W + (x + 1))]
+                let Lm10  = lumBlur[(y * W + (x - 1))]
+                let Lp10  = lumBlur[(y * W + (x + 1))]
+                let Lm1p1 = lumBlur[((y + 1) * W + (x - 1))]
+                let Lp1p1 = lumBlur[((y + 1) * W + (x + 1))]
+                let L0m1  = lumBlur[((y - 1) * W + x)]
+                let L0p1  = lumBlur[((y + 1) * W + x)]
+
+                // Sobel X and Y gradients
+                let gx = -Lm1m1 + Lp1m1 - 2.0 * Lm10 + 2.0 * Lp10 - Lm1p1 + Lp1p1
+                let gy = -Lm1m1 - 2.0 * L0m1 - Lp1m1 + Lm1p1 + 2.0 * L0p1 + Lp1p1
+                edge[i] = cast(f32) Math.sqrt(gx * gx + gy * gy)
+            }
+        }
+
+        // OPTIMIZED: Compute contrast only for subset of pixels, then interpolate
+        const R       = SALIENCY_RADIUS
+        var contrast: Array'f32
+        contrast.resize(cast(u64) N)
+
+        // Sample contrast every 2 pixels for speed
+        let sampleStep = 2
+        for var y = 0; y < H; y += sampleStep
+        {
+            for var x = 0; x < W; x += sampleStep
+            {
+                let i  = cast(u64) (y * W + x)
+                let x0 = Math.max(0, x - R)
+                let y0 = Math.max(0, y - R)
+                let x1 = Math.min(W - 1, x + R)
+                let y1 = Math.min(H - 1, y + R)
+
+                // Query integral images for rectangle stats
+                let A = cast(u64) (y0 * (W + 1) + x0)
+                let B = cast(u64) (y0 * (W + 1) + (x1 + 1))
+                let C = cast(u64) ((y1 + 1) * (W + 1) + x0)
+                let D = cast(u64) ((y1 + 1) * (W + 1) + (x1 + 1))
+
+                let n     = cast(f64) ((x1 - x0 + 1) * (y1 - y0 + 1))
+                let sum   = ii[D] - ii[B] - ii[C] + ii[A]
+                let sumSq = iiSq[D] - iiSq[B] - iiSq[C] + iiSq[A]
+
+                // Variance = E[X²] - E[X]²
+                let mean = sum / n
+                let ovar = Math.max(0.0, (sumSq / n) - mean * mean)
+                contrast[i] = cast(f32) Math.sqrt(ovar)
+
+                // Fill neighboring pixels with same value (simple interpolation)
+                if x + 1 < W:
+                    contrast[i + 1] = contrast[i]
+                if y + 1 < H
+                {
+                    contrast[i + cast(u64) W] = contrast[i]
+                    if x + 1 < W:
+                        contrast[i + cast(u64) W + 1] = contrast[i]
+                }
+            }
+        }
+
+        // Normalize each feature to [0,1] using percentiles (robust to outliers)
+        let (cLo, cHi) = .estimatePercentiles(&contrast, N, 0.01, 0.99)
+        let (sLo, sHi) = .estimatePercentiles(&sat, N, 0.01, 0.99)
+        let (eLo, eHi) = .estimatePercentiles(&edge, N, 0.01, 0.99)
+
+        let cDen = Math.max(1e-6, cHi - cLo)
+        let sDen = Math.max(1e-6, sHi - sLo)
+        let eDen = Math.max(1e-6, eHi - eLo)
+
+        // Combine features with power curves for perceptual tuning
+        for i in 0 to (N - 1)
+        {
+            let cn = Math.saturate((contrast[cast(u64) i] - cLo) / cDen)
+            let sn = Math.saturate((sat[cast(u64) i] - sLo) / sDen)
+            let en = Math.saturate((edge[cast(u64) i] - eLo) / eDen)
+
+            // Power curves: contrast^0.9, saturation^1.1, edge^0.85
+            let combined = weights.contrast * Math.pow(cn, 0.9) +
+                           weights.saturation * Math.pow(sn, 1.1) +
+                           weights.edge * Math.pow(en, 0.85)
+
+            saliencyMap[i] = combined
+        }
+    }
+
     // Evaluate the quality score of a specific crop rectangle
     // Returns a score where higher values indicate better crops
     // rect: The crop rectangle to evaluate (x, y, width, height in pixels)
@@ -1074,6 +1075,7 @@ public impl Image
     //   let score1 = image.evaluateCropScore(rect1, opts)
     //   let score2 = image.evaluateCropScore(rect2, opts)
     //   if score2 > score1: use rect2, else use rect1
+    #[Swag.Overload]
     mtd evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts = {})->f64
     {
         Debug.assert(.isValid())
@@ -1088,6 +1090,32 @@ public impl Image
 
         // FULL PATH: Complete feature-based scoring
         return .evaluateCropScoreFull(rect, opts)
+    }
+
+    // Add to Image implementation
+    #[Swag.Overload]
+    mtd const evaluateCropScore(rect: Math.Rectangle, opts: SmartCropSearchOpts, precomputedSaliency: &Array'f32)->f64
+    {
+        let W = .width, H = .height
+
+        // Use provided saliency instead of recomputing
+        var Sb = .boxBlurViaIntegral(precomputedSaliency, W, H, opts.blurRadius)
+
+        if opts.computeThirds and opts.thirdsWeight > 0.01
+        {
+            var T = .buildThirdsMap(W, H, THIRDS_SIGMA)
+            for i in 0 to (W * H - 1)
+            {
+                let idx = cast(u64) i
+                Sb[idx] = Sb[idx] + opts.thirdsWeight * T[idx]
+            }
+        }
+
+        var ii   = .buildIntegral(&Sb, W, H)
+        let area = cast(f64) (rect.width * rect.height)
+        let sumS = .sumRect(&ii, W, H, cast() rect.x, cast() rect.y, cast() rect.right(), cast() rect.bottom())
+
+        return sumS / area
     }
 
     // Perform content-aware smart crop to target rectangle
