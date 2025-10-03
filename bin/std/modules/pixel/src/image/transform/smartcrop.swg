@@ -53,29 +53,29 @@ public impl Image
     {
         var ii: retval
         ii.resize((w + 1) * (h + 1))
-
+        let pitch = w + 1
         for y in 1 to h
         {
-            var rowSum = 0.0'f32
+            var rowSum  = 0.0
+            let baseIn  = (y - 1) * w
+            let baseOut = y * pitch
             for x in 1 to w
             {
-                let s = cast(f32) src[(y - 1) * w + (x - 1)]
-                rowSum += s
-                let idx = (y * (w + 1) + x)
-                ii[idx] = ii[idx - (w + 1)] + rowSum
+                rowSum += src[baseIn + (x - 1)]
+                ii[baseOut + x] = ii[baseOut - pitch + x] + rowSum
             }
         }
-
         return ii
     }
 
+    #[Swag.Inline]
     private func sumRect(ii: &Array'f32, w, h, x0, y0, x1, y1: s32)->f32
     {
-        let A = y0 * (w + 1) + x0
-        let B = y0 * (w + 1) + x1
-        let C = y1 * (w + 1) + x0
-        let D = y1 * (w + 1) + x1
-        return ii[D] - ii[B] - ii[C] + ii[A]
+        let a = y0 * (w + 1) + x0
+        let b = y0 * (w + 1) + x1
+        let c = y1 * (w + 1) + x0
+        let d = y1 * (w + 1) + x1
+        return ii[d] - ii[b] - ii[c] + ii[a]
     }
 
     private func boxBlurViaIntegral(src: Array'f32, w, h, radius: s32)->Array'f32
@@ -130,7 +130,7 @@ public impl Image
         T.resize(w * h)
         for y in 0 to (h - 1):
             for x in 0 to (w - 1):
-                T[y * w + x] = Math.pow(tx[cast(u64) x] * ty[cast(u64) y], 1.5)
+                T[y * w + x] = Math.pow(tx[x] * ty[y], 1.5)
         return T
     }
 
@@ -141,7 +141,7 @@ public impl Image
         {
             for x in 0 to (w - 1)
             {
-                let i = cast(u64) (y * w + x)
+                let i = y * w + x
                 if x == 0 or y == 0 or x == w - 1 or y == h - 1
                 {
                     outEdge[i] = 0.0
@@ -203,7 +203,7 @@ public impl Image
         D.resize(w * h)
         for i in 0 to (w * h - 1)
         {
-            let e = Math.saturate(B[cast(u64) i])
+            let e = Math.saturate(B[i])
             // either power inversion:
             let inv = 1.0 - e
             D[i] = Math.pow(inv, 0.75)
@@ -244,8 +244,8 @@ public impl Image
 
         let il = Math.max(0, Math.min(M - 1, cast(s32) Math.floor(pLow * cast(f32) (M - 1))))
         let ih = Math.max(0, Math.min(M - 1, cast(s32) Math.floor(pHigh * cast(f32) (M - 1))))
-        let lo = tmp[cast(u64) il]
-        let hi = tmp[cast(u64) ih]
+        let lo = tmp[il]
+        let hi = tmp[ih]
         if hi <= lo:
             return {lo, lo + 1e-6}
         return {lo, hi}
@@ -283,13 +283,13 @@ public impl Image
         // Blur luminance and compute Sobel once
         var lumBlur  = boxBlurViaIntegral(&lum, w, h, 1)
         var edgeMag: Array'f32
-        edgeMag.resize(cast(u64) N)
+        edgeMag.resize(N)
         sobelMagFromLumBlur(&lumBlur, w, h, &edgeMag)
 
         // Downsampled local contrast (same as before)
         const R       = SALIENCY_RADIUS
         var contrast: Array'f32
-        contrast.resize(cast(u64) N)
+        contrast.resize(N)
         let sampleStep = 2
         for var y = 0; y < h; y += sampleStep
         {
@@ -355,11 +355,8 @@ public impl Image
     {
         var tmp: retval
         tmp.resize(w * h)
-
         if enabled:
             return buildThirdsMap(w, h, THIRDS_SIGMA)
-
-        tmp.fill(0)
         return tmp
     }
 
@@ -382,9 +379,9 @@ public impl Image
         }
         else
         {
-            E.resize(cast(u64) (w * h))
+            E.resize(w * h)
             for i in 0 to (w * h - 1):
-                E[cast(u64) i] = 1.0
+                E[i] = 1.0
         }
 
         // Build integrals
@@ -757,8 +754,7 @@ public impl Image
         {
             for i in 0 to (w * h - 1)
             {
-                let idx = cast(u64) i
-                pack.sblur[idx] = pack.sblur[idx] + opts.thirdsWeight * pack.T[idx]
+                pack.sblur[i] = pack.sblur[i] + opts.thirdsWeight * pack.T[i]
             }
         }
 
