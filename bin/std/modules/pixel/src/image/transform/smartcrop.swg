@@ -171,14 +171,10 @@ public impl Image
         mec.visitPixels(&f)
         {
             let p = image.getPixelColor(x, y)
+            let params = cast(*#decltype(f)) userData
 
             // linear luminance
-            let r_lin  = srgbToLinear(p.r / 255.0)
-            let g_lin  = srgbToLinear(p.g / 255.0)
-            let b_lin  = srgbToLinear(p.b / 255.0)
-            let L      = r_lin * 0.2126 + g_lin * 0.7152 + b_lin * 0.0722
-            let params = cast(*#decltype(f)) userData
-            params.lum.buffer[index] = L
+            params.lum.buffer[index] = p.getRelativeLuminance()
 
             // saturation in sRGB
             let rs   = p.r / 255.0

@@ -244,6 +244,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     inlineNode->func           = funcDecl;
     inlineNode->scope          = node->ownerScope;
     inlineNode->typeInfo       = TypeManager::concreteType(funcDecl->typeInfo);
+    inlineNode->id             = g_UniqueID.fetch_add(1);
 
     if (node->hasOwnerTryCatchAssume())
     {
@@ -418,7 +419,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
     // Propagate attributes
     if (node->is(AstNodeKind::Identifier) && node->parent->is(AstNodeKind::IdentifierRef))
         newContent->setOwnerAttrUseFrom(node->parent);
-    
+
     // Sub declarations in the inline block, like sub functions
     if (!funcDecl->subDecl.empty())
     {

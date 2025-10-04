@@ -291,6 +291,7 @@ enum class ExtraPointerKind
     TokenParse,
     FromAlias,
     TypeInfoCast,
+    OriginalInlineId,
 };
 
 struct AstNode
@@ -696,7 +697,7 @@ struct AstIdentifierRef : AstNode
 struct AstIdentifier : AstNode
 {
     static constexpr SpecFlags SPEC_FLAG_NO_INLINE           = 0x0001;
-    static constexpr SpecFlags SPEC_FLAG_FROM_RECEIVER           = 0x0002;
+    static constexpr SpecFlags SPEC_FLAG_FROM_RECEIVER       = 0x0002;
     static constexpr SpecFlags SPEC_FLAG_FROM_USING          = 0x0004;
     static constexpr SpecFlags SPEC_FLAG_CLOSURE_FIRST_PARAM = 0x0008;
     static constexpr SpecFlags SPEC_FLAG_SILENT_CALL         = 0x0010;
@@ -1170,6 +1171,7 @@ struct AstInline : AstNode
     AstFuncDecl*             func;
     Scope*                   scope;
     Scope*                   parametersScope;
+    uint32_t                 id;
 };
 
 struct AstCompilerIfBlock : AstNode

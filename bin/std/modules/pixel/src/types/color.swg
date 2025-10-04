@@ -64,10 +64,10 @@ impl Color
     #[Inline]
     func setArgbf(me, a, r, g, b: f32)
     {
-        .a = cast() (Math.clamp(a, 0, 1) * 255)
-        .r = cast() (Math.clamp(r, 0, 1) * 255)
-        .g = cast() (Math.clamp(g, 0, 1) * 255)
-        .b = cast() (Math.clamp(b, 0, 1) * 255)
+        .a = cast() (Math.saturate(a) * 255)
+        .r = cast() (Math.saturate(r) * 255)
+        .g = cast() (Math.saturate(g) * 255)
+        .b = cast() (Math.saturate(b) * 255)
     }
 
     // Set RGB components with u8 values (0-255).
@@ -97,14 +97,14 @@ impl Color
     func setRgbf(me, r, g, b: f32)
     {
         .a = 255
-        .r = cast() (Math.clamp(r, 0, 1) * 255)
-        .g = cast() (Math.clamp(g, 0, 1) * 255)
-        .b = cast() (Math.clamp(b, 0, 1) * 255)
+        .r = cast() (Math.saturate(r) * 255)
+        .g = cast() (Math.saturate(g) * 255)
+        .b = cast() (Math.saturate(b) * 255)
     }
 
     // Retrieve all ARGB components as floating point values between 0 and 1.
     #[Inline, ConstExpr]
-    func toArgbf(const me)->{ a: f32, r: f32, g: f32, b: f32 }
+    mtd const toArgbf()->{ a: f32, r: f32, g: f32, b: f32 }
     {
         var result: retval = undefined
         result.a = .a / 255.0
@@ -116,7 +116,7 @@ impl Color
 
     // Convert color to a Math.Vector4 (w=alpha, x=red, y=green, z=blue).
     #[Inline, ConstExpr]
-    func toVector4(const me)->Math.Vector4
+    mtd const toVector4()->Math.Vector4
     {
         var result: retval = undefined
         result.w = .a / 255.0
@@ -128,7 +128,7 @@ impl Color
 
     // Retrieve RGB components as floating point values between 0 and 1.
     #[Inline, ConstExpr]
-    func toRgbf(const me)->{ r: f32, g: f32, b: f32 }
+    mtd const toRgbf()->{ r: f32, g: f32, b: f32 }
     {
         var result: retval = undefined
         result.r = .r / 255.0
@@ -253,9 +253,9 @@ impl Color
             return cast(u8) (v * 255)
         }
 
-        var _h = Math.clamp(h, 0.0, 1.0)
-        var _l = Math.clamp(l, 0.0, 1.0)
-        var _s = Math.clamp(s, 0.0, 1.0)
+        var _h = Math.saturate(h)
+        var _l = Math.saturate(l)
+        var _s = Math.saturate(s)
 
         if _s == 0
         {
@@ -312,6 +312,61 @@ impl Color
             result.h -= 1
 
         return result
+    }
+
+    // Convert the color to a linear-light Math.Vector4.
+    // Components are normalized to [0, 1], with gamma-correct sRGB → linear conversion applied.
+    // Useful for rendering, lighting, and blending operations where
+    // linear color space is required instead of gamma-encoded sRGB.
+    #[Inline, ConstExpr]
+    mtd const toLinear()->Math.Vector4
+    {
+        // Convert a normalized sRGB channel [0,1] to linear light.
+        func srgbToLinear(c: f32)->f32
+        {
+            return c <= 0.04045 ? (c / 12.92) : Core.Math.pow((c + 0.055) / 1.055, 2.4)
+        }
+
+        var result: retval = undefined
+        result.w = .a / 255.0 // alpha channel
+        result.x = srgbToLinear(.r / 255.0) // red channel
+        result.y = srgbToLinear(.g / 255.0) // green channel
+        result.z = srgbToLinear(.b / 255.0) // blue channel
+        return result
+    }
+
+    // Create a new Color from a linear-light Math.Vector4.
+    // Components are expected to be normalized in [0, 1].
+    // Performs gamma correction (linear → sRGB) on the RGB channels.
+    // Useful for reconstructing an 8-bit Color after doing math in linear space.
+    #[Inline, ConstExpr]
+    func fromLinear(vec: Math.Vector4)->Color
+    {
+        // Convert a linear-light channel [0,1] to gamma-encoded sRGB.
+        func linearToSrgb(c: f32)->f32
+        {
+            return c <= 0.0031308 ? (c * 12.92) : (1.055 * Core.Math.pow(c, 1.0 / 2.4) - 0.055)
+        }
+
+        var result: retval = undefined
+        result.a = cast(u8) Math.round(Math.saturate(vec.w) * 255.0)
+        result.r = cast(u8) Math.round(Math.saturate(linearToSrgb(vec.x)) * 255.0)
+        result.g = cast(u8) Math.round(Math.saturate(linearToSrgb(vec.y)) * 255.0)
+        result.b = cast(u8) Math.round(Math.saturate(linearToSrgb(vec.z)) * 255.0)
+        return result
+    }
+
+    // Calculate the relative luminance (Y) of the color in linear light.
+    // Uses the linearized RGB values from toLinear() and BT.709 coefficients (WCAG 2.x).
+    // Returns a scalar in [0, 1] representing perceived brightness.
+    // Formula:
+    //   Y = 0.2126 * R_lin + 0.7152 * G_lin + 0.0722 * B_lin
+    // where R_lin, G_lin, B_lin are the linearized channels.
+    //#[Inline, ConstExpr]
+    mtd const getRelativeLuminance()->f32
+    {
+        let lin = .toLinear()
+        return lin.x * 0.2126 + lin.y * 0.7152 + lin.z * 0.0722
     }
 
     // Blend two colors using linear interpolation, keeping 'col0's alpha channel.
@@ -385,7 +440,7 @@ impl Color
     }
 
     // Calculate the perceived brightness using luminance formula.
-    #[Inline]
+    #[Inline, ConstExpr]
     mtd const getGrayScalef()->f32
     {
         return (cast(f32) .r * 0.299 + cast(f32) .g * 0.587 + cast(f32) .b * 0.114) / 255.0

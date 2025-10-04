@@ -304,7 +304,25 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
         // sub declaration to be registered in the corresponding new scope.
         const auto newScopeNode = oldOwnerNode->findChildRefRec(f->ownerScope->owner, refNode);
         SWAG_ASSERT(newScopeNode);
-        const auto subFuncScope = newScopeNode->ownerScope;
+        auto subFuncScope = newScopeNode->ownerScope;
+
+        if (f->ownerScope->owner->is(AstNodeKind::Inline))
+        {
+            auto originalInline = castAst<AstInline>(f->ownerScope->owner, AstNodeKind::Inline);
+            const auto res = Ast::visit(context, refNode, [&](ErrorContext* cxt, const AstNode* n) {
+                if (n->is(AstNodeKind::Inline))
+                {
+                    const auto inlineNode = castAst<AstInline>(n, AstNodeKind::Inline);
+                    if (inlineNode->id == originalInline->id)
+                    {
+                        subFuncScope = inlineNode->scope;
+                        return Ast::VisitResult::Stop;
+                    }
+                }
+                
+                return Ast::VisitResult::Continue;
+            });
+        }
 
         cloneContext.parentScope = subFuncScope;
         cloneContext.parent      = nullptr; // Register in parent will be done at the end (race condition)
@@ -316,8 +334,11 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
 
         // Be sure the symbol is not already there. This can happen when using mixins
         const SymbolName* sym = nullptr;
-        if (context)
+        if (context && !f->ownerScope->owner->is(AstNodeKind::Inline))
             sym = subFuncScope->symTable.find(sub->token.text);
+
+        if (!sub->hasExtraPointer(ExtraPointerKind::OriginalInlineId) && cloneContext.ownerInline)
+            sub->addExtraPointer(ExtraPointerKind::OriginalInlineId, reinterpret_cast<void*>(cloneContext.ownerInline->id));
 
         auto symKind = SymbolKind::Invalid;
         switch (sub->kind)
@@ -1102,6 +1123,7 @@ AstNode* AstInline::clone(CloneContext& context)
     newNode->removeAstFlag(AST_NO_BYTECODE_CHILDREN);
 
     newNode->func = func;
+    newNode->id   = id;
 
     // I'm not sure why i must not always clone parameters
     if (parametersScope && !context.cloneFlags.has(CLONE_INLINE))
