@@ -309,7 +309,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
         if (f->ownerScope->owner->is(AstNodeKind::Inline))
         {
             auto originalInline = castAst<AstInline>(f->ownerScope->owner, AstNodeKind::Inline);
-            const auto res = Ast::visit(context, refNode, [&](ErrorContext* cxt, const AstNode* n) {
+            (void) Ast::visit(context, refNode, [&](ErrorContext* cxt, const AstNode* n) {
                 if (n->is(AstNodeKind::Inline))
                 {
                     const auto inlineNode = castAst<AstInline>(n, AstNodeKind::Inline);
@@ -319,7 +319,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
                         return Ast::VisitResult::Stop;
                     }
                 }
-                
+
                 return Ast::VisitResult::Continue;
             });
         }
@@ -338,7 +338,7 @@ bool AstFuncDecl::cloneSubDecl(ErrorContext* context, CloneContext& cloneContext
             sym = subFuncScope->symTable.find(sub->token.text);
 
         if (!sub->hasExtraPointer(ExtraPointerKind::OriginalInlineId) && cloneContext.ownerInline)
-            sub->addExtraPointer(ExtraPointerKind::OriginalInlineId, reinterpret_cast<void*>(cloneContext.ownerInline->id));
+            sub->addExtraPointer(ExtraPointerKind::OriginalInlineId, reinterpret_cast<void*>(static_cast<uint64_t>(cloneContext.ownerInline->id)));
 
         auto symKind = SymbolKind::Invalid;
         switch (sub->kind)

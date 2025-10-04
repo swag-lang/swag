@@ -866,9 +866,6 @@ void Diagnostic::printSourceCode(Log* log, uint32_t num, const Utf8& line) const
 
 void Diagnostic::printSourceCode(Log* log) const
 {
-    if (showErrorLevel || showFileName)
-        printMargin(log, true);
-
     printSourceCode(log, lineCodeNumPrev + 1, lineCodePrev);
     printSourceCode(log, lineCodeNum + 1, lineCode);
 }
@@ -1126,6 +1123,27 @@ void Diagnostic::report(Log* log)
 {
     textMsg = preprocess(textMsg);
 
+    // Source file and location on their own line
+    if (showFileName)
+    {
+        printMargin(log, false, true);
+
+        if (fromContext)
+            log->setColor(sourceFileColorContext);
+        else
+            log->setColor(sourceFileColor);
+
+        if (hasErrorId(textMsg))
+        {
+            log->print(Utf8(textMsg.buffer, 9));
+            log->print(" ");
+        }
+
+        printSourceLine(log);
+        log->writeEol();
+        printMargin(log, true, true);
+    }
+    
     // Code pre remarks
     if (!preRemarks.empty())
     {
@@ -1145,28 +1163,6 @@ void Diagnostic::report(Log* log)
     {
         printMargin(log, true, true);
         printRemarks(log);
-    }
-
-    // Source file and location on their own line
-    if (showFileName)
-    {
-        printMargin(log, true, true);
-        printMargin(log, false, true);
-
-        if (fromContext)
-            log->setColor(sourceFileColorContext);
-        else
-            log->setColor(sourceFileColor);
-
-        if (hasErrorId(textMsg))
-        {
-            log->print(Utf8(textMsg.buffer, 9));
-            log->print(" ");
-        }
-
-        printSourceLine(log);
-
-        log->writeEol();
     }
 
     log->setDefaultColor();
