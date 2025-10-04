@@ -253,7 +253,7 @@ namespace
         }
         else
         {
-            const auto msg = formErr(Err0592, bi.badSignatureRequestedType->getDisplayNameC(), niceArg.cstr(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg = formErr(Err0592, niceArg.cstr(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{errorNode, msg};
             err->hint      = errorParam.explicitCastMsg;
         }

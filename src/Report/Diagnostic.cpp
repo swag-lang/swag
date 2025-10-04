@@ -960,6 +960,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
     {
         LogWriteContext logCxt;
 
+        /*
         if (r.errorLevel == DiagnosticLevel::Error)
         {
             if (lineNo == 0)
@@ -972,7 +973,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
             {
                 log->print("  ");
             }
-        }
+        }*/
 
         setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
         log->print(lines[lineNo], &logCxt);
