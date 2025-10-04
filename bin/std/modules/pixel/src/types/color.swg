@@ -318,13 +318,13 @@ impl Color
     // Components are normalized to [0, 1], with gamma-correct sRGB → linear conversion applied.
     // Useful for rendering, lighting, and blending operations where
     // linear color space is required instead of gamma-encoded sRGB.
-    #[Inline, ConstExpr]
+    #[ConstExpr]
     mtd const toLinear()->Math.Vector4
     {
         // Convert a normalized sRGB channel [0,1] to linear light.
         func srgbToLinear(c: f32)->f32
         {
-            return c <= 0.04045 ? (c / 12.92) : Core.Math.pow((c + 0.055) / 1.055, 2.4)
+            return c <= 0.04045 ? (c / 12.92) : Math.pow((c + 0.055) / 1.055, 2.4)
         }
 
         var result: retval = undefined
@@ -339,13 +339,13 @@ impl Color
     // Components are expected to be normalized in [0, 1].
     // Performs gamma correction (linear → sRGB) on the RGB channels.
     // Useful for reconstructing an 8-bit Color after doing math in linear space.
-    #[Inline, ConstExpr]
+    #[ConstExpr]
     func fromLinear(vec: Math.Vector4)->Color
     {
         // Convert a linear-light channel [0,1] to gamma-encoded sRGB.
         func linearToSrgb(c: f32)->f32
         {
-            return c <= 0.0031308 ? (c * 12.92) : (1.055 * Core.Math.pow(c, 1.0 / 2.4) - 0.055)
+            return c <= 0.0031308 ? (c * 12.92) : (1.055 * Math.pow(c, 1.0 / 2.4) - 0.055)
         }
 
         var result: retval = undefined
