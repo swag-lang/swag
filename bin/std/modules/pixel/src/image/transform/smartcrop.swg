@@ -37,7 +37,6 @@ public impl Image
 
     private const SALIENCY_RADIUS = 4
     private const THIRDS_SIGMA = 0.075
-    private const EPS_TIE = 1.0e-9'f32
     private const EDGE_DIST_SCALE = 0.15
     private const ENHANCED_WEIGHTS = SaliencyWeights{contrast: 1.0, saturation: 0.55, edge: 1.2}
 
@@ -456,12 +455,12 @@ public impl Image
         if imgAspect > aspect
         {
             h0 = Math.min(h, Math.max(4, h0))
-            w0 = Math.min(w, Math.max(4, cast(s32) Math.round(cast(f32) h0 * aspect)))
+            w0 = Math.min(w, Math.max(4, Math.roundS32(cast(f32) h0 * aspect)))
         }
         else
         {
             w0 = Math.min(w, Math.max(4, w0))
-            h0 = Math.min(h, Math.max(4, cast(s32) Math.round(cast(f32) w0 / aspect)))
+            h0 = Math.min(h, Math.max(4, Math.roundS32(cast(f32) w0 / aspect)))
         }
 
         return {w0, h0}
@@ -488,7 +487,7 @@ public impl Image
             for x0 in rx0 to rx1
             {
                 let r = scoreWindow(ctx, x0, y0, bestW, bestH)
-                if r.score > bScore + EPS_TIE or (Math.abs(r.score - bScore) <= EPS_TIE and r.d2 < bD2)
+                if r.score > bScore + Math.ConstF32.Epsilon or (Math.abs(r.score - bScore) <= Math.ConstF32.Epsilon and r.d2 < bD2)
                 {
                     bx     = x0
                     by     = y0
@@ -517,8 +516,8 @@ public impl Image
         {
             if i == 2:
                 continue
-            let cw = cast(s32) Math.round(bestW * scales[i])
-            let ch = cast(s32) Math.round(bestH * scales[i])
+            let cw = Math.roundS32(bestW * scales[i])
+            let ch = Math.roundS32(bestH * scales[i])
             if cw < 4 or ch < 4:
                 continue
             if cw > ctx.w or ch > ctx.h:
@@ -537,7 +536,7 @@ public impl Image
             let y0 = Math.clamp(bestY + (bestH - fh) / 2, 0, maxY)
             let r  = scoreWindow(ctx, x0, y0, fw, fh)
 
-            if r.score > bScore + EPS_TIE or (Math.abs(r.score - bScore) <= EPS_TIE and r.d2 < bD2)
+            if r.score > bScore + Math.ConstF32.Epsilon or (Math.abs(r.score - bScore) <= Math.ConstF32.Epsilon and r.d2 < bD2)
             {
                 bx     = x0
                 by     = y0
@@ -578,14 +577,14 @@ public impl Image
 
         let maxX   = w - cropW
         let maxY   = h - cropH
-        let stride = Math.max(1, cast(s32) Math.round(opts.strideFrac * cast(f32) Math.min(cropW, cropH)))
+        let stride = Math.max(1, Math.roundS32(opts.strideFrac * cast(f32) Math.min(cropW, cropH)))
 
         for var y0 = 0; y0 <= maxY; y0 += stride
         {
             for var x0 = 0; x0 <= maxX; x0 += stride
             {
                 let result = scoreWindow(&ctx, x0, y0, cropW, cropH)
-                if result.score > bestScore + EPS_TIE or (Math.abs(result.score - bestScore) <= EPS_TIE and result.d2 < bestD2)
+                if result.score > bestScore + Math.ConstF32.Epsilon or (Math.abs(result.score - bestScore) <= Math.ConstF32.Epsilon and result.d2 < bestD2)
                 {
                     bestScore = result.score
                     bestX     = x0
@@ -605,7 +604,7 @@ public impl Image
             for x0 in rx0 to rx1
             {
                 let result = scoreWindow(&ctx, x0, y0, cropW, cropH)
-                if result.score > bestScore + EPS_TIE
+                if result.score > bestScore + Math.ConstF32.Epsilon
                 {
                     bestScore = result.score
                     bestX     = x0
@@ -646,13 +645,13 @@ public impl Image
             var cw, ch: s32
             if imgAspect > aspect
             {
-                ch = Math.min(h, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea / aspect))))
-                cw = Math.min(w, cast(s32) Math.round(ch * aspect))
+                ch = Math.min(h, Math.max(8, Math.roundS32(Math.sqrt(targetArea / aspect))))
+                cw = Math.min(w, Math.roundS32(ch * aspect))
             }
             else
             {
-                cw = Math.min(w, Math.max(8, cast(s32) Math.round(Math.sqrt(targetArea * aspect))))
-                ch = Math.min(h, cast(s32) Math.round(cw / aspect))
+                cw = Math.min(w, Math.max(8, Math.roundS32(Math.sqrt(targetArea * aspect))))
+                ch = Math.min(h, Math.roundS32(cw / aspect))
             }
 
             if cw < 4 or ch < 4:
@@ -662,15 +661,15 @@ public impl Image
             if maxX < 0 or maxY < 0:
                 continue
 
-            let strideX = Math.max(1, cast(s32) Math.round(opts.strideFrac * cw))
-            let strideY = Math.max(1, cast(s32) Math.round(opts.strideFrac * ch))
+            let strideX = Math.max(1, Math.roundS32(opts.strideFrac * cw))
+            let strideY = Math.max(1, Math.roundS32(opts.strideFrac * ch))
 
             for var y0 = 0; y0 <= maxY; y0 += strideY
             {
                 for var x0 = 0; x0 <= maxX; x0 += strideX
                 {
                     let r = scoreWindow(&ctx, x0, y0, cw, ch)
-                    if r.score > bestScore + EPS_TIE or (Math.abs(r.score - bestScore) <= EPS_TIE and r.d2 < bestCenterD2)
+                    if r.score > bestScore + Math.ConstF32.Epsilon or (Math.abs(r.score - bestScore) <= Math.ConstF32.Epsilon and r.d2 < bestCenterD2)
                     {
                         bestScore    = r.score
                         bestX        = x0
@@ -695,7 +694,7 @@ public impl Image
 
         {
             let rr = refinePosition(&ctx, bestX, bestY, bestW, bestH, 2)
-            if rr.score > bestScore + EPS_TIE
+            if rr.score > bestScore + Math.ConstF32.Epsilon
             {
                 bestScore    = rr.score
                 bestX        = rr.x
@@ -704,7 +703,7 @@ public impl Image
             }
 
             let sr = tryScaledVariants(&ctx, aspect, imgAspect, bestX, bestY, bestW, bestH)
-            if sr.score > bestScore + EPS_TIE
+            if sr.score > bestScore + Math.ConstF32.Epsilon
             {
                 bestScore    = sr.score
                 bestX        = sr.x
@@ -715,7 +714,7 @@ public impl Image
             }
 
             let rr2 = refinePosition(&ctx, bestX, bestY, bestW, bestH, 1)
-            if rr2.score > bestScore + EPS_TIE
+            if rr2.score > bestScore + Math.ConstF32.Epsilon
             {
                 bestX = rr2.x
                 bestY = rr2.y
@@ -732,11 +731,10 @@ public impl Image
 
     private mtd const calculateReframeRect(targetWidth, targetHeight: f32, opts: SmartCropSearchOpts)->Math.Rectangle
     {
-        let w = .width, h = .height
-        Debug.assert(w > 0 and h > 0)
-
+        let w         = .width
+        let h         = .height
         let aspect    = targetWidth / targetHeight
-        let imgAspect = cast(f32) w / cast(f32) h
+        let imgAspect = cast(f32) w / h
 
         if opts.minCoverage >= 0.95:
             return .calculateSingleScale(aspect, imgAspect, w, h, opts)
@@ -752,7 +750,7 @@ public impl Image
 
         if opts.thirdsWeight > 0.01
         {
-            for i in 0 to (w * h - 1)
+            for i in 0 until w * h
             {
                 pack.sblur[i] = pack.sblur[i] + opts.thirdsWeight * pack.T[i]
             }
@@ -834,18 +832,18 @@ public impl Image
             if maxSide > opts.maxSize
             {
                 let scale = cast(f32) opts.maxSize / maxSide
-                let w2    = Math.max(1, cast(s32) Math.round(scale * w0))
-                let h2    = Math.max(1, cast(s32) Math.round(scale * h0))
+                let w2    = Math.max(1, Math.roundS32(scale * w0))
+                let h2    = Math.max(1, Math.roundS32(scale * h0))
 
                 var work = dref me
                 work.resize(w2, h2)
 
                 // Scale the input rect down to the working copy
                 var rs: Math.Rectangle
-                rs.x      = Math.clamp(cast(s32) Math.round(rect.x * scale), 0, w2 - 1)
-                rs.y      = Math.clamp(cast(s32) Math.round(rect.y * scale), 0, h2 - 1)
-                rs.width  = Math.max(1, cast(s32) Math.round(rect.width * scale))
-                rs.height = Math.max(1, cast(s32) Math.round(rect.height * scale))
+                rs.x      = Math.clamp(Math.roundS32(rect.x * scale), 0, w2 - 1)
+                rs.y      = Math.clamp(Math.roundS32(rect.y * scale), 0, h2 - 1)
+                rs.width  = Math.max(1, Math.roundS32(rect.width * scale))
+                rs.height = Math.max(1, Math.roundS32(rect.height * scale))
                 rs.width  = Math.min(rs.width, w2 - rs.x)
                 rs.height = Math.min(rs.height, h2 - rs.y)
 
@@ -874,8 +872,8 @@ public impl Image
             if maxSide > opts.maxSize
             {
                 let scale = cast(f32) opts.maxSize / maxSide
-                let w2    = Math.max(1, cast(s32) Math.round(scale * w0))
-                let h2    = Math.max(1, cast(s32) Math.round(scale * h0))
+                let w2    = Math.max(1, Math.roundS32(scale * w0))
+                let h2    = Math.max(1, Math.roundS32(scale * h0))
 
                 // Working copy (resized) — use it only to compute the rectangle
                 var work = dref me
@@ -885,10 +883,10 @@ public impl Image
 
                 // Map the rectangle back to original coordinates
                 var r: Math.Rectangle
-                r.x      = Math.clamp(cast(s32) Math.round(rSmall.x / scale), 0, w0 - 1)
-                r.y      = Math.clamp(cast(s32) Math.round(rSmall.y / scale), 0, h0 - 1)
-                r.width  = Math.max(1, cast(s32) Math.round(rSmall.width / scale))
-                r.height = Math.max(1, cast(s32) Math.round(rSmall.height / scale))
+                r.x      = Math.clamp(Math.roundS32(rSmall.x / scale), 0, w0 - 1)
+                r.y      = Math.clamp(Math.roundS32(rSmall.y / scale), 0, h0 - 1)
+                r.width  = Math.max(1, Math.roundS32(rSmall.width / scale))
+                r.height = Math.max(1, Math.roundS32(rSmall.height / scale))
                 r.width  = Math.min(r.width, w0 - r.x)
                 r.height = Math.min(r.height, h0 - r.y)
 

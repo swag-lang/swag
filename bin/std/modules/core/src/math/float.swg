@@ -237,6 +237,15 @@ alias ConstF64 = Const'f64
     func round(x: f32) => @round(x)
     func round(x: f64) => @round(x)
 
+    func floorS32(x: f32) => cast(s32) @floor(x)
+    func floorS64(x: f64) => cast(s64) @floor(x)
+    func ceilS32(x: f32)  =>cast(s32) @ceil(x)
+    func ceilS64(x: f64)  => cast(s64) @ceil(x)
+    func truncS32(x: f32) => cast(s32) @trunc(x)
+    func truncS64(x: f64) => cast(s64) @trunc(x)
+    func roundS32(x: f32) => cast(s32) @round(x)
+    func roundS64(x: f64) => cast(s64) @round(x)
+
     func abs(x: f32) => @abs(x)
     func abs(x: f64) => @abs(x)
 

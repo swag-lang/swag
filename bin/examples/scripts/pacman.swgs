@@ -770,14 +770,14 @@ impl Ghost
      *
      * @return - integer, X coordinate of current tile
      */
-    mtd const getX() => cast(s32) Math.round(.x)
+    mtd const getX() => Math.roundS32(.x)
 
     /**
      * Determines and returns absolute Y coordinate of map tile on which ghost resides
      *
      * @return - integer, Y coordinate of current tile
      */
-    mtd const getY() => cast(s32) Math.round(.y)
+    mtd const getY() => Math.roundS32(.y)
 
     /**
      * Determines and returns the next tile in the given direction of movement
@@ -813,7 +813,7 @@ impl Ghost
     mtd atTileCenter()->bool
     {
         let mod = cast(s32) (1 / .dPos)
-        return cast(s32) Math.round(.y * mod) % mod == 0 and cast(s32) Math.round(.x * mod) % mod == 0
+        return Math.roundS32(.y * mod) % mod == 0 and Math.roundS32(.x * mod) % mod == 0
     }
 
     mtd move(redGhost: Ghost)
@@ -1009,7 +1009,7 @@ impl Pacman
      */
     mtd atTileCenter()->bool
     {
-        return cast(s32) Math.round(.y * 10.0) % 10 == 0 and cast(s32) Math.round(.x * 10.0) % 10 == 0
+        return Math.roundS32(.y * 10.0) % 10 == 0 and Math.roundS32(.x * 10.0) % 10 == 0
     }
 
     /**
@@ -1017,14 +1017,14 @@ impl Pacman
      *
      * @return - integer, X coordinate of current tile
      */
-    mtd const getX() => cast(s32) Math.round(.x)
+    mtd const getX() => Math.roundS32(.x)
 
     /**
      * Determines and returns absolute Y coordinate of map tile on which Pac-Man resides
      *
      * @return - integer, Y coordinate of current tile
      */
-    mtd const getY() => cast(s32) Math.round(.y)
+    mtd const getY() => Math.roundS32(.y)
 
     /**
      * "Eat" the current tile:
