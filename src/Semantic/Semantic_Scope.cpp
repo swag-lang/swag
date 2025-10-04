@@ -524,6 +524,10 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         }
     }
 
+    // For a subdecl, collect alternative scope from the owner 
+    if (startNode->is(AstNodeKind::FuncDecl) && startNode->ownerFct)
+       collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->ownerFct, flags, scopeUpMode, scopeUpValue);
+    
     // Add registered alternative scopes of the current node
     if (startNode->hasExtMisc())
     {
