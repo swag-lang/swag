@@ -524,10 +524,6 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         }
     }
 
-    // For a subdecl, collect alternative scope from the owner 
-    if (startNode->is(AstNodeKind::FuncDecl) && startNode->ownerFct)
-       collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->ownerFct, flags, scopeUpMode, scopeUpValue);
-    
     // Add registered alternative scopes of the current node
     if (startNode->hasExtMisc())
     {
@@ -549,6 +545,21 @@ void Semantic::collectAlternativeScopeHierarchy(SemanticContext*                
         if (startNode->ownerFct == context->node->ownerFct || startNode == context->node->ownerFct)
         {
             collectAlternativeScopeVars(startNode, scopes, scopesVars);
+        }
+    }
+
+    if (startNode->is(AstNodeKind::FuncDecl))
+    {
+        // For a sub decl, collect alternative scope from the original owner function 
+        if (startNode->ownerFct)
+        {
+            collectAlternativeScopeHierarchy(context, scopes, scopesVars, startNode->ownerFct, flags, scopeUpMode, scopeUpValue);
+        }
+        
+        if (startNode->ownerScope->is(ScopeKind::Inline))
+        {
+            const auto inlineNode = castAst<AstInline>(startNode->ownerScope->owner, AstNodeKind::Inline);
+            collectAlternativeScopeHierarchy(context, scopes, scopesVars, inlineNode->func, flags, scopeUpMode, scopeUpValue);
         }
     }
 
