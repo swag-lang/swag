@@ -25,10 +25,15 @@ namespace
         return context->report(*errs0[0], errs1);
     }
 
-    constexpr uint32_t MAX_OVERLOADS = 5;
-
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
+        // No candidates at all: fall back to a generic overload error
+        if (tryMatches.empty())
+        {
+            Diagnostic err{node, node->token, toErr(Err0506)};
+            return context->report(err, {});
+        }
+
         // Primary error (kept unless all per-overload reasons are identical)
         Diagnostic                err{node, node->token, toErr(Err0506)};
         Vector<const Diagnostic*> notes;
@@ -46,18 +51,19 @@ namespace
         note->endLocation   = firstErrs[0]->endLocation;
         note->canBeMerged   = true;
 
-        // Collect overload lines + track whether all short reasons are the same
-        int        overloadIndex = 1;
-        const auto maxOverloads  = std::min<uint32_t>(tryMatches.size(), MAX_OVERLOADS);
+        constexpr uint32_t maxOverloads = 5;
+        const uint32_t shown = std::min<uint32_t>(tryMatches.size(), maxOverloads);
 
         FormatAst     fmtAst;
         FormatContext fmtContext;
 
-        Utf8 firstShortReason;
-        bool haveFirstShort  = false;
-        bool allReasonsEqual = true;
+        Utf8 firstReasonId; // getErrorId returns Utf8
+        bool haveFirst = false;
+        bool allEqual  = true;
 
-        for (uint32_t i = 0; i < maxOverloads; i++)
+        uint32_t overloadIndex = 1;
+
+        for (uint32_t i = 0; i < shown; i++)
         {
             OneTryMatch* match = tryMatches[i];
 
@@ -80,8 +86,9 @@ namespace
             }
 
             Utf8 sig = fmtAst.getUtf8();
-            if (!sig.empty() && (sig.back() == '\n' || sig.back() == ';'))
+            while (!sig.empty() && (sig.back() == '\n' || sig.back() == ';' || isspace(sig.back())))
                 sig.count--;
+
             SyntaxColorContext cxt;
             sig = doSyntaxColor(sig, cxt);
 
@@ -89,79 +96,65 @@ namespace
             Vector<const Diagnostic*> errs0, notes0;
             SemanticError::getDiagnosticForMatch(context, *match, errs0, notes0);
 
-            Utf8 shortMsg, shortCompare;
-            if (!errs0.empty())
-            {
+            // Per-overload message uses the DETAIL part (token[1]); title (token[0]) is reserved for the main error
+            Utf8 detailMsg;
+            Utf8 reasonId; // stable key via Diagnostic::getErrorId(full)
+
+            auto extract = [&](const Utf8& full) {
                 Vector<Utf8> tokens;
-                Diagnostic::tokenizeError(errs0[0]->textMsg, tokens);
-                if (tokens.size() > 1)
-                {
-                    shortCompare = tokens[0];
-                    shortMsg     = tokens[1];
-                }
-                else
-                {
-                    shortMsg     = errs0[0]->textMsg;
-                    shortCompare = shortMsg;
-                }
+                Diagnostic::tokenizeError(full, tokens);
+                // token[0] = title (short), token[1] = detail (what we want per overload)
+                detailMsg = tokens.size() >= 2 ? tokens[1] : full; // fallback to full message if no detail part
+                reasonId  = Diagnostic::getErrorId(full);
+            };
 
-                // Keep output compact
-                /*int d = shortMsg.find(", got");
-                if (d != -1)
-                    shortMsg.remove(d, shortMsg.length() - d);*/
+            if (!errs0.empty())
+                extract(errs0[0]->textMsg);
+            else
+                if (!notes0.empty())
+                    extract(notes0[0]->textMsg);
 
-                // Track equality across all overload reasons
-                if (!haveFirstShort)
-                {
-                    firstShortReason = shortCompare;
-                    haveFirstShort   = true;
-                }
-                else if (shortCompare != firstShortReason)
-                {
-                    allReasonsEqual = false;
-                }
-            }
-
-            // 3) Compose: "overload N: <sig> -- <shortMsg>"
-            Utf8 overTxt;
-            overTxt += Log::colorToVTS(LogColor::DarkYellow);
-            overTxt += form("overload %d", overloadIndex++);
-            overTxt += Log::colorToVTS(LogColor::White);
-            overTxt += ": ";
-            overTxt += sig;
-
-            if (!shortMsg.empty())
+            if (!haveFirst)
             {
-                overTxt += " -- ";
-                overTxt += shortMsg;
+                firstReasonId = reasonId;
+                haveFirst     = true;
+            }
+            else
+                if (reasonId != firstReasonId) { allEqual = false; }
+
+            // 3) Compose line: "overload N: <sig> -- <detailMsg>"
+            Utf8 line;
+            line += Log::colorToVTS(LogColor::DarkYellow);
+            line += form("overload %u", overloadIndex++);
+            line += Log::colorToVTS(LogColor::White);
+            line += ": ";
+            line += sig;
+            if (!detailMsg.empty())
+            {
+                line += " -- ";
+                line += detailMsg;
             }
 
-            note->preRemarks.push_back(overTxt);
+            note->remarks.push_back(std::move(line));
         }
 
-        if (tryMatches.size() > MAX_OVERLOADS)
-            note->preRemarks.push_back("...");
+        if (tryMatches.size() > shown)
+            note->remarks.push_back(form("... and %u more overload(s) not shown", uint32_t(tryMatches.size() - shown)));
 
-        // Only adjust the main error text if ALL per-overload short reasons are identical.
-        // Otherwise keep the original main error message verbatim.
-        if (allReasonsEqual && !firstErrs.empty())
+        // If ALL per-overload reasons are identical, set the main error text to the TITLE (token[0]) of the first error
+        if (allEqual && !firstErrs.empty())
         {
             Vector<Utf8> tokens;
             Diagnostic::tokenizeError(firstErrs[0]->textMsg, tokens);
-            if (!tokens.empty())
-            {
-                err.textMsg       = tokens[0];
-                err.sourceFile    = firstErrs[0]->sourceFile;
-                err.startLocation = firstErrs[0]->startLocation;
-                err.endLocation   = firstErrs[0]->endLocation;
-            }
+            err.textMsg = !tokens.empty() ? tokens[0] : firstErrs[0]->textMsg;
+
+            // Anchor main error to first candidate error for accuracy
+            err.sourceFile    = firstErrs[0]->sourceFile;
+            err.startLocation = firstErrs[0]->startLocation;
+            err.endLocation   = firstErrs[0]->endLocation;
         }
 
-        // Render the overload list
-        note->remarks = std::move(note->preRemarks);
-
-        Vector<const Diagnostic*> oneNote;
-        oneNote.push_back(note);
+        Vector<const Diagnostic*> oneNote{note};
         return context->report(err, oneNote);
     }
 }
