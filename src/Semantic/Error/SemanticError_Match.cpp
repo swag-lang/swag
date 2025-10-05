@@ -258,6 +258,7 @@ namespace
                 if (!detailToShow.empty())
                 {
                     line += OVER_SEP;
+                    line += Log::colorToVTS(LogColor::White);
                     line += detailToShow;
                 }
             }
