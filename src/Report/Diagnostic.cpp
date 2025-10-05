@@ -215,6 +215,13 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("[[1]] fields", "[[1]] field");
     replace.replace("[[1]] variables", "[[1]] variable");
 
+    replace.replace(" [[0]] argument(s)", " [[0]] argument");
+    replace.replace(" [[1]] argument(s)", " [[1]] argument");
+    replace.replace(" [[0]] parameter(s)", " [[0]] parameter");
+    replace.replace(" [[1]] parameter(s)", " [[1]] parameter");
+    replace.replace("argument(s)", "arguments");
+    replace.replace("parameter(s)", "parameters");
+
     return replace;
 }
 
@@ -1001,18 +1008,25 @@ void Diagnostic::printRanges(Log* log)
         }
 
         ranges.pop_back();
-
-        //if (!ranges.empty())
-        //    printRangesVerticalBars(log, ranges.size());
     }
 
     log->writeEol();
 }
 
-void Diagnostic::reportCompact(Log* log)
+void Diagnostic::preprocess()
 {
     textMsg = preprocess(textMsg);
+    for (auto& r : preRemarks)
+        r = preprocess(r);
+    for (auto& r : autoRemarks)
+        r = preprocess(r);
+    for (auto& r : remarks)
+        r = preprocess(r);
+}
 
+void Diagnostic::reportCompact(Log* log)
+{
+    preprocess();
     setupColors();
     setColorRanges(log, errorLevel, HintPart::ErrorLevel);
     printErrorLevel(log);
@@ -1038,7 +1052,7 @@ void Diagnostic::reportCompact(Log* log)
 
 void Diagnostic::report(Log* log)
 {
-    textMsg = preprocess(textMsg);
+    preprocess();
 
     // Source file and location on their own line
     if (showFileName)

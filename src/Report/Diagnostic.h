@@ -176,6 +176,7 @@ struct Diagnostic
     bool        hasNotes() const { return !notes.empty(); }
     bool        hasSomething() const { return !textMsg.empty() || !preRemarks.empty() || !remarks.empty() || !autoRemarks.empty() || !notes.empty() || !ranges.empty(); }
 
+    void     preprocess();
     void     setupColors();
     void     collectSourceCode();
     void     sortRanges();
