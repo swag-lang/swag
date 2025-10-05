@@ -66,8 +66,6 @@ namespace
             Utf8     detailFull;  // original full detail
             Utf8     detailNoGot; // detail with trailing ", got X" stripped (if factoring)
             uint32_t widthPlain;
-            bool     eligibleForGot = false; // true if MatchResult is BadSignature/BadGenericSignature
-            bool     hasGot         = false; // true if we found a trailing ", got X"
         };
         Vector<Item> items;
 
@@ -85,9 +83,8 @@ namespace
         bool allEqualDetails = true;
 
         // Simplified factoring state: only if **all shown overloads** are eligible AND share the same ", got X"
-        bool allShownEligible = true;  // becomes false if any shown overload is not eligible
-        bool canFactorGot     = true;  // becomes false if any eligible overload misses ", got " or differs
-        bool haveCommonGot    = false; // set when we capture the first got value
+        bool canFactorGot  = true;  // becomes false if any eligible overload misses ", got " or differs
+        bool haveCommonGot = false; // set when we capture the first got value
         Utf8 commonGotValue;
 
         // First pass: collect data & compute maximum signature width (after truncation)
@@ -176,82 +173,64 @@ namespace
             it.detailFull  = detailMsg;
             it.detailNoGot = detailMsg;
             it.widthPlain  = w;
-
-            const auto mr     = match->symMatchContext.result;
-            it.eligibleForGot = (mr == MatchResult::BadSignature) || (mr == MatchResult::BadGenericSignature);
-
-            // If any shown overload is not eligible, we won't factor at all.
-            if (!it.eligibleForGot)
-                allShownEligible = false;
-
             items.push_back(std::move(it));
         }
 
         // Only attempt to factor if ALL shown overloads are eligible
-        if (allShownEligible)
+        static constexpr auto GOT_TOK = ", got ";
+
+        for (auto& it : items)
         {
-            static constexpr auto GOT_TOK = ", got ";
-
-            for (auto& it : items)
+            const char* fullCStr = it.detailFull.cstr();
+            const char* gotPtr   = strstr(fullCStr, GOT_TOK);
+            if (!gotPtr)
             {
-                const char* fullCStr = it.detailFull.cstr();
-                const char* gotPtr   = strstr(fullCStr, GOT_TOK);
-                if (!gotPtr)
-                {
-                    canFactorGot = false;
-                    break;
-                }
-
-                const uint32_t pos    = static_cast<uint32_t>(gotPtr - fullCStr);
-                Utf8           gotVal = it.detailFull.substr(pos + static_cast<uint32_t>(strlen(GOT_TOK)));
-                if (gotVal.empty())
-                {
-                    canFactorGot = false;
-                    break;
-                }
-
-                // First value becomes the common value; others must match it
-                if (!haveCommonGot)
-                {
-                    commonGotValue = gotVal;
-                    haveCommonGot  = true;
-                }
-                else if (gotVal != commonGotValue)
-                {
-                    canFactorGot = false;
-                    break;
-                }
-
-                it.hasGot      = true;
-                it.detailNoGot = it.detailFull.substr(0, pos);
-                it.detailNoGot.trimRight();
+                canFactorGot = false;
+                break;
             }
 
-            // If all equal, also trim the stored first common detail
-            if (canFactorGot && haveCommonGot && allEqualDetails && !firstReasonDetail.empty())
+            const uint32_t pos    = static_cast<uint32_t>(gotPtr - fullCStr);
+            Utf8           gotVal = it.detailFull.substr(pos + static_cast<uint32_t>(strlen(GOT_TOK)));
+            if (gotVal.empty())
             {
-                if (const char* p = strstr(firstReasonDetail.cstr(), GOT_TOK))
-                {
-                    const uint32_t pos     = static_cast<uint32_t>(p - firstReasonDetail.cstr());
-                    firstReasonDetailNoGot = firstReasonDetail.substr(0, pos);
-                    firstReasonDetailNoGot.trimRight();
-                }
+                canFactorGot = false;
+                break;
             }
-            else
+
+            // The first value becomes the common value; others must match it
+            if (!haveCommonGot)
             {
-                firstReasonDetailNoGot = firstReasonDetail;
+                commonGotValue = gotVal;
+                haveCommonGot  = true;
+            }
+            else if (gotVal != commonGotValue)
+            {
+                canFactorGot = false;
+                break;
+            }
+
+            it.detailNoGot = it.detailFull.substr(0, pos);
+            it.detailNoGot.trimRight();
+        }
+
+        // If all equal, also trim the stored first common detail
+        if (canFactorGot && haveCommonGot && allEqualDetails && !firstReasonDetail.empty())
+        {
+            if (const char* p = strstr(firstReasonDetail.cstr(), GOT_TOK))
+            {
+                const uint32_t pos     = static_cast<uint32_t>(p - firstReasonDetail.cstr());
+                firstReasonDetailNoGot = firstReasonDetail.substr(0, pos);
+                firstReasonDetailNoGot.trimRight();
             }
         }
         else
         {
-            canFactorGot           = false;
-            haveCommonGot          = false;
             firstReasonDetailNoGot = firstReasonDetail;
         }
+        
+        bool shouldFactorGot = canFactorGot && haveCommonGot && !commonGotValue.empty();
 
-        bool shouldFactorGot = allShownEligible && canFactorGot && haveCommonGot && !commonGotValue.empty();
-
-        // Details start one space after the widest shown signature
+        // Details start one space after the widest-shown signature
         const uint32_t detailCol = (maxSigWidth < SIG_COL_MAX ? maxSigWidth : SIG_COL_MAX) + 1;
 
         // Second pass: render aligned lines
@@ -275,7 +254,7 @@ namespace
 
             if (!allEqualDetails)
             {
-                const Utf8& detailToShow = (shouldFactorGot && it.hasGot) ? it.detailNoGot : it.detailFull;
+                const Utf8& detailToShow = shouldFactorGot ? it.detailNoGot : it.detailFull;
                 if (!detailToShow.empty())
                 {
                     line += OVER_SEP;
