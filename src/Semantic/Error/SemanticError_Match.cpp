@@ -97,11 +97,11 @@ namespace
                 if (tokens.size() > 1)
                 {
                     shortCompare = tokens[0];
-                    shortMsg = tokens[1];
+                    shortMsg     = tokens[1];
                 }
                 else
                 {
-                    shortMsg = errs0[0]->textMsg;
+                    shortMsg     = errs0[0]->textMsg;
                     shortCompare = shortMsg;
                 }
 
@@ -149,7 +149,12 @@ namespace
             Vector<Utf8> tokens;
             Diagnostic::tokenizeError(firstErrs[0]->textMsg, tokens);
             if (!tokens.empty())
-                err.textMsg = tokens[0];
+            {
+                err.textMsg       = tokens[0];
+                err.sourceFile    = firstErrs[0]->sourceFile;
+                err.startLocation = firstErrs[0]->startLocation;
+                err.endLocation   = firstErrs[0]->endLocation;
+            }
         }
 
         // Render the overload list
