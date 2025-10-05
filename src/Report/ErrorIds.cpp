@@ -643,7 +643,7 @@ void initErrors()
     SWAG_ERROR(Err0506, "overload mismatch                                 $                                                                               $ ");
     SWAG_ERROR(Err0507, "recursive evaluation                              $ struct [[%s]] references itself                                               $ ");
     SWAG_ERROR(Err0508, "redundant access specifier                        $ [[%s]] redundant with [[#global export]]                                      $ remove [[public]]: [[#global export]] makes all declarations public");
-    SWAG_ERROR(Err0509, "redundant nullable                                $ parameter with [[null]] default is implicitly nullable $ remove [[#null]]     $ ");
+    SWAG_ERROR(Err0509, "redundant nullable                                $ parameter with [[null]] default is implicitly nullable                        $ remove [[#null]] ");
     SWAG_ERROR(Err0510, "reserved field name                               $ field name [[%s]] reserved                                                    $ names starting with [[item]] are reserved");
     SWAG_ERROR(Err0511, "reserved function name                            $ function name [[%s]] reserved                                                 $ ");
     SWAG_ERROR(Err0512, "reserved name                                     $ single [[_]] identifier reserved                                              $ single [[_]] reserved by compiler");

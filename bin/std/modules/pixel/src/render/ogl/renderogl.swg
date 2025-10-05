@@ -596,9 +596,18 @@ impl RenderOgl
     }
 
     // Scale the world transform
+    #[Swag.Overload]
     mtd scaleTransform(x, y: f32)
     {
         let tr = Transform2.createScale(x, y, 0, 0)
+        .worldTransform.multiply(tr)
+    }
+
+    // Scale the world transform
+    #[Swag.Overload]
+    mtd scaleTransform(x: f32)
+    {
+        let tr = Transform2.createScale(x, x, 0, 0)
         .worldTransform.multiply(tr)
     }
 

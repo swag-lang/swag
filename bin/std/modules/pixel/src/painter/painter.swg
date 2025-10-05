@@ -582,11 +582,23 @@ impl Painter
     }
 
     // Set the paint scale
+    #[Swag.Overload]
     mtd scaleTransform(x, y: f32)
     {
         if isZeroEpsilon(x) and isZeroEpsilon(y):
             return
         let tr = Transform2.createScale(x, y, 0, 0)
+        .curState.transform.multiply(tr)
+        .setTransform(.curState.transform)
+    }
+
+    // Set the paint scale
+    #[Swag.Overload]
+    mtd scaleTransform(x: f32)
+    {
+        if isZeroEpsilon(x):
+            return
+        let tr = Transform2.createScale(x, x, 0, 0)
         .curState.transform.multiply(tr)
         .setTransform(.curState.transform)
     }
