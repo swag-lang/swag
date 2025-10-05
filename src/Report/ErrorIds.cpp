@@ -640,7 +640,7 @@ void initErrors()
     SWAG_ERROR(Err0503, "slice bounds unordered                            $ lower bound [[%I64u]] exceeds upper bound [[%I64u]]                           $ ");
     SWAG_ERROR(Err0504, "slice bound out of range                          $ [[until]] cannot be zero                                                      $ ");
     SWAG_ERROR(Err0505, "too many variadic arguments                       $ variadic arguments exceed [[%d]], got [[%d]]                                  $ ");
-    SWAG_ERROR(Err0506, "overload mismatch                                 $ no matching overload among [[%d]] for [[%s]]                                  $ ");
+    SWAG_ERROR(Err0506, "overload mismatch                                 $                                                                               $ ");
     SWAG_ERROR(Err0507, "recursive evaluation                              $ struct [[%s]] references itself                                               $ ");
     SWAG_ERROR(Err0508, "redundant access specifier                        $ [[%s]] redundant with [[#global export]]                                      $ remove [[public]]: [[#global export]] makes all declarations public");
     SWAG_ERROR(Err0509, "redundant nullable                                $ parameter with [[null]] default is implicitly nullable $ remove [[#null]]     $ ");
@@ -713,7 +713,7 @@ void initErrors()
     SWAG_ERROR(Err0576, "type mismatch comparison                          $ operation [['%s']] invalid for left type [[%s]]                               $ ");
     SWAG_ERROR(Err0577, "type mismatch comparison                          $ operation [['%s']] invalid for right type [[%s]]                              $ ");
     SWAG_ERROR(Err0578, "type mismatch const                               $ immutable [[%s]] cannot cast to mutable [[%s]]                                $ ");
-    SWAG_ERROR(Err0579, "type mismatch const UFCS                          $ UFCS needs mutable type, got immutable [[%s]]                                 $ ");
+    SWAG_ERROR(Err0579, "type mismatch const argument                      $ [[%s]] first argument needs mutable value, got [[%s]]                         $ ");
     SWAG_ERROR(Err0580, "type mismatch const argument                      $ [[%s]] first argument needs mutable pointer, got [[%s]]                       $ ");
     SWAG_ERROR(Err0581, "type mismatch const argument                      $ [[%s]] first argument needs mutable variable, got [[%s]]                      $ ");
     SWAG_ERROR(Err0582, "type mismatch embedded enum                       $ expected enum type, got [[%s]]                                                $ ");
@@ -726,7 +726,7 @@ void initErrors()
     SWAG_ERROR(Err0589, "type mismatch enum                                $ enum array type [[%s]] must be [[const]]                                      $ use [[const %s]]");
     SWAG_ERROR(Err0590, "type mismatch enum                                $ enum slice type [[%s]] must be [[const]]                                      $ use [[const %s]]");
     SWAG_ERROR(Err0591, "type mismatch field                               $ field [[%s]] expects [[%s]], got [[%s]]                                       $ ");
-    SWAG_ERROR(Err0592, "type mismatch generic                             $ generic %s expects [[%s]], got [[%s]]                                         $ ");
+    SWAG_ERROR(Err0592, "type mismatch generic                             $ expected [[%s]], got [[%s]]                                                   $ ");
     SWAG_ERROR(Err0593, "type mismatch generic parameter                   $ tuple types not allowed as generic parameters                                 $ ");
     SWAG_ERROR(Err0594, "type mismatch operation                           $ bit inversion [['~']] invalid for type [[%s]]                                 $ ");
     SWAG_ERROR(Err0595, "type mismatch operation                           $ operation [['%s']] needs integer, got [[%s]]                                  $ ");

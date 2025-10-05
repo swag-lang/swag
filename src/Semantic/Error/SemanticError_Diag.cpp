@@ -253,7 +253,7 @@ namespace
         }
         else
         {
-            const auto msg = formErr(Err0592, niceArg.cstr(), bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg = formErr(Err0592, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{errorNode, msg};
             err->hint      = errorParam.explicitCastMsg;
         }
@@ -313,7 +313,7 @@ namespace
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {
-            const auto msg  = formErr(Err0579, bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg  = formErr(Err0579, errorParam.destFuncDecl->getTokenName().cstr(), bi.badSignatureGivenType->getDisplayNameC());
             err             = new Diagnostic{callParamNode, callParamNode->token, msg};
             addCastErrorMsg = false;
         }
@@ -329,7 +329,8 @@ namespace
         {
             const auto msg  = formErr(Err0668, bi.badSignatureRequestedType->getDisplayNameC());
             err             = new Diagnostic{callParamNode, msg};
-            const auto note = Diagnostic::note(context->node, context->node->token, form("function [[%s]] is a method and should be called with a pointer to [[%s]] as a first argument", errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC()));
+            const auto n    = form("function [[%s]] is a method and should be called with a pointer to [[%s]] as a first argument", errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
+            const auto note = Diagnostic::note(context->node, context->node->token, n);
             errorParam.addNote(note);
             addCastErrorMsg = false;
         }

@@ -64,7 +64,7 @@ namespace
         // Remove notes without messages
         for (uint32_t i = 0; i < notes.size(); i++)
         {
-            if (notes[i]->textMsg.empty())
+            if (!notes[i]->hasSomething())
             {
                 notes.erase(notes.begin() + i);
                 i--;
@@ -104,15 +104,21 @@ namespace
         {
             for (uint32_t j = i + 1; j < notes.size(); j++)
             {
-                if ((notes[j]->startLocation.line == notes[i]->startLocation.line && notes[j]->startLocation.column == notes[i]->startLocation.column) ||
-                    !notes[j]->hasLocation)
+                if (notes[j]->canBeMerged)
                 {
-                    if (!notes[j]->textMsg.empty())
+                    if ((notes[j]->sourceFile == notes[i]->sourceFile &&
+                         notes[j]->startLocation.line == notes[i]->startLocation.line &&
+                         notes[j]->startLocation.column == notes[i]->startLocation.column) ||
+                        !notes[j]->hasLocation)
                     {
-                        notes[i]->remarks.push_back(notes[j]->textMsg);
-                        notes[j]->textMsg.clear();
+                        if (!notes[j]->textMsg.empty())
+                        {
+                            notes[i]->remarks.push_back(notes[j]->textMsg);
+                            notes[j]->textMsg.clear();
+                            notes[j]->setup();
+                        }
+                        continue;
                     }
-                    continue;
                 }
             }
         }
@@ -120,7 +126,7 @@ namespace
         // Remove notes without messages
         for (uint32_t i = 0; i < notes.size(); i++)
         {
-            if (notes[i]->textMsg.empty())
+            if (!notes[i]->hasSomething())
             {
                 notes.erase(notes.begin() + i);
                 i--;

@@ -154,7 +154,7 @@ void Diagnostic::setup()
 {
     if (!sourceFile || sourceFile->path.empty())
         showFileName = false;
-    if (!sourceFile || sourceFile->path.empty() || !hasLocation)
+    if (!sourceFile || sourceFile->path.empty() || !hasLocation || textMsg.empty())
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
 }
@@ -518,103 +518,19 @@ void Diagnostic::printErrorLevel(Log* log)
     }
 }
 
-void Diagnostic::printPreRemarks(Log* log) const
+void Diagnostic::printRemarks(Log* log, const Vector<Utf8>& what, LogColor color) const
 {
-    if (preRemarks.empty())
-        return;
-
-    for (const auto& r : preRemarks)
+    for (const auto& r : what)
     {
         if (r.empty())
             continue;
 
-        Vector<Utf8> lines;
-        wordWrap(r, lines, 100000);
-
-        for (const auto& line : lines)
-        {
-            printMargin(log, false, true, 0);
-            if (r.empty() || r[0] == ' ')
-            {
-                log->setColor(remarkColor);
-                log->write(" ");
-            }
-            else
-            {
-                log->setColor(preRemarkColor);
-                log->print(LogSymbol::DotList);
-            }
-
-            log->write(" ");
-            log->print(line);
-            log->writeEol();
-        }
+        printMargin(log, false, true, 0);
+        log->setColor(color);
+        log->print(r);
+        log->writeEol();
     }
 }
-
-void Diagnostic::printRemarks(Log* log) const
-{
-    // Auto remarks
-    for (const auto& r : autoRemarks)
-    {
-        if (r.empty())
-            continue;
-
-        Vector<Utf8> lines;
-        wordWrap(r, lines, g_CommandLine.errorRightColumn);
-
-        bool firstLine = true;
-        for (const auto& line : lines)
-        {
-            printMargin(log, false, true, 0);
-            log->setColor(autoRemarkColor);
-            if (firstLine)
-            {
-                log->print(LogSymbol::DotList);
-                log->write(" ");
-                firstLine = false;
-            }
-            else
-            {
-                log->write("  ");
-            }
-
-            log->print(line);
-            log->writeEol();
-        }
-    }
-
-    // Manual remarks
-    for (const auto& r : remarks)
-    {
-        if (r.empty())
-            continue;
-
-        Vector<Utf8> lines;
-        wordWrap(r, lines, g_CommandLine.errorRightColumn);
-
-        bool firstLine = true;
-        for (const auto& line : lines)
-        {
-            printMargin(log, false, true, 0);
-            log->setColor(remarkColor);
-            if (firstLine)
-            {
-                log->print(LogSymbol::DotList);
-                log->write(" ");
-                firstLine = false;
-            }
-            else
-            {
-                log->write("  ");
-            }
-
-            log->print(line);
-            log->writeEol();
-        }
-    }
-}
-
 
 namespace
 {
@@ -1144,11 +1060,11 @@ void Diagnostic::report(Log* log)
         log->writeEol();
         printMargin(log, true, true);
     }
-    
+
     // Code pre remarks
     if (!preRemarks.empty())
     {
-        printPreRemarks(log);
+        printRemarks(log, preRemarks, preRemarkColor);
         printMargin(log, true, true);
     }
 
@@ -1162,8 +1078,10 @@ void Diagnostic::report(Log* log)
     // Code remarks
     if (!autoRemarks.empty() || !remarks.empty())
     {
-        printMargin(log, true, true);
-        printRemarks(log);
+        if (showSourceCode)
+            printMargin(log, true, true);
+        printRemarks(log, autoRemarks, autoRemarkColor);
+        printRemarks(log, remarks, remarkColor);
     }
 
     log->setDefaultColor();

@@ -9,6 +9,7 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 #include "Syntax/SyntaxColor.h"
+#pragma optimize("", off)
 
 namespace
 {
@@ -67,16 +68,25 @@ namespace
             case MatchResult::BadSignature:
             {
                 const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
+                Utf8       n;
                 if (tryResult[0]->ufcs && paramIdx == 0)
-                    note = Diagnostic::note(node, node->token, form("the UFCS argument does not match (type is [[%s]])", badType.cstr()));
+                    n = form("the UFCS argument does not match (type is [[%s]])", badType.cstr());
+                else if (tryResult[0]->callParameters && tryResult[0]->callParameters->childCount() == 1)
+                    n = form("the argument does not match (type is [[%s]])", badType.cstr());
                 else
-                    note = Diagnostic::note(node, node->token, form("the %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).cstr(), badType.cstr()));
+                    n = form("the %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).cstr(), badType.cstr());
+                note = Diagnostic::note(node, node->token, n);
                 break;
             }
             case MatchResult::BadGenericSignature:
             {
                 const auto badType = tryResult[0]->symMatchContext.badSignatureInfos.badSignatureGivenType->getDisplayName();
-                note               = Diagnostic::note(node, node->token, form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).cstr(), badType.cstr()));
+                Utf8       n;
+                if (tryResult[0]->genericParameters && tryResult[0]->genericParameters->childCount() == 1)
+                    n = form("the generic argument does not match (type is [[%s]])", badType.cstr());
+                else
+                    n = form("the generic %s does not match (type is [[%s]])", Naming::niceArgumentRank(paramIdx + 1).cstr(), badType.cstr());
+                note = Diagnostic::note(node, node->token, n);
                 break;
             }
             default:
@@ -90,13 +100,9 @@ namespace
         Vector<Utf8> addMsg;
         for (uint32_t i = 0; i < maxOverloads; i++)
         {
-            Vector<const Diagnostic*> errs0, errs1;
-            Vector<Utf8>              parts;
-
-            SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, errs1);
-            Diagnostic::tokenizeError(errs0[0]->textMsg, parts);
-            SWAG_ASSERT(parts.size() > 1);
-            addMsg.push_back(parts[1]);
+            Vector<const Diagnostic*> errs0, notes0;
+            SemanticError::getDiagnosticForMatch(context, *tryResult[i], errs0, notes0);
+            addMsg.push_back(errs0[0]->textMsg);
         }
 
         // Determine if all "per overload" errors are the same
@@ -114,7 +120,9 @@ namespace
         if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
         {
             if (allAddMsgAreEquals)
+            {
                 note->textMsg = addMsg[0];
+            }
         }
 
         FormatAst     fmtAst;
@@ -154,26 +162,31 @@ namespace
             overTxt += Log::colorToVTS(LogColor::White);
             overTxt += ": ";
             overTxt += n;
-            note->preRemarks.push_back(overTxt);
 
             // Additional (more precise) information in case of bad signature
             if (result == MatchResult::BadSignature || result == MatchResult::BadGenericSignature)
             {
                 if (!allAddMsgAreEquals)
                 {
-                    Utf8 msg = " => ";
-                    msg += addMsg[i];
-                    note->preRemarks.push_back(msg);
+                    overTxt += " -- ";                    
+                    Vector<Utf8> tokens;
+                    Diagnostic::tokenizeError(addMsg[i], tokens);
+                    int d = tokens[1].find(", got");
+                    if (d != -1)
+                        tokens[1].remove(d, tokens[1].length() - d);
+                    overTxt += tokens[1];
                 }
             }
+
+            note->preRemarks.push_back(overTxt);
         }
 
         if (tryResult.size() > MAX_OVERLOADS)
             note->preRemarks.push_back("...");
 
         // Locate to the first error
-        Vector<const Diagnostic*> errs0, errs1;
-        SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, errs1);
+        Vector<const Diagnostic*> errs0, notes0;
+        SemanticError::getDiagnosticForMatch(context, *tryResult[0], errs0, notes0);
         note->sourceFile    = errs0[0]->sourceFile;
         note->startLocation = errs0[0]->startLocation;
         note->endLocation   = errs0[0]->endLocation;
@@ -199,7 +212,7 @@ namespace
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
         // Multiple tryMatches
-        Diagnostic                err{node, node->token, formErr(Err0506, tryMatches.size(), tryMatches[0]->overload->symbol->name.cstr())};
+        Diagnostic                err{node, node->token, toErr(Err0506)};
         Vector<const Diagnostic*> notes;
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 
@@ -226,6 +239,35 @@ namespace
             }
 
             notes.insert(notes.end(), notesSig.begin(), notesSig.end());
+        }
+
+        if (notes.size() == 1)
+        {
+            const auto note0 = const_cast<Diagnostic*>(notes[0]);
+
+            Vector<Utf8> tokens;
+            Diagnostic::tokenizeError(note0->textMsg, tokens);
+            if (tokens.size() > 1)
+            {
+                err.textMsg    = tokens[0];
+                note0->textMsg.clear();
+                note0->textMsg = tokens[1];
+            }
+
+            note0->remarks     = std::move(note0->preRemarks);
+            note0->canBeMerged = true;
+        }
+        else
+        {
+            for (const auto& note : notes)
+            {
+                const auto note0 = const_cast<Diagnostic*>(note);
+
+                Vector<Utf8> tokens;
+                Diagnostic::tokenizeError(note0->textMsg, tokens);
+                if (tokens.size() > 1)
+                    note0->textMsg = tokens[1];
+            }
         }
 
         return context->report(err, notes);

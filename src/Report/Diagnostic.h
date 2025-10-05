@@ -174,6 +174,7 @@ struct Diagnostic
     void        addNote(SourceFile* file, const Token& token, const Utf8& msg);
     void        addNote(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg);
     bool        hasNotes() const { return !notes.empty(); }
+    bool        hasSomething() const { return !textMsg.empty() || !preRemarks.empty() || !remarks.empty() || !autoRemarks.empty() || !notes.empty() || !ranges.empty(); }
 
     void     setupColors();
     void     collectSourceCode();
@@ -185,8 +186,7 @@ struct Diagnostic
     void     printErrorLevel(Log* log);
     void     printMarginLineNo(Log* log, uint32_t lineNo) const;
     void     printMargin(Log* log, bool eol = false, bool printLineNo = false, uint32_t lineNo = 0) const;
-    void     printPreRemarks(Log* log) const;
-    void     printRemarks(Log* log) const;
+    void     printRemarks(Log* log, const Vector<Utf8>& what, LogColor color) const;
     void     setColorRanges(Log* log, DiagnosticLevel level, HintPart part, LogWriteContext* logCxt = nullptr) const;
     void     alignRangeColumn(Log* log, uint32_t& curColumn, uint32_t where, bool withCode = true) const;
     uint32_t printRangesVerticalBars(Log* log, size_t maxMarks);
@@ -239,12 +239,12 @@ struct Diagnostic
     LogColor                  errorColorHint;
     LogColor                  errorColorHintHighLight;
     LogColor                  warningColor;
-    LogColor                  warningColorHighLight;   
+    LogColor                  warningColorHighLight;
     LogColor                  warningColorHint;
     LogColor                  warningColorHintHighLight;
     LogColor                  noteHeaderColor;
     LogColor                  noteColor;
-    LogColor                  noteColorHighLight;  
+    LogColor                  noteColorHighLight;
     LogColor                  noteColorHint;
     LogColor                  noteColorHintHighLight;
     LogColor                  marginBorderColor;
