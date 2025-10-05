@@ -76,7 +76,9 @@ namespace
         // Track reason equality using string IDs (Utf8) from Diagnostic::getErrorId
         bool haveFirst = false;
         Utf8 firstReasonId;
-        bool allEqualIds = true;
+        Utf8 firstReasonDetail;
+        bool allEqualIds     = true;
+        bool allEqualDetails = true;
 
         // First pass: collect data & compute maximum signature width (after truncation)
         uint32_t maxSigWidth = 0;
@@ -103,9 +105,8 @@ namespace
                 SWAG_ASSERT(false);
             }
 
-            Utf8 sigRaw = fmtAst.getUtf8();
-
             // Strip trailing newlines/semicolons/whitespace
+            Utf8 sigRaw = fmtAst.getUtf8();
             while (!sigRaw.empty() && (sigRaw.back() == '\n' || sigRaw.back() == ';'))
                 sigRaw.removeBack();
             sigRaw.trimRight();
@@ -134,22 +135,26 @@ namespace
 
             if (!haveFirst)
             {
-                firstReasonId = reasonId;
-                haveFirst     = true;
+                firstReasonId     = reasonId;
+                firstReasonDetail = detailMsg;
+                haveFirst         = true;
             }
-            else if (reasonId != firstReasonId)
+            else
             {
-                allEqualIds = false;
+                if (reasonId != firstReasonId)
+                    allEqualIds = false;
+                if (detailMsg != firstReasonDetail)
+                    allEqualDetails = false;
             }
 
-            // 3) Truncate the plain signature for consistent column
+            // 3) Truncate the plain signature for a consistent column
             Utf8 sigLimited = (sigPlain.length() > SIG_COL_MAX) ? Utf8::ellipsizeMiddle(sigPlain, SIG_COL_MAX) : sigPlain;
 
             // 4) Colorize AFTER limiting so colored content matches measured width
             SyntaxColorContext cxt;
             Utf8               sigColored = doSyntaxColor(sigLimited, cxt);
 
-            // 5) Measure width of the limited plain signature for padding
+            // 5) Measure the width of the limited plain signature for padding
             const uint32_t w = sigLimited.length();
             maxSigWidth      = std::max(w, maxSigWidth);
 
@@ -183,10 +188,13 @@ namespace
             for (uint32_t k = 0; k < pad; k++)
                 line += ' ';
 
-            if (!it.detail.empty())
+            if(!allEqualDetails)
             {
-                line += OVER_SEP;
-                line += it.detail;
+                if (!it.detail.empty())
+                {
+                    line += OVER_SEP;
+                    line += it.detail;
+                }
             }
 
             note->remarks.push_back(std::move(line));
@@ -195,6 +203,11 @@ namespace
         if (tryMatches.size() > shown)
             note->remarks.push_back(form("... and %u more overload(s) not shown", tryMatches.size() - shown));
 
+        if (allEqualDetails)
+        {
+            err.remarks.push_back(firstReasonDetail);
+        }
+        
         // If ALL per-overload reasons are identical, set the main error text to the TITLE (token[0]) of the first error
         if (allEqualIds && !firstErrs.empty())
         {
