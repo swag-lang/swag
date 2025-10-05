@@ -35,7 +35,7 @@ namespace
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 
         // Single note that will carry ALL overloads as remarks
-        Diagnostic* note = Diagnostic::note(node, node->token, "candidate overloads");
+        Diagnostic* note = Diagnostic::note(node, node->token, "");
 
         // Anchor diagnostics to first candidate
         Vector<const Diagnostic*> firstErrs, firstNotes;
@@ -89,28 +89,34 @@ namespace
             Vector<const Diagnostic*> errs0, notes0;
             SemanticError::getDiagnosticForMatch(context, *match, errs0, notes0);
 
-            Utf8 shortMsg;
+            Utf8 shortMsg, shortCompare;
             if (!errs0.empty())
             {
                 Vector<Utf8> tokens;
                 Diagnostic::tokenizeError(errs0[0]->textMsg, tokens);
                 if (tokens.size() > 1)
+                {
+                    shortCompare = tokens[0];
                     shortMsg = tokens[1];
+                }
                 else
+                {
                     shortMsg = errs0[0]->textMsg;
+                    shortCompare = shortMsg;
+                }
 
                 // Keep output compact
-                int d = shortMsg.find(", got");
+                /*int d = shortMsg.find(", got");
                 if (d != -1)
-                    shortMsg.remove(d, shortMsg.length() - d);
+                    shortMsg.remove(d, shortMsg.length() - d);*/
 
                 // Track equality across all overload reasons
                 if (!haveFirstShort)
                 {
-                    firstShortReason = shortMsg;
+                    firstShortReason = shortCompare;
                     haveFirstShort   = true;
                 }
-                else if (shortMsg != firstShortReason)
+                else if (shortCompare != firstShortReason)
                 {
                     allReasonsEqual = false;
                 }
