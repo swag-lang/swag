@@ -78,7 +78,6 @@ namespace
         bool haveFirst = false;
         Utf8 firstReasonId;
         Utf8 firstReasonDetail;
-        Utf8 firstReasonDetailNoGot;
         bool allEqualIds     = true;
         bool allEqualDetails = true;
 
@@ -144,7 +143,6 @@ namespace
             {
                 firstReasonId          = reasonId;
                 firstReasonDetail      = detailMsg;
-                firstReasonDetailNoGot = firstReasonDetail; // may be trimmed later
                 haveFirst              = true;
             }
             else
@@ -214,27 +212,14 @@ namespace
         }
 
         // If all equal, also trim the stored first common detail
-        if (canFactorGot && haveCommonGot && allEqualDetails && !firstReasonDetail.empty())
-        {
-            if (const char* p = strstr(firstReasonDetail.cstr(), GOT_TOK))
-            {
-                const uint32_t pos     = static_cast<uint32_t>(p - firstReasonDetail.cstr());
-                firstReasonDetailNoGot = firstReasonDetail.substr(0, pos);
-                firstReasonDetailNoGot.trimRight();
-            }
-        }
-        else
-        {
-            firstReasonDetailNoGot = firstReasonDetail;
-        }
-        
         bool shouldFactorGot = canFactorGot && haveCommonGot && !commonGotValue.empty();
 
         // Details start one space after the widest-shown signature
         const uint32_t detailCol = (maxSigWidth < SIG_COL_MAX ? maxSigWidth : SIG_COL_MAX) + 1;
 
         // Second pass: render aligned lines
-        uint32_t overloadIndex = 1;
+        uint32_t overloadIndex      = 1;
+        uint32_t firstOverloadIndex = note->remarks.size();
         for (const auto& it : items)
         {
             Utf8 line;
@@ -272,9 +257,11 @@ namespace
         // If all details are identical, push the common detail (factored or not)
         if (allEqualDetails)
         {
-            Utf8 commonDetail = shouldFactorGot ? firstReasonDetailNoGot : firstReasonDetail;
-            if (!commonDetail.empty())
-                err.remarks.push_back(commonDetail);
+            if (!firstReasonDetail.empty())
+            {
+                err.remarks.push_back(firstReasonDetail);
+                shouldFactorGot = false;
+            }
         }
 
         // If ALL per-overload reasons are identical, set the main error text to the TITLE (token[0]) of the first error
@@ -288,18 +275,15 @@ namespace
             err.sourceFile    = firstErrs[0]->sourceFile;
             err.startLocation = firstErrs[0]->startLocation;
             err.endLocation   = firstErrs[0]->endLocation;
-
-            if (shouldFactorGot)
-            {
-                shouldFactorGot = false;
-                err.textMsg += form(" (got %s)", commonGotValue.cstr());
-            }
         }
 
         // If a common ", got X" was detected, add it once as a remark on the main error
         if (shouldFactorGot)
-            err.remarks.push_back(form("type mismatch %s", commonGotValue.cstr()));
-
+        {
+            shouldFactorGot = false;
+            note->remarks[firstOverloadIndex] += form(", got %s", commonGotValue.cstr());
+        }
+        
         Vector<const Diagnostic*> oneNote{note};
         return context->report(err, oneNote);
     }
