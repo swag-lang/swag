@@ -107,6 +107,7 @@ struct Utf8
     void         replace(const char* src, const char* dst, bool wordBoundaryOnly = false);
     bool         toChar32(uint32_t& ch) const;
     std::wstring toWString() const;
+    Utf8         substr(uint32_t start, uint32_t len = UINT32_MAX) const;
 
     static void        tokenize(const Utf8& str, char c, Vector<Utf8>& tokens, bool keepEmpty = false, bool trim = false);
     static void        tokenizeBlanks(const Utf8& str, Vector<Utf8>& tokens);

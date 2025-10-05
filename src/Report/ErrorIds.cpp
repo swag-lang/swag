@@ -713,7 +713,7 @@ void initErrors()
     SWAG_ERROR(Err0576, "type mismatch comparison                          $ operation [['%s']] invalid for left type [[%s]]                               $ ");
     SWAG_ERROR(Err0577, "type mismatch comparison                          $ operation [['%s']] invalid for right type [[%s]]                              $ ");
     SWAG_ERROR(Err0578, "type mismatch const                               $ immutable [[%s]] cannot cast to mutable [[%s]]                                $ ");
-    SWAG_ERROR(Err0579, "type mismatch const argument                      $ [[%s]] first argument needs mutable value, got [[%s]]                         $ ");
+    SWAG_ERROR(Err0579, "type mismatch const argument                      $ [[%s]] first argument needs to be mutable, got [[%s]]                         $ ");
     SWAG_ERROR(Err0580, "type mismatch const argument                      $ [[%s]] first argument needs mutable pointer, got [[%s]]                       $ ");
     SWAG_ERROR(Err0581, "type mismatch const argument                      $ [[%s]] first argument needs mutable variable, got [[%s]]                      $ ");
     SWAG_ERROR(Err0582, "type mismatch embedded enum                       $ expected enum type, got [[%s]]                                                $ ");

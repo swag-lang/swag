@@ -61,10 +61,13 @@ namespace
 
         struct Item
         {
-            Utf8     sigPlain;   // one-lined and (possibly) truncated, uncolored
-            Utf8     sigColored; // same content as sigPlain, but syntax-colored
-            Utf8     detail;     // tokens[1] (or full message if no split)
+            Utf8     sigPlain;    // one-lined and (possibly) truncated, uncolored
+            Utf8     sigColored;  // same content as sigPlain, but syntax-colored
+            Utf8     detailFull;  // original full detail
+            Utf8     detailNoGot; // detail with trailing ", got X" stripped (if factoring)
             uint32_t widthPlain;
+            bool     eligibleForGot = false; // true if MatchResult is BadSignature/BadGenericSignature
+            bool     hasGot         = false; // true if we found a trailing ", got X"
         };
         Vector<Item> items;
 
@@ -77,8 +80,15 @@ namespace
         bool haveFirst = false;
         Utf8 firstReasonId;
         Utf8 firstReasonDetail;
+        Utf8 firstReasonDetailNoGot;
         bool allEqualIds     = true;
         bool allEqualDetails = true;
+
+        // Simplified factoring state: only if **all shown overloads** are eligible AND share the same ", got X"
+        bool allShownEligible = true;  // becomes false if any shown overload is not eligible
+        bool canFactorGot     = true;  // becomes false if any eligible overload misses ", got " or differs
+        bool haveCommonGot    = false; // set when we capture the first got value
+        Utf8 commonGotValue;
 
         // First pass: collect data & compute maximum signature width (after truncation)
         uint32_t maxSigWidth = 0;
@@ -135,9 +145,10 @@ namespace
 
             if (!haveFirst)
             {
-                firstReasonId     = reasonId;
-                firstReasonDetail = detailMsg;
-                haveFirst         = true;
+                firstReasonId          = reasonId;
+                firstReasonDetail      = detailMsg;
+                firstReasonDetailNoGot = firstReasonDetail; // may be trimmed later
+                haveFirst              = true;
             }
             else
             {
@@ -158,13 +169,87 @@ namespace
             const uint32_t w = sigLimited.length();
             maxSigWidth      = std::max(w, maxSigWidth);
 
+            // 6) Collect item + simplified factoring flags
             Item it;
-            it.sigPlain   = std::move(sigLimited);
-            it.sigColored = std::move(sigColored);
-            it.detail     = std::move(detailMsg);
-            it.widthPlain = w;
+            it.sigPlain    = std::move(sigLimited);
+            it.sigColored  = std::move(sigColored);
+            it.detailFull  = detailMsg;
+            it.detailNoGot = detailMsg;
+            it.widthPlain  = w;
+
+            const auto mr     = match->symMatchContext.result;
+            it.eligibleForGot = (mr == MatchResult::BadSignature) || (mr == MatchResult::BadGenericSignature);
+
+            // If any shown overload is not eligible, we won't factor at all.
+            if (!it.eligibleForGot)
+                allShownEligible = false;
+
             items.push_back(std::move(it));
         }
+
+        // Only attempt to factor if ALL shown overloads are eligible
+        if (allShownEligible)
+        {
+            static constexpr auto GOT_TOK = ", got ";
+
+            for (auto& it : items)
+            {
+                const char* fullCStr = it.detailFull.cstr();
+                const char* gotPtr   = strstr(fullCStr, GOT_TOK);
+                if (!gotPtr)
+                {
+                    canFactorGot = false;
+                    break;
+                }
+
+                const uint32_t pos    = static_cast<uint32_t>(gotPtr - fullCStr);
+                Utf8           gotVal = it.detailFull.substr(pos + static_cast<uint32_t>(strlen(GOT_TOK)));
+                if (gotVal.empty())
+                {
+                    canFactorGot = false;
+                    break;
+                }
+
+                // First value becomes the common value; others must match it
+                if (!haveCommonGot)
+                {
+                    commonGotValue = gotVal;
+                    haveCommonGot  = true;
+                }
+                else if (gotVal != commonGotValue)
+                {
+                    canFactorGot = false;
+                    break;
+                }
+
+                it.hasGot      = true;
+                it.detailNoGot = it.detailFull.substr(0, pos);
+                it.detailNoGot.trimRight();
+            }
+
+            // If all equal, also trim the stored first common detail
+            if (canFactorGot && haveCommonGot && allEqualDetails && !firstReasonDetail.empty())
+            {
+                if (const char* p = strstr(firstReasonDetail.cstr(), GOT_TOK))
+                {
+                    const uint32_t pos     = static_cast<uint32_t>(p - firstReasonDetail.cstr());
+                    firstReasonDetailNoGot = firstReasonDetail.substr(0, pos);
+                    firstReasonDetailNoGot.trimRight();
+                }
+            }
+            else
+            {
+                firstReasonDetailNoGot = firstReasonDetail;
+            }
+        }
+        else
+        {
+            canFactorGot           = false;
+            haveCommonGot          = false;
+            firstReasonDetailNoGot = firstReasonDetail;
+        }
+
+        bool shouldFactorGot = allShownEligible && canFactorGot && haveCommonGot && !commonGotValue.empty();
 
         // Details start one space after the widest shown signature
         const uint32_t detailCol = (maxSigWidth < SIG_COL_MAX ? maxSigWidth : SIG_COL_MAX) + 1;
@@ -188,12 +273,13 @@ namespace
             for (uint32_t k = 0; k < pad; k++)
                 line += ' ';
 
-            if(!allEqualDetails)
+            if (!allEqualDetails)
             {
-                if (!it.detail.empty())
+                const Utf8& detailToShow = (shouldFactorGot && it.hasGot) ? it.detailNoGot : it.detailFull;
+                if (!detailToShow.empty())
                 {
                     line += OVER_SEP;
-                    line += it.detail;
+                    line += detailToShow;
                 }
             }
 
@@ -203,11 +289,14 @@ namespace
         if (tryMatches.size() > shown)
             note->remarks.push_back(form("... and %u more overload(s) not shown", tryMatches.size() - shown));
 
+        // If all details are identical, push the common detail (factored or not)
         if (allEqualDetails)
         {
-            err.remarks.push_back(firstReasonDetail);
+            Utf8 commonDetail = shouldFactorGot ? firstReasonDetailNoGot : firstReasonDetail;
+            if (!commonDetail.empty())
+                err.remarks.push_back(commonDetail);
         }
-        
+
         // If ALL per-overload reasons are identical, set the main error text to the TITLE (token[0]) of the first error
         if (allEqualIds && !firstErrs.empty())
         {
@@ -219,7 +308,17 @@ namespace
             err.sourceFile    = firstErrs[0]->sourceFile;
             err.startLocation = firstErrs[0]->startLocation;
             err.endLocation   = firstErrs[0]->endLocation;
+
+            if (shouldFactorGot)
+            {
+                shouldFactorGot = false;
+                err.textMsg += form(" (got %s)", commonGotValue.cstr());
+            }
         }
+
+        // If a common ", got X" was detected, add it once as a remark on the main error
+        if (shouldFactorGot)
+            err.remarks.push_back(form("type mismatch %s", commonGotValue.cstr()));
 
         Vector<const Diagnostic*> oneNote{note};
         return context->report(err, oneNote);

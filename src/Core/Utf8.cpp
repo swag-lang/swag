@@ -1,3 +1,5 @@
+#include <utility>
+
 #include "pch.h"
 #include "Backend/Runtime.h"
 #include "Core/Crc32.h"
@@ -534,7 +536,7 @@ void Utf8::toUni32(VectorNative<uint32_t>& uni, int maxChars) const
     const auto  end   = buffer + count;
     while (start != end)
     {
-        if (maxChars != -1 && uni.size() >= static_cast<size_t>(maxChars))
+        if (maxChars != -1 && std::cmp_greater_equal(uni.size(), maxChars))
             return;
         uint32_t c;
         start = decodeUtf8(start, c, offset);
@@ -1090,4 +1092,47 @@ Utf8 Utf8::ellipsizeMiddle(const Utf8& in, uint32_t maxWidth)
         out.append(in.begin() + (n - right), right);
 
     return out;
+}
+
+Utf8 Utf8::substr(uint32_t start, uint32_t len) const
+{
+    // Guard: empty string or start beyond end
+    if (start >= length())
+        return {};
+
+    const char* begin = cstr();
+    const char* end   = begin + length();
+
+    // Move to the starting byte position, respecting UTF-8 boundaries
+    const char* p = begin;
+    size_t bytePos = 0;
+    while (p < end && bytePos < start)
+    {
+        const unsigned char c = static_cast<unsigned char>(*p);
+        size_t charLen  = 1;
+        if      ((c & 0x80) == 0x00) charLen = 1;
+        else if ((c & 0xE0) == 0xC0) charLen = 2;
+        else if ((c & 0xF0) == 0xE0) charLen = 3;
+        else if ((c & 0xF8) == 0xF0) charLen = 4;
+        p += charLen;
+        bytePos++;
+    }
+
+    const char* startPtr = p;
+    const char* cur      = startPtr;
+
+    size_t byteCount = 0;
+    while (cur < end && (len == UINT32_MAX || byteCount < len))
+    {
+        const unsigned char c = static_cast<unsigned char>(*cur);
+        size_t charLen  = 1;
+        if      ((c & 0x80) == 0x00) charLen = 1;
+        else if ((c & 0xE0) == 0xC0) charLen = 2;
+        else if ((c & 0xF0) == 0xE0) charLen = 3;
+        else if ((c & 0xF8) == 0xF0) charLen = 4;
+        cur += charLen;
+        byteCount++;
+    }
+
+    return Utf8{startPtr, static_cast<unsigned int>(cur - startPtr)};
 }
