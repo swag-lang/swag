@@ -168,7 +168,7 @@ namespace
             {
                 if (!allAddMsgAreEquals)
                 {
-                    overTxt += " -- ";                    
+                    overTxt += " -- ";
                     Vector<Utf8> tokens;
                     Diagnostic::tokenizeError(addMsg[i], tokens);
                     int d = tokens[1].find(", got");
@@ -209,68 +209,133 @@ namespace
         return context->report(*errs0[0], errs1);
     }
 
+    constexpr uint32_t MAX_OVERLOADS = 5;
+
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
-        // Multiple tryMatches
+        // Primary error (kept unless all per-overload reasons are identical)
         Diagnostic                err{node, node->token, toErr(Err0506)};
         Vector<const Diagnostic*> notes;
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 
-        int overloadIndex = 1;
-        cannotMatchIdentifier(context, MatchResult::WhereFailed, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::NotEnoughArguments, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::TooManyArguments, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::NotEnoughGenericArguments, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::TooManyGenericArguments, 0, tryMatches, node, notes, overloadIndex);
-        cannotMatchIdentifier(context, MatchResult::InvalidNamedArgument, 0, tryMatches, node, notes, overloadIndex);
+        // Single note that will carry ALL overloads as remarks
+        Diagnostic* note = Diagnostic::note(node, node->token, "candidate overloads");
 
-        // For a bad signature, only show the ones with the greatest match
-        for (int what = 0; what < 2; what++)
+        // Anchor diagnostics to first candidate
+        Vector<const Diagnostic*> firstErrs, firstNotes;
+        SemanticError::getDiagnosticForMatch(context, *tryMatches[0], firstErrs, firstNotes);
+        SWAG_ASSERT(!firstErrs.empty());
+        note->sourceFile    = firstErrs[0]->sourceFile;
+        note->startLocation = firstErrs[0]->startLocation;
+        note->endLocation   = firstErrs[0]->endLocation;
+        note->canBeMerged   = true;
+
+        // Collect overload lines + track whether all short reasons are the same
+        int        overloadIndex = 1;
+        const auto maxOverloads  = std::min<uint32_t>(tryMatches.size(), MAX_OVERLOADS);
+
+        FormatAst     fmtAst;
+        FormatContext fmtContext;
+
+        Utf8 firstShortReason;
+        bool haveFirstShort  = false;
+        bool allReasonsEqual = true;
+
+        for (uint32_t i = 0; i < maxOverloads; i++)
         {
-            Vector<const Diagnostic*> notesSig;
-            int                       paramIdx = 0;
-            while (true)
+            OneTryMatch* match = tryMatches[i];
+
+            // 1) Pretty-print the candidate signature
+            fmtAst.clear();
+            if (match->overload->node->is(AstNodeKind::FuncDecl))
             {
-                Vector<const Diagnostic*> notesTmp;
-                const auto                m = what == 0 ? MatchResult::BadSignature : MatchResult::BadGenericSignature;
-                if (!cannotMatchIdentifier(context, m, paramIdx++, tryMatches, node, notesTmp, overloadIndex))
-                    break;
-                notesSig = notesTmp;
+                const auto funcNode = castAst<AstFuncDecl>(match->overload->node, AstNodeKind::FuncDecl);
+                fmtAst.outputFuncSignature(fmtContext, funcNode, funcNode->genericParameters, funcNode->parameters, nullptr);
+            }
+            else if (match->overload->node->is(AstNodeKind::VarDecl))
+            {
+                const auto varNode = castAst<AstVarDecl>(match->overload->node, AstNodeKind::VarDecl);
+                const auto lambda  = castAst<AstTypeExpression>(varNode->typeInfo->declNode, AstNodeKind::TypeLambda);
+                fmtAst.outputFuncSignature(fmtContext, varNode, nullptr, lambda->parameters, nullptr);
+            }
+            else
+            {
+                SWAG_ASSERT(false);
             }
 
-            notes.insert(notes.end(), notesSig.begin(), notesSig.end());
-        }
+            Utf8 sig = fmtAst.getUtf8();
+            if (!sig.empty() && (sig.back() == '\n' || sig.back() == ';'))
+                sig.count--;
+            SyntaxColorContext cxt;
+            sig = doSyntaxColor(sig, cxt);
 
-        if (notes.size() == 1)
-        {
-            const auto note0 = const_cast<Diagnostic*>(notes[0]);
+            // 2) Get the specific error for THIS overload
+            Vector<const Diagnostic*> errs0, notes0;
+            SemanticError::getDiagnosticForMatch(context, *match, errs0, notes0);
 
-            Vector<Utf8> tokens;
-            Diagnostic::tokenizeError(note0->textMsg, tokens);
-            if (tokens.size() > 1)
+            Utf8 shortMsg;
+            if (!errs0.empty())
             {
-                err.textMsg    = tokens[0];
-                note0->textMsg.clear();
-                note0->textMsg = tokens[1];
-            }
-
-            note0->remarks     = std::move(note0->preRemarks);
-            note0->canBeMerged = true;
-        }
-        else
-        {
-            for (const auto& note : notes)
-            {
-                const auto note0 = const_cast<Diagnostic*>(note);
-
                 Vector<Utf8> tokens;
-                Diagnostic::tokenizeError(note0->textMsg, tokens);
+                Diagnostic::tokenizeError(errs0[0]->textMsg, tokens);
                 if (tokens.size() > 1)
-                    note0->textMsg = tokens[1];
+                    shortMsg = tokens[1];
+                else
+                    shortMsg = errs0[0]->textMsg;
+
+                // Keep output compact
+                int d = shortMsg.find(", got");
+                if (d != -1)
+                    shortMsg.remove(d, shortMsg.length() - d);
+
+                // Track equality across all overload reasons
+                if (!haveFirstShort)
+                {
+                    firstShortReason = shortMsg;
+                    haveFirstShort   = true;
+                }
+                else if (shortMsg != firstShortReason)
+                {
+                    allReasonsEqual = false;
+                }
             }
+
+            // 3) Compose: "overload N: <sig> -- <shortMsg>"
+            Utf8 overTxt;
+            overTxt += Log::colorToVTS(LogColor::DarkYellow);
+            overTxt += form("overload %d", overloadIndex++);
+            overTxt += Log::colorToVTS(LogColor::White);
+            overTxt += ": ";
+            overTxt += sig;
+
+            if (!shortMsg.empty())
+            {
+                overTxt += " -- ";
+                overTxt += shortMsg;
+            }
+
+            note->preRemarks.push_back(overTxt);
         }
 
-        return context->report(err, notes);
+        if (tryMatches.size() > MAX_OVERLOADS)
+            note->preRemarks.push_back("...");
+
+        // Only adjust the main error text if ALL per-overload short reasons are identical.
+        // Otherwise keep the original main error message verbatim.
+        if (allReasonsEqual && !firstErrs.empty())
+        {
+            Vector<Utf8> tokens;
+            Diagnostic::tokenizeError(firstErrs[0]->textMsg, tokens);
+            if (!tokens.empty())
+                err.textMsg = tokens[0];
+        }
+
+        // Render the overload list
+        note->remarks = std::move(note->preRemarks);
+
+        Vector<const Diagnostic*> oneNote;
+        oneNote.push_back(note);
+        return context->report(err, oneNote);
     }
 }
 
