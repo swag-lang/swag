@@ -1030,3 +1030,64 @@ Utf8 form(const char* format, ...)
     va_end(args);
     return result;
 }
+
+// Turn any multi-line signature into a single, space-collapsed line.
+Utf8 Utf8::oneLine(const Utf8& in)
+{
+    Utf8 out = in;
+
+    // Replace newlines/tabs with spaces
+    out.replaceAll('\n', ' ');
+    out.replaceAll('\r', ' ');
+    out.replaceAll('\t', ' ');
+
+    // Collapse multiple spaces
+    Utf8 collapsed;
+    collapsed.reserve(out.length());
+
+    bool prevSpace = false;
+    for (uint32_t i = 0; i < out.length(); i++)
+    {
+        const char c       = out[i];
+        const bool isSpace = (c == ' ');
+        if (isSpace && prevSpace)
+            continue;
+
+        collapsed.append(c);
+        prevSpace = isSpace;
+    }
+
+    collapsed.trim(); // trim leading/trailing spaces
+    return collapsed;
+}
+
+// Middle-ellipsize to fit maxWidth code units (bytes). Keeps both ends visible.
+Utf8 Utf8::ellipsizeMiddle(const Utf8& in, uint32_t maxWidth)
+{
+    const uint32_t n = in.length();
+    if (n <= maxWidth || maxWidth < 4)
+        return in;
+
+    static constexpr auto ELLIPSIS = " ... ";
+    const auto            ellLen   = static_cast<uint32_t>(strlen(ELLIPSIS));
+
+    const uint32_t keep  = (maxWidth > ellLen) ? (maxWidth - ellLen) : 0;
+    const uint32_t left  = keep / 2;
+    const uint32_t right = keep - left;
+
+    Utf8 out;
+    out.reserve(maxWidth);
+
+    // Left part
+    if (left)
+        out.append(in.begin(), left);
+
+    // Ellipsis
+    out.append(ELLIPSIS, ellLen);
+
+    // Right part
+    if (right)
+        out.append(in.begin() + (n - right), right);
+
+    return out;
+}

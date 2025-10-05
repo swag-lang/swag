@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "pch.h"
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
@@ -25,6 +27,8 @@ namespace
         return context->report(*errs0[0], errs1);
     }
 
+    // Column cap for the signature before " -- <detail>" starts.
+    // Long signatures are middle-ellipsized to fit within this cap.
     bool cannotMatchOverload(SemanticContext* context, AstNode* node, VectorNative<OneTryMatch*>& tryMatches)
     {
         // No candidates at all: fall back to a generic overload error
@@ -33,6 +37,10 @@ namespace
             Diagnostic err{node, node->token, toErr(Err0506)};
             return context->report(err, {});
         }
+
+        static constexpr uint32_t SIG_COL_MAX   = 64;
+        static constexpr auto     OVER_SEP      = " -- ";
+        static constexpr uint32_t MAX_OVERLOADS = 5;
 
         // Primary error (kept unless all per-overload reasons are identical)
         Diagnostic                err{node, node->token, toErr(Err0506)};
@@ -51,23 +59,33 @@ namespace
         note->endLocation   = firstErrs[0]->endLocation;
         note->canBeMerged   = true;
 
-        constexpr uint32_t maxOverloads = 5;
-        const uint32_t shown = std::min<uint32_t>(tryMatches.size(), maxOverloads);
+        struct Item
+        {
+            Utf8     sigPlain;   // one-lined and (possibly) truncated, uncolored
+            Utf8     sigColored; // same content as sigPlain, but syntax-colored
+            Utf8     detail;     // tokens[1] (or full message if no split)
+            uint32_t widthPlain;
+        };
+        Vector<Item> items;
+
+        const uint32_t shown = std::min<uint32_t>(tryMatches.size(), MAX_OVERLOADS);
 
         FormatAst     fmtAst;
         FormatContext fmtContext;
 
-        Utf8 firstReasonId; // getErrorId returns Utf8
+        // Track reason equality using string IDs (Utf8) from Diagnostic::getErrorId
         bool haveFirst = false;
-        bool allEqual  = true;
+        Utf8 firstReasonId;
+        bool allEqualIds = true;
 
-        uint32_t overloadIndex = 1;
+        // First pass: collect data & compute maximum signature width (after truncation)
+        uint32_t maxSigWidth = 0;
 
         for (uint32_t i = 0; i < shown; i++)
         {
             OneTryMatch* match = tryMatches[i];
 
-            // 1) Pretty-print the candidate signature
+            // 1) Produce the raw signature
             fmtAst.clear();
             if (match->overload->node->is(AstNodeKind::FuncDecl))
             {
@@ -85,64 +103,100 @@ namespace
                 SWAG_ASSERT(false);
             }
 
-            Utf8 sig = fmtAst.getUtf8();
-            while (!sig.empty() && (sig.back() == '\n' || sig.back() == ';' || isspace(sig.back())))
-                sig.count--;
+            Utf8 sigRaw = fmtAst.getUtf8();
 
-            SyntaxColorContext cxt;
-            sig = doSyntaxColor(sig, cxt);
+            // Strip trailing newlines/semicolons/whitespace
+            while (!sigRaw.empty() && (sigRaw.back() == '\n' || sigRaw.back() == ';'))
+                sigRaw.removeBack();
+            sigRaw.trimRight();
 
-            // 2) Get the specific error for THIS overload
+            // Normalize to one line (for measuring & alignment)
+            Utf8 sigPlain = Utf8::oneLine(sigRaw);
+
+            // 2) Extract the per-overload detail (token[1]); reason key for equality
             Vector<const Diagnostic*> errs0, notes0;
             SemanticError::getDiagnosticForMatch(context, *match, errs0, notes0);
 
-            // Per-overload message uses the DETAIL part (token[1]); title (token[0]) is reserved for the main error
             Utf8 detailMsg;
-            Utf8 reasonId; // stable key via Diagnostic::getErrorId(full)
+            Utf8 reasonId;
 
             auto extract = [&](const Utf8& full) {
                 Vector<Utf8> tokens;
                 Diagnostic::tokenizeError(full, tokens);
-                // token[0] = title (short), token[1] = detail (what we want per overload)
-                detailMsg = tokens.size() >= 2 ? tokens[1] : full; // fallback to full message if no detail part
+                detailMsg = tokens.size() >= 2 ? tokens[1] : full;
                 reasonId  = Diagnostic::getErrorId(full);
             };
 
             if (!errs0.empty())
                 extract(errs0[0]->textMsg);
-            else
-                if (!notes0.empty())
-                    extract(notes0[0]->textMsg);
+            else if (!notes0.empty())
+                extract(notes0[0]->textMsg);
 
             if (!haveFirst)
             {
                 firstReasonId = reasonId;
                 haveFirst     = true;
             }
-            else
-                if (reasonId != firstReasonId) { allEqual = false; }
+            else if (reasonId != firstReasonId)
+            {
+                allEqualIds = false;
+            }
 
-            // 3) Compose line: "overload N: <sig> -- <detailMsg>"
+            // 3) Truncate the plain signature for consistent column
+            Utf8 sigLimited = (sigPlain.length() > SIG_COL_MAX) ? Utf8::ellipsizeMiddle(sigPlain, SIG_COL_MAX) : sigPlain;
+
+            // 4) Colorize AFTER limiting so colored content matches measured width
+            SyntaxColorContext cxt;
+            Utf8               sigColored = doSyntaxColor(sigLimited, cxt);
+
+            // 5) Measure width of the limited plain signature for padding
+            const uint32_t w = sigLimited.length();
+            maxSigWidth      = std::max(w, maxSigWidth);
+
+            Item it;
+            it.sigPlain   = std::move(sigLimited);
+            it.sigColored = std::move(sigColored);
+            it.detail     = std::move(detailMsg);
+            it.widthPlain = w;
+            items.push_back(std::move(it));
+        }
+
+        // Details start one space after the widest shown signature
+        const uint32_t detailCol = (maxSigWidth < SIG_COL_MAX ? maxSigWidth : SIG_COL_MAX) + 1;
+
+        // Second pass: render aligned lines
+        uint32_t overloadIndex = 1;
+        for (const auto& it : items)
+        {
             Utf8 line;
             line += Log::colorToVTS(LogColor::DarkYellow);
             line += form("overload %u", overloadIndex++);
             line += Log::colorToVTS(LogColor::White);
             line += ": ";
-            line += sig;
-            if (!detailMsg.empty())
+            line += it.sigColored;
+
+            // Pad with spaces based on PLAIN width so VT codes don't skew alignment
+            uint32_t pad = 1; // at least one space before separator
+            if (it.widthPlain + 1 <= detailCol)
+                pad = detailCol - it.widthPlain;
+
+            for (uint32_t k = 0; k < pad; k++)
+                line += ' ';
+
+            if (!it.detail.empty())
             {
-                line += " -- ";
-                line += detailMsg;
+                line += OVER_SEP;
+                line += it.detail;
             }
 
             note->remarks.push_back(std::move(line));
         }
 
         if (tryMatches.size() > shown)
-            note->remarks.push_back(form("... and %u more overload(s) not shown", uint32_t(tryMatches.size() - shown)));
+            note->remarks.push_back(form("... and %u more overload(s) not shown", tryMatches.size() - shown));
 
         // If ALL per-overload reasons are identical, set the main error text to the TITLE (token[0]) of the first error
-        if (allEqual && !firstErrs.empty())
+        if (allEqualIds && !firstErrs.empty())
         {
             Vector<Utf8> tokens;
             Diagnostic::tokenizeError(firstErrs[0]->textMsg, tokens);

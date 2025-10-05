@@ -116,6 +116,8 @@ struct Utf8
     static uint32_t    fuzzyCompare(const Utf8& str1, const Utf8& str2);
     static Utf8        truncateDisplay(const char* str, int maxLen);
     static bool        isNumber(const char* pz);
+    static Utf8        oneLine(const Utf8& in);
+    static Utf8        ellipsizeMiddle(const Utf8& in, uint32_t maxWidth);
 
     char*    buffer    = nullptr;
     uint32_t count     = 0;
