@@ -841,6 +841,7 @@ var g_DataPath: String
     foreach f, i in files
     {
         let fn = assume Path.getFileNameWithoutExtension(f.fullname)
+        if Path.getFileName(f.fullname) == "lieux.txt":
         paintObjects(fn, deckColors[i])
     }
 }
