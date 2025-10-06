@@ -454,6 +454,15 @@ impl Color
         return Color.fromArgb(.a, gray, gray, gray)
     }
 
+    // Calculates contrast ratio between this color and another.
+    // Uses the standard WCAG contrast formula: (l1 + 0.05) / (l2 + 0.05)
+    mtd const getContrastRatio(against: Color)->f32
+    {
+        let l1 = Math.max(.getRelativeLuminance(), against.getRelativeLuminance())
+        let l2 = Math.min(.getRelativeLuminance(), against.getRelativeLuminance())
+        return (l1 + 0.05) / (l2 + 0.05)
+    }
+
     // Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation).
     #[ConstExpr]
     mtd const adjustSaturation(factor: f32)->Color
@@ -474,6 +483,50 @@ impl Color
         var result = Color.fromHsl(hsl.h, hsl.s, newL)
         result.a = .a // Preserve alpha
         return result
+    }
+
+    // Returns a new color adjusted so that its contrast ratio against `target`
+    // meets or exceeds the given `requiredContrast` (WCAG-compatible).
+    //
+    // The function iteratively darkens or lightens the color depending on
+    // which direction increases contrast most effectively.
+    //
+    // - Parameters:
+    //   - target: The color to contrast against (e.g., foreground or background).
+    //   - requiredContrast: The minimum contrast ratio (default = 4.5 for normal text).
+    //   - step: Brightness adjustment per iteration. Positive values move toward lighter,
+    //           negative toward darker; the function automatically picks direction.
+    //   - maxSteps: Maximum number of iterations (safety cap).
+    // - Returns: A new color meeting or exceeding the required contrast ratio.
+    mtd ensureContrast(target: Color, requiredContrast: f32 = 4.5, step: f32 = 0.02, maxSteps: s32 = 64)
+    {
+        let initialContrast = .getContrastRatio(target)
+
+        // If already meets the contrast requirement, return unchanged
+        if initialContrast >= requiredContrast:
+            return
+
+        // Decide direction: should we go lighter or darker?
+        // Try both directions and see which one increases contrast more.
+        let astep             = Math.abs(step)
+        let lighter           = .adjustBrightness(astep)
+        let darker            = .adjustBrightness(-astep)
+        let contrastIfLighter = lighter.getContrastRatio(target)
+        let contrastIfDarker  = darker.getContrastRatio(target)
+
+        // Direction that improves contrast more
+        let direction: f32 = (contrastIfLighter > contrastIfDarker) ? astep : -astep
+
+        var steps    = 0
+        var contrast = initialContrast
+
+        // Iterate until we reach or exceed required contrast
+        while contrast < requiredContrast and steps < maxSteps
+        {
+            dref me = .adjustBrightness(direction)
+            contrast = .getContrastRatio(target)
+            steps += 1
+        }
     }
 
     // Adjust hue by rotating around the color wheel.
