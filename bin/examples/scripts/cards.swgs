@@ -10,13 +10,13 @@ using Core, Gui, Pixel
 const CARD_SCALE    = 0.5
 const CARD_WIDTH    = cast(s32) (744 * CARD_SCALE)
 const CARD_HEIGHT   = cast(s32) (1038 * CARD_SCALE)
-const CARD_ROUND    = cast(u32) (CARD_WIDTH / 54)
-const BORDER_SIZE   = cast(f32) (CARD_WIDTH / 18)
-const MARGIN_BOTTOM = cast(f32) (CARD_WIDTH / 17)
+const CARD_ROUND    = cast(s32) (CARD_WIDTH / 54.0)
+const BORDER_SIZE   = cast(f32) (CARD_WIDTH / 18.0)
+const MARGIN_BOTTOM = cast(s32) (CARD_WIDTH / 17.0)
 
 const ROUND_IMAGE = CARD_WIDTH / 54.0
 
-const BADGE_SIZE   = cast(f32) (CARD_WIDTH / 5)
+const BADGE_SIZE   = cast(f32) (CARD_WIDTH / 6)
 const BADGE_BORDER = BORDER_SIZE * 0.3
 
 const PEPPER_SIZE = TITLE_HEIGHT * 0.6
@@ -108,7 +108,7 @@ func getRectTitle(card: Math.Rectangle)->Math.Rectangle
 func getRectSubTitle(card: Math.Rectangle)->Math.Rectangle
 {
     var r: retval = getRectTitle(card)
-    r.y = r.bottom() - SUBTITLE_HEIGHT
+    r.y      = r.bottom() - SUBTITLE_HEIGHT
     r.height = SUBTITLE_HEIGHT
     return r
 }
@@ -118,9 +118,7 @@ func getRectIconBadge(base: Math.Rectangle)->Math.Rectangle
     var rect1 = base
     rect1.x = base.right() - BADGE_SIZE - BORDER_SIZE
     rect1.y = BORDER_SIZE
-    rect1.x += BORDER_SIZE * 0.5
-    rect1.y -= BORDER_SIZE * 0.5
-    rect1.width, rect1.height  = BADGE_SIZE
+    rect1.width, rect1.height = BADGE_SIZE
     return rect1
 }
 
@@ -559,7 +557,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         dc.drawTexture(rect1, g_BackTitle, colorBack)
         rect1.inflate(-TITLE_PADDING)
 
-        var rs: RichString
+        var rs:  RichString
         var rsf: RichStringFormat
         rs.set(fi.title)
         rsf.font.regular  = g_TitleFont
@@ -577,7 +575,7 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         dc.fillRect(rect1, Color.fromArgb(100, 0, 0, 0))
         rect1.inflate(-TITLE_PADDING)
 
-        var rs: RichString
+        var rs:  RichString
         var rsf: RichStringFormat
         rs.set(fi.family)
         rsf.font.regular  = g_SubTitleFont
@@ -795,7 +793,7 @@ var g_DataPath: String
     g_Opts.maxSize     = 64
 
     let args = Env.getArgs()
-    if(@countof(args) < 2)
+    if (@countof(args) < 2)
     {
         @print("INVALID DATA PATH")
         return
