@@ -611,8 +611,8 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         dc.fillCircle(rect1.horzCenter(), rect1.vertCenter(), rect1.width * 0.5, getColorCard(fi.rank))
         dc.drawCircle(rect1.horzCenter(), rect1.vertCenter(), rect1.width * 0.5, Argb.White, BADGE_BORDER)
 
-        var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
-        dataPath = Path.combine(dataPath, "datas", "img", fi.what)
+        var dataPath = g_DataPath
+        dataPath = Path.combine(dataPath, "img", fi.what)
         var imgPath = Path.combine(dataPath, fi.what)
         imgPath += ".png"
         var img = catch Image.load(imgPath)
@@ -665,7 +665,7 @@ func paintObjects(what: string, colorDeck: Color)
     g_What      = what
     g_ColorDeck = colorDeck
 
-    var dataPath = g_DataPath
+    let dataPath = g_DataPath
 
     var fileName = Path.combine(dataPath, what)
     fileName += ".txt"
