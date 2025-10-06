@@ -7,10 +7,10 @@
 
 using Core, Gui, Pixel
 
-const CARD_SCALE    = 0.5
+const CARD_SCALE    = 1.0
 const CARD_WIDTH    = cast(s32) (744 * CARD_SCALE)
 const CARD_HEIGHT   = cast(s32) (1038 * CARD_SCALE)
-const CARD_ROUND    = cast(s32) (CARD_WIDTH / 54.0)
+const CARD_ROUND    = cast(f32) (CARD_WIDTH / 27.0)
 const BORDER_SIZE   = cast(f32) (CARD_WIDTH / 18.0)
 const MARGIN_BOTTOM = cast(s32) (CARD_WIDTH / 17.0)
 
@@ -22,7 +22,7 @@ const BADGE_BORDER = BORDER_SIZE * 0.3
 const PEPPER_SIZE = TITLE_HEIGHT * 0.6
 
 const DESCRIPTION_PADDING    = BORDER_SIZE * 0.5
-const DESCRIPTION_FONT_SIZE  = cast(u32) (CARD_WIDTH / 18)
+const DESCRIPTION_FONT_SIZE  = cast(u32) (CARD_WIDTH / 17)
 const DESCRIPTION2_FONT_SIZE = cast(u32) (DESCRIPTION_FONT_SIZE * 0.9)
 const DESCRIPTION_HEIGHT     = cast(u32) (CARD_HEIGHT / 6.0)
 
@@ -44,6 +44,7 @@ var g_BackText:  Texture
 var g_BackTitle: Texture
 var g_Logo:      Texture
 var g_TextSep:   Texture
+var g_FrontCard: Texture
 var g_BackCard:  Texture
 
 var g_Id:          u32 = 1
@@ -176,11 +177,18 @@ func loadRes(app: *Application)
     img.resize(cast() CARD_WIDTH, cast() TITLE_HEIGHT, .Bicubic)
     g_BackTitle = app.renderer.addImage(img)
 
-    let colorDeck = g_ColorDeck
-    var imgBack   = Image.create(1024, 1024, .RGB8)
-    let res       = makeElegantCorners(colorDeck)
+    img = assume Image.load(Path.combine(dataPath, "back_card.png"))
+    img.resize(cast() CARD_WIDTH, cast() CARD_HEIGHT, .Bicubic)
+    g_BackCard = app.renderer.addImage(img)
+
+    /*var imgBack = Image.create(1024, 1024, .RGB8)
+    let res     = makeElegantCorners(g_ColorDeck)
     imgBack.fillGradient4(res.tl, res.tr, res.bl, res.br)
-    g_BackCard = app.renderer.addImage(imgBack)
+    g_FrontCard = app.renderer.addImage(imgBack)*/
+
+    img = assume Image.load(Path.combine(dataPath, "front_card.png"))
+    img.resize(cast() CARD_WIDTH, cast() CARD_HEIGHT, .Bicubic)
+    g_FrontCard = app.renderer.addImage(img)
 
     g_TTRegular = assume TypeFace.load(Path.combine(dataPath, "regular.ttf"))
     g_TTBold    = assume TypeFace.load(Path.combine(dataPath, "bold.ttf"))
@@ -452,7 +460,20 @@ func getColorCard(rank: u32)->Color
     return colorBack
 }
 
-func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
+func paintBack(_app: *Application, dc: *Painter, _fi: ImageInfo)
+{
+    let rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
+    dc.fillRoundRect(rect, CARD_ROUND, CARD_ROUND, Argb.Black)
+
+    {
+        var br = Brush.createTexture(g_BackCard)
+        br.color = g_ColorDeck
+        let rectBorder = rect
+        dc.fillRoundRect(rectBorder, CARD_ROUND, CARD_ROUND, br)
+    }
+}
+
+func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
 {
     Console.printf(" %/% ", g_Id, g_CountFamily[fi.family])
     Console.print(fi.title, " ")
@@ -464,15 +485,18 @@ func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
         g_InitDone = true
     }
 
-    let rect = Math.Rectangle{x, y, CARD_WIDTH, CARD_HEIGHT}
+    let rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
 
     // Border
     /////////////////////////////////
 
     {
-        let br         = Brush.createTexture(g_BackCard)
-        let rectBorder = rect
-        dc.fillRoundRect(rectBorder, CARD_ROUND * 2.0, CARD_ROUND * 2.0, br)
+        var rect1 = rect
+        var br         = Brush.createTexture(g_FrontCard)
+        br.color = g_ColorDeck
+        dc.fillRoundRect(rect1, CARD_ROUND, CARD_ROUND, br)
+        rect1.inflate(-BORDER_SIZE*0.12, -BORDER_SIZE*0.12)
+        dc.drawRoundRect(rect1, CARD_ROUND, CARD_ROUND, Argb.Black, BORDER_SIZE*0.25)
     }
 
     // Image
@@ -752,16 +776,24 @@ func paintObjects(what: string, colorDeck: Color)
         }
 
         empty = false
-        let img = pt.draw(func|f|(app, dc)
+
+        let img0 = pt.draw(func|f|(app, dc)
         {
             dc.setColorMaskFull()
             dc.clear(Argb.White)
-            paintOne(app, dc, 0, 0, f)
+            paintFront(app, dc, f)
         })
+        page.mix(img0, x, y)
 
-        page.mix(img, x, y)
+        let img1 = pt.draw(func|f|(app, dc)
+        {
+            dc.setColorMaskFull()
+            dc.clear(Argb.White)
+            paintBack(app, dc, f)
+        })
+        page.mix(img1, x + CARD_WIDTH, y)
 
-        x += CARD_WIDTH
+        x += 2 * CARD_WIDTH
         if x == page.width
         {
             x = 0
