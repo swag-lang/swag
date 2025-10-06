@@ -523,7 +523,7 @@ impl Color
         // Iterate until we reach or exceed required contrast
         while contrast < requiredContrast and steps < maxSteps
         {
-            dref me = .adjustBrightness(direction)
+            dref me  = .adjustBrightness(direction)
             contrast = .getContrastRatio(target)
             steps += 1
         }
@@ -587,6 +587,34 @@ impl Color
         result.g = cast(u8) Math.min(cast(u16) col0.g + col1.g, 255)
         result.b = cast(u8) Math.min(cast(u16) col0.b + col1.b, 255)
         return result
+    }
+
+    // Generates N visually distinct colors.
+    // Uses golden-angle hue spacing to ensure that each color is clearly separated from the others,
+    // with slight lightness variation for good contrast against white text.
+    func generateDistinctColors(n: u32, startHue: f32 = 0.113, lum: f32 = 0.44, sat: f32 = 0.68)->Array'Color
+    {
+        var colors: retval
+        if n == 0:
+            return colors
+
+        const G    = 0.61803398875     // Golden ratio conjugate for low-discrepancy hue sampling
+        const LVAR = 0.05              // tiny alternation to separate neighbors
+
+        for i in n
+        {
+            // Evenly jump around the hue circle with the golden angle
+            let h = Math.fract(startHue + cast(f32) i * G)
+
+            // Slight alternating lightness to enhance contrast between adjacent colors
+            let l = lum + ((i & 1) == 0 ? -LVAR : LVAR)
+
+            var c = fromHsl(h, sat, l)
+            c.a = 255
+            colors.add(c)
+        }
+
+        return colors
     }
 }
 

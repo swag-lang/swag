@@ -54,6 +54,10 @@ alias ConstF64 = Const'f64
     func interpQuintic(t: f32) => t * t * t * (t * (t * 6 - 15) + 10)
     func interpQuintic(t: f64) => t * t * t * (t * (t * 6 - 15) + 10)
 
+    // Get the fractional part
+    func fract(x: f32)->f32 => x - floor(x)
+    func fract(x: f64)->f64 => x - floor(x)
+
     // Interpolation at constant speed - moves a fixed distance per step
     func moveTowards(current, target, speed: f32)->f32
     {
@@ -239,7 +243,7 @@ alias ConstF64 = Const'f64
 
     func floorS32(x: f32) => cast(s32) @floor(x)
     func floorS64(x: f64) => cast(s64) @floor(x)
-    func ceilS32(x: f32)  =>cast(s32) @ceil(x)
+    func ceilS32(x: f32)  => cast(s32) @ceil(x)
     func ceilS64(x: f64)  => cast(s64) @ceil(x)
     func truncS32(x: f32) => cast(s32) @trunc(x)
     func truncS64(x: f64) => cast(s64) @trunc(x)
