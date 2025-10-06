@@ -123,7 +123,10 @@ enum Metrics
 
 #premain
 {
-    let str = getNativeArgs()
-    if @countof(str):
-        @pinfos.args = str
+    if !(@rtflags & .FromCompiler)
+    {
+        let str = getNativeArgs()
+        if @countof(str):
+            @pinfos.args = str
+    }
 }

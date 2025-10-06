@@ -1,0 +1,816 @@
+// Swag script file
+#dependencies
+{
+    // Here you can add your external dependencies
+    #import("gui", location: "swag@std")
+}
+
+using Core, Gui, Pixel
+
+const CARD_SCALE    = 0.5
+const CARD_WIDTH    = cast(s32) (744 * CARD_SCALE)
+const CARD_HEIGHT   = cast(s32) (1038 * CARD_SCALE)
+const CARD_ROUND    = cast(u32) (CARD_WIDTH / 54)
+const BORDER_SIZE   = cast(f32) (CARD_WIDTH / 18)
+const MARGIN_BOTTOM = cast(f32) (CARD_WIDTH / 17)
+
+const ROUND_IMAGE = CARD_WIDTH / 54.0
+
+const BADGE_SIZE   = cast(f32) (CARD_WIDTH / 5)
+const BADGE_BORDER = BORDER_SIZE * 0.3
+
+const PEPPER_SIZE = TITLE_HEIGHT * 0.6
+
+const DESCRIPTION_PADDING    = BORDER_SIZE * 0.5
+const DESCRIPTION_FONT_SIZE  = cast(u32) (CARD_WIDTH / 18)
+const DESCRIPTION2_FONT_SIZE = cast(u32) (DESCRIPTION_FONT_SIZE * 0.9)
+const DESCRIPTION_HEIGHT     = cast(u32) (CARD_HEIGHT / 6.0)
+
+const TITLE_FONT_SIZE = cast(u32) (CARD_WIDTH / 13)
+const TITLE_HEIGHT    = cast(u32) (CARD_HEIGHT / 8)
+const TITLE_PADDING   = BORDER_SIZE * 0.5
+
+const SUBTITLE_HEIGHT    = cast(u32) (TITLE_HEIGHT / 5)
+const SUBTITLE_FONT_SIZE = SUBTITLE_HEIGHT - 4
+
+const ID_FONT_SIZE = cast(u32) (CARD_WIDTH / 16)
+
+const LOGO_WIDTH  = cast(f32) (CARD_WIDTH / 4)
+const LOGO_HEIGHT = MARGIN_BOTTOM
+
+var g_InitDone = false
+var g_IconH, g_IconF, g_Pepper: Texture
+var g_BackText:  Texture
+var g_BackTitle: Texture
+var g_Logo:      Texture
+var g_TextSep:   Texture
+var g_BackCard:  Texture
+
+var g_Id:          u32 = 1
+var g_CountFamily: HashTable'(String, u32)
+var g_What:        String
+var g_ColorDeck:   Color
+var g_Colors:      Array'Color
+
+var g_TTRegular: *TypeFace
+var g_TTBold:    *TypeFace
+var g_TTItalic:  *TypeFace
+
+var g_TitleFont:    *Font
+var g_SubTitleFont: *Font
+var g_IdFont:       *Font
+var g_TextFont:     FontFamily
+var g_TextFont2:    FontFamily
+
+var g_Opts: Image.SmartCropSearchOpts
+var g_Rng:  Random.Rng
+
+struct ImageInfo
+{
+    what:       String
+    images:     Array'String
+    badge:      String
+    title:      String
+    family:     String
+    icons:      Array'String
+    text:       String
+    text2:      String
+    color:      String
+    rank:       s32
+}
+
+func getRectImage(card: Math.Rectangle)->Math.Rectangle
+{
+    var r: retval = card
+    r.inflate(-BORDER_SIZE * 1.8)
+    r.height = r.width
+    return r
+}
+
+func getRectDescription(card: Math.Rectangle)->Math.Rectangle
+{
+    var r: retval = card
+    r.inflate(-BORDER_SIZE)
+    r.y = r.bottom() - MARGIN_BOTTOM
+    r.y -= DESCRIPTION_HEIGHT
+    r.height = DESCRIPTION_HEIGHT
+    return r
+}
+
+func getRectTitle(card: Math.Rectangle)->Math.Rectangle
+{
+    var r: retval = getRectDescription(card)
+    r.y -= TITLE_HEIGHT
+    r.height = TITLE_HEIGHT
+    return r
+}
+
+func getRectSubTitle(card: Math.Rectangle)->Math.Rectangle
+{
+    var r: retval = getRectTitle(card)
+    r.y = r.bottom() - SUBTITLE_HEIGHT
+    r.height = SUBTITLE_HEIGHT
+    return r
+}
+
+func getRectIconBadge(base: Math.Rectangle)->Math.Rectangle
+{
+    var rect1 = base
+    rect1.x = base.right() - BADGE_SIZE - BORDER_SIZE
+    rect1.y = BORDER_SIZE
+    rect1.x += BORDER_SIZE * 0.5
+    rect1.y -= BORDER_SIZE * 0.5
+    rect1.width, rect1.height  = BADGE_SIZE
+    return rect1
+}
+
+// MAIN: produce four corner colors from a too-light base
+// Returns (topLeft, topRight, bottomLeft, bottomRight)
+func makeElegantCorners(base: Color)->{ tl: Color, tr: Color, bl: Color, br: Color }
+{
+    var result: retval
+    result.tl = base.getBlendKeepAlpha(Argb.White, 0.22)
+    result.tr = base.getBlendKeepAlpha(Argb.Black, 0.16)
+    result.bl = base.getBlendKeepAlpha(Argb.White, 0.10)
+    result.br = base.getBlendKeepAlpha(Argb.Black, 0.30)
+
+    with result
+    {
+        .tr.ensureContrast(Argb.White)
+        .tl.ensureContrast(Argb.Black)
+        .bl.ensureContrast(Argb.White)
+        .br.ensureContrast(Argb.Black)
+    }
+
+    return result
+}
+
+func loadRes(app: *Application)
+{
+    var dataPath = g_DataPath
+    dataPath = Path.combine(dataPath, "res")
+
+    var img: Image
+
+    /*var img = assume Image.load(Path.combine(dataPath, "h.png"))
+    img.resize(cast() BADGE_SIZE, cast() BADGE_SIZE, .Bicubic)
+    g_IconH = app.renderer.addImage(img)
+
+    img = assume Image.load(Path.combine(dataPath, "f.png"))
+    img.resize(cast() BADGE_SIZE, cast() BADGE_SIZE, .Bicubic)
+    g_IconF = app.renderer.addImage(img)*/
+
+    img = assume Image.load(Path.combine(dataPath, "pepper.png"))
+    img.resize(cast() PEPPER_SIZE, cast() PEPPER_SIZE, .Bicubic)
+    g_Pepper = app.renderer.addImage(img)
+
+    img = assume Image.load(Path.combine(dataPath, "logo.png"))
+    img.resize(cast() LOGO_WIDTH, cast() LOGO_HEIGHT, .Bicubic)
+    g_Logo = app.renderer.addImage(img)
+
+    img = assume Image.load(Path.combine(dataPath, "sep.png"))
+    img.resize(cast() CARD_WIDTH, cast(s32) DESCRIPTION_FONT_SIZE, .Bicubic)
+    g_TextSep = app.renderer.addImage(img)
+
+    g_BackText = app.renderer.addImage(assume Image.load(Path.combine(dataPath, "back_text.png")))
+
+    img = assume Image.load(Path.combine(dataPath, "back_title.png"))
+    img.resize(cast() CARD_WIDTH, cast() TITLE_HEIGHT, .Bicubic)
+    g_BackTitle = app.renderer.addImage(img)
+
+    let colorDeck = g_ColorDeck
+    var imgBack   = Image.create(1024, 1024, .RGB8)
+    let res       = makeElegantCorners(colorDeck)
+    imgBack.fillGradient4(res.tl, res.tr, res.bl, res.br)
+    g_BackCard = app.renderer.addImage(imgBack)
+
+    g_TTRegular = assume TypeFace.load(Path.combine(dataPath, "regular.ttf"))
+    g_TTBold    = assume TypeFace.load(Path.combine(dataPath, "bold.ttf"))
+    g_TTItalic  = assume TypeFace.load(Path.combine(dataPath, "italic.ttf"))
+
+    g_TitleFont = Font.create(g_TTBold, TITLE_FONT_SIZE)
+    g_IdFont    = Font.create(g_TTBold, ID_FONT_SIZE)
+
+    g_TextFont.regular    = Font.create(g_TTRegular, DESCRIPTION_FONT_SIZE)
+    g_TextFont.bold       = Font.create(g_TTBold, DESCRIPTION_FONT_SIZE)
+    g_TextFont.italic     = Font.create(g_TTItalic, DESCRIPTION_FONT_SIZE)
+    g_TextFont.boldItalic = Font.create(g_TTItalic, DESCRIPTION_FONT_SIZE, forceBold: true)
+
+    g_TextFont2.regular    = Font.create(g_TTRegular, DESCRIPTION2_FONT_SIZE)
+    g_TextFont2.bold       = Font.create(g_TTBold, DESCRIPTION2_FONT_SIZE)
+    g_TextFont2.italic     = Font.create(g_TTItalic, DESCRIPTION2_FONT_SIZE)
+    g_TextFont2.boldItalic = Font.create(g_TTItalic, DESCRIPTION2_FONT_SIZE, forceBold: true)
+
+    g_SubTitleFont = Font.create(g_TTItalic, SUBTITLE_FONT_SIZE)
+}
+
+/*
+func paintBadge(dc: *Painter, x, y: f32, m: bool)
+{
+    var texture: Texture
+    var color:   Color
+
+    if m
+    {
+        texture = g_IconH
+        color   = Argb.CornflowerBlue
+    }
+    else
+    {
+        texture = g_IconF
+        color   = Argb.Pink
+    }
+
+    let rectSolo = Math.Rectangle{x, y, BADGE_SIZE, BADGE_SIZE}
+
+    dc.fillCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE * 0.5, color)
+    var rectIcon = rectSolo
+    rectIcon.inflate(-10)
+    dc.drawTexture(rectIcon, texture)
+    dc.drawCircle(rectSolo.horzCenter(), rectSolo.vertCenter(), BADGE_SIZE * 0.5, Argb.Black, BADGE_BORDER)
+}*/
+
+func drawImage(dc: *Painter, rect: Math.Rectangle, texture: Texture)
+{
+    dc.pushTransform()
+    dc.scaleTransform(g_Rng.nextF32(0.95, 1.05))
+    dc.rotateTransform(g_Rng.nextF32(-0.025, 0.025))
+    dc.translateTransform(rect.horzCenter(), rect.vertCenter())
+    let br    = Brush.createTexture(texture)
+    let rect1 = Math.Rectangle{-rect.width * 0.5, -rect.height * 0.5, rect.width, rect.height}
+    dc.fillRoundRect(rect1, ROUND_IMAGE, ROUND_IMAGE, br)
+    dc.drawRoundRect(rect1, ROUND_IMAGE, ROUND_IMAGE, Argb.Black, BORDER_SIZE * 0.35)
+    dc.drawRoundRect(rect1, ROUND_IMAGE, ROUND_IMAGE, Argb.White, BORDER_SIZE * 0.25)
+    dc.popTransform()
+}
+
+// Main layout function
+func layoutImages(all: &Array'Image, rectImage: Math.Rectangle, dc: *Painter, app: *Application)
+{
+    switch all.count
+    {
+    case 1:
+        layoutSingleImage(all, rectImage, dc, app)
+    case 2:
+        layoutTwoImages(all, rectImage, dc, app)
+    case 3:
+        layoutThreeImages(all, rectImage, dc, app)
+    case 4:
+        layoutFourImages(all, rectImage, dc, app)
+    }
+}
+
+func layoutSingleImage(all: &Array'Image, rectImage: Math.Rectangle, dc: *Painter, app: *Application)
+{
+    let texture = app.renderer.addImage(all[0])
+    dc.drawImage(rectImage, texture)
+}
+
+func layoutTwoImages(all: &Array'Image, rectImage: Math.Rectangle, dc: *Painter, app: *Application)
+{
+    // Determine layout direction based on image characteristics
+    var useVerticalSplit = false
+
+    var rect1 = rectImage
+    var rect2 = rectImage
+    rect1.width /= 2
+    rect2.height /= 2
+    let val1 = all[0].evaluateCropScore(rect1, g_Opts)
+    let val2 = all[0].evaluateCropScore(rect2, g_Opts)
+    useVerticalSplit = val1 >= val2
+
+    // Split vertically (left/right)
+    if useVerticalSplit
+    {
+        rect1 = rectImage
+        rect2 = rectImage
+        rect1.width /= 2
+        rect2.width /= 2
+        rect2.x += rect1.width
+
+        all[0].smartCrop(rect1, g_Opts)
+        all[1].smartCrop(rect2, g_Opts)
+
+        let texture1 = app.renderer.addImage(all[0])
+        let texture2 = app.renderer.addImage(all[1])
+
+        dc.drawImage(rect1, texture1)
+        dc.drawImage(rect2, texture2)
+    }
+
+    // Split horizontally (top/bottom)
+    else
+    {
+        rect1 = rectImage
+        rect2 = rectImage
+        rect1.height /= 2
+        rect2.height /= 2
+        rect2.y += rect1.height
+
+        all[0].smartCrop(rect1, g_Opts)
+        all[1].smartCrop(rect2, g_Opts)
+
+        let texture1 = app.renderer.addImage(all[0])
+        let texture2 = app.renderer.addImage(all[1])
+        dc.drawImage(rect1, texture1)
+        dc.drawImage(rect2, texture2)
+    }
+}
+
+func layoutThreeImages(all: &Array'Image, rectImage: Math.Rectangle, dc: *Painter, app: *Application)
+{
+    // Define layout configurations once
+    struct LayoutConfig
+    {
+        rects:          [3] Math.Rectangle
+        configType:     s32                    // 0 = wide top, 1 = tall left
+    }
+
+    var configs: [2] LayoutConfig
+
+    // Config 0: Wide on top
+    {
+        var rectTop         = rectImage
+        var rectBottomLeft  = rectImage
+        var rectBottomRight = rectImage
+
+        rectTop.height         = cast(s32) (rectImage.height * 0.5)
+        rectBottomLeft.height  = rectImage.height - rectTop.height
+        rectBottomRight.height = rectImage.height - rectTop.height
+        rectBottomLeft.width /= 2
+        rectBottomRight.width /= 2
+        rectBottomLeft.y += rectTop.height
+        rectBottomRight.x += rectBottomLeft.width
+        rectBottomRight.y += rectTop.height
+
+        configs[0].rects      = [rectTop, rectBottomLeft, rectBottomRight]
+        configs[0].configType = 0
+    }
+
+    // Config 1: Tall on left
+    {
+        var rectLeft        = rectImage
+        var rectTopRight    = rectImage
+        var rectBottomRight = rectImage
+
+        rectLeft.width        = cast(s32) (rectImage.width * 0.5)
+        rectTopRight.width    = rectImage.width - rectLeft.width
+        rectBottomRight.width = rectImage.width - rectLeft.width
+        rectTopRight.height /= 2
+        rectBottomRight.height /= 2
+        rectTopRight.x += rectLeft.width
+        rectBottomRight.x += rectLeft.width
+        rectBottomRight.y += rectTopRight.height
+
+        configs[1].rects      = [rectLeft, rectTopRight, rectBottomRight]
+        configs[1].configType = 1
+    }
+
+    var permutations: [6] [3] s32 = [
+        [0, 1, 2], [0, 2, 1], [1, 0, 2],
+        [1, 2, 0], [2, 0, 1], [2, 1, 0]]
+
+    var bestScore  = -1.0e30'f64
+    var bestConfig = 0's32
+    var bestPerm   = 0's32
+
+    // Evaluate all combinations using pre-computed saliency
+    for configIdx in 0 to 1
+    {
+        let config = &configs[configIdx]
+        for permIdx in 0 to 5
+        {
+            let perm = &permutations[permIdx]
+
+            // Use fast evaluation with pre-computed saliency
+            let score0 = all[perm[0]].evaluateCropScore(config.rects[0], g_Opts)
+            let score1 = all[perm[1]].evaluateCropScore(config.rects[1], g_Opts)
+            let score2 = all[perm[2]].evaluateCropScore(config.rects[2], g_Opts)
+
+            let totalScore = score0 + score1 + score2
+
+            if totalScore > bestScore
+            {
+                bestScore  = totalScore
+                bestConfig = configIdx
+                bestPerm   = permIdx
+            }
+        }
+    }
+
+    // Render using best configuration (no recalculation needed)
+    let chosenConfig = &configs[bestConfig]
+    let chosenPerm   = &permutations[bestPerm]
+
+    for i in 0 to 2
+    {
+        let imgIdx = chosenPerm[i]
+        all[imgIdx].smartCrop(chosenConfig.rects[i], g_Opts)
+        let texture = app.renderer.addImage(&all[imgIdx])
+        dc.drawImage(chosenConfig.rects[i], texture)
+    }
+}
+
+func layoutFourImages(all: &Array'Image, rectImage: Math.Rectangle, dc: *Painter, app: *Application)
+{
+    var rects: [4] Math.Rectangle
+
+    let topHeight    = rectImage.height * 0.5
+    let bottomHeight = rectImage.height * 0.5
+    let halfWidth    = rectImage.width / 2
+
+    rects[0] = {rectImage.x, rectImage.y, halfWidth, topHeight}
+    rects[1] = {rectImage.x + halfWidth, rectImage.y, halfWidth, topHeight}
+    rects[2] = {rectImage.x, rectImage.y + topHeight, halfWidth, bottomHeight}
+    rects[3] = {rectImage.x + halfWidth, rectImage.y + topHeight, halfWidth, bottomHeight}
+
+    for i in 4
+    {
+        let img     = &all[i]
+        let texture = app.renderer.addImage(img)
+        dc.drawImage(rects[i], texture)
+    }
+}
+
+func getColorCard(rank: u32)->Color
+{
+    var colorBack: retval
+    switch rank
+    {
+    case 1:
+        colorBack = 0xFF3CB371
+    case 2:
+        colorBack = 0xFF1E90FF
+    case 3:
+        colorBack = 0xFFFF2500
+    case 4:
+        colorBack = 0xFF9400D3
+    case 5:
+        colorBack = 0xFF2C143C
+    default:
+        colorBack = rank | 0xFF000000
+    }
+
+    return colorBack
+}
+
+func paintOne(app: *Application, dc: *Painter, x, y: u32, fi: ImageInfo)
+{
+    Console.printf(" %/% ", g_Id, g_CountFamily[fi.family])
+    Console.print(fi.title, " ")
+    defer Console.print("\n")
+
+    if !g_InitDone
+    {
+        loadRes(app)
+        g_InitDone = true
+    }
+
+    let rect = Math.Rectangle{x, y, CARD_WIDTH, CARD_HEIGHT}
+
+    // Border
+    /////////////////////////////////
+
+    {
+        let br         = Brush.createTexture(g_BackCard)
+        let rectBorder = rect
+        dc.fillRoundRect(rectBorder, CARD_ROUND * 2.0, CARD_ROUND * 2.0, br)
+    }
+
+    // Image
+    /////////////////////////////////
+
+    {
+        let rectImage = getRectImage(rect)
+
+        var all: Array'Image
+        foreach &im in fi.images
+        {
+            var img = catch Image.load(dref im)
+            if @err == null:
+                all.add(moveref &img)
+        }
+
+        if all.isEmpty()
+        {
+            if fi.images.count
+            {
+                var rs:  RichString
+                var rsf: RichStringFormat
+                rsf.font          = g_TextFont
+                rsf.horzAlignment = .Center
+                rsf.vertAlignment = .Center
+                rsf.flags |= .WordWrap
+                rsf.palette[0] = Argb.Black
+                rs.set(Path.getFileName(fi.images[0]))
+                dc.drawRichString(rectImage, &rs, rsf)
+            }
+            Console.print(" => EMPTY !!!!")
+        }
+
+        layoutImages(&all, rectImage, dc, app)
+    }
+
+    // Description
+    /////////////////////////////////
+
+    {
+        var rectText = getRectDescription(rect)
+
+        var colorDeck = Color.fromArgb(0xFFAADDCC)
+        colorDeck.ensureContrast(Argb.Black)
+        dc.drawTexture(rectText, g_BackText, colorDeck)
+
+        rectText.inflate(-DESCRIPTION_PADDING)
+
+        var rs:  RichString
+        var rsf: RichStringFormat
+        rsf.font          = g_TextFont
+        rsf.horzAlignment = .Left
+        rsf.vertAlignment = .Center
+        rsf.flags |= .WordWrap
+        rsf.palette[0] = Argb.Black
+        rs.set(fi.text)
+        if !fi.text2.isEmpty():
+            rectText.height *= 0.5
+        dc.drawRichString(rectText, &rs, rsf)
+
+        if !fi.text2.isEmpty()
+        {
+            rsf.font = g_TextFont2
+            rectText.y += rectText.height
+            rs.set(fi.text2)
+            dc.drawRichString(rectText, &rs, rsf)
+
+            var rectSep = rectText
+            rectSep.y -= (DESCRIPTION_FONT_SIZE * 0.5)
+            rectSep.height = DESCRIPTION_FONT_SIZE
+            dc.drawTexture(rectSep, g_TextSep)
+        }
+    }
+
+    // Title
+    /////////////////////////////////
+
+    let colorBack = g_Colors[Hash.Crc32.compute(fi.family) % g_Colors.count]
+
+    {
+        var rect1 = getRectTitle(rect)
+        dc.drawTexture(rect1, g_BackTitle, colorBack)
+        rect1.inflate(-TITLE_PADDING)
+
+        var rs: RichString
+        var rsf: RichStringFormat
+        rs.set(fi.title)
+        rsf.font.regular  = g_TitleFont
+        rsf.horzAlignment = .Left
+        rsf.vertAlignment = .Center
+        rsf.palette[0]    = colorBack.getContrasting()
+        dc.drawRichString(rect1, &rs, rsf)
+    }
+
+    // Sub title
+    /////////////////////////////////
+
+    {
+        var rect1 = getRectSubTitle(rect)
+        dc.fillRect(rect1, Color.fromArgb(100, 0, 0, 0))
+        rect1.inflate(-TITLE_PADDING)
+
+        var rs: RichString
+        var rsf: RichStringFormat
+        rs.set(fi.family)
+        rsf.font.regular  = g_SubTitleFont
+        rsf.horzAlignment = .Center
+        rsf.vertAlignment = .Center
+        rsf.palette[0]    = Argb.White
+        dc.drawRichString(rect1, &rs, rsf)
+    }
+
+    // Pepper
+    /////////////////////////////////
+
+    {
+        var rect1 = getRectTitle(rect)
+        rect1.x = rect.right() - PEPPER_SIZE - (BORDER_SIZE * 1.5)
+        rect1.y = rect1.vertCenter() - PEPPER_SIZE * 0.5
+        rect1.width, rect1.height = PEPPER_SIZE
+
+        for i in fi.rank
+        {
+            dc.drawTexture(rect1, g_Pepper, colorBack.getContrasting())
+            rect1.x -= PEPPER_SIZE * 0.5
+        }
+    }
+
+    // Badge
+    /////////////////////////////////
+
+    {
+        let rect1 = getRectIconBadge(rect)
+        dc.fillCircle(rect1.horzCenter(), rect1.vertCenter(), rect1.width * 0.5, getColorCard(fi.rank))
+        dc.drawCircle(rect1.horzCenter(), rect1.vertCenter(), rect1.width * 0.5, Argb.White, BADGE_BORDER)
+
+        var dataPath: String = Path.getDirectoryName(#curlocation.fileName)
+        dataPath = Path.combine(dataPath, "datas", "img", fi.what)
+        var imgPath = Path.combine(dataPath, fi.what)
+        imgPath += ".png"
+        var img = catch Image.load(imgPath)
+        if img.isValid()
+        {
+            img.resize(cast(s32) rect1.width, cast(s32) rect1.height, .Bilinear)
+            let texture = app.renderer.addImage(img)
+            dc.drawTexture(rect1, texture, Argb.White)
+        }
+    }
+
+    // Margin bottom
+    /////////////////////////////////
+
+    {
+        var rect1 = rect
+        rect1.y      = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
+        rect1.height = MARGIN_BOTTOM + BORDER_SIZE
+        rect1.width -= BORDER_SIZE
+
+        var rs: RichString
+        let num = Format.toString("%/%", g_Id, g_CountFamily[fi.family])
+        rs.set(num)
+
+        var rsf: RichStringFormat
+        rsf.font.regular  = g_IdFont
+        rsf.horzAlignment = .Right
+        rsf.vertAlignment = .Center
+        rsf.palette[0]    = Argb.White
+        dc.drawRichString(rect1, &rs, rsf)
+    }
+
+    {
+        var rect1 = rect
+        rect1.y      = rect1.bottom() - MARGIN_BOTTOM - BORDER_SIZE
+        rect1.height = MARGIN_BOTTOM + BORDER_SIZE
+        rect1.y      = rect1.vertCenter() - (LOGO_HEIGHT / 2)
+
+        rect1.x      = BORDER_SIZE
+        rect1.width  = LOGO_WIDTH
+        rect1.height = LOGO_HEIGHT
+
+        dc.drawTexture(rect1, g_Logo)
+    }
+}
+
+func paintObjects(what: string, colorDeck: Color)
+{
+    g_InitDone  = false
+    g_What      = what
+    g_ColorDeck = colorDeck
+
+    var dataPath = g_DataPath
+
+    var fileName = Path.combine(dataPath, what)
+    fileName += ".txt"
+    let lines = assume File.readAllLines(fileName)
+
+    var files: Array'ImageInfo
+    foreach l in lines
+    {
+        let tokens = Tokenize.split(l, ';''rune, removeEmpty: false)
+        if tokens.count == 0:
+            continue
+
+        var fi: ImageInfo
+        fi.what   = what
+        fi.family = tokens[0]
+        fi.title  = tokens[1]
+        fi.text   = tokens[2]
+
+        var imgRank = 3
+        if tokens.count == 5
+        {
+            fi.rank = assume StrConv.toS32(tokens[3])
+            imgRank = 4
+        }
+
+        if tokens.count >= 4 and @countof(tokens[4])
+        {
+            for i in 5
+            {
+                var imgPath = Path.combine(dataPath, "img", fi.what)
+                imgPath = Path.combine(imgPath, tokens[4])
+                if i:
+                    imgPath += Format.toString("%", 'a''rune + (i - 1))
+                imgPath += ".png"
+                fi.images.add(imgPath)
+            }
+        }
+
+        files.add(fi)
+    }
+
+    var page = Image.create(CARD_WIDTH * 4, CARD_HEIGHT * 4, .BGRA8)
+    page.fill(Argb.White)
+    var x       = 0
+    var y       = page.height - CARD_HEIGHT
+    var pageNum = 1
+
+    #[Swag.Mixin]
+    func flushPage()
+    {
+        let fileN = Format.toString("%-%.jpg", what, pageNum)
+        let pOut  = Path.combine(dataPath, "out")
+        if !Directory.exists(pOut):
+            assume Directory.create(pOut)
+        assume page.save(Path.combine(dataPath, "out", cast(string) fileN))
+    }
+
+    var pt: PaintImage
+    pt.init(CARD_WIDTH, CARD_HEIGHT)
+
+    g_Id = 0
+    var lastFamily = files[0].family
+    foreach &f in files
+    {
+        if f.family != lastFamily
+        {
+            g_CountFamily.add(lastFamily, g_Id)
+            g_Id = 0
+        }
+
+        lastFamily = f.family
+        g_Id += 1
+    }
+
+    g_CountFamily.add(lastFamily, g_Id)
+
+    var empty = false
+    g_Id       = 1
+    lastFamily = files[0].family
+    foreach &f in files
+    {
+        if f.family != lastFamily
+        {
+            lastFamily = f.family
+            g_Id       = 1
+        }
+
+        empty = false
+        let img = pt.draw(func|f|(app, dc)
+        {
+            dc.setColorMaskFull()
+            dc.clear(Argb.White)
+            paintOne(app, dc, 0, 0, f)
+        })
+
+        page.mix(img, x, y)
+
+        x += CARD_WIDTH
+        if x == page.width
+        {
+            x = 0
+            y -= CARD_HEIGHT
+            if y < 0
+            {
+                empty = true
+                flushPage()
+                y = page.height - CARD_HEIGHT
+                pageNum += 1
+                page.fill(Argb.White)
+            }
+        }
+
+        g_Id += 1
+    }
+
+    if !empty:
+        flushPage()
+}
+
+var g_DataPath: String
+
+#main
+{
+    Time.Stopwatch.scopeMeasure()
+    try Jobs.setNumWorkers()
+    g_Opts.minCoverage = 1
+    g_Opts.maxSize     = 64
+
+    let args = Env.getArgs()
+    if(@countof(args) < 2)
+    {
+        @print("INVALID DATA PATH")
+        return
+    }
+
+    g_DataPath = args[1]
+
+    let deckColors = Color.generateDistinctColors(8, sat: 0.45)
+
+    let files = assume Directory.enumerateFiles(g_DataPath, matchExtension: ".txt")
+    g_Colors = Color.generateDistinctColors(cast(u32) files.count, sat: 0.3)
+
+    foreach f, i in files
+    {
+        let fn = assume Path.getFileNameWithoutExtension(f.fullname)
+        paintObjects(fn, deckColors[i])
+    }
+}
