@@ -90,7 +90,8 @@ namespace
                     notes.insert(++notes.begin(), newNote);
             }
 
-            err->hint = parts[1];
+            err->textMsg += "\n";
+            err->textMsg += parts[1];
 
             for (uint32_t i = 2; i < parts.size(); i++)
             {

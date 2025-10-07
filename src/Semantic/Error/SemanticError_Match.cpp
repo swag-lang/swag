@@ -141,9 +141,9 @@ namespace
 
             if (!haveFirst)
             {
-                firstReasonId          = reasonId;
-                firstReasonDetail      = detailMsg;
-                haveFirst              = true;
+                firstReasonId     = reasonId;
+                firstReasonDetail = detailMsg;
+                haveFirst         = true;
             }
             else
             {
@@ -218,15 +218,11 @@ namespace
         const uint32_t detailCol = (maxSigWidth < SIG_COL_MAX ? maxSigWidth : SIG_COL_MAX) + 1;
 
         // Second pass: render aligned lines
-        uint32_t overloadIndex      = 1;
         uint32_t firstOverloadIndex = note->remarks.size();
         for (const auto& it : items)
         {
             Utf8 line;
-            line += Log::colorToVTS(LogColor::DarkYellow);
-            line += form("overload %u", overloadIndex++);
-            line += Log::colorToVTS(LogColor::White);
-            line += ": ";
+            line = "overload: ";
             line += it.sigColored;
 
             // Pad with spaces based on PLAIN width so VT codes don't skew alignment
@@ -283,7 +279,7 @@ namespace
             shouldFactorGot = false;
             note->remarks[firstOverloadIndex] += form(", got %s", commonGotValue.cstr());
         }
-        
+
         Vector<const Diagnostic*> oneNote{note};
         return context->report(err, oneNote);
     }

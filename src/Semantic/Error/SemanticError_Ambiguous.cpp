@@ -65,12 +65,9 @@ bool SemanticError::ambiguousGenericError(SemanticContext* context, AstNode* nod
     bool first = true;
     for (const auto match : matches)
     {
-        auto couldBe = "could be";
-        if (!first)
-            couldBe = Utf8("or ") + couldBe;
-
-        const auto note   = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->getTokenName(), couldBe);
-        note->canBeMerged = false;
+        const auto couldBe = first ? "could be" : "or could be";
+        const auto note    = Diagnostic::note(match->symbolOverload->node, match->symbolOverload->node->getTokenName(), couldBe);
+        note->canBeMerged  = false;
         err.addNote(note);
 
         first = false;

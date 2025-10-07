@@ -898,7 +898,13 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
             }
         }*/
 
-        setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+        if (!lineNo)
+            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+        else
+        {
+            setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
+        }
+
         log->print(lines[lineNo], &logCxt);
 
         if (lineNo != lines.size() - 1)
@@ -1098,10 +1104,11 @@ void Diagnostic::report(Log* log)
 
         for (auto& r : remarks)
         {
-            if (!r.startsWith("note: ") && !r.startsWith("hint: "))
+            if (!r.startsWith("note: ") && !r.startsWith("hint: ") && !r.startsWith("overload: "))
                 r.insert(0, "note: ");
             r.replace("note: ", form("%snote: %s", Log::colorToVTS(LogColor::DarkYellow).cstr(), Log::colorToVTS(remarkColor).cstr()));
             r.replace("hint: ", form("%shint: %s", Log::colorToVTS(LogColor::DarkYellow).cstr(), Log::colorToVTS(remarkColor).cstr()));
+            r.replace("overload: ", form("%soverload: %s", Log::colorToVTS(LogColor::DarkYellow).cstr(), Log::colorToVTS(remarkColor).cstr()));
         }
 
         printRemarks(log, remarks, remarkColor);
