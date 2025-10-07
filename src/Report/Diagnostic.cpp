@@ -489,6 +489,23 @@ void Diagnostic::printMargin(Log* log, bool eol, bool printLineNo, uint32_t line
         log->writeEol();
 }
 
+Utf8 Diagnostic::getErrorLevelTitle() const
+{
+    switch (errorLevel)
+    {
+        case DiagnosticLevel::Error:
+            return "error: ";
+        case DiagnosticLevel::Panic:
+            return "panic: ";
+        case DiagnosticLevel::Warning:
+            return "warning: ";
+        case DiagnosticLevel::Note:
+            return "note: ";
+    }
+
+    return "";
+}
+
 void Diagnostic::printErrorLevel(Log* log)
 {
     // Put the error ID right after the error level, instead at the beginning of the message
@@ -499,24 +516,7 @@ void Diagnostic::printErrorLevel(Log* log)
         textMsg.remove(0, 10);
     }
 
-    switch (errorLevel)
-    {
-        case DiagnosticLevel::Error:
-            log->write("error: ");
-            break;
-
-        case DiagnosticLevel::Panic:
-            log->write("panic: ");
-            break;
-
-        case DiagnosticLevel::Warning:
-            log->write("warning: ");
-            break;
-
-        case DiagnosticLevel::Note:
-            log->write("note: ");
-            break;
-    }
+    log->write(getErrorLevelTitle());
 
     if (!id.empty())
     {
@@ -598,24 +598,7 @@ void Diagnostic::collectRanges()
         if (!tokens.empty())
         {
             removeErrorId(tokens[0]);
-            switch (errorLevel)
-            {
-                case DiagnosticLevel::Error:
-                    tokens[0].insert(0, "error: ");
-                    break;
-
-                case DiagnosticLevel::Panic:
-                    tokens[0].insert(0, "panic: ");
-                    break;
-
-                case DiagnosticLevel::Warning:
-                    tokens[0].insert(0, "warning: ");
-                    break;
-
-                case DiagnosticLevel::Note:
-                    tokens[0].insert(0, "note: ");
-                    break;
-            }
+            tokens[0].insert(0, getErrorLevelTitle());
 
             ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = tokens[0], .errorLevel = errorLevel});
             if (!hint.empty())

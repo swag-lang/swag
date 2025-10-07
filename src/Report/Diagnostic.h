@@ -185,6 +185,7 @@ struct Diagnostic
     void     printSourceCode(Log* log) const;
     void     printSourceLine(Log* log) const;
     void     printErrorLevel(Log* log);
+    Utf8     getErrorLevelTitle() const;
     void     printMarginLineNo(Log* log, uint32_t lineNo) const;
     void     printMargin(Log* log, bool eol = false, bool printLineNo = false, uint32_t lineNo = 0) const;
     void     printRemarks(Log* log, const Vector<Utf8>& what, LogColor color) const;
