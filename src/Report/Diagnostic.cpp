@@ -882,9 +882,14 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
         }*/
 
         if (!lineNo)
+        {
             setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+        }
         else
         {
+            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
+            log->print(LogSymbol::DotList);
+            log->print(" ");
             setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
         }
 
