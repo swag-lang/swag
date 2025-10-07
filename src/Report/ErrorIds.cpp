@@ -149,15 +149,15 @@ void initErrors()
     SWAG_ERROR(Err0007, "multiple [[default]] clauses found in the same [[switch]] statement                                    $ ");
     SWAG_ERROR(Err0008, "[[%s]] cannot appear after [[%s]]                                                                      $ ");
     SWAG_ERROR(Err0009, "enum [[%s]] already defined                                                                            $ ");
-    SWAG_ERROR(Err0010, "enum value [[%s]] duplicates another with the same underlying value                                    $ ");
-    SWAG_ERROR(Err0011, "field [[%s]] conflicts with an existing field                                                          $ ");
+    SWAG_ERROR(Err0010, "[[%s]] has the same underlying value as [[%s]]                                                         $ ");
+    SWAG_ERROR(Err0011, "field [[%s]] already defined                                                                           $ ");
     SWAG_ERROR(Err0012, "generic symbol [[%s]] already defined                                                                  $ ");
     SWAG_ERROR(Err0013, "integer value [[%d]] already used in another [[case]]                                                  $ ");
     SWAG_ERROR(Err0014, "floating value [[%f]] already used in another [[case]]                                                 $ ");
     SWAG_ERROR(Err0015, "symbol value [[%s]] already used in another [[case]]                                                   $ ");
     SWAG_ERROR(Err0016, "string value [[\"%s\"]] already used in another [[case]]                                               $ ");
     SWAG_ERROR(Err0017, "[[null]] case already defined                                                                          $ ");
-    SWAG_ERROR(Err0018, "%s [[%s]] conflicts with an existing symbol                                                            $ ");
+    SWAG_ERROR(Err0018, "%s [[%s]] already defined                                                                              $ ");
     SWAG_ERROR(Err0019, "[[using]] applies to multiple variables of type [[%s]]                                                 $ ");
     SWAG_ERROR(Err0020, "cast from [[%s]] to [[%s]] resolves to multiple possibilities                                          $ ");
     SWAG_ERROR(Err0021, "enum value [[%s]] resolves to multiple matches                                                         $ ");

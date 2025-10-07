@@ -73,10 +73,10 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     auto it = valText.find(one->value->text);
                     if (it != valText.end())
                     {
-                        Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr())};
-                        err.addNote(Diagnostic::hereIs(it->second, "this is the other definition"));
+                        Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr(), it->second->token.text.cstr())};
+                        err.addNote(Diagnostic::hereIs(it->second));
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(form("the duplicated underlying enum value is [[%s]]", val.cstr()));
+                        err.addNote(form("both evaluate to [[%s]]", val.cstr()));
                         return context->report(err);
                     }
 
@@ -92,10 +92,10 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     auto it = val64.find(one->value->reg.u64);
                     if (it != val64.end())
                     {
-                        Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr())};
-                        err.addNote(Diagnostic::hereIs(it->second, "this is the other definition"));
+                        Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr(), it->second->token.text.cstr())};
+                        err.addNote(Diagnostic::hereIs(it->second));
                         const auto val = Ast::literalToString(rawType, *one->value);
-                        err.addNote(form("the duplicated underlying enum value is [[%s]]", val.cstr()));
+                        err.addNote(form("both evaluate to [[%s]]", val.cstr()));
                         return context->report(err);
                     }
 

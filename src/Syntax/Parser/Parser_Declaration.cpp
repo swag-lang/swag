@@ -390,7 +390,10 @@ bool Parser::doCurlyStatement(AstNode* parent, AstNode** result)
 
     const bool isGlobal = currentScope->isGlobalOrImpl();
     const auto startLoc = tokenParse.token.startLocation;
-    SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
+    if (parent->is(AstNodeKind::FuncDecl))
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the function body"));
+    else
+        SWAG_CHECK(eatToken(TokenId::SymLeftCurly, "to start the statement block"));
     SWAG_CHECK(eatFormat(node));
 
     if (isGlobal)
@@ -720,7 +723,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
         case TokenId::CompilerUp:
         case TokenId::SymLeftParen:
         case TokenId::SymDot:
-            
+
         case TokenId::IntrinsicAtomicAdd:
         case TokenId::IntrinsicAtomicAnd:
         case TokenId::IntrinsicAtomicCmpXchg:
