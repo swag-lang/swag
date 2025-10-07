@@ -1005,7 +1005,7 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
             SWAG_CHECK(evaluateConstExpression(context, front));
             YIELD();
             SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0035), node->token.text));
-            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0565, node->token.cstr(), front->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0565, node->token.cstr(), node->token.cstr(), front->typeInfo->getDisplayNameC())}));
             node->typeInfo = g_TypeMgr->typeInfoBool;
             node->setFlagsValueIsComputed();
 
@@ -1037,7 +1037,7 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
             SWAG_CHECK(evaluateConstExpression(context, front));
             YIELD();
             SWAG_CHECK(checkIsConstExpr(context, front->hasFlagComputedValue(), front, toErr(Err0035), node->token.text));
-            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0565, node->token.cstr(), front->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0565, node->token.cstr(), node->token.cstr(), front->typeInfo->getDisplayNameC())}));
             const auto tag = g_Workspace->hasTag(front->computedValue()->text);
             node->typeInfo = g_TypeMgr->typeInfoBool;
             node->setFlagsValueIsComputed();
@@ -1056,7 +1056,7 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
             YIELD();
 
             SWAG_CHECK(checkIsConstExpr(context, nameNode->hasFlagComputedValue(), nameNode, toErr(Err0035), node->token.text));
-            SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0565, node->token.cstr(), nameNode->typeInfo->getDisplayNameC())}));
+            SWAG_VERIFY(nameNode->typeInfo->isString(), context->report({nameNode, formErr(Err0565, node->token.cstr(), node->token.cstr(), nameNode->typeInfo->getDisplayNameC())}));
             SWAG_VERIFY(defaultVal->hasComputedValue(), context->report({defaultVal, formErr(Err0158, Naming::aKindName(defaultVal).cstr())}));
 
             {

@@ -213,7 +213,7 @@ namespace
         {
             if (genericParameters)
                 errNode = genericParameters->children[match.badSignatureInfos.badSignatureNum2];
-            const auto msg = formErr(Err0518, match.badSignatureInfos.badSignatureNum2, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr(), match.badSignatureInfos.badSignatureNum1);
+            const auto msg = formErr(Err0518, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
             err            = new Diagnostic{errNode, msg};
         }
 
