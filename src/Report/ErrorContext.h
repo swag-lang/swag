@@ -36,7 +36,7 @@ struct PushErrCxtStep
 {
     PushErrCxtStep(ErrorContext* context, AstNode* node, ErrCxtStepKind kind, const std::function<Utf8()>& err, bool locIsToken = false);
     ~PushErrCxtStep();
-    ErrorContext* cxt;
+    ErrorContext* cxt = nullptr;
 };
 
 struct ErrorContext

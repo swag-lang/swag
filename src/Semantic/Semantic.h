@@ -147,7 +147,7 @@ namespace Semantic
     bool           resolveGlobalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, DataSegment*& storageSegment, uint32_t& storageOffset);
     bool           resolveLocalVar(SemanticContext* context, AstVarDecl* node, OverloadFlags& overFlags, const TypeInfo* typeInfo, uint32_t& storageOffset);
     bool           appendLastCodeStatement(SemanticContext* context, AstIdentifier* node, const SymbolOverload* overload);
-    bool           boundCheck(SemanticContext* context, const TypeInfo* forType, const AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
+    bool           boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount);
     bool           collectAssignment(SemanticContext* context, DataSegment* storageSegment, uint32_t& storageOffset, AstVarDecl* node, TypeInfo* typeInfo = nullptr);
     bool           collectConstantAssignment(SemanticContext* context, DataSegment** storageSegmentResult, uint32_t* storageOffsetResult, OverloadFlags& symbolFlags);
     bool           collectConstantSlice(SemanticContext* context, AstNode* assignNode, TypeInfo* assignType, DataSegment* storageSegment, uint32_t& storageOffset);

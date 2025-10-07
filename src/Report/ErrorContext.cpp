@@ -10,20 +10,24 @@ PushErrCxtStep::PushErrCxtStep(ErrorContext*                context,
                                AstNode*                     node,
                                ErrCxtStepKind               kind,
                                const std::function<Utf8()>& err,
-                               bool                         locIsToken) :
-    cxt{context}
+                               bool                         locIsToken)
 {
-    ErrorCxtStep expNode;
-    expNode.node       = node;
-    expNode.type       = kind;
-    expNode.err        = err;
-    expNode.locIsToken = locIsToken;
-    context->errCxtSteps.push_back(expNode);
+    if (node)
+    {
+        ErrorCxtStep expNode;
+        expNode.node       = node;
+        expNode.type       = kind;
+        expNode.err        = err;
+        expNode.locIsToken = locIsToken;
+        context->errCxtSteps.push_back(expNode);
+        cxt = context;
+    }
 }
 
 PushErrCxtStep::~PushErrCxtStep()
 {
-    cxt->errCxtSteps.pop_back();
+    if (cxt)
+        cxt->errCxtSteps.pop_back();
 }
 
 void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& notes)
@@ -53,7 +57,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
             {
                 hasSameNode = true;
             }
-            
+
             for (const auto note : notes)
             {
                 if (exp.node &&

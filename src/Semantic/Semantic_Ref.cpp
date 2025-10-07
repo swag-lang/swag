@@ -11,11 +11,13 @@
 #include "Syntax/Tokenizer/LanguageSpec.h"
 #include "Wmf/Module.h"
 
-bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, const AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
+bool Semantic::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* arrayNode, AstNode* arrayAccess, uint64_t maxCount)
 {
     if (!arrayAccess->hasFlagComputedValue())
         return true;
 
+    PushErrCxtStep ec(context, arrayNode, ErrCxtStepKind::HereIs, nullptr);
+    
     if (maxCount == 0)
     {
         if (forType->isSlice())
@@ -35,7 +37,12 @@ bool Semantic::boundCheck(SemanticContext* context, const TypeInfo* forType, con
 
     const auto idx = arrayAccess->computedValue()->reg.u64;
     if (idx >= maxCount)
-        return context->report({arrayAccess, formErr(Err0500, idx, maxCount - 1)});
+    {
+        Diagnostic err{arrayAccess, formErr(Err0500, idx, maxCount - 1)};
+        err.addNote(Diagnostic::hereIs(arrayNode, Diagnostic::isType(forType)));
+        return context->report(err);
+    }
+    
     return true;
 }
 
@@ -812,7 +819,7 @@ bool Semantic::getConstantArrayPtr(SemanticContext* context, uint32_t* storageOf
     const auto arrayNode = castAst<AstArrayPointerIndex>(context->node, AstNodeKind::ArrayPointerIndex);
     const auto arrayType = TypeManager::concreteType(arrayNode->array->typeInfo);
     const auto typePtr   = castTypeInfo<TypeInfoArray>(arrayType, TypeInfoKind::Array);
-
+   
     if (!arrayNode->typeInfo->isArray() && arrayNode->access->hasFlagComputedValue())
     {
         bool     isConstAccess = true;

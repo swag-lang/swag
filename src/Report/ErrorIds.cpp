@@ -627,7 +627,7 @@ void initErrors()
     SWAG_ERROR(Err0497, "too many array dimensions                         $ array dimensions exceed [[254]]                                                                        $ ");
     SWAG_ERROR(Err0498, "too many callback parameters                      $ callback limited to [[%d]] parameters, got [[%d]]                                                      $ ");
     SWAG_ERROR(Err0499, "enum value out of range                           $ enum value [[%s]] exceeds range of [[%s]]                                                              $ ");
-    SWAG_ERROR(Err0500, "index out of range                                $ index [[%I64u]] exceeds maximum [[%I64u]]                                                              $ ");
+    SWAG_ERROR(Err0500, "index out of range                                $ index [[%I64u]] exceeds maximum index of [[%I64u]]                                                     $ ");
     SWAG_ERROR(Err0501, "inline level exceeded                             $ [[%s]] expansion exceeds [[--limit-inline:%d]]                                                         $ ");
     SWAG_ERROR(Err0502, "slice bound out of range                          $ slice bound [[%I64u]] exceeds maximum [[%I64u]]                                                        $ ");
     SWAG_ERROR(Err0503, "slice bounds unordered                            $ lower bound [[%I64u]] exceeds upper bound [[%I64u]]                                                    $ ");
