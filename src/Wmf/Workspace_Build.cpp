@@ -347,10 +347,12 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
             remark = "waiting for the type to be exported";
             break;
         case JobWaitKind::SemFullResolve:
-            remark = form("waiting for %s to be fully solved", sym.cstr());
+            if (!sym.empty())
+                remark = form("waiting for %s to be fully solved", sym.cstr());
             break;
         case JobWaitKind::WaitSymbol:
-            remark = form("waiting for %s to be solved", sym.cstr());
+            if (!sym.empty())
+                remark = form("waiting for %s to be solved", sym.cstr());
             break;
     }
 
