@@ -36,7 +36,8 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (tokenParse.token.isNot(id))
     {
-        const Diagnostic err{sourceFile, tokenParse, formErr(Err0073, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg)};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0073, Naming::tokenToName(id).cstr())};
+        err.addNote(Diagnostic::note(form("expected [[%s]] %s", Naming::tokenToName(id).cstr(), msg)));
         return context->report(err);
     }
 

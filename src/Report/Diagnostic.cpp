@@ -881,18 +881,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
             }
         }*/
 
-        if (!lineNo)
-        {
-            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
-        }
-        else
-        {
-            setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
-            log->print(LogSymbol::DotList);
-            log->print(" ");
-            setColorRanges(log, r.errorLevel, HintPart::Text, &logCxt);
-        }
-
+        setColorRanges(log, r.errorLevel, HintPart::ErrorLevel, &logCxt);
         log->print(lines[lineNo], &logCxt);
 
         if (lineNo != lines.size() - 1)
@@ -1036,12 +1025,6 @@ void Diagnostic::reportCompact(Log* log)
 
     printSourceLine(log);
     log->write(": ");
-
-    if (tokens.size() > 1)
-    {
-        log->setColor(LogColor::White);
-        log->print(tokens[1]);
-    }
 
     log->writeEol();
     log->setDefaultColor();
@@ -1236,15 +1219,7 @@ Utf8 Diagnostic::oneLiner(const Utf8& err)
 {
     Vector<Utf8> tokens;
     tokenizeError(err, tokens);
-
-    auto result = tokens[0];
-    if (tokens.size() > 1)
-    {
-        result += ": ";
-        result += tokens[1];
-    }
-
-    return result;
+    return tokens[0];
 }
 
 bool Diagnostic::containsText(const Utf8& txt) const

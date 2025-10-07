@@ -90,11 +90,7 @@ namespace
                     notes.insert(++notes.begin(), newNote);
             }
 
-            err->remarks.push_back(parts[1]);
-            /*err->textMsg += "\n";
-            err->textMsg += parts[1];*/
-
-            for (uint32_t i = 2; i < parts.size(); i++)
+            for (uint32_t i = 1; i < parts.size(); i++)
             {
                 auto newNote = Diagnostic::note(parts[i]);
                 notes.push_back(newNote);

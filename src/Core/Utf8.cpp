@@ -731,10 +731,10 @@ void Utf8::replace(const char* src, const char* dst, bool wordBoundaryOnly)
 
         if (wordBoundaryOnly)
         {
-            const bool startsAtBoundary = (pos == 0) || !SWAG_IS_ALPHA(buffer[pos - 1]);
+            const bool startsAtBoundary = (nPos == 0) || !SWAG_IS_ALPHA(buffer[nPos - 1]);
             if (!startsAtBoundary)
             {
-                pos += 1; // Move forward by 1 to continue searching
+                pos = nPos + 1; // Move forward by 1 to continue searching
                 continue;
             }
         }
@@ -1104,16 +1104,21 @@ Utf8 Utf8::substr(uint32_t start, uint32_t len) const
     const char* end   = begin + length();
 
     // Move to the starting byte position, respecting UTF-8 boundaries
-    const char* p = begin;
-    size_t bytePos = 0;
+    const char* p       = begin;
+    size_t      bytePos = 0;
     while (p < end && bytePos < start)
     {
-        const unsigned char c = static_cast<unsigned char>(*p);
-        size_t charLen  = 1;
-        if      ((c & 0x80) == 0x00) charLen = 1;
-        else if ((c & 0xE0) == 0xC0) charLen = 2;
-        else if ((c & 0xF0) == 0xE0) charLen = 3;
-        else if ((c & 0xF8) == 0xF0) charLen = 4;
+        const unsigned char c       = static_cast<unsigned char>(*p);
+        size_t              charLen = 1;
+        if ((c & 0x80) == 0x00)
+            charLen = 1;
+        else if ((c & 0xE0) == 0xC0)
+            charLen = 2;
+        else if ((c & 0xF0) == 0xE0)
+            charLen = 3;
+        else
+            if ((c & 0xF8) == 0xF0)
+                charLen = 4;
         p += charLen;
         bytePos++;
     }
@@ -1124,12 +1129,17 @@ Utf8 Utf8::substr(uint32_t start, uint32_t len) const
     size_t byteCount = 0;
     while (cur < end && (len == UINT32_MAX || byteCount < len))
     {
-        const unsigned char c = static_cast<unsigned char>(*cur);
-        size_t charLen  = 1;
-        if      ((c & 0x80) == 0x00) charLen = 1;
-        else if ((c & 0xE0) == 0xC0) charLen = 2;
-        else if ((c & 0xF0) == 0xE0) charLen = 3;
-        else if ((c & 0xF8) == 0xF0) charLen = 4;
+        const unsigned char c       = static_cast<unsigned char>(*cur);
+        size_t              charLen = 1;
+        if ((c & 0x80) == 0x00)
+            charLen = 1;
+        else if ((c & 0xE0) == 0xC0)
+            charLen = 2;
+        else if ((c & 0xF0) == 0xE0)
+            charLen = 3;
+        else
+            if ((c & 0xF8) == 0xF0)
+                charLen = 4;
         cur += charLen;
         byteCount++;
     }

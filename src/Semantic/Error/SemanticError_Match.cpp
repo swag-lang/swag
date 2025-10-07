@@ -130,7 +130,7 @@ namespace
             auto extract = [&](const Utf8& full) {
                 Vector<Utf8> tokens;
                 Diagnostic::tokenizeError(full, tokens);
-                detailMsg = tokens.size() >= 2 ? tokens[1] : full;
+                detailMsg = tokens[0];
                 reasonId  = Diagnostic::getErrorId(full);
             };
 
@@ -265,7 +265,7 @@ namespace
         {
             Vector<Utf8> tokens;
             Diagnostic::tokenizeError(firstErrs[0]->textMsg, tokens);
-            err.textMsg = !tokens.empty() ? tokens[0] : firstErrs[0]->textMsg;
+            err.textMsg = tokens[0];
 
             // Anchor main error to first candidate error for accuracy
             err.sourceFile    = firstErrs[0]->sourceFile;

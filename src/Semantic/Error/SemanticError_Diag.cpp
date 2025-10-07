@@ -372,8 +372,7 @@ namespace
             {
                 Vector<Utf8> parts;
                 Diagnostic::tokenizeError(castMsg, parts);
-                if (parts.size() > 1)
-                    castMsg = parts[1];
+                castMsg = parts[0];
 
                 if (errorParam.oneTry->dependentVar)
                 {
