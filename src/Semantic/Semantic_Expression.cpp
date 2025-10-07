@@ -404,8 +404,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        Diagnostic err{node->expressionLow, formErr(Err0230, node->expressionLow->typeInfo->getDisplayNameC())};
-        err.addNote("hint: use the syntax [[func %s(...) -> %s]] to declare a function with a return type");
+        const Diagnostic err{node->expressionLow, formErr(Err0230, node->expressionLow->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
