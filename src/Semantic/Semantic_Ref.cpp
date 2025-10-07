@@ -402,7 +402,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic err{node, node->token, toErr(Err0228)};
             err.addNote(node->array, Diagnostic::isType(typeVar));
-            err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
+            err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['*']]");
             return context->report(err);
         }
 
@@ -469,7 +469,8 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (node->upperBound->computedValue()->reg.u64 > maxBound)
         {
-            const Diagnostic err{node->upperBound, formErr(Err0502, node->upperBound->computedValue()->reg.u64, maxBound)};
+            Diagnostic err{node->upperBound, formErr(Err0502, node->upperBound->computedValue()->reg.u64, maxBound)};
+            err.addNote(Diagnostic::hereIs(node->array, Diagnostic::isType(typeVar)));
             return context->report(err);
         }
     }

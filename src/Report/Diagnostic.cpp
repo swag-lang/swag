@@ -1002,6 +1002,9 @@ void Diagnostic::printRanges(Log* log)
         }
 
         ranges.pop_back();
+
+        if (!ranges.empty())
+            printRangesVerticalBars(log, ranges.size());        
     }
 
     log->writeEol();

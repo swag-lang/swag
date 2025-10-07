@@ -365,7 +365,7 @@ void initErrors()
     SWAG_ERROR(Err0225, "invalid pointer arithmetic                        $ pointer arithmetic disallowed                                                                          $ ");
     SWAG_ERROR(Err0226, "invalid pointer arithmetic                        $ pointer arithmetic on [[void*]] disallowed                                                             $ note: [[void]] has no size");
     SWAG_ERROR(Err0227, "invalid pointer arithmetic                        $ pointer arithmetic requires integer, got [[%s]]                                                        $ ");
-    SWAG_ERROR(Err0228, "invalid pointer slicing                           $ pointer slicing not supported                                                                          $ ");
+    SWAG_ERROR(Err0228, "invalid pointer slicing                           $ pointer slicing not supported on this type                                                             $ ");
     SWAG_ERROR(Err0229, "invalid range bounds                              $ lower bound [[%lld]] exceeds upper bound [[%lld]]                                                      $ hint: use [[#reverse]] for descending ranges");
     SWAG_ERROR(Err0230, "invalid range type                                $ type [[%s]] cannot define a range                                                                      $ note: only integer, rune, or float types can form ranges");
     SWAG_ERROR(Err0231, "invalid reference                                 $ [[ref]] applied to non-pointer or non-reference type [[%s]]                                            $ ");
@@ -629,7 +629,7 @@ void initErrors()
     SWAG_ERROR(Err0499, "enum value out of range                           $ enum value [[%s]] exceeds range of [[%s]]                                                              $ ");
     SWAG_ERROR(Err0500, "index out of range                                $ index [[%I64u]] exceeds maximum index of [[%I64u]]                                                     $ ");
     SWAG_ERROR(Err0501, "inline level exceeded                             $ [[%s]] expansion exceeds [[--limit-inline:%d]]                                                         $ ");
-    SWAG_ERROR(Err0502, "slice bound out of range                          $ slice bound [[%I64u]] exceeds maximum [[%I64u]]                                                        $ ");
+    SWAG_ERROR(Err0502, "slice bound out of range                          $ slice bound [[%I64u]] exceeds maximum value of [[%I64u]]                                               $ ");
     SWAG_ERROR(Err0503, "slice bounds unordered                            $ lower bound [[%I64u]] exceeds upper bound [[%I64u]]                                                    $ ");
     SWAG_ERROR(Err0504, "slice bound out of range                          $ [[until]] value cannot be zero                                                                         $ ");
     SWAG_ERROR(Err0505, "too many variadic arguments                       $ variadic arguments exceed [[%d]], got [[%d]]                                                           $ ");
