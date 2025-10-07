@@ -259,7 +259,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
         if (sourceFile->module->mainIsDefined)
         {
             Diagnostic err{funcNode, toErr(Err0006)};
-            err.addNote(module->mainIsDefined, module->mainIsDefined->getTokenName(), "this is the other definition");
+            err.addNote(Diagnostic::hereIs(module->mainIsDefined, "this is the other definition"));
             return context->report(err);
         }
 

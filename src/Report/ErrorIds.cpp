@@ -144,7 +144,7 @@ void initErrors()
     SWAG_ERROR(Err0002, "%s");
     SWAG_ERROR(Err0003, "%s");
 
-    SWAG_ERROR(Err0004, "%s already defined                                $ %s [[%s]] is already defined %s                                                                        $ ");
+    SWAG_ERROR(Err0004, "symbol already defined                            $ %s [[%s]] already defined %s                                                                           $ ");
     SWAG_ERROR(Err0005, "conflicting [[#global export]] directive          $ multiple [[#global export]] directives found in the same file                                          $ ");
     SWAG_ERROR(Err0006, "multiple [[#main]] functions                      $ more than one [[#main]] function defined in this module                                                $ ");
     SWAG_ERROR(Err0007, "duplicate [[default]] clause                      $ multiple [[default]] clauses found in the same [[switch]] statement                                    $ ");

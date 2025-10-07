@@ -88,30 +88,18 @@ bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeIn
     return context->report(err);
 }
 
-bool SemanticError::duplicatedSymbolError(ErrorContext* context,
-                                          SourceFile*   sourceFile,
-                                          const Token&  token,
-                                          SymbolKind    thisKind,
-                                          const Utf8&   thisName,
-                                          SymbolKind    otherKind,
-                                          AstNode*      otherSymbolDecl)
+bool SemanticError::duplicatedSymbolError(ErrorContext* context, SourceFile* sourceFile, const Token& token, SymbolKind thisKind, const Utf8& thisName, SymbolKind otherKind, AstNode* otherSymbolDecl)
 {
     Utf8 as;
-    Utf8 what;
     if (thisKind != otherKind)
-    {
-        what = "symbol";
-        as   = form("as [[%s]]", Naming::aKindName(otherKind).cstr());
-    }
-    else
-        what = Naming::kindName(thisKind);
+        as = form("as [[%s]]", Naming::aKindName(otherKind).cstr());
 
-    Diagnostic err{sourceFile, token, formErr(Err0004, what.cstr(), Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
+    Diagnostic err{sourceFile, token, formErr(Err0004, Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
 
     if (otherSymbolDecl->isGeneratedMe())
         err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, "there is already an implied first parameter named [[me]] because of [[mtd]]");
     else
-        err.addNote(otherSymbolDecl, otherSymbolDecl->getTokenName(), "this is the other definition");
+        err.addNote(Diagnostic::hereIs(otherSymbolDecl, "this is the other definition"));
 
     return context->report(err);
 }

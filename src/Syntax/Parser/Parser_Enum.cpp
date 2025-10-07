@@ -41,8 +41,8 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).cstr());
-            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0004, "symbol", "enum", enumNode->token.cstr(), asA.cstr())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), "this is the other definition");
+            Diagnostic err{enumNode->token.sourceFile, tokenParse.token, formErr(Err0004, "enum", enumNode->token.cstr(), asA.cstr())};
+            err.addNote(Diagnostic::hereIs(newScope->owner, "this is the other definition"));
             return context->report(err);
         }
 

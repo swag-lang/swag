@@ -907,7 +907,7 @@ bool Semantic::postResolveStruct(SemanticContext* context)
             if (idx != UINT32_MAX)
             {
                 Diagnostic err(key->declNode, formErr(Err0019, typeStruct->getDisplayNameC()));
-                err.addNote(where[idx], "this is the other definition");
+                err.addNote(Diagnostic::hereIs(where[idx], "this is the other definition"));
                 err.addNote(form("this makes the conversion from [[%s]] to [[%s]] ambiguous", typeInfo->getDisplayNameC(), typeStruct->getDisplayNameC()));
                 return context->report(err);
             }

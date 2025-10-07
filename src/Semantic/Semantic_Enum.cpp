@@ -27,7 +27,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
         {
             if (p != node)
             {
-                const auto note   = Diagnostic::note(p, p->getTokenName(), "this is the other definition");
+                const auto note   = Diagnostic::hereIs(p, "this is the other definition");
                 note->canBeMerged = false;
                 err.addNote(note);
                 break;
@@ -74,7 +74,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != valText.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr())};
-                        err.addNote(it->second, it->second->getTokenName(), "this is the other definition");
+                        err.addNote(Diagnostic::hereIs(it->second, "this is the other definition"));
                         const auto val = Ast::literalToString(rawType, *one->value);
                         err.addNote(form("the duplicated underlying enum value is [[%s]]", val.cstr()));
                         return context->report(err);
@@ -93,7 +93,7 @@ bool Semantic::resolveEnum(SemanticContext* context)
                     if (it != val64.end())
                     {
                         Diagnostic err{one->declNode, one->declNode->token, formErr(Err0010, one->name.cstr())};
-                        err.addNote(it->second, it->second->getTokenName(), "this is the other definition");
+                        err.addNote(Diagnostic::hereIs(it->second, "this is the other definition"));
                         const auto val = Ast::literalToString(rawType, *one->value);
                         err.addNote(form("the duplicated underlying enum value is [[%s]]", val.cstr()));
                         return context->report(err);

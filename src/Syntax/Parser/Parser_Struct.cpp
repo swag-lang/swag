@@ -266,8 +266,8 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
             }
 
             const Utf8 asA = form("as %s", Naming::aKindName(newScope->kind).cstr());
-            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0004, "symbol", "struct", structNode->token.cstr(), asA.cstr())};
-            err.addNote(newScope->owner, newScope->owner->getTokenName(), "this is the other definition");
+            Diagnostic err{structNode->token.sourceFile, tokenParse.token, formErr(Err0004, "struct", structNode->token.cstr(), asA.cstr())};
+            err.addNote(Diagnostic::hereIs(newScope->owner, "this is the other definition"));
             return context->report(err);
         }
 

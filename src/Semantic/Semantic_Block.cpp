@@ -227,7 +227,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
                             Diagnostic err{expr, formErr(Err0016, expr->computedValue()->text.cstr())};
-                            err.addNote(valExpression[idx], "this is the other definition");
+                            err.addNote(Diagnostic::hereIs(valExpression[idx], "this is the other definition"));
                             return context->report(err);
                         }
 
@@ -249,7 +249,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
-                            const auto note = Diagnostic::note(valExpression[idx], "this is the other definition");
+                            const auto note = Diagnostic::hereIs(valExpression[idx], "this is the other definition");
                             if (expr->isConstantGenTypeInfo())
                                 return context->report({expr, formErr(Err0015, expr->token.cstr())}, note);
                             if (expr->typeInfo->isEnum())
