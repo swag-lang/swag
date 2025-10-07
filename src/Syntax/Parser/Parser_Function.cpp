@@ -458,7 +458,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
 
         if (tokenParse.is(TokenId::Identifier) && getNextToken().is(TokenId::SymLeftParen))
         {
-            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&] { return form("consider using the syntax [[func %s(...) -> %s]] to declare a function with a return type", tokenParse.cstr(), parent->token.cstr()); });
+            PushErrCxtStep ec(context, nullptr, ErrCxtStepKind::Note, [&] { return form("hint: use the syntax [[func %s(...) -> %s]] to declare a function with a return type", tokenParse.cstr(), parent->token.cstr()); });
             return eatToken(TokenId::SymLeftParen, form("to declare the function parameters of [[%s]]", parent->token.cstr()));
         }
 
@@ -558,7 +558,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             {
                 Diagnostic err{sourceFile, tokenParse, toErr(Err0197)};
                 err.addNote(Diagnostic::note(oneParam, form("[[%s]] is interpreted as a type, not a generic value, due to the preceding [[var]]", oneParam->token.cstr())));
-                err.addNote(Diagnostic::note(sourceFile, tokenForce, "consider removing [[var]] or replacing it with [[const]] if you intend to declare a generic value"));
+                err.addNote(Diagnostic::note(sourceFile, tokenForce, "hint: remove [[var]] or replace it with [[const]] if you intend to declare a generic value"));
                 return context->report(err);
             }
 
@@ -583,7 +583,7 @@ bool Parser::doGenericDeclParameters(AstNode* parent, AstNode** result)
             else if (!oneParam->type)
             {
                 isType = true;
-                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return form("consider prefixing [[%s]] with [[const]] to declare a generic constant", oneParam->token.cstr()); }, true);
+                PushErrCxtStep ec1(context, nullptr, ErrCxtStepKind::Note, [oneParam] { return form("hint: prefix [[%s]] with [[const]] to declare a generic constant", oneParam->token.cstr()); }, true);
                 SWAG_CHECK(doTypeExpression(oneParam, EXPR_FLAG_NONE, &oneParam->assignment));
             }
             else
@@ -823,7 +823,7 @@ bool Parser::doFuncDecl(AstNode* parent, AstNode** result, TokenId typeFuncId, F
     {
         Utf8 note;
         if (funcNode->hasAttribute(ATTRIBUTE_MAIN_FUNC))
-            note = "consider using the [[@args]] intrinsic value to retrieve the program arguments";
+            note = "hint: use the [[@args]] intrinsic value to retrieve the program arguments";
         return error(tokenParse, formErr(Err0652, funcNode->getDisplayNameC()), note.cstr());
     }
 

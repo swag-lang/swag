@@ -73,7 +73,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic err{varDecl, varDecl->token, formErr(Err0701, numUnpack, typeStruct->fields.size())};
         err.addNote(varDecl->assignment, form("this tuple has [[%d]] fields", typeStruct->fields.size()));
-        err.addNote("consider using [[?]] to unpack and discard a variable");
+        err.addNote("hint: use [[?]] to unpack and discard a variable");
         return context->report(err);
     }
 
@@ -1093,14 +1093,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         if (overFlags.has(OVERLOAD_CONSTANT))
         {
             Diagnostic err{node->assignment, toErr(Err0455)};
-            err.addNote("consider replacing [[undefined]] with an explicit initialization value");
+            err.addNote("hint: replace [[undefined]] with an explicit initialization value");
             return context->report(err);
         }
 
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
         {
             Diagnostic err{node->assignment, toErr(Err0454)};
-            err.addNote("consider replacing [[undefined]] with an explicit initialization value");
+            err.addNote("hint: replace [[undefined]] with an explicit initialization value");
             return context->report(err);
         }
     }

@@ -223,7 +223,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CAST_FLAG_CAST))
-            hint = "consider taking the address with [['&']] to create a reference";
+            hint = "hint: take the address with [['&']] to create a reference";
     }
     else if (toType->isTuple() && fromType->isTuple())
     {
@@ -272,7 +272,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
         {
             if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(fromNode, form("consider adding an explicit [[cast(%s)]] if necessary", toType->getDisplayNameC())));
+                notes.push_back(Diagnostic::note(fromNode, form("hint: add an explicit [[cast(%s)]] if necessary", toType->getDisplayNameC())));
         }
 
         Diagnostic err{fromNode, msg};

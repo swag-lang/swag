@@ -36,7 +36,7 @@ bool Parser::doEnum(AstNode* parent, AstNode** result)
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode, formErr(Err0295, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Enum).cstr())};
                 err.addNote(Diagnostic::hereIs(enumNode));
-                err.addNote(form("consider writing [[impl enum %s]] instead", implNode->token.cstr()));
+                err.addNote(form("hint: write [[impl enum %s]] instead", implNode->token.cstr()));
                 return context->report(err);
             }
 

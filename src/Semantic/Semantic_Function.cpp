@@ -1522,7 +1522,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         if (node->hasOwnerInline() && !node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN))
             err.addNote(funcNode, funcNode->getTokenName(), form("the function [[%s]] is tagged with [[#[Swag.CalleeReturn]]], indicating the return value is utilized within [[%s]]", node->ownerInline()->func->token.cstr(), funcNode->token.cstr()));
 
-        err.addNote(funcNode, funcNode->getTokenName(), form("consider adding a return type [[->%s]] to the declaration", concreteType->name.cstr()));
+        err.addNote(funcNode, funcNode->getTokenName(), form("hint: add a return type [[->%s]] to the declaration", concreteType->name.cstr()));
         return context->report(err);
     }
 

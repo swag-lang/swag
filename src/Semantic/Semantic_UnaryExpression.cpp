@@ -36,7 +36,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         case NativeTypeKind::Any:
         {
             Diagnostic err{node, node->token, formErr(Err0216, typeInfo->getDisplayNameC())};
-            err.addNote(child, "consider casting to the underlying [[any]] type");
+            err.addNote(child, "hint: cast to the underlying [[any]] type");
             return context->report(err);
         }
 
@@ -170,7 +170,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, const AstNode* chi
         case NativeTypeKind::Any:
         {
             Diagnostic err{node, node->token, formErr(Err0594, typeInfo->getDisplayNameC())};
-            err.addNote(child, "consider casting to the underlying [[any]] type");
+            err.addNote(child, "hint: cast to the underlying [[any]] type");
             return context->report(err);
         }
 

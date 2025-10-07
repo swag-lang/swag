@@ -861,7 +861,7 @@ bool Parser::doEmbeddedInstruction(AstNode* parent, AstNode** result)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0661)};
             eatToken();
             if (tokenParse.is(TokenId::Identifier))
-                err.addNote("consider using the syntax [[var name: type]] or [[var name = expression]] to declare a variable");
+                err.addNote("hint: use the syntax [[var name: type]] or [[var name = expression]] to declare a variable");
             return context->report(err);
         }
 

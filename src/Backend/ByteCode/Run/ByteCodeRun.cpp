@@ -1808,7 +1808,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                     {
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
-                        context->internalPanicHint   = "consider initializing the global variable with [[undefined]] instead of zero";
+                        context->internalPanicHint   = "hint: initialize the global variable with [[undefined]] instead of zero";
                         callInternalPanic(context, ip, formErr(Err0092, over->node->token.cstr()));
                     }
                 }
@@ -1830,7 +1830,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         else if (module->bssCannotChange)
                         {
                             context->internalPanicSymbol = over;
-                            context->internalPanicHint   = "consider initializing the global variable with [[undefined]] instead of zero";
+                            context->internalPanicHint   = "hint: initialize the global variable with [[undefined]] instead of zero";
                             callInternalPanic(context, ip, formErr(Err0092, over->node->token.cstr()));
                         }
                     }

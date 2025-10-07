@@ -521,14 +521,14 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
         if (front->is(AstNodeKind::IdentifierRef) && front->firstChild()->is(AstNodeKind::ArrayPointerIndex))
         {
-            err.addNote(front, "consider adding [['&']] to get the address of this expression");
+            err.addNote(front, "hint: add [['&']] to get the address of this expression");
             return context->report(err);
         }
 
         if (front->is(AstNodeKind::IdentifierRef))
         {
             err.hint = "the operation is not allowed on a non-pointer type";
-            err.addNote(front, form("consider using [['&']] to get the address of [[%s]]", front->token.cstr()));
+            err.addNote(front, form("hint: use [['&']] to get the address of [[%s]]", front->token.cstr()));
             return context->report(err);
         }
 

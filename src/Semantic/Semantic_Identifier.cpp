@@ -57,7 +57,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
             symbolName->is(SymbolKind::TypeAlias) ||
             symbolName->is(SymbolKind::Struct))
         {
-            err.addNote(node, node->kwdLoc, form("consider using [[alias]] to create an alias for %s", Naming::aKindName(symbolName->kind).cstr()));
+            err.addNote(node, node->kwdLoc, form("hint: use [[alias]] to create an alias for %s", Naming::aKindName(symbolName->kind).cstr()));
         }
 
         return context->report(err);
@@ -443,13 +443,13 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
             {
                 Diagnostic err{dependentVar, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
                 err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, "the other one is an implicit parameter [[using me]]");
-                err.addNote("consider removing one [[using]]");
+                err.addNote("hint: remove one [[using]]");
                 return context->report(err);
             }
 
             Diagnostic err{dep.node, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
             err.addNote(dependentVar, "this is another one");
-            err.addNote("consider removing one [[using]]");
+            err.addNote("hint: remove one [[using]]");
             return context->report(err);
         }
 

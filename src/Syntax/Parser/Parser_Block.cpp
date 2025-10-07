@@ -309,15 +309,15 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         newScope->owner                             = statement;
 
         if (!isDefault)
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'case' statement"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the [[case]] statement"));
         else
-            SWAG_CHECK(eatToken(TokenId::SymColon, "after the 'default' statement"));
+            SWAG_CHECK(eatToken(TokenId::SymColon, "after the [[default]] statement"));
 
         // Not empty
         if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-            return error(prevToken, isDefault ? toErr(Err0062) : toErr(Err0061), "consider adding a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
+            return error(prevToken, isDefault ? toErr(Err0062) : toErr(Err0061), "hint: add a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
         if (tokenParse.is(TokenId::SymRightCurly))
-            return error(prevToken, isDefault ? toErr(Err0062) : toErr(Err0061), "consider adding a [[break]] if you want to exit without any action");
+            return error(prevToken, isDefault ? toErr(Err0062) : toErr(Err0061), "hint: add a [[break]] if you want to exit without any action");
 
         while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
             SWAG_CHECK(doEmbeddedInstruction(parentStmt, &dummyResult));

@@ -263,7 +263,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
                 !identifier->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
                 identifier->ownerStructScope)
             {
-                notes.push_back(Diagnostic::note(identifier->ownerFct, identifier->ownerFct->token, "consider using [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter"));
+                notes.push_back(Diagnostic::note(identifier->ownerFct, identifier->ownerFct->token, "hint: use [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter"));
             }
             break;
     }

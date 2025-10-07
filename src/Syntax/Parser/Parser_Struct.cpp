@@ -83,9 +83,9 @@ bool Parser::doImpl(AstNode* parent, AstNode** result)
         Diagnostic err{implNode, formErr(Err0295, Naming::aKindName(scopeKind).cstr(), implNode->token.cstr(), Naming::aKindName(newScope->kind).cstr())};
         err.addNote(Diagnostic::hereIs(newScope->owner));
         if (newScope->is(ScopeKind::Enum))
-            err.addNote(form("consider writing [[impl enum %s]] instead", implNode->token.cstr()));
+            err.addNote(form("hint: write [[impl enum %s]] instead", implNode->token.cstr()));
         else if (newScope->is(ScopeKind::Struct))
-            err.addNote(form("consider writing [[impl %s]] instead", implNode->token.cstr()));
+            err.addNote(form("hint: write [[impl %s]] instead", implNode->token.cstr()));
         return context->report(err);
     }
 
@@ -261,7 +261,7 @@ bool Parser::doStructContent(AstStruct* structNode, SyntaxStructType structType)
                 const auto implNode = castAst<AstImpl>(newScope->owner, AstNodeKind::Impl);
                 Diagnostic err{implNode, formErr(Err0295, Naming::aKindName(newScope->kind).cstr(), implNode->token.cstr(), Naming::aKindName(ScopeKind::Struct).cstr())};
                 err.addNote(Diagnostic::hereIs(structNode));
-                err.addNote(form("consider writing [[impl %s]] instead", implNode->token.cstr()));
+                err.addNote(form("hint: write [[impl %s]] instead", implNode->token.cstr()));
                 return context->report(err);
             }
 

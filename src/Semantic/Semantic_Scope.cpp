@@ -57,7 +57,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
             first = false;
         }
 
-        err.addNote("consider using the full name of the enum value");
+        err.addNote("hint: use the full name of the enum value");
         return context->report(err);
     }
 

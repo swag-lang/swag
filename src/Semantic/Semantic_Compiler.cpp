@@ -40,7 +40,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         const auto result = Diagnostic::note(c, c->token, form("the function [[%s]] is not marked with [[#[Swag.ConstExpr]]]", symbolName->name.cstr()));
-                        result->hint      = "consider prefixing with [[#run]] to enforce a compile-time call";
+                        result->hint      = "hint: prefix with [[#run]] to enforce a compile-time call";
                         return result;
                     }
 
@@ -141,7 +141,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic err{node, formErr(Err0044, realType->getDisplayNameC())};
-                    err.hint = "consider prefixing with [[#run]] to enforce a compile-time call";
+                    err.hint = "hint: prefix with [[#run]] to enforce a compile-time call";
                     return context->report(err);
                 }
             }

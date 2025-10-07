@@ -207,7 +207,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0026)};
                 const auto note = Diagnostic::note(lastParameter, form("[[%s]] could refer to either a type or a parameter name", lastParameter->type->token.cstr()));
-                note->hint      = form("consider using [[#type]] before [[%s]] if it is a type, or specify a [[:type]] after [[%s]] if it is a parameter name", lastParameter->type->token.cstr(), lastParameter->type->token.cstr());
+                note->hint      = form("hint: use [[#type]] before [[%s]] if it is a type, or specify a [[:type]] after [[%s]] if it is a parameter name", lastParameter->type->token.cstr(), lastParameter->type->token.cstr());
                 err.addNote(note);
                 return context->report(err);
             }
@@ -452,13 +452,13 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
         err = new Diagnostic{sourceFile, tokenParse, toErr(Err0264)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
-        err->addNote("consider using [[func(]] to declare a lambda type");
+        err->addNote("hint: use [[func(]] to declare a lambda type");
     else if (tokenParse.is(TokenId::SymDotDotDot))
         err->addNote("the symbol [[...]] is used to declare variadic function parameters, which is not valid in this context");
     else if (Tokenizer::isKeyword(tokenParse.token.id))
         err->addNote(form("the keyword [[%s]] cannot be used as an identifier", tokenParse.cstr()));
     else if (tokenParse.is(TokenId::CompilerTypeOf) || tokenParse.is(TokenId::IntrinsicKindOf))
-        err->addNote("consider using [[#decltype]] to retrieve the type of an expression");
+        err->addNote("hint: use [[#decltype]] to retrieve the type of an expression");
 
     return context->report(*err);
 }

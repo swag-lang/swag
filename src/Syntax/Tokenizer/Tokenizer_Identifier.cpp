@@ -33,7 +33,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         tokenParse.token.endLocation = location;
         Diagnostic err{sourceFile, tokenParse, formErr(Err0626, tokenParse.cstr())};
         if (tokenParse.token.text == '#' && SWAG_IS_BLANK(*curBuffer))
-            err.addNote("consider using [[//]] to start a line comment");
+            err.addNote("hint: use [[//]] to start a line comment");
         return errorContext->report(err);
     }
 

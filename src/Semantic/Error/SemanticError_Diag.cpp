@@ -129,7 +129,7 @@ namespace
         if (!callParameters && errorParam.destFuncDecl)
         {
             if (node->findParent(AstNodeKind::Return) || node->findParent(AstNodeKind::AffectOp))
-                err->addNote(form("consider using [[&%s]] if you want a function pointer for a lambda or a closure", errorParam.destFuncDecl->token.cstr()));
+                err->addNote(form("hint: use [[&%s]] if you want a function pointer for a lambda or a closure", errorParam.destFuncDecl->token.cstr()));
         }
     }
 
@@ -406,7 +406,7 @@ namespace
                 if (bi.castErrorToType && bi.castErrorFromType && !bi.castErrorToType->isGeneric())
                 {
                     if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                        errorParam.addNote(Diagnostic::note(callParamNode, form("consider adding an explicit [[cast(%s)]] if necessary", bi.castErrorToType->getDisplayNameC())));
+                        errorParam.addNote(Diagnostic::note(callParamNode, form("hint: add an explicit [[cast(%s)]] if necessary", bi.castErrorToType->getDisplayNameC())));
                 }
             }
         }
@@ -529,7 +529,7 @@ void SemanticError::getDiagnosticForMatch(SemanticContext* context, OneTryMatch&
             {
                 if (TypeManager::makeCompatibles(context, bi.badSignatureRequestedType, bi.badSignatureGivenType, nullptr, nullptr, CAST_FLAG_TRY_COERCE | CAST_FLAG_JUST_CHECK))
                 {
-                    errorParam.explicitCastMsg = form("consider casting with [[cast(%s)]]", bi.badSignatureRequestedType->name.cstr());
+                    errorParam.explicitCastMsg = form("hint: cast with [[cast(%s)]]", bi.badSignatureRequestedType->name.cstr());
                     break;
                 }
             }

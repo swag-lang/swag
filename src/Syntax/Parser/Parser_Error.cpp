@@ -61,13 +61,13 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             {
                 Diagnostic err{sourceFile, startToken, formErr(Err0645, startToken.cstr())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
-                    err.addNote("consider using [[func]] to declare a function");
+                    err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
                     err.addNote(form("did you mean [[%s]]?", "public"));
                 else if (nextToken.is(TokenId::SymLeftParen))
-                    err.addNote("consider using [[func]] to declare a function");
+                    err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    err.addNote("consider using [[func]] to declare a function");
+                    err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
                     err.addNote("did you forget [[var]] or [[const]] to declare a global variable or constant?");
                 else
@@ -89,13 +89,13 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             {
                 msg = toErr(Err0247);
                 if (startToken.is(TokenId::KwdLet))
-                    note = "consider using [[var]] or [[const]] instead of [[let]] to declare a global variable or constant";
+                    note = "hint: use [[var]] or [[const]] instead of [[let]] to declare a global variable or constant";
                 else if (startToken.is(TokenId::CompilerInclude))
-                    note = "consider using [[const Value = #include(\"path\")]] to embed an external file in a constant byte array";
+                    note = "hint: use [[const Value = #include(\"path\")]] to embed an external file in a constant byte array";
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
-                    note = "consider using [[func]] to declare a function";
+                    note = "hint: use [[func]] to declare a function";
                 else if (startToken.is(TokenId::NativeType) && nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymEqual))
-                    note = form("consider using the syntax [[var %s: %s]] to declare a variable", nextToken.token.cstr(), startToken.cstr());
+                    note = form("hint: use the syntax [[var %s: %s]] to declare a variable", nextToken.token.cstr(), startToken.cstr());
                 else
                     note = "this is unexpected in global scope";
             }
@@ -184,7 +184,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
                 err.addNote(form("did you forget a [['.']] between [[%s]] and [[%s]]?", id->token.cstr(), tokenParse.cstr()));
             else if (Tokenizer::isStartOfNewStatement(nextToken))
-                err.addNote(form("consider using the syntax [[var %s: %s]] to declare a variable", tokenParse.cstr(), id->token.cstr()));
+                err.addNote(form("hint: use the syntax [[var %s: %s]] to declare a variable", tokenParse.cstr(), id->token.cstr()));
             else
                 err.addNote(leftNode, "this should be a function call or an affectation");
             return context->report(err);
