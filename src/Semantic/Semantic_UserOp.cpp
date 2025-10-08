@@ -514,9 +514,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
         {
             YIELD();
 
-            Diagnostic err{context->node, context->node->token, formErr(Err0209, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            err.addNote(form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffectLiteral.cstr()));
-            err.addNote(left->token, Diagnostic::isType(leftTypeInfo));
+            Diagnostic err{context->node, context->node->token, formErr(Err0209, leftTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             err.addNote(right->firstChild(), form("this is the literal suffix [[%s]]", suffix.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode));
             return context->report(err);

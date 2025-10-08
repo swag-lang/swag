@@ -345,7 +345,7 @@ void initErrors()
     SWAG_ERROR(Err0206, "[[%s]] is [[%s]], invalid literal suffix                                                               $ note: suffix must correspond to a valid type");
     SWAG_ERROR(Err0207, "[[%s]] invalid for float literals                                                                      $ note: only [[f32]] and [[f64]] suffixes are allowed");
     SWAG_ERROR(Err0208, "[[%s]] invalid literal suffix                                                                          $ ");
-    SWAG_ERROR(Err0209, "[[%s]] cannot initialize [[%s]]; missing [[opAffectLiteral]]                                           $ ");
+    SWAG_ERROR(Err0209, "cannot initialize [[%s]] with a special literal                                                        $ note: [[%s]] does not implement [[opAffectLiteral]]");
     SWAG_ERROR(Err0210, "mismatched logical operator; [[%s]] expected but found [[%s]]                                          $ ");
     SWAG_ERROR(Err0211, "[[#[Swag.Foreign]]] module name is empty                                                               $ ");
     SWAG_ERROR(Err0212, "[[.]] not permitted in [[#[Swag.Foreign]]] module name                                                 $ note: module names cannot contain file extensions");
