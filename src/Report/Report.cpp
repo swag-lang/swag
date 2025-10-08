@@ -284,6 +284,13 @@ namespace
         }
     }
 
+    void flattenDiagnostics(Vector<Diagnostic*>& out, const Diagnostic* err)
+    {
+        out.push_back(new Diagnostic{*err});
+        for (const auto n : err->notes)
+            flattenDiagnostics(out, n);
+    }
+
     void reportInternal(Log* log, const Diagnostic& err, const Vector<const Diagnostic*>& inNotes)
     {
         if (g_CommandLine.errorOneLine)
@@ -295,24 +302,23 @@ namespace
         }
 
         // Make a copy
-        Vector<Diagnostic*> notes;
-        const auto          c = new Diagnostic{err};
-        notes.push_back(c);
+        Vector<Diagnostic*> diags;
+        flattenDiagnostics(diags, &err);
         for (const auto n : inNotes)
         {
             if (!n)
                 continue;
-            notes.push_back(new Diagnostic{*n});
+            diags.push_back(new Diagnostic{*n});
         }
 
-        std::ranges::sort(notes, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
-        cleanNotes(notes);
+        std::ranges::sort(diags, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
+        cleanNotes(diags);
 
         log->writeEol();
 
         bool              marginBefore = true;
         const Diagnostic* prevN        = nullptr;
-        for (const auto n : notes)
+        for (const auto n : diags)
         {
             if (!n->display)
                 continue;
@@ -527,202 +533,7 @@ namespace
         for (const auto& n : notes)
             display = display || n->containsText(g_CommandLine.verboseErrorsFilter);
         if (display)
-        {
             reportInternal(&g_Log, err, notes);
-        }
-    }
-
-    bool reportInternal(const Diagnostic& inDiag, const Vector<const Diagnostic*>& inNotes, ByteCodeRunContext* runContext)
-    {
-        if (g_SilentError > 0 && inDiag.errorLevel != DiagnosticLevel::Exception)
-        {
-            g_SilentErrorMsg = inDiag.textMsg;
-            return false;
-        }
-
-        ScopedLock lock(g_Log.mutexAccess);
-
-        const auto copyDiag  = new Diagnostic{inDiag};
-        auto       copyNotes = inNotes;
-        for (auto note : inDiag.notes)
-            copyNotes.push_back(note);
-
-        if (!dealWithWarning(*copyDiag))
-            return true;
-
-        auto&       err   = *copyDiag;
-        const auto& notes = copyNotes;
-
-        const auto sourceFile = Report::getDiagFile(err);
-        SaveGenJob::flush(sourceFile->module);
-
-        switch (err.errorLevel)
-        {
-            case DiagnosticLevel::Exception:
-                ++sourceFile->module->criticalErrors;
-                err.errorLevel = DiagnosticLevel::Panic;
-                break;
-
-            case DiagnosticLevel::Error:
-            case DiagnosticLevel::Panic:
-                sourceFile->numErrors++;
-                ++sourceFile->module->numErrors;
-
-                // Do not raise an error if we are waiting for one, during tests
-                if (sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
-                {
-                    bool dismiss = true;
-                    if (!sourceFile->shouldHaveErrorString.empty())
-                    {
-                        dismiss   = false;
-                        auto str1 = err.textMsg;
-                        str1.makeLower();
-                        for (const auto& filter : sourceFile->shouldHaveErrorString)
-                        {
-                            auto str2 = filter;
-                            str2.makeLower();
-                            if (str1.find(str2) != -1)
-                            {
-                                dismiss = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (dismiss)
-                    {
-                        if (g_CommandLine.verboseErrors)
-                            verboseErrorWarning(err, notes);
-                        return false;
-                    }
-                }
-
-                ++g_Workspace->numErrors;
-                break;
-
-            case DiagnosticLevel::Warning:
-                sourceFile->numWarnings++;
-                ++sourceFile->module->numWarnings;
-
-                // Do not raise a warning if we are waiting for one, during tests
-                if (sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
-                {
-                    bool dismiss = true;
-                    if (!sourceFile->shouldHaveWarningString.empty())
-                    {
-                        dismiss = false;
-                        for (const auto& filter : sourceFile->shouldHaveWarningString)
-                        {
-                            auto str1 = err.textMsg;
-                            auto str2 = filter;
-                            str1.makeLower();
-                            str2.makeLower();
-                            if (str1.find(str2) != -1)
-                            {
-                                dismiss = true;
-                                break;
-                            }
-                        }
-                    }
-
-                    if (dismiss)
-                    {
-                        if (g_CommandLine.verboseErrors)
-                            verboseErrorWarning(err, notes);
-                        return true;
-                    }
-                }
-
-                ++g_Workspace->numWarnings;
-                break;
-
-            default:
-                break;
-        }
-
-        // Print error/warning
-        reportInternal(&g_Log, err, notes);
-
-        if (runContext)
-        {
-            if (err.errorLevel == DiagnosticLevel::Error || err.errorLevel == DiagnosticLevel::Panic)
-                runContext->debugOnFirstError = true;
-
-            if (g_CommandLine.dbgCallStack)
-            {
-                const SwagContext* context = static_cast<SwagContext*>(OS::tlsGetValue(g_TlsContextId));
-
-                // Bytecode callstack
-                if (context && context->flags & static_cast<uint64_t>(ContextFlags::ByteCode))
-                {
-                    const auto callStack = g_ByteCodeStackTrace->log(runContext);
-                    if (!callStack.empty())
-                    {
-                        g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
-                        g_Log.setDefaultColor();
-                        g_Log.print(callStack);
-                        g_Log.setDefaultColor();
-                        g_Log.writeEol();
-                    }
-                }
-
-                // Error callstack
-                if (context && context->traceIndex)
-                {
-                    Utf8 str;
-                    for (uint32_t i = context->traceIndex - 1; i != UINT32_MAX; i--)
-                    {
-                        const auto sourceFile1 = g_Workspace->getFileByName(static_cast<const char*>(context->traces[i]->fileName.buffer));
-                        if (sourceFile1)
-                        {
-                            str += Log::colorToVTS(LogColor::DarkYellow);
-                            str += "error";
-                            str += Log::colorToVTS(LogColor::Gray);
-                            str += form(" --> %s:%d:%d", sourceFile1->path.cstr(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
-                            str += "\n";
-                        }
-                    }
-
-                    if (!str.empty())
-                    {
-                        g_Log.print("[error callstack]\n", LogColor::Cyan);
-                        g_Log.setDefaultColor();
-                        g_Log.print(str);
-                        g_Log.setDefaultColor();
-                        g_Log.writeEol();
-                    }
-                }
-
-                // Runtime callstack
-                if (runContext)
-                {
-                    const auto nativeStack = OS::captureStack();
-                    if (!nativeStack.empty())
-                    {
-                        g_Log.print("[runtime callstack]\n", LogColor::Cyan);
-                        g_Log.setDefaultColor();
-                        g_Log.print(nativeStack);
-                        g_Log.setDefaultColor();
-                        g_Log.writeEol();
-                    }
-                }
-            }
-        }
-
-        if (err.errorLevel == DiagnosticLevel::Error || err.errorLevel == DiagnosticLevel::Panic)
-        {
-            if (!OS::isDebuggerAttached())
-            {
-                if (g_CommandLine.dbgDevMode && !g_CommandLine.dbgCatch)
-                {
-                    OS::errorBox("[Developer Mode]", "Error raised !");
-                    OS::exit(-1);
-                    return false;
-                }
-            }
-        }
-
-        return err.errorLevel != DiagnosticLevel::Error && err.errorLevel != DiagnosticLevel::Panic;
     }
 }
 
@@ -742,13 +553,188 @@ SourceFile* Report::getDiagFile(const Diagnostic& err)
 
 bool Report::report(const Diagnostic& err, const Vector<const Diagnostic*>& notes, ByteCodeRunContext* runContext)
 {
-    const bool result = reportInternal(err, notes, runContext);
-    return result;
-}
+    if (g_SilentError > 0 && err.errorLevel != DiagnosticLevel::Exception)
+    {
+        g_SilentErrorMsg = err.textMsg;
+        return false;
+    }
 
-bool Report::report(const Diagnostic& err)
-{
-    return report(err, {});
+    ScopedLock lock(g_Log.mutexAccess);
+
+    const auto diag = const_cast<Diagnostic*>(&err);
+    if (!dealWithWarning(*diag))
+        return true;
+
+    const auto sourceFile = getDiagFile(err);
+    SaveGenJob::flush(sourceFile->module);
+
+    switch (err.errorLevel)
+    {
+        case DiagnosticLevel::Exception:
+            ++sourceFile->module->criticalErrors;
+            diag->errorLevel = DiagnosticLevel::Panic;
+            break;
+
+        case DiagnosticLevel::Error:
+        case DiagnosticLevel::Panic:
+            sourceFile->numErrors++;
+            ++sourceFile->module->numErrors;
+
+            // Do not raise an error if we are waiting for one, during tests
+            if (sourceFile->hasFlag(FILE_SHOULD_HAVE_ERROR))
+            {
+                bool dismiss = true;
+                if (!sourceFile->shouldHaveErrorString.empty())
+                {
+                    dismiss   = false;
+                    auto str1 = err.textMsg;
+                    str1.makeLower();
+                    for (const auto& filter : sourceFile->shouldHaveErrorString)
+                    {
+                        auto str2 = filter;
+                        str2.makeLower();
+                        if (str1.find(str2) != -1)
+                        {
+                            dismiss = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (dismiss)
+                {
+                    if (g_CommandLine.verboseErrors)
+                        verboseErrorWarning(err, notes);
+                    return false;
+                }
+            }
+
+            ++g_Workspace->numErrors;
+            break;
+
+        case DiagnosticLevel::Warning:
+            sourceFile->numWarnings++;
+            ++sourceFile->module->numWarnings;
+
+            // Do not raise a warning if we are waiting for one, during tests
+            if (sourceFile->hasFlag(FILE_SHOULD_HAVE_WARNING))
+            {
+                bool dismiss = true;
+                if (!sourceFile->shouldHaveWarningString.empty())
+                {
+                    dismiss = false;
+                    for (const auto& filter : sourceFile->shouldHaveWarningString)
+                    {
+                        auto str1 = err.textMsg;
+                        auto str2 = filter;
+                        str1.makeLower();
+                        str2.makeLower();
+                        if (str1.find(str2) != -1)
+                        {
+                            dismiss = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (dismiss)
+                {
+                    if (g_CommandLine.verboseErrors)
+                        verboseErrorWarning(err, notes);
+                    return true;
+                }
+            }
+
+            ++g_Workspace->numWarnings;
+            break;
+
+        default:
+            break;
+    }
+
+    // Print error/warning
+    reportInternal(&g_Log, err, notes);
+
+    if (runContext)
+    {
+        if (err.errorLevel == DiagnosticLevel::Error || err.errorLevel == DiagnosticLevel::Panic)
+            runContext->debugOnFirstError = true;
+
+        if (g_CommandLine.dbgCallStack)
+        {
+            const SwagContext* context = static_cast<SwagContext*>(OS::tlsGetValue(g_TlsContextId));
+
+            // Bytecode callstack
+            if (context && context->flags & static_cast<uint64_t>(ContextFlags::ByteCode))
+            {
+                const auto callStack = g_ByteCodeStackTrace->log(runContext);
+                if (!callStack.empty())
+                {
+                    g_Log.print("[bytecode callstack]\n", LogColor::Cyan);
+                    g_Log.setDefaultColor();
+                    g_Log.print(callStack);
+                    g_Log.setDefaultColor();
+                    g_Log.writeEol();
+                }
+            }
+
+            // Error callstack
+            if (context && context->traceIndex)
+            {
+                Utf8 str;
+                for (uint32_t i = context->traceIndex - 1; i != UINT32_MAX; i--)
+                {
+                    const auto sourceFile1 = g_Workspace->getFileByName(static_cast<const char*>(context->traces[i]->fileName.buffer));
+                    if (sourceFile1)
+                    {
+                        str += Log::colorToVTS(LogColor::DarkYellow);
+                        str += "error";
+                        str += Log::colorToVTS(LogColor::Gray);
+                        str += form(" --> %s:%d:%d", sourceFile1->path.cstr(), context->traces[i]->lineStart + 1, context->traces[i]->colStart + 1);
+                        str += "\n";
+                    }
+                }
+
+                if (!str.empty())
+                {
+                    g_Log.print("[error callstack]\n", LogColor::Cyan);
+                    g_Log.setDefaultColor();
+                    g_Log.print(str);
+                    g_Log.setDefaultColor();
+                    g_Log.writeEol();
+                }
+            }
+
+            // Runtime callstack
+            if (runContext)
+            {
+                const auto nativeStack = OS::captureStack();
+                if (!nativeStack.empty())
+                {
+                    g_Log.print("[runtime callstack]\n", LogColor::Cyan);
+                    g_Log.setDefaultColor();
+                    g_Log.print(nativeStack);
+                    g_Log.setDefaultColor();
+                    g_Log.writeEol();
+                }
+            }
+        }
+    }
+
+    if (err.errorLevel == DiagnosticLevel::Error || err.errorLevel == DiagnosticLevel::Panic)
+    {
+        if (!OS::isDebuggerAttached())
+        {
+            if (g_CommandLine.dbgDevMode && !g_CommandLine.dbgCatch)
+            {
+                OS::errorBox("[Developer Mode]", "Error raised !");
+                OS::exit(-1);
+                return false;
+            }
+        }
+    }
+
+    return err.errorLevel != DiagnosticLevel::Error && err.errorLevel != DiagnosticLevel::Panic;
 }
 
 bool Report::error(Module* module, const Utf8& msg)

@@ -214,16 +214,10 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
 
 bool ErrorContext::report(const Diagnostic& err, const Vector<const Diagnostic*>& notes)
 {
-    auto copyDiag  = err;
-    auto copyNotes = notes;
-
-    for (auto note : err.notes)
-        copyNotes.push_back(note);
-    copyDiag.notes.clear();
-
-    extract(copyDiag, copyNotes);
-
-    return Report::report(copyDiag, copyNotes);
+    const auto copyDiag  = const_cast<Diagnostic*>(&err);
+    auto       copyNotes = notes;
+    extract(*copyDiag, copyNotes);
+    return Report::report(*copyDiag, copyNotes);
 }
 
 bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)

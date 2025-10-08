@@ -40,7 +40,7 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
                     if (!c->resolvedSymbolOverload()->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         const auto result = Diagnostic::note(c, c->token, form("the function [[%s]] is not marked with [[#[Swag.ConstExpr]]]", symbolName->name.cstr()));
-                        result->hint      = "hint: prefix with [[#run]] to enforce a compile-time call";
+                        result->addNote("hint: prefix with [[#run]] to enforce a compile-time call");
                         return result;
                     }
 
@@ -49,7 +49,10 @@ Diagnostic* Semantic::computeNonConstExprNote(AstNode* node)
             }
 
             if (symbolName->is(SymbolKind::Variable))
-                return Diagnostic::note(c, c->token, form("[[%s]] is a variable, and variables in expressions cannot be evaluated at compile-time", symbolName->name.cstr()));
+            {
+                const auto n = form("[[%s]] is a variable, and variables in expressions cannot be evaluated at compile-time", symbolName->name.cstr());
+                return Diagnostic::note(c, c->token, n);
+            }
 
             return Diagnostic::note(c, "evaluation failed during compile-time");
         }
