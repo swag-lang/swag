@@ -384,6 +384,15 @@ void Diagnostic::addNote(const Utf8& msg)
     notes.push_back(note);
 }
 
+void Diagnostic::addNote(const char* msg)
+{
+    if (!msg  || !msg[0])
+        return;
+    const auto note   = Diagnostic::note(msg);
+    note->fromContext = forceFromContext;
+    notes.push_back(note);
+}
+
 void Diagnostic::addNote(const Diagnostic* note)
 {
     if (!note)
@@ -993,7 +1002,7 @@ void Diagnostic::printRanges(Log* log)
         ranges.pop_back();
 
         if (!ranges.empty())
-            printRangesVerticalBars(log, ranges.size());        
+            printRangesVerticalBars(log, ranges.size());
     }
 
     log->writeEol();

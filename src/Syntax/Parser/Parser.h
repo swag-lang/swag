@@ -108,9 +108,9 @@ struct Parser
     static bool saveEmbeddedAst(const Utf8& content, const AstNode* fromNode, Path& tmpFilePath, Utf8& tmpFileName, uint32_t& previousLogLine);
     bool        constructEmbeddedAst(const Utf8& content, AstNode* parent, AstNode* fromNode, CompilerAstKind kind, bool logGenerated, AstNode** result = nullptr);
 
-    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
-    bool error(const TokenParse& tk, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
-    bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* hint = nullptr) const;
+    bool error(const Token& tk, const Utf8& msg, const char* help = nullptr, const char* note = nullptr) const;
+    bool error(const TokenParse& tk, const Utf8& msg, const char* help = nullptr, const char* note = nullptr) const;
+    bool error(AstNode* node, const Utf8& msg, const char* help = nullptr, const char* note = nullptr) const;
     bool error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help = nullptr) const;
     bool invalidTokenError(InvalidTokenError kind);
     bool invalidIdentifierError(const TokenParse& myToken, const char* msg = nullptr) const;

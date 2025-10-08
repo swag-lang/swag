@@ -284,8 +284,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     SWAG_ASSERT(prevNode);
 
-    Utf8 msg;
-    Utf8 hint;
+    Utf8 msg, nte;
 
     if (depNode)
     {
@@ -293,8 +292,8 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     }
     else if (prevNode && prevJob->waitingType)
     {
-        msg  = form("the symbol %s [[%s]] is waiting for the generation of the type [[%s]]", Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), prevJob->waitingType->getDisplayNameC());
-        hint = Diagnostic::isType(prevNode->typeInfo);
+        msg = form("the symbol %s [[%s]] is waiting for the generation of the type [[%s]]", Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), prevJob->waitingType->getDisplayNameC());
+        nte = Diagnostic::isType(prevNode->typeInfo);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
@@ -306,8 +305,8 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     }
     else
     {
-        msg  = form("cannot resolve %s [[%s]]", Naming::kindName(prevNode).cstr(), prevNode->token.cstr());
-        hint = Diagnostic::isType(prevNode->typeInfo);
+        msg = form("cannot resolve %s [[%s]]", Naming::kindName(prevNode).cstr(), prevNode->token.cstr());
+        nte = Diagnostic::isType(prevNode->typeInfo);
     }
 
     if (prevJob->waitingHintNode)
@@ -328,7 +327,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     const auto note   = Diagnostic::note(prevNodeLocal, prevNodeLocal->token, msg);
     note->canBeMerged = false;
-    note->hint        = hint;
+    note->addNote(nte);
 
     Utf8 remark, sym;
     if (prevJob->waitingSymbolSolved)

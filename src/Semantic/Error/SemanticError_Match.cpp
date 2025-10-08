@@ -1,5 +1,3 @@
-#include <algorithm>
-
 #include "pch.h"
 #include "Format/FormatAst.h"
 #include "Report/Diagnostic.h"
@@ -131,6 +129,7 @@ namespace
                 Vector<Utf8> tokens;
                 Diagnostic::tokenizeError(full, tokens);
                 detailMsg = tokens[0];
+                Diagnostic::removeErrorId(detailMsg);
                 reasonId  = Diagnostic::getErrorId(full);
             };
 

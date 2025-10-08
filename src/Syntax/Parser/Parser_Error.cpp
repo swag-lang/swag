@@ -5,41 +5,34 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Parser/Parser.h"
 
-bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* hint) const
+bool Parser::error(AstNode* node, const Utf8& msg, const char* help, const char* note) const
 {
     Diagnostic err{node, msg};
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
+    err.addNote(note);
+    err.addNote(help);
     return context->report(err);
 }
 
-bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* hint) const
+bool Parser::error(const Token& tk, const Utf8& msg, const char* help, const char* note) const
 {
     Diagnostic err{sourceFile, tk, msg};
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
+    err.addNote(note);
+    err.addNote(help);
     return context->report(err);
 }
 
-bool Parser::error(const TokenParse& tk, const Utf8& msg, const char* help, const char* hint) const
+bool Parser::error(const TokenParse& tk, const Utf8& msg, const char* help, const char* note) const
 {
     Diagnostic err{sourceFile, tk, msg};
-    if (hint)
-        err.hint = hint;
-    if (help)
-        err.addNote(help);
+    err.addNote(note);
+    err.addNote(help);
     return context->report(err);
 }
 
 bool Parser::error(const SourceLocation& startLocation, const SourceLocation& endLocation, const Utf8& msg, const char* help) const
 {
     Diagnostic err{sourceFile, startLocation, endLocation, msg};
-    if (help)
-        err.addNote(help);
+    err.addNote(help);
     return context->report(err);
 }
 

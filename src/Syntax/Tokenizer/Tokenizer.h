@@ -51,7 +51,7 @@ struct TokenizerState
 
 struct Tokenizer
 {
-    bool error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint = "") const;
+    bool error(TokenParse& tokenParse, const Utf8& msg, const Utf8& note = "") const;
     void appendTokenName(TokenParse& tokenParse) const;
 
     uint32_t readChar();

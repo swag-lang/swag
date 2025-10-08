@@ -9,12 +9,12 @@
 #include "Core/Timer.h"
 #endif
 
-bool Tokenizer::error(TokenParse& tokenParse, const Utf8& msg, const Utf8& hint) const
+bool Tokenizer::error(TokenParse& tokenParse, const Utf8& msg, const Utf8& note) const
 {
     tokenParse.token.endLocation = location;
 
     Diagnostic err{sourceFile, tokenParse, msg};
-    err.hint = hint;
+    err.addNote(note);
     return errorContext->report(err);
 }
 
