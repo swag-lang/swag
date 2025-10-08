@@ -249,7 +249,7 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                     {
                         if (caseNode == valCase[idx] || (!caseNode->whereClause && !valCase[idx]->whereClause))
                         {
-                            const auto note = Diagnostic::hereIs(valExpression[idx], "this is the other definition");
+                            const auto note = Diagnostic::hereIs(valExpression[idx], "this is the other usage");
                             if (expr->isConstantGenTypeInfo())
                             {
                                 Diagnostic err{expr, formErr(Err0015, expr->token.cstr())};
