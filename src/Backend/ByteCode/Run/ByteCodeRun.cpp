@@ -353,7 +353,7 @@ namespace
             level   = DiagnosticLevel::Exception;
             userMsg = toErr(Err0718);
             notes.push_back(Diagnostic::note("potential issue detected in your program's compile-time component"));
-            notes.push_back(Diagnostic::note("run [[Swag]] with [[--dbg-catch]] to initiate the bytecode debugger when an exception is raised"));
+            notes.push_back(Diagnostic::note("run [[swag]] with [[--dbg-catch]] to launch the bytecode debugger when an exception is raised"));
         }
 
         // Message
@@ -400,7 +400,7 @@ namespace
             runContext->ip--;
 
         if (!g_CommandLine.dbgCallStack)
-            notes.push_back(Diagnostic::note("run [[Swag]] with [[--callstack]] for additional context and details"));
+            err->addNote("run [[swag]] with [[--callstack]] for additional context and details");
 
         Report::report(*err, notes, runContext);
 

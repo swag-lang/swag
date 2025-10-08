@@ -68,8 +68,8 @@ namespace
         if (parts.size() > 1)
         {
             err->textMsg = parts[0];
-            for (uint32_t i = 1; i < parts.size(); i++)
-                diags.push_back(Diagnostic::note(parts[i]));
+            for (uint32_t i = parts.size() - 1; i != 0; i--)
+                diags.insert(diags.begin() + 1, Diagnostic::note(parts[i]));
         }
 
         // If multiple diagnostics have the same source code location, then merge them in the remarks section
