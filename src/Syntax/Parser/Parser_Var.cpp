@@ -373,7 +373,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarD
 
             Diagnostic err{sourceFile, tokenParse, msg};
             if (tokenParse.is(TokenId::SymEqualEqual))
-                err.addNote("did you mean to assign a value with the symbol [['=']] instead?");
+                err.addNote("hint: did you mean to assign a value with the symbol [['=']] instead?");
 
             if (leftNode->is(AstNodeKind::IdentifierRef))
             {

@@ -244,12 +244,12 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         case IdentifierSearchFor::Type:
             if (identifier->token.text == "int")
-                notes.push_back(Diagnostic::note(form("did you mean [[%s]]?", "s32")));
+                notes.push_back(Diagnostic::note(form("hint: did you mean [[%s]]?", "s32")));
             break;
 
         case IdentifierSearchFor::Variable:
             if (pr2->is(AstNodeKind::AffectOp) && !identifierRef->previousScope)
-                notes.push_back(Diagnostic::note("did you forget [[var]], [[let]], or [[const]] to declare a variable or constant?"));
+                notes.push_back(Diagnostic::note("hint: did you forget [[var]], [[let]], or [[const]] to declare a variable or constant?"));
             break;
     }
 

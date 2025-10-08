@@ -56,13 +56,13 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
                     err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
-                    err.addNote(form("did you mean [[%s]]?", "public"));
+                    err.addNote(form("hint: did you mean [[%s]]?", "public"));
                 else if (nextToken.is(TokenId::SymLeftParen))
                     err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextNextToken.is(TokenId::SymLeftParen))
                     err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::SymEqual) || nextToken.is(TokenId::SymColon))
-                    err.addNote("did you forget [[var]] or [[const]] to declare a global variable or constant?");
+                    err.addNote("hint: did you forget [[var]] or [[const]] to declare a global variable or constant?");
                 else
                     err.addNote(SemanticError::findClosestMatchesMsg(startToken.text, {}, IdentifierSearchFor::TopLevelInstruction));
                 return context->report(err);
@@ -175,7 +175,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
             Diagnostic err{sourceFile, tokenParse, toErr(Err0644)};
             const auto nextToken = getNextToken();
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
-                err.addNote(form("did you forget a [['.']] between [[%s]] and [[%s]]?", id->token.cstr(), tokenParse.cstr()));
+                err.addNote(form("hint: did you forget a [['.']] between [[%s]] and [[%s]]?", id->token.cstr(), tokenParse.cstr()));
             else if (Tokenizer::isStartOfNewStatement(nextToken))
                 err.addNote(form("hint: use the syntax [[var %s: %s]] to declare a variable", tokenParse.cstr(), id->token.cstr()));
             else
