@@ -132,7 +132,7 @@ void Diagnostic::setupColors()
     noteColorHighLight     = LogColor::Gray;
     noteColorHint          = LogColor::White;
     noteColorHintHighLight = LogColor::Gray;
-    noteHeaderColor        = LogColor::White;
+    noteHeaderColor        = LogColor::DarkYellow;
 
     marginBorderColor        = LogColor::Cyan;
     marginBorderColorContext = LogColor::Gray;
@@ -145,8 +145,6 @@ void Diagnostic::setupColors()
 
     stackColor = LogColor::DarkYellow;
 
-    preRemarkColor  = LogColor::White;
-    remarkColor     = LogColor::White;
     autoRemarkColor = LogColor::Gray;
 }
 
@@ -157,6 +155,7 @@ void Diagnostic::setup()
     if (!sourceFile || sourceFile->path.empty() || !hasLocation || textMsg.empty())
         showSourceCode = false;
     hasContent = showSourceCode || !remarks.empty() || !autoRemarks.empty() || !preRemarks.empty();
+    setupColors();
 }
 
 namespace
@@ -177,6 +176,13 @@ namespace
         replace.replace(form("%s $$A$$ ", verb.cstr()), form("%s %s ", verb.cstr(), a.cstr()), true);
         replace.replace(form("%s $$AN$$ ", verb.cstr()), form("%s %s ", verb.cstr(), an.cstr()), true);
     }
+}
+
+void Diagnostic::colorizeNoteHeader(Utf8& r) const
+{
+    r.replace("note: ", form("%snote: %s", Log::colorToVTS(noteHeaderColor).cstr(), Log::colorToVTS(noteColor).cstr()), true);
+    r.replace("hint: ", form("%shint: %s", Log::colorToVTS(noteHeaderColor).cstr(), Log::colorToVTS(noteColor).cstr()), true);
+    r.replace("overload: ", form("%soverload: %s", Log::colorToVTS(noteHeaderColor).cstr(), Log::colorToVTS(noteColor).cstr()), true);
 }
 
 Utf8 Diagnostic::preprocess(const Utf8& textMsg)
@@ -587,8 +593,8 @@ void Diagnostic::collectRanges()
         tokenizeError(textMsg, tokens);
         if (!tokens.empty())
         {
-            if (errorLevel != DiagnosticLevel::Note)
-                tokens[0].insert(0, getErrorLevelTitle());
+            tokens[0].insert(0, getErrorLevelTitle());
+            colorizeNoteHeader(tokens[0]);
             ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .msg = tokens[0], .errorLevel = errorLevel});
             textMsg.clear();
         }
@@ -993,18 +999,17 @@ void Diagnostic::preprocess()
 void Diagnostic::reportCompact(Log* log)
 {
     preprocess();
-    setupColors();
 
     printSourceLine(log);
     log->write(": ");
-    
+
     setColorRanges(log, errorLevel, HintPart::ErrorLevel);
     log->write(getErrorLevelTitle());
 
     Vector<Utf8> tokens;
     tokenizeError(textMsg, tokens);
     log->print(tokens[0]);
-    
+
     log->writeEol();
     log->setDefaultColor();
 }
@@ -1038,7 +1043,7 @@ void Diagnostic::report(Log* log)
     // Code pre remarks
     if (!preRemarks.empty())
     {
-        printRemarks(log, preRemarks, preRemarkColor);
+        printRemarks(log, preRemarks, noteColor);
         printMargin(log, true, true);
     }
 
@@ -1060,12 +1065,10 @@ void Diagnostic::report(Log* log)
         {
             if (!r.startsWith("note: ") && !r.startsWith("hint: ") && !r.startsWith("overload: "))
                 r.insert(0, "note: ");
-            r.replace("note: ", form("%snote: %s", Log::colorToVTS(LogColor::DarkYellow).cstr(), Log::colorToVTS(remarkColor).cstr()));
-            r.replace("hint: ", form("%shint: %s", Log::colorToVTS(LogColor::DarkYellow).cstr(), Log::colorToVTS(remarkColor).cstr()));
-            r.replace("overload: ", form("%soverload: %s", Log::colorToVTS(LogColor::DarkYellow).cstr(), Log::colorToVTS(remarkColor).cstr()));
+            colorizeNoteHeader(r);
         }
 
-        printRemarks(log, remarks, remarkColor);
+        printRemarks(log, remarks, noteColor);
     }
 
     log->setDefaultColor();

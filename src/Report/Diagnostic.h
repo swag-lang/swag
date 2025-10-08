@@ -129,6 +129,7 @@ struct Diagnostic
     static Diagnostic* note(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg) { return new Diagnostic{file, start, end, msg, DiagnosticLevel::Note}; }
 
     void        setup();
+    void        colorizeNoteHeader(Utf8& r) const;
     static Utf8 preprocess(const Utf8& textMsg);
     static Utf8 replaceHighLight(const Utf8& textMsg);
     void        replaceTokenName(const Token& token);
@@ -222,9 +223,7 @@ struct Diagnostic
     LogColor                  noteColorHintHighLight;
     LogColor                  marginBorderColor;
     LogColor                  marginBorderColorContext;
-    LogColor                  preRemarkColor;
     LogColor                  autoRemarkColor;
-    LogColor                  remarkColor;
     LogColor                  sourceFileColor;
     LogColor                  sourceFileColorContext;
     LogColor                  codeLineNoColor;
