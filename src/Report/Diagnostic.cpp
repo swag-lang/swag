@@ -508,30 +508,9 @@ Utf8 Diagnostic::getErrorLevelTitle() const
             return "panic: ";
         case DiagnosticLevel::Warning:
             return "warning: ";
-        case DiagnosticLevel::Note:
-            return "note: ";
     }
 
     return "";
-}
-
-void Diagnostic::printErrorLevel(Log* log)
-{
-    // Put the error ID right after the error level, instead at the beginning of the message
-    Utf8 id;
-    if (hasErrorId(textMsg))
-    {
-        id = Utf8(textMsg.buffer, 9);
-        textMsg.remove(0, 10);
-    }
-
-    log->write(getErrorLevelTitle());
-
-    if (!id.empty())
-    {
-        log->print(id);
-        log->write(": ");
-    }
 }
 
 void Diagnostic::printRemarks(Log* log, const Vector<Utf8>& what, LogColor color) const
@@ -599,13 +578,15 @@ void Diagnostic::collectRanges()
     if (!showSourceCode)
         return;
 
+    errorId = getErrorId(textMsg);
+    removeErrorId(textMsg);
+
     if (hasLocation)
     {
         Vector<Utf8> tokens;
         tokenizeError(textMsg, tokens);
         if (!tokens.empty())
         {
-            removeErrorId(tokens[0]);
             tokens[0].insert(0, getErrorLevelTitle());
             ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .msg = tokens[0], .errorLevel = errorLevel});
             textMsg.clear();
@@ -1012,18 +993,17 @@ void Diagnostic::reportCompact(Log* log)
 {
     preprocess();
     setupColors();
-    setColorRanges(log, errorLevel, HintPart::ErrorLevel);
-    printErrorLevel(log);
-
-    Vector<Utf8> tokens;
-    tokenizeError(textMsg, tokens);
-
-    log->print(tokens[0]);
-    log->print(": ");
 
     printSourceLine(log);
     log->write(": ");
+    
+    setColorRanges(log, errorLevel, HintPart::ErrorLevel);
+    log->write(getErrorLevelTitle());
 
+    Vector<Utf8> tokens;
+    tokenizeError(textMsg, tokens);
+    log->print(tokens[0]);
+    
     log->writeEol();
     log->setDefaultColor();
 }
@@ -1042,10 +1022,11 @@ void Diagnostic::report(Log* log)
         else
             log->setColor(sourceFileColor);
 
-        if (hasErrorId(textMsg))
+        if (!errorId.empty())
         {
-            log->print(Utf8(textMsg.buffer, 9));
-            log->print(" ");
+            log->print("[");
+            log->print(errorId);
+            log->print("] ");
         }
 
         printSourceLine(log);
@@ -1183,9 +1164,7 @@ Utf8 Diagnostic::getErrorId(const Utf8& textMsg)
 {
     if (!hasErrorId(textMsg))
         return "";
-    Utf8 err;
-    err.setView(textMsg.buffer + 1, 7);
-    return err;
+    return textMsg.substr(1, 7);
 }
 
 void Diagnostic::tokenizeError(const Utf8& err, Vector<Utf8>& tokens)

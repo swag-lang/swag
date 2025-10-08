@@ -155,7 +155,6 @@ struct Diagnostic
     void     printSourceCode(Log* log, uint32_t num, const Utf8& line) const;
     void     printSourceCode(Log* log) const;
     void     printSourceLine(Log* log) const;
-    void     printErrorLevel(Log* log);
     Utf8     getErrorLevelTitle() const;
     void     printMarginLineNo(Log* log, uint32_t lineNo) const;
     void     printMargin(Log* log, bool eol = false, bool printLineNo = false, uint32_t lineNo = 0) const;
@@ -192,6 +191,7 @@ struct Diagnostic
         bool            mergeNext = false;
     };
 
+    Utf8            errorId;
     Utf8            textMsg;
     Vector<Utf8>    preRemarks;
     Vector<Utf8>    remarks;
