@@ -260,8 +260,9 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
                     const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                     if (!param->assignment)
                     {
-                        const Diagnostic err{node->token.sourceFile, node->token, formErr(Err0081, identifier->resolvedSymbolName()->name.cstr())};
-                        return context->report(err, Diagnostic::hereIs(identifier->resolvedSymbolOverload()));
+                        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0081, identifier->resolvedSymbolName()->name.cstr())};
+                        err.addNote(Diagnostic::hereIs(identifier->resolvedSymbolOverload()));
+                        return context->report(err);
                     }
 
                     const auto child    = Ast::newFuncCallParam(nullptr, identifier->genericParameters);

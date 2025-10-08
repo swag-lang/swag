@@ -22,14 +22,16 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
     {
-        const Diagnostic err{first, formErr(Err0498, SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
-        return context->report(err, Diagnostic::hereIs(typeFunc->declNode));
+        Diagnostic err{first, formErr(Err0498, SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
+        err.addNote(Diagnostic::hereIs(typeFunc->declNode));
+        return context->report(err);
     }
 
     if (typeFunc->numReturnRegisters() > 1)
     {
-        const Diagnostic err{first, formErr(Err0605, typeFunc->returnType->getDisplayNameC())};
-        return context->report(err, Diagnostic::hereIs(typeFunc->declNode));
+        Diagnostic err{first, formErr(Err0605, typeFunc->returnType->getDisplayNameC())};
+        err.addNote(Diagnostic::hereIs(typeFunc->declNode));
+        return context->report(err);
     }
 
     node->typeInfo    = first->typeInfo;

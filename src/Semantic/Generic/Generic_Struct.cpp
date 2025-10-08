@@ -32,8 +32,9 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
                         const auto param = castAst<AstVarDecl>(p, AstNodeKind::FuncDeclParam);
                         if (!param->assignment)
                         {
-                            const Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0082, typeExpr->identifier->resolvedSymbolName()->name.cstr())};
-                            return context->report(err, Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload()));
+                            Diagnostic err{node->token.sourceFile, node->type->token, formErr(Err0082, typeExpr->identifier->resolvedSymbolName()->name.cstr())};
+                            err.addNote(Diagnostic::hereIs(typeExpr->identifier->resolvedSymbolOverload()));
+                            return context->report(err);
                         }
 
                         const auto child    = Ast::newFuncCallParam(nullptr, identifier->genericParameters);
@@ -56,7 +57,8 @@ bool Generic::instantiateDefaultGenericVar(SemanticContext* context, AstVarDecl*
         }
     }
 
-    return context->report({node, formErr(Err0719, node->typeInfo->getDisplayNameC())});
+    const Diagnostic err{node, formErr(Err0719, node->typeInfo->getDisplayNameC())};
+    return context->report(err);
 }
 
 bool Generic::instantiateStruct(SemanticContext* context, AstNode* genericParameters, OneMatch& match, bool& alias)

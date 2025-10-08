@@ -226,19 +226,10 @@ bool ErrorContext::report(const Diagnostic& err, const Vector<const Diagnostic*>
     return Report::report(copyDiag, copyNotes);
 }
 
-bool ErrorContext::report(const Diagnostic& err, const Diagnostic* note, const Diagnostic* note1)
-{
-    Vector<const Diagnostic*> notes;
-    if (note)
-        notes.push_back(note);
-    if (note1)
-        notes.push_back(note1);
-    return report(err, notes);
-}
-
 bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue)
 {
     if (value <= maxValue)
         return true;
-    return report({node, formErr(Err0762, typeOverflow, maxValue)});
+    const Diagnostic err{node, formErr(Err0762, typeOverflow, maxValue)};
+    return report(err);
 }

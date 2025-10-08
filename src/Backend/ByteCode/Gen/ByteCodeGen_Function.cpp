@@ -1440,8 +1440,9 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
         {
             if (!srcNode)
                 srcNode = typeInfoFunc->declNode;
-            const Diagnostic err{parent, parent->token, formErr(Err0396, parent->token.cstr(), srcNode->token.cstr())};
-            return context->report(err, Diagnostic::hereIs(srcNode));
+            Diagnostic err{parent, parent->token, formErr(Err0396, parent->token.cstr(), srcNode->token.cstr())};
+            err.addNote(Diagnostic::hereIs(srcNode));
+            return context->report(err);
         }
     }
 

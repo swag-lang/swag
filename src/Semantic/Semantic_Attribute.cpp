@@ -707,7 +707,8 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         if (resolvedName->isNot(SymbolKind::Attribute))
         {
             Diagnostic err{identifier, identifier->token, formErr(Err0163, resolvedName->name.cstr(), Naming::aKindName(resolvedName->kind).cstr())};
-            context->report(err, Diagnostic::hereIs(resolved));
+            err.addNote(Diagnostic::hereIs(resolved));
+            context->report(err);
             return false;
         }
 
@@ -718,7 +719,8 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             if (!(typeInfo->attributeUsage.has(ATTR_USAGE_FILE)))
             {
                 Diagnostic err{identifier, identifier->token, formErr(Err0377, resolvedName->name.cstr())};
-                context->report(err, Diagnostic::hereIs(resolved));
+                err.addNote(Diagnostic::hereIs(resolved));
+                context->report(err);
                 return false;
             }
         }

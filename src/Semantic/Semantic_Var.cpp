@@ -1191,8 +1191,9 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 const auto over      = nodeWhere->resolvedSymbolOverload();
                 if (nodeWhere->is(AstNodeKind::IdentifierRef))
                     nodeWhere = nodeWhere->lastChild();
-                const Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0162)};
-                return context->report(err, Diagnostic::hereIs(over));
+                Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0162)};
+                err.addNote(Diagnostic::hereIs(over));
+                return context->report(err);
             }
 
             const Diagnostic err{node->assignment, toErr(Err0747)};

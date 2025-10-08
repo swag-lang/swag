@@ -42,8 +42,7 @@ struct PushErrCxtStep
 struct ErrorContext
 {
     void extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& notes);
-    bool report(const Diagnostic& err, const Diagnostic* note = nullptr, const Diagnostic* note1 = nullptr);
-    bool report(const Diagnostic& err, const Vector<const Diagnostic*>& notes);
+    bool report(const Diagnostic& err, const Vector<const Diagnostic*>& notes = {});
     bool checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue);
 
     void reset()

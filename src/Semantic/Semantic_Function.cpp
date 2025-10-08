@@ -972,8 +972,9 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
 
             if (other)
             {
-                const Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0635, funcNode->token.cstr())};
-                return context->report(err, Diagnostic::hereIs(other));
+                Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0635, funcNode->token.cstr())};
+                err.addNote(Diagnostic::hereIs(other));
+                return context->report(err);
             }
         }
     }

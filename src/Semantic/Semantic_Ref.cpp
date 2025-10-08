@@ -189,8 +189,9 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     {
         if (child->isNot(AstNodeKind::IdentifierRef) || child->lastChild()->isNot(AstNodeKind::ArrayPointerIndex))
         {
-            const Diagnostic err{node, node->token, toErr(Err0152)};
-            return context->report(err, Diagnostic::hereIs(overload->node));
+            Diagnostic err{node, node->token, toErr(Err0152)};
+            err.addNote(Diagnostic::hereIs(overload->node));
+            return context->report(err);
         }
     }
 
@@ -215,13 +216,15 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
         {
             if (typeInfo->isVoid())
             {
-                const Diagnostic err{node, node->token, formErr(Err0144, symbol->name.cstr())};
-                return context->report(err, Diagnostic::hereIs(overload));
+                Diagnostic err{node, node->token, formErr(Err0144, symbol->name.cstr())};
+                err.addNote(Diagnostic::hereIs(overload));
+                return context->report(err);
             }
 
             Diagnostic err{node, node->token, formErr(Err0149, typeInfo->getDisplayNameC())};
             err.addNote(form("only the address of a returned reference can be taken, and this is %s", Naming::aKindName(typeInfo).cstr()));
-            return context->report(err, Diagnostic::hereIs(overload));
+            err.addNote(Diagnostic::hereIs(overload));
+            return context->report(err);
         }
     }
 

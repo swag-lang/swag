@@ -251,14 +251,36 @@ bool Semantic::resolveSwitch(SemanticContext* context)
                         {
                             const auto note = Diagnostic::hereIs(valExpression[idx], "this is the other definition");
                             if (expr->isConstantGenTypeInfo())
-                                return context->report({expr, formErr(Err0015, expr->token.cstr())}, note);
+                            {
+                                Diagnostic err{expr, formErr(Err0015, expr->token.cstr())};
+                                err.addNote(note);
+                                return context->report(err);
+                            }
+
                             if (expr->typeInfo->isEnum())
-                                return context->report({expr, formErr(Err0015, expr->token.cstr())}, note);
+                            {
+                                Diagnostic err{expr, formErr(Err0015, expr->token.cstr())};
+                                err.addNote(note);
+                                return context->report(err);
+                            }
+
                             if (typeExpr->isNativeInteger())
-                                return context->report({expr, formErr(Err0013, expr->computedValue()->reg.u64)}, note);
+                            {
+                                Diagnostic err{expr, formErr(Err0013, expr->computedValue()->reg.u64)};
+                                err.addNote(note);
+                                return context->report(err);
+                            }
+
                             if (typeExpr->isPointerNull())
-                                return context->report({expr, toErr(Err0017)}, note);
-                            return context->report({expr, formErr(Err0014, expr->computedValue()->reg.f64)}, note);
+                            {
+                                Diagnostic err{expr, toErr(Err0017)};
+                                err.addNote(note);
+                                return context->report(err);
+                            }
+
+                            Diagnostic err{expr, formErr(Err0014, expr->computedValue()->reg.f64)};
+                            err.addNote(note);
+                            return context->report(err);
                         }
 
                         continue;
@@ -279,12 +301,14 @@ bool Semantic::resolveSwitch(SemanticContext* context)
     if (node->hasAttribute(ATTRIBUTE_COMPLETE))
     {
         // No default for a complete switch
-        auto back = node->cases.back();
+        const auto back = node->cases.back();
         if (back->expressions.empty())
         {
             const auto attr = back->findParentAttrUse(g_LangSpec->name_Swag_Complete);
             const auto note = Diagnostic::note(attr, form("this is the %s", "attribute"));
-            return context->report({back, back->token, toErr(Err0326)}, note);
+            Diagnostic err{back, back->token, toErr(Err0326)};
+            err.addNote(note);
+            return context->report(err);
         }
 
         // When a switch is marked as complete, be sure that every definition has been covered

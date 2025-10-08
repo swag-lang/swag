@@ -133,8 +133,9 @@ bool Semantic::resolveImplFor(SemanticContext* context)
     auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isInterface())
     {
-        const Diagnostic err{node->identifier, formErr(Err0139, node->identifier->token.cstr(), Naming::aKindName(typeInfo).cstr())};
-        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
+        Diagnostic err{node->identifier, formErr(Err0139, node->identifier->token.cstr(), Naming::aKindName(typeInfo).cstr())};
+        err.addNote(Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
+        return context->report(err);
     }
 
     // Be sure the second identifier is a struct
@@ -609,8 +610,9 @@ bool Semantic::resolveImpl(SemanticContext* context)
     const auto typeInfo = node->identifier->typeInfo;
     if (!typeInfo->isStruct() && !typeInfo->isEnum())
     {
-        const Diagnostic err{node->identifier, formErr(Err0138, node->identifier->token.cstr(), typeInfo->getDisplayNameC())};
-        return context->report(err, Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
+        Diagnostic err{node->identifier, formErr(Err0138, node->identifier->token.cstr(), typeInfo->getDisplayNameC())};
+        err.addNote(Diagnostic::hereIs(node->identifier->resolvedSymbolOverload()));
+        return context->report(err);
     }
 
     const auto typeIdentifier = node->identifier->resolvedSymbolOverload()->typeInfo;

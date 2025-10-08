@@ -806,8 +806,9 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
             {
                 if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                 {
-                    const Diagnostic err(identifier, identifier->token, formErr(Err0713, overload->node->token.cstr()));
-                    return context->report(err, Diagnostic::hereIs(overload));
+                    Diagnostic err(identifier, identifier->token, formErr(Err0713, overload->node->token.cstr()));
+                    err.addNote(Diagnostic::hereIs(overload));
+                    return context->report(err);
                 }
 
                 identifier->addAstFlag(AST_DISCARD);
@@ -815,8 +816,9 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         }
         else if (typeInfoRet->isVoid() && identifier->hasAstFlag(AST_DISCARD))
         {
-            const Diagnostic err{identifier, identifier->token, toErr(Err0128)};
-            return context->report(err, Diagnostic::hereIs(overload));
+            Diagnostic err{identifier, identifier->token, toErr(Err0128)};
+            err.addNote(Diagnostic::hereIs(overload));
+            return context->report(err);
         }
 
         // From now this is considered as a function, not a lambda
@@ -920,8 +922,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     // Be sure this is not a 'forward' decl
     if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && !identifier->hasIntrinsicName())
     {
-        const Diagnostic err{identifier, identifier->token, formErr(Err0186, identifier->token.cstr())};
-        return context->report(err, Diagnostic::hereIs(overload));
+        Diagnostic err{identifier, identifier->token, formErr(Err0186, identifier->token.cstr())};
+        err.addNote(Diagnostic::hereIs(overload));
+        return context->report(err);
     }
 
     const auto pr2 = identifier->getParent(2);
@@ -1006,8 +1009,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
             {
-                const Diagnostic err(identifier, identifier->token, formErr(Err0711, overload->node->token.cstr()));
-                return context->report(err, Diagnostic::hereIs(overload));
+                Diagnostic err(identifier, identifier->token, formErr(Err0711, overload->node->token.cstr()));
+                err.addNote(Diagnostic::hereIs(overload));
+                return context->report(err);
             }
 
             identifier->addAstFlag(AST_DISCARD);
@@ -1017,8 +1021,9 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     {
         if (identifier->hasAstFlag(AST_DISCARD))
         {
-            const Diagnostic err{identifier, identifier->token, toErr(Err0128)};
-            return context->report(err, Diagnostic::hereIs(overload));
+            Diagnostic err{identifier, identifier->token, toErr(Err0128)};
+            err.addNote(Diagnostic::hereIs(overload));
+            return context->report(err);
         }
     }
 

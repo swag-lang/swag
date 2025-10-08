@@ -217,8 +217,9 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     // Be sure the identifier is an enum
     if (!node->typeInfo->isEnum())
     {
-        const Diagnostic err{node, formErr(Err0582, node->typeInfo->getDisplayNameC())};
-        return context->report(err, Diagnostic::hereIs(node->resolvedSymbolOverload()));
+        Diagnostic err{node, formErr(Err0582, node->typeInfo->getDisplayNameC())};
+        err.addNote(Diagnostic::hereIs(node->resolvedSymbolOverload()));
+        return context->report(err);
     }
 
     const auto enumNode = castAst<AstEnum>(node->findParent(AstNodeKind::EnumDecl), AstNodeKind::EnumDecl);
@@ -232,10 +233,10 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CAST_FLAG_EXACT))
     {
-        const Diagnostic err{node, formErr(Err0588, concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
-        const auto       note  = Diagnostic::hereIs(node->resolvedSymbolOverload());
-        const auto       note1 = Diagnostic::hereIs(enumNode->type);
-        return context->report(err, note, note1);
+        Diagnostic err{node, formErr(Err0588, concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
+        err.addNote(Diagnostic::hereIs(node->resolvedSymbolOverload()));
+        err.addNote(Diagnostic::hereIs(enumNode->type));
+        return context->report(err);
     }
 
     // Add a symbol in the enum scope
