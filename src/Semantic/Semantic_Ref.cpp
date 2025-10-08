@@ -443,7 +443,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (!symbol)
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0234, node->array->token.cstr(), typeInfo->getDisplayNameC())};
-            err.hint = form("there is a hidden call to [[%s]]", g_LangSpec->name_opSlice.cstr());
+            err.addNote(form("there is a hidden call to [[%s]]", g_LangSpec->name_opSlice.cstr()));
             err.addNote(node->array, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
@@ -538,13 +538,13 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
 
         if (front->is(AstNodeKind::IdentifierRef))
         {
-            err.hint = "the operation is not allowed on a non-pointer type";
+            err.addNote("the operation is not allowed on a non-pointer type");
             err.addNote(front, form("hint: use [['&']] to get the address of [[%s]]", front->token.cstr()));
             return context->report(err);
         }
 
         err.addNote(front, Diagnostic::isType(typeInfo));
-        err.hint = "the operation is not allowed on a non-pointer type";
+        err.addNote("the operation is not allowed on a non-pointer type");
         return context->report(err);
     }
 
@@ -1106,7 +1106,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 YIELD();
                 Diagnostic err{arrayNode->access, formErr(Err0175, arrayNode->array->token.cstr(), arrayType->getDisplayNameC())};
-                err.hint = form("there is a hidden call to [[%s]]", g_LangSpec->name_opIndex.cstr());
+                err.addNote(form("there is a hidden call to [[%s]]", g_LangSpec->name_opIndex.cstr()));
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(err);
             }

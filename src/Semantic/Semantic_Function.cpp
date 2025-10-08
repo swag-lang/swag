@@ -1516,7 +1516,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         if (Parser::isGeneratedName(funcNode->token.text))
             msg = formErr(Err0657, concreteType->getDisplayNameC());
         else
-            msg = formErr(Err0658, concreteType->getDisplayNameC(), funcNode->token.cstr());
+            msg = formErr(Err0658, funcNode->token.cstr(), concreteType->getDisplayNameC());
 
         Diagnostic err{child, msg};
 

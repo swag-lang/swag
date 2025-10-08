@@ -1151,7 +1151,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     if (!userOp->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
                         Diagnostic err{node->assignment, toErr(Err0043)};
-                        err.hint = form("this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]", leftConcreteType->getDisplayNameC());
+                        err.addNote(form("this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]", leftConcreteType->getDisplayNameC()));
                         err.addNote(node->assignToken, form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
                         return context->report(err);
                     }

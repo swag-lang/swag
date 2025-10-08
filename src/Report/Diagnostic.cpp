@@ -386,7 +386,7 @@ void Diagnostic::addNote(const Utf8& msg)
 
 void Diagnostic::addNote(const char* msg)
 {
-    if (!msg  || !msg[0])
+    if (!msg || !msg[0])
         return;
     const auto note   = Diagnostic::note(msg);
     note->fromContext = forceFromContext;
@@ -1001,8 +1001,8 @@ void Diagnostic::printRanges(Log* log)
 
         ranges.pop_back();
 
-        if (!ranges.empty())
-            printRangesVerticalBars(log, ranges.size());
+        //if (!ranges.empty())
+        //    printRangesVerticalBars(log, ranges.size());
     }
 
     log->writeEol();
@@ -1238,19 +1238,25 @@ bool Diagnostic::containsText(const Utf8& txt) const
 
     for (const auto& n : notes)
     {
-        if (n->textMsg.containsNoCase(g_CommandLine.verboseErrorsFilter))
+        if (n->containsText(txt))
             return true;
     }
 
-    for (const auto& n : remarks)
+    for (const auto& n : preRemarks)
     {
-        if (n.containsNoCase(g_CommandLine.verboseErrorsFilter))
+        if (n.containsNoCase(txt))
             return true;
     }
 
     for (const auto& n : autoRemarks)
     {
-        if (n.containsNoCase(g_CommandLine.verboseErrorsFilter))
+        if (n.containsNoCase(txt))
+            return true;
+    }
+
+    for (const auto& n : remarks)
+    {
+        if (n.containsNoCase(txt))
             return true;
     }
 

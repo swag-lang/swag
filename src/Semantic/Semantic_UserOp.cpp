@@ -515,7 +515,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             YIELD();
 
             Diagnostic err{context->node, context->node->token, formErr(Err0209, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            err.hint = form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffectLiteral.cstr());
+            err.addNote(form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffectLiteral.cstr()));
             err.addNote(left->token, Diagnostic::isType(leftTypeInfo));
             err.addNote(right->firstChild(), form("this is the literal suffix [[%s]]", suffix.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode));
@@ -539,7 +539,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             YIELD();
 
             Diagnostic err{right, formErr(Err0531, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            err.hint = Diagnostic::isType(rightTypeInfo);
+            err.addNote(Diagnostic::isType(rightTypeInfo));
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
             err.addNote(context->node, context->node->token, form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload()));
@@ -581,14 +581,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         if (!opConst)
         {
             Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0240, name.cstr(), leftType->getDisplayNameC())};
-            err.hint = form("there is a hidden call to [[%s]]", name.cstr());
+            err.addNote(form("there is a hidden call to [[%s]]", name.cstr()));
             err.addNote(left, Diagnostic::isType(leftType));
             err.addNote(note);
             return context->report(err);
         }
 
         Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0241, name.cstr(), leftType->getDisplayNameC(), opConst)};
-        err.hint = form("there is a hidden call to [[%s]]", name.cstr());
+        err.addNote(form("there is a hidden call to [[%s]]", name.cstr()));
         err.addNote(left, Diagnostic::isType(leftType));
         err.addNote(note);
         return context->report(err);

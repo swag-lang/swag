@@ -645,7 +645,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
                     oneParam->typeInfo->isCVariadic())
                 {
                     Diagnostic err{oneParam, toErr(Err0411)};
-                    err.hint = Diagnostic::isType(oneParam);
+                    err.addNote(Diagnostic::isType(oneParam));
                     return context->report(err);
                 }
             }

@@ -393,7 +393,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                             YIELD();
 
                             Diagnostic err{right, formErr(Err0239, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-                            err.hint = Diagnostic::isType(rightTypeInfo);
+                            err.addNote(Diagnostic::isType(rightTypeInfo));
                             err.addNote(left, Diagnostic::isType(leftTypeInfo));
                             err.addNote(node, node->token, form("there is a hidden call to [[%s]] for the type [[%s]]", "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                             return context->report(err);

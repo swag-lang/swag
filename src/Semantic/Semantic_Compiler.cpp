@@ -144,7 +144,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
                 else
                 {
                     Diagnostic err{node, formErr(Err0044, realType->getDisplayNameC())};
-                    err.hint = "hint: prefix with [[#run]] to enforce a compile-time call";
+                    err.addNote("hint: prefix with [[#run]] to enforce a compile-time call");
                     return context->report(err);
                 }
             }

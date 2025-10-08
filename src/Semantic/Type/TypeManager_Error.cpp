@@ -119,10 +119,10 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
     return true;
 }
 
-void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, CastFlags castFlags, CastErrorType castError, Vector<const Diagnostic*>& notes)
+void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, TypeInfo* toType, TypeInfo* fromType, CastFlags castFlags, CastErrorType castError, Vector<const Diagnostic*>& notes)
 {
     msg.clear();
-    hint.clear();
+    note.clear();
     if (!toType || !fromType)
         return;
 
@@ -138,13 +138,13 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         const auto to   = castTypeInfo<TypeInfoSlice>(toType, TypeInfoKind::Slice);
         const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
-        hint            = form("the array has [[%d]] elements of type [[%s]], which does not match a slice of type [[%s]]", from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
+        note            = form("the array has [[%d]] elements of type [[%s]], which does not match a slice of type [[%s]]", from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
         msg = formErr(Err0601, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
-            hint = "only [[u64]] may be cast to a pointer";
+            note = "only [[u64]] may be cast to a pointer";
     }    
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic() && fromType->isPointer())
     {
@@ -166,17 +166,17 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     }
     else if (toType->isStruct() && fromType->isInterface())
     {
-        hint = Diagnostic::isType(fromType);
+        note = Diagnostic::isType(fromType);
         msg  = toErr(Err0529);
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
-        hint = form("this is a type value, also known as [[typeinfo]], or [[%s]]", fromType->getDisplayNameC());
+        note = form("this is a type value, also known as [[typeinfo]], or [[%s]]", fromType->getDisplayNameC());
         msg  = formErr(Err0528, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        hint = "a lambda can be converted to a closure type, but not vice versa";
+        note = "a lambda can be converted to a closure type, but not vice versa";
         msg  = toErr(Err0527);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
@@ -223,7 +223,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& hint, Vector<Utf8>& remarks, 
     {
         const auto toPtrRef = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer);
         if (fromType->isSame(toPtrRef->pointedType, CAST_FLAG_CAST))
-            hint = "hint: take the address with [['&']] to create a reference";
+            note = "hint: take the address with [['&']] to create a reference";
     }
     else if (toType->isTuple() && fromType->isTuple())
     {

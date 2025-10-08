@@ -277,7 +277,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 case MatchResult::MissingReturnType:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
-                    err.hint = "a return type is missing";
+                    err.addNote("a return type is missing");
                     err.addNote(itfSymbol->declNode, itfSymbol->declNode->token, form("the interface declaration returns type [[%s]]", typeLambda->returnType->getDisplayNameC()));
                     return context->report(err);
                 }
