@@ -207,8 +207,8 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
 
                 Diagnostic err{sourceFile, tokenAmb, toErr(Err0026)};
                 const auto note = Diagnostic::note(lastParameter, form("[[%s]] could refer to either a type or a parameter name", lastParameter->type->token.cstr()));
-                note->hint      = form("hint: use [[#type]] before [[%s]] if it is a type, or specify a [[:type]] after [[%s]] if it is a parameter name", lastParameter->type->token.cstr(), lastParameter->type->token.cstr());
                 err.addNote(note);
+                err.addNote(form("hint: use [[#type]] before [[%s]] if it is a type, or specify a [[:type]] after [[%s]] if it is a parameter name", lastParameter->type->token.cstr(), lastParameter->type->token.cstr()));
                 return context->report(err);
             }
 

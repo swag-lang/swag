@@ -107,11 +107,11 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         {
             left->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_AFFECT);
         }
-        
+
         return true;
     }
 
-    Utf8              hint;
+    Utf8              nte;
     const auto        node    = context->node;
     const Diagnostic* note    = nullptr;
     const auto        orgLeft = left;
@@ -139,7 +139,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             if (child->hasAstFlag(AST_FUNC_CALL | AST_FUNC_INLINE_CALL) && (child->typeInfo->isConst() || child->typeInfo->isStruct()))
             {
                 left = child;
-                hint = form("the function call returns an immutable [[%s]]", left->typeInfo->getDisplayNameC());
+                nte  = form("the function call returns an immutable [[%s]]", left->typeInfo->getDisplayNameC());
                 break;
             }
 
@@ -153,19 +153,19 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         if (left->is(AstNodeKind::Identifier) && left->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING | AstIdentifier::SPEC_FLAG_FROM_RECEIVER))
         {
             const auto leftId = castAst<AstIdentifier>(left, AstNodeKind::Identifier);
-            hint              = "this is equivalent to [[";
+            nte               = "this is equivalent to [[";
             for (uint32_t ic = 0; ic < orgLeft->childCount(); ic++)
             {
                 const auto c = orgLeft->children[ic];
                 if (ic)
-                    hint += ".";
-                hint += c->token.text;
+                    nte += ".";
+                nte += c->token.text;
             }
 
             if (left->hasSpecFlag(AstIdentifier::SPEC_FLAG_FROM_USING))
-                hint += "]] because of a [[using]]";
+                nte += "]] because of a [[using]]";
             else
-                hint += "]] because of a [[with]]";
+                nte += "]] because of a [[with]]";
 
             SWAG_ASSERT(left->resolvedSymbolOverload());
             if (left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
@@ -221,10 +221,10 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
                 left = left->children[left->childCount() - 2];
         }
 
-        if (hint.empty())
-            hint = Diagnostic::isType(left);
+        if (nte.empty())
+            nte = Diagnostic::isType(left);
 
-        err.addNote(left, hint);
+        err.addNote(left, nte);
         err.addNote(note);
         return context->report(err);
     }
@@ -232,16 +232,16 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     if (left->resolvedSymbolOverload() && left->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
     {
         Diagnostic err{node, node->token, toErr(Err0093)};
-        if (hint.empty())
-            hint = "this is a constant";
-        err.addNote(left, hint);
+        if (nte.empty())
+            nte = "this is a constant";
+        err.addNote(left, nte);
         return context->report(err);
     }
 
     Diagnostic err{node, node->token, toErr(Err0737)};
-    if (hint.empty())
-        hint = Diagnostic::isType(left);
-    err.addNote(left, hint);
+    if (nte.empty())
+        nte = Diagnostic::isType(left);
+    err.addNote(left, nte);
     return context->report(err);
 }
 

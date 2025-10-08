@@ -299,7 +299,7 @@ bool Semantic::resolveImplFor(SemanticContext* context)
                 case MatchResult::MismatchThrow:
                 {
                     Diagnostic err{child, child->getTokenName(), formErr(Err0299, typeBaseInterface->name.cstr(), child->token.cstr())};
-                    err.hint          = "one function declares [[throw]], while the other does not";
+                    err.addNote("one function declares [[throw]], while the other does not");
                     const auto note   = Diagnostic::note(itfSymbol->declNode, itfSymbol->declNode->getTokenName(), "this is the expected signature");
                     note->canBeMerged = false;
                     err.addNote(note);

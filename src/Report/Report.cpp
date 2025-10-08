@@ -59,61 +59,36 @@ namespace
         }
     }
 
-    void cleanNotes(Vector<Diagnostic*>& notes)
+    void cleanDiags(Vector<Diagnostic*>& diags)
     {
-        // Remove notes without messages
-        for (uint32_t i = 0; i < notes.size(); i++)
-        {
-            if (!notes[i]->hasSomething())
-            {
-                notes.erase(notes.begin() + i);
-                i--;
-                continue;
-            }
-        }
-
-        // Error message can have different parts.
-        // We generate hint and notes...
-        const auto   err = notes[0];
+        // The diagnostic message can have different parts.
+        const auto   err = diags[0];
         Vector<Utf8> parts;
         Diagnostic::tokenizeError(err->textMsg, parts);
         if (parts.size() > 1)
         {
             err->textMsg = parts[0];
-
-            if (!err->hint.empty())
-            {
-                const auto newNote = Diagnostic::note(err->sourceFile, err->startLocation, err->endLocation, err->hint);
-                if (notes.size() == 1)
-                    notes.push_back(newNote);
-                else
-                    notes.insert(++notes.begin(), newNote);
-            }
-
             for (uint32_t i = 1; i < parts.size(); i++)
-            {
-                auto newNote = Diagnostic::note(parts[i]);
-                notes.push_back(newNote);
-            }
+                diags.push_back(Diagnostic::note(parts[i]));
         }
 
-        // If multiple notes have the same source code location, then merge them on multiple lines
-        for (uint32_t i = 0; i < notes.size(); i++)
+        // If multiple diagnostics have the same source code location, then merge them in the remarks section
+        for (uint32_t i = 0; i < diags.size(); i++)
         {
-            for (uint32_t j = i + 1; j < notes.size(); j++)
+            for (uint32_t j = i + 1; j < diags.size(); j++)
             {
-                if (notes[j]->canBeMerged)
+                if (diags[j]->canBeMerged)
                 {
-                    if ((notes[j]->sourceFile == notes[i]->sourceFile &&
-                         notes[j]->startLocation.line == notes[i]->startLocation.line &&
-                         notes[j]->startLocation.column == notes[i]->startLocation.column) ||
-                        !notes[j]->hasLocation)
+                    if ((diags[j]->sourceFile == diags[i]->sourceFile &&
+                         diags[j]->startLocation.line == diags[i]->startLocation.line &&
+                         diags[j]->startLocation.column == diags[i]->startLocation.column) ||
+                        !diags[j]->hasLocation)
                     {
-                        if (!notes[j]->textMsg.empty())
+                        if (!diags[j]->textMsg.empty())
                         {
-                            notes[i]->remarks.push_back(notes[j]->textMsg);
-                            notes[j]->textMsg.clear();
-                            notes[j]->setup();
+                            diags[i]->remarks.push_back(diags[j]->textMsg);
+                            diags[j]->textMsg.clear();
+                            diags[j]->setup();
                         }
                         continue;
                     }
@@ -121,41 +96,31 @@ namespace
             }
         }
 
-        // Remove notes without messages
-        for (uint32_t i = 0; i < notes.size(); i++)
+        // Remove empty diagnostics
+        for (uint32_t i = 0; i < diags.size(); i++)
         {
-            if (!notes[i]->hasSomething())
+            if (!diags[i]->hasSomething())
             {
-                notes.erase(notes.begin() + i);
+                diags.erase(diags.begin() + i);
                 i--;
                 continue;
             }
         }
 
-        computeAutoRemarks(notes);
+        computeAutoRemarks(diags);
 
-        for (const auto note : notes)
+        // Call all ranges
+        for (const auto diag : diags)
         {
-            if (!note->display)
+            if (!diag->display)
                 continue;
-
-            // Transform a note in a hint
-            if (note->errorLevel == DiagnosticLevel::Note &&
-                note->hint.empty() &&
-                note->hasLocation)
-            {
-                note->showErrorLevel = false;
-                note->hint           = note->textMsg;
-                note->textMsg.clear();
-            }
-
-            note->collectRanges();
+            diag->collectRanges();
         }
 
         // Move ranges from note to note if they share the same line of code, and they do not overlap
-        for (uint32_t idxNote = 0; idxNote < notes.size(); idxNote++)
+        for (uint32_t idxDiag = 0; idxDiag < diags.size(); idxDiag++)
         {
-            const auto note = notes[idxNote];
+            const auto note = diags[idxDiag];
             if (!note->display || !note->canBeMerged)
                 continue;
 
@@ -163,7 +128,7 @@ namespace
             if (sourceFile0 && sourceFile0->fileForSourceLocation)
                 sourceFile0 = sourceFile0->fileForSourceLocation;
 
-            for (const auto note1 : notes)
+            for (const auto note1 : diags)
             {
                 if (note == note1)
                     continue;
@@ -198,10 +163,10 @@ namespace
                             // Exact same range, but there's no hint. Eat the hint.
                             if (r0.startLocation == r1.startLocation && r0.endLocation == r1.endLocation)
                             {
-                                if (r0.hint.empty())
+                                if (r0.msg.empty())
                                 {
-                                    r0.hint = r1.hint;
-                                    r1.hint.clear();
+                                    r0.msg = r1.msg;
+                                    r1.msg.clear();
                                     if (note1->ranges.size() == 1)
                                         note1->display = false;
                                 }
@@ -237,9 +202,9 @@ namespace
         }
 
         // No need to repeat the same source file line reference
-        for (uint32_t idxNote = 0; idxNote < notes.size(); idxNote++)
+        for (uint32_t idxNote = 0; idxNote < diags.size(); idxNote++)
         {
-            const auto note = notes[idxNote];
+            const auto note = diags[idxNote];
             if (!note->display)
                 continue;
             if (!note->showFileName)
@@ -249,9 +214,9 @@ namespace
             if (sourceFile0 && sourceFile0->fileForSourceLocation)
                 sourceFile0 = sourceFile0->fileForSourceLocation;
 
-            for (uint32_t idxNote1 = idxNote + 1; idxNote1 < notes.size(); idxNote1++)
+            for (uint32_t idxNote1 = idxNote + 1; idxNote1 < diags.size(); idxNote1++)
             {
-                const auto note1 = notes[idxNote1];
+                const auto note1 = diags[idxNote1];
                 if (!note1->display || !note1->hasLocation)
                     continue;
                 if (note->fromContext != note1->fromContext)
@@ -271,13 +236,13 @@ namespace
         uint32_t lineCodeMaxDigits = 0;
         uint32_t minBlanks         = UINT32_MAX;
 
-        for (const auto note : notes)
+        for (const auto note : diags)
         {
             lineCodeMaxDigits = std::max(lineCodeMaxDigits, note->lineCodeNumDigits);
             minBlanks         = std::min(minBlanks, note->minBlanks);
         }
 
-        for (const auto note : notes)
+        for (const auto note : diags)
         {
             note->lineCodeMaxDigits = lineCodeMaxDigits;
             note->minBlanks         = minBlanks;
@@ -312,7 +277,7 @@ namespace
         }
 
         std::ranges::sort(diags, [](auto& r1, auto& r2) { return r1->fromContext < r2->fromContext; });
-        cleanNotes(diags);
+        cleanDiags(diags);
 
         log->writeEol();
 

@@ -599,28 +599,16 @@ void Diagnostic::collectRanges()
     if (!showSourceCode)
         return;
 
-    if (hasLocation && errorLevel != DiagnosticLevel::Note)
+    if (hasLocation)
     {
-        // Main title as a hint
         Vector<Utf8> tokens;
         tokenizeError(textMsg, tokens);
         if (!tokens.empty())
         {
             removeErrorId(tokens[0]);
             tokens[0].insert(0, getErrorLevelTitle());
-
-            ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = tokens[0], .errorLevel = errorLevel});
-            if (!hint.empty())
-                remarks.insert(remarks.begin(), hint);
-            hint.clear();
+            ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .msg = tokens[0], .errorLevel = errorLevel});
         }
-    }
-
-    if (hasLocation && !hint.empty())
-    {
-        // The main hint is transformed to a range
-        ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .hint = hint, .errorLevel = errorLevel});
-        hint.clear();
     }
 
     if (ranges.empty())
@@ -640,7 +628,7 @@ void Diagnostic::collectRanges()
     // Preprocess ranges
     for (auto& r : ranges)
     {
-        r.hint = preprocess(r.hint);
+        r.msg = preprocess(r.msg);
 
         // Be sure start column is before end column
         if (r.startLocation.line == r.endLocation.line && r.startLocation.column > r.endLocation.column)
@@ -869,7 +857,7 @@ void Diagnostic::printLastRangeHint(Log* log, uint32_t curColumn)
 
     Vector<Utf8>   lines;
     const uint32_t maxLength = g_CommandLine.errorRightColumn - leftColumn + minBlanks;
-    wordWrap(r.hint, lines, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
+    wordWrap(r.msg, lines, std::max(maxLength, g_CommandLine.errorRightColumn / 2));
 
     for (uint32_t lineNo = 0; lineNo < lines.size(); lineNo++)
     {
@@ -929,7 +917,7 @@ void Diagnostic::printRanges(Log* log)
     // Remove all ranges with an empty message
     for (uint32_t i = 0; i < ranges.size(); i++)
     {
-        if (ranges[i].hint.empty())
+        if (ranges[i].msg.empty())
         {
             ranges.erase(ranges.begin() + i);
             i--;
@@ -944,7 +932,7 @@ void Diagnostic::printRanges(Log* log)
         const auto mid = static_cast<int>(r.mid - minBlanks);
 
         // Compute the maximum length of one line.
-        auto         unFormat = Log::removeFormat(r.hint.cstr());
+        auto         unFormat = Log::removeFormat(r.msg.cstr());
         Vector<Utf8> tokens;
         int          unFormatLen = 0;
         wordWrap(unFormat, tokens, 100000); // Just take care of '\n'
@@ -962,7 +950,7 @@ void Diagnostic::printRanges(Log* log)
         {
             alignRangeColumn(log, curColumn, r.mid - 2 - unFormatLen);
             setColorRanges(log, r.errorLevel, HintPart::ErrorLevel);
-            log->print(r.hint);
+            log->print(r.msg);
             log->write(" ");
             log->print(LogSymbol::HorizontalLine);
             log->print(LogSymbol::DownLeft);

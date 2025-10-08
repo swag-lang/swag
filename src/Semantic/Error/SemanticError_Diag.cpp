@@ -255,7 +255,7 @@ namespace
         {
             const auto msg = formErr(Err0592, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{errorNode, msg};
-            err->hint      = errorParam.explicitCastMsg;
+            err->addNote(errorParam.explicitCastMsg);
         }
 
         errorParam.addError(err);
@@ -327,8 +327,7 @@ namespace
                  !bi.badSignatureGivenType->isPointerTo(TypeInfoKind::Struct) &&
                  errorParam.oneTry->overload->node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
         {
-            const auto msg  = formErr(Err0668, bi.badSignatureRequestedType->getDisplayNameC());
-            err             = new Diagnostic{callParamNode, msg};
+            err             = new Diagnostic{callParamNode, formErr(Err0668, bi.badSignatureRequestedType->getDisplayNameC())};
             const auto n    = form("function [[%s]] is a method and should be called with a pointer to [[%s]] as a first argument", errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
             const auto note = Diagnostic::note(context->node, context->node->token, n);
             errorParam.addNote(note);
@@ -336,11 +335,11 @@ namespace
         }
         else
         {
-            const auto msg = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
-            err            = new Diagnostic{callParamNode, msg};
+            const auto n = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            err          = new Diagnostic{callParamNode, n};
         }
 
-        err->hint = errorParam.explicitCastMsg;
+        err->addNote(errorParam.explicitCastMsg);
         errorParam.addError(err);
 
         // Let var with a const problem
@@ -348,24 +347,27 @@ namespace
         {
             const auto callOver = callParamNode->resolvedSymbolOverload();
             if (callOver && callOver->hasFlag(OVERLOAD_VAR_IS_LET))
-                errorParam.addNote(Diagnostic::note(callOver->node, callOver->node->token, "a [[let]] variable is immutable and cannot be modified"));
+            {
+                const auto note = Diagnostic::note(callOver->node, callOver->node->token, "a [[let]] variable is immutable and cannot be modified");
+                errorParam.addNote(note);
+            }
         }
 
         // Generic comes from
         if (bi.genMatchFromNode)
         {
-            const auto msg  = form("the type [[%s]] is expected because it was inferred here during instantiation", bi.genMatchFromNode->typeInfo->getDisplayNameC());
-            const auto note = Diagnostic::note(bi.genMatchFromNode, msg);
+            const auto n    = form("the type [[%s]] is expected because it was inferred here during instantiation", bi.genMatchFromNode->typeInfo->getDisplayNameC());
+            const auto note = Diagnostic::note(bi.genMatchFromNode, n);
             errorParam.addNote(note, false);
         }
 
         // A more specific cast message?
         if (addCastErrorMsg)
         {
-            Utf8                      castMsg, castHint;
+            Utf8                      castMsg, castNte;
             Vector<Utf8>              castRemarks;
             Vector<const Diagnostic*> notes;
-            TypeManager::getCastErrorMsg(castMsg, castHint, castRemarks, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, bi.castErrorType, notes);
+            TypeManager::getCastErrorMsg(castMsg, castNte, castRemarks, bi.castErrorToType, bi.castErrorFromType, bi.castErrorFlags, bi.castErrorType, notes);
             Diagnostic::removeErrorId(castMsg);
 
             if (!castMsg.empty())
@@ -383,20 +385,20 @@ namespace
                     else
                     {
                         const auto note = Diagnostic::note(errorParam.oneTry->dependentVar, castMsg);
-                        note->hint      = castHint;
+                        note->addNote(castNte);
                         errorParam.addNote(note);
                     }
                 }
                 else
                 {
                     const auto note = Diagnostic::note(err->sourceNode, err->sourceNode->token, castMsg);
-                    note->hint      = castHint;
+                    note->addNote(castNte);
                     errorParam.addNote(note);
                 }
             }
-            else if (!castHint.empty() && err->hint.empty())
+            else if (!castNte.empty())
             {
-                err->hint = castHint;
+                err->addNote(castNte);
             }
 
             // Is there an explicit cast possible?
@@ -405,7 +407,10 @@ namespace
                 if (bi.castErrorToType && bi.castErrorFromType && !bi.castErrorToType->isGeneric())
                 {
                     if (TypeManager::makeCompatibles(context, bi.castErrorToType, bi.castErrorFromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                        errorParam.addNote(Diagnostic::note(callParamNode, form("hint: add an explicit [[cast(%s)]] if necessary", bi.castErrorToType->getDisplayNameC())));
+                    {
+                        const auto n = form("hint: add an explicit [[cast(%s)]] if necessary", bi.castErrorToType->getDisplayNameC());
+                        errorParam.addNote(Diagnostic::note(callParamNode, n));
+                    }
                 }
             }
         }
@@ -422,12 +427,13 @@ namespace
         }
         else if (destParamNode->hasAstFlag(AST_GENERATED) || Parser::isGeneratedName(destParamNode->token.cstr()))
         {
-            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, "this is the corresponding parameter");
+            const auto note = Diagnostic::note(destParamNode, destParamNode->token, "this is the corresponding parameter");
             errorParam.addNote(note);
         }
         else
         {
-            Diagnostic* note = Diagnostic::note(destParamNode, destParamNode->token, form("this is the corresponding parameter [[%s]]", destParamNode->token.cstr()));
+            const auto n    = form("this is the corresponding parameter [[%s]]", destParamNode->token.cstr());
+            const auto note = Diagnostic::note(destParamNode, destParamNode->token, n);
             errorParam.addNote(note);
         }
     }

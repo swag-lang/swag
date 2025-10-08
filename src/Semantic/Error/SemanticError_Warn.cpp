@@ -92,7 +92,7 @@ bool SemanticError::warnUnusedFunction(const Module* moduleToGen, const ByteCode
 
     Diagnostic err{funcDecl, funcDecl->tokenName, formErr(Wrn0006, "function", "function", funcDecl->token.cstr()), DiagnosticLevel::Warning};
     if (!funcDecl->isSpecialFunctionName())
-        err.hint = form("hint: rename it to [[_%s]] if this is intentional", funcDecl->token.cstr());
+        err.addNote(form("hint: rename it to [[_%s]] if this is intentional", funcDecl->token.cstr()));
     return Report::report(err);
 }
 
@@ -197,7 +197,7 @@ bool SemanticError::warnUnusedVariables(SemanticContext* context, const Scope* s
                     continue;
                 const auto msg = formErr(Wrn0006, Naming::kindName(overload).cstr(), Naming::kindName(overload).cstr(), sym->name.cstr());
                 Diagnostic err{front->ownerFct, front->ownerFct->token, msg, DiagnosticLevel::Warning};
-                err.hint = "there is an implied first parameter [[me]]";
+                err.addNote("there is an implied first parameter [[me]]");
                 err.addNote("hint: use [[func]] instead of [[mtd]] to avoid the implicit [[me]] parameter.");
                 isOk = isOk && context->report(err);
             }

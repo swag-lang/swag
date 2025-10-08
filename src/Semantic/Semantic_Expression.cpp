@@ -19,7 +19,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     {
         Diagnostic err{expression, expression->token, formErr(Err0044, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-        err.hint          = form("there is a hidden call to [[%s]]", userOp->symbol->name.cstr());
+        err.addNote(form("there is a hidden call to [[%s]]", userOp->symbol->name.cstr()));
         err.addNote(note);
         return context->report(err);
     }

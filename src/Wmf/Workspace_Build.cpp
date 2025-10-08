@@ -416,7 +416,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                     auto       msg    = form("the %s [[%s]] is waiting for %s [[%s]] to be resolved", Naming::kindName(front).cstr(), front->token.cstr(), Naming::kindName(back).cstr(), back->token.cstr());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
-                    note->hint        = Diagnostic::isType(back->typeInfo);
+                    note->addNote(Diagnostic::isType(back->typeInfo));
                     notes.push_back(note);
                 }
 

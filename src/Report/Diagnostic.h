@@ -91,38 +91,9 @@ struct Diagnostic
         setup();
     }
 
-    Diagnostic(AstNode* node, const Token& token, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error) :
-        textMsg{std::move(msg)},
-        errorLevel{level},
-        startLocation{token.startLocation},
-        endLocation{token.endLocation},
-        hint{std::move(hint)},
-        sourceFile{node->token.sourceFile},
-        sourceNode{node},
-        showSourceCode{true},
-        hasLocation{true}
-    {
-        replaceTokenName(token);
-        setup();
-    }
-
     Diagnostic(AstNode* node, Utf8 msg, DiagnosticLevel level = DiagnosticLevel::Error) :
         textMsg{std::move(msg)},
         errorLevel{level},
-        sourceFile{node->token.sourceFile},
-        sourceNode{node},
-        showSourceCode{true},
-        hasLocation{true}
-    {
-        replaceTokenName(node->token);
-        node->computeLocation(startLocation, endLocation);
-        setup();
-    }
-
-    Diagnostic(AstNode* node, Utf8 msg, Utf8 hint, DiagnosticLevel level = DiagnosticLevel::Error) :
-        textMsg{std::move(msg)},
-        errorLevel{level},
-        hint{std::move(hint)},
         sourceFile{node->token.sourceFile},
         sourceNode{node},
         showSourceCode{true},
@@ -153,10 +124,9 @@ struct Diagnostic
 
     static Diagnostic* note(const Utf8& msg) { return new Diagnostic{msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(AstNode* node, const Token& token, const Utf8& msg) { return new Diagnostic{node, token, msg, DiagnosticLevel::Note}; }
-    static Diagnostic* note(AstNode* node, const Utf8& msg, const Utf8& hint) { return new Diagnostic{node, msg, hint, DiagnosticLevel::Note}; }
+    static Diagnostic* note(AstNode* node, const Utf8& msg) { return new Diagnostic{node, msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(SourceFile* file, const Token& token, const Utf8& msg) { return new Diagnostic{file, token, msg, DiagnosticLevel::Note}; }
     static Diagnostic* note(SourceFile* file, const SourceLocation& start, const SourceLocation& end, const Utf8& msg) { return new Diagnostic{file, start, end, msg, DiagnosticLevel::Note}; }
-    static Diagnostic* note(AstNode* node, const Utf8& msg) { return node ? new Diagnostic{node, msg, DiagnosticLevel::Note} : nullptr; }
 
     void        setup();
     static Utf8 preprocess(const Utf8& textMsg);
@@ -214,7 +184,7 @@ struct Diagnostic
     {
         SourceLocation  startLocation;
         SourceLocation  endLocation;
-        Utf8            hint;
+        Utf8            msg;
         DiagnosticLevel errorLevel;
         uint32_t        width     = 0;
         uint32_t        mid       = 0;
@@ -263,7 +233,6 @@ struct Diagnostic
 
     SourceLocation startLocation;
     SourceLocation endLocation;
-    Utf8           hint;
 
     SourceFile* contextFile = nullptr;
     SourceFile* sourceFile  = nullptr;
