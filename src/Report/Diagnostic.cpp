@@ -608,6 +608,7 @@ void Diagnostic::collectRanges()
             removeErrorId(tokens[0]);
             tokens[0].insert(0, getErrorLevelTitle());
             ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .msg = tokens[0], .errorLevel = errorLevel});
+            textMsg.clear();
         }
     }
 
