@@ -587,7 +587,8 @@ void Diagnostic::collectRanges()
         tokenizeError(textMsg, tokens);
         if (!tokens.empty())
         {
-            tokens[0].insert(0, getErrorLevelTitle());
+            if (errorLevel != DiagnosticLevel::Note)
+                tokens[0].insert(0, getErrorLevelTitle());
             ranges.push_back({.startLocation = startLocation, .endLocation = endLocation, .msg = tokens[0], .errorLevel = errorLevel});
             textMsg.clear();
         }
