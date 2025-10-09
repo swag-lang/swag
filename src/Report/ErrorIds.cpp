@@ -836,15 +836,17 @@ void initErrors()
     SWAG_ERROR(Err0703, "array dimension could not be inferred: missing initialization                                          $ ");
     SWAG_ERROR(Err0704, "flag [[%s]] value cannot be derived: previous value not a power of two                                 $ ");
     SWAG_ERROR(Err0705, "generic arguments for %s [[%s]] could not be determined                                                $ ");
-    SWAG_ERROR(Err0706, "identifier [[%s]] could not be resolved                                                                $ ");
-    SWAG_ERROR(Err0707, "failed to resolve semantic reference                                                                   $ ");
-    SWAG_ERROR(Err0708, "variable type could not be inferred: expression is [[null]]                                            $ ");
-    SWAG_ERROR(Err0709, "[[%s]] cannot be part of a union: contains [[%s]]                                                      $ ");
-    SWAG_ERROR(Err0710, "no matching variable found for alias [[%s]]                                                            $ hint: remove the alias");
-    SWAG_ERROR(Err0711, "function [[%s]] return value cannot be ignored                                                         $ hint: add [[discard]] to explicitly ignore it");
-    SWAG_ERROR(Err0712, "intrinsic [[%s]] return value cannot be ignored                                                        $ ");
-    SWAG_ERROR(Err0713, "lambda [[%s]] return value cannot be ignored                                                           $ hint: add [[discard]] to explicitly ignore it");
     
+    SWAG_ERROR(Err0706, "failed to resolve identifier [[%s]]                                                                    $ ");
+    SWAG_ERROR(Err0707, "failed to resolve semantic reference                                                                   $ ");
+    SWAG_ERROR(Err0708, "variable type could not be inferred from [[null]] expression                                           $ ");
+    SWAG_ERROR(Err0709, "[[%s]] contains [[%s]] and cannot be part of a union                                                   $ ");
+    SWAG_ERROR(Err0710, "no matching variable found for alias [[%s]]                                                            $ hint: remove the alias");
+    SWAG_ERROR(Err0711, "return value of function [[%s]] cannot be ignored                                                      $ hint: use [[discard]] to explicitly ignore the return value if intentional");
+    SWAG_ERROR(Err0712, "return value of intrinsic [[%s]] value cannot be ignored                                               $ ");
+    SWAG_ERROR(Err0713, "return value of lambda [[%s]] cannot be ignored                                                        $ hint: use [[discard]] to explicitly ignore the return value if intentional");
+    SWAG_ERROR(Err0786, "[[%s]] used incorrectly with arguments                                                                 $ hint: [[%s]] is a value, not a function call; remove [['(']]");
+
     SWAG_ERROR(Err0714, "[[#import]] location already defined                                                                   $ ");
     SWAG_ERROR(Err0715, "module [[%s]] location already defined as [[%s]]                                                       $ ");
     SWAG_ERROR(Err0716, "[[#import]] version already defined                                                                    $ ");
@@ -906,7 +908,7 @@ void initErrors()
     SWAG_ERROR(Err0772, "foreign function [[%s]] not found                                                                      $ ");
     SWAG_ERROR(Err0773, "third [[#import]] argument missing or invalid, got $$TKN$$                                             $ hint: use [[version:\"version\"]]");
     SWAG_ERROR(Err0774, "[[\"%s\"]] is not a valid [[location]] value                                                           $ hint: use [[\"swag\"]] or [[\"disk\"]]");
-    SWAG_ERROR(Err0775, "module [[%s]] dependency has version mismatch                                                          $ ");
+    SWAG_ERROR(Err0775, "module [[%s]] dependency version mismatch                                                              $ ");
     SWAG_ERROR(Err0776, "module [[%s]] dependency version [[%s]] not found                                                      $ ");
     SWAG_ERROR(Err0777, "module [[%s]] dependency version [[%s]] not found at [[%s]]                                            $ ");
     SWAG_ERROR(Err0778, "module [[%s]] dependency has empty [[location]]                                                        $ ");
@@ -917,7 +919,6 @@ void initErrors()
     SWAG_ERROR(Err0783, "[[#nameof]] argument evaluation failed                                                                 $ ");
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
-    SWAG_ERROR(Err0786, "[[%s]] used incorrectly with arguments                                                                 $ hint: [[%s]] is a value, not a function call; remove [['(']]");
 
     SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0421, nullptr);

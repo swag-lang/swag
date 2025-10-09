@@ -124,7 +124,7 @@ bool Semantic::doExecuteCompilerNode(SemanticContext* context, AstNode* node, bo
             {
                 Diagnostic err{node, formErr(Err0044, realType->getDisplayNameC())};
                 const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
-                err.addNote(form("there is a hidden call to [[%s]]", userOp->symbol->name.cstr()));
+                err.addNote(form("there is an implicit call to [[%s]]", userOp->symbol->name.cstr()));
                 return context->report(err);
             }
 

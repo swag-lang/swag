@@ -443,7 +443,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (!symbol)
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0234, node->array->token.cstr(), typeInfo->getDisplayNameC())};
-            err.addNote(form("there is a hidden call to [[%s]]", g_LangSpec->name_opSlice.cstr()));
+            err.addNote(form("there is an implicit call to [[%s]]", g_LangSpec->name_opSlice.cstr()));
             err.addNote(node->array, Diagnostic::isType(typeInfo));
             return context->report(err);
         }
@@ -1106,7 +1106,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             {
                 YIELD();
                 Diagnostic err{arrayNode->access, formErr(Err0175, arrayNode->array->token.cstr(), arrayType->getDisplayNameC())};
-                err.addNote(form("there is a hidden call to [[%s]]", g_LangSpec->name_opIndex.cstr()));
+                err.addNote(form("there is an implicit call to [[%s]]", g_LangSpec->name_opIndex.cstr()));
                 err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
                 return context->report(err);
             }

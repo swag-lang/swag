@@ -136,7 +136,7 @@ namespace
     void errorNotEnoughGenericArguments(const SemanticContext* context, const ErrorParam& errorParam)
     {
         const auto overload          = errorParam.oneTry->overload;
-        const Utf8 niceName          = "the " + Naming::kindName(overload);
+        const Utf8 niceName          = Naming::kindName(overload);
         const auto genericParameters = errorParam.oneTry->genericParameters;
 
         AstNode* errNode = genericParameters;

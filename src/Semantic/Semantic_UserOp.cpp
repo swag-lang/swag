@@ -415,7 +415,7 @@ bool Semantic::hasUserOp(SemanticContext* context, const Utf8& name, TypeInfoStr
     if (results.size() > 1)
     {
         Diagnostic err{context->node, formErr(Err0023, name.cstr())};
-        err.addNote(context->node, form("there is a hidden call to [[%s]]", name.cstr()));
+        err.addNote(context->node, form("there is an implicit call to [[%s]]", name.cstr()));
         for (const auto& f : results)
             err.addNote(f.usingField->declNode, form("[[%s]] was found in [[%s]] because of a [[using]] field", name.cstr(), f.parentStruct->getDisplayNameC()));
         return context->report(err);
@@ -539,7 +539,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             Diagnostic err{right, formErr(Err0531, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(rightTypeInfo));
             err.addNote(left, Diagnostic::isType(leftTypeInfo));
-            err.addNote(context->node, context->node->token, form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
+            err.addNote(context->node, context->node->token, form("there is an implicit call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload()));
             return context->report(err);
         }
@@ -579,14 +579,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         if (!opConst)
         {
             Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0240, name.cstr(), leftType->getDisplayNameC())};
-            err.addNote(form("there is a hidden call to [[%s]]", name.cstr()));
+            err.addNote(form("there is an implicit call to [[%s]]", name.cstr()));
             err.addNote(left, Diagnostic::isType(leftType));
             err.addNote(note);
             return context->report(err);
         }
 
         Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0241, name.cstr(), leftType->getDisplayNameC(), opConst)};
-        err.addNote(form("there is a hidden call to [[%s]]", name.cstr()));
+        err.addNote(form("there is an implicit call to [[%s]]", name.cstr()));
         err.addNote(left, Diagnostic::isType(leftType));
         err.addNote(note);
         return context->report(err);
@@ -628,7 +628,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
     if (leftType->isGeneric())
     {
-        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return form("there is a hidden call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
+        PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return form("there is an implicit call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
         const Diagnostic err(left, formErr(Err0081, name.cstr()));
         return context->report(err);
     }
@@ -656,7 +656,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         }
 
         {
-            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return form("there is a hidden call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
+            PushErrCxtStep ec(context, left->parent, ErrCxtStepKind::Note, [name, leftType] { return form("there is an implicit call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
             context->node = left->parent;
             SWAG_CHECK(matchIdentifierParameters(context, listTryMatch, nullptr));
             context->node = node;

@@ -1152,7 +1152,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     {
                         Diagnostic err{node->assignment, toErr(Err0043)};
                         err.addNote(form("this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]", leftConcreteType->getDisplayNameC()));
-                        err.addNote(node->assignToken, form("there is a hidden call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
+                        err.addNote(node->assignToken, form("there is an implicit call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
                         return context->report(err);
                     }
                 }
