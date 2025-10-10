@@ -512,29 +512,29 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
         switch (leftTypeInfo->nativeType)
         {
             case NativeTypeKind::S8:
-                if (left->computedValue()->reg.s32 == INT8_MIN && right->computedValue()->reg.s32 == -1)
-                    return context->report({node, node->token, formErr(Err0054, leftTypeInfo->getDisplayNameC())});
+                if (overflowIsEnabled(nullptr, node, SafetyContext::Compiler) && left->computedValue()->reg.s32 == INT8_MIN && right->computedValue()->reg.s32 == -1)
+                    return context->overflowError(node, SafetyMsg::Div, leftTypeInfo, &left->computedValue()->reg.s8, &right->computedValue()->reg.s8);
                 if (right->computedValue()->reg.s32 == 0)
                     return context->report({right, toErr(Err0053)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S16:
-                if (left->computedValue()->reg.s32 == INT16_MIN && right->computedValue()->reg.s32 == -1)
-                    return context->report({node, node->token, formErr(Err0054, leftTypeInfo->getDisplayNameC())});
+                if (overflowIsEnabled(nullptr, node, SafetyContext::Compiler) && left->computedValue()->reg.s32 == INT16_MIN && right->computedValue()->reg.s32 == -1)
+                    return context->overflowError(node, SafetyMsg::Div, leftTypeInfo, &left->computedValue()->reg.s16, &right->computedValue()->reg.s16);
                 if (right->computedValue()->reg.s32 == 0)
                     return context->report({right, toErr(Err0053)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S32:
-                if (left->computedValue()->reg.s32 == INT32_MIN && right->computedValue()->reg.s32 == -1)
-                    return context->report({node, node->token, formErr(Err0054, leftTypeInfo->getDisplayNameC())});
+                if (overflowIsEnabled(nullptr, node, SafetyContext::Compiler) && left->computedValue()->reg.s32 == INT8_MIN && right->computedValue()->reg.s32 == -1)
+                    return context->overflowError(node, SafetyMsg::Div, leftTypeInfo, &left->computedValue()->reg.s32, &right->computedValue()->reg.s32);
                 if (right->computedValue()->reg.s32 == 0)
                     return context->report({right, toErr(Err0053)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 / right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S64:
-                if (left->computedValue()->reg.s64 == INT64_MIN && right->computedValue()->reg.s64 == -1)
-                    return context->report({node, node->token, formErr(Err0054, leftTypeInfo->getDisplayNameC())});
+                if (overflowIsEnabled(nullptr, node, SafetyContext::Compiler) && left->computedValue()->reg.s32 == INT64_MIN && right->computedValue()->reg.s64 == -1)
+                    return context->overflowError(node, SafetyMsg::Div, leftTypeInfo, &left->computedValue()->reg.s64, &right->computedValue()->reg.s64);
                 if (right->computedValue()->reg.s64 == 0)
                     return context->report({right, toErr(Err0053)});
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s64 / right->computedValue()->reg.s64;
