@@ -1025,6 +1025,7 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
             CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
             CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
             CHECK_SAFETY_NAME(name_null, SAFETY_NULL);
+            CHECK_SAFETY_NAME(name_memory, SAFETY_MEMORY);
 
             if (!done)
             {

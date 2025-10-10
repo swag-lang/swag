@@ -1,7 +1,9 @@
 #include "pch.h"
-#include "Backend/ByteCode/Sanity/ByteCodeSanityState.h"
+
 #include "Backend/ByteCode/ByteCodeInstruction.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
+#include "Backend/ByteCode/Sanity/ByteCodeSanityState.h"
+#include "Backend/Runtime.h"
 #include "Report/ErrorIds.h"
 
 bool ByteCodeSanityState::getImmediateA(SanityValue& result, const ByteCodeInstruction* ipn)
@@ -83,6 +85,9 @@ bool ByteCodeSanityState::checkStackOffset(uint64_t stackOffset, uint32_t sizeOf
 {
     if (stackOffset + sizeOf <= static_cast<size_t>(stack.size()))
         return true;
+    if (!san->mustEmitSafety(SAFETY_MEMORY))
+        return true;
+    
     const auto err = ByteCodeSanity::raiseError(ip, formErr(Saf0033, stackOffset + sizeOf, stack.size()), locValue);
     if (err)
         return san->context.report(*err);
@@ -95,6 +100,8 @@ bool ByteCodeSanityState::checkStackInitialized(void* addr, uint32_t sizeOf, con
     SWAG_CHECK(getStackKind(&memValue, addr, sizeOf));
     if (memValue.kind != SanityValueKind::Invalid)
         return true;
+    if (!san->mustEmitSafety(SAFETY_MEMORY))
+        return true;    
 
     const auto err = ByteCodeSanity::raiseError(ip, toErr(Saf0034), locValue);
     if (err)

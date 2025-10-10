@@ -11,6 +11,15 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 
+bool ByteCodeSanity::mustEmitSafety(SafetyFlags what) const
+{
+    const auto ip   = STATE()->ip;
+    const auto node = ip->node;
+    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, what, true))
+        return false;
+    return true;
+}
+
 Diagnostic* ByteCodeSanity::raiseError(const ByteCodeInstruction* ip, const Utf8& msg, const SanityValue* locValue, AstNode* locNode)
 {
     if (!ip->node)
@@ -127,12 +136,10 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 {
     if (!value->isConstant() || !isZero)
         return true;
-
-    const auto ip   = STATE()->ip;
-    const auto node = ip->node;
-    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_MATH, true))
+    if (mustEmitSafety(SAFETY_MATH))
         return true;
 
+    const auto ip  = STATE()->ip;
     const auto err = raiseError(ip, toErr(Saf0016), value);
     if (err)
         return context.report(*err);
@@ -142,6 +149,9 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 bool ByteCodeSanity::checkEscapeFrame(const SanityValue* value)
 {
     SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
+    if (mustEmitSafety(SAFETY_MEMORY))
+        return true;
+
     const auto err = raiseError(STATE()->ip, toErr(Saf0032), value);
     if (err)
         return context.report(*err);
@@ -152,13 +162,10 @@ bool ByteCodeSanity::checkNotNull(const SanityValue* value)
 {
     if (!value->isZero())
         return true;
-
-    const auto ip   = STATE()->ip;
-    const auto node = ip->node;
-    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
+    if (mustEmitSafety(SAFETY_NULL))
         return true;
 
-    const auto err = raiseError(ip, toErr(Saf0018), value);
+    const auto err = raiseError(STATE()->ip, toErr(Saf0018), value);
     if (err)
         return context.report(*err);
     return true;
@@ -169,9 +176,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
     const auto ip = STATE()->ip;
     if (ip->flags.has(BCI_NOT_NULL))
         return true;
-
-    const auto node = ip->node;
-    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
+    if (mustEmitSafety(SAFETY_NULL))
         return true;
 
     SanityValue* ra = nullptr;
@@ -196,12 +201,10 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
 
 bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
 {
-    const auto ip = STATE()->ip;
-
-    const auto node = ip->node;
-    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
+    if (!mustEmitSafety(SAFETY_NULL))
         return true;
 
+    const auto        ip       = STATE()->ip;
     TypeInfoFuncAttr* typeFunc = nullptr;
 
     if (intrinsic.empty())

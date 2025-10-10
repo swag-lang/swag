@@ -178,6 +178,7 @@ void LanguageSpec::setupNames()
     name_bool        = "bool";
     name_nan         = "nan";
     name_null        = "null";
+    name_memory      = "memory";
     name_dyncast     = "dyncast";
 
     name_any      = "any";

@@ -4,6 +4,7 @@
 #include "Threading/Job.h"
 
 enum class SafetyMsg;
+using SafetyFlags = Flags<uint16_t>;
 struct ByteCode;
 struct ByteCodeInstruction;
 
@@ -17,6 +18,7 @@ struct SanityContext : JobContext
 
 struct ByteCodeSanity
 {
+    bool               mustEmitSafety(SafetyFlags what) const;
     static Diagnostic* raiseError(const ByteCodeInstruction* ip, const Utf8& msg, const SanityValue* locValue, AstNode* locNode = nullptr);
     static Diagnostic* raiseError(const ByteCodeInstruction* ip, Diagnostic* err, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr);
 

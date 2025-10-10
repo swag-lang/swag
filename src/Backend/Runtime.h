@@ -16,6 +16,7 @@ constexpr SafetyFlags SAFETY_BOOL        = 0x0020;
 constexpr SafetyFlags SAFETY_NAN         = 0x0040;
 constexpr SafetyFlags SAFETY_UNREACHABLE = 0x0080;
 constexpr SafetyFlags SAFETY_NULL        = 0x0100;
+constexpr SafetyFlags SAFETY_MEMORY      = 0x0200;
 constexpr SafetyFlags SAFETY_ALL         = 0xFFFF;
 
 constexpr int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
@@ -85,7 +86,7 @@ struct SwagSourceCodeLocation
     SwagSlice fileName;
     SwagSlice funcName;
     uint32_t  lineStart, colStart;
-    uint32_t  lineEnd,   colEnd;
+    uint32_t  lineEnd, colEnd;
 };
 
 struct SwagCVaList
@@ -149,7 +150,7 @@ using SwagContext = struct SwagContext
     uint32_t                hasError;
 };
 
-using FuncCB = void* (*)(void*, void*, void*, void*, void*, void*, void*, void*, void*, void*);
+using FuncCB = void* (*) (void*, void*, void*, void*, void*, void*, void*, void*, void*, void*);
 
 using SwagBytecodeRun  = void (*)(void*, ...);
 using SwagThreadRun    = void (*)(void*);
@@ -340,7 +341,7 @@ struct BuildCfg
     SwagSlice      resAppName;
     SwagSlice      resAppDescription;
     SwagSlice      resAppCompany;
-    SwagSlice      resAppCopyright; 
+    SwagSlice      resAppCopyright;
     BuildCfgGenDoc genDoc;
 };
 
