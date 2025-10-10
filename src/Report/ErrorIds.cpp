@@ -116,7 +116,7 @@ void initErrors()
     SWAG_ERROR(San0006, "[sanity] null pointer dereference");
     SWAG_ERROR(San0007, "[sanity] stack overwrite at offset [[%lld]] (stack size [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] use of uninitialized memory");
-    SWAG_ERROR(San0010, "[sanity] overflow in [['%s']] (type [[%s]])");
+    SWAG_ERROR(San0010, "[sanity] overflow in [['%s']] operation (type [[%s]])");
     SWAG_ERROR(San0005, nullptr);
     SWAG_ERROR(San0009, nullptr);
 

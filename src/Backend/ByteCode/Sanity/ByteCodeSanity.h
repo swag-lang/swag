@@ -18,7 +18,7 @@ struct ByteCodeSanity
 {
     static Diagnostic* raiseError(const ByteCodeInstruction* ip, const Utf8& msg, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr);
 
-    bool checkOverflow(bool isValid, const char* msgKind, TypeInfo* type);
+    bool checkOverflow(bool isValid, const char* msgKind, TypeInfo* type, const void* val0, const void* val1);
     bool checkDivZero(const SanityValue* value, bool isZero);
     bool checkEscapeFrame(const SanityValue* value);
     bool checkNotNull(const SanityValue* value);

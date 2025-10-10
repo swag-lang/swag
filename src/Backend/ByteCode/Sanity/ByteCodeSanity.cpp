@@ -106,13 +106,53 @@ Diagnostic* ByteCodeSanity::raiseError(const ByteCodeInstruction* ip, const Utf8
     return err;
 }
 
-bool ByteCodeSanity::checkOverflow(bool isValid, const char* msgKind, TypeInfo* type)
+bool ByteCodeSanity::checkOverflow(bool isValid, const char* msgKind, TypeInfo* type, const void* val0, const void* val1)
 {
     if (isValid)
         return true;
     const auto err = raiseError(STATE()->ip, formErr(San0010, msgKind, type->getDisplayNameC()));
     if (err)
+    {
+        if (!type->isNativeIntegerSigned())
+        {
+            switch (type->sizeOf)
+            {
+                case 1:
+                    err->addNote(form("values are [[%u]] and [[%u]]", *static_cast<const uint8_t*>(val0), *static_cast<const uint8_t*>(val1)));
+                    break;
+                case 2:
+                    err->addNote(form("values are [[%u]] and [[%u]]", *static_cast<const uint16_t*>(val0), *static_cast<const uint16_t*>(val1)));
+                    break;
+                case 4:
+                    err->addNote(form("values are [[%u]] and [[%u]]", *static_cast<const uint32_t*>(val0), *static_cast<const uint32_t*>(val1)));
+                    break;
+                case 8:
+                    err->addNote(form("values are [[%llu]] and [[%llu]]", *static_cast<const uint64_t*>(val0), *static_cast<const uint64_t*>(val1)));
+                    break;
+            }
+        }
+        else
+        {
+            switch (type->sizeOf)
+            {
+                case 1:
+                    err->addNote(form("values are [[%d]] and [[%d]]", *static_cast<const int8_t*>(val0), *static_cast<const int8_t*>(val1)));
+                    break;
+                case 2:
+                    err->addNote(form("values are [[%d]] and [[%d]]", *static_cast<const int16_t*>(val0), *static_cast<const int16_t*>(val1)));
+                    break;
+                case 4:
+                    err->addNote(form("values are [[%d]] and [[%d]]", *static_cast<const int32_t*>(val0), *static_cast<const int32_t*>(val1)));
+                    break;
+                case 8:
+                    err->addNote(form("values are [[%lld]] and [[%lld]]", *static_cast<const int64_t*>(val0), *static_cast<const int64_t*>(val1)));
+                    break;
+            }
+        }
+
         return context.report(*err);
+    }
+
     return true;
 }
 
