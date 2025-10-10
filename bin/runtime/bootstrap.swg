@@ -710,13 +710,13 @@ namespace Swag
     const SafetyBoundCheck  = 0x0001
     const SafetyOverflow    = 0x0002
     const SafetyMath        = 0x0004
-    const SafetyAny         = 0x0008
+    const SafetyDynCast     = 0x0008
     const SafetySwitch      = 0x0010
     const SafetyBool        = 0x0020
     const SafetyNaN         = 0x0040
-    const SafetySanity      = 0x0080
-    const SafetyUnreachable = 0x0100
-    const SafetyNullCheck   = 0x0200
+    const SafetyUnreachable = 0x0080
+    const SafetyNullCheck   = 0x0100
+    const SafetyMemory      = 0x0200
     const SafetyNone        = 0x0000
     const SafetyAll         = 0xFFFF
 

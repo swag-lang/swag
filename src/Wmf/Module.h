@@ -9,6 +9,13 @@
 #include "Syntax/Tokenizer/Token.h"
 #include "Threading/JobGroup.h"
 
+enum class SafetyContext
+{
+    Compiler,
+    ByteCode,
+    Sanity,
+};
+
 enum class ModuleBuildPass
 {
     Init,
@@ -166,8 +173,8 @@ struct Module
     bool mustOptimizeSemantic(const AstNode* node) const;
     bool mustOptimizeByteCode(const AstNode* node) const;
     bool mustOptimizeBackend(const AstNode* node) const;
-    bool mustEmitSafetyOverflow(const AstNode* node, bool compileTime = false) const;
-    bool mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileTime = false) const;
+    bool mustEmitSafetyOverflow(const AstNode* node, SafetyContext safeCxt) const;
+    bool mustEmitSafety(const AstNode* node, SafetyFlags what, SafetyContext safeCxt) const;
 
     void setBuildPass(BuildPass buildP);
 

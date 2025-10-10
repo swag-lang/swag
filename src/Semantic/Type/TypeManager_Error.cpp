@@ -13,7 +13,7 @@ bool TypeManager::isOverflowEnabled(const SemanticContext* context, const AstNod
         return true;
     if (castFlags.has(CAST_FLAG_COERCE))
         return false;
-    if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode, true))
+    if (fromNode && context->sourceFile && context->sourceFile->module && !context->sourceFile->module->mustEmitSafetyOverflow(fromNode, SafetyContext::Compiler))
         return true;
     return false;
 }
@@ -54,7 +54,7 @@ bool TypeManager::safetyErrorOutOfRange(SemanticContext* context, AstNode* fromN
     }
 }
 
-bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType, TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
+bool TypeManager::safetyComputedValue(SemanticContext* context, const TypeInfo* toType, const TypeInfo* fromType, AstNode* fromNode, CastFlags castFlags)
 {
     if (!fromNode || !fromNode->hasFlagComputedValue())
         return true;
@@ -62,7 +62,7 @@ bool TypeManager::safetyComputedValue(SemanticContext* context, TypeInfo* toType
         return true;
     if (!castFlags.has(CAST_FLAG_EXPLICIT))
         return true;
-    if (!fromNode->token.sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW))
+    if (!fromNode->token.sourceFile->module->mustEmitSafety(fromNode, SAFETY_OVERFLOW, SafetyContext::Compiler))
         return true;
 
     auto msg  = ByteCodeGen::safetyMsg(SafetyMsg::CastTruncated, toType, fromType);

@@ -139,7 +139,7 @@ void ByteCodeOptimizer::setContextFlags(ByteCodeOptContext* context, ByteCodeIns
     if (ip->node &&
         ip->node->token.sourceFile &&
         ip->node->token.sourceFile->module &&
-        ip->node->token.sourceFile->module->mustEmitSafetyOverflow(ip->node))
+        ip->node->token.sourceFile->module->mustEmitSafetyOverflow(ip->node, SafetyContext::ByteCode))
     {
         ip->dynFlags.add(BCID_SAFETY_OF);
     }

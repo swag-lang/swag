@@ -1946,7 +1946,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S8(ip);
             auto val2 = IMMB_S8(ip);
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8));
             registersRC[ip->c.u32].s32 = val1 + val2;
             break;
@@ -1955,7 +1955,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S16(ip);
             auto val2 = IMMB_S16(ip);
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16));
             registersRC[ip->c.u32].s32 = val1 + val2;
             break;
@@ -1964,7 +1964,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S32(ip);
             auto val2 = IMMB_S32(ip);
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32));
             registersRC[ip->c.u32].s32 = val1 + val2;
             break;
@@ -1973,7 +1973,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S64(ip);
             auto val2 = IMMB_S64(ip);
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64));
             registersRC[ip->c.u32].s64 = val1 + val2;
             break;
@@ -1982,7 +1982,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint8_t>(IMMA_S8(ip));
             auto val2 = static_cast<uint8_t>(IMMB_S8(ip));
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8));
             registersRC[ip->c.u32].u32 = val1 + val2;
             break;
@@ -1991,7 +1991,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint16_t>(IMMA_S16(ip));
             auto val2 = static_cast<uint16_t>(IMMB_S16(ip));
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16));
             registersRC[ip->c.u32].u32 = val1 + val2;
             break;
@@ -2000,7 +2000,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint32_t>(IMMA_S32(ip));
             auto val2 = static_cast<uint32_t>(IMMB_S32(ip));
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32));
             registersRC[ip->c.u32].u32 = val1 + val2;
             break;
@@ -2009,7 +2009,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint64_t>(IMMA_S64(ip));
             auto val2 = static_cast<uint64_t>(IMMB_S64(ip));
-            if (addWillOverflow(ip, ip->node, val1, val2))
+            if (addWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64));
             registersRC[ip->c.u32].u64 = val1 + val2;
             break;
@@ -2090,7 +2090,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S8(ip);
             auto val2 = IMMB_S8(ip);
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8));
             registersRC[ip->c.u32].s32 = val1 - val2;
             break;
@@ -2099,7 +2099,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S16(ip);
             auto val2 = IMMB_S16(ip);
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16));
             registersRC[ip->c.u32].s32 = val1 - val2;
             break;
@@ -2108,7 +2108,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S32(ip);
             auto val2 = IMMB_S32(ip);
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32));
             registersRC[ip->c.u32].s32 = val1 - val2;
             break;
@@ -2117,7 +2117,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S64(ip);
             auto val2 = IMMB_S64(ip);
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64));
             registersRC[ip->c.u32].s64 = val1 - val2;
             break;
@@ -2126,7 +2126,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint8_t>(IMMA_S8(ip));
             auto val2 = static_cast<uint8_t>(IMMB_S8(ip));
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8));
             registersRC[ip->c.u32].u32 = val1 - val2;
             break;
@@ -2135,7 +2135,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint16_t>(IMMA_S16(ip));
             auto val2 = static_cast<uint16_t>(IMMB_S16(ip));
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16));
             registersRC[ip->c.u32].u16 = val1 - val2;
             break;
@@ -2144,7 +2144,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint32_t>(IMMA_S32(ip));
             auto val2 = static_cast<uint32_t>(IMMB_S32(ip));
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32));
             registersRC[ip->c.u32].u32 = val1 - val2;
             break;
@@ -2153,7 +2153,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint64_t>(IMMA_S64(ip));
             auto val2 = static_cast<uint64_t>(IMMB_S64(ip));
-            if (subWillOverflow(ip, ip->node, val1, val2))
+            if (subWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
             registersRC[ip->c.u32].u64 = val1 - val2;
             break;
@@ -2234,7 +2234,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S8(ip);
             auto val2 = IMMB_S8(ip);
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8));
             registersRC[ip->c.u32].s32 = val1 * val2;
             break;
@@ -2243,7 +2243,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S16(ip);
             auto val2 = IMMB_S16(ip);
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16));
             registersRC[ip->c.u32].s32 = val1 * val2;
             break;
@@ -2252,7 +2252,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S32(ip);
             auto val2 = IMMB_S32(ip);
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32));
             registersRC[ip->c.u32].s32 = val1 * val2;
             break;
@@ -2261,7 +2261,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = IMMA_S64(ip);
             auto val2 = IMMB_S64(ip);
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64));
             registersRC[ip->c.u32].s64 = val1 * val2;
             break;
@@ -2270,7 +2270,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint8_t>(IMMA_S8(ip));
             auto val2 = static_cast<uint8_t>(IMMB_S8(ip));
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8));
             registersRC[ip->c.u32].u32 = val1 * val2;
             break;
@@ -2279,7 +2279,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint16_t>(IMMA_S16(ip));
             auto val2 = static_cast<uint16_t>(IMMB_S16(ip));
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16));
             registersRC[ip->c.u32].u32 = val1 * val2;
             break;
@@ -2288,7 +2288,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint32_t>(IMMA_S32(ip));
             auto val2 = static_cast<uint32_t>(IMMB_S32(ip));
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32));
             registersRC[ip->c.u32].u32 = val1 * val2;
             break;
@@ -2297,7 +2297,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         {
             auto val1 = static_cast<uint64_t>(IMMA_S64(ip));
             auto val2 = static_cast<uint64_t>(IMMB_S64(ip));
-            if (mulWillOverflow(ip, ip->node, val1, val2))
+            if (mulWillOverflow(ip, ip->node, val1, val2, SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64));
             registersRC[ip->c.u32].u64 = val1 * val2;
             break;
@@ -3614,7 +3614,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         /////////////////////////////////////
 
         case ByteCodeOp::AffectOpPlusEqS8:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip)))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8));
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) += IMMB_S8(ip);
             break;
@@ -3626,7 +3626,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqS16:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer), IMMB_S16(ip)))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer), IMMB_S16(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16));
             *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer) += IMMB_S16(ip);
             break;
@@ -3638,7 +3638,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqS32:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer), IMMB_S32(ip)))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer), IMMB_S32(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32));
             *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer) += IMMB_S32(ip);
             break;
@@ -3650,7 +3650,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqS64:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer), IMMB_S64(ip)))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer), IMMB_S64(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64));
             *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer) += IMMB_S64(ip);
             break;
@@ -3662,7 +3662,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqU8:
-            if (addWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, static_cast<uint8_t>(IMMB_S8(ip))))
+            if (addWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, static_cast<uint8_t>(IMMB_S8(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8));
             *registersRC[ip->a.u32].pointer += IMMB_S8(ip);
             break;
@@ -3674,7 +3674,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqU16:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer), static_cast<uint16_t>(IMMB_S16(ip))))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer), static_cast<uint16_t>(IMMB_S16(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16));
             *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer) += IMMB_S16(ip);
             break;
@@ -3686,7 +3686,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqU32:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer), static_cast<uint32_t>(IMMB_S32(ip))))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer), static_cast<uint32_t>(IMMB_S32(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32));
             *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer) += IMMB_S32(ip);
             break;
@@ -3698,7 +3698,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpPlusEqU64:
-            if (addWillOverflow(ip, ip->node, *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer), static_cast<uint64_t>(IMMB_S64(ip))))
+            if (addWillOverflow(ip, ip->node, *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer), static_cast<uint64_t>(IMMB_S64(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64));
             *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer) += IMMB_S64(ip);
             break;
@@ -3726,7 +3726,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         /////////////////////////////////////
 
         case ByteCodeOp::AffectOpMinusEqS8:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip)))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8));
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S8(ip);
             break;
@@ -3738,7 +3738,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqS16:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer), IMMB_S16(ip)))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer), IMMB_S16(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16));
             *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S16(ip);
             break;
@@ -3750,7 +3750,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqS32:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer), IMMB_S32(ip)))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer), IMMB_S32(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32));
             *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S32(ip);
             break;
@@ -3762,7 +3762,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqS64:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer), IMMB_S64(ip)))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer), IMMB_S64(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64));
             *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S64(ip);
             break;
@@ -3774,7 +3774,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqU8:
-            if (subWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, static_cast<uint8_t>(IMMB_S8(ip))))
+            if (subWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, static_cast<uint8_t>(IMMB_S8(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8));
             *registersRC[ip->a.u32].pointer -= IMMB_S8(ip);
             break;
@@ -3786,7 +3786,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqU16:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer), static_cast<uint16_t>(IMMB_S16(ip))))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer), static_cast<uint16_t>(IMMB_S16(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16));
             *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S16(ip);
             break;
@@ -3798,7 +3798,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqU32:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer), static_cast<uint32_t>(IMMB_S32(ip))))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer), static_cast<uint32_t>(IMMB_S32(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32));
             *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S32(ip);
             break;
@@ -3810,7 +3810,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMinusEqU64:
-            if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer), static_cast<uint64_t>(IMMB_S64(ip))))
+            if (subWillOverflow(ip, ip->node, *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer), static_cast<uint64_t>(IMMB_S64(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64));
             *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer) -= IMMB_S64(ip);
             break;
@@ -3838,7 +3838,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
         /////////////////////////////////////
 
         case ByteCodeOp::AffectOpMulEqS8:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip)))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer), IMMB_S8(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS8));
             *reinterpret_cast<int8_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S8(ip);
             break;
@@ -3850,7 +3850,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqS16:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer), IMMB_S16(ip)))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer), IMMB_S16(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS16));
             *reinterpret_cast<int16_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S16(ip);
             break;
@@ -3862,7 +3862,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqS32:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer), IMMB_S32(ip)))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer), IMMB_S32(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS32));
             *reinterpret_cast<int32_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S32(ip);
             break;
@@ -3874,7 +3874,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqS64:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer), IMMB_S64(ip)))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer), IMMB_S64(ip), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoS64));
             *reinterpret_cast<int64_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S64(ip);
             break;
@@ -3886,7 +3886,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqU8:
-            if (mulWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, static_cast<uint8_t>(IMMB_S8(ip))))
+            if (mulWillOverflow(ip, ip->node, *registersRC[ip->a.u32].pointer, static_cast<uint8_t>(IMMB_S8(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU8));
             *registersRC[ip->a.u32].pointer *= IMMB_S8(ip);
             break;
@@ -3898,7 +3898,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqU16:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer), static_cast<uint16_t>(IMMB_S16(ip))))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer), static_cast<uint16_t>(IMMB_S16(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU16));
             *reinterpret_cast<uint16_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S16(ip);
             break;
@@ -3910,7 +3910,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqU32:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer), static_cast<uint32_t>(IMMB_S32(ip))))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer), static_cast<uint32_t>(IMMB_S32(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU32));
             *reinterpret_cast<uint32_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S32(ip);
             break;
@@ -3922,7 +3922,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
             break;
 
         case ByteCodeOp::AffectOpMulEqU64:
-            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer), static_cast<uint64_t>(IMMB_S64(ip))))
+            if (mulWillOverflow(ip, ip->node, *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer), static_cast<uint64_t>(IMMB_S64(ip)), SafetyContext::ByteCode))
                 callInternalPanic(context, ip, ByteCodeGen::safetyMsg(SafetyMsg::MulEq, g_TypeMgr->typeInfoU64));
             *reinterpret_cast<uint64_t*>(registersRC[ip->a.u32].pointer) *= IMMB_S64(ip);
             break;

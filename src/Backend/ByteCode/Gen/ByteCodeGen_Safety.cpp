@@ -160,7 +160,7 @@ bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, SafetyFlags 
 {
     if (context->contextFlags & BCC_FLAG_NO_SAFETY)
         return false;
-    if (!context->sourceFile->module->mustEmitSafety(context->node, what))
+    if (!context->sourceFile->module->mustEmitSafety(context->node, what, SafetyContext::ByteCode))
         return false;
     return true;
 }
@@ -199,7 +199,7 @@ void ByteCodeGen::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
 bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NO_SAFETY ||
-        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_UNREACHABLE))
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_UNREACHABLE, SafetyContext::ByteCode))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
     }
@@ -215,7 +215,7 @@ bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NO_SAFETY ||
-        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH))
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH, SafetyContext::ByteCode))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
         return true;

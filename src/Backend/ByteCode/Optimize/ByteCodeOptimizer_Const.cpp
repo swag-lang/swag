@@ -196,49 +196,49 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     break;
 
                 case ByteCodeOp::BinOpPlusS8:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS8, &ip->a.s8, &ip->b.s8));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS8, &ip->a.s8, &ip->b.s8));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusS8_Safe:
                     BINOP_S8(+);
                     break;
                 case ByteCodeOp::BinOpPlusS16:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS16, &ip->a.s16, &ip->b.s16));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS16, &ip->a.s16, &ip->b.s16));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusS16_Safe:
                     BINOP_S16(+);
                     break;
                 case ByteCodeOp::BinOpPlusS32:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS32, &ip->a.s32, &ip->b.s32));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS32, &ip->a.s32, &ip->b.s32));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusS32_Safe:
                     BINOP_S32(+);
                     break;
                 case ByteCodeOp::BinOpPlusS64:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS64, &ip->a.s64, &ip->b.s64));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS64, &ip->a.s64, &ip->b.s64));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusS64_Safe:
                     BINOP_S64(+);
                     break;
                 case ByteCodeOp::BinOpPlusU8:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU8, &ip->a.u8, &ip->b.u8));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU8, &ip->a.u8, &ip->b.u8));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusU8_Safe:
                     BINOP_U8(+);
                     break;
                 case ByteCodeOp::BinOpPlusU16:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU16, &ip->a.u16, &ip->b.u16));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU16, &ip->a.u16, &ip->b.u16));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusU16_Safe:
                     BINOP_U16(+);
                     break;
                 case ByteCodeOp::BinOpPlusU32:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU32, &ip->a.u32, &ip->b.u32));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU32, &ip->a.u32, &ip->b.u32));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusU32_Safe:
                     BINOP_S32(+);
                     break;
                 case ByteCodeOp::BinOpPlusU64:
-                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU64, &ip->a.u32, &ip->b.u64));
+                    SWAG_VERIFY(!addWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU64, &ip->a.u32, &ip->b.u64));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpPlusU64_Safe:
                     BINOP_S64(+);
@@ -251,49 +251,49 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     break;
 
                 case ByteCodeOp::BinOpMinusS8:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS8, &ip->a.s8, &ip->b.s8));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS8, &ip->a.s8, &ip->b.s8));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusS8_Safe:
                     BINOP_S8(-);
                     break;
                 case ByteCodeOp::BinOpMinusS16:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS16, &ip->a.s16, &ip->b.s16));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS16, &ip->a.s16, &ip->b.s16));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusS16_Safe:
                     BINOP_S16(-);
                     break;
                 case ByteCodeOp::BinOpMinusS32:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS32, &ip->a.s32, &ip->b.s32));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS32, &ip->a.s32, &ip->b.s32));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusS32_Safe:
                     BINOP_S32(-);
                     break;
                 case ByteCodeOp::BinOpMinusS64:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS64, &ip->a.s64, &ip->b.s64));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS64, &ip->a.s64, &ip->b.s64));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusS64_Safe:
                     BINOP_S64(-);
                     break;
                 case ByteCodeOp::BinOpMinusU8:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU8, &ip->a.u8, &ip->b.u8));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU8, &ip->a.u8, &ip->b.u8));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusU8_Safe:
                     BINOP_S8(-);
                     break;
                 case ByteCodeOp::BinOpMinusU16:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU16, &ip->a.u16, &ip->b.u16));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU16, &ip->a.u16, &ip->b.u16));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusU16_Safe:
                     BINOP_S16(-);
                     break;
                 case ByteCodeOp::BinOpMinusU32:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU32, &ip->a.u32, &ip->b.u32));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU32, &ip->a.u32, &ip->b.u32));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusU32_Safe:
                     BINOP_S32(-);
                     break;
                 case ByteCodeOp::BinOpMinusU64:
-                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU64, &ip->a.u8, &ip->b.u64));
+                    SWAG_VERIFY(!subWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU64, &ip->a.u8, &ip->b.u64));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMinusU64_Safe:
                     BINOP_S64(-);
@@ -306,49 +306,49 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     break;
 
                 case ByteCodeOp::BinOpMulS8:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS8, &ip->a.s8, &ip->b.s8));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s8, ip->b.s8, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS8, &ip->a.s8, &ip->b.s8));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulS8_Safe:
                     BINOP_S8(*);
                     break;
                 case ByteCodeOp::BinOpMulS16:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS16, &ip->a.s16, &ip->b.s16));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s16, ip->b.s16, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS16, &ip->a.s16, &ip->b.s16));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulS16_Safe:
                     BINOP_S16(*);
                     break;
                 case ByteCodeOp::BinOpMulS32:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS32, &ip->a.s32, &ip->b.s32));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s32, ip->b.s32, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS32, &ip->a.s32, &ip->b.s32));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulS32_Safe:
                     BINOP_S32(*);
                     break;
                 case ByteCodeOp::BinOpMulS64:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS64, &ip->a.s64, &ip->b.s64));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.s64, ip->b.s64, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS64, &ip->a.s64, &ip->b.s64));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulS64_Safe:
                     BINOP_S64(*);
                     break;
                 case ByteCodeOp::BinOpMulU8:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU8, &ip->a.u8, &ip->b.u8));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u8, ip->b.u8, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU8, &ip->a.u8, &ip->b.u8));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulU8_Safe:
                     BINOP_S8(*);
                     break;
                 case ByteCodeOp::BinOpMulU16:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU16, &ip->a.u16, &ip->b.u16));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u16, ip->b.u16, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU16, &ip->a.u16, &ip->b.u16));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulU16_Safe:
                     BINOP_S16(*);
                     break;
                 case ByteCodeOp::BinOpMulU32:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU32, &ip->a.u32, &ip->b.u32));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u32, ip->b.u32, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU32, &ip->a.u32, &ip->b.u32));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulU32_Safe:
                     BINOP_S32(*);
                     break;
                 case ByteCodeOp::BinOpMulU64:
-                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU64, &ip->a.u64, &ip->b.u64));
+                    SWAG_VERIFY(!mulWillOverflow(ip, ip->node, ip->a.u64, ip->b.u64, SafetyContext::ByteCode), context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU64, &ip->a.u64, &ip->b.u64));
                     [[fallthrough]];
                 case ByteCodeOp::BinOpMulU64_Safe:
                     BINOP_S64(*);
@@ -1065,14 +1065,14 @@ bool ByteCodeOptimizer::optimizePassConst(ByteCodeOptContext* context)
                     break;
 
                 case ByteCodeOp::NegS32:
-                    if (ip->b.s32 == INT32_MIN && sourceFile->module->mustEmitSafetyOverflow(node))
+                    if (ip->b.s32 == INT32_MIN && sourceFile->module->mustEmitSafetyOverflow(node, SafetyContext::ByteCode))
                         return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Neg, g_TypeMgr->typeInfoS32)});
                     SET_OP(ip, ByteCodeOp::SetImmediate32);
                     ip->b.s32 = -ip->b.s32;
                     OK();
                     break;
                 case ByteCodeOp::NegS64:
-                    if (ip->b.s64 == INT64_MIN && sourceFile->module->mustEmitSafetyOverflow(node))
+                    if (ip->b.s64 == INT64_MIN && sourceFile->module->mustEmitSafetyOverflow(node, SafetyContext::ByteCode))
                         return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Neg, g_TypeMgr->typeInfoS64)});
                     SET_OP(ip, ByteCodeOp::SetImmediate64);
                     ip->b.s64 = -ip->b.s64;

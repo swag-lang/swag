@@ -949,12 +949,12 @@ void Module::printBC()
         bc->print(opt);
 }
 
-bool Module::mustEmitSafetyOverflow(const AstNode* node, bool compileTime) const
+bool Module::mustEmitSafetyOverflow(const AstNode* node, SafetyContext safeCxt) const
 {
-    return mustEmitSafety(node, SAFETY_OVERFLOW, compileTime);
+    return mustEmitSafety(node, SAFETY_OVERFLOW, safeCxt);
 }
 
-bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileTime) const
+bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, SafetyContext safeCxt) const
 {
     if (what == SAFETY_OVERFLOW)
     {
@@ -968,7 +968,7 @@ bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, bool compileT
         return true;
 
     // at compile time, we must emit safety except if the user has specifically changed it in the code
-    if (compileTime)
+    if (safeCxt == SafetyContext::Compiler)
         return true;
 
     return buildCfg.safetyGuards.has(what);

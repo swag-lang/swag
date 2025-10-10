@@ -15,8 +15,10 @@ bool ByteCodeSanity::mustEmitSafety(SafetyFlags what) const
 {
     const auto ip   = STATE()->ip;
     const auto node = ip->node;
-    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, what, true))
+    if (!node || !context.sourceFile || !context.sourceFile->module)
         return false;
+    if (!context.sourceFile->module->mustEmitSafety(node, what, SafetyContext::Sanity))
+        return false;    
     return true;
 }
 
