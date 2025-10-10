@@ -142,7 +142,7 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 bool ByteCodeSanity::checkEscapeFrame(const SanityValue* value)
 {
     SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
-    const auto err = raiseError(STATE()->ip, toErr(San0004), value);
+    const auto err = raiseError(STATE()->ip, toErr(Saf0032), value);
     if (err)
         return context.report(*err);
     return true;

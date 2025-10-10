@@ -1,4 +1,4 @@
-//#global testerror "San0008"
+//#global testerror "Saf0034"
 
 enum A { R, G }
 struct B { x: A }

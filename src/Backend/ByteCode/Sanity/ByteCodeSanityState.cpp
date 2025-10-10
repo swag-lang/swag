@@ -83,7 +83,7 @@ bool ByteCodeSanityState::checkStackOffset(uint64_t stackOffset, uint32_t sizeOf
 {
     if (stackOffset + sizeOf <= static_cast<size_t>(stack.size()))
         return true;
-    const auto err = ByteCodeSanity::raiseError(ip, formErr(San0007, stackOffset + sizeOf, stack.size()), locValue);
+    const auto err = ByteCodeSanity::raiseError(ip, formErr(Saf0033, stackOffset + sizeOf, stack.size()), locValue);
     if (err)
         return san->context.report(*err);
     return true;
@@ -96,7 +96,7 @@ bool ByteCodeSanityState::checkStackInitialized(void* addr, uint32_t sizeOf, con
     if (memValue.kind != SanityValueKind::Invalid)
         return true;
 
-    const auto err = ByteCodeSanity::raiseError(ip, toErr(San0008), locValue);
+    const auto err = ByteCodeSanity::raiseError(ip, toErr(Saf0034), locValue);
     if (err)
         return san->context.report(*err);
     return true;
