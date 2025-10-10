@@ -13,7 +13,7 @@
 
 bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto       node          = castAst<AstOp>(context->node, AstNodeKind::FactorOp);
+    const auto node          = castAst<AstOp>(context->node, AstNodeKind::FactorOp);
     const auto sourceFile    = context->sourceFile;
     auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -199,7 +199,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
 
 bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto       node          = context->node;
+    const auto node          = context->node;
     const auto sourceFile    = context->sourceFile;
     auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);
@@ -337,7 +337,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
 
 bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNode* right)
 {
-    auto       node          = context->node;
+    const auto node          = context->node;
     const auto sourceFile    = context->sourceFile;
     auto       leftTypeInfo  = TypeManager::concretePtrRefType(left->typeInfo);
     const auto rightTypeInfo = TypeManager::concretePtrRefType(right->typeInfo);

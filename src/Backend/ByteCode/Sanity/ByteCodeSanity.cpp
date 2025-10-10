@@ -136,7 +136,7 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 {
     if (!value->isConstant() || !isZero)
         return true;
-    if (mustEmitSafety(SAFETY_MATH))
+    if (!mustEmitSafety(SAFETY_MATH))
         return true;
 
     const auto ip  = STATE()->ip;
@@ -149,7 +149,7 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 bool ByteCodeSanity::checkEscapeFrame(const SanityValue* value)
 {
     SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
-    if (mustEmitSafety(SAFETY_MEMORY))
+    if (!mustEmitSafety(SAFETY_MEMORY))
         return true;
 
     const auto err = raiseError(STATE()->ip, toErr(Saf0032), value);
@@ -162,7 +162,7 @@ bool ByteCodeSanity::checkNotNull(const SanityValue* value)
 {
     if (!value->isZero())
         return true;
-    if (mustEmitSafety(SAFETY_NULL))
+    if (!mustEmitSafety(SAFETY_NULL))
         return true;
 
     const auto err = raiseError(STATE()->ip, toErr(Saf0018), value);
@@ -176,7 +176,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
     const auto ip = STATE()->ip;
     if (ip->flags.has(BCI_NOT_NULL))
         return true;
-    if (mustEmitSafety(SAFETY_NULL))
+    if (!mustEmitSafety(SAFETY_NULL))
         return true;
 
     SanityValue* ra = nullptr;
