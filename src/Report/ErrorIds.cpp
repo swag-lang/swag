@@ -111,10 +111,9 @@ void initErrors()
 
     SWAG_ERROR(San0002, "[sanity] division by zero");
     SWAG_ERROR(San0004, "[sanity] return of stack memory");
-    SWAG_ERROR(San0006, "[sanity] null pointer dereference");
     SWAG_ERROR(San0007, "[sanity] stack overwrite at offset [[%lld]] (stack size [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] use of uninitialized memory");
-    
+
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -829,7 +828,7 @@ void initErrors()
     SWAG_ERROR(Err0701, "tuple has [[%u]] fields, but [[%u]] variables were provided                                            $ ");
     SWAG_ERROR(Err0702, "tuple has only [[%u]] fields, but [[%u]] variables were provided                                       $ ");
     SWAG_ERROR(Err0703, "array dimension could not be inferred: missing initialization                                          $ ");
-    
+
     SWAG_ERROR(Err0704, "flag [[%s]] value cannot be derived                                                                    $ note: previous value ([[%llu]]) not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
     SWAG_ERROR(Err0705, "generic arguments for %s [[%s]] could not be determined                                                $ ");
     SWAG_ERROR(Err0706, "failed to resolve identifier [[%s]]                                                                    $ ");

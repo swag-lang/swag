@@ -1,5 +1,5 @@
 #global skip
-#global testerror "San0006"
+#global testerror "Saf0018"
 
 #[Swag.Safety("", true)]
 #[Swag.Optimize("", false)]
