@@ -116,43 +116,43 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         {
             case NativeTypeKind::S8:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS8)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS8, &left->computedValue()->reg.s8, &right->computedValue()->reg.s8);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S16:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS16)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS16, &left->computedValue()->reg.s16, &right->computedValue()->reg.s16);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S32:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS32)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS32, &left->computedValue()->reg.s32, &right->computedValue()->reg.s32);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 + right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S64:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoS64)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoS64, &left->computedValue()->reg.s64, &right->computedValue()->reg.s64);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s64 + right->computedValue()->reg.s64;
                 break;
             case NativeTypeKind::U8:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU8)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU8, &left->computedValue()->reg.u8, &right->computedValue()->reg.u8);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U16:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU16)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU16, &left->computedValue()->reg.u16, &right->computedValue()->reg.u16);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU32)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU32, &left->computedValue()->reg.u32, &right->computedValue()->reg.u32);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u32 + right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U64:
                 if (addWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Plus, g_TypeMgr->typeInfoU64)});
+                    return context->overflowError(node, SafetyMsg::Plus, g_TypeMgr->typeInfoU64, &left->computedValue()->reg.u64, &right->computedValue()->reg.u64);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u64 + right->computedValue()->reg.u64;
                 break;
             case NativeTypeKind::F32:
@@ -184,7 +184,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
     }
 
     // Mul+add
-    // Must be float, without a dynamic cast
+    // Must be a float, without a dynamic cast
     if (leftTypeInfo->isNativeFloat() && !left->typeInfoCast && !node->typeInfoCast)
     {
         if (left->is(AstNodeKind::FactorOp) && left->token.is(TokenId::SymAsterisk))
@@ -272,43 +272,43 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         {
             case NativeTypeKind::S8:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS8)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS8, &left->computedValue()->reg.s8, &right->computedValue()->reg.s8);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S16:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS16)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS16, &left->computedValue()->reg.s16, &right->computedValue()->reg.s16);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S32:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS32)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS32, &left->computedValue()->reg.s32, &right->computedValue()->reg.s32);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s32 - right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S64:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoS64)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoS64, &left->computedValue()->reg.s64, &right->computedValue()->reg.s64);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s64 - right->computedValue()->reg.s64;
                 break;
             case NativeTypeKind::U8:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU8)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU8, &left->computedValue()->reg.u8, &right->computedValue()->reg.u8);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U16:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU16)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU16, &left->computedValue()->reg.u16, &right->computedValue()->reg.u16);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU32)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU32, &left->computedValue()->reg.u32, &right->computedValue()->reg.u32);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u32 - right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U64:
                 if (subWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Minus, g_TypeMgr->typeInfoU64)});
+                    return context->overflowError(node, SafetyMsg::Minus, g_TypeMgr->typeInfoU64, &left->computedValue()->reg.u64, &right->computedValue()->reg.u64);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u64 - right->computedValue()->reg.u64;
                 break;
             case NativeTypeKind::F32:
@@ -386,43 +386,43 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
         {
             case NativeTypeKind::S8:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s8, right->computedValue()->reg.s8))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS8)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS8, &left->computedValue()->reg.s8, &right->computedValue()->reg.s8);
                 node->computedValue()->reg.s64 = static_cast<int64_t>(left->computedValue()->reg.s8) * right->computedValue()->reg.s8;
                 break;
             case NativeTypeKind::S16:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s16, right->computedValue()->reg.s16))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS16)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS16, &left->computedValue()->reg.s16, &right->computedValue()->reg.s16);
                 node->computedValue()->reg.s64 = static_cast<int64_t>(left->computedValue()->reg.s16) * right->computedValue()->reg.s16;
                 break;
             case NativeTypeKind::S32:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s32, right->computedValue()->reg.s32))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS32)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS32, &left->computedValue()->reg.s32, &right->computedValue()->reg.s32);
                 node->computedValue()->reg.s64 = static_cast<int64_t>(left->computedValue()->reg.s32) * right->computedValue()->reg.s32;
                 break;
             case NativeTypeKind::S64:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.s64, right->computedValue()->reg.s64))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoS64)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoS64, &left->computedValue()->reg.s64, &right->computedValue()->reg.s64);
                 node->computedValue()->reg.s64 = left->computedValue()->reg.s64 * right->computedValue()->reg.s64;
                 break;
             case NativeTypeKind::U8:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u8, right->computedValue()->reg.u8))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU8)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU8, &left->computedValue()->reg.u8, &right->computedValue()->reg.u8);
                 node->computedValue()->reg.u64 = static_cast<uint64_t>(left->computedValue()->reg.u8) * right->computedValue()->reg.u8;
                 break;
             case NativeTypeKind::U16:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u16, right->computedValue()->reg.u16))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU16)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU16, &left->computedValue()->reg.u16, &right->computedValue()->reg.u16);
                 node->computedValue()->reg.u64 = static_cast<uint64_t>(left->computedValue()->reg.u16) * right->computedValue()->reg.u16;
                 break;
             case NativeTypeKind::U32:
             case NativeTypeKind::Rune:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u32, right->computedValue()->reg.u32))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU32)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU32, &left->computedValue()->reg.u32, &right->computedValue()->reg.u32);
                 node->computedValue()->reg.u64 = static_cast<uint64_t>(left->computedValue()->reg.u32) * right->computedValue()->reg.u32;
                 break;
             case NativeTypeKind::U64:
                 if (mulWillOverflow(nullptr, node, left->computedValue()->reg.u64, right->computedValue()->reg.u64))
-                    return context->report({node, ByteCodeGen::safetyMsg(SafetyMsg::Mul, g_TypeMgr->typeInfoU64)});
+                    return context->overflowError(node, SafetyMsg::Mul, g_TypeMgr->typeInfoU64, &left->computedValue()->reg.u64, &right->computedValue()->reg.u64);
                 node->computedValue()->reg.u64 = left->computedValue()->reg.u64 * right->computedValue()->reg.u64;
                 break;
             case NativeTypeKind::F32:
