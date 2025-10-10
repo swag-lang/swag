@@ -177,7 +177,7 @@ void initErrors()
     SWAG_ERROR(Err0050, "[[#[Swag.Mixin]]] and [[#[Swag.Inline]]] cannot be combined                                            $ ");
     SWAG_ERROR(Err0051, "[[#[Swag.Mixin]]] and [[#[Swag.NoInline]]] cannot be combined                                          $ ");
     SWAG_ERROR(Err0052, "[[%s]] and [[%s]] cannot be combined                                                                   $ ");
-    SWAG_ERROR(Err0053, "divider evaluated to 0                                                                                 $ ");
+    SWAG_ERROR(Err0053, "division by zero                                                                                       $ ");
     SWAG_ERROR(Err0054, "result exceeds range of [[%s]]                                                                         $ ");
     SWAG_ERROR(Err0055, "[[%s]] applied multiple times; [[Swag.AttrMulti]] not specified                                        $ ");
     SWAG_ERROR(Err0056, "struct initialized with both type syntax and assignment                                                $ ");
