@@ -4,6 +4,7 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity_Macros.h"
 #include "Report/Diagnostic.h"
+#include "Report/ErrorIds.h"
 #include "Report/Report.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
@@ -2226,6 +2227,13 @@ bool ByteCodeSanity::loop()
                 break;
             case ByteCodeOp::BinOpDivF32:
                 BINOP_DIV(/, f32);
+                SWAG_CHECK(STATE()->getImmediateB(vb));
+                if (vb.isConstant() && std::isnan(vb.reg.f32))
+                {
+                    const auto err = raiseError(STATE()->ip, formErr(San0005, "f32"), &vb);
+                    if (err)
+                        return context.report(*err);                    
+                }
                 break;
             case ByteCodeOp::BinOpDivF64:
                 BINOP_DIV(/, f64);

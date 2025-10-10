@@ -5,8 +5,8 @@ var G: bool
 //#[Swag.PrintBc]
 #test
 {
-    let a = Swag.F64.Nan
-    let b = Swag.F64.Nan
+    let a = Swag.F64.NaN
+    let b = Swag.F64.NaN
     if a != b:
         G = true
     else:

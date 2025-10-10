@@ -3,7 +3,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    let a = Swag.F64.Nan
-    let b = Swag.F64.Nan
+    let a = Swag.F64.NaN
+    let b = Swag.F64.NaN
     @assert(a != b)
 }

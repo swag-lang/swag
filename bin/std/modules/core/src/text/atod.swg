@@ -847,7 +847,7 @@ func special(s: const [..] u8)->{ value: f64, eat: u32 }
     switch
     {
     case !Latin1.compare(s, "NaN", ignoreCase: true):
-        result.value = Swag.F64.Nan
+        result.value = Swag.F64.NaN
         result.eat   = 3
     case !Latin1.compare(s, "Inf", ignoreCase: true):
         result.value = Swag.F64.Inf
