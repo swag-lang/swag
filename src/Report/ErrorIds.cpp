@@ -99,7 +99,7 @@ void initErrors()
     SWAG_ERROR(Saf0026, "[safety] value [[%g]] too large for type [[%s]] (overflow)                  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0027, "[safety] overflow detected during [['%s']] operation (type [[%s]])          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0028, "[safety] truncation from [[%s]] to [[%s]] not allowed (possible data loss)  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
-    SWAG_ERROR(Saf0029, "[safety] unexpected switch value (no matching case found)                   $ this occurred because [[#[Swag.Complete]]] requires all possible values to be handled $ note: this safety check was triggered because [[#[Swag.Safety(\"switch\")]]] is enabled");
+    SWAG_ERROR(Saf0029, "[safety] unexpected switch value (no matching case found)                   $ note: this safety check was triggered because [[#[Swag.Safety(\"switch\")]]] is enabled");
     SWAG_ERROR(Saf0032, "[safety] return of stack memory                                             $ note: this safety check was triggered because [[#[Swag.Safety(\"memory\")]]] is enabled");
     SWAG_ERROR(Saf0033, "[safety] stack overwrite at offset [[%lld]] (stack size [[%lld]])           $ note: this safety check was triggered because [[#[Swag.Safety(\"memory\")]]] is enabled");
     SWAG_ERROR(Saf0034, "[safety] use of uninitialized memory                                        $ note: this safety check was triggered because [[#[Swag.Safety(\"memory\")]]] is enabled");
