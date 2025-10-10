@@ -88,7 +88,8 @@ void initErrors()
     SWAG_ERROR(Saf0017, "[safety] NaN (Not a Number) value detected                                  $ note: this safety check was triggered because [[#[Swag.Safety(\"nan\")]]] is enabled");
     SWAG_ERROR(Saf0018, "[safety] attempted to dereference a null pointer                            $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
     SWAG_ERROR(Saf0019, "[safety] attempted to throw a null error value                              $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
-    SWAG_ERROR(Saf0030, "[sanity] null argument passed to [[%s]]                                     $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
+    SWAG_ERROR(Saf0030, "[safety] null argument passed to [[%s]]                                     $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
+    SWAG_ERROR(Saf0031, "[safety] cannot return a null value                                         $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
     SWAG_ERROR(Saf0020, "[safety] negative value [[%I64d]] cannot cast to unsigned type [[%s]]       $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0021, "[safety] negative type [[%s]] cannot cast to unsigned type [[%s]]           $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0022, "[safety] negative value [[%g]] cannot cast to unsigned type [[%s]]          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
@@ -99,7 +100,6 @@ void initErrors()
     SWAG_ERROR(Saf0027, "[safety] overflow detected during [['%s']] operation (type [[%s]])          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0028, "[safety] truncation from [[%s]] to [[%s]] not allowed (possible data loss)  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0029, "[safety] unexpected switch value (no matching case found)                   $ this occurred because [[#[Swag.Complete]]] requires all possible values to be handled $ note: this safety check was triggered because [[#[Swag.Safety(\"switch\")]]] is enabled");
-    SWAG_ERROR(Saf0031, nullptr);
     SWAG_ERROR(Saf0032, nullptr);
     SWAG_ERROR(Saf0033, nullptr);
     SWAG_ERROR(Saf0034, nullptr);
@@ -110,7 +110,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
 
     SWAG_ERROR(San0002, "[sanity] division by zero");
-    SWAG_ERROR(San0003, "[sanity] null return");
     SWAG_ERROR(San0004, "[sanity] return of stack memory");
     SWAG_ERROR(San0006, "[sanity] null pointer dereference");
     SWAG_ERROR(San0007, "[sanity] stack overwrite at offset [[%lld]] (stack size [[%lld]])");

@@ -158,6 +158,10 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
     if (ip->flags.has(BCI_NOT_NULL))
         return true;
 
+    const auto node = ip->node;
+    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
+        return true;
+
     SanityValue* ra = nullptr;
     SWAG_CHECK(STATE()->getRegister(ra, reg));
 
@@ -168,7 +172,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
             const auto returnType = context.bc->typeInfoFunc->concreteReturnType();
             if (!returnType->isNullable() && returnType->couldBeNull())
             {
-                const auto err = raiseError(STATE()->ip, toErr(San0003), ra);
+                const auto err = raiseError(STATE()->ip, toErr(Saf0031), ra);
                 if (err)
                     return context.report(*err);
             }
@@ -180,9 +184,9 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
 
 bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
 {
-    const auto ip   = STATE()->ip;
-    const auto node = ip->node;
+    const auto ip = STATE()->ip;
 
+    const auto node = ip->node;
     if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
         return true;
 
