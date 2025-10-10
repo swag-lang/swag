@@ -370,7 +370,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     if (isFlags && enumNode->computedValue()->reg.u8)
                     {
                         const auto n = enumNode->computedValue()->reg.u8;
-                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr())}));
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr(), n)}));
                         enumNode->computedValue()->reg.u8 <<= 1;
                     }
                     else
@@ -382,7 +382,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     if (isFlags && enumNode->computedValue()->reg.u16)
                     {
                         const auto n = enumNode->computedValue()->reg.u16;
-                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr())}));
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr(), n)}));
                         enumNode->computedValue()->reg.u16 <<= 1;
                     }
                     else
@@ -394,7 +394,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     if (isFlags && enumNode->computedValue()->reg.u32)
                     {
                         const auto n = enumNode->computedValue()->reg.u32;
-                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr())}));
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr(), n)}));
                         enumNode->computedValue()->reg.u32 <<= 1;
                     }
                     else
@@ -406,7 +406,7 @@ bool Semantic::resolveEnumValue(SemanticContext* context)
                     if (isFlags && enumNode->computedValue()->reg.u64)
                     {
                         const auto n = enumNode->computedValue()->reg.u64;
-                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr())}));
+                        SWAG_VERIFY((n & n - 1) == 0, context->report({valNode, formErr(Err0704, valNode->token.cstr(), n)}));
                         enumNode->computedValue()->reg.u64 <<= 1;
                     }
                     else
