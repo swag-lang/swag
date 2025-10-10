@@ -158,6 +158,8 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 
 bool ByteCodeSanity::loop()
 {
+    PushErrCxtStep ec(&context, nullptr, ErrCxtStepKind::DuringSanity, nullptr);
+    
     SanityValue*           ra    = nullptr;
     SanityValue*           rb    = nullptr;
     SanityValue*           rc    = nullptr;

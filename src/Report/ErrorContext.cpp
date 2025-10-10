@@ -15,16 +15,13 @@ PushErrCxtStep::PushErrCxtStep(ErrorContext*                context,
                                const std::function<Utf8()>& err,
                                bool                         locIsToken)
 {
-    if (node)
-    {
-        ErrorCxtStep expNode;
-        expNode.node       = node;
-        expNode.type       = kind;
-        expNode.err        = err;
-        expNode.locIsToken = locIsToken;
-        context->errCxtSteps.push_back(expNode);
-        cxt = context;
-    }
+    ErrorCxtStep expNode;
+    expNode.node       = node;
+    expNode.type       = kind;
+    expNode.err        = err;
+    expNode.locIsToken = locIsToken;
+    context->errCxtSteps.push_back(expNode);
+    cxt = context;
 }
 
 PushErrCxtStep::~PushErrCxtStep()
@@ -92,14 +89,14 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     break;
 
                 case ErrCxtStepKind::DuringInline:
-                    exp.hide = doneInline;
+                    exp.hide   = doneInline;
                     doneInline = true;
                     if (hasSameNode || !diagnostic.sourceNode || diagnostic.sourceNode->hasAstFlag(AST_IN_MIXIN))
                         exp.hide = true;
                     break;
 
                 case ErrCxtStepKind::DuringCompileTime:
-                    exp.hide = doneCompTime;
+                    exp.hide     = doneCompTime;
                     doneCompTime = true;
                     break;
 
@@ -144,20 +141,25 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                 case ErrCxtStepKind::Note:
                     break;
                 case ErrCxtStepKind::DuringGeneric:
-                    msg = form("occurred during the generic instantiation of [[%s]]", name.cstr());
+                    msg             = form("occurred during the generic instantiation of [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringInline:
-                    msg = form("occurred during the inline expansion of [[%s]]", name.cstr());
+                    msg             = form("occurred during the inline expansion of [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringCompileTime:
-                    msg = form("occurred during compile-time evaluation", name.cstr());
+                    msg             = "occurred during compile-time evaluation";
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
+                case ErrCxtStepKind::DuringSanity:
+                    msg             = "occurred during the sanity pass ([[#[Swag.Sanity]]] is enabled)";
+                    exp.fromContext = true;
+                    break;
+
                 case ErrCxtStepKind::DuringWhere:
                     if (exp.node->is(AstNodeKind::StructDecl))
                         msg = form("occurred during the [[where]] check of the struct [[%s]]", name.cstr());
@@ -167,7 +169,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringVerify:
-                    msg = form("occurred during the [[verify]] check of the call to [[%s]]", name.cstr());
+                    msg             = form("occurred during the [[verify]] check of the call to [[%s]]", name.cstr());
                     exp.locIsToken  = true;
                     exp.fromContext = true;
                     break;
@@ -231,7 +233,7 @@ bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, u
     return report(err);
 }
 
-bool ErrorContext::overflowError(AstNode* loc, SafetyMsg msgKind, const TypeInfo* type, const void* val0, const void *val1)
+bool ErrorContext::overflowError(AstNode* loc, SafetyMsg msgKind, const TypeInfo* type, const void* val0, const void* val1)
 {
     if (!loc)
         loc = node;
@@ -277,8 +279,8 @@ bool ErrorContext::overflowError(AstNode* loc, SafetyMsg msgKind, const TypeInfo
             }
         }
 
-        err.addNote(n);        
+        err.addNote(n);
     }
-    
+
     return report(err);
 }

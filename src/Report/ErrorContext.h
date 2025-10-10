@@ -20,6 +20,7 @@ enum class ErrCxtStepKind
     DuringCompileTime,
     DuringWhere,
     DuringVerify,
+    DuringSanity,
 };
 
 struct ErrorCxtStep
