@@ -180,7 +180,12 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
 
 bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
 {
-    const auto        ip       = STATE()->ip;
+    const auto ip   = STATE()->ip;
+    const auto node = ip->node;
+
+    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
+        return true;
+
     TypeInfoFuncAttr* typeFunc = nullptr;
 
     if (intrinsic.empty())
@@ -231,11 +236,11 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
             {
                 Utf8 msg;
                 if (ip->op == ByteCodeOp::LambdaCall)
-                    msg = formErr(San0001, "lambda");
+                    msg = formErr(Saf0030, "lambda");
                 else if (typeFunc)
-                    msg = formErr(San0001, typeFunc->declNode->token.cstr());
+                    msg = formErr(Saf0030, typeFunc->declNode->token.cstr());
                 else
-                    msg = formErr(San0001, intrinsic.cstr());
+                    msg = formErr(Saf0030, intrinsic.cstr());
 
                 AstNode* locNode = nullptr;
                 if (ip->node && ip->node->childCount() && ip->node->lastChild()->is(AstNodeKind::FuncCallParams))
@@ -255,7 +260,7 @@ bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, co
                     const auto childParam = funcDecl->parameters->children[idx];
                     if (childParam->isGeneratedMe())
                     {
-                        msg = form("%s [[%s]] does not accept a null value as %s", "function", funcDecl->token.cstr(), "an implicit UFCS first argument");
+                        msg = form("%s [[%s]] does not accept a null value as %s", "function", funcDecl->token.cstr(), "an implicit first argument");
                         err->addNote(funcDecl, funcDecl->getTokenName(), msg);
                     }
                     else
@@ -304,7 +309,8 @@ bool ByteCodeSanity::process(ByteCode* bc)
     if (!bc->node->token.sourceFile->module->buildCfg.sanity && !bc->node->hasAttribute(ATTRIBUTE_SANITY_ON))
         return true;
 
-    context.bc = bc;
+    context.bc         = bc;
+    context.sourceFile = bc->sourceFile;
 
     const auto state    = new ByteCodeSanityState;
     const auto funcDecl = castAst<AstFuncDecl>(context.bc->node, AstNodeKind::FuncDecl);

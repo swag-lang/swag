@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "San0001"
+//#global testerror "Saf0030"
 
 #[Swag.NoInline]
 func titi()->#null *s32

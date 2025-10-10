@@ -159,7 +159,7 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
 bool ByteCodeSanity::loop()
 {
     PushErrCxtStep ec(&context, nullptr, ErrCxtStepKind::DuringSanity, nullptr);
-    
+
     SanityValue*           ra    = nullptr;
     SanityValue*           rb    = nullptr;
     SanityValue*           rc    = nullptr;
@@ -182,8 +182,8 @@ bool ByteCodeSanity::loop()
             continue;
         }
 
-        context.node = ip->node;
-        STATE()->ip = ip;
+        context.node       = ip->node;
+        STATE()->ip        = ip;
         STATE()->ips.push_back(ip);
 
         switch (ip->op)
@@ -198,7 +198,7 @@ bool ByteCodeSanity::loop()
             case ByteCodeOp::Nop:
                 break;
 
-            /////////////////////////////////////////
+                /////////////////////////////////////////
 
             case ByteCodeOp::DecSPBP:
             case ByteCodeOp::IncSPPostCall:
@@ -301,7 +301,7 @@ bool ByteCodeSanity::loop()
                 SanityValue::setIps(ip, ra);
                 break;
 
-            /////////////////////////////////////////
+                /////////////////////////////////////////
 
             case ByteCodeOp::CopyRAtoRT:
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
@@ -443,7 +443,7 @@ bool ByteCodeSanity::loop()
                 pushParams.clear();
                 break;
 
-            /////////////////////////////////////////
+                /////////////////////////////////////////
 
             case ByteCodeOp::Jump:
                 ip->dynFlags.add(BCID_SAN_PASS);
@@ -531,7 +531,7 @@ bool ByteCodeSanity::loop()
                 }
                 break;
 
-            /////////////////////////////////////////
+                /////////////////////////////////////////
 
             case ByteCodeOp::CopyRBtoRA64:
                 SWAG_CHECK(STATE()->getRegister(ra, ip->a.u32));
@@ -1443,7 +1443,7 @@ bool ByteCodeSanity::loop()
                 SanityValue::setIps(ip, ra, rb);
                 break;
 
-            /////////////////////////////////////////
+                /////////////////////////////////////////
 
             case ByteCodeOp::IntrinsicTableOf:
                 SWAG_CHECK(checkNotNullArguments({ip->b.u32, ip->a.u32}, "@tableOf"));
@@ -1671,7 +1671,7 @@ bool ByteCodeSanity::loop()
                 }
                 break;
 
-            /////////////////////////////////////////
+                /////////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
                 BINOP_EQ_OVF(int8_t, +=, s8, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8);
@@ -2236,7 +2236,7 @@ bool ByteCodeSanity::loop()
                 {
                     const auto err = raiseError(STATE()->ip, formErr(San0005, "f32"), &vb);
                     if (err)
-                        return context.report(*err);                    
+                        return context.report(*err);
                 }
                 break;
             case ByteCodeOp::BinOpDivF64:

@@ -1,12 +1,13 @@
 //#global skip
-#global testerror "Saf0030"
+//#global testerror "Saf0030"
 
 var G = 0
+
 struct A {}
 impl A
 {
     #[Swag.Optimize("", false)]
-    mtd toto(x: s32)
+    mtd toto()
     {
         //@print("titi")
         G = 1
@@ -14,11 +15,9 @@ impl A
 }
 
 #[Swag.Sanity(true)]
-#[Swag.Safety("null", true)]
+#[Swag.Safety("null", false)]
 #[Swag.Optimize("", false)]
 #test
 {
-    var p: *A
-    let p1 = p
-    A.toto(p1, 0)
+    A.toto(null)
 }

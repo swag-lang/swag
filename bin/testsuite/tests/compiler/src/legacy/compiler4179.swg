@@ -1,5 +1,5 @@
 //#global skip
-#global testerror "San0001"
+#global testerror "Saf0030"
 
 #[Swag.Sanity(true)]
 func toto(str: string, x: cvarargs)

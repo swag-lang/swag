@@ -156,7 +156,7 @@ void ErrorContext::extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& no
                     exp.fromContext = true;
                     break;
                 case ErrCxtStepKind::DuringSanity:
-                    msg             = "occurred during the sanity pass ([[#[Swag.Sanity]]] is enabled)";
+                    msg             = "occurred during the sanity pass; [[#[Swag.Sanity]]] is enabled";
                     exp.fromContext = true;
                     break;
 
