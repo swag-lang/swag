@@ -127,7 +127,13 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 {
     if (!value->isConstant() || !isZero)
         return true;
-    const auto err = raiseError(STATE()->ip, toErr(San0002), value);
+
+    const auto ip   = STATE()->ip;
+    const auto node = ip->node;
+    if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_MATH, true))
+        return true;
+
+    const auto err = raiseError(ip, toErr(Saf0016), value);
     if (err)
         return context.report(*err);
     return true;
@@ -147,11 +153,11 @@ bool ByteCodeSanity::checkNotNull(const SanityValue* value)
     if (!value->isZero())
         return true;
 
-    const auto ip = STATE()->ip;
+    const auto ip   = STATE()->ip;
     const auto node = ip->node;
     if (!node || !context.sourceFile || !context.sourceFile->module || !context.sourceFile->module->mustEmitSafety(node, SAFETY_NULL, true))
         return true;
-    
+
     const auto err = raiseError(ip, toErr(Saf0018), value);
     if (err)
         return context.report(*err);

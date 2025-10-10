@@ -109,7 +109,6 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(San0002, "[sanity] division by zero");
     SWAG_ERROR(San0004, "[sanity] return of stack memory");
     SWAG_ERROR(San0007, "[sanity] stack overwrite at offset [[%lld]] (stack size [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] use of uninitialized memory");

@@ -1,4 +1,4 @@
-#global testerror "San0002"
+#global testerror "Saf0016"
 
 //#[Swag.PrintBc]
 #[Swag.Sanity(true)]
