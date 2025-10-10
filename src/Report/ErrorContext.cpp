@@ -1,9 +1,12 @@
 #include "pch.h"
-#include "Report/ErrorContext.h"
+
+#include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Report/Diagnostic.h"
+#include "Report/ErrorContext.h"
 #include "Report/ErrorIds.h"
 #include "Report/Report.h"
 #include "Semantic/Scope.h"
+#include "Semantic/Type/TypeInfo.h"
 #include "Wmf/SourceFile.h"
 
 PushErrCxtStep::PushErrCxtStep(ErrorContext*                context,
@@ -225,5 +228,57 @@ bool ErrorContext::checkSizeOverflow(const char* typeOverflow, uint64_t value, u
     if (value <= maxValue)
         return true;
     const Diagnostic err{node, formErr(Err0762, typeOverflow, maxValue)};
+    return report(err);
+}
+
+bool ErrorContext::overflowError(AstNode* loc, SafetyMsg msgKind, const TypeInfo* type, const void* val0, const void *val1)
+{
+    if (!loc)
+        loc = node;
+    SWAG_ASSERT(loc);
+    Diagnostic err{loc, loc->token, ByteCodeGen::safetyMsg(msgKind, type)};
+    if (type && val0 && val1)
+    {
+        Utf8 n;
+        if (!type->isNativeIntegerSigned())
+        {
+            switch (type->sizeOf)
+            {
+                case 1:
+                    n = form("operands are [[%u]] and [[%u]]", *static_cast<const uint8_t*>(val0), *static_cast<const uint8_t*>(val1));
+                    break;
+                case 2:
+                    n = form("operands are [[%u]] and [[%u]]", *static_cast<const uint16_t*>(val0), *static_cast<const uint16_t*>(val1));
+                    break;
+                case 4:
+                    n = form("operands are [[%u]] and [[%u]]", *static_cast<const uint32_t*>(val0), *static_cast<const uint32_t*>(val1));
+                    break;
+                case 8:
+                    n = form("operands are [[%llu]] and [[%llu]]", *static_cast<const uint64_t*>(val0), *static_cast<const uint64_t*>(val1));
+                    break;
+            }
+        }
+        else
+        {
+            switch (type->sizeOf)
+            {
+                case 1:
+                    n = form("operands are [[%d]] and [[%d]]", *static_cast<const int8_t*>(val0), *static_cast<const int8_t*>(val1));
+                    break;
+                case 2:
+                    n = form("operands are [[%d]] and [[%d]]", *static_cast<const int16_t*>(val0), *static_cast<const int16_t*>(val1));
+                    break;
+                case 4:
+                    n = form("operands are [[%d]] and [[%d]]", *static_cast<const int32_t*>(val0), *static_cast<const int32_t*>(val1));
+                    break;
+                case 8:
+                    n = form("operands are [[%lld]] and [[%lld]]", *static_cast<const int64_t*>(val0), *static_cast<const int64_t*>(val1));
+                    break;
+            }
+        }
+
+        err.addNote(n);        
+    }
+    
     return report(err);
 }

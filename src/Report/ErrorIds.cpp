@@ -69,35 +69,35 @@ void initErrors()
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
 
-    SWAG_ERROR(Saf0001, "[safety] invalid cast from [[any]] to [[%s]]                                $ note: this safety check was triggered because [[#[Swag.Safety(\"dyncast\")]]] is true");
-    SWAG_ERROR(Saf0002, "[safety] null value cannot be cast to [[%s]]                                $ note: this safety check was triggered because [[#[Swag.Safety(\"dyncast\")]]] is true");
-    SWAG_ERROR(Saf0003, "[safety] invalid boolean value detected                                     $ note: this safety check was triggered because [[#[Swag.Safety(\"bool\")]]] is true");
-    SWAG_ERROR(Saf0004, "[safety] index out of range                                                 $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0005, "[safety] lower bound greater than upper bound                               $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0006, "[safety] lower bound greater than upper bound                               $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0007, "[safety] upper bound exceeds array length                                   $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is true");
-    SWAG_ERROR(Saf0008, "[safety] overflow detected in [[@abs]] (type [[%s]])                        $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0009, "[safety] invalid argument passed to [[@acos]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0010, "[safety] invalid argument passed to [[@asin]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0011, "[safety] invalid argument passed to [[@log]] (type [[%s]])                  $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0012, "[safety] invalid argument passed to [[@log10]] (type [[%s]])                $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0013, "[safety] invalid argument passed to [[@log2]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0014, "[safety] invalid argument passed to [[@sqrt]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0015, "[safety] invalid argument passed to [[@pow]] (type [[%s]])                  $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0016, "[safety] division by zero                                                   $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is true");
-    SWAG_ERROR(Saf0017, "[safety] NaN (Not a Number) value detected                                  $ note: this safety check was triggered because [[#[Swag.Safety(\"nan\")]]] is true");
-    SWAG_ERROR(Saf0018, "[safety] attempted to dereference a null pointer                            $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is true");
-    SWAG_ERROR(Saf0019, "[safety] attempted to throw a null error value                              $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is true");
-    SWAG_ERROR(Saf0020, "[safety] negative value [[%I64d]] cannot cast to unsigned type [[%s]]       $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0021, "[safety] negative type [[%s]] cannot cast to unsigned type [[%s]]           $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0022, "[safety] negative value [[%g]] cannot cast to unsigned type [[%s]]          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0023, "[safety] value [[%s]] ([[%I64u]]) too large for type [[%s]] (overflow)      $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0024, "[safety] value [[%I64u]] too large for type [[%s]] (overflow)               $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0025, "[safety] value [[%I64d]] too large for type [[%s]] (overflow)               $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0026, "[safety] value [[%g]] too large for type [[%s]] (overflow)                  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0027, "[safety] overflow detected during [['%s']] operation (type [[%s]])          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0028, "[safety] truncation from [[%s]] to [[%s]] not allowed (possible data loss)  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is true");
-    SWAG_ERROR(Saf0029, "[safety] unexpected switch value (no matching case found)                   $ this occurred because [[#[Swag.Complete]]] requires all possible values to be handled $ note: this safety check was triggered because [[#[Swag.Safety(\"switch\")]]] is true");
+    SWAG_ERROR(Saf0001, "[safety] invalid cast from [[any]] to [[%s]]                                $ note: this safety check was triggered because [[#[Swag.Safety(\"dyncast\")]]] is enabled");
+    SWAG_ERROR(Saf0002, "[safety] null value cannot be cast to [[%s]]                                $ note: this safety check was triggered because [[#[Swag.Safety(\"dyncast\")]]] is enabled");
+    SWAG_ERROR(Saf0003, "[safety] invalid boolean value detected                                     $ note: this safety check was triggered because [[#[Swag.Safety(\"bool\")]]] is enabled");
+    SWAG_ERROR(Saf0004, "[safety] index out of range                                                 $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
+    SWAG_ERROR(Saf0005, "[safety] lower bound greater than upper bound                               $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
+    SWAG_ERROR(Saf0006, "[safety] lower bound greater than upper bound                               $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
+    SWAG_ERROR(Saf0007, "[safety] upper bound exceeds array length                                   $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
+    SWAG_ERROR(Saf0008, "[safety] overflow detected in [[@abs]] (type [[%s]])                        $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0009, "[safety] invalid argument passed to [[@acos]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0010, "[safety] invalid argument passed to [[@asin]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0011, "[safety] invalid argument passed to [[@log]] (type [[%s]])                  $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0012, "[safety] invalid argument passed to [[@log10]] (type [[%s]])                $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0013, "[safety] invalid argument passed to [[@log2]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0014, "[safety] invalid argument passed to [[@sqrt]] (type [[%s]])                 $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0015, "[safety] invalid argument passed to [[@pow]] (type [[%s]])                  $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0016, "[safety] division by zero                                                   $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0017, "[safety] NaN (Not a Number) value detected                                  $ note: this safety check was triggered because [[#[Swag.Safety(\"nan\")]]] is enabled");
+    SWAG_ERROR(Saf0018, "[safety] attempted to dereference a null pointer                            $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
+    SWAG_ERROR(Saf0019, "[safety] attempted to throw a null error value                              $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
+    SWAG_ERROR(Saf0020, "[safety] negative value [[%I64d]] cannot cast to unsigned type [[%s]]       $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0021, "[safety] negative type [[%s]] cannot cast to unsigned type [[%s]]           $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0022, "[safety] negative value [[%g]] cannot cast to unsigned type [[%s]]          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0023, "[safety] value [[%s]] ([[%I64u]]) too large for type [[%s]] (overflow)      $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0024, "[safety] value [[%I64u]] too large for type [[%s]] (overflow)               $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0025, "[safety] value [[%I64d]] too large for type [[%s]] (overflow)               $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0026, "[safety] value [[%g]] too large for type [[%s]] (overflow)                  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0027, "[safety] overflow detected during [['%s']] operation (type [[%s]])          $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0028, "[safety] truncation from [[%s]] to [[%s]] not allowed (possible data loss)  $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0029, "[safety] unexpected switch value (no matching case found)                   $ this occurred because [[#[Swag.Complete]]] requires all possible values to be handled $ note: this safety check was triggered because [[#[Swag.Safety(\"switch\")]]] is enabled");
     SWAG_ERROR(Saf0030, nullptr);
     SWAG_ERROR(Saf0031, nullptr);
     SWAG_ERROR(Saf0032, nullptr);
@@ -118,8 +118,7 @@ void initErrors()
     SWAG_ERROR(San0007, "[sanity] stack overwrite at offset [[%lld]] (stack size [[%lld]])");
     SWAG_ERROR(San0008, "[sanity] use of uninitialized memory");
     SWAG_ERROR(San0009, "[sanity] division by infinity (type [[%s]])");
-    SWAG_ERROR(San0010, "[sanity] overflow in [['%s']] operation (type [[%s]])");
-
+    
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

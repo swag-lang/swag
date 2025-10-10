@@ -12,7 +12,7 @@ namespace
     thread_local Utf8 g_TypedMsg[static_cast<int>(SafetyMsg::Count)][static_cast<int>(NativeTypeKind::Count)][static_cast<int>(NativeTypeKind::Count)];
 }
 
-const char* ByteCodeGen::safetyMsg(SafetyMsg msg, TypeInfo* toType, TypeInfo* fromType)
+const char* ByteCodeGen::safetyMsg(SafetyMsg msg, const TypeInfo* toType, const TypeInfo* fromType)
 {
     const int m = static_cast<int>(msg);
     const int i = toType ? static_cast<int>(toType->nativeType) : 0;

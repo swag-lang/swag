@@ -2,9 +2,11 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
+#include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity_Macros.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
+#include "Semantic/Error/SemanticError.h"
 #include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
@@ -15,8 +17,16 @@ Diagnostic* ByteCodeSanity::raiseError(const ByteCodeInstruction* ip, const Utf8
         return nullptr;
     if (!locNode)
         locNode = ip->node;
-
     const auto err = new Diagnostic{locNode, locNode->token, msg};
+    return raiseError(ip, err, locValue, locNode);
+}
+
+Diagnostic* ByteCodeSanity::raiseError(const ByteCodeInstruction* ip, Diagnostic* err, const SanityValue* locValue, AstNode* locNode)
+{
+    if (!ip->node)
+        return nullptr;
+    if (!locNode)
+        locNode = ip->node;
     if (!locValue)
         return err;
 
@@ -106,54 +116,11 @@ Diagnostic* ByteCodeSanity::raiseError(const ByteCodeInstruction* ip, const Utf8
     return err;
 }
 
-bool ByteCodeSanity::checkOverflow(bool isValid, const char* msgKind, TypeInfo* type, const void* val0, const void* val1)
+bool ByteCodeSanity::checkOverflow(bool isValid, SafetyMsg msgKind, const TypeInfo* type, const void* val0, const void* val1)
 {
     if (isValid)
         return true;
-    const auto err = raiseError(STATE()->ip, formErr(San0010, msgKind, type->getDisplayNameC()));
-    if (err)
-    {
-        if (!type->isNativeIntegerSigned())
-        {
-            switch (type->sizeOf)
-            {
-                case 1:
-                    err->addNote(form("values are [[%u]] and [[%u]]", *static_cast<const uint8_t*>(val0), *static_cast<const uint8_t*>(val1)));
-                    break;
-                case 2:
-                    err->addNote(form("values are [[%u]] and [[%u]]", *static_cast<const uint16_t*>(val0), *static_cast<const uint16_t*>(val1)));
-                    break;
-                case 4:
-                    err->addNote(form("values are [[%u]] and [[%u]]", *static_cast<const uint32_t*>(val0), *static_cast<const uint32_t*>(val1)));
-                    break;
-                case 8:
-                    err->addNote(form("values are [[%llu]] and [[%llu]]", *static_cast<const uint64_t*>(val0), *static_cast<const uint64_t*>(val1)));
-                    break;
-            }
-        }
-        else
-        {
-            switch (type->sizeOf)
-            {
-                case 1:
-                    err->addNote(form("values are [[%d]] and [[%d]]", *static_cast<const int8_t*>(val0), *static_cast<const int8_t*>(val1)));
-                    break;
-                case 2:
-                    err->addNote(form("values are [[%d]] and [[%d]]", *static_cast<const int16_t*>(val0), *static_cast<const int16_t*>(val1)));
-                    break;
-                case 4:
-                    err->addNote(form("values are [[%d]] and [[%d]]", *static_cast<const int32_t*>(val0), *static_cast<const int32_t*>(val1)));
-                    break;
-                case 8:
-                    err->addNote(form("values are [[%lld]] and [[%lld]]", *static_cast<const int64_t*>(val0), *static_cast<const int64_t*>(val1)));
-                    break;
-            }
-        }
-
-        return context.report(*err);
-    }
-
-    return true;
+    return context.overflowError(STATE()->ip->node, msgKind, type, val0, val1);
 }
 
 bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)

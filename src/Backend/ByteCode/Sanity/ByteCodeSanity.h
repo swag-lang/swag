@@ -3,6 +3,7 @@
 #include "Backend/ByteCode/Sanity/ByteCodeSanityValue.h"
 #include "Threading/Job.h"
 
+enum class SafetyMsg;
 struct ByteCode;
 struct ByteCodeInstruction;
 
@@ -16,9 +17,10 @@ struct SanityContext : JobContext
 
 struct ByteCodeSanity
 {
-    static Diagnostic* raiseError(const ByteCodeInstruction* ip, const Utf8& msg, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr);
+    static Diagnostic* raiseError(const ByteCodeInstruction* ip, const Utf8& msg, const SanityValue* locValue, AstNode* locNode = nullptr);
+    static Diagnostic* raiseError(const ByteCodeInstruction* ip, Diagnostic* err, const SanityValue* locValue = nullptr, AstNode* locNode = nullptr);
 
-    bool checkOverflow(bool isValid, const char* msgKind, TypeInfo* type, const void* val0, const void* val1);
+    bool checkOverflow(bool isValid, SafetyMsg msgKind, const TypeInfo* type, const void* val0, const void* val1);
     bool checkDivZero(const SanityValue* value, bool isZero);
     bool checkEscapeFrame(const SanityValue* value);
     bool checkNotNull(const SanityValue* value);

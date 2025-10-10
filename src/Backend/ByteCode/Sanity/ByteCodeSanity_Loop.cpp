@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Backend/ByteCode/ByteCode.h"
 #include "Backend/ByteCode/ByteCode_Math.h"
+#include "Backend/ByteCode/Gen/ByteCodeGen.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity.h"
 #include "Backend/ByteCode/Sanity/ByteCodeSanity_Macros.h"
 #include "Report/Diagnostic.h"
@@ -179,6 +180,7 @@ bool ByteCodeSanity::loop()
             continue;
         }
 
+        context.node = ip->node;
         STATE()->ip = ip;
         STATE()->ips.push_back(ip);
 
@@ -1670,28 +1672,28 @@ bool ByteCodeSanity::loop()
             /////////////////////////////////////////
 
             case ByteCodeOp::AffectOpPlusEqS8:
-                BINOP_EQ_OVF(int8_t, +=, s8, addWillOverflow, "+=", g_TypeMgr->typeInfoS8);
+                BINOP_EQ_OVF(int8_t, +=, s8, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS8);
                 break;
             case ByteCodeOp::AffectOpPlusEqS16:
-                BINOP_EQ_OVF(int16_t, +=, s16, addWillOverflow, "+=", g_TypeMgr->typeInfoS16);
+                BINOP_EQ_OVF(int16_t, +=, s16, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS16);
                 break;
             case ByteCodeOp::AffectOpPlusEqS32:
-                BINOP_EQ_OVF(int32_t, +=, s32, addWillOverflow, "+=", g_TypeMgr->typeInfoS32);
+                BINOP_EQ_OVF(int32_t, +=, s32, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS32);
                 break;
             case ByteCodeOp::AffectOpPlusEqS64:
-                BINOP_EQ_OVF(int64_t, +=, s64, addWillOverflow, "+=", g_TypeMgr->typeInfoS64);
+                BINOP_EQ_OVF(int64_t, +=, s64, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoS64);
                 break;
             case ByteCodeOp::AffectOpPlusEqU8:
-                BINOP_EQ_OVF(uint8_t, +=, u8, addWillOverflow, "+=", g_TypeMgr->typeInfoU8);
+                BINOP_EQ_OVF(uint8_t, +=, u8, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU8);
                 break;
             case ByteCodeOp::AffectOpPlusEqU16:
-                BINOP_EQ_OVF(uint16_t, +=, u16, addWillOverflow, "+=", g_TypeMgr->typeInfoU16);
+                BINOP_EQ_OVF(uint16_t, +=, u16, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU16);
                 break;
             case ByteCodeOp::AffectOpPlusEqU32:
-                BINOP_EQ_OVF(uint32_t, +=, u32, addWillOverflow, "+=", g_TypeMgr->typeInfoU32);
+                BINOP_EQ_OVF(uint32_t, +=, u32, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU32);
                 break;
             case ByteCodeOp::AffectOpPlusEqU64:
-                BINOP_EQ_OVF(uint64_t, +=, u64, addWillOverflow, "+=", g_TypeMgr->typeInfoU64);
+                BINOP_EQ_OVF(uint64_t, +=, u64, addWillOverflow, SafetyMsg::PlusEq, g_TypeMgr->typeInfoU64);
                 break;
             case ByteCodeOp::AffectOpPlusEqF32_Safe:
                 BINOP_EQ(float, +=, f32);
@@ -1701,28 +1703,28 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::AffectOpMinusEqS8:
-                BINOP_EQ_OVF(int8_t, -=, s8, subWillOverflow, "-=", g_TypeMgr->typeInfoS8);
+                BINOP_EQ_OVF(int8_t, -=, s8, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS8);
                 break;
             case ByteCodeOp::AffectOpMinusEqS16:
-                BINOP_EQ_OVF(int16_t, -=, s16, subWillOverflow, "-=", g_TypeMgr->typeInfoS16);
+                BINOP_EQ_OVF(int16_t, -=, s16, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS16);
                 break;
             case ByteCodeOp::AffectOpMinusEqS32:
-                BINOP_EQ_OVF(int32_t, -=, s32, subWillOverflow, "-=", g_TypeMgr->typeInfoS32);
+                BINOP_EQ_OVF(int32_t, -=, s32, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS32);
                 break;
             case ByteCodeOp::AffectOpMinusEqS64:
-                BINOP_EQ_OVF(int64_t, -=, s64, subWillOverflow, "-=", g_TypeMgr->typeInfoS64);
+                BINOP_EQ_OVF(int64_t, -=, s64, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoS64);
                 break;
             case ByteCodeOp::AffectOpMinusEqU8:
-                BINOP_EQ_OVF(uint8_t, -=, u8, subWillOverflow, "-=", g_TypeMgr->typeInfoU8);
+                BINOP_EQ_OVF(uint8_t, -=, u8, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU8);
                 break;
             case ByteCodeOp::AffectOpMinusEqU16:
-                BINOP_EQ_OVF(uint16_t, -=, u16, subWillOverflow, "-=", g_TypeMgr->typeInfoU16);
+                BINOP_EQ_OVF(uint16_t, -=, u16, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU16);
                 break;
             case ByteCodeOp::AffectOpMinusEqU32:
-                BINOP_EQ_OVF(uint32_t, -=, u32, subWillOverflow, "-=", g_TypeMgr->typeInfoU32);
+                BINOP_EQ_OVF(uint32_t, -=, u32, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU32);
                 break;
             case ByteCodeOp::AffectOpMinusEqU64:
-                BINOP_EQ_OVF(uint64_t, -=, u64, subWillOverflow, "-=", g_TypeMgr->typeInfoU64);
+                BINOP_EQ_OVF(uint64_t, -=, u64, subWillOverflow, SafetyMsg::MinusEq, g_TypeMgr->typeInfoU64);
                 break;
             case ByteCodeOp::AffectOpMinusEqF32_Safe:
                 BINOP_EQ(float, -=, f32);
@@ -1732,28 +1734,28 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::AffectOpMulEqS8:
-                BINOP_EQ_OVF(int8_t, *=, s8, mulWillOverflow, "*=", g_TypeMgr->typeInfoS8);
+                BINOP_EQ_OVF(int8_t, *=, s8, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS8);
                 break;
             case ByteCodeOp::AffectOpMulEqS16:
-                BINOP_EQ_OVF(int16_t, *=, s16, mulWillOverflow, "*=", g_TypeMgr->typeInfoS16);
+                BINOP_EQ_OVF(int16_t, *=, s16, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS16);
                 break;
             case ByteCodeOp::AffectOpMulEqS32:
-                BINOP_EQ_OVF(int32_t, *=, s32, mulWillOverflow, "*=", g_TypeMgr->typeInfoS32);
+                BINOP_EQ_OVF(int32_t, *=, s32, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS32);
                 break;
             case ByteCodeOp::AffectOpMulEqS64:
-                BINOP_EQ_OVF(int64_t, *=, s64, mulWillOverflow, "*=", g_TypeMgr->typeInfoS64);
+                BINOP_EQ_OVF(int64_t, *=, s64, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoS64);
                 break;
             case ByteCodeOp::AffectOpMulEqU8:
-                BINOP_EQ_OVF(uint8_t, *=, u8, mulWillOverflow, "*=", g_TypeMgr->typeInfoU8);
+                BINOP_EQ_OVF(uint8_t, *=, u8, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU8);
                 break;
             case ByteCodeOp::AffectOpMulEqU16:
-                BINOP_EQ_OVF(uint16_t, *=, u16, mulWillOverflow, "*=", g_TypeMgr->typeInfoU16);
+                BINOP_EQ_OVF(uint16_t, *=, u16, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU16);
                 break;
             case ByteCodeOp::AffectOpMulEqU32:
-                BINOP_EQ_OVF(uint32_t, *=, u32, mulWillOverflow, "*=", g_TypeMgr->typeInfoU32);
+                BINOP_EQ_OVF(uint32_t, *=, u32, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU32);
                 break;
             case ByteCodeOp::AffectOpMulEqU64:
-                BINOP_EQ_OVF(uint64_t, *=, u64, mulWillOverflow, "*=", g_TypeMgr->typeInfoU64);
+                BINOP_EQ_OVF(uint64_t, *=, u64, mulWillOverflow, SafetyMsg::MulEq, g_TypeMgr->typeInfoU64);
                 break;
             case ByteCodeOp::AffectOpMulEqF32_Safe:
                 BINOP_EQ(float, *=, f32);
@@ -2109,28 +2111,28 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::BinOpPlusS8:
-                BINOP_OVF(+, s8, addWillOverflow, "+", g_TypeMgr->typeInfoS8);
+                BINOP_OVF(+, s8, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoS8);
                 break;
             case ByteCodeOp::BinOpPlusS16:
-                BINOP_OVF(+, s16, addWillOverflow, "+", g_TypeMgr->typeInfoS16);
+                BINOP_OVF(+, s16, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoS16);
                 break;
             case ByteCodeOp::BinOpPlusS32:
-                BINOP_OVF(+, s32, addWillOverflow, "+", g_TypeMgr->typeInfoS32);
+                BINOP_OVF(+, s32, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoS32);
                 break;
             case ByteCodeOp::BinOpPlusS64:
-                BINOP_OVF(+, s64, addWillOverflow, "+", g_TypeMgr->typeInfoS64);
+                BINOP_OVF(+, s64, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoS64);
                 break;
             case ByteCodeOp::BinOpPlusU8:
-                BINOP_OVF(+, u8, addWillOverflow, "+", g_TypeMgr->typeInfoU8);
+                BINOP_OVF(+, u8, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoU8);
                 break;
             case ByteCodeOp::BinOpPlusU16:
-                BINOP_OVF(+, u16, addWillOverflow, "+", g_TypeMgr->typeInfoU16);
+                BINOP_OVF(+, u16, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoU16);
                 break;
             case ByteCodeOp::BinOpPlusU32:
-                BINOP_OVF(+, u32, addWillOverflow, "+", g_TypeMgr->typeInfoU32);
+                BINOP_OVF(+, u32, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoU32);
                 break;
             case ByteCodeOp::BinOpPlusU64:
-                BINOP_OVF(+, u64, addWillOverflow, "+", g_TypeMgr->typeInfoU64);
+                BINOP_OVF(+, u64, addWillOverflow, SafetyMsg::Plus, g_TypeMgr->typeInfoU64);
                 break;
             case ByteCodeOp::BinOpPlusF32_Safe:
                 BINOP(+, f32);
@@ -2140,28 +2142,28 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::BinOpMinusS8:
-                BINOP_OVF(-, s8, subWillOverflow, "-", g_TypeMgr->typeInfoS8);
+                BINOP_OVF(-, s8, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoS8);
                 break;
             case ByteCodeOp::BinOpMinusS16:
-                BINOP_OVF(-, s16, subWillOverflow, "-", g_TypeMgr->typeInfoS16);
+                BINOP_OVF(-, s16, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoS16);
                 break;
             case ByteCodeOp::BinOpMinusS32:
-                BINOP_OVF(-, s32, subWillOverflow, "-", g_TypeMgr->typeInfoS32);
+                BINOP_OVF(-, s32, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoS32);
                 break;
             case ByteCodeOp::BinOpMinusS64:
-                BINOP_OVF(-, s64, subWillOverflow, "-", g_TypeMgr->typeInfoS64);
+                BINOP_OVF(-, s64, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoS64);
                 break;
             case ByteCodeOp::BinOpMinusU8:
-                BINOP_OVF(-, u8, subWillOverflow, "-", g_TypeMgr->typeInfoU8);
+                BINOP_OVF(-, u8, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoU8);
                 break;
             case ByteCodeOp::BinOpMinusU16:
-                BINOP_OVF(-, u16, subWillOverflow, "-", g_TypeMgr->typeInfoU16);
+                BINOP_OVF(-, u16, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoU16);
                 break;
             case ByteCodeOp::BinOpMinusU32:
-                BINOP_OVF(-, u32, subWillOverflow, "-", g_TypeMgr->typeInfoU32);
+                BINOP_OVF(-, u32, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoU32);
                 break;
             case ByteCodeOp::BinOpMinusU64:
-                BINOP_OVF(-, u64, subWillOverflow, "-", g_TypeMgr->typeInfoU64);
+                BINOP_OVF(-, u64, subWillOverflow, SafetyMsg::Minus, g_TypeMgr->typeInfoU64);
                 break;
             case ByteCodeOp::BinOpMinusF32_Safe:
                 BINOP(-, f32);
@@ -2171,28 +2173,28 @@ bool ByteCodeSanity::loop()
                 break;
 
             case ByteCodeOp::BinOpMulS8:
-                BINOP_OVF(*, s8, mulWillOverflow, "*", g_TypeMgr->typeInfoS8);
+                BINOP_OVF(*, s8, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoS8);
                 break;
             case ByteCodeOp::BinOpMulS16:
-                BINOP_OVF(*, s16, mulWillOverflow, "*", g_TypeMgr->typeInfoS16);
+                BINOP_OVF(*, s16, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoS16);
                 break;
             case ByteCodeOp::BinOpMulS32:
-                BINOP_OVF(*, s32, mulWillOverflow, "*", g_TypeMgr->typeInfoS32);
+                BINOP_OVF(*, s32, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoS32);
                 break;
             case ByteCodeOp::BinOpMulS64:
-                BINOP_OVF(*, s64, mulWillOverflow, "*", g_TypeMgr->typeInfoS64);
+                BINOP_OVF(*, s64, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoS64);
                 break;
             case ByteCodeOp::BinOpMulU8:
-                BINOP_OVF(*, u8, mulWillOverflow, "*", g_TypeMgr->typeInfoU8);
+                BINOP_OVF(*, u8, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoU8);
                 break;
             case ByteCodeOp::BinOpMulU16:
-                BINOP_OVF(*, u16, mulWillOverflow, "*", g_TypeMgr->typeInfoU16);
+                BINOP_OVF(*, u16, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoU16);
                 break;
             case ByteCodeOp::BinOpMulU32:
-                BINOP_OVF(*, u32, mulWillOverflow, "*", g_TypeMgr->typeInfoU32);
+                BINOP_OVF(*, u32, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoU32);
                 break;
             case ByteCodeOp::BinOpMulU64:
-                BINOP_OVF(*, u64, mulWillOverflow, "*", g_TypeMgr->typeInfoU64);
+                BINOP_OVF(*, u64, mulWillOverflow, SafetyMsg::Mul, g_TypeMgr->typeInfoU64);
                 break;
             case ByteCodeOp::BinOpMulF32_Safe:
                 BINOP(*, f32);

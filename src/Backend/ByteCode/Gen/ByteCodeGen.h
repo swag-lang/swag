@@ -298,7 +298,7 @@ namespace ByteCodeGen
     bool emitDefer(ByteCodeGenContext* context);
     void emitAssert(const ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
 
-    const char* safetyMsg(SafetyMsg msg, TypeInfo* toType = nullptr, TypeInfo* fromType = nullptr);
+    const char* safetyMsg(SafetyMsg msg, const TypeInfo* toType = nullptr, const TypeInfo* fromType = nullptr);
     bool        mustEmitSafety(const ByteCodeGenContext* context, SafetyFlags what);
     void        emitSafetyAssert(ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
     void        emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r);

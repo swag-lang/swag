@@ -1,6 +1,7 @@
 #pragma once
 #include "Semantic/Generic/Generic.h"
 
+enum class SafetyMsg;
 struct AstNode;
 struct JobContext;
 struct TypeInfo;
@@ -44,6 +45,7 @@ struct ErrorContext
     void extract(Diagnostic& diagnostic, Vector<const Diagnostic*>& notes);
     bool report(const Diagnostic& err, const Vector<const Diagnostic*>& notes = {});
     bool checkSizeOverflow(const char* typeOverflow, uint64_t value, uint64_t maxValue);
+    bool overflowError(AstNode* loc, SafetyMsg msgKind, const TypeInfo* type, const void* val0, const void *val1);
 
     void reset()
     {

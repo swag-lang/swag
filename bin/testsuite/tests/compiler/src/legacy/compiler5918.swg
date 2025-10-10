@@ -6,5 +6,5 @@
 #[Swag.Optimize("", false)]
 func titi()
 {
-    const A = 1.0 / 0//Swag.F32.NaN
+    const A = 1.0 / Swag.F32.NaN
 }
