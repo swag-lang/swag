@@ -239,7 +239,7 @@ func paintBadge(dc: *Painter, x, y: f32, m: bool)
 func drawImage(dc: *Painter, rect: Math.Rectangle, texture: Texture)
 {
     dc.pushTransform()
-    dc.scaleTransform(g_Rng.nextF32(0.95, 1.05))
+    dc.scaleTransform(g_Rng.nextF32(0.90, 0.98))
     dc.rotateTransform(g_Rng.nextF32(-0.025, 0.025))
     dc.translateTransform(rect.horzCenter(), rect.vertCenter())
     let br    = Brush.createTexture(texture)
@@ -841,7 +841,7 @@ var g_DataPath: String
     foreach f, i in files
     {
         let fn = assume Path.getFileNameWithoutExtension(f.fullname)
-        if Path.getFileName(f.fullname) == "preparatifs.txt":
+        if Path.getFileName(f.fullname) == "objets.txt":
         paintObjects(fn, deckColors[i])
     }
 }
