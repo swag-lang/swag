@@ -3,9 +3,7 @@ using Swag
 #[AttrUsage(AttributeUsage.FunctionParameter)]
 attr Toto()
 
-func toto(#[Toto] x, y: s32)
-{
-}
+func toto(#[Toto] x, y: s32) {}
 
 #[Swag.Optimize("", false)]
 #test

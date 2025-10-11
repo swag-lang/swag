@@ -2,7 +2,7 @@ struct MyStruct
 {
     x, y: bool
     #[Swag.Align(8)]
-    z: bool
+    z:   bool
 }
 
 #assert(#offsetof(MyStruct.z) == 8)

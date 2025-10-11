@@ -4,10 +4,7 @@ using Swag
 public attr Final()
 
 #[Final]
-public struct TT43
-{
-    x, y: s32
-}
+public struct TT43 { x, y: s32 }
 
 public impl TT43
 {

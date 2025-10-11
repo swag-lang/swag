@@ -1,6 +1,6 @@
 struct R
 {
-    x: s32
+    x:   s32
 }
 
 #[Swag.Macro]

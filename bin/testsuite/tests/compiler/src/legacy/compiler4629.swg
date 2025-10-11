@@ -1,11 +1,10 @@
 #global testerror "Saf0024"
 
-#[Swag.Safety("", true)]
-#[Swag.Optimize("", false)]
+#[Swag.Safety("", true), Swag.Optimize("", false)]
 #test
 {
     const x = 0xFFFF'u32
-    let y = cast(s16) x
+    let y   = cast(s16) x
 }
 
 /*

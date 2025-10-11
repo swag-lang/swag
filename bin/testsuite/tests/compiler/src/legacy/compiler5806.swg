@@ -10,7 +10,7 @@ impl I5806 for A
 {
     mtd impl b()
     {
-    }    
+    }
 }
 */
 

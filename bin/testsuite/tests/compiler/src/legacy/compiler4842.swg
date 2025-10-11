@@ -1,4 +1,4 @@
-﻿struct A {}
+struct A {}
 impl A
 {
     mtd opAffect(x: bool) {}

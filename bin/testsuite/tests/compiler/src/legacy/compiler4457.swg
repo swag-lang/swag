@@ -1,6 +1,6 @@
 struct A
 {
-    v: [2, 2] string = "true"
+    v:   [2, 2] string = "true"
 }
 
 //#global testerror

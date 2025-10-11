@@ -1,6 +1,6 @@
 struct AA
 {
-    x: u64
+    x:   u64
 }
 
 var G = 0
@@ -16,7 +16,7 @@ impl AA
 #[Swag.Inline]
 func toto()->AA
 {
-    return AA{};
+    return AA{}
 }
 
 //#[Swag.PrintBc]

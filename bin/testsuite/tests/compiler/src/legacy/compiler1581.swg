@@ -9,13 +9,10 @@
         Blue
     }
 
-    var a = 0//Color.Red
+    var a = 0 //Color.Red
 
     #[Swag.Complete]
     switch a
     {
-        /*case Color.Red:
-        case Color.Green:
-        case Color.Blue:*/
     }
 }

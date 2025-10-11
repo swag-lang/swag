@@ -1,12 +1,9 @@
-
 #global testerror "Err0561"
 
 #[Swag.Strict]
 alias Alias = s32
 
-func toto(x: Alias)
-{
-}
+func toto(x: Alias) {}
 
 #test
 {

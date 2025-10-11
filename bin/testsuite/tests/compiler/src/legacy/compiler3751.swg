@@ -1,8 +1,6 @@
 #global testerror "Err0144"
 
-func toto(x: s32)
-{
-}
+func toto(x: s32) {}
 
 #test
 {

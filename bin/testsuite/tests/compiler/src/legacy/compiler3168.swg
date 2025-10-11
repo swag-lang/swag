@@ -1,6 +1,6 @@
 struct AAA
 {
-    v = 666
+    v    = 666
 }
 
 func toto(xxx = AAA{555})

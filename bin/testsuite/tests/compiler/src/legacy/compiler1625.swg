@@ -1,7 +1,4 @@
-struct(T) A
-{
-
-}
+struct(T) A {}
 
 #test
 {

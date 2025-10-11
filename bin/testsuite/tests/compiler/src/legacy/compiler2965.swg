@@ -1,7 +1,7 @@
 //#global testerror
 struct AA
 {
-    x: s32
+    x:   s32
 }
 
 #assert(#offsetof(AA.x) == 0)

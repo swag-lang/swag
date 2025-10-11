@@ -2,7 +2,7 @@
 
 struct A
 {
-    x: func||()
+    x:   func||()
 }
 
 impl A

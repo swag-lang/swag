@@ -1,8 +1,12 @@
 //#global testerror
 struct(T) S
 {
-    #if T == bool {} #else: #error("error")
-    x: T
+    #if T == bool
+    {
+    }
+    #else:
+        #error("error")
+    x:   T
 }
 
 #test

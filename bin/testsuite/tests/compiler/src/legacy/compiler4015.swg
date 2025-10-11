@@ -1,12 +1,6 @@
-struct A
-{
-    x, y: s16
-}
+struct A { x, y: s16 }
 
-struct B
-{
-    x, y: s8
-}
+struct B { x, y: s8 }
 
 #test
 {

@@ -9,8 +9,8 @@ func maxSize(T: const [..] typeinfo)->u64
 
 struct(T: const [..] typeinfo) AA
 {
-    cur: typeinfo
-    buf: [maxSize(T)] u8
+    cur:     typeinfo
+    buf:     [maxSize(T)] u8
 }
 
 impl AA
@@ -20,20 +20,23 @@ impl AA
     {
         var ms: u64 = 0
         foreach p in T:
-            if p == V: return true
+            if p == V:
+                return true
         return false
     }
 
     mtd(TV) set(v: TV)
     {
-        #if !isIn(TV): #error("invalid type " ++ #stringof(#typeof(TV)))
-        me.cur = TV
+        #if !isIn(TV):
+            #error("invalid type " ++ #stringof(#typeof(TV)))
+        me.cur                = TV
         dref cast(*TV) me.buf = v
     }
 
     mtd(TV) get()->TV
     {
-        #if !isIn(TV): #error("invalid type " ++ #stringof(#typeof(TV)))
+        #if !isIn(TV):
+            #error("invalid type " ++ #stringof(#typeof(TV)))
         @assert(me.cur == TV)
         return dref cast(*TV) me.buf
     }

@@ -1,6 +1,6 @@
 struct AA
 {
-    x: s64 = 1
+    x:   s64 = 1
 }
 
 var G: s32
@@ -26,8 +26,7 @@ impl AA
     }
 }
 
-
-func toto()-> {x: AA}
+func toto()->{ x: AA }
 {
     var result: retval
     return result

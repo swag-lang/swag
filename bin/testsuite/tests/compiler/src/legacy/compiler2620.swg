@@ -2,19 +2,21 @@ using Swag
 
 struct(T) AA
 {
-    x: T
+    x:   T
 }
 
 impl AA
 {
     #[Swag.Overload]
-    func isNull(me)->bool where #typeof(T) == s32
+    func isNull(me)->bool
+        where #typeof(T) == s32
     {
         return me.x == 0
     }
 
     #[Swag.Overload]
-    func isNull(me, eps: f32)->bool where #typeof(T) == f32
+    func isNull(me, eps: f32)->bool
+        where #typeof(T) == f32
     {
         return me.x < eps ? true : false
     }

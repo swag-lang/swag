@@ -8,9 +8,7 @@ enum RGB: const [..] s32
     B = [1, 1]
 }
 
-func toto(rgb: RGB)
-{
-}
+func toto(rgb: RGB) {}
 
 #test
 {

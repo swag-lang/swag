@@ -8,12 +8,12 @@
     {
         c += @index
     }
-    @assert(c == 10+9+8+7+6+5)
+    @assert(c == 10 + 9 + 8 + 7 + 6 + 5)
 
     c = 0
     for y to x
     {
         c += @index
     }
-    @assert(c == 10+9+8+7+6+5)
+    @assert(c == 10 + 9 + 8 + 7 + 6 + 5)
 }

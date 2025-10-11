@@ -1,6 +1,4 @@
-struct(T) Y
-{
-}
+struct(T) Y {}
 
 impl Y
 {
@@ -33,7 +31,7 @@ impl X
 
 struct A
 {
-    x: X's32
+    x:   X's32
 }
 
 impl A

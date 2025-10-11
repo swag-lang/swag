@@ -1,12 +1,10 @@
-alias pair = {a:string, b:any}
-
-//#[Swag.PrintBc]
+alias pair = { a: string, b: any }
 #test
 {
-	var arr: [..] pair
-	var pt: pair
+    var arr: [..] pair
+    var pt:  pair
 
-	pt.item0 = "toto"
-	pt.item1 = 6
-	@assert(@kindof(pt.item1) == #typeof(s32))
+    pt.item0 = "toto"
+    pt.item1 = 6
+    @assert(@kindof(pt.item1) == #typeof(s32))
 }

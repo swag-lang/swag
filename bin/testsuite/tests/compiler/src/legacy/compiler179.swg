@@ -1,7 +1,7 @@
 #[Swag.ConstExpr]
 {
-	func main () -> bool { return true; }
-	func main1 () -> bool { return false; }
+    func main()->bool { return true; }
+    func main1()->bool { return false; }
 }
 
 #assert(main())

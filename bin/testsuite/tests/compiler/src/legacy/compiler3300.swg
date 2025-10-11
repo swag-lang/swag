@@ -18,7 +18,7 @@ impl Duration
 
 #test
 {
-    let x:  Duration = 1.0's
+    let x: Duration = 1.0's
     @assert(x.val == 1000.0)
     let x1: Duration = 1.0'ms
     @assert(x1.val == 1.0)

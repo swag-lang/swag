@@ -5,18 +5,16 @@ interface IWnd
     func titi(me, x: s32);
 }
 
-struct Wnd
-{
-}
+struct Wnd {}
 
 struct Dialog
 {
-    using wnd:  Wnd
+    using wnd: Wnd
 }
 
 struct MessageDlg
 {
-    using dlg:  Dialog
+    using dlg: Dialog
 }
 
 impl IWnd for Wnd

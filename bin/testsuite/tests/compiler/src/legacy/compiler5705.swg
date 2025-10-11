@@ -1,6 +1,6 @@
 struct Evt
 {
-    x: s32
+    x:   s32
 }
 
 struct Evt1
@@ -18,21 +18,29 @@ struct Evt3
     using base: Evt2
 }
 
-interface IEvent 
+interface IEvent
 {
     mtd toto() {}
 }
 
-impl IEvent for Evt {}
-impl IEvent for Evt1 {}
-impl IEvent for Evt2 {}
-impl IEvent for Evt3 {}
+impl IEvent for Evt
+{
+}
+impl IEvent for Evt1
+{
+}
+impl IEvent for Evt2
+{
+}
+impl IEvent for Evt3
+{
+}
 
 func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
     if @typecmp(toType, fromType, .Strict):
         return true
-                
+
     foreach ft in fromType.usingFields
     {
         if @typecmp(toType, cast(const *Swag.TypeInfoStruct) ft.pointedType, .Strict)

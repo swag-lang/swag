@@ -18,7 +18,7 @@ impl Toto for A
 #test
 {
     var a: A
-    let i = cast(Toto) a
+    let i  = cast(Toto) a
     i.print()
     @assert(G == 1)
 }

@@ -1,19 +1,13 @@
 struct A
 {
-    b: B
+    b:   B
 }
 
-struct B
-{
-
-}
+struct B {}
 
 impl B
 {
-    mtd toto()
-    {
-
-    }
+    mtd toto() {}
 }
 
 #[Swag.Warning("Wrn0003", .Enable)]

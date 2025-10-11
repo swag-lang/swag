@@ -1,16 +1,16 @@
 #global testerror "Err0484"
 struct A
 {
-    fn: func(me)
+    fn:  func(*A)
 }
 
 impl A
 {
     func toto(me)
     {
-     //   fn = null
+        //   fn = null
         //if me.fn:
-            fn(me)
+        fn(me)
     }
 }
 

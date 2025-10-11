@@ -2,7 +2,7 @@
 
 private struct Bot
 {
-    val: [2] s32 = { Swag.S32.Max }
+    val: [2] s32 = {Swag.S32.Max}
 }
 
 /*#test

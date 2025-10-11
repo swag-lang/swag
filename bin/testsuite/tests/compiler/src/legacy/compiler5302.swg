@@ -1,6 +1,6 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 var G0, G1: s32
@@ -32,5 +32,5 @@ impl A
         }
     }
 
-    @assert(G1 == G0+1)
+    @assert(G1 == G0 + 1)
 }

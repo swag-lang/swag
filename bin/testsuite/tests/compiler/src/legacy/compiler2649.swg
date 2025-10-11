@@ -1,11 +1,11 @@
 struct(T) ST
 {
-    x: T
+    x:   T
 }
 
 struct(T) Arr
 {
-    x: T
+    x:   T
 }
 
 #[Swag.Macro]
@@ -26,6 +26,5 @@ func(T) toto(v: [..] T, stmt: #code void)
     var v: [2] s32
     toto(cast() v)
     {
-
     }
 }

@@ -1,7 +1,7 @@
 struct A
 {
-    b: bool = true
-    c: s32 = 666
+    b:     bool = true
+    c:     s32 = 666
 }
 
 alias AA = A

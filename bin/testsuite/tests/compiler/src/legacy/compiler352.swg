@@ -1,5 +1,5 @@
-#global testerror "Err0530";
+#global testerror "Err0530"
 #test
 {
-	var a = [0, 1.0];
+    var a = [0, 1.0]
 }

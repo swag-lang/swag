@@ -1,6 +1,6 @@
 struct C
 {
-    vv: s32
+    vv:  s32
 }
 
 impl C

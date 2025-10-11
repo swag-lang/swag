@@ -1,13 +1,13 @@
 public struct A75
 {
-    a: s32
+    a:   s32
 }
 
 public impl A75
 {
     struct Toto75
     {
-        x: s32
+        x:   s32
     }
 
     mtd titi75(a: Toto75 = Toto75{})

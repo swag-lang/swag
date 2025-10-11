@@ -1,19 +1,18 @@
-#global testerror "Err0322";
-;
-using Swag;
+#global testerror "Err0322"
+using Swag
 
 //#[PrintBc]
-func main ()
+func main()
 {
-	var a = 10;
-	//while a > 0
-	{
-		a -= 1;
-		if a == 5: break;
-	}
+    var a = 10
+    //while a > 0
+    {
+        a -= 1; if a == 5:
+            break
+    }
 }
 
 #run
 {
-	main()
+    main()
 }

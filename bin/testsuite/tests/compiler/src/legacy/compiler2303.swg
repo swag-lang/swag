@@ -7,9 +7,7 @@ impl AA
 {
     const CC = 0
 
-    struct BB
-    {
-    }
+    struct BB {}
 }
 
 //#[Swag.PrintBc]

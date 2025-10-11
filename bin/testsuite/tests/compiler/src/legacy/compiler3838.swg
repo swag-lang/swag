@@ -1,6 +1,4 @@
-func toto(a: *void)
-{
-}
+func toto(a: *void) {}
 
 #test
 {

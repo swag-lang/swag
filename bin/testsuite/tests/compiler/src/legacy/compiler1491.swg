@@ -1,7 +1,4 @@
-func toto(x: u8)
-{
-
-}
+func toto(x: u8) {}
 
 #test
 {

@@ -1,9 +1,6 @@
-
-
-
 //#[Swag.PrintBc]
 #test
 {
-	var d: s32 = 666;
-	var c: const *s32 = &d;
+    var d: s32 = 666
+    var c: const *s32 = &d
 }

@@ -1,7 +1,7 @@
 #global testerror "Err0709"
 struct BB
 {
-    x: bool
+    x:   bool
 }
 
 impl BB
@@ -14,7 +14,7 @@ impl BB
 
 union AA
 {
-    x: BB
+    x:   BB
 }
 
 //#[Swag.PrintBc]

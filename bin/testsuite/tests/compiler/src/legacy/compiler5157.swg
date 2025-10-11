@@ -1,6 +1,6 @@
 enum Toto
 {
-    R,
+    R
 }
 
 enum R

@@ -1,6 +1,4 @@
-func toto()
-{
-}
+func toto() {}
 
 //#[Swag.PrintBc]
 //#[Swag.Optimize("", false)]

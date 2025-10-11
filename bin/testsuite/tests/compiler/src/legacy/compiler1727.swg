@@ -10,10 +10,7 @@
         using root: A
     }
 
-    func F(ptr: *B)
-    {
-
-    }
+    func F(ptr: *B) {}
 
     var v: B
     F(&v)

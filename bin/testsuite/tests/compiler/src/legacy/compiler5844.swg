@@ -20,7 +20,7 @@ func tata()
 
 struct A
 {
-    a = toto()
+    a    = toto()
 }
 
 #test

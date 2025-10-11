@@ -1,7 +1,4 @@
-public struct A70
-{
-    x, y/*, z*/: s32
-}
+public struct A70 { x, y: s32 }
 
 public func call70(toto70: func()->A70)
 {

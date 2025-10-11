@@ -1,5 +1,7 @@
 #global testerror "Err0189"
-namespace x {}
+namespace x
+{
+}
 #test
 {
     x()

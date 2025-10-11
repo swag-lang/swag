@@ -4,10 +4,7 @@
 using A
 namespace A
 {
-    struct B
-    {
-
-    }
+    struct B {}
 }
 
 namespace A

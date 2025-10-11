@@ -1,12 +1,16 @@
 #global testerror "Err0260"
 
-interface I {}
+interface I
+{
+}
 struct A {}
-impl I for A {}
+impl I for A
+{
+}
 
 #test
 {
-    let a: A
+    let a:   A
     let itf: I = a
 
     //let b = @as(A, @kindof(itf), @dataof(itf))

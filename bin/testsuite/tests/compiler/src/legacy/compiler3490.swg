@@ -4,15 +4,11 @@ namespace A
 {
 }
 
-struct B
-{
-}
+struct B {}
 
 impl B
 {
-    mtd titi()
-    {
-    }
+    mtd titi() {}
 
     mtd toto()
     {

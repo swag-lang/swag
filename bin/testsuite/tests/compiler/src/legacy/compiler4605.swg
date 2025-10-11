@@ -8,8 +8,5 @@ struct S {}
 
 impl I for S
 {
-    mtd impl tota()
-    {
-
-    }
+    mtd impl tota() {}
 }

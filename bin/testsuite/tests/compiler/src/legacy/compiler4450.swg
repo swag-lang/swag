@@ -6,7 +6,7 @@ func(T) fill(v: T)->[2] T
     return result
 }
 
-const x: [2] bool = fill(true)
+const x:  [2] bool = fill(true)
 const x1: [2] s32 = fill(52's32)
 
 //#[Swag.PrintBc]

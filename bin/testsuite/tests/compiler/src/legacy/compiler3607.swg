@@ -1,7 +1,7 @@
 alias Hook = func(*Wnd)
 struct Wnd
 {
-    h: Hook
+    h:   Hook
 }
 
 #test

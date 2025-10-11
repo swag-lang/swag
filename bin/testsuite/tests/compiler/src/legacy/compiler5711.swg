@@ -12,5 +12,5 @@ func toto() throw
         break
     default:
         throw Swag.Error{}
-    }    
+    }
 }

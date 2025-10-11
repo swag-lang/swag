@@ -8,7 +8,7 @@ func(T) map(values: [..] T, cb: func(T)->T)
 
 #test
 {
-    var arr = [1,2,3,4]
+    var arr = [1, 2, 3, 4]
     //map(arr, &inc's32)
     map(cast() arr, func(x) => x * x)
     @assert(arr[0] == 1)

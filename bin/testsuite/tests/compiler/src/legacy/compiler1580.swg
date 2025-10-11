@@ -11,8 +11,6 @@
     @assert(a == 1)
 }
 
-func toto()
-{
-}
+func toto() {}
 
 #run toto()

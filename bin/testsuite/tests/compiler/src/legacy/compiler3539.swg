@@ -20,7 +20,7 @@ impl Thing
         G += 1
     }
 
-#[Swag.NoInline]
+    #[Swag.NoInline]
     mtd(op: string) opBinary(other: Thing)->Thing
     {
         return {me.number + other.number}
@@ -29,7 +29,7 @@ impl Thing
 
 struct Team
 {
-    a: Thing
+    a:   Thing
 }
 
 //#[Swag.PrintBc]
@@ -37,9 +37,7 @@ struct Team
 #test
 {
     {
-        var team = Team{
-            a: Thing.initxxx(1) + Thing.initxxx(2),
-        }
+        var team = Team{a: Thing.initxxx(1) + Thing.initxxx(2)}
     }
 
     @assert(G == 3)

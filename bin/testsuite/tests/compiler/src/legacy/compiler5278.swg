@@ -2,7 +2,8 @@
 {
     if const a = 1:
         @assert(a == 1)
-    if const a = 1 {
+    if const a = 1
+    {
         @assert(a == 1)
     }
 

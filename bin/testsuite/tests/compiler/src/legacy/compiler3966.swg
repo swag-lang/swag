@@ -1,12 +1,9 @@
 #global testerror "Err0231"
 
-var G: VV
+var G:  VV
 var PC: bool
 
-struct VV
-{
-    x, y, z: f32
-}
+struct VV { x, y, z: f32 }
 
 impl VV
 {

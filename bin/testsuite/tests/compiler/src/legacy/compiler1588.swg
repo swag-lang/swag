@@ -1,9 +1,7 @@
 //
 //#global testerror
 
-struct(T) B
-{
-}
+struct(T) B {}
 
 impl B
 {

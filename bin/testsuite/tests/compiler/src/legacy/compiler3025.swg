@@ -5,7 +5,7 @@ struct AA
 
 struct BB
 {
-    aa: AA
+    aa:  AA
 }
 
 impl BB
@@ -13,7 +13,7 @@ impl BB
     #[Swag.Inline]
     mtd opIndex(idx: u64)->*AA
     {
-        return &me.aa;
+        return &me.aa
     }
 }
 

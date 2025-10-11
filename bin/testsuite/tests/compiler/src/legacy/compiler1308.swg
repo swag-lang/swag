@@ -2,7 +2,7 @@
 
 #test
 {
-	var error = false
+    var error = false
     #scope(Outer)
     for x in 10
     {
@@ -12,8 +12,8 @@
             break to Outer
         }
 
-		error = true
+        error = true
     }
 
-	@assert(!error)
+    @assert(!error)
 }

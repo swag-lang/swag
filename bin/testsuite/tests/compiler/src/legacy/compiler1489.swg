@@ -1,7 +1,4 @@
-struct S
-{
-
-}
+struct S {}
 
 var G = 0
 
@@ -24,10 +21,16 @@ impl S
     G = 0
 
     var x: S
-    foreach x {}
+    foreach x
+    {
+    }
     @assert(G == 2)
-    foreach x {}
+    foreach x
+    {
+    }
     @assert(G == 4)
-    foreach &xxx in x {}
+    foreach &xxx in x
+    {
+    }
     @assert(G == 5)
 }

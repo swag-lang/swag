@@ -6,8 +6,7 @@ func toto()->&u64
     return &g
 }
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", false)]
 #test
 {
     let a: u32 = cast() toto()

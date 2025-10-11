@@ -1,6 +1,6 @@
 struct AA
 {
-    vv = 2
+    vv   = 2
 }
 
 impl AA
@@ -16,11 +16,13 @@ impl AA
 #test
 {
     var x: AA
-    var a = 0
+    var a  = 0
     switch x
     {
-    case 5 to 10:  @assert(false)
-    default:       a = 1; break
+    case 5 to 10:
+        @assert(false)
+    default:
+        a = 1; break
     }
 
     @assert(a == 1)

@@ -1,11 +1,10 @@
 //#global testerror
 
-#[Swag.Safety("overflow", true)]
-#[Swag.Optimize("", false)]
+#[Swag.Safety("overflow", true), Swag.Optimize("", false)]
 #test
 {
     const x = -1'f32
-    let y = cast #wrap (u64) x
+    let y   = cast #wrap (u64) x
 }
 
 /*

@@ -1,4 +1,2 @@
 #global testerror "Err0472"
-func main () -> bool
-{
-}
+func main()->bool {}

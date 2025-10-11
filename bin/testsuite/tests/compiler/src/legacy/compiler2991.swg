@@ -1,7 +1,4 @@
-struct AA
-{
-
-}
+struct AA {}
 
 interface BB
 {
@@ -10,9 +7,7 @@ interface BB
 
 impl AA
 {
-    func toto(me, v: u64, a: s32 = 0)
-    {
-    }
+    func toto(me, v: u64, a: s32 = 0) {}
 }
 
 impl BB for AA

@@ -2,10 +2,10 @@ struct(T) Arr
 {
     struct ST1
     {
-        x: T
+        x:   T
     }
 
-    z: ST1
+    z:   ST1
 }
 
 //#[Swag.PrintBc]

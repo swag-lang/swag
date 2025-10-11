@@ -14,7 +14,7 @@ impl I for X
 #test
 {
     var x: X
-    let i = cast(I) x
+    let i  = cast(I) x
     switch i
     {
     case X:

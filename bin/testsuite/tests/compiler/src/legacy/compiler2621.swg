@@ -4,14 +4,15 @@ var G = 0
 
 struct(T) AA
 {
-    x: T
+    x:   T
 }
 
 impl AA
 {
     //#[compileif(#typeof(T) == s32)]
     #[Swag.Overload]
-    func isNull(me)->bool where #typeof(T) == s32
+    func isNull(me)->bool
+        where #typeof(T) == s32
     {
         G += 1
         return me.x == 0
@@ -19,7 +20,8 @@ impl AA
 
     //#[compileif(#typeof(T) == f32)]
     #[Swag.Overload]
-    func isNull(me)->bool where #typeof(T) == f32
+    func isNull(me)->bool
+        where #typeof(T) == f32
     {
         G += 2
         return me.x == 0

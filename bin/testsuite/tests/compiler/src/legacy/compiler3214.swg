@@ -1,12 +1,12 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 struct B
 {
-    using base: A
-    xx: s32
+    using base:     A
+    xx:             s32
 }
 
 struct C

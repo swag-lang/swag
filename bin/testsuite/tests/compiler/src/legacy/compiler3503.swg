@@ -1,8 +1,6 @@
 var G = 0
 
-struct A
-{
-}
+struct A {}
 
 struct B
 {

@@ -1,7 +1,7 @@
 #global testerror "Err0530"
 #test
 {
-    var x = [0, 2, 3, 4]
+    var x   = [0, 2, 3, 4]
     var ptr = &x[0]
 
     @assert(x[1] == 2)

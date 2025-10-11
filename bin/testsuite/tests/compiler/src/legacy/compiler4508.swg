@@ -1,4 +1,4 @@
-struct T { a, b: s32; }
+struct T { a, b: s32 }
 
 //#[Swag.PrintBc]
 #[Swag.NoInline]

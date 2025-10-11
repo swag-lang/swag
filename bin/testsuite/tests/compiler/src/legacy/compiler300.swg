@@ -1,7 +1,5 @@
-
-
-#global testerror "assertion failed";
+#global testerror "assertion failed"
 #test
 {
-	@assert(@countof(1 + 1) == 4);
+    @assert(@countof(1 + 1) == 4)
 }

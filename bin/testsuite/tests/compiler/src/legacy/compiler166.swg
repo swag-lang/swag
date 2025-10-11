@@ -1,8 +1,8 @@
-#global testerror "assertion failed";
+#global testerror "assertion failed"
 
-using Swag;
+using Swag
 
 #run
 {
-	@assert(1 == 2);
+    @assert(1 == 2)
 }

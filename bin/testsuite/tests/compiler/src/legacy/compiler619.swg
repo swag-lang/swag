@@ -1,14 +1,11 @@
-
-
-
 //#[Swag.PrintBc]
 #global testerror "Err0081"
 func(x: string) Print()
 {
-	//@print(x)
+    //@print(x)
 }
 
 #test
 {
-	Print()
+    Print()
 }

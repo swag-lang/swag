@@ -3,5 +3,5 @@ struct A {}
 
 namespace B
 {
-func opDrop(x: *A){}
+    func opDrop(x: *A) {}
 }

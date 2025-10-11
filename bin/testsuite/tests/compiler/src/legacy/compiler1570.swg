@@ -1,14 +1,11 @@
 struct Point
 {
-    x: s64 = 1
+    x:   s64 = 1
 }
 
 impl Point
 {
-    func opDrop(me)
-    {
-
-    }
+    func opDrop(me) {}
 }
 
 func toto(val: *Point)

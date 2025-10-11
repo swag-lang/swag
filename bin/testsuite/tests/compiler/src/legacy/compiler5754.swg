@@ -1,10 +1,16 @@
 #global testerror "Saf0029"
 
-interface I {}
+interface I
+{
+}
 struct A { v = "a" }
 struct B { v = "b" }
-impl I for A {}
-impl I for B {}
+impl I for A
+{
+}
+impl I for B
+{
+}
 
 //#[Swag.PrintBc]
 #[Swag.Safety("", true)]
@@ -17,8 +23,6 @@ func toto(i: #null I)
         @print("ptr.a")
     case B:
         @print("ptr.v")
-    //case null:
-      //  @print("ptr.v")
     }
 }
 

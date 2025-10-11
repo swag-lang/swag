@@ -1,6 +1,6 @@
 struct Vector2
 {
-    x: s32
+    x:   s32
 }
 
 impl Vector2
@@ -28,7 +28,7 @@ func toto(other: Vector2)
 //#[Swag.PrintBc]
 #test
 {
-    var me1: Vector2//{1}
+    var me1: Vector2 //{1}
     //@breakpoint()
     toto({1})
 }

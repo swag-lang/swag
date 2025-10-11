@@ -3,9 +3,7 @@ struct(T) Toto {}
 
 impl Toto
 {
-    mtd(T) titi()
-    {
-    }
+    mtd(T) titi() {}
 }
 
 #test

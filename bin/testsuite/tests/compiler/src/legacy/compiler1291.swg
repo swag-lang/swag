@@ -2,15 +2,15 @@
 func Visit(user: #code void)
 {
     var c: rune
-	for 10
-	{
+    for 10
+    {
         c = 100
-		#macro
+        #macro
         {
             var value = #up c
             #inject(#up user)
         }
-	}
+    }
 }
 
 //#[Swag.PrintBc]

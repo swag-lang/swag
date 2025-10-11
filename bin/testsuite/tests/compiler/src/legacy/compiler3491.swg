@@ -1,7 +1,7 @@
 //#global skip
 struct A
 {
-    a: s32 = 666
+    a:   s32 = 666
 }
 
 impl A
@@ -16,14 +16,14 @@ impl A
 
 struct B
 {
-    d: f32
-    using a: A
+    d:           f32
+    using a:     A
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var v: B
-    let x = v[0]
+    let x  = v[0]
     @assert(x == 10)
 }

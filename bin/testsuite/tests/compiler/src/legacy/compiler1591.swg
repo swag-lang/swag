@@ -1,4 +1,3 @@
-
 #global testerror "Err0176"
 
 struct B

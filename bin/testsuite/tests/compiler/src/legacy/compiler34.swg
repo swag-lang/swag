@@ -1,2 +1,2 @@
-﻿#global testpass syntax;
-#global testpass lexer;
+#global testpass syntax
+#global testpass lexer

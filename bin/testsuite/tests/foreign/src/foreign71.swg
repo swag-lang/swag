@@ -1,7 +1,4 @@
-public struct A71
-{
-    x, y, z: s32
-}
+public struct A71 { x, y, z: s32 }
 
 public func call71(toto71: func()->A71)
 {

@@ -1,8 +1,5 @@
 #global testerror "Err0699"
-struct A
-{
-    x, y: s32
-}
+struct A { x, y: s32 }
 
 func toto()->A
 {

@@ -1,7 +1,4 @@
-public struct A2191
-{
-
-}
+public struct A2191 {}
 
 public impl A2191
 {
@@ -10,9 +7,7 @@ public impl A2191
         me.titi()
     }
 
-    func tata(me)
-    {
-    }
+    func tata(me) {}
 
     func titi(me)
     {

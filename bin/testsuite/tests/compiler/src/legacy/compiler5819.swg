@@ -1,4 +1,3 @@
-
 func(T) totoMin(a, b: T)->T
 {
     return @min(a, b)
@@ -8,8 +7,6 @@ func(T) totoMax(a, b: T)->T
 {
     return @max(a, b)
 }
-
-
 
 #[Swag.Optimize("", false)]
 //#[Swag.PrintBc]

@@ -3,9 +3,7 @@ interface I
     func toto(me);
 }
 
-struct A
-{
-}
+struct A {}
 
 impl I for A
 {
@@ -24,7 +22,7 @@ impl I for B
 
 func(T) alloc()
 {
-    var x: *T
+    var x:  *T
     var itf = cast(I) x
 }
 

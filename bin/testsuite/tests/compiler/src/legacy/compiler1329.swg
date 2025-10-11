@@ -5,6 +5,4 @@ interface toto
     func print(me) => &titi
 }
 
-func titi()
-{
-}
+func titi() {}

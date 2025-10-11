@@ -1,8 +1,6 @@
 using Swag
 
-func panic(msg: string, loc: Swag.SourceCodeLocation)
-{
-}
+func panic(msg: string, loc: Swag.SourceCodeLocation) {}
 
 //#[PrintBc]
 #test

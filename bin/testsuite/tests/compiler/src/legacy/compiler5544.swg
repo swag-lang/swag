@@ -2,7 +2,7 @@
 
 #test
 {
-    struct Vector{a, b: s32;}
+    struct Vector { a, b: s32 }
     a = Vector{1, 1}
     var b = Vector{2, 5}
     var c = a - b

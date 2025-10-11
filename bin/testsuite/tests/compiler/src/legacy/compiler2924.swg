@@ -5,9 +5,7 @@ func(T) toto(x: T)
 }
 
 #[Swag.Overload]
-func(T) toto(x: const [..] T)
-{
-}
+func(T) toto(x: const [..] T) {}
 
 #test
 {

@@ -1,7 +1,7 @@
 struct(T) AA
 {
-    x: s64
-    y: T
+    x:     s64
+    y:     T
 }
 
 func(T) toto()

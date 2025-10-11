@@ -1,8 +1,5 @@
 #global testerror "Err0241"
-struct V
-{
-    x, y: s32
-}
+struct V { x, y: s32 }
 
 var G: V{1, 10}
 

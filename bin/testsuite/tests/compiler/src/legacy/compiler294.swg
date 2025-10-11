@@ -1,10 +1,10 @@
 #global testerror "Err0500"
 
-using Swag;
+using Swag
 
 #[Swag.Safety("", true)]
 #test
 {
-	let b = "XYZ";
-	@assert(b[3] == 0);
+    let b = "XYZ"
+    @assert(b[3] == 0)
 }

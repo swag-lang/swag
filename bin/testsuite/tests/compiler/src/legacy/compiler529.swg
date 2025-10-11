@@ -1,25 +1,22 @@
-
-
-
 struct toto
 {
-	x: s32
-	y: s32
+    x:     s32
+    y:     s32
 }
 
 impl toto
 {
-	func fff(me)
-	{
-		//@print(me.x)
-	}
+    func fff(me)
+    {
+        //@print(me.x)
+    }
 }
 
 #test
 {
-	using toto
-	var pt: toto
-	pt.x = 100
-	pt.y = 200
-	fff(pt)
+    using toto
+    var pt: toto
+    pt.x = 100
+    pt.y = 200
+    fff(pt)
 }

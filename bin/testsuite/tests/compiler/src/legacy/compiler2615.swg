@@ -1,14 +1,12 @@
 #global testerror "Err0078"
 
-struct(T) AA
-{
-
-}
+struct(T) AA {}
 
 impl AA
 {
     //#[Swag.compileif(#typeof(T) == f32)]
-    func toto() where #typeof(T) == f32
+    func toto()
+        where #typeof(T) == f32
     {
     }
 }

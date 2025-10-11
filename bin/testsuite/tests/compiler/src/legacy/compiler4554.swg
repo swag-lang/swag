@@ -2,8 +2,8 @@ alias F = func(s32)->bool
 
 struct A
 {
-    b: *B
-    f: F
+    b:     *B
+    f:     F
 }
 
 #[Swag.Optimize("", false)]
@@ -16,5 +16,5 @@ struct A
 
 struct B
 {
-    a: *A
+    a:   *A
 }

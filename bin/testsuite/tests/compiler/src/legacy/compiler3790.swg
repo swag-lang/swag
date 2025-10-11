@@ -12,6 +12,6 @@ private
 
 #test
 {
-    using A//, B
+    using A //, B
     var a = &toto
 }

@@ -1,8 +1,8 @@
 #global testerror "Err0529"
 
-struct BaseEvent 
+struct BaseEvent
 {
-    x = 66
+    x    = 66
 }
 
 struct MouseEvent
@@ -10,19 +10,23 @@ struct MouseEvent
     using base: BaseEvent
 }
 
-interface IEvent 
+interface IEvent
 {
 }
 
-impl IEvent for BaseEvent {}
-impl IEvent for MouseEvent {}
+impl IEvent for BaseEvent
+{
+}
+impl IEvent for MouseEvent
+{
+}
 
 func toto(x: IEvent)
 {
     var g = 0
     switch x
     {
-    case MouseEvent: 
+    case MouseEvent:
         let ptr = cast(MouseEvent) x
         g = ptr.x
     }

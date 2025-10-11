@@ -3,10 +3,7 @@ interface Error
     func toString(me)->string;
 }
 
-struct MyError
-{
-    x, y, z = 3.14
-}
+struct MyError { x, y, z = 3.14 }
 
 //#[Swag.PrintBc]
 func toto()->Error
@@ -25,7 +22,7 @@ var err: MyError
 //#[Swag.PrintBc]
 #test
 {
-    let v = toto()
+    let v  = toto()
     let vv = cast(*MyError) @dataof(v)
     @assert(vv.x == 666)
     @assert(vv.z == 3.14)

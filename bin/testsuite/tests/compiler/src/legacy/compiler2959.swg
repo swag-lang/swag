@@ -1,8 +1,5 @@
 #[Swag.ConstExpr]
-struct V
-{
-    x, y: f32 = 0
-}
+struct V { x, y: f32 = 0 }
 
 func toto(x, y: V)->V
 {

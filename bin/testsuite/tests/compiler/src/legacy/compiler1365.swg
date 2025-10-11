@@ -1,6 +1,6 @@
 interface IIncrementable
 {
-	func incr(me);
+    func incr(me);
     //decr: func(me)
     //done: func(me)->bool
 }
@@ -31,7 +31,7 @@ impl IIncrementable for TITI
 func Loop(x: IIncrementable)
 {
     //while !x.done()
-     //   x.decr()
+    //   x.decr()
 }
 
 //#[Swag.PrintBc]

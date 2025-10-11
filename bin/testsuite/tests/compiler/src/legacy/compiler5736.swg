@@ -25,7 +25,7 @@ impl Rect
 #test
 {
     var wnd: Wnd
-    var g = 0
+    var g    = 0
     if wnd.getClientRect().contains(0, 0):
         g = 1
     @assert(g == 1)

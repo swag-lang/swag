@@ -1,6 +1,6 @@
 struct AA
 {
-    x: s32 = 555
+    x:   s32 = 555
 }
 
 impl AA
@@ -17,7 +17,7 @@ impl AA
         var v: AA
         with v
         {
-            @assert(.x == 555);
+            @assert(.x == 555)
             .titi()
         }
     }

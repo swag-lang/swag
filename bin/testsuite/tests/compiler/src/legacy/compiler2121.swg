@@ -1,14 +1,11 @@
 struct(T) Arr
 {
-    z: ST's32
+    z:   ST's32
 }
 
 impl Arr
 {
-    struct ST
-    {
-        x, y: T
-    }
+    struct ST { x, y: T }
 }
 
 //#[Swag.PrintBc]

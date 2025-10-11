@@ -11,8 +11,9 @@ var G: s32
 {
     toto()
     {
-        let a = 666
-        let fn = func|a|(){
+        let a  = 666
+        let fn = func|a|()
+        {
             G = a
         }
         fn()

@@ -1,6 +1,6 @@
 struct(T) AA
 {
-    v: T
+    v:   T
 }
 
 func(T) inc(x: T)->T

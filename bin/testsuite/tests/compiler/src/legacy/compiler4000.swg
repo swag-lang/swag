@@ -1,7 +1,7 @@
 // YOUHOU 4000 !!!
 struct B
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 var G = 0
@@ -16,7 +16,7 @@ impl B
 
 struct A
 {
-    b: B
+    b:   B
 }
 
 impl A

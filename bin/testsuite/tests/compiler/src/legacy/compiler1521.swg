@@ -11,10 +11,7 @@
     @assert(p.y == true)
 }*/
 
-func toto(x: s32, y: bool)
-{
-
-}
+func toto(x: s32, y: bool) {}
 
 #test
 {

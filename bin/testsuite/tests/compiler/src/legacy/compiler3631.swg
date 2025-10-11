@@ -1,7 +1,7 @@
 #global testerror "Err0176"
 struct Wnd
 {
-    x: s32
+    x:   s32
 }
 
 impl Wnd

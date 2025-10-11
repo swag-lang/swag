@@ -1,8 +1,6 @@
 //#global testerror
 
-func(T) toto(x: T)
-{
-}
+func(T) toto(x: T) {}
 
 #test
 {

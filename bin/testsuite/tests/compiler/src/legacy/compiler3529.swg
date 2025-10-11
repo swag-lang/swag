@@ -1,11 +1,5 @@
-struct(T) A
-{
-}
+struct(T) A {}
 
-func(T) toto(x: A'T)
-{
-}
+func(T) toto(x: A'T) {}
 
-func titi(x: A's32)
-{
-}
+func titi(x: A's32) {}

@@ -7,8 +7,8 @@ struct Entity
 
 struct Monster
 {
-    gg: bool
-    using entity: *Entity
+    gg:               bool
+    using entity:     *Entity
 }
 
 func set(entity: Entity)

@@ -1,6 +1,6 @@
 struct A
 {
-    v = 555
+    v    = 555
 }
 
 impl A

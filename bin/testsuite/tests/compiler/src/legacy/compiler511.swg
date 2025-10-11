@@ -1,19 +1,16 @@
-
-
-
 func(T) valueof(x: any)->T
 {
-	let ptr = cast(*T) @dataof(x)
-	return dref ptr
+    let ptr = cast(*T) @dataof(x)
+    return dref ptr
 }
 
 //#[Swag.PrintBc]
 func toto(xx: string, a: ...)
 {
-	@assert(valueof'string(a[0]) == "toto")
-	@assert(valueof's32(a[1]) == 10)
+    @assert(valueof'string(a[0]) == "toto")
+    @assert(valueof's32(a[1]) == 10)
 
-	/*
+    /*
 	var i = 0'u32
 	var idx = 0
 	while(i < @countof(xx))
@@ -40,5 +37,5 @@ func toto(xx: string, a: ...)
 //#[Swag.PrintBc]
 #test
 {
-	toto("%s%d", "toto", 10)
+    toto("%s%d", "toto", 10)
 }

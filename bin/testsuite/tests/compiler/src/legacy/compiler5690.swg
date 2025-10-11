@@ -9,8 +9,8 @@
     var g = 0
     switch v
     {
-    case {x: s32, y: s32} as fn:
-        g = 1//@print(fn.x, " ", fn.y)
+    case { x: s32, y: s32 } as fn:
+        g = 1 //@print(fn.x, " ", fn.y)
         break
     }
 

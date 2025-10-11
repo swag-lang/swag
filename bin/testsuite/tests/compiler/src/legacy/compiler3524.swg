@@ -1,7 +1,4 @@
-struct(T) Array
-{
-    x, y, z: T
-}
+struct(T) Array { x, y, z: T }
 
 impl Array
 {

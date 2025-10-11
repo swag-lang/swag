@@ -1,5 +1,5 @@
 using Swag
-enum TOTO : s64
+enum TOTO: s64
 {
     A = 666
     B = 100
@@ -13,7 +13,7 @@ func fromName(name: string)->X
     for t.values
     {
         let param = t.values[@index]
-        if(param.name == name)
+        if (param.name == name)
         {
             let ptr = cast(const *TOTO) param.value
             return dref ptr

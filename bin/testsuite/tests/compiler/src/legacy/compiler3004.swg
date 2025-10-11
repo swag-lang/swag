@@ -1,6 +1,6 @@
 struct R
 {
-    x: s32 = 10
+    x:   s32 = 10
 }
 
 impl R

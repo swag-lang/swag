@@ -9,7 +9,7 @@ func create1()
 
 func create(x: AA)
 {
-//    @print("x")
+    //    @print("x")
 }
 
 //#[Swag.PrintBc]

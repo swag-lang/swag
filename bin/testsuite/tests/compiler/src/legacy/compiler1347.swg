@@ -1,11 +1,9 @@
 interface TOTO
 {
-	func print(v: *TOTO, x: bool);
+    func print(v: *TOTO, x: bool);
 }
 
-struct TITI
-{
-}
+struct TITI {}
 
 impl TOTO for TITI
 {

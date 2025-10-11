@@ -5,7 +5,7 @@
 #test
 {
     let g: any = 66
-    var r = 0
+    var r  = 0
     switch g
     {
     case s32 as ptr1 where ptr1 == 66:

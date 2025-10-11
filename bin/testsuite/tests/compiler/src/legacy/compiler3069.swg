@@ -1,6 +1,4 @@
-struct AA
-{
-}
+struct AA {}
 
 impl AA
 {
@@ -25,5 +23,5 @@ func toto()->AA
 #test
 {
     const X = toto()
-    var v = X[0]
+    var v   = X[0]
 }

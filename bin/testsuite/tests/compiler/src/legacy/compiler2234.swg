@@ -1,6 +1,6 @@
 struct A
 {
-    x = 1
+    x    = 1
 }
 
 var G = 0
@@ -12,9 +12,7 @@ impl A
         G += 1
     }
 
-    func opPostMove(me)
-    {
-    }
+    func opPostMove(me) {}
 
     func opPostCopy(me)
     {

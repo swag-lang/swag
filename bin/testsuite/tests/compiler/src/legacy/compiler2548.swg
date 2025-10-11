@@ -1,6 +1,6 @@
 struct AA
 {
-    x: *u8
+    x:   *u8
 }
 
 impl AA

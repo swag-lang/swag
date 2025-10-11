@@ -1,12 +1,14 @@
 //#[Swag.PrintBc]
 #test
 {
-    var g = 0
+    var g   = 0
     var cpt = 0
     for #reverse i in 6 until 8
     {
-        if cpt == 0: @assert(i == 7)
-        if cpt == 1: @assert(i == 6)
+        if cpt == 0:
+            @assert(i == 7)
+        if cpt == 1:
+            @assert(i == 6)
         g += i
         cpt += 1
     }

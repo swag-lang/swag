@@ -1,6 +1,6 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 impl A
@@ -21,6 +21,6 @@ func toto()->A
 //#[Swag.PrintBc]
 #test
 {
-    var x = toto()
+    var x  = toto()
     var x1 = toto()
 }

@@ -1,6 +1,6 @@
 struct Arr
 {
-    a: CB
+    a:   CB
 }
 
 impl Arr

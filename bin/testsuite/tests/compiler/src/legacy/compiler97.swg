@@ -1,10 +1,7 @@
-;
-;
-
 enum A
 {
-	Red;
-	Green;
+    Red
+    Green
 }
 
-var a: A = undefined;
+var a: A = undefined

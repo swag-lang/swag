@@ -1,10 +1,6 @@
-func(T) lambdaToCallback(lambda: func(T))
-{
-}
+func(T) lambdaToCallback(lambda: func(T)) {}
 
-func toto(t: const *void)
-{
-}
+func toto(t: const *void) {}
 
 #test
 {

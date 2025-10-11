@@ -2,9 +2,7 @@ using Swag
 
 var GG = false
 
-struct MyAlloc
-{
-}
+struct MyAlloc {}
 
 impl IAllocator for MyAlloc
 {
@@ -17,7 +15,7 @@ impl IAllocator for MyAlloc
 
 func toto()
 {
-    let cxt = @getcontext()
+    let cxt  = @getcontext()
     var req: AllocatorRequest
     req.size = 10
     cxt.allocator.req(&req)
@@ -27,7 +25,7 @@ func toto()
 func changeContext(user: #code void)
 {
     let savedCxt = @getcontext()
-    var newCxt: Context = dref savedCxt
+    var newCxt:  Context = dref savedCxt
     @setcontext(newCxt)
 
     #macro

@@ -9,17 +9,12 @@ struct(T) SoaTest
 
 impl SoaTest
 {
-    mtd reserve(size: u64)
-    {
-    }
+    mtd reserve(size: u64) {}
 }
 
 #test
 {
-    struct Test
-    {
-        x, y, z: f32
-    }
+    struct Test { x, y, z: f32 }
 
     var v: SoaTest'Test
     v.reserve(10)

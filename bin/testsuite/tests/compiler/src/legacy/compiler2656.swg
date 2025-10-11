@@ -1,13 +1,9 @@
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
     enum ENUM
     {
-
     }
 
     #[Swag.Macro]

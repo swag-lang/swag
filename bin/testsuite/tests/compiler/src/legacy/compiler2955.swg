@@ -1,6 +1,6 @@
 struct Color
 {
-    b: bool
+    b:   bool
 }
 
 impl Color
@@ -12,7 +12,7 @@ impl Color
     }
 }
 
-struct Painter{}
+struct Painter {}
 impl Painter
 {
     func draw(me, col: Color, size: f32)

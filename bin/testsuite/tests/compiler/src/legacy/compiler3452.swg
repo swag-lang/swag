@@ -1,8 +1,5 @@
 #global testerror "Err0169"
-struct Vector
-{
-    x, y: f32
-}
+struct Vector { x, y: f32 }
 
 impl Vector
 {

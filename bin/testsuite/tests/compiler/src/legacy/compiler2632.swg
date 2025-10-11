@@ -4,7 +4,8 @@ func toto()
     {
         func titi()
         {
-            #if true: struct AA {}
+            #if true:
+                struct AA {}
             var x: AA
         }
     }

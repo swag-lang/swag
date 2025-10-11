@@ -1,6 +1,4 @@
-func(T) sort(value: T, cb: func(T, T)->s32)
-{
-}
+func(T) sort(value: T, cb: func(T, T)->s32) {}
 
 #test
 {

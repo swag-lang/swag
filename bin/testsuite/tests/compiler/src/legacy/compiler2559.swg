@@ -1,6 +1,6 @@
 struct AA
 {
-    x = 0
+    x    = 0
 }
 
 impl AA
@@ -14,7 +14,7 @@ impl AA
 //#[Swag.PrintBc]
 func toto()->[2] AA
 {
-    return [{1},{1}]
+    return [{1}, {1}]
 }
 
 //#[Swag.PrintBc]

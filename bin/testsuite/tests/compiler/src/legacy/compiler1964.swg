@@ -1,6 +1,6 @@
 struct A
 {
-    x: s64 = 555
+    x:   s64 = 555
 }
 
 impl A

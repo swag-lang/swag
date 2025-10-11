@@ -2,14 +2,14 @@
 #global testerror "Err0019"
 struct AA
 {
-    x: s32 = 555
+    x:   s32 = 555
 }
 
 struct BB
 {
-    xx: f64
-    using aa0: AA
-    using aa1: AA
+    xx:            f64
+    using aa0:     AA
+    using aa1:     AA
 }
 
 interface I
@@ -28,7 +28,7 @@ impl I for AA
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
-    var x: BB
+    var x:  BB
     var ptr = cast(I) x
     ptr.toto()
 }

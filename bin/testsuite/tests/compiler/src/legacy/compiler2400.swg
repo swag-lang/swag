@@ -1,7 +1,7 @@
 struct(T, N: u8) A
 {
-    x: [N] T
-    y: u32
+    x:     [N] T
+    y:     u32
 }
 
 #test

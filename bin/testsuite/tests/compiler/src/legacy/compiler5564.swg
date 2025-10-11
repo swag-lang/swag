@@ -3,6 +3,6 @@
 //#[Swag.PrintBc]
 #test
 {
-    struct F { x: s32; }
-	let a = F{a: 0}
+    struct F { x: s32 }
+    let a = F{a: 0}
 }

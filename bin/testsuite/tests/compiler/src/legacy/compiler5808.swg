@@ -2,7 +2,7 @@
 interface I5806
 {
     mtd a() { b(); }
-    mtd b();// {}
+    mtd b(); // {}
 }
 
 struct B {}

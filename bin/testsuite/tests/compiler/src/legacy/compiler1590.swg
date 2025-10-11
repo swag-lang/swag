@@ -1,10 +1,8 @@
-struct(T) B
-{
-}
+struct(T) B {}
 
 impl B
 {
-    func opIndex(me, index: u64) -> T
+    func opIndex(me, index: u64)->T
     {
         let x: T = 666 + cast(s32) index
         return x

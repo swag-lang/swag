@@ -1,4 +1,4 @@
-func toto(x: rune){}
+func toto(x: rune) {}
 
 #test
 {

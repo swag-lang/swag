@@ -25,6 +25,5 @@ impl X
         }
     }
 
-
-    @assert(G==2)
+    @assert(G == 2)
 }

@@ -12,8 +12,8 @@ struct Phys
 
 struct Monster
 {
-    using entity:   *Entity
-    using phys:     Phys
+    using entity:     *Entity
+    using phys:       Phys
 }
 
 func set(phys: Phys)
@@ -34,6 +34,6 @@ func set1(monster: Monster)
     v.entity = &e
 
     v.position[1] = 666
-    v.speed[0] = 666
+    v.speed[0]    = 666
     set1(v)
 }

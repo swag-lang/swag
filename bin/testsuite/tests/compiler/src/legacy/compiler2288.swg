@@ -12,8 +12,8 @@ struct Phys
 
 struct Monster
 {
-    using entity:   *Entity
-    using phys:     Phys
+    using entity:     *Entity
+    using phys:       Phys
 }
 
 func set(phys: Phys)

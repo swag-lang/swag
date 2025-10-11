@@ -1,11 +1,11 @@
 struct V
 {
-    x = 666
+    x    = 666
 }
 
 #test
 {
-    var v: V
+    var v:  V
     var fn: func||(V)
 
     fn = func(v)

@@ -2,7 +2,7 @@ func titi()
 {
     struct AA
     {
-        x: s32
+        x:   s32
     }
 
     var v: AA
@@ -10,10 +10,7 @@ func titi()
 
 func tata()
 {
-    struct AA
-    {
-        x, y: s32
-    }
+    struct AA { x, y: s32 }
 
     var v: AA
 }

@@ -1,6 +1,6 @@
 struct Point
 {
-    x: s64 = 666
+    x:   s64 = 666
 }
 
 var G: s64 = 0
@@ -22,7 +22,7 @@ impl IPrintable for Point
 #test
 {
     var pt: Point
-    let ty = #typeof(pt)
+    let ty  = #typeof(pt)
     let itf = @mkinterface(&pt, ty, IPrintable)
     @assert(itf != null)
     itf.print()

@@ -3,7 +3,7 @@ var G = 0
 
 struct B
 {
-    b: s32
+    b:   s32
 }
 
 impl B

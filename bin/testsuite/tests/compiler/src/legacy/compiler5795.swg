@@ -12,8 +12,10 @@ func toto(s: B)
     //#[Swag.Complete]
     switch s.x
     {
-    case R: a = true
-    case G: a = true
+    case R:
+        a = true
+    case G:
+        a = true
     }
 
     @assert(a)

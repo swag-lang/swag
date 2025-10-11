@@ -1,7 +1,7 @@
 #global testerror "Err0078"
 
 struct(T) Point
-    where T == bool
+        where T == bool
 {
 }
 

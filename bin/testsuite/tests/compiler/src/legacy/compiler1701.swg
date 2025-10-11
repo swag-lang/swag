@@ -5,7 +5,7 @@ interface Print
 
 struct A
 {
-    x: f64 = 666
+    x:   f64 = 666
 }
 
 impl Print for A

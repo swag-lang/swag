@@ -24,5 +24,5 @@ func toto(x: A)
 #test
 {
     toto(0's32)
-	@assert(G == 1)
+    @assert(G == 1)
 }

@@ -1,8 +1,6 @@
 #global testerror "Err0561"
 
-func toto(v: const [..] any)
-{
-}
+func toto(v: const [..] any) {}
 
 #test
 {

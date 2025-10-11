@@ -1,9 +1,8 @@
 var g = 55
 
-
 struct A
 {
-    a: string
+    a:   string
 }
 
 impl A

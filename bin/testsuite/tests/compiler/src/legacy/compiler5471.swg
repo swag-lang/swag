@@ -17,10 +17,10 @@ func(T) orderMinMax(x, y: *T)
 
 private struct Bot
 {
-    id:          s32
-    count:       s32
-    val:         [2] s32 = Swag.S32.Max
-    out:         s32
+    id:        s32
+    count:     s32
+    val:       [2] s32 = Swag.S32.Max
+    out:       s32
 }
 
 private impl Bot
@@ -31,4 +31,3 @@ private impl Bot
         orderMinMax(&me.val[0], &me.val[1])
     }
 }
-

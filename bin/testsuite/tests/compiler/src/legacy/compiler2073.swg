@@ -1,15 +1,13 @@
 struct AA
 {
-    val: u64
-    val1: u64
+    val:      u64
+    val1:     u64
 }
 
 impl AA
 {
     //#[Swag.PrintBc]
-    func opPostMove(me)
-    {
-    }
+    func opPostMove(me) {}
 }
 
 //#[Swag.PrintBc]

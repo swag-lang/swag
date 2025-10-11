@@ -1,6 +1,6 @@
 struct(T) AA
 {
-    x: T
+    x:   T
 }
 
 impl AA

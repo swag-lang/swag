@@ -1,7 +1,6 @@
-#global testerror "Err0004";
-;
+#global testerror "Err0004"
 
-alias myType = u32;
-alias myType1 = bool;
+alias myType  = u32
+alias myType1 = bool
 
-alias myType = f32;
+alias myType = f32

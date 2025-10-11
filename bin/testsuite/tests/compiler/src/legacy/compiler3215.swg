@@ -2,13 +2,13 @@ namespace NP
 {
     struct A
     {
-        x: s32
+        x:   s32
     }
 }
 
 struct B
 {
-    x: NP.A
+    x:   NP.A
 }
 
 #test

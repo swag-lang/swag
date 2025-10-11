@@ -1,4 +1,4 @@
-func toto(x: const &{v: s32})
+func toto(x: const &{ v: s32 })
 {
     @assert(x.v == 2)
 }

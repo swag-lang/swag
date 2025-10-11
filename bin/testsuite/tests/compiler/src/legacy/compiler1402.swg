@@ -5,6 +5,6 @@
 {
     struct A
     {
-        x: s32
+        x:   s32
     }
 }

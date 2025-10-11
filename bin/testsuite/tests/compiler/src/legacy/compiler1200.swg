@@ -1,4 +1,4 @@
-enum E : u32
+enum E: u32
 {
     RED
 }

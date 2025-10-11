@@ -1,4 +1,4 @@
-struct V { x, y, z: f32; }
+struct V { x, y, z: f32 }
 
 func toto(v: const &V)
 {
@@ -10,5 +10,5 @@ func toto(v: const &V)
 //#[Swag.PrintBc]
 #test
 {
-    toto({2.0,3.0,4})
+    toto({2.0, 3.0, 4})
 }

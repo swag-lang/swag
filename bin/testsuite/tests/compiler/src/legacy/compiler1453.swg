@@ -1,8 +1,6 @@
 #global testerror "Err0536"
 
-struct S
-{
-}
+struct S {}
 
 impl S
 {

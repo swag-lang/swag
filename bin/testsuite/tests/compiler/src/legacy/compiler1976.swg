@@ -2,9 +2,7 @@
 //#global testerror
 using Swag
 
-struct(T) AA1976
-{
-}
+struct(T) AA1976 {}
 
 const TITI = 5
 
@@ -22,6 +20,5 @@ impl AA1976
     var x: AA1976's32
     foreach x
     {
-
     }
 }

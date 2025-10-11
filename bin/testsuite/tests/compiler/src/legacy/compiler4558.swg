@@ -11,5 +11,5 @@ impl A
 {
     var a: A
     let b: &A = &a
-    let c = !b
+    let c  = !b
 }

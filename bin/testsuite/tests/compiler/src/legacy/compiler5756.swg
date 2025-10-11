@@ -1,10 +1,16 @@
 #global testerror "Err0017"
 
-interface I {}
+interface I
+{
+}
 struct A { v = "a" }
 struct B { v = "b" }
-impl I for A {}
-impl I for B {}
+impl I for A
+{
+}
+impl I for B
+{
+}
 
 //#[Swag.PrintBc]
 #[Swag.Safety("", true)]
@@ -13,14 +19,14 @@ func toto(i: I)
     #[Swag.Complete]
     switch i
     {
-    case A: 
+    case A:
         @print("ptr.a")
-    case B: 
+    case B:
         @print("ptr.v")
     case null:
         break
     case null:
-        break      
+        break
     }
 }
 

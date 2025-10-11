@@ -3,14 +3,14 @@
 //#[Swag.PrintBc]
 struct Point
 {
-	x: f32
-	y: f32
+    x:     f32
+    y:     f32
 }
 
 //#[Swag.PrintBc]
 func Print(x: s64)
 {
-/*	@print(x)
+    /*	@print(x)
 	@print(" ")
 	@print(x.y)
 	@print("\n")*/
@@ -19,5 +19,5 @@ func Print(x: s64)
 //#[Swag.PrintBc]
 #test
 {
-	Print(s32)
+    Print(s32)
 }

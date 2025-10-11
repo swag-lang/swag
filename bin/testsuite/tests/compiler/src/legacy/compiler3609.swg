@@ -1,5 +1,5 @@
 #[Swag.Inline]
-func toto()->{v: s32}
+func toto()->{ v: s32 }
 {
     var result: retval
     result.v = 10

@@ -13,5 +13,5 @@ impl V
 #test
 {
     var v: V
-    var y = v[0 to ]
+    var y  = v[0 to ]
 }

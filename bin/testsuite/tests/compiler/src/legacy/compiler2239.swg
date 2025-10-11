@@ -1,6 +1,6 @@
 struct Pt
 {
-    x: s64 = 1
+    x:   s64 = 1
 }
 
 impl Pt

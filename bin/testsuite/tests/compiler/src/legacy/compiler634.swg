@@ -1,9 +1,7 @@
 #global testerror "Err0082"
-struct(T) Point
-{
-}
+struct(T) Point {}
 
 #test
 {
-	var x: Point
+    var x: Point
 }

@@ -3,17 +3,11 @@ interface A
     func x(me);
 }
 
-struct X
-{
-
-}
+struct X {}
 
 impl A for X
 {
-    func impl x(me)
-    {
-
-    }
+    func impl x(me) {}
 }
 
 //#[Swag.PrintBc]

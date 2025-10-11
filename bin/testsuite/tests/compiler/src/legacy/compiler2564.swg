@@ -1,7 +1,4 @@
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
@@ -15,6 +12,6 @@ impl AA
 #test
 {
     var x: [2] AA
-    var y = x
+    var y  = x
     y = x
 }

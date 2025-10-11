@@ -19,7 +19,7 @@ impl A
 #test
 {
     var st: A
-    var ew = st.toto(66)
+    var ew  = st.toto(66)
 
     {
         var xxx = 0

@@ -1,7 +1,4 @@
-struct V
-{
-    x, y: s32
-}
+struct V { x, y: s32 }
 
 impl V
 {

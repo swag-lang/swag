@@ -1,6 +1,6 @@
 struct AA
 {
-    vv: s32 = 666
+    vv:  s32 = 666
 }
 
 impl AA
@@ -16,7 +16,7 @@ impl AA
         @assert(me.vv == 666)
         @assert(a == 0)
         @assert(b == 3)
-        return [1, 2, 3 ,4]
+        return [1, 2, 3, 4]
     }
 }
 

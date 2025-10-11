@@ -8,7 +8,7 @@ struct AA
         G
     }
 
-    z: BB = BB.R
+    z:   BB = BB.R
 }
 
 #test

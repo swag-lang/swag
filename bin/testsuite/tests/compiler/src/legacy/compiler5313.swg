@@ -9,6 +9,6 @@ namespace C
     using C
     struct A
     {
-        x: B
+        x:   B
     }
 }

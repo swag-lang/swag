@@ -1,7 +1,4 @@
-func(T) toto(value: const [..] T)
-{
-
-}
+func(T) toto(value: const [..] T) {}
 
 #test
 {

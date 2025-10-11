@@ -1,8 +1,6 @@
 internal
 {
-    private func toto()
-    {
-    }
+    private func toto() {}
 }
 
 #test

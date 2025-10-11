@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 struct B
 {
@@ -12,10 +10,7 @@ struct C
     using b: B
 }
 
-func toto(x: A)
-{
-
-}
+func toto(x: A) {}
 
 #test
 {

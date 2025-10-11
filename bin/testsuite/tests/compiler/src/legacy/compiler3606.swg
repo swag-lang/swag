@@ -2,7 +2,7 @@ alias MyType = s32
 
 enum E: MyType
 {
-    R;
+    R
 }
 
 #test

@@ -1,15 +1,13 @@
 //#[Swag.NoCopy]
-struct AA
-{
-}
+struct AA {}
 
 struct BB
 {
-    x: AA
+    x:   AA
 }
 
 #test
 {
     var x: BB
-    var y = x
+    var y  = x
 }

@@ -1,6 +1,6 @@
 #global testerror "Err0574"
 
-func toto()->{x: s32} 
+func toto()->{ x: s32 }
 {
     return {0}
 }
@@ -9,6 +9,5 @@ func toto()->{x: s32}
 {
     if toto() <= toto()
     {
-
     }
 }

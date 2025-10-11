@@ -1,4 +1,4 @@
-struct ErrToto{}
+struct ErrToto {}
 
 #test
 {
@@ -8,10 +8,12 @@ struct ErrToto{}
 func toto()
 {
     titi()
-#if false: throw ErrToto{}
+    #if false:
+        throw ErrToto{}
 }
 
 func titi()
 {
-#if false: throw ErrToto{}
+    #if false:
+        throw ErrToto{}
 }

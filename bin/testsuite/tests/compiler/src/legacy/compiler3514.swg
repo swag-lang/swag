@@ -4,7 +4,7 @@ func toto()->s32
     for
     {
         //if a
-            return 1
+        return 1
         //a += 1
     }
 }

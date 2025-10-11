@@ -18,8 +18,8 @@ struct(T) Toto
 {
     struct MyStruct
     {
-        x: f32
-        y: bool
+        x:     f32
+        y:     bool
     }
 
     var gen: Toto'MyStruct

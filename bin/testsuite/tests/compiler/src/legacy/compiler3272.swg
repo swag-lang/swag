@@ -1,6 +1,6 @@
 struct C
 {
-    c: s32
+    c:   s32
 }
 
 var gc: C

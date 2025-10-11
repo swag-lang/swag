@@ -1,9 +1,6 @@
 //using Core
 
-struct X
-{
-    a, b, c: s32
-}
+struct X { a, b, c: s32 }
 
 #[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 func(what: string) safety(expr51: #code bool, message: string = null, loc = #callerlocation)

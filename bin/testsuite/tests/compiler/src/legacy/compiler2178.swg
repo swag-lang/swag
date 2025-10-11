@@ -1,12 +1,9 @@
-func toto()->{a,b: u32}
+func toto()->{ a, b: u32 }
 {
     return {5, 10}
 }
 
-struct A
-{
-    x, y: u32
-}
+struct A { x, y: u32 }
 
 #test
 {

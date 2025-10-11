@@ -11,7 +11,7 @@ enum AA { R }
     {
         let a = R
     }
-    
+
     with Win32
     {
         toto()

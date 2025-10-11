@@ -1,10 +1,6 @@
-
-
-
 //#[Swag.PrintBc]
-#global testerror "Err0093";
+#global testerror "Err0093"
 #test
 {
-	const d = 6;
-	d = 5;
-}
+    const d = 6
+    d = 5; }

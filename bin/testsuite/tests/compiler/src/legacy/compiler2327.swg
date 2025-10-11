@@ -1,9 +1,9 @@
 struct AA
 {
-    a: u8
-    b: u16
-    c: u32
-    d: u64
+    a:     u8
+    b:     u16
+    c:     u32
+    d:     u64
 }
 
 #assert(#offsetof(AA.a) == 0)

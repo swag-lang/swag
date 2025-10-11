@@ -3,7 +3,7 @@ using Swag
 var cpt = 0's64
 
 #[Compiler]
-func testInline(type: const* TypeInfoFunc)
+func testInline(type: const *TypeInfoFunc)
 {
     foreach i in type.attributes
     {
@@ -22,8 +22,9 @@ func testInline(type: const* TypeInfoFunc)
     let itf = @compiler
     let msg = itf.getMessage()
     @assert(msg != null)
-    if(msg.type.kind != TypeInfoKind.Func): return
+    if (msg.type.kind != TypeInfoKind.Func):
+        return
 
-    testInline(cast(const* TypeInfoFunc) msg.type)
+    testInline(cast(const *TypeInfoFunc) msg.type)
     cpt += 1
 }

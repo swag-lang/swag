@@ -1,7 +1,5 @@
 #global testerror "Err0296"
-func toto()
-{
-}
+func toto() {}
 
 #[Swag.Inline]
 public func titi3122()

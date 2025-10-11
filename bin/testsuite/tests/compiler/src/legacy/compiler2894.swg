@@ -1,7 +1,4 @@
-struct A
-{
-
-}
+struct A {}
 
 var G = 0
 impl A
@@ -13,7 +10,7 @@ impl A
 
     func toto(me)
     {
-        var fn: func(me)
+        var fn: func(*A)
         fn = &titi
         fn(me)
     }

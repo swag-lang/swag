@@ -7,14 +7,12 @@ impl A
         return
     }
 
-
     #[Swag.Mixin]
     mtd titi()
     {
         .tata()
     }
 }
-
 
 #test
 {

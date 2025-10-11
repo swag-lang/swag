@@ -1,5 +1,6 @@
 struct A {}
-impl A {
+impl A
+{
     mtd toString() => "toto"
 }
 

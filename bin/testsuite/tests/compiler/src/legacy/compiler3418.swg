@@ -1,7 +1,7 @@
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
-    let a = 666
+    let a  = 666
     let v: func||(s32) = func|a|(x: s32)
     {
         @assert(a == 666)

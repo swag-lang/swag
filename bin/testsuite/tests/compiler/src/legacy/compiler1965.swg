@@ -1,6 +1,6 @@
 struct AA
 {
-    p: s64 = 55
+    p:   s64 = 55
 }
 
 #test

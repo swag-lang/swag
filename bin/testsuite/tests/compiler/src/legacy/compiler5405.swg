@@ -1,8 +1,6 @@
 //#global skip
 
-struct(T) A
-{
-}
+struct(T) A {}
 
 var g = 6
 
@@ -27,11 +25,10 @@ func toto(a: &A's32, b: &s32)
     @assert(c == 6)
 }
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", false)]
 #test
 {
-    var a: A's32
+    var a:  A's32
     var idx = 0
     toto(&a, &idx)
 }

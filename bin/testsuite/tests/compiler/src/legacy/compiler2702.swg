@@ -1,8 +1,6 @@
 #global testerror "Err0322"
 
-func doIt(fn: func())
-{
-}
+func doIt(fn: func()) {}
 
 #test
 {

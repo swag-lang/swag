@@ -8,5 +8,5 @@ enum OT: const [..] s32
 //#[Swag.PrintBc]
 #test
 {
-	var pt: OT
+    var pt: OT
 }

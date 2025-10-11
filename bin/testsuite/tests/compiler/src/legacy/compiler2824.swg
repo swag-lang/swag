@@ -1,6 +1,5 @@
 namespace titi
 {
-
 }
 
 func toto()

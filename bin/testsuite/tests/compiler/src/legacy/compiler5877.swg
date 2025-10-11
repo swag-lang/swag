@@ -2,7 +2,7 @@
 struct A {}
 impl A
 {
-    mtd toto(x:s32) {}
+    mtd toto(x: s32) {}
     mtd titi()
     {
         toto(0)

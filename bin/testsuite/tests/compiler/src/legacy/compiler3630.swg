@@ -2,7 +2,7 @@
 
 struct Wnd
 {
-    x: s32
+    x:   s32
 }
 
 var childs: [4] *Wnd

@@ -1,5 +1,5 @@
 interface TOTO
 {
-    alias FL = func(me)
+    alias FL = func(*TOTO)
     func x(me);
 }

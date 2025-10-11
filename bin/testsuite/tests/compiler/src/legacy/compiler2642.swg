@@ -8,10 +8,7 @@ namespace BB
 
 namespace AA
 {
-    func toto()
-    {
-
-    }
+    func toto() {}
 }
 
 #[Swag.Macro]

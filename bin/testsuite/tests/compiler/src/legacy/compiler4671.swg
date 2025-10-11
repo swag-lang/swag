@@ -1,8 +1,10 @@
-interface I {
+interface I
+{
     mtd toto();
 }
 struct A {}
-impl I for A {
+impl I for A
+{
     mtd impl toto() {}
 }
 

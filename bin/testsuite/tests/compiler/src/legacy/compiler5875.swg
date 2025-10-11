@@ -13,9 +13,7 @@ impl A
 
 impl B
 {
-    mtd tata()
-    {
-    }
+    mtd tata() {}
 
     #[Swag.Mixin]
     func titi(me)

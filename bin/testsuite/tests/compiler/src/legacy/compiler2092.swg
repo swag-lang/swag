@@ -10,5 +10,5 @@
 
 struct(T) AAAA
 {
-    v: T
+    v:   T
 }

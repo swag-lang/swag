@@ -1,12 +1,9 @@
 struct AA
 {
     x, y: f64
-    struct BB
-    {
-        x, y: string = "true"
-    }
+    struct BB { x, y: string = "true" }
 
-    z: BB
+    z:   BB
 }
 
 #test

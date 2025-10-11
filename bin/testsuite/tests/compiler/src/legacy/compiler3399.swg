@@ -1,5 +1,5 @@
 //#global testerror
-func(A, B) toto(x: {a: A, b: B, c: s32})
+func(A, B) toto(x: { a: A, b: B, c: s32 })
 {
     @assert(x.item0 == 1)
     @assert(x.item1 == true)

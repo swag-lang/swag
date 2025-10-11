@@ -3,7 +3,8 @@ func toto(x: func||() = null)
 {
     var y: func||()
     y = x
-    if y: y()
+    if y:
+        y()
 }
 
 //#[Swag.PrintBc]

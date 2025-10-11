@@ -14,7 +14,7 @@ impl Y
 {
     mtd opIndex(x: u64)->u64
     {
-        return me.idx+x*10
+        return me.idx + x * 10
     }
 }
 

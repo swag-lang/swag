@@ -1,11 +1,11 @@
 struct A
 {
-    x = 1
+    x    = 1
 }
 
 struct B
 {
-    x: [1] A
+    x:   [1] A
 }
 
 impl B

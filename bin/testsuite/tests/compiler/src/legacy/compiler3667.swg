@@ -1,7 +1,7 @@
 struct T
 {
-    x: s32 = 10
-    y: s32 = 20
+    x:     s32 = 10
+    y:     s32 = 20
 }
 
 func toto(x: string, y: T, z: ...)

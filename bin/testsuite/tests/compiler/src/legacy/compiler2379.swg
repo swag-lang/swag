@@ -1,6 +1,6 @@
 struct AA
 {
-    s = "toto"
+    s    = "toto"
 }
 
 //#[Swag.PrintBc]

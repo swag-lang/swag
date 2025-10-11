@@ -1,7 +1,4 @@
-struct V2
-{
-    x, y: f32
-}
+struct V2 { x, y: f32 }
 
 impl V2
 {

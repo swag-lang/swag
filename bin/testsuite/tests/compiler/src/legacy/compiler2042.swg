@@ -1,9 +1,6 @@
 #global testerror "Err0187"
 
-func titi()
-{
-
-}
+func titi() {}
 
 #test
 {

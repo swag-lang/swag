@@ -6,11 +6,11 @@ struct E
 {
     #if A
     {
-        x: s32
+        x:   s32
     }
     #else
     {
-        y: s32
+        y:   s32
     }
 }
 

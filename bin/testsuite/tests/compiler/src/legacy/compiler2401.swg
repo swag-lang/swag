@@ -1,6 +1,6 @@
 struct(T, N: u8) A
 {
-    x: [N] T
+    x:   [N] T
 }
 
 impl A

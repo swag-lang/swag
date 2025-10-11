@@ -7,7 +7,5 @@ impl Image
         Copy
     }
 
-    mtd doMix(mode: MixMode = Copy)
-    {
-    }
+    mtd doMix(mode: MixMode = Copy) {}
 }

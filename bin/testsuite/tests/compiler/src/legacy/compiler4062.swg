@@ -2,7 +2,7 @@
 #test
 {
     var toto = false
-    var r = #ref &toto
+    var r    = #ref &toto
     if r
     {
         @assert(false)

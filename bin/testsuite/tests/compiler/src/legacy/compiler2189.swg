@@ -1,6 +1,6 @@
 struct P
 {
-    a: u8
+    a:   u8
 }
 
 impl P
@@ -12,7 +12,7 @@ impl P
     }
 
     #[Swag.Inline]
-    func toFloat(const me) -> {a: f32}
+    func toFloat(const me)->{ a: f32 }
     {
         var result: retval = undefined
         result.a = me.a / 255'f32
@@ -25,6 +25,6 @@ impl P
 #test
 {
     let x: P = 255'u8
-    let v = x.toFloat()
+    let v  = x.toFloat()
     @assert(v.a == 1)
 }

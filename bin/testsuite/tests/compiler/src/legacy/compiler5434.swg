@@ -2,9 +2,7 @@
 
 struct A {}
 
-func toto(x: A)
-{
-}
+func toto(x: A) {}
 
 func titi()
 {

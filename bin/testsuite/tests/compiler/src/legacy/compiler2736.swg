@@ -1,6 +1,6 @@
 var G = 0
 
-struct ErrTiti{}
+struct ErrTiti {}
 
 #[Swag.Inline]
 func titi() throw

@@ -2,7 +2,7 @@ using Swag
 
 struct TOTO
 {
-    x: func(*TOTO)
+    x:   func(*TOTO)
 }
 
 //#[Swag.PrintBc]

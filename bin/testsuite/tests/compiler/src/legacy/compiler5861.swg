@@ -1,6 +1,6 @@
 struct A
 {
-    private a: s32
+    private a:   s32
 }
 
 struct B

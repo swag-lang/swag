@@ -6,9 +6,7 @@ struct Duration
 
 impl Duration
 {
-    mtd(K, V) opAffect(v: K)
-    {
-    }
+    mtd(K, V) opAffect(v: K) {}
 }
 
 #test

@@ -1,11 +1,8 @@
 var G = 0
 
-struct ErrToto{}
+struct ErrToto {}
 
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {

@@ -1,7 +1,4 @@
-struct A
-{
-
-}
+struct A {}
 
 func(T) titi(x: T)
 {

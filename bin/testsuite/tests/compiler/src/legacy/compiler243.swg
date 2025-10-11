@@ -3,20 +3,20 @@ using Swag
 //#[PrintBc]
 func toto()
 {
-	var a = 0
-	while a < 10
-	{
-		a += 1
-		for
-		{
-			break
-		}
-	}
+    var a = 0
+    while a < 10
+    {
+        a += 1
+        for
+        {
+            break
+        }
+    }
 
-	@assert(a == 10)
+    @assert(a == 10)
 }
 
 #run
 {
-	toto()
+    toto()
 }

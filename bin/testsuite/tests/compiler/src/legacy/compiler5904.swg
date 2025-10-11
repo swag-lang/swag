@@ -8,9 +8,7 @@ func toto()->#null *s32
     return &g_A
 }
 
-func titi(prt: *s32)
-{
-}
+func titi(prt: *s32) {}
 
 //#[Swag.PrintBc]
 func tata()

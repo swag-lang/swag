@@ -10,11 +10,11 @@ func swap(x, y: *s32)
 func quick(values: [..] s32, cb: func(s32, s32)->s32)
 {
     let count = @countof(values)
-    if(count == 0):
+    if (count == 0):
         return
 
-    let begin = 0'u64
-    var end = count - 1
+    let begin  = 0'u64
+    var end    = count - 1
     var buffer = @dataof(values)
 
     for
@@ -29,7 +29,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
         let pivot = (begin + end) / 2
         swap(&buffer[pivot], &buffer[end])
 
-        var low = begin
+        var low  = begin
         var high = end
         for
         {
@@ -69,8 +69,8 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
             else*/
             {
                 let first = high + 1
-                let last = end
-                quick(@mkslice(buffer + first, 1 + (last - first)), cb);
+                let last  = end
+                quick(@mkslice(buffer + first, 1 + (last - first)), cb)
                 end = low - 1
             }
         }
@@ -86,6 +86,7 @@ func quick(values: [..] s32, cb: func(s32, s32)->s32)
 #test
 {
     var arr: [12] s32
-    for @countof(arr): arr[@index] = cast(s32) @index
+    for @countof(arr):
+        arr[@index] = cast(s32) @index
     quick(arr, func(x, y) => y <=> x)
 }

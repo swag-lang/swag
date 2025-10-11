@@ -1,7 +1,4 @@
-struct Vector
-{
-    x, y: f32
-}
+struct Vector { x, y: f32 }
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test

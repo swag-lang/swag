@@ -4,19 +4,17 @@ var TOTO = "win32"
 
 #if TOTO == "linux"
 {
-	func toto()
-	{
-		@assert(false)
-	}
+    func toto()
+    {
+        @assert(false)
+    }
 }
 #else
 {
-	func toto()
-	{
-	}
+    func toto() {}
 }
 
 #test
 {
-	toto()
+    toto()
 }

@@ -3,9 +3,7 @@ impl A
 {
     mtd toto()
     {
-        mtd titi()
-        {
-        }
+        mtd titi() {}
 
         me.titi()
     }

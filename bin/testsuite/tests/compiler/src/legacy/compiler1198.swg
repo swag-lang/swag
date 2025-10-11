@@ -4,11 +4,11 @@ struct E
 {
     #if A
     {
-        x: s32 = 10
+        x:   s32 = 10
     }
     #else
     {
-        y: s32 = 10
+        y:   s32 = 10
     }
 }
 

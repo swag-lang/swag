@@ -2,7 +2,7 @@
 func toto()
 {
     var values = [[1], [2]]
-    var a = 0
+    var a      = 0
     foreach b, a in values
     {
         @print(a)

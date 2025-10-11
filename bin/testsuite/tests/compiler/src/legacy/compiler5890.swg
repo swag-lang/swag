@@ -2,17 +2,15 @@
 
 interface TOTO
 {
-	mtd print()->bool;
+    mtd print()->bool;
 }
 
-struct TITI
-{
-}
+struct TITI {}
 
 impl TOTO for TITI
 {
-	mtd impl print()->s32
-	{
+    mtd impl print()->s32
+    {
         return 0
-	}
+    }
 }

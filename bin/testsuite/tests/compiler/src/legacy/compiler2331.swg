@@ -10,17 +10,17 @@ impl AA
     {
         #macro
         {
-            #if #up ptr {}
+            #if #up ptr
+            {
+            }
         }
     }
 }
-
 
 #test
 {
     var v: AA
     foreach v
     {
-
     }
 }

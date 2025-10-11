@@ -1,6 +1,6 @@
 struct AA
 {
-    x: s64 = 10
+    x:   s64 = 10
 }
 
 impl AA
@@ -27,7 +27,7 @@ func create()->AA
 
 #test
 {
-    var x: AA
+    var x:  AA
     let res = x.toto()
     @assert(res.x == 666)
 }

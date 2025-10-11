@@ -1,10 +1,6 @@
-
-
 struct iter
 {
-	arr: Array
+    arr: Array
 }
 
-struct Array
-{
-}
+struct Array {}

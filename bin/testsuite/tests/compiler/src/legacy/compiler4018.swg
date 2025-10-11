@@ -1,6 +1,6 @@
 struct A
 {
-    x: const &s32 = undefined
+    x:   const &s32 = undefined
 }
 
 #test

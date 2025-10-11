@@ -1,6 +1,4 @@
-struct(T) A
-{
-}
+struct(T) A {}
 
 impl A
 {
@@ -19,5 +17,5 @@ struct(T) B
 {
     var v1: A'(#null *s32)
     var v:  B's32
-    var x = v[0]
+    var x   = v[0]
 }

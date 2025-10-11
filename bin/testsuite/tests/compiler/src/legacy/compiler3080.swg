@@ -5,7 +5,7 @@ interface AA
 
 struct BB
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 var G: s32
@@ -25,7 +25,7 @@ impl AA for BB
 #test
 {
     var v: BB
-    let i = cast(AA) v
+    let i  = cast(AA) v
     i.toto()
     @assert(G == 666)
 }

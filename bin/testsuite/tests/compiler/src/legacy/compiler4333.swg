@@ -1,2 +1,2 @@
 //#global testerror
-var G: {a, b: s32 = 1}
+var G: { a, b: s32 = 1 }

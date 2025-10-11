@@ -1,18 +1,15 @@
-;
-;
-using Swag;
+using Swag
 
-var v = 50;
+var v = 50
 
 //#[PrintBc]
-func main ()
+func main()
 {
-	@assert(v == 50);
-	v = 666;
-	@assert(v == 666);
+    @assert(v == 50)
+    v = 666; @assert(v == 666)
 }
 
 #run
 {
-	main()
+    main()
 }

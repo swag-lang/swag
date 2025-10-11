@@ -7,9 +7,7 @@ struct(T) NumericArray
 
 impl NumericArray
 {
-    func(op: string) opAssign(me, value: NumericArray)
-    {
-    }
+    func(op: string) opAssign(me, value: NumericArray) {}
 }
 
 #test

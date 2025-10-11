@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 struct B
 {

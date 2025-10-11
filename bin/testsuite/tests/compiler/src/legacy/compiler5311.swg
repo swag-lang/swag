@@ -1,7 +1,7 @@
 struct(K, V) A {}
 impl A
 {
-    mtd opAffect(slice: const [..] {k: K, v: V})
+    mtd opAffect(slice: const [..] { k: K, v: V })
     {
         foreach v in slice
         {

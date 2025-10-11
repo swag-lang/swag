@@ -1,9 +1,6 @@
-struct A
-{
-    x, y: u64
-}
+struct A { x, y: u64 }
 
-func toto()->{a: A, err: string}
+func toto()->{ a: A, err: string }
 {
     var result: retval
     result.err = "err"

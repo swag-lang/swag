@@ -1,13 +1,8 @@
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
-    func toto(me, x: string, z: ...)
-    {
-    }
+    func toto(me, x: string, z: ...) {}
 }
 
 #test

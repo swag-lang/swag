@@ -1,6 +1,6 @@
 struct Vector
 {
-    x: s32
+    x:   s32
 }
 
 impl Vector
@@ -8,8 +8,8 @@ impl Vector
     //#[Swag.PrintBc, Swag.Safety("", false)]
     func max(x, y: Vector)->Vector
     {
-        var result: retval// = undefined
-        var zz = @max(x.x, y.x)
+        var result: retval               // = undefined
+        var zz      = @max(x.x, y.x)
         //@print(zz)
         return result
     }

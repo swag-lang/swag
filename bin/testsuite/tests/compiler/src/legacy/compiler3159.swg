@@ -4,9 +4,7 @@ func printf(format: cstring, args: cvarargs)
     printf1(format, args)
 }
 
-func printf1(format: cstring, args: cvarargs)
-{
-}
+func printf1(format: cstring, args: cvarargs) {}
 
 #test
 {

@@ -1,12 +1,9 @@
-struct Argb2036
-{
-    a, r, g, b: u8
-}
+struct Argb2036 { a, r, g, b: u8 }
 
 impl Argb2036
 {
     //#[Swag.Inline]
-    func extract(me) -> {a,b,c,d:f32}
+    func extract(me)->{ a, b, c, d: f32 }
     {
         var _a = me.a / 255.0'f32
         var _r = me.r / 255.0'f32

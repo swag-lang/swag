@@ -4,12 +4,12 @@ struct(T) Queue
 {
     struct Node
     {
-        data: T
-        next: *Node
+        data:     T
+        next:     *Node
     }
 
-    gpa:        Swag.IAllocator
-    start, end: *Node
+    gpa:            Swag.IAllocator
+    start, end:     *Node
 }
 
 impl Queue
@@ -31,7 +31,7 @@ impl Queue
         end = node
     }
 
-    mtd dequeue() -> T
+    mtd dequeue()->T
     {
         let start = start orelse null
         defer gpa.destroy(start)
@@ -39,19 +39,19 @@ impl Queue
             me.start = me.next
         else:
             me.start, me.end = null
-        return data;
+        return data
     }
 }
 
 #test
 {
     var int_queue: Queue's32
-    int_queue.init(@getcontext().allocator);
+    int_queue.init(@getcontext().allocator)
 
-    try int_queue.enqueue(25);
-    try int_queue.enqueue(50);
-    try int_queue.enqueue(75);
-    try int_queue.enqueue(100);
+    try int_queue.enqueue(25)
+    try int_queue.enqueue(50)
+    try int_queue.enqueue(75)
+    try int_queue.enqueue(100)
 }
 
 /*

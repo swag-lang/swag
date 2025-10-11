@@ -1,7 +1,7 @@
 //#global testerror
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 func toto()->A

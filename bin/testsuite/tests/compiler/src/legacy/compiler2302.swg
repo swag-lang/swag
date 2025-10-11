@@ -4,7 +4,7 @@ using Swag
 
 struct AA
 {
-    x: IAllocator
+    x:   IAllocator
 }
 
 impl AA

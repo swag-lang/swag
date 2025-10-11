@@ -5,7 +5,7 @@ struct(T) ArrayPtr
 
 struct XXX
 {
-    x: ArrayPtr'XXX
+    x:   ArrayPtr'XXX
 }
 
 #assert(#sizeof(XXX) == #sizeof(*void))

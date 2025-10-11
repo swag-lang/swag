@@ -1,13 +1,8 @@
-struct Vector3
-{
-    x, y, z: s32 = 666
-}
+struct Vector3 { x, y, z: s32 = 666 }
 
 impl Vector3
 {
-    mtd opDrop()
-    {
-    }
+    mtd opDrop() {}
 }
 
 //#[Swag.PrintBc]

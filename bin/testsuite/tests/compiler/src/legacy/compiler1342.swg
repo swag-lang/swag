@@ -2,28 +2,22 @@
 
 interface TOTO
 {
-	func print(me, str: string);
+    func print(me, str: string);
 }
 
-struct TITI
-{
-}
+struct TITI {}
 
-struct TATA
-{
-}
+struct TATA {}
 
 impl TOTO for TITI
 {
-    func impl print(me1: *TATA, x: string)
-    {
-    }
+    func impl print(me1: *TATA, x: string) {}
 }
 
 //#[Swag.PrintBc]
 #test
 {
-/*    var x: TOTO
+    /*    var x: TOTO
     var y: TITI
     x = y*/
 }

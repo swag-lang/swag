@@ -1,6 +1,6 @@
 struct Arr
 {
-    tt: s32
+    tt:  s32
 }
 
 var G = 0
@@ -16,8 +16,8 @@ impl Arr
 //#[Swag.PrintBc]
 struct T
 {
-    x: Arr
-    y: [2] Arr
+    x:     Arr
+    y:     [2] Arr
 }
 
 #test
@@ -26,6 +26,6 @@ struct T
     t1 = t2
     @assert(G == 3)
     t1 = #move t2
-    G = 0
+    G  = 0
     @assert(G == 0)
 }

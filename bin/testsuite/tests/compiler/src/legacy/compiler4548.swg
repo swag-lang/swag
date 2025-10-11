@@ -1,10 +1,8 @@
 #global testerror "Err0675"
 
-enum A { R; G; B; }
+enum A { R, G, B }
 
-func toto(x: A)
-{
-}
+func toto(x: A) {}
 
 func titi()
 {

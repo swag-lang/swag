@@ -3,9 +3,7 @@ struct A
     lambda: func(s32)
 }
 
-func titi(p: s32)
-{
-}
+func titi(p: s32) {}
 
 #test
 {

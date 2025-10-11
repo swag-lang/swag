@@ -4,7 +4,6 @@ struct BB
     abc: string
 }
 
-
 struct AA
 {
     abc: string
@@ -18,7 +17,7 @@ impl AA
         with x
         {
             me.abc = "2"
-            .abc = "1"
+            .abc   = "1"
         }
 
         @assert(me.abc == "2")

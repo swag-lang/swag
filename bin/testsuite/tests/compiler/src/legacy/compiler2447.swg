@@ -1,2 +1,3 @@
 func N() => 10
-var arr: [#run N()] s32
+var arr: [#run N()
+] s32

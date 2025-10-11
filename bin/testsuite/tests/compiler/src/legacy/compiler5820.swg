@@ -5,8 +5,8 @@ struct(T) Toto
 
 struct Titi
 {
-    a: Toto'{a, b: s32}
-    b: Toto'{a, b: string}
+    a:     Toto'{ a, b: s32 }
+    b:     Toto'{ a, b: string }
 }
 
 struct Tata

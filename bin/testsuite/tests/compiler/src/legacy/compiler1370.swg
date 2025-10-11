@@ -1,8 +1,6 @@
 using Swag
 
-struct TOTO
-{
-}
+struct TOTO {}
 
 interface Itf
 {
@@ -11,9 +9,7 @@ interface Itf
 
 impl Itf for TOTO
 {
-    func impl print(me)
-    {
-    }
+    func impl print(me) {}
 }
 
 //#[Swag.PrintBc]

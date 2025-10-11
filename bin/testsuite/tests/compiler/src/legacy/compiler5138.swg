@@ -1,6 +1,8 @@
 #global testerror "Err0168"
 
-namespace A {}
+namespace A
+{
+}
 
 #test
 {

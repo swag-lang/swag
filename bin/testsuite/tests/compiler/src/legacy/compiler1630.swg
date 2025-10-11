@@ -1,5 +1,2 @@
 //#global testerror
-func drop()
-{
-
-}
+func drop() {}

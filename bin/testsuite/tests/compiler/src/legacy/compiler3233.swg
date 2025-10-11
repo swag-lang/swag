@@ -8,9 +8,7 @@ func(T) create1()
     create(0)
 }
 
-func(T) create(x: s32)
-{
-}
+func(T) create(x: s32) {}
 
 #test
 {

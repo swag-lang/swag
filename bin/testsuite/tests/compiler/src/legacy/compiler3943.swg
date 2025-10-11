@@ -1,7 +1,4 @@
-struct V
-{
-    x, y: f32
-}
+struct V { x, y: f32 }
 
 func toto(x: &V)
 {

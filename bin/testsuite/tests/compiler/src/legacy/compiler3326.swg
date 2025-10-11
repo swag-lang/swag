@@ -1,7 +1,8 @@
 #global testerror "Err0602"
 #test
 {
-    var a = #run {
+    var a = #run
+    {
         for 1:
             return 66.0
         return true

@@ -8,10 +8,7 @@ namespace AA
     }
 }
 
-struct BB
-{
-
-}
+struct BB {}
 
 impl BB
 {

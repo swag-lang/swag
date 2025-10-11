@@ -1,7 +1,7 @@
 struct(A, B) Foozle
 {
-    a: A
-    b: B
+    a:     A
+    b:     B
 }
 
 #test

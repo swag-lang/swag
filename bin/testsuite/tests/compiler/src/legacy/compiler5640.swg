@@ -2,5 +2,5 @@
 
 #test
 {
-    let my_list = [1, 2, 3, ]
+    let my_list = [1, 2, 3]
 }

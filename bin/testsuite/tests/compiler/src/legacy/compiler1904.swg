@@ -1,14 +1,11 @@
 //#[Swag.PrintBc]
-struct TT
-{
-    x, y: s32
-}
+struct TT { x, y: s32 }
 
 //#[Swag.PrintBc]
 #test
 {
     var buf: [100] u8
-    var idx = 0'u64
+    var idx  = 0'u64
 
     let ptr = #typeof(TT)
     foreach it in ptr.fields

@@ -2,7 +2,7 @@
 #test
 {
     var toto = false
-    let r = #ref &toto
+    let r    = #ref &toto
     while r
     {
         @assert(false)

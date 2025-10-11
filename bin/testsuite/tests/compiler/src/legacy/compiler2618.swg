@@ -1,11 +1,7 @@
 #[Swag.NoCopy]
-struct AA
-{
-}
+struct AA {}
 
-struct(T) BB
-{
-}
+struct(T) BB {}
 
 impl BB
 {

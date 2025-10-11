@@ -1,6 +1,4 @@
-func(T) sort(values: const [..] T, cb: func||(T, T)->s32)
-{
-}
+func(T) sort(values: const [..] T, cb: func||(T, T)->s32) {}
 
 #test
 {

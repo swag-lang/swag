@@ -1,4 +1,5 @@
 #test
 {
-    #if false: #error("toto" ++ "titi")
+    #if false:
+        #error("toto" ++ "titi")
 }

@@ -1,12 +1,8 @@
-struct A
-{
-}
+struct A {}
 
 impl A
 {
-    mtd(op: string) opAssign(x: string)
-    {
-    }
+    mtd(op: string) opAssign(x: string) {}
 
     #[Swag.Implicit, Swag.Inline]
     mtd opCast()->string

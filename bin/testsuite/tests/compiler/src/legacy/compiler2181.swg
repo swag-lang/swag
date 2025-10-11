@@ -1,6 +1,6 @@
 struct ST
 {
-    x: u32 = 5
+    x:   u32 = 5
 }
 
 //#[Swag.PrintBc]

@@ -18,6 +18,6 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 #test
 {
     var arr = [1, 2, 4]
-    let b = contains(arr[ to ], 1's32)
+    let b   = contains(arr[ to ], 1's32)
     @assert(b)
 }

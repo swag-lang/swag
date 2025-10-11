@@ -1,7 +1,7 @@
 //#global skip
 struct A
 {
-    x = 666
+    x    = 666
 }
 
 impl A
@@ -17,7 +17,7 @@ impl A
     }
 }
 
-var g: A
+var g:  A
 var g1: *A
 
 func titi()->&*A

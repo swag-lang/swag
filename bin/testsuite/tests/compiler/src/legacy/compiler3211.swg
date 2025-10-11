@@ -7,9 +7,7 @@ enum KeyModifiers
     Alt
 }
 
-struct Event
-{
-}
+struct Event {}
 
 enum Key
 {
@@ -18,7 +16,7 @@ enum Key
 
 struct KeyEvent
 {
-    using base: Event
-    modifiers:  KeyModifiers = .None
-    key:        Key = undefined
+    using base:     Event
+    modifiers:      KeyModifiers = .None
+    key:            Key = undefined
 }

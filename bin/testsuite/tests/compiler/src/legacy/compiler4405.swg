@@ -1,7 +1,7 @@
 #global testerror "Err0591"
 
 //#[Swag.PrintBc]
-func toto(x: {a:s32})
+func toto(x: { a: s32 })
 {
     var v = x.item0
 }

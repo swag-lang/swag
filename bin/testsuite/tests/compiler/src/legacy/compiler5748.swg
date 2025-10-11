@@ -3,27 +3,34 @@
 var G = 0
 
 //#global skip
-interface Printable {
+interface Printable
+{
     mtd const printDetails();
 }
 
-struct Book {
+struct Book
+{
     title: string = "TOTO"
 }
 
-impl Printable for Book {
-    mtd const impl printDetails() {
+impl Printable for Book
+{
+    mtd const impl printDetails()
+    {
         if me.title == "Swift Programming":
             G += 1
     }
 }
 
-struct Magazine {
+struct Magazine
+{
     issueNumber: s32
 }
 
-impl Printable for Magazine {
-    mtd const impl printDetails() {
+impl Printable for Magazine
+{
+    mtd const impl printDetails()
+    {
         G += me.issueNumber
     }
 }
@@ -33,7 +40,8 @@ impl Printable for Magazine {
 {
     var items: [?] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
 
-    foreach item in items {
+    foreach item in items
+    {
         item.printDetails()
     }
 

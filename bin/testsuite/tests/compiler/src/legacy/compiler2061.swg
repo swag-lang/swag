@@ -1,6 +1,6 @@
 struct AA
 {
-    x: s32
+    x:   s32
 }
 
 interface ITF
@@ -15,16 +15,12 @@ interface ITF1
 
 impl ITF for AA
 {
-    func impl cb(me)
-    {
-    }
+    func impl cb(me) {}
 }
 
 impl ITF1 for AA
 {
-    func impl cb(me)
-    {
-    }
+    func impl cb(me) {}
 }
 
 func interfaceOf(structType, itfType: const *Swag.TypeInfoStruct)->#null const *void

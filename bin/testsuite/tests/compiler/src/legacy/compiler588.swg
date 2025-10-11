@@ -1,10 +1,7 @@
-
-
-
 //#[Swag.PrintBc]
 func(op: string) toto()
 {
-	/*#if op == "op"
+    /*#if op == "op"
 		@print("op")
 	#if op == "op1"
 		@print("op1")*/
@@ -13,6 +10,6 @@ func(op: string) toto()
 //#[Swag.PrintBc]
 #test
 {
-	toto'("op")()
-	toto'("op1")()
+    toto'("op")()
+    toto'("op1")()
 }

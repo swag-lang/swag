@@ -1,7 +1,7 @@
 struct S
 {
-    down:   s32 = 10
-    up:     s32 = 20
+    down:     s32 = 10
+    up:       s32 = 20
 }
 
 impl S
@@ -22,7 +22,7 @@ impl S
 
 #test
 {
-    var x: S
+    var x:  S
     var cpt = 0
     foreach i in x
     {

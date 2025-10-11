@@ -1,15 +1,13 @@
-
-
 //#[Swag.PrintBc]
 func toto(x: const [..] s32)
 {
-	@assert(@countof(x) == 2)
+    @assert(@countof(x) == 2)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var array = [1 , 2]
-	toto(array)
-	toto([4, 5])
+    var array = [1, 2]
+    toto(array)
+    toto([4, 5])
 }

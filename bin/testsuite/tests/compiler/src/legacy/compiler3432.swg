@@ -1,6 +1,6 @@
 struct X
 {
-    v: func||(s32)
+    v:   func||(s32)
 }
 
 var G = 0

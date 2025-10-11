@@ -1,8 +1,5 @@
 #global testerror "Err0682"
-struct A
-{
-
-}
+struct A {}
 
 impl A
 {

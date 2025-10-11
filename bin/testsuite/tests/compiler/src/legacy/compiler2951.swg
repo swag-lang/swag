@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y: s32 = 666
-}
+struct AA { x, y: s32 = 666 }
 
 //#[Swag.PrintBc]
 func toto(x: AA)

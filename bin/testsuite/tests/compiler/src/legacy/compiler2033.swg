@@ -1,7 +1,4 @@
-struct Argb
-{
-    a, r, g, b: u8
-}
+struct Argb { a, r, g, b: u8 }
 
 impl Argb
 {

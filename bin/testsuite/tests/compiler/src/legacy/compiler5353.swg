@@ -1,7 +1,7 @@
 #global testerror "Err0032"
 struct AA
 {
-    vv: s32 = 666
+    vv:  s32 = 666
 }
 
 impl AA

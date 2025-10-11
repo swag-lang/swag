@@ -1,9 +1,6 @@
 #global testerror "Err0252"
 
-struct(T) AA
-{
-
-}
+struct(T) AA {}
 
 impl AA
 {

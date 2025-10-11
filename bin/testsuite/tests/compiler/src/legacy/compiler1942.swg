@@ -5,7 +5,7 @@ struct(T) BB
 
 struct(T) AA
 {
-    b: BB
+    b:   BB
 }
 
 func titi(st: AA)

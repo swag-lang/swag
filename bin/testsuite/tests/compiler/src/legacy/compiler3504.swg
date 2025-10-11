@@ -2,7 +2,7 @@ var G = 0
 
 struct A
 {
-    n: bool
+    n:   bool
 }
 
 struct B
@@ -12,7 +12,7 @@ struct B
 
 struct C
 {
-    n: bool
+    n:   bool
 }
 
 impl C

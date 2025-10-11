@@ -2,7 +2,7 @@ using Swag
 
 struct A
 {
-    x: s64 = 10
+    x:   s64 = 10
 }
 
 var G: s32
@@ -23,7 +23,7 @@ impl A
     var a: A
     var b: A
     b.x = 20
-    a = #move b
+    a   = #move b
     @assert(G == 1)
     //@assert(b.x == 10)
 }

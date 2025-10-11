@@ -1,6 +1,2 @@
-
-
 //#global testerror
-func(op: string, T) toto()
-{
-}
+func(op: string, T) toto() {}

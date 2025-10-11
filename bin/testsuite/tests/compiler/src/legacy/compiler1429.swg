@@ -1,6 +1,6 @@
 struct A
 {
-    x: s64 = 10
+    x:   s64 = 10
 }
 
 //#[Swag.PrintBc]

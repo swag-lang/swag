@@ -1,7 +1,7 @@
 #global testerror "Err0540"
 struct B
 {
-    x: s32 = 42
+    x:   s32 = 42
 }
 
 impl B
@@ -14,6 +14,6 @@ impl B
 #test
 {
     var c: B
-    var y = c orelse B{}
+    var y  = c orelse B{}
     @assert(y == null)
 }

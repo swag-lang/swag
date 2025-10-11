@@ -1,6 +1,6 @@
 struct A
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 impl A
@@ -15,7 +15,7 @@ impl A
 #test
 {
     var a: A
-    let b = &a[0]
+    let b  = &a[0]
     @assert(#typeof(b).kind == .Pointer)
     @assert(dref b == 666)
 }

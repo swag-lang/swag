@@ -1,5 +1,5 @@
 #global testerror "Err0516"
-enum A { B; }
+enum A { B }
 
 func toto()
 {

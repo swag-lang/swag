@@ -1,4 +1,4 @@
-struct A { a, b, c, d: s32; }
+struct A { a, b, c, d: s32 }
 
 var G: *void
 

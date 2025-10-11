@@ -2,9 +2,7 @@
 
 using Swag
 
-struct X
-{
-}
+struct X {}
 
 #test
 {

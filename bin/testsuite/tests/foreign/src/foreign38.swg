@@ -1,7 +1,4 @@
-public struct A38
-{
-    a, r, g, b: u8
-}
+public struct A38 { a, r, g, b: u8 }
 
 public func toto38(a, b, c, d: s64, x: A38)
 {

@@ -1,6 +1,6 @@
 struct AA
 {
-    b: bool
+    b:   bool
 }
 
 //#[Swag.PrintBc]

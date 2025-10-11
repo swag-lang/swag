@@ -1,6 +1,6 @@
 struct X
 {
-    x: s32
+    x:   s32
 }
 
 func toto()->X

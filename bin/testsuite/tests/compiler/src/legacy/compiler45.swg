@@ -1,2 +1,2 @@
-﻿//#global testerror;
+//#global testerror;
 //var a: bool;

@@ -1,12 +1,9 @@
-struct AA
-{
-    x, y: s32 = 10
-}
+struct AA { x, y: s32 = 10 }
 
 impl AA
 {
     #[Swag.Inline]
-    func titi(me)->{a: f32, b: f32}
+    func titi(me)->{ a: f32, b: f32 }
     {
         var _a = cast(f32) me.x / 10
         var _b = cast(f32) me.y / 10

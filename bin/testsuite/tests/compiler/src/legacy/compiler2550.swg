@@ -1,10 +1,12 @@
 #global testerror "Err0315"
-struct ErrToto{}
+struct ErrToto {}
 
 func toto()
 {
-#if false: throw ErrToto{}
-#else: throw ErrToto{}
+    #if false:
+        throw ErrToto{}
+    #else:
+        throw ErrToto{}
 }
 
 #test

@@ -3,7 +3,5 @@
 
 func toto()
 {
-    func toto1()
-    {
-    }
+    func toto1() {}
 }

@@ -1,6 +1,6 @@
 struct A
 {
-    x: u32 = 1
+    x:   u32 = 1
 }
 
 impl A

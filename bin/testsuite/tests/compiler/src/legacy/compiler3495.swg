@@ -1,14 +1,12 @@
 struct(T) A
 {
-    a: s32 = 666
+    a:   s32 = 666
 }
 
 impl A
 {
     #[Swag.Overload]
-    mtd toto()
-    {
-    }
+    mtd toto() {}
 
     #[Swag.Overload]
     mtd toto(x: T)
@@ -19,13 +17,13 @@ impl A
 
 struct(T) B
 {
-    d: f32
-    using a: A'(#null *T)
+    d:           f32
+    using a:     A'(#null *T)
 }
 
 struct C
 {
-    v: B's32
+    v:   B's32
 }
 
 impl C

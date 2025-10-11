@@ -2,13 +2,13 @@
 
 struct(X1) Point
 {
-    x: X1
+    x:   X1
 }
 
 impl Point
 {
     #[Swag.Inline]
-    mtd(X2) mixup(other: Point'X2) -> Point'X2
+    mtd(X2) mixup(other: Point'X2)->Point'X2
     {
         return Point{x: other.x}
     }

@@ -1,5 +1,5 @@
 using Swag
-struct ErrToto{}
+struct ErrToto {}
 
 #[Inline]
 func toto()->string throw

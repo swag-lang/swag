@@ -1,6 +1,6 @@
 struct A
 {
-    x: [3] s32
+    x:   [3] s32
 }
 
 impl A

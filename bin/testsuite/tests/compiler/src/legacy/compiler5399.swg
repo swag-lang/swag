@@ -1,7 +1,7 @@
 //#global skip
 struct B
 {
-    x: s32 = 6
+    x:   s32 = 6
 }
 
 struct A
@@ -17,8 +17,7 @@ impl A
     }
 }
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", false)]
 #test
 {
     var b: B

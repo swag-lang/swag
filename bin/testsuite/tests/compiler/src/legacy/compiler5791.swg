@@ -22,7 +22,7 @@ func compareLeft(src, dst: const [..] u8)->s32
         if !dga:
             return -1
         if !dgb:
-            return 1            
+            return 1
 
         //ai, bi += 1
         csrc, cdst -= 1

@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y: f32
-}
+struct AA { x, y: f32 }
 
 func toto(a, b: AA)->AA
 {

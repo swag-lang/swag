@@ -3,9 +3,7 @@
 struct A {}
 impl A
 {
-    mtd toto()
-    {
-    }
+    mtd toto() {}
 
     mtd const titi()
     {

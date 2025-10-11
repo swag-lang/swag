@@ -1,8 +1,5 @@
 #[Swag.Compiler]
-func titi()
-{
-
-}
+func titi() {}
 
 #run
 {

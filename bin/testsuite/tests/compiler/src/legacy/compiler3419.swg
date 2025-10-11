@@ -2,7 +2,7 @@
 
 func toto()->func||(s32)
 {
-    let a = 666
+    let a  = 666
     let v: func||(s32) = func|a|(x: s32)
     {
         @assert(a == 666)

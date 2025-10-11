@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 var G = 0
 impl A
@@ -15,7 +13,7 @@ impl A
 #test
 {
     {
-        var x: [2] A
+        var x:    [2] A
         var count = 1
         count -= 1
         @drop(&x[0], count)

@@ -1,14 +1,10 @@
-enum A { R; G; B; }
+enum A { R, G, B }
 
-func toto(x: s32)
-{
-}
+func toto(x: s32) {}
 
 func titi()
 {
-    func toto(x: A)
-    {
-    }
+    func toto(x: A) {}
 
     toto(.R)
 }

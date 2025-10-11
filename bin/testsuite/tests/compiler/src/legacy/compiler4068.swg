@@ -2,8 +2,8 @@
 #test
 {
     var toto: [..] s32 = [10, 20]
-    var r = &toto
-    var x = 0
+    var r     = &toto
+    var x     = 0
     for r
     {
         x += 1

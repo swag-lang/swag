@@ -1,6 +1,4 @@
-func toto(fct: func(s32, s32)->bool)
-{
-}
+func toto(fct: func(s32, s32)->bool) {}
 
 #test
 {

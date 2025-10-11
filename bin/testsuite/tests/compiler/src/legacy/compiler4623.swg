@@ -1,9 +1,8 @@
-#[Swag.Safety("overflow", false)]
-#[Swag.Optimize("", false)]
+#[Swag.Safety("overflow", false), Swag.Optimize("", false)]
 #test
 {
     const x = Swag.F32.Max
-    let y = cast(u32) x
+    let y   = cast(u32) x
 }
 
 /*

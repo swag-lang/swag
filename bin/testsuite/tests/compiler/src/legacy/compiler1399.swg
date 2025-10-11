@@ -1,10 +1,10 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 func titi()
 {
     var pt: A
-    var y = pt.x
+    var y   = pt.x
 }

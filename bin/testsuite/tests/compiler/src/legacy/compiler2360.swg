@@ -1,7 +1,4 @@
-func toto(x: string, y: s32, z: ...)
-{
-
-}
+func toto(x: string, y: s32, z: ...) {}
 
 #test
 {

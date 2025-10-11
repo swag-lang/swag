@@ -7,8 +7,7 @@ impl A
     }
 }
 
-struct Err{}
-
+struct Err {}
 
 func tata()->A
 {

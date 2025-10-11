@@ -1,12 +1,8 @@
-struct Arr
-{
-}
+struct Arr {}
 
 impl Arr
 {
-    mtd(V) toto(x: V)
-    {
-    }
+    mtd(V) toto(x: V) {}
 }
 
 #test

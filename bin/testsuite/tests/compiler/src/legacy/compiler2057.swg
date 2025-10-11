@@ -3,7 +3,7 @@ func itoa(result: [*] u8, value: s64)->[*] u8
 {
     const conv = "zyxwvutsrqponmlkjihgfedcba9876543210123456789abcdefghijklmnopqrstuvwxyz"
 
-    var ptr = result
+    var ptr      = result
     var orgValue = value
     for
     {
@@ -33,7 +33,7 @@ func itoa(result: [*] u8, value: s64)->[*] u8
     while ptr1 < ptr
     {
         let tmpChar = dref ptr
-        dref ptr  = dref ptr1; ptr -= 1
+        dref ptr = dref ptr1; ptr -= 1
         dref ptr1 = tmpChar; ptr1 += 1
     }
 
@@ -58,7 +58,7 @@ func ftoa(result: [*] u8, value: f64)
         n += 1
     }
     else:
-        n = itoa(result, ipart);
+        n = itoa(result, ipart)
 
     dref n = '.''u8; n += 1
 
@@ -72,7 +72,8 @@ func ftoa(result: [*] u8, value: f64)
     }
 
     ipart = cast(s64) fpart
-    if fpart - ipart > 0.5: ipart += 1
+    if fpart - ipart > 0.5:
+        ipart += 1
     itoa(n, ipart)
 }
 

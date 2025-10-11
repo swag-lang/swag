@@ -1,9 +1,6 @@
 func(T) toto()
 {
-    struct A
-    {
-        x, y: T
-    }
+    struct A { x, y: T }
 
     var v: A
     @assert(#typeof(v.x) == f64)

@@ -1,10 +1,16 @@
 //#global skip
 
-interface I {}
+interface I
+{
+}
 struct A { v = "a" }
 struct B { v = "b" }
-impl I for A {}
-impl I for B {}
+impl I for A
+{
+}
+impl I for B
+{
+}
 
 //#[Swag.PrintBc]
 func toto(i: #null I)

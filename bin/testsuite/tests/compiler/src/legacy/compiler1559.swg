@@ -1,15 +1,10 @@
-struct A
-{
-
-}
+struct A {}
 
 var G = 0
 
 impl A
 {
-    func opPostCopy(me)
-    {
-    }
+    func opPostCopy(me) {}
 
     func opDrop(me)
     {

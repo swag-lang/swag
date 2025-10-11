@@ -2,7 +2,7 @@
 
 struct S
 {
-    x: s32
+    x:   s32
 }
 
 struct A
@@ -12,12 +12,10 @@ struct A
 
 struct B
 {
-    a: *A
+    a:   *A
 }
 
-func toto(x: S)
-{
-}
+func toto(x: S) {}
 
 #test
 {

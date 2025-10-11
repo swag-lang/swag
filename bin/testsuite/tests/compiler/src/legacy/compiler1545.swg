@@ -1,10 +1,8 @@
 using Swag
 
-struct X
-{
-}
+struct X {}
 
-func toto(type: const* TypeInfo)
+func toto(type: const *TypeInfo)
 {
     @assert(type.kind == TypeInfoKind.Struct)
 }

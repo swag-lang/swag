@@ -1,6 +1,4 @@
-struct(T) Arr
-{
-}
+struct(T) Arr {}
 
 var G = 0
 impl Arr
@@ -18,15 +16,12 @@ impl Arr
     }
 }
 
-struct C
-{
-    x, y: s32
-}
+struct C { x, y: s32 }
 
 #test
 {
     var arr1: Arr'C
-    var arr2: Arr'{x, y: s32}
+    var arr2: Arr'{ x, y: s32 }
 
     discard arr2.toto()
     G = 1

@@ -2,7 +2,8 @@
 
 func toto()
 {
-    #if false: func titi() => 666's64
+    #if false:
+        func titi() => 666's64
     @print(titi())
 }
 

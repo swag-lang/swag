@@ -1,6 +1,6 @@
 struct Evt
 {
-    x: s32
+    x:   s32
 }
 
 struct Evt1
@@ -18,11 +18,21 @@ struct Evt3
     using base: *Evt2
 }
 
-interface IEvent {}
-impl IEvent for Evt {}
-impl IEvent for Evt1 {}
-impl IEvent for Evt2 {}
-impl IEvent for Evt3 {}
+interface IEvent
+{
+}
+impl IEvent for Evt
+{
+}
+impl IEvent for Evt1
+{
+}
+impl IEvent for Evt2
+{
+}
+impl IEvent for Evt3
+{
+}
 
 func toto(v: IEvent)
 {

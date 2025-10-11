@@ -1,6 +1,6 @@
 struct(T) TT
 {
-    x: T
+    x:   T
 }
 
 alias AA = TT's32

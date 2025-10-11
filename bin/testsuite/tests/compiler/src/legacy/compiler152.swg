@@ -1,8 +1,5 @@
-
-;
-
-#global testerror "Err0658";
-func main ()
+#global testerror "Err0658"
+func main()
 {
-	return 1;
+    return 1
 }

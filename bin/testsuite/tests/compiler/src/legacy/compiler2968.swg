@@ -14,7 +14,7 @@ impl Color
 
 struct VV
 {
-    C: Color = 12345678
+    C:   Color = 12345678
 }
 
 #test

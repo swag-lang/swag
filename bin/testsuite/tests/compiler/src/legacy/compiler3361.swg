@@ -1,8 +1,6 @@
 //#global skip
 
-struct A
-{
-}
+struct A {}
 
 #[Swag.Macro]
 func toto(x: s32, stmt: #code void)

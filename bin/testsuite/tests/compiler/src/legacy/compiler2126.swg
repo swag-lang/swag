@@ -1,16 +1,11 @@
-
 #global testerror "Err0300"
 
 using A
 namespace A
 {
-    struct B
-    {
-
-    }
+    struct B {}
 }
 
 impl B
 {
-
 }

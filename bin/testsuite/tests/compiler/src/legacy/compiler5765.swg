@@ -3,8 +3,8 @@
 #[Swag.Sanity(true)]
 func setErr1(err: any)
 {
-    let cxt = @getcontext()
+    let cxt  = @getcontext()
     var type = cast(const *Swag.TypeInfoStruct) @kindof(err)
     type = null
-    let ptr  = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
+    let ptr = cxt.errorAllocator.alloc(cast(u64) type.sizeof)
 }

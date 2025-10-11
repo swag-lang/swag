@@ -2,6 +2,5 @@
 func toto()
 {
     var x: func||()
-    var v = func|x|() {
-    }
+    var v  = func|x|() {}
 }

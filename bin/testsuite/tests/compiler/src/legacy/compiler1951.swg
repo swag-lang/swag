@@ -1,6 +1,4 @@
-struct(A) Foozle
-{
-}
+struct(A) Foozle {}
 
 var GG = 0
 

@@ -492,11 +492,11 @@ func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
 
     {
         var rect1 = rect
-        var br         = Brush.createTexture(g_FrontCard)
+        var br    = Brush.createTexture(g_FrontCard)
         br.color = g_ColorDeck
         dc.fillRoundRect(rect1, CARD_ROUND, CARD_ROUND, br)
-        rect1.inflate(-BORDER_SIZE*0.12, -BORDER_SIZE*0.12)
-        dc.drawRoundRect(rect1, CARD_ROUND, CARD_ROUND, Argb.Black, BORDER_SIZE*0.25)
+        rect1.inflate(-BORDER_SIZE * 0.12, -BORDER_SIZE * 0.12)
+        dc.drawRoundRect(rect1, CARD_ROUND, CARD_ROUND, Argb.Black, BORDER_SIZE * 0.25)
     }
 
     // Image
@@ -842,6 +842,6 @@ var g_DataPath: String
     {
         let fn = assume Path.getFileNameWithoutExtension(f.fullname)
         if Path.getFileName(f.fullname) == "objets.txt":
-        paintObjects(fn, deckColors[i])
+            paintObjects(fn, deckColors[i])
     }
 }

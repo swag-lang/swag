@@ -1,8 +1,6 @@
 namespace AA
 {
-    struct BB
-    {
-    }
+    struct BB {}
 
     #[Swag.Macro]
     func toto(stmt: #code void)
@@ -18,6 +16,5 @@ namespace AA
 {
     AA.toto()
     {
-
     }
 }

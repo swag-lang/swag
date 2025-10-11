@@ -2,9 +2,7 @@
 
 namespace A.B
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #test

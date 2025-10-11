@@ -1,7 +1,4 @@
-struct A
-{
-    x, y: s32
-}
+struct A { x, y: s32 }
 
 #test
 {

@@ -1,9 +1,7 @@
-#[Swag.ConstExpr]
-#[Swag.Overload]
-func toto(x: f32)=> 0'f32
-#[Swag.ConstExpr]
-#[Swag.Overload]
-func toto(x: f64)=> 0'f64
+#[Swag.ConstExpr, Swag.Overload]
+func toto(x: f32) => 0'f32
+#[Swag.ConstExpr, Swag.Overload]
+func toto(x: f64) => 0'f64
 
 struct(T) A
 {

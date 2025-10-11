@@ -4,7 +4,7 @@ func titi(stmt: #code void)
     #inject(stmt)
 }
 
-func toto()->{idx: s32, sep: bool}
+func toto()->{ idx: s32, sep: bool }
 {
     titi()
     {

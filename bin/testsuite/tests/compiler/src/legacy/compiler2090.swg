@@ -1,10 +1,8 @@
-struct(T) AA
-{
-}
+struct(T) AA {}
 
 impl AA
 {
-    func toto(me)->{a: T}
+    func toto(me)->{ a: T }
     {
         return {5}
     }
@@ -14,6 +12,6 @@ impl AA
 #test
 {
     var x: AA's64
-    let v = x.toto()
+    let v  = x.toto()
     @assert(v.item0 == 5)
 }

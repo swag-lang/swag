@@ -1,11 +1,11 @@
 struct BB
 {
-    b: AAPtr
+    b:   AAPtr
 }
 
 struct AA
 {
-    b: BBPtr
+    b:   BBPtr
 }
 
 alias AAPtr = *AA

@@ -1,7 +1,4 @@
-struct Point
-{
-    x, y, z: f64
-}
+struct Point { x, y, z: f64 }
 
 #[Swag.Tls]
 var pt: Point = {1, 2, 3}

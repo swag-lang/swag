@@ -2,9 +2,7 @@ public func toto3632() throw
 {
 }
 
-public func tata3632()
-{
-}
+public func tata3632() {}
 
 #[Swag.Inline]
 public func titi3632() throw

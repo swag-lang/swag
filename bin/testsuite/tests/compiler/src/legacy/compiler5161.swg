@@ -11,10 +11,6 @@ enum Z: string
     Z = "Z"
 }
 
-enum XYZ: string
-{
-    using XY
-    using Z
-}
+enum XYZ: string { using XY, using Z }
 
 const C = XYZ.X1

@@ -1,7 +1,4 @@
-struct Vector3
-{
-    x, y, z: s32 = 666
-}
+struct Vector3 { x, y, z: s32 = 666 }
 
 #test
 {
@@ -10,7 +7,7 @@ struct Vector3
         toI = from
     }
 
-    var a = Vector3{1, 2, 3}
+    var a  = Vector3{1, 2, 3}
     var b: Vector3
 
     // The 'copy' version

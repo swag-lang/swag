@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y: s64
-}
+struct AA { x, y: s64 }
 
 const v: AA{10, 20}
 #assert(v.x == 10)

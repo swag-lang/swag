@@ -2,21 +2,17 @@
 
 interface TOTO
 {
-	func print(me);
+    func print(me);
 }
 
-struct TITI
-{
-}
+struct TITI {}
 
 const COMPILE = false
 #if COMPILE
 {
     impl TOTO for TITI
     {
-        func print(me)
-        {
-        }
+        func print(me) {}
     }
 }
 

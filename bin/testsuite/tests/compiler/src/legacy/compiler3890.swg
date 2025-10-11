@@ -1,6 +1,7 @@
 #global testerror "Err0004"
 struct A {}
-impl A {
+impl A
+{
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {

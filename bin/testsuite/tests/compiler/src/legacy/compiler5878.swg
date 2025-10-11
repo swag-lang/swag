@@ -3,8 +3,8 @@ using Swag
 
 struct Array
 {
-    count:      u32
-    size:       u32
+    count:     u32
+    size:      u32
 }
 
 impl Array

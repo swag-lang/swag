@@ -9,7 +9,7 @@ impl B
 
 struct(T) A
 {
-    b: T
+    b:   T
 }
 
 impl A

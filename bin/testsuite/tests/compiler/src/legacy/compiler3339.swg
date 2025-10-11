@@ -1,13 +1,8 @@
 #global testerror "Err0511"
 
-struct AA
-{
-}
+struct AA {}
 
 impl AA
 {
-    mtd opCMP1()
-    {
-
-    }
+    mtd opCMP1() {}
 }

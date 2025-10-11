@@ -1,5 +1,5 @@
 #global testerror "Err0523"
-func(A, B) toto(x: {a: A, b: B})
+func(A, B) toto(x: { a: A, b: B })
 {
     @assert(x.item0 == 1)
     @assert(x.item1 == 2)

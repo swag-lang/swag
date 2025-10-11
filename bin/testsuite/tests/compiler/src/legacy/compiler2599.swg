@@ -10,7 +10,8 @@ func toto(stmt: #code void)
         #inject(stmt)
     }
 
-    for 10: titi()
+    for 10:
+        titi()
 }
 
 //#[Swag.PrintBc]

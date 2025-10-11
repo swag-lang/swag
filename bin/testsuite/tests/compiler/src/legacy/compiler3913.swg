@@ -2,7 +2,7 @@
 
 struct(T) A
 {
-    v: s32
+    v:   s32
 }
 
 #test

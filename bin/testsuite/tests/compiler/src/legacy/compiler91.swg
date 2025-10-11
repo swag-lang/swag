@@ -1,9 +1,9 @@
 namespace A
 {
-	alias tt1 = bool;
+    alias tt1 = bool
 }
 
 namespace A
 {
-	alias tt = bool;
+    alias tt = bool
 }

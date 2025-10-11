@@ -1,4 +1,4 @@
-struct A { x: s32}
+struct A { x: s32 }
 impl A
 {
     mtd opDrop()
@@ -25,11 +25,8 @@ func tata(c: #code void)
     #inject(c)
 }
 
-#[Swag.NoInline]
-#[Swag.Optimize("", false)]
-func tx(x: ...)
-{
-}
+#[Swag.NoInline, Swag.Optimize("", false)]
+func tx(x: ...) {}
 
 var G = 1
 #test

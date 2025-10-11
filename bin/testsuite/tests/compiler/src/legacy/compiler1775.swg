@@ -1,7 +1,4 @@
-func test1()
-{
-
-}
+func test1() {}
 
 //#[Swag.PrintBc]
 #test

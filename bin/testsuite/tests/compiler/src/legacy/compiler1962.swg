@@ -8,22 +8,16 @@ interface ITF1
     func toto(me);
 }
 
-struct AA
-{
-}
+struct AA {}
 
 impl ITF0 for AA
 {
-    func impl toto(me)
-    {
-    }
+    func impl toto(me) {}
 }
 
 impl ITF1 for AA
 {
-    func impl toto(me)
-    {
-    }
+    func impl toto(me) {}
 }
 
 #test

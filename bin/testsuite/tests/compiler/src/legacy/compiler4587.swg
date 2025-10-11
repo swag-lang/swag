@@ -2,12 +2,10 @@
 
 struct V
 {
-    fn: func()
+    fn:  func()
 }
 
-#[Swag.Safety("null", true)]
-#[Swag.Sanity(true)]
-#[Swag.Optimize("", false)]
+#[Swag.Safety("null", true), Swag.Sanity(true), Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 #test
 {

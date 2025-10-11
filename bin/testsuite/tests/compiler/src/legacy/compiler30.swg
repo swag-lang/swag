@@ -1,3 +1,3 @@
-﻿/*#global testerror;
+/*#global testerror;
 #module
 toto*/

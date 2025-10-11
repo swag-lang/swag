@@ -1,12 +1,10 @@
-#global testerror "Err0143";
-using Swag;
+#global testerror "Err0143"
+using Swag
 
 #[Compiler]
-func main ()
-{
-}
+func main() {}
 
-func main1 ()
+func main1()
 {
-	main();
+    main()
 }

@@ -1,9 +1,6 @@
 namespace A5915
 {
-    func toto()
-    {
-
-    }
+    func toto() {}
 }
 
 #[Swag.Using(A5915)]

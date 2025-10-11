@@ -4,6 +4,5 @@
 {
     foreach a, b, c in "toto"
     {
-
     }
 }

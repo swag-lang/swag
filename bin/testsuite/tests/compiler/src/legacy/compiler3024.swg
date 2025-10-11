@@ -1,6 +1,6 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 #[Swag.Inline]
@@ -14,7 +14,7 @@ func titi(a: A)
     @assert(a.x == 36)
 }
 
-#[/*Swag.PrintBc,*/ Swag.Optimize("", false)]
+#[Swag.Optimize("", false)] /*Swag.PrintBc,*/
 #test
 {
     titi(A{round(6)})

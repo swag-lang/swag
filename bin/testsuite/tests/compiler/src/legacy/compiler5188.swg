@@ -1,5 +1,5 @@
-alias Point = s64
-alias Triangle = s64
+alias Point       = s64
+alias Triangle    = s64
 alias Orientation = bool
 
 struct A {}
@@ -22,9 +22,10 @@ impl A
     {
         //@print(ep, " ", eq, " ", tri, " ", p, "\n")
         @assert(tri == 1)
-        if cpt == 2: return
+        if cpt == 2:
+            return
         cpt += 1
-        var t = tri
+        var t  = tri
         let ot = t
         let op = t
 

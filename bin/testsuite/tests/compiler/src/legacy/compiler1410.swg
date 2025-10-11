@@ -1,13 +1,9 @@
-struct A
-{
-}
+struct A {}
 
 impl A
 {
     func toto()
     {
-        func titi(me)
-        {
-        }
+        func titi(me) {}
     }
 }

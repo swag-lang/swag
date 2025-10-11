@@ -1,6 +1,4 @@
-struct(T) A
-{
-}
+struct(T) A {}
 
 //#[Swag.PrintBc]
 #test

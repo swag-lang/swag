@@ -1,15 +1,13 @@
-;
-;
-using Swag;
+using Swag
 
 #[Compiler]
 #test
 {
-	@assert(true);
+    @assert(true)
 }
 
 #[Compiler]
 #test
 {
-	@assert(true);
+    @assert(true)
 }

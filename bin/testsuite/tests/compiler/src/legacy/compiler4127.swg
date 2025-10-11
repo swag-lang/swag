@@ -1,10 +1,10 @@
 struct A
 {
-    x: s32 = undefined
+    x:   s32 = undefined
 }
 
 //#[Swag.PrintBc]
-struct B { x: A{1}; }
+struct B { x: A{1} }
 
 impl B
 {

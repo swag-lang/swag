@@ -1,5 +1,5 @@
 //#global skip
-struct A { x: u32; }
+struct A { x: u32 }
 impl A
 {
     mtd(op: string) opBinary(value: u32)->A
@@ -12,6 +12,6 @@ impl A
 {
     const C: A = {1}
     const D: s32 = 2
-    let v = C << 2
+    let v    = C << 2
     @assert(v.x == 2)
 }

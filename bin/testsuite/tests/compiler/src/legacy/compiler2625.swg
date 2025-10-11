@@ -13,13 +13,9 @@
 
 #if true
 {
-    struct BB
-    {
-    }
+    struct BB {}
 }
 #else
 {
-    struct BB
-    {
-    }
+    struct BB {}
 }

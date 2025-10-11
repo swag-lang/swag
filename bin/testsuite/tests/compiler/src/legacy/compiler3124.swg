@@ -5,6 +5,4 @@ enum Col
     B
 }
 
-public func titi3124(x: Col)
-{
-}
+public func titi3124(x: Col) {}

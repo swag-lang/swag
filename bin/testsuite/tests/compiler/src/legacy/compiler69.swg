@@ -1,5 +1,2 @@
-
-;
-
-#global testerror "Err0029";
-#assert(!2);
+#global testerror "Err0029"
+#assert(!2)

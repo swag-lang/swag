@@ -1,6 +1,6 @@
 struct A
 {
-    x = 0
+    x    = 0
 }
 
 impl A

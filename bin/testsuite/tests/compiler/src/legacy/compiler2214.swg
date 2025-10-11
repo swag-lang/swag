@@ -1,6 +1,6 @@
 struct A
 {
-    x = 0's64
+    x    = 0's64
 }
 
 var G = 0
@@ -39,8 +39,7 @@ func titi()->A
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", true)]
-#[Swag.Warning("Wrn0003", .Disable)]
+#[Swag.Optimize("", true), Swag.Warning("Wrn0003", .Disable)]
 #test
 {
     if @bytecode and @compiler.getBuildCfg().byteCodeOptimizeLevel > Swag.BuildCfgByteCodeOptim.O1

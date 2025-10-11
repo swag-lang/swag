@@ -1,7 +1,6 @@
 #global testerror "Saf0018"
 
-#[Swag.Sanity(true)]
-#[Swag.Safety("null", true)]
+#[Swag.Sanity(true), Swag.Safety("null", true)]
 {
     #[Swag.Safety("memory", true)]
     func titi()

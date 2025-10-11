@@ -1,7 +1,5 @@
 //#global skip
-struct A
-{
-}
+struct A {}
 
 interface I
 {
@@ -15,15 +13,13 @@ impl I for A
         R
     }
 
-    struct XX1
-    {
-    }
+    struct XX1 {}
 
     alias XX2 = s32
 
     mtd impl toto()
     {
-        var x: XX = undefined
+        var x:  XX = undefined
         var x1: XX1 = undefined
         var x2: XX2 = undefined
     }

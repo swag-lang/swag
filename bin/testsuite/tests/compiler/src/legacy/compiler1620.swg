@@ -6,5 +6,8 @@ func mac(stmt: #code void)
 
 #test
 {
-    mac() { return; }
+    mac()
+    {
+        return
+    }
 }

@@ -1,4 +1,3 @@
+#global testpass syntax
 
-#global testpass syntax;
-
-#assert(1 ^ 1 == 2);
+#assert(1 ^ 1 == 2)

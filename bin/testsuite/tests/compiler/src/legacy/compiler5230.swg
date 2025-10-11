@@ -1,5 +1,5 @@
-struct A { x, y: s32; }
-struct B { x, y: s32; }
+struct A { x, y: s32 }
+struct B { x, y: s32 }
 
 struct(T) Array {}
 
@@ -7,5 +7,5 @@ struct(T) Array {}
 {
     var a: Array'A
     var b: Array'B
-    var c: Array'{x, y: s32}
+    var c: Array'{ x, y: s32 }
 }

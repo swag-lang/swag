@@ -1,5 +1,3 @@
-func toto()
-{
-}
+func toto() {}
 
 #run toto()

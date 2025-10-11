@@ -1,9 +1,6 @@
 #global testerror "Err0487"
 
-struct A
-{
-    x, w: s64
-}
+struct A { x, w: s64 }
 
 impl A
 {

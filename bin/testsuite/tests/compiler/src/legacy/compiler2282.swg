@@ -1,4 +1,3 @@
-
 #global testerror "Err0024"
 
 using Swag
@@ -15,8 +14,8 @@ struct Entity1
 
 struct Monster
 {
-    using entity: *Entity
-    using entity1: *Entity1
+    using entity:      *Entity
+    using entity1:     *Entity1
 }
 
 //#[Swag.PrintBc]

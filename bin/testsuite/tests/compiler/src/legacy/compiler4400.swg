@@ -1,5 +1,5 @@
 //#global testerror "Err0561"
-struct Node {x: s32;}
+struct Node { x: s32 }
 struct(T) Arr {}
 
 impl Arr

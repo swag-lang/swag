@@ -1,6 +1,6 @@
 struct A
 {
-    x: u32 = 1
+    x:   u32 = 1
 }
 
 impl A
@@ -10,9 +10,9 @@ impl A
         me.x = 666
     }
 
-    mtd(op:string) opBinary(other: A)->A
+    mtd(op: string) opBinary(other: A)->A
     {
-        return {me.x+other.x}
+        return {me.x + other.x}
     }
 }
 

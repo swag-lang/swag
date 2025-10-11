@@ -4,7 +4,7 @@ struct A {}
 
 impl A
 {
-    mtd titi(){}
+    mtd titi() {}
 }
 
 #test

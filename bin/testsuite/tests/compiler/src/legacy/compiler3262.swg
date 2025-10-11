@@ -1,7 +1,5 @@
 #global testerror "Err0193"
-func(N: s32) toto(v: [N] f32)
-{
-}
+func(N: s32) toto(v: [N] f32) {}
 
 #test
 {

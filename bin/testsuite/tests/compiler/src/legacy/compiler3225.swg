@@ -1,16 +1,16 @@
 struct A
 {
-    x: f32
+    x:   f32
 }
 
 struct B
 {
-    a: A //= {1}
+    a:   A //= {1}
 }
 
 struct C
 {
-    b: B = {{1}}
+    b:   B = {{1}}
 }
 
 #test

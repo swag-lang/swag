@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y: s32
-}
+struct AA { x, y: s32 }
 
 var g: [2] AA = [{1, 2}, {3, 4}]
 

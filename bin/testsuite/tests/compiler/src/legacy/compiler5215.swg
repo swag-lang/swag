@@ -1,6 +1,6 @@
 #global testerror "Err0003"
 
-struct ErrToto{}
+struct ErrToto {}
 
 func toto() throw
 {

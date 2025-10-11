@@ -5,7 +5,7 @@ struct Point2
 }
 
 //#[Swag.PrintBc]
-func(T) norm(vec: T) -> #decltype(T.R)
+func(T) norm(vec: T)->#decltype(T.R)
 {
     #assert(#typeof(T).kind == Swag.TypeInfoKind.Struct)
     return vec.x
@@ -14,5 +14,5 @@ func(T) norm(vec: T) -> #decltype(T.R)
 #test
 {
     var pt: Point2
-    var r = norm'Point2(pt)
+    var r   = norm'Point2(pt)
 }

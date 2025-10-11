@@ -1,19 +1,17 @@
 struct(K, V) HashTableEntry
 {
-    key:    K
-    value:  V
+    key:       K
+    value:     V
 }
 
 struct(K, V) HashTable
 {
-    table:  *HashTableEntry'(K, V)
+    table: *HashTableEntry'(K, V)
     #assert(#typeof(K) == AA)
     #assert(#typeof(V) == u32)
 }
 
-struct AA
-{
-}
+struct AA {}
 
 #test
 {

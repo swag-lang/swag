@@ -1,16 +1,12 @@
-enum RGB { R; G; B; }
+enum RGB { R, G, B }
 
 struct A {}
 impl A
 {
-    mtd toto(rgb: RGB)
-    {
-    }
+    mtd toto(rgb: RGB) {}
 }
 
-func titi(x: bool, rgb: RGB)
-{
-}
+func titi(x: bool, rgb: RGB) {}
 
 #test
 {

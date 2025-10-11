@@ -3,10 +3,10 @@
 #[Swag.Compiler]
 func toto()
 {
-	//@print(x)
+    //@print(x)
 }
 
 func toto1()
 {
-	var x = &toto
+    var x = &toto
 }

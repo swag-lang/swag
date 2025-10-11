@@ -1,7 +1,8 @@
 #test
 {
     let counter = 0
-    let f = func|counter|()->s32 {
+    let f       = func|counter|()->s32
+    {
         counter += 1
         return counter
     }

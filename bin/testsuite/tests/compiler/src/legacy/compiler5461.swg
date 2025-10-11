@@ -1,7 +1,7 @@
 struct(T) A
 {
-    b: bool
-    x: T
+    b:     bool
+    x:     T
 }
 
 var a: A's16

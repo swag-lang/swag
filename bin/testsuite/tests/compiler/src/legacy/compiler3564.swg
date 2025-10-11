@@ -2,7 +2,7 @@
 
 struct(T) A
 {
-    fn: T
+    fn:  T
 }
 
 impl A

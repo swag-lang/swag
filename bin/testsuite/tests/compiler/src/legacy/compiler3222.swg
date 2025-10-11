@@ -1,11 +1,11 @@
 struct A
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 struct B
 {
-    a: A
+    a:   A
 }
 
 impl B
@@ -15,7 +15,7 @@ impl B
 
 #test
 {
-    var v: B
+    var v:  B
     let val = &v.getA().x
     @assert(dref val == 666)
 }

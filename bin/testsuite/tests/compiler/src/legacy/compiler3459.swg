@@ -1,7 +1,8 @@
 var G = 0
 func toto(x: s32)
 {
-    let v = func|x|() {
+    let v = func|x|()
+    {
         G += x
     }
 

@@ -2,14 +2,14 @@
 {
     struct AA
     {
-        T = 1
+        T    = 1
     }
 }
 #else
 {
     struct AA
     {
-        R = 2
+        R    = 2
     }
 }
 

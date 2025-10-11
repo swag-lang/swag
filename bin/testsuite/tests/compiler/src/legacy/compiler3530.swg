@@ -5,7 +5,7 @@ struct(T, N: u64) StaticArray
 
 impl StaticArray
 {
-    mtd const opCount()->u64 => StaticArray.N
+    mtd const opCount()->u64       => StaticArray.N
     mtd const opIndex(idx: u64)->T => me.buffer[idx]
 }
 

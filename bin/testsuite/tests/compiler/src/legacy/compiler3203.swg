@@ -1,12 +1,12 @@
 struct Base
 {
-    x: s32 = 555
+    x:   s32 = 555
 }
 
 struct BB
 {
-    x: [4] bool
-    using base: Base
+    x:              [4] bool
+    using base:     Base
 }
 
 interface I
@@ -17,7 +17,7 @@ interface I
 
 impl I for Base
 {
-    mtd impl init()->s32 => 1
+    mtd impl init()->s32  => 1
     mtd impl close()->s32 => 2
 }
 
@@ -35,7 +35,7 @@ impl I for BB
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
-    var x: BB
+    var x:  BB
     let ptr = cast(I) x
     @assert(ptr.init() == 1)
     @assert(ptr.close() == 20)

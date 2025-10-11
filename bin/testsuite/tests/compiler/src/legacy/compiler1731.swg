@@ -8,8 +8,8 @@
 
     struct B
     {
-        ggg:        u64
-        using root: A
+        ggg:            u64
+        using root:     A
     }
 
     /*func F(ptr: *A)

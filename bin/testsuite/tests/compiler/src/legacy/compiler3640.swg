@@ -1,6 +1,4 @@
-struct C
-{
-}
+struct C {}
 
 impl C
 {
@@ -9,13 +7,13 @@ impl C
 
 struct D
 {
-    x: C
+    x:   C
 }
 
 //#[Swag.PrintBc]
 #test
 {
     var x: D
-    let v = cast(s32) x.x
+    let v  = cast(s32) x.x
     @assert(v == 666)
 }

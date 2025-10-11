@@ -1,15 +1,15 @@
 //#global testerror
 struct A
 {
-    x: RR
+    x:   RR
 }
 
 struct B
 {
-    a: A
+    a:   A
 }
 
-enum RR { T; }
+enum RR { T }
 
 impl A
 {

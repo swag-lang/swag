@@ -1,30 +1,28 @@
-;
-;
-using Swag;
+using Swag
 
 //#[PrintBc]
 #[Swag.Overload]
-func main (a: s32 = 6)->s32
+func main(a: s32 = 6)->s32
 {
-	//@print("1");
-	return a;
+    //@print("1");
+    return a
 }
 
 #[Swag.Overload]
-func main (a: s32, b: s32)->s32
+func main(a: s32, b: s32)->s32
 {
-	//@print("2");
-	return b;
+    //@print("2");
+    return b
 }
 
-func main1 ()
+func main1()
 {
-	@assert(main() == 6);
-	@assert(main(5) == 5);
-	@assert(main(5, 7) == 7);
+    @assert(main() == 6)
+    @assert(main(5) == 5)
+    @assert(main(5, 7) == 7)
 }
 
 #run
 {
-	main1()
+    main1()
 }

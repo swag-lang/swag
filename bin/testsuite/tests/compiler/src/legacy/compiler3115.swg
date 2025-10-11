@@ -1,8 +1,5 @@
 #global testerror "Err0296"
-struct AA
-{
-
-}
+struct AA {}
 
 public func toto3115()->AA
 {

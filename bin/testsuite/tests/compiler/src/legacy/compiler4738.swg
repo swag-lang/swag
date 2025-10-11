@@ -3,7 +3,7 @@ func toto(x: s32, y: f32) {}
 
 struct A
 {
-    c: func(x: s32, y: f32)
+    c:   func(x: s32, y: f32)
 }
 
 #test

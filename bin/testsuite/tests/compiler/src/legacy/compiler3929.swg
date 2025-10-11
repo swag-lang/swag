@@ -5,9 +5,7 @@ var g: func||(s32)
     #[Swag.Mixin]
     func toto()
     {
-        g = func(btn)
-        {
-        }
+        g = func(btn) {}
     }
 
     toto()

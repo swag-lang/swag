@@ -3,7 +3,5 @@
 struct A {}
 impl A
 {
-    mtd opBinary()
-    {
-    }
+    mtd opBinary() {}
 }

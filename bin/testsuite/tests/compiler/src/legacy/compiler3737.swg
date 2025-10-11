@@ -1,6 +1,6 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 interface I
@@ -10,14 +10,14 @@ interface I
 
 impl I for A
 {
-    mtd impl x(){}
+    mtd impl x() {}
 }
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var v: *A
-    let x = cast(I) cast(*A) v
-    let t = @kindof(x)
+    let x  = cast(I) cast(*A) v
+    let t  = @kindof(x)
     @assert(t and @countof(t.fullname))
 }

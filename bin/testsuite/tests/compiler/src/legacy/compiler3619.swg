@@ -15,7 +15,7 @@ func toto1(x, y: s32)->s32
 alias T = func(s32, s32)->s32
 struct X
 {
-    t: [2] T
+    t:   [2] T
 }
 
 #test

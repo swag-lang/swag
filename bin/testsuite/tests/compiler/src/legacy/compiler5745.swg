@@ -2,26 +2,33 @@
 var G: string
 
 //#global skip
-interface Printable {
+interface Printable
+{
     mtd const printDetails();
 }
 
-struct Book {
+struct Book
+{
     title: string = "TOTO"
 }
 
-impl Printable for Book {
-    mtd const impl printDetails() {
+impl Printable for Book
+{
+    mtd const impl printDetails()
+    {
         G = me.title
     }
 }
 
-struct Magazine {
+struct Magazine
+{
     issueNumber: s32
 }
 
-impl Printable for Magazine {
-    mtd const impl printDetails() {
+impl Printable for Magazine
+{
+    mtd const impl printDetails()
+    {
         @print("Magazine Issue: ", me.issueNumber)
     }
 }

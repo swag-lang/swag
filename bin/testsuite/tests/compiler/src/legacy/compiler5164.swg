@@ -11,15 +11,9 @@ enum Z: string
     Z = "Z"
 }
 
-enum XYZ: string
-{
-    using XY
-    using Z
-}
+enum XYZ: string { using XY, using Z }
 
-func toto(x: XY)
-{
-}
+func toto(x: XY) {}
 
 #test
 {

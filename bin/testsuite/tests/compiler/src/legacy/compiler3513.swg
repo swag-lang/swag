@@ -1,7 +1,4 @@
-struct(T = s32) A
-{
-
-}
+struct(T = s32) A {}
 
 #test
 {

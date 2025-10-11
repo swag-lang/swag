@@ -1,9 +1,8 @@
-
 #global testerror "Err0213"
 
 struct A
 {
-    x: s32 = 1
+    x:   s32 = 1
 }
 
 func toto(val: A)

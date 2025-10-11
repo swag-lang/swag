@@ -1,6 +1,6 @@
 struct AA
 {
-    v: u32
+    v:   u32
 }
 
 func toto(y: s32, x: AA = {5})

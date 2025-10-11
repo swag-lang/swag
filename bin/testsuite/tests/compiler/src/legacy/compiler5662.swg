@@ -12,7 +12,7 @@
         break
     case 6 where b == 4:
         c = 1
-        break        
+        break
     }
 
     @assert(c == 1)

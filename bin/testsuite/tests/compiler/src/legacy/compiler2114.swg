@@ -4,16 +4,12 @@ using Swag
 public attr myAttr()
 
 #[myAttr]
-func toto()
-{
-}
+func toto() {}
 
 #[myAttr]
-func titi()
-{
-}
+func titi() {}
 
-var toTreat: [4] string
+var toTreat:    [4] string
 var toTreatCpt: u32
 
 //#[Swag.PrintBc]
@@ -21,7 +17,8 @@ var toTreatCpt: u32
 {
     let itf = @compiler
     let msg = itf.getMessage()
-    if msg.type.kind != TypeInfoKind.Func: return
+    if msg.type.kind != TypeInfoKind.Func:
+        return
 
     let typeF = cast(const *TypeInfoFunc) msg.type
     foreach i in typeF.attributes

@@ -1,6 +1,6 @@
 struct Point
 {
-    x: s64
+    x:   s64
 }
 
 interface IPrintable

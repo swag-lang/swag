@@ -6,7 +6,6 @@ func level0()
     //@print(titi)
 }
 
-
 //#[Swag.PrintBc]
 #[Swag.Optimize("", false)]
 func test(level: s64)

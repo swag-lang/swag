@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-func toto()->{x: s32, y: s32}
+func toto()->{ x: s32, y: s32 }
 {
     var res: retval
     res.x = 20

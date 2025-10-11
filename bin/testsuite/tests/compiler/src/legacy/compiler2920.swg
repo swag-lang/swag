@@ -1,11 +1,11 @@
 struct AA
 {
-    y = false
+    y    = false
 }
 
 struct BB
 {
-    yy = 666
+    yy   = 666
 }
 
 impl AA

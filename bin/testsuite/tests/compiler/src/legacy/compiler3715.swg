@@ -1,6 +1,4 @@
-struct(T) A
-{
-}
+struct(T) A {}
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 func toto(type: const *Swag.TypeInfoStruct)

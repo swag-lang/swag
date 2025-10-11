@@ -2,13 +2,13 @@
 
 enum OT
 {
-	A = 1
-	B
+    A = 1
+    B
 }
 
 struct A
 {
-    x: typeinfo
+    x:   typeinfo
 }
 
 func toto()
@@ -20,5 +20,5 @@ func toto()
 #test
 {
     var vv: const *Swag.TypeInfoEnum = OT
-	var pt = {x: OT}
+    var pt  = {x: OT}
 }

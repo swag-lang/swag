@@ -2,8 +2,8 @@ struct AA
 {
     using params: union
     {
-        x: s32
-        y: bool
+        x:     s32
+        y:     bool
     }
 }
 

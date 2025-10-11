@@ -22,7 +22,7 @@ impl Color
 
 struct A
 {
-    x: Color = Color.getDarken()
+    x:   Color = Color.getDarken()
 }
 
 #test

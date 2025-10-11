@@ -9,9 +9,7 @@ func(T) create(data: *T)
     //#print(#typeof(Inner.outer).name)
 }
 
-struct Outer
-{
-}
+struct Outer {}
 
 #test
 {

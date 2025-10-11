@@ -1,14 +1,8 @@
 //#global testerror "Err0016"
 
-func titi()
-{
+func titi() {}
 
-}
-
-func(T) toto(x: T)
-{
-
-}
+func(T) toto(x: T) {}
 
 #test
 {

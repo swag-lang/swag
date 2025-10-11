@@ -13,17 +13,11 @@ struct(T) X
     }
 }*/
 
-struct Y
-{
-
-}
+struct Y {}
 
 impl Y
 {
-    func toto(me)
-    {
-
-    }
+    func toto(me) {}
 }
 
 //#[Swag.PrintBc]

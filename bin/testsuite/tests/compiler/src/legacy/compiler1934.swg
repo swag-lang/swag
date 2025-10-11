@@ -1,9 +1,6 @@
 var G = 0's64
 
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
@@ -17,11 +14,11 @@ impl AA
 {
     {
         var x: AA
-        let v = 0
+        let v  = 0
         switch v
         {
-            case 0:
-                break
+        case 0:
+            break
         }
     }
 

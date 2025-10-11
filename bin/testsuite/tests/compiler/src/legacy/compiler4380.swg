@@ -1,9 +1,9 @@
-    #[Swag.ConstExpr, Swag.Mixin]
-    func isF32(t: typeinfo)->bool
-    {
-        //@compilererror("toto", #location(t))
-        return t == f32
-    }
+#[Swag.ConstExpr, Swag.Mixin]
+func isF32(t: typeinfo)->bool
+{
+    //@compilererror("toto", #location(t))
+    return t == f32
+}
 
 //#global testerror
 #test
@@ -19,7 +19,6 @@
 
     //if x == s32
     {
-
     }
 
     //var g: bool = isF32(bool)

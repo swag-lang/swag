@@ -1,6 +1,6 @@
-#global testerror "Err0671";
+#global testerror "Err0671"
 
-var g: string = "tata";
+var g: string = "tata"
 
 #[PrintBc]
 #test

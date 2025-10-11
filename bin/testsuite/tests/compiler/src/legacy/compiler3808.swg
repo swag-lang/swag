@@ -1,14 +1,12 @@
 #global testerror "Err0480"
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 impl A
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 func aa()

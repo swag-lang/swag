@@ -11,8 +11,4 @@ enum BasicErrors1: f32
 }
 
 #[Swag.NoDuplicate]
-enum BasicErrors2: #decltype(#typeof(BasicErrors1).rawType)
-{
-    using BasicErrors0
-    using BasicErrors1
-}
+enum BasicErrors2: #decltype(#typeof(BasicErrors1).rawType) { using BasicErrors0, using BasicErrors1 }

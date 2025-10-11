@@ -1,6 +1,6 @@
 struct A
 {
-    x: s64 = 1
+    x:   s64 = 1
 }
 
 var G = 0
@@ -25,7 +25,7 @@ impl A
 }
 
 //#[Swag.PrintBc]
-func toto() -> {a:A, b:bool}
+func toto()->{ a: A, b: bool }
 {
     var x: A
     x.x = 555

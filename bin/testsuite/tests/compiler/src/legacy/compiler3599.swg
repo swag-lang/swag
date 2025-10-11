@@ -1,15 +1,11 @@
-enum RGB { R; G; B; }
-enum RGB1 { G; }
+enum RGB { R, G, B }
+enum RGB1 { G }
 
-struct X
-{
-}
+struct X {}
 
 impl X
 {
-    mtd toto(k: RGB, k1: RGB1)
-    {
-    }
+    mtd toto(k: RGB, k1: RGB1) {}
 
     mtd toto1()
     {

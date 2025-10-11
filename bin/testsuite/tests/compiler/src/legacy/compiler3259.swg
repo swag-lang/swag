@@ -5,9 +5,7 @@ struct AA
 
 impl AA
 {
-    mtd titi()
-    {
-    }
+    mtd titi() {}
 
     mtd toto()
     {

@@ -1,4 +1,3 @@
-
 /*
 func toto(x: {a,b: s32})
 {

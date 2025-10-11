@@ -1,10 +1,10 @@
 func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 {
-    if(@countof(values) == 0):
+    if (@countof(values) == 0):
         return
 
-    var begin = 0'u64
-    var end = @countof(values) - 1
+    var begin  = 0'u64
+    var end    = @countof(values) - 1
     var buffer = @dataof(values)
 
     for
@@ -14,9 +14,9 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 
         let med = buffer[pivot]
         buffer[pivot] = buffer[end]
-        buffer[end] = med
+        buffer[end]   = med
 
-        var low = begin
+        var low  = begin
         var high = end
         for
         {
@@ -27,12 +27,12 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
             if low >= high:
                 break
             let tmp = low
-            low = high
+            low  = high
             high = tmp
         }
 
         // Put the median in the "center" of the list
-        buffer[end] = buffer[high]
+        buffer[end]  = buffer[high]
         buffer[high] = med
 
         // To avoid too much recursions, we recurse only for the smaller partition
@@ -45,12 +45,12 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         {
             if set1 <= set2
             {
-                sortQuick(@mkslice(buffer + begin, cast(u64) (low - begin) + 1), cb);
+                sortQuick(@mkslice(buffer + begin, cast(u64) (low - begin) + 1), cb)
                 begin = high + 1
             }
             else
             {
-                sortQuick(@mkslice(buffer + high + 1, cast(u64) (end - high) + 1), cb);
+                sortQuick(@mkslice(buffer + high + 1, cast(u64) (end - high) + 1), cb)
                 end = low - 1
             }
         }

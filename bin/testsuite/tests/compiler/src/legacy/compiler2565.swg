@@ -1,11 +1,8 @@
 #global testerror "Err0314"
 
-struct ErrTiti{}
+struct ErrTiti {}
 
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {

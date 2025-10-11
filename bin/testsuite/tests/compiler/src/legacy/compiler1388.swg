@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 #test
 {
-    var b = true
+    var b   = true
     let x0: s8 = cast() b
     let x1: s16 = cast() b
     let x2: s32 = cast(s32) b

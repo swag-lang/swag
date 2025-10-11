@@ -24,7 +24,7 @@ func titi()
 #test
 {
     var x: AA = undefined
-    var y = BB.A
+    var y  = BB.A
 
     titi()
 }

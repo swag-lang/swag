@@ -1,7 +1,5 @@
 //#global skip
-struct A
-{
-}
+struct A {}
 
 interface I
 {

@@ -9,20 +9,14 @@
 
 struct AA
 {
-    x = 666
+    x    = 666
 }
 
 impl AA
 {
-    func opDrop(me)
-    {
-    }
+    func opDrop(me) {}
 
-    func opPostCopy(me)
-    {
-    }
+    func opPostCopy(me) {}
 
-    func opPostMove(me)
-    {
-    }
+    func opPostMove(me) {}
 }

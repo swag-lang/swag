@@ -1,10 +1,10 @@
 #[Swag.AttrUsage(Swag.AttributeUsage.StructVariable)]
-attr toto();
+attr toto()
 
 struct A
 {
     #[toto]
-    x: s32
+    x:   s32
 }
 
 const C: A{0}

@@ -2,6 +2,6 @@
 #test
 {
     var x = "toto"
-    var y = x[until 0]
+    var y = x[ until 0]
     @print(y)
 }

@@ -1,5 +1,5 @@
 //#global testerror "Err0093"
-struct A {x: s32}
+struct A { x: s32 }
 
 var g: A
 impl A

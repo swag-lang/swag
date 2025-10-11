@@ -1,7 +1,5 @@
 //#global testerror
-func(N: s32) toto(v, w: [N] f32)
-{
-}
+func(N: s32) toto(v, w: [N] f32) {}
 
 #test
 {

@@ -1,5 +1,4 @@
-
-#global testpass syntax;
+#global testpass syntax
 
 enum A
 {
@@ -7,7 +6,7 @@ enum A
 
 namespace AA
 {
-	enum B
-	{
-	}
+    enum B
+    {
+    }
 }

@@ -1,8 +1,6 @@
 //using Swag
 
-struct(T) A
-{
-}
+struct(T) A {}
 
 var G = 0
 

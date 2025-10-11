@@ -1,15 +1,9 @@
 #global testerror "Err0536"
 
-struct A
-{
-
-}
+struct A {}
 
 impl A
 {
     #[Swag.Macro]
-    func(ptr: bool, back: bool) opVisit(const me, stmt: #code bool)
-    {
-
-    }
+    func(ptr: bool, back: bool) opVisit(const me, stmt: #code bool) {}
 }

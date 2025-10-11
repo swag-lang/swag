@@ -1,9 +1,7 @@
 #global testerror "Saf0027"
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
-#[Swag.Sanity(true)]
-#[Swag.Safety("overflow", true)]
+#[Swag.Optimize("", false), Swag.Sanity(true), Swag.Safety("overflow", true)]
 #test
 {
     var x = 254'u8

@@ -1,6 +1,6 @@
 struct Color
 {
-    b: u32
+    b:   u32
 }
 
 impl Color

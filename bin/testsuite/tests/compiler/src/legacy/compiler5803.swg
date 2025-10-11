@@ -1,8 +1,5 @@
 #[Swag.ConstExpr]
-struct C
-{
-    a, b, c, d: s32
-}
+struct C { a, b, c, d: s32 }
 
 impl C
 {
@@ -15,7 +12,7 @@ impl C
 
 struct D
 {
-    t = C.from(52)
+    t    = C.from(52)
 }
 
 #test

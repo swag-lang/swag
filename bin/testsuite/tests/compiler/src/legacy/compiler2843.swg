@@ -1,8 +1,6 @@
 //#global testerror
 
-struct AA
-{
-}
+struct AA {}
 
 impl AA
 {
@@ -12,7 +10,7 @@ impl AA
 func xxxxxxxxxxxxxx()
 {
     let integerDigits = 0
-    var pow10 = 1'u64
-    var x: AA
+    var pow10         = 1'u64
+    var x:            AA
     pow10 = x.uint64pow10[integerDigits]
 }

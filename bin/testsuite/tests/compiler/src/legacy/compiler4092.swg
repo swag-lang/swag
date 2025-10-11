@@ -1,6 +1,6 @@
 struct Arr
 {
-    tt: s32
+    tt:  s32
 }
 
 var G = 0
@@ -16,15 +16,15 @@ impl Arr
 //#[Swag.PrintBc]
 struct T
 {
-    x: Arr
-    y: [2] Arr
+    x:     Arr
+    y:     [2] Arr
 }
 
 #test
 {
     {
         var t: T
-        t.x.tt = 1
+        t.x.tt    = 1
         t.y[0].tt = 2
         t.y[1].tt = 3
     }

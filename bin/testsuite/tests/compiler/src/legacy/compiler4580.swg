@@ -15,5 +15,5 @@ func toto(x: H = null)
     var y: func||()
     y = null
 
-//    toto()
+    //    toto()
 }

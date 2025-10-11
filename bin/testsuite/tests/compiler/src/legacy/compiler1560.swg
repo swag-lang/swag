@@ -1,15 +1,13 @@
 struct A
 {
-    x: s32 = 555
+    x:   s32 = 555
 }
 
 var G = 0
 
 impl A
 {
-    func opPostCopy(me)
-    {
-    }
+    func opPostCopy(me) {}
 
     func opDrop(me)
     {

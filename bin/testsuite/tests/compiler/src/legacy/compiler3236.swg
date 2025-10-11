@@ -1,8 +1,5 @@
 #global testerror "Err0462"
-func toto(x, y: s32, z: bool)
-{
-
-}
+func toto(x, y: s32, z: bool) {}
 
 #test
 {

@@ -1,15 +1,11 @@
 #[Swag.Inline]
-func assert(v: bool)
-{
-}
+func assert(v: bool) {}
 
-struct S
-{
-}
+struct S {}
 
 impl S
 {
-    func titi(const me)=>true
+    func titi(const me) => true
 }
 
 func tata(x: S)

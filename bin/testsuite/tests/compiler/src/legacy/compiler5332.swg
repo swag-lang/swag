@@ -12,5 +12,5 @@ impl A
 #test
 {
     var x: A
-    let y = x[0].y
+    let y  = x[0].y
 }

@@ -1,15 +1,9 @@
 #global testerror "Err0085"
 
 #[Swag.NoCopy]
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
-    func opPostCopy(me)
-    {
-
-    }
+    func opPostCopy(me) {}
 }

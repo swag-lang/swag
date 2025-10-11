@@ -1,7 +1,5 @@
-
-
 //#[Swag.PrintBc]
 #test
 {
-	@assert(!0)
+    @assert(!0)
 }

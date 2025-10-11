@@ -7,6 +7,6 @@
     var x = 1
     x >>= 32
     x >>= 32
-//    x <<= 32
-//    #semerror x <<= 32
+    //    x <<= 32
+    //    #semerror x <<= 32
 }

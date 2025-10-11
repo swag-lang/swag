@@ -1,7 +1,5 @@
 #global testerror "Err0043"
-struct C
-{
-}
+struct C {}
 
 impl C
 {

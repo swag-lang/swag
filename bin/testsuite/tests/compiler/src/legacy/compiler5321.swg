@@ -1,7 +1,7 @@
 //#global skip
 struct(R) A
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 impl A

@@ -1,9 +1,7 @@
 #global testerror "Err0561"
 struct Arr {}
 
-func(T) toto(v: [..] T)
-{
-}
+func(T) toto(v: [..] T) {}
 
 #test
 {

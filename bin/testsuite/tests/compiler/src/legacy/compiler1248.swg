@@ -2,9 +2,7 @@ using Swag
 
 var GG = false
 
-struct MyAlloc
-{
-}
+struct MyAlloc {}
 
 impl IAllocator for MyAlloc
 {
@@ -29,7 +27,7 @@ func toto()
     GG = false
 
     let savedCxt = @getcontext()
-    var cxt: Context = dref savedCxt
+    var cxt:     Context = dref savedCxt
     var myAlloc: MyAlloc
     cxt.allocator = myAlloc
     defer @setcontext(savedCxt)

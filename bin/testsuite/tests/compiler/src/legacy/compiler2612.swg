@@ -1,9 +1,6 @@
-struct(T) AA
-{
+struct(T) AA {}
 
-}
-
-attr ife(expr: bool);
+attr ife(expr: bool)
 
 impl AA
 {
@@ -14,10 +11,7 @@ impl AA
     }
 
     //#[ife(titi(#typeof(T)))]
-    func toto()
-    {
-
-    }
+    func toto() {}
 }
 
 #test

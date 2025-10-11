@@ -2,9 +2,11 @@
 //#global testerror
 #test
 {
-    let a = #run {
+    let a = #run
+    {
         var ret = 0's32
-        for 10: ret += 66
+        for 10:
+            ret += 66
         return ret
     }
 

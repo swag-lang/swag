@@ -1,6 +1,4 @@
-public struct AA2072
-{
-}
+public struct AA2072 {}
 
 public impl AA2072
 {

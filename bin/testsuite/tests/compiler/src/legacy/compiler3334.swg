@@ -1,7 +1,7 @@
 #global testerror "Err0561"
 struct(T) VV
 {
-    x: T
+    x:   T
 }
 
 //#[Swag.PrintBc]

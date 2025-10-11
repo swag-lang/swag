@@ -13,7 +13,6 @@ func day7A()
             let it = steps.find(c)
             foreach it.value.next
             {
-
             }
         }
     }

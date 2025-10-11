@@ -6,8 +6,8 @@
     var a = 0
     switch a
     {
-        case 0: 
-            a = 1
-            break
+    case 0:
+        a = 1
+        break
     }
 }

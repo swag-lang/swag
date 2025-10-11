@@ -1,8 +1,6 @@
 //#global skip
 
-struct(T) A
-{
-}
+struct(T) A {}
 
 var g = 6
 
@@ -20,14 +18,10 @@ impl A
         return &g
     }
 
-    mtd toto(x: T)
-    {
-
-    }
+    mtd toto(x: T) {}
 }
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", false)]
 #test
 {
     var a: A's32

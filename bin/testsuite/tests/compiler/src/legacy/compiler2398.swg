@@ -1,6 +1,6 @@
 struct(N: u32) A
 {
-    x: [N] s32
+    x:   [N] s32
 }
 
 #test

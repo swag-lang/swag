@@ -1,6 +1,6 @@
 #test
 {
-    var x = [0, 2, 3, 4]
+    var x   = [0, 2, 3, 4]
     let ptr = &x[0]
 
     @assert(x[1] == 2)

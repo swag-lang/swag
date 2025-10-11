@@ -1,49 +1,35 @@
 #if false
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #if false
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #if false
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #if false
 {
     #[Swag.Overload]
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #if false
 {
     #[Swag.Overload]
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #if false
 {
     #[Swag.Overload]
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 #[Swag.Overload]
-func toto()
-{
-}
+func toto() {}

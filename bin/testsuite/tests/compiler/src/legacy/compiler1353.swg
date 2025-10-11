@@ -2,12 +2,10 @@
 
 struct TOTO
 {
-	print: func(me, bool)
+    print: func(*TOTO, bool)
 }
 
-func print1(s: *TOTO, x: bool)
-{
-}
+func print1(s: *TOTO, x: bool) {}
 
 //#[Swag.PrintBc]
 #test

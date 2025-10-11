@@ -1,7 +1,5 @@
 #global testerror "Err0567"
-func(N: f32) toto(v: [N] f32)
-{
-}
+func(N: f32) toto(v: [N] f32) {}
 
 #test
 {

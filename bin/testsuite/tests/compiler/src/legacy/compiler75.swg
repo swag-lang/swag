@@ -1,12 +1,9 @@
-﻿;
-;
-
 namespace A
 {
-	namespace B
-	{
-		var a: myType;
-	}
+    namespace B
+    {
+        var a: myType
+    }
 }
 
-alias myType = u32;
+alias myType = u32

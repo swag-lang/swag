@@ -2,10 +2,10 @@ using Swag
 
 struct BitArray
 {
-    buffer:     [*] u32
-    allocator:  IAllocator
-    count:      u64
-    capacity:   u64
+    buffer:        [*] u32
+    allocator:     IAllocator
+    count:         u64
+    capacity:      u64
 }
 
 impl BitArray
@@ -16,12 +16,12 @@ impl BitArray
         me.reserve(len)
     }
 
-#[Swag.NoInline]
-//#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+    #[Swag.NoInline]
+    //#[Swag.PrintBc]
+    //#[Swag.Optimize("", false)]
     mtd reserve(maxBits: u64)
     {
-        me.count = maxBits
+        me.count    = maxBits
         me.capacity = maxBits >> 5
         if me.capacity << 5 < maxBits:
             me.capacity += 1

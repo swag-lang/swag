@@ -1,6 +1,4 @@
-struct(T) A
-{
-}
+struct(T) A {}
 
 var G: u32 = 0
 
@@ -14,7 +12,7 @@ impl A
 
 struct B
 {
-    x: A'(*u8)
+    x:   A'(*u8)
 }
 
 impl B

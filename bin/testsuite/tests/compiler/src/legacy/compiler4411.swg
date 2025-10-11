@@ -1,7 +1,4 @@
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
@@ -17,8 +14,10 @@ var G = 0
 //#[Swag.Inline]
 func(T) toto(x: T)
 {
-    if T == s32: G += 1
-    if T == AA : G += 2
+    if T == s32:
+        G += 1
+    if T == AA:
+        G += 2
 }
 
 //#[Swag.PrintBc]

@@ -3,5 +3,7 @@
 func toto()
 {
     #[Swag.Strict]
-    for 4 {}
+    for 4
+    {
+    }
 }

@@ -1,9 +1,6 @@
-
-;
-
-#global testerror "Err0147";
+#global testerror "Err0147"
 #test
 {
-	const a = 1;
-	var ptr = &a;
+    const a = 1
+    var ptr = &a
 }

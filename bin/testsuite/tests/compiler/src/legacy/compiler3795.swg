@@ -1,6 +1,4 @@
-struct X
-{
-}
+struct X {}
 
 impl X
 {

@@ -1,9 +1,6 @@
-
-
-
 struct point
 {
-	x = "toto"
+    x    = "toto"
 }
 
 var pt: point
@@ -11,5 +8,5 @@ var pt: point
 //#[Swag.PrintBc]
 #test
 {
-	@assert(pt.x == "toto")
+    @assert(pt.x == "toto")
 }

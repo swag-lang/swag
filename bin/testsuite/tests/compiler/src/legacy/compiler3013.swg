@@ -1,6 +1,6 @@
 struct Base
 {
-    x: s32
+    x:   s32
 }
 
 struct AA

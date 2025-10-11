@@ -1,8 +1,6 @@
 struct Col { a, r, g, b: s32 }
 
-func toto(c: Col)
-{
-}
+func toto(c: Col) {}
 
 #test
 {

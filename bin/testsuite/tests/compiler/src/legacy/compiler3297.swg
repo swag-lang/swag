@@ -1,41 +1,41 @@
 #global testerror "Err0004"
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
-struct Y{}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}
+struct Y {}

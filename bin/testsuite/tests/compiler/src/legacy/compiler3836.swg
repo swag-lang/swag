@@ -1,10 +1,14 @@
 #test
 {
     var pt: *void
-    if pt {}
+    if pt
+    {
+    }
 
     #[Swag.Strict]
     alias PVOID = *void
     var pt1: PVOID
-    if pt1 {}
+    if pt1
+    {
+    }
 }

@@ -1,5 +1,5 @@
 #global testerror "Err0044"
-struct A { x: s32; }
+struct A { x: s32 }
 impl A
 {
     mtd(op: string) opBinary(value: s32)->A

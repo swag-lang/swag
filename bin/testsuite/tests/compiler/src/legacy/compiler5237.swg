@@ -1,4 +1,4 @@
-enum Dir {A}
+enum Dir { A }
 
 struct(T) Array {}
 impl Array

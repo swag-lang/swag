@@ -1,7 +1,4 @@
-struct Vector2
-{
-    x, y: f32
-}
+struct Vector2 { x, y: f32 }
 
 const Max = Vector2{1, 1}
 #test

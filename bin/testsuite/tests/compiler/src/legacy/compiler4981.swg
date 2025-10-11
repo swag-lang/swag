@@ -3,5 +3,5 @@
 
 #test
 {
-	@compilerwarning("toto $ titi $ tata", #curlocation)
+    @compilerwarning("toto $ titi $ tata", #curlocation)
 }

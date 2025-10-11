@@ -1,8 +1,6 @@
 #global testerror "Err0202"
 
-struct AA
-{
-}
+struct AA {}
 
 interface BB
 {
@@ -11,7 +9,7 @@ interface BB
 
 #test
 {
-    var a: AA
+    var a:   AA
     var itf: BB
 
     var ptr = cast(*AA) itf

@@ -6,10 +6,7 @@ interface AA
     func fb(me)->s32;
 }
 
-struct BB
-{
-
-}
+struct BB {}
 
 impl AA for BB
 {
@@ -21,7 +18,7 @@ impl AA for BB
 
 #test
 {
-    var x: BB
+    var x:  BB
     var itf = cast(AA) x
     itf.fb()
 }

@@ -2,11 +2,9 @@
 
 alias A = string
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("", true)]
-#[Swag.Sanity(true)]
+#[Swag.Optimize("", false), Swag.Safety("", true), Swag.Sanity(true)]
 #test
 {
     var x: A
-    var y = x[1 to 2]
+    var y  = x[1 to 2]
 }

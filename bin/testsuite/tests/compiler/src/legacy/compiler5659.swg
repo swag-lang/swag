@@ -13,7 +13,7 @@
         break
     case 0 where b == 1:
         c = 1
-        break        
+        break
     }
 
     @assert(b == 1)

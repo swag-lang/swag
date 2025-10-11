@@ -1,7 +1,4 @@
-public struct TT50
-{
-    x, y: s32
-}
+public struct TT50 { x, y: s32 }
 
 public func foufou50(a: TT50)
 {

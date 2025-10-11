@@ -11,6 +11,7 @@ enum AA: const [2] s32
     var x = AA.A
     switch x
     {
-    case [1, 2]: break
+    case [1, 2]:
+        break
     }
 }

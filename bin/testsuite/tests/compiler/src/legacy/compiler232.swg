@@ -1,9 +1,8 @@
-#global testerror "Err0596";
+#global testerror "Err0596"
 
 using Swag
 
-func main ()
+func main()
 {
-	var a = true;
-	a += true;
-}
+    var a = true
+    a += true; }

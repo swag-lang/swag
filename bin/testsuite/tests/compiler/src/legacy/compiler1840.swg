@@ -1,6 +1,6 @@
 struct Point
 {
-    x: s64 = 666
+    x:   s64 = 666
 }
 
 var G: s64 = 0

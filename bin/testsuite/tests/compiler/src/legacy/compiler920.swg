@@ -1,8 +1,6 @@
 #global testerror "Err0411"
 
-func sum(x: f32, nums: f32...)
-{
-}
+func sum(x: f32, nums: f32...) {}
 
 //#[Swag.PrintBc]
 func average(nums: f32...)

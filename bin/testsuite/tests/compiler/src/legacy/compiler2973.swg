@@ -10,7 +10,7 @@ enum X: const [4] u8
     var cpt = 0
     foreach p in ptr.values
     {
-        let ptr1 = cast(const*u8) p.value
+        let ptr1 = cast(const *u8) p.value
         cpt += dref ptr1
     }
 

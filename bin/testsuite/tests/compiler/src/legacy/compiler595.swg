@@ -1,9 +1,7 @@
 #global testerror "Err0592"
-func(op: string) toto()
-{
-}
+func(op: string) toto() {}
 
 #test
 {
-	toto'(0)()
+    toto'(0)()
 }

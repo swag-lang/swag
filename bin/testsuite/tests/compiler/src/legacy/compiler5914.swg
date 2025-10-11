@@ -3,10 +3,7 @@ using Swag
 #[Inline]
 func toto()
 {
-    func titi()
-    {
-
-    }
+    func titi() {}
 
     titi()
 }

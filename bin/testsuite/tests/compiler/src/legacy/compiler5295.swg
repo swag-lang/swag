@@ -6,7 +6,7 @@ impl Array
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
         for 7:
-        #inject(stmt)
+            #inject(stmt)
     }
 
     mtd opSlice(a, b: u64)->string
@@ -21,7 +21,7 @@ impl Array
 #test
 {
     var arr: Array
-    var g = 0
+    var g    = 0
     foreach arr
     {
         foreach arr[1 to ]
@@ -31,5 +31,5 @@ impl Array
         }
     }
 
-    @assert(g==7)
+    @assert(g == 7)
 }

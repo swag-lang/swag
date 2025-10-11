@@ -1,13 +1,10 @@
-struct ErrToto{}
+struct ErrToto {}
 func toto() throw
 {
     throw ErrToto{}
 }
 
-struct AA
-{
-    x, y = 1
-}
+struct AA { x, y = 1 }
 
 //#[Swag.PrintBc]
 func titi()->AA throw

@@ -1,7 +1,7 @@
 #[Swag.ExportType("methods")]
 struct X
 {
-    x: s32
+    x:   s32
 }
 
 #if false
@@ -22,15 +22,9 @@ struct X
 
 impl X
 {
-    func toto(const me, xx: X)
-    {
+    func toto(const me, xx: X) {}
 
-    }
-
-    func toto1(const me, xx: X)
-    {
-
-    }
+    func toto1(const me, xx: X) {}
 }
 
 #test

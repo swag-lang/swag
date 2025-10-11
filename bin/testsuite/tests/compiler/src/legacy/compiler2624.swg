@@ -5,5 +5,5 @@ struct AA
 
 struct BB
 {
-    x: AA
+    x:   AA
 }

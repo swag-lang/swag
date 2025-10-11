@@ -1,13 +1,9 @@
-struct Image
-{
-
-}
+struct Image {}
 
 impl Image
 {
     enum AA
     {
-
     }
 
     func fill(me, x: AA)

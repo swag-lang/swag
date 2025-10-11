@@ -1,4 +1,4 @@
-func toto()->{x: s32, y: s32}
+func toto()->{ x: s32, y: s32 }
 {
     var result: retval
     result.x = 1

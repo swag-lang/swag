@@ -2,7 +2,7 @@
 
 struct AA
 {
-    x: s64
+    x:   s64
 }
 
 impl AA
@@ -14,6 +14,4 @@ impl AA
     }
 }
 
-func toto()
-{
-}
+func toto() {}

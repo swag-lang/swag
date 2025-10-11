@@ -1,7 +1,7 @@
 struct(T) AA
 {
     #assert(#typeof(T) == s32)
-    x: T
+    x:   T
 }
 
 #test

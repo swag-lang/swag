@@ -1,8 +1,6 @@
 using Swag
 
-func toto(str: string)
-{
-}
+func toto(str: string) {}
 
 #test
 {

@@ -1,6 +1,4 @@
-struct(T) B
-{
-}
+struct(T) B {}
 
 var G = 0
 

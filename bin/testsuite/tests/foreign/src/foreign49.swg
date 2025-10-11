@@ -1,7 +1,4 @@
-public struct TT49
-{
-    x, y: s32
-}
+public struct TT49 { x, y: s32 }
 
 public func foufou49(a: string, b: s32, x: cvarargs)->TT49
 {

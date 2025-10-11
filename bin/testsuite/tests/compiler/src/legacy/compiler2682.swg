@@ -1,6 +1,6 @@
 public struct AA2682
 {
-    x: s64
+    x:   s64
 }
 
 public impl AA2682

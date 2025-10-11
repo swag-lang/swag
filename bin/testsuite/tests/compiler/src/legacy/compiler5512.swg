@@ -2,7 +2,7 @@
 
 func toto()
 {
-    for 5'u32 to 0xFFFFFFFF's32 
-    {        
+    for 5'u32 to 0xFFFFFFFF's32
+    {
     }
 }

@@ -3,7 +3,7 @@
 #test
 {
     const x: string = null
-    var y: string
+    var y:   string
     y = "null"
     const z = x orelse y
 }

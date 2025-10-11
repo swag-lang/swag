@@ -1,23 +1,17 @@
-enum A : u32
+enum A: u32
 {
     B
 }
 
-struct T
-{
-}
+struct T {}
 
 impl T
 {
     #[Swag.Overload]
-    func opAffect(me, val: u32)
-    {
-    }
+    func opAffect(me, val: u32) {}
 
     #[Swag.Overload]
-    func opAffect(me, val: A)
-    {
-    }
+    func opAffect(me, val: A) {}
 }
 
 #test

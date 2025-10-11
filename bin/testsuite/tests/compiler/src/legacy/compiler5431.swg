@@ -4,7 +4,7 @@ namespace A
 }
 
 #[Swag.Using(A)]
-func toto()->{a: T}
+func toto()->{ a: T }
 {
     return {0}
 }

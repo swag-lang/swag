@@ -1,7 +1,7 @@
 #global testerror "Err0350"
 struct A
 {
-    a: s32
+    a:   s32
 }
 
 struct B

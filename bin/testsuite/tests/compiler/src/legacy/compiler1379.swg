@@ -1,6 +1,6 @@
 struct TOTO
 {
-    x: s32
+    x:   s32
 }
 
 struct TITI

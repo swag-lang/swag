@@ -1,7 +1,4 @@
-struct Vector2
-{
-	x, y: f32
-}
+struct Vector2 { x, y: f32 }
 
 const XAxis: Vector2{444, 555}
 const YAxis: Vector2{10, 666}
@@ -9,11 +6,11 @@ const YAxis: Vector2{10, 666}
 //#[Swag.PrintBc]
 #test
 {
-	let pt1: Vector2 = XAxis
-	@assert(pt1.x == 444)
-	@assert(pt1.y == 555)
+    let pt1: Vector2 = XAxis
+    @assert(pt1.x == 444)
+    @assert(pt1.y == 555)
 
-	let pt2: Vector2 = YAxis
-	@assert(pt2.x == 10)
-	@assert(pt2.y == 666)
+    let pt2: Vector2 = YAxis
+    @assert(pt2.x == 10)
+    @assert(pt2.y == 666)
 }

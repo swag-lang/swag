@@ -5,14 +5,10 @@
 }
 
 #[Swag.Overload]
-func test(x: AA)
-{
-}
+func test(x: AA) {}
 
 #[Swag.Overload]
-func test(x: BB)
-{
-}
+func test(x: BB) {}
 
 func totoXXX()->AA
 {

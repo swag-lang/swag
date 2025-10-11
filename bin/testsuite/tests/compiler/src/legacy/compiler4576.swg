@@ -1,6 +1,6 @@
 #test
 {
-    var x: [3][2] s32
+    var x: [3] [2] s32
     @assert(#typeof(x).name == "[3][2] s32")
 
     x[0, 0] = 1

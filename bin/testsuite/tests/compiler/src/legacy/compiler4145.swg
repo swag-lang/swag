@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 struct B {}
 
@@ -10,9 +8,7 @@ impl A
     {
     }*/
 
-    func toto(ptr1: *B)
-    {
-    }
+    func toto(ptr1: *B) {}
 
     mtd titi(ptr2: *B)
     {

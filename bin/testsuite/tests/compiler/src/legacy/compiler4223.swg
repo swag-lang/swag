@@ -1,4 +1,4 @@
-struct Err{}
+struct Err {}
 
 func titi()->s32 throw { throw Err{}; return 0; }
 

@@ -7,6 +7,6 @@ namespace A
 #[Swag.Using(A)]
 struct B
 {
-    t: T
+    t:   T
     //x: {a: T}
 }

@@ -1,7 +1,7 @@
 //#global testerror
 struct(T) VV
 {
-    x: T
+    x:   T
 }
 
 //#[Swag.PrintBc]

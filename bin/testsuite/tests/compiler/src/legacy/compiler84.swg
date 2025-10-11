@@ -1,3 +1,1 @@
-;
-
-alias tt = bool;
+alias tt = bool

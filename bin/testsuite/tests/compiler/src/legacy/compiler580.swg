@@ -1,26 +1,21 @@
-
-
-
 struct Point
 {
-	x: s32
-	y: s32
+    x:     s32
+    y:     s32
 }
 
 impl Point
 {
-	func opEquals(me, other: s32)->bool
-	{
-		return me.x == other and me.y == other
-	}
+    func opEquals(me, other: s32)->bool
+    {
+        return me.x == other and me.y == other
+    }
 }
 
 #test
 {
-	var pt: Point
-	@assert(pt != 1)
-	pt.x = 0; pt.y = 1;
-	@assert(pt != 1)
-	pt.x = 1;
-	@assert(pt == 1)
+    var pt: Point
+    @assert(pt != 1)
+    pt.x = 0; pt.y = 1; @assert(pt != 1)
+    pt.x = 1; @assert(pt == 1)
 }

@@ -2,9 +2,9 @@
 //#global #[Swag.PrintBc]
 
 #[Swag.ConstExpr]
-struct String 
+struct String
 {
-    x: u64
+    x:   u64
 }
 
 impl String
@@ -16,9 +16,7 @@ impl String
     }
 
     #[Swag.Implicit]
-    mtd opAffect(value: string)
-    {
-    }
+    mtd opAffect(value: string) {}
 }
 
 #[Swag.ConstExpr, Swag.Inline]

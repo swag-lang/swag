@@ -1,10 +1,6 @@
-struct ParseOptions
-{
-}
+struct ParseOptions {}
 
-func parse(options = ParseOptions{})
-{
-}
+func parse(options = ParseOptions{}) {}
 
 #test
 {

@@ -1,14 +1,10 @@
-
 #global testerror "Err0024"
 
 struct(T) Arr
 {
-    struct(T) ST
-    {
-        x, y: T
-    }
+    struct(T) ST { x, y: T }
 
-    z: ST
+    z:   ST
 }
 
 //#[Swag.PrintBc]

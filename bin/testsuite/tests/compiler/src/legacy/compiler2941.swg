@@ -1,6 +1,4 @@
-struct AA
-{
-}
+struct AA {}
 
 impl AA
 {
@@ -12,7 +10,7 @@ impl AA
 
 struct BB
 {
-    v: AA
+    v:   AA
 }
 
 impl BB

@@ -1,7 +1,7 @@
 #global testerror "Err0031"
 struct AA
 {
-    vv: s32 = 666
+    vv:  s32 = 666
 }
 
 impl AA
@@ -15,7 +15,7 @@ impl AA
     mtd opSlice(a, b: u64)->const [..] s32
     {
         @assert(false)
-        return [1, 2, 3 ,4]
+        return [1, 2, 3, 4]
     }
 }
 

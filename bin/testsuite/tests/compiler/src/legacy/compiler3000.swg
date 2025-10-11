@@ -1,6 +1,6 @@
 struct AA
 {
-    b: AAPtr
+    b:   AAPtr
 }
 
 alias AAPtr = *AA

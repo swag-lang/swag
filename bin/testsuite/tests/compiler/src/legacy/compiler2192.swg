@@ -1,8 +1,5 @@
 #global testerror "Err0233"
-struct A
-{
-
-}
+struct A {}
 
 impl A
 {
@@ -14,7 +11,7 @@ impl A
 
 #test
 {
-    var x: A
+    var x:  A
     var res = x[1 to 2]
     @assert(res == 3)
 }

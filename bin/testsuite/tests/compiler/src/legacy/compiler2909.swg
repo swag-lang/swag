@@ -9,7 +9,7 @@ namespace Drawing
 {
     struct Color
     {
-        f: f64
+        f:   f64
     }
 }
 

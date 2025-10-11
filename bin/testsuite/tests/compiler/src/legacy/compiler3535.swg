@@ -17,15 +17,9 @@ impl Thing
     }
 }
 
-struct Team
-{
-    a, b: Thing
-}
+struct Team { a, b: Thing }
 
 #run
 {
-    var team = Team{
-        a: Thing.init(1),
-        b: Thing.init(2),
-    }
+    var team = Team{a: Thing.init(1), b: Thing.init(2)}
 }

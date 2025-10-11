@@ -1,8 +1,6 @@
 #global testerror "Saf0009"
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("math", true)]
-#[Swag.Safety("nan", false)]
+#[Swag.Optimize("", false), Swag.Safety("math", true), Swag.Safety("nan", false)]
 func toto(y: f64)
 {
     var x = @acos(y)

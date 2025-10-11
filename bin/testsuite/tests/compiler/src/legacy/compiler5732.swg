@@ -3,7 +3,7 @@ interface I
 }
 struct A
 {
-    val = 45
+    val  = 45
 }
 
 struct B {}

@@ -1,6 +1,6 @@
 struct String
 {
-    a: string
+    a:   string
 }
 
 impl String

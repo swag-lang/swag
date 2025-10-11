@@ -1,12 +1,9 @@
-struct Vector
-{
-    x, y: s32
-}
+struct Vector { x, y: s32 }
 
 impl Vector
 {
     #[Swag.Inline]
-    mtd(op: string) opBinary(other: Vector)->Vector => Vector{me.x-other.x, me.y-other.y}
+    mtd(op: string) opBinary(other: Vector)->Vector => Vector{me.x - other.x, me.y - other.y}
     //mtd tt(other: Vector)->Vector => Vector{x-other.x, y-other.y}
 }
 

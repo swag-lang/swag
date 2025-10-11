@@ -1,14 +1,14 @@
 #global testerror "Err0683"
 struct A
 {
-    x: s32
+    x:   s32
 }
 struct B
 {
-    a: *A
+    a:   *A
 }
 
-enum RGB { R; }
+enum RGB { R }
 func toto(rgb: RGB) {}
 
 #test

@@ -7,9 +7,9 @@ struct(T) AA
         #assert(#typeof(T).kind == TypeInfoKind.Struct)
 
         var buf: [100] u8
-        var idx = 0'u64
+        var idx  = 0'u64
 
-        let ptr = #typeof(T)
+        let ptr  = #typeof(T)
         foreach it in ptr.fields
         {
             @memcpy(&buf[idx], @dataof(it.name), @countof(it.name))
@@ -31,8 +31,8 @@ struct(T) AA
 {
     struct BB
     {
-        val1: f32
-        val2: f32
+        val1:     f32
+        val2:     f32
     }
 
     var str: AA'BB

@@ -1,7 +1,4 @@
-struct TOTO
-{
-
-}
+struct TOTO {}
 
 #test
 {

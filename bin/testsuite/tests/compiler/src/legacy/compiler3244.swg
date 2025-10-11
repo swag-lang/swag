@@ -5,9 +5,7 @@ public struct AA3244 {}
 public impl AA3244
 {
     using BB3244
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 namespace BB3244

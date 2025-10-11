@@ -3,16 +3,11 @@ public interface C1961ITF
     func toto(me);
 }
 
-public struct C1961AA
-{
-
-}
+public struct C1961AA {}
 
 public impl C1961ITF for C1961AA
 {
-    func impl toto(me)
-    {
-    }
+    func impl toto(me) {}
 }
 
 func(T) gen(x: T)

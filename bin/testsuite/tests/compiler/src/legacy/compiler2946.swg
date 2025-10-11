@@ -1,6 +1,4 @@
-struct BaseRenderOgl
-{
-}
+struct BaseRenderOgl {}
 
 struct RenderOgl
 {
@@ -9,10 +7,7 @@ struct RenderOgl
 
 impl BaseRenderOgl
 {
-    func toto(me)
-    {
-
-    }
+    func toto(me) {}
 }
 
 #test

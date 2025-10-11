@@ -1,9 +1,6 @@
 #global testerror "Err0128"
 
-func toto()
-{
-
-}
+func toto() {}
 
 #test
 {

@@ -3,7 +3,7 @@
 #[Swag.ConstExpr]
 struct C
 {
-    a: s32
+    a:   s32
 }
 
 impl C
@@ -15,7 +15,7 @@ impl C
     }
 }
 
-var t = C.from(52)
+var t    = C.from(52)
 const t1 = C.from(52)
 
 #test

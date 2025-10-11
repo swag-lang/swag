@@ -1,6 +1,6 @@
 struct titi
 {
-	buf: [5] u8;
+    buf: [5] u8
 }
 
 //#[Swag.PrintBc]
@@ -16,6 +16,6 @@ impl titi
 #test
 {
     var arr = [10, 20, 320]
-	var t: titi
-	titi.toto(t, 666)
+    var t:  titi
+    titi.toto(t, 666)
 }

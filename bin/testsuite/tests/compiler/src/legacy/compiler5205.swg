@@ -1,5 +1,5 @@
 #global testerror "Err0296"
-struct ErrToto5205{}
+struct ErrToto5205 {}
 
 #[Swag.Inline]
 public func toto5205()->s32 throw

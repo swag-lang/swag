@@ -3,6 +3,5 @@
 #test
 {
     let a = 0
-    var f = func|a|(){
-    }
+    var f = func|a|() {}
 }

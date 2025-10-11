@@ -1,7 +1,7 @@
 #global testerror "Err0591"
 struct A
 {
-    x: string
+    x:   string
 }
 
 #test

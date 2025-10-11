@@ -1,6 +1,7 @@
-struct A {
-    buf: [*] u8
-    len: u32 = 4
+struct A
+{
+    buf:     [*] u8
+    len:     u32 = 4
 }
 
 impl A

@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 var G = 0
 impl A

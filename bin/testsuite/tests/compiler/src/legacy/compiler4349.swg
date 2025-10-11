@@ -2,12 +2,12 @@
 
 struct(X1) Point
 {
-    x: X1
+    x:   X1
 }
 
 impl Point
 {
-    mtd(X2) mixup(other: Point'X2) -> Point'X1
+    mtd(X2) mixup(other: Point'X2)->Point'X1
     {
         return Point{me.x}
     }

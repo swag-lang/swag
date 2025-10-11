@@ -1,13 +1,13 @@
 struct Arr
 {
-    tt: s32 = 5
+    tt:  s32 = 5
 }
 
 //#[Swag.PrintBc]
 struct T
 {
-    x: Arr
-    y: [2] Arr
+    x:     Arr
+    y:     [2] Arr
 }
 
 #test

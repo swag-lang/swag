@@ -8,9 +8,7 @@ interface I
 
 impl I for A
 {
-    mtd impl free5873(r: *AllocatorRequest)
-    {
-    }
+    mtd impl free5873(r: *AllocatorRequest) {}
 
     mtd impl alloc(r: *AllocatorRequest)
     {
@@ -22,8 +20,5 @@ struct AllocatorRequest {}
 
 impl A
 {
-    mtd free5873(addr: *void, size: u64)
-    {
-    }
+    mtd free5873(addr: *void, size: u64) {}
 }
-

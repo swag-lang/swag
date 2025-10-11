@@ -1,6 +1,6 @@
 struct AA
 {
-    x = 555
+    x    = 555
 }
 
 impl AA

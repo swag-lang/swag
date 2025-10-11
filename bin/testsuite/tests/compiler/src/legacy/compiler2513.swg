@@ -1,7 +1,7 @@
-func toto(x: string)-> [100] u8
+func toto(x: string)->[100] u8
 {
     var result: retval
-    let len = @countof(x)
+    let len     = @countof(x)
     @memcpy(@dataof(result), @dataof(x), len)
     result[len] = 0
     return result

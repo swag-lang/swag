@@ -1,7 +1,4 @@
-struct A
-{
-    x, y: s64
-}
+struct A { x, y: s64 }
 
 func titi(p: *A)
 {

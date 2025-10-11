@@ -1,4 +1,4 @@
-interface I 
+interface I
 {
     mtd toto();
 }
@@ -15,11 +15,9 @@ impl I for A
 {
 }
 
-struct B
-{
-}
+struct B {}
 
-struct A 
+struct A
 {
     using b: B
 }

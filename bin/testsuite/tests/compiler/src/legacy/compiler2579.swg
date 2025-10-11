@@ -1,8 +1,6 @@
 #global testerror "Err0530"
 
-func toto()
-{
-}
+func toto() {}
 
 //#[Swag.PrintBc]
 #test

@@ -1,4 +1,3 @@
-
 #global testerror "Err0225"
 
 //#[Swag.PrintBc]

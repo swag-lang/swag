@@ -18,8 +18,8 @@ impl AA
 
 struct BB
 {
-    x: AA
-    yyyy: s32
+    x:        AA
+    yyyy:     s32
 }
 
 impl BB

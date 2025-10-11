@@ -1,6 +1,6 @@
 struct AA
 {
-    l: u64 = 4
+    l:   u64 = 4
 }
 
 impl AA
@@ -13,7 +13,7 @@ impl AA
 //#[Swag.optimizebc(0)]
 #test
 {
-    var x: AA
+    var x:  AA
     var cpt = 0
     for x:
         cpt += 1

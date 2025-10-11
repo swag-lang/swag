@@ -3,9 +3,7 @@ interface Error
     func toString(me)->string;
 }
 
-struct MyError
-{
-}
+struct MyError {}
 
 //#[Swag.PrintBc]
 func toto()->Error

@@ -2,7 +2,7 @@
 
 struct BaseEvent
 {
-    x = 66
+    x    = 66
 }
 
 struct MouseEvent

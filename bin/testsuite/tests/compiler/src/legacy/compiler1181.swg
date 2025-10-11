@@ -1,12 +1,9 @@
 using Swag
 #[AttrUsage(AttributeUsage.EnumValue)]
-attr T();
+attr T()
 
 enum TITI
 {
     #[T]
-    {
-        A
-        B
-    }
+    A
 }

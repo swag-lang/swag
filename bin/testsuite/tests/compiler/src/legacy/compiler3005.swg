@@ -1,6 +1,4 @@
-struct BB
-{
-}
+struct BB {}
 
 var G = 0
 
@@ -14,7 +12,7 @@ impl BB
 
 struct AA
 {
-    x: BB
+    x:   BB
 }
 
 impl AA

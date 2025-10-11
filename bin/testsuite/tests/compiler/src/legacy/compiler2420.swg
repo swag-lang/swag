@@ -1,8 +1,8 @@
 func toto(f: f32)
-where
-{
-    return true
-}
+    where
+    {
+        return true
+    }
 {
 }
 

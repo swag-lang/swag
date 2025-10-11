@@ -3,7 +3,5 @@
 struct A {}
 impl A
 {
-    mtd opVisit()
-    {
-    }
+    mtd opVisit() {}
 }

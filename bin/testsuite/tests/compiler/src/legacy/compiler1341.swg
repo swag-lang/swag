@@ -2,16 +2,12 @@
 
 interface TOTO
 {
-	func print(me, str: string);
+    func print(me, str: string);
 }
 
-struct TITI
-{
-}
+struct TITI {}
 
 impl TOTO for TITI
 {
-    func impl print(y: bool, x: string)
-    {
-    }
+    func impl print(y: bool, x: string) {}
 }

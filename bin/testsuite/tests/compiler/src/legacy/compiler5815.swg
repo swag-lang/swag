@@ -1,7 +1,7 @@
 struct(T) Arr
 {
-    count5815: s32
-    buf:   T
+    count5815:     s32
+    buf:           T
 }
 
 impl Arr

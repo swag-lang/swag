@@ -1,5 +1,4 @@
-#global testerror "Err0694";
-;
+#global testerror "Err0694"
 
-alias myType = u32;
-var a: myType1;
+alias myType = u32
+var a: myType1

@@ -2,7 +2,7 @@
 
 struct ST
 {
-    x: u32 = 10
+    x:   u32 = 10
 }
 
 //#[Swag.Inline]

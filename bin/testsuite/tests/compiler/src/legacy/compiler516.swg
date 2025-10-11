@@ -1,8 +1,2 @@
-
-
-
 //#[Swag.PrintBc]
-struct toto
-{
-	x, y: f32 = 666;
-}
+struct toto { x, y: f32 = 666 }

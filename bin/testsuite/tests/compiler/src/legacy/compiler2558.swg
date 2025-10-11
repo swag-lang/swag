@@ -1,7 +1,4 @@
-struct AA
-{
-
-}
+struct AA {}
 
 impl AA
 {
@@ -11,9 +8,7 @@ impl AA
     }
 }
 
-func(T) toto(x: T)
-{
-}
+func(T) toto(x: T) {}
 
 #test
 {

@@ -5,7 +5,7 @@ struct A
         return "x: s32; y: s32 = 666"
     }
 
-    z: s32 = 555
+    z:   s32 = 555
 }
 
 //#[Swag.PrintBc]

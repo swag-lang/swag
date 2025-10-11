@@ -3,7 +3,7 @@
 
 struct AA
 {
-    x: u8 = 5
+    x:   u8 = 5
 }
 
 //#[Swag.PrintBc]
@@ -13,6 +13,6 @@ struct AA
     for t.x
     {
         if @index > 10:
-            break;
+            break
     }
 }

@@ -1,6 +1,6 @@
 struct(T) Point
 {
-    x: T = 1.5
+    x:   T = 1.5
 }
 
 alias X = Point'f32

@@ -1,4 +1,4 @@
-attr ife(expr: bool);
+attr ife(expr: bool)
 
 #[Swag.ConstExpr]
 func titi()->bool
@@ -7,7 +7,4 @@ func titi()->bool
 }
 
 #[ife(titi())]
-func toto()
-{
-
-}
+func toto() {}

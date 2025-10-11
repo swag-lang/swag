@@ -10,8 +10,8 @@
 
     struct B
     {
-        using root:  A
-        using root1: A
+        using root:      A
+        using root1:     A
     }
 
     func F(ptr: *A)

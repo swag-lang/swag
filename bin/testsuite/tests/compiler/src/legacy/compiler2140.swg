@@ -3,5 +3,5 @@
 
 struct AA
 {
-    x = false
+    x    = false
 }

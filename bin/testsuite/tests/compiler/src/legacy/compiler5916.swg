@@ -1,13 +1,9 @@
 namespace A5916
 {
-    func toto()
-    {
-
-    }
+    func toto() {}
 }
 
-#[Swag.Using(A5916)]
-#[Swag.Inline]
+#[Swag.Using(A5916), Swag.Inline]
 func titi()
 {
     func tata()

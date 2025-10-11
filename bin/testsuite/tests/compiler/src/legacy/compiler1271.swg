@@ -1,4 +1,4 @@
-enum A : u32
+enum A: u32
 {
     B
 }

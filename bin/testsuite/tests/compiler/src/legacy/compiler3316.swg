@@ -1,7 +1,5 @@
 #global testerror "Err0640"
-struct Duration
-{
-}
+struct Duration {}
 
 impl Duration
 {
@@ -14,5 +12,5 @@ impl Duration
 #test
 {
     var x: Duration
-    var y = cast(s32) x
+    var y  = cast(s32) x
 }

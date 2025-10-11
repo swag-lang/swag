@@ -1,6 +1,4 @@
-struct Array
-{
-}
+struct Array {}
 
 impl Array
 {
@@ -15,9 +13,7 @@ impl Array
 
 alias Vector = Array
 
-func toto(x: Vector)
-{
-}
+func toto(x: Vector) {}
 
 //#[Swag.PrintBc]
 #test

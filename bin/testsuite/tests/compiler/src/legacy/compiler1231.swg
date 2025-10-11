@@ -3,6 +3,4 @@
 
 alias F = f32
 
-func toto(x: F)
-{
-}
+func toto(x: F) {}

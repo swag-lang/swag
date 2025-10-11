@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y: s32
-}
+struct AA { x, y: s32 }
 
 impl AA
 {
@@ -9,9 +6,7 @@ impl AA
 }
 
 #[Swag.Inline]
-func xx(b: bool)
-{
-}
+func xx(b: bool) {}
 
 func toto(all: *AA...)
 {

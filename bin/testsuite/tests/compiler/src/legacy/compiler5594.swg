@@ -1,7 +1,7 @@
 var g_RedImg: s32
 func addAliens()
 {
-    const DIST = 50  // DIST should be a numeric value, not a string
+    const DIST = 50 // DIST should be a numeric value, not a string
     for xc in 10
     {
         for yc in 6

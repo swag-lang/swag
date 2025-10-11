@@ -1,7 +1,4 @@
-struct Pt
-{
-    x, y: s32
-}
+struct Pt { x, y: s32 }
 
 func toto(x: Pt)
 {

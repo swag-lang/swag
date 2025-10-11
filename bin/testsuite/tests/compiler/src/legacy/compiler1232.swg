@@ -1,6 +1,6 @@
 struct V
 {
-    x: s32
+    x:   s32
 }
 
 const X: V{0}

@@ -1,9 +1,7 @@
 attr AA(x: typeinfo...)
 
 #[AA(s32, string, bool)]
-func toto()
-{
-}
+func toto() {}
 
 #test
 {

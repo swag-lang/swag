@@ -1,8 +1,8 @@
 #[Swag.Overload]
 {
-func toto();
-func toto();
-func toto();
+    func toto();
+    func toto();
+    func toto();
 }
 
 var G = 0

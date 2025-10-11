@@ -1,10 +1,6 @@
-struct X
+struct X {}
+
+impl X
 {
-}
-
-impl X{
-    func toto()
-    {
-
-    }
+    func toto() {}
 }

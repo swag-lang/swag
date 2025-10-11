@@ -1,6 +1,6 @@
 struct AA
 {
-    x: s64 = 2
+    x:   s64 = 2
 }
 
 func toto(v, v1: s64)

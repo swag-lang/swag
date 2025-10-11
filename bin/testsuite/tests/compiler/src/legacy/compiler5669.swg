@@ -1,24 +1,23 @@
-struct A 
+struct A
 {
-    a: f32 = 1.5
+    a:   f32 = 1.5
 }
 
 struct B
 {
-    b: f32 = 3.5
-}   
+    b:   f32 = 3.5
+}
 
 //#[Swag.PrintBc]
 func toto(x: any)
 {
     switch x
     {
-    case A:  
+    case A:
         let ptr = cast(const &A) x
-        //@print(ptr.a)
-    case B: 
+    //@print(ptr.a)
+    case B:
         let ptr = cast(const &B) x
-        //@print(ptr.b)    
     }
 }
 

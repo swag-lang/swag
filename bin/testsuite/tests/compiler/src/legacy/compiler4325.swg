@@ -17,7 +17,7 @@ impl I for A
 #test
 {
     var a: A
-    let i = cast(I) a
+    let i  = cast(I) a
     i.toto()
     a.I.toto()
     @assert(G == 30)

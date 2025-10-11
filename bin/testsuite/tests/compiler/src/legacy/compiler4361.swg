@@ -1,12 +1,12 @@
 #global testerror "toto"
 
 struct(T) Point
-    where
-    {
-        if T != bool:
-            @compilererror("toto", #curlocation)
-        return true
-    }
+        where
+        {
+            if T != bool:
+                @compilererror("toto", #curlocation)
+            return true
+        }
 {
 }
 

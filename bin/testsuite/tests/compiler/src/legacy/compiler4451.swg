@@ -2,7 +2,8 @@
 func(T, N: s64) fill(v: T)->[N] T
 {
     var result: retval
-    for i in N: result[i] = v
+    for i in N:
+        result[i] = v
     return result
 }
 

@@ -1,7 +1,5 @@
 //#[Swag.PrintBc]
-func toto(x: any)
-{
-}
+func toto(x: any) {}
 
 #test
 {

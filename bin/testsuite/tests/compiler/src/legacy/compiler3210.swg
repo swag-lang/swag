@@ -5,9 +5,7 @@ struct B
     using a: A
 }
 
-func toto(x: *A)
-{
-}
+func toto(x: *A) {}
 
 func titi()
 {

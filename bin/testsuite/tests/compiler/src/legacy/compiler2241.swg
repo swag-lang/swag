@@ -4,7 +4,6 @@ func mix()
     #alias0 += #alias1
 }
 
-
 //#[Swag.PrintBc]
 #test
 {

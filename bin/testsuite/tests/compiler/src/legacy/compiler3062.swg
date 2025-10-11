@@ -1,8 +1,5 @@
 #global testerror "Err0234"
-struct AA
-{
-
-}
+struct AA {}
 
 #test
 {

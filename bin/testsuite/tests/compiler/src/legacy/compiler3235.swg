@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 impl A
 {
@@ -8,9 +6,7 @@ impl A
     mtd const isValid() => true
 }
 
-func toto(x: A)
-{
-}
+func toto(x: A) {}
 
 func titi(x: A = {})
 {

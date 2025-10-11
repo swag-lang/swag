@@ -13,9 +13,7 @@ impl A
     }
 }
 
-#[Swag.Sanity(true)]
-#[Swag.Safety("null", true)]
-#[Swag.Optimize("", false)]
+#[Swag.Sanity(true), Swag.Safety("null", true), Swag.Optimize("", false)]
 #test
 {
     var p: *A

@@ -1,6 +1,6 @@
 struct Vector2
 {
-    x: s32
+    x:   s32
 }
 
 impl Vector2

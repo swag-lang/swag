@@ -1,6 +1,6 @@
 struct(T) toto
 {
-    x: T
+    x:   T
 }
 
 #test

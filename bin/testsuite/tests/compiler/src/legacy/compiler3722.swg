@@ -6,7 +6,7 @@ func titi() {}
 #[Swag.Optimize("", false)]
 #test
 {
-    let x = #typeof(titi).attributes[0]//.name
+    let x = #typeof(titi).attributes[0] //.name
     @assert(#sizeof(x) == #sizeof(Swag.Attribute))
     //@print(x.name)
 }

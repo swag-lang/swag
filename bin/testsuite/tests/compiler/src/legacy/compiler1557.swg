@@ -1,8 +1,6 @@
 //using Swag
 
-struct(TTX) A
-{
-}
+struct(TTX) A {}
 
 var G = 0
 
@@ -16,7 +14,7 @@ impl A
     func opDrop(me)
     {
         G = 1
-        var ptr : TTX
+        var ptr: TTX
         @assert(#typeof(TTX) == #typeof(s32))
     }
 }

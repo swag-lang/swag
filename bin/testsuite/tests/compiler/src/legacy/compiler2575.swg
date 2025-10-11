@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y = 666
-}
+struct AA { x, y = 666 }
 
 //#[Swag.PrintBc]
 #test

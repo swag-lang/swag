@@ -1,11 +1,9 @@
-;
-;
-using Swag;
+using Swag
 
-enum T : s16
+enum T: s16
 {
-	X = -2;
-	Y;
+    X = -2
+    Y
 }
 
 #assert(T.X == -2)

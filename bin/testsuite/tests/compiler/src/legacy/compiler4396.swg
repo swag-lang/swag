@@ -1,6 +1,6 @@
 #global testerror "Err0561"
 
-struct A { x, y: s32; }
+struct A { x, y: s32 }
 
 func toto(x: &A)
 {

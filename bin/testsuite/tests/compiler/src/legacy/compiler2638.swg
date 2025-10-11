@@ -1,23 +1,14 @@
 namespace AA
 {
-    struct ST
-    {
-
-    }
+    struct ST {}
 }
 
 namespace BB
 {
-    struct ST
-    {
-
-    }
+    struct ST {}
 }
 
-func(T) toto()
-{
-
-}
+func(T) toto() {}
 
 #test
 {

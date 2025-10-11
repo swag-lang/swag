@@ -1,15 +1,11 @@
 #global testerror "Err0480"
-struct A
-{
-}
+struct A {}
 
 struct B {}
 
 impl B
 {
-    func toto()
-    {
-    }
+    func toto() {}
 }
 
 impl A

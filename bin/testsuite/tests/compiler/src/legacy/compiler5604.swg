@@ -4,5 +4,6 @@
 const g: bool = true
 #if g == false:
     const g1: bool = true
-#else: #if g == true:
-    const g1: bool = true
+#else:
+    #if g == true:
+        const g1: bool = true

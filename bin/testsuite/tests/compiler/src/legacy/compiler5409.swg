@@ -2,7 +2,7 @@
 
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 var g = 666
@@ -12,8 +12,7 @@ func toto()->&s32
     return &g
 }
 
-#[Swag.Optimize("", false)]
-#[Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", false)]
 #test
 {
     var a: A{toto()}

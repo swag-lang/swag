@@ -1,6 +1,4 @@
-func sendMessage(text: string)
-{
-}
+func sendMessage(text: string) {}
 
 func indexOf(a: string, b: rune, c: u64)->u64
 {

@@ -9,14 +9,14 @@ func toto(a, b: s32)->s32
         return a + b + 1
 
     case 0 where b == 1:
-        return a + b + 10 
+        return a + b + 10
 
     case 1 where b == 5:
         return 666
 
     case 1:
         return a * b
-        
+
     default:
         return 0
     }

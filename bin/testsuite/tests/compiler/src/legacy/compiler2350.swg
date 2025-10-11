@@ -1,15 +1,8 @@
-func(T) lambdaToCallback(lambda: func(T))
-{
-}
+func(T) lambdaToCallback(lambda: func(T)) {}
 
-struct Point
-{
+struct Point {}
 
-}
-
-func toto(t: Point)
-{
-}
+func toto(t: Point) {}
 
 #test
 {

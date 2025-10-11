@@ -1,8 +1,6 @@
 //#global testerror
 
-struct A
-{
-}
+struct A {}
 
 impl A
 {
@@ -13,5 +11,5 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx += func(a, b) { }
+    xxxx += func(a, b) {}
 }

@@ -1,7 +1,7 @@
 #[Swag.ExportType("methods")]
 struct X
 {
-    x: s32
+    x:   s32
 }
 
 #if false

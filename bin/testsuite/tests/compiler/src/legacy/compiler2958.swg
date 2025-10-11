@@ -1,14 +1,11 @@
 #global testerror "Err0084"
 
 #[Swag.ConstExpr]
-struct V
-{
-    x, y, z: f32 = 666
-}
+struct V { x, y, z: f32 = 666 }
 
 impl V
 {
-    func opDrop(me){}
+    func opDrop(me) {}
 }
 
 func toto()->V

@@ -1,9 +1,6 @@
-struct Point
-{
-    x, y: f32
-}
+struct Point { x, y: f32 }
 
-func RR()->{pt: Point, err: bool}
+func RR()->{ pt: Point, err: bool }
 {
     return {{1, 2}, true}
 }

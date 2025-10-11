@@ -1,13 +1,9 @@
 #global testerror "Err0662"
 
-struct P
-{
-}
+struct P {}
 
 alias Alias = P
 impl Alias
 {
-    func toto(me)
-    {
-    }
+    func toto(me) {}
 }

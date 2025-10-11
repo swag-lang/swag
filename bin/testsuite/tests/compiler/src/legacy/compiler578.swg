@@ -2,16 +2,16 @@
 
 struct Point
 {
-	x: s32
-	y: s32
+    x:     s32
+    y:     s32
 }
 
 alias toto = s32
 
 impl Point
 {
-	func opEquals(me, other: Point)->toto
-	{
-		return 1;
-	}
+    func opEquals(me, other: Point)->toto
+    {
+        return 1
+    }
 }

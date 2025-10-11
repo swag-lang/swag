@@ -1,8 +1,8 @@
 //#[Swag.PrintBc]
 struct(K, V) A
 {
-    x: K = 666
-    y: V = true
+    x:     K = 666
+    y:     V = true
 }
 
 struct(K, V) B

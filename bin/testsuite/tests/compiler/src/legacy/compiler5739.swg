@@ -1,32 +1,39 @@
 //#global skip
-interface Printable {
+interface Printable
+{
     mtd printDetails();
 }
 
-struct Book {
+struct Book
+{
     title: string = "TOTO"
 }
 
-impl Printable for Book {
-    mtd impl printDetails() {
+impl Printable for Book
+{
+    mtd impl printDetails()
+    {
         @print("Book Title: ", me.title)
     }
 }
 
-struct Magazine {
+struct Magazine
+{
     issueNumber: s32
 }
 
-impl Printable for Magazine {
-    mtd impl printDetails() {
+impl Printable for Magazine
+{
+    mtd impl printDetails()
+    {
         @print("Magazine Issue: ", me.issueNumber)
     }
 }
 
 //const items: [?] Printable = [Book{title: "Swift Programming"}, Magazine{issueNumber: 42}]
-const items: Printable = Book{}//{title: "Swift Programming"}
+const items: Printable = Book{} //{title: "Swift Programming"}
 
-const A: any = Book{}//{title: "Swift Programming"}
+const A: any = Book{} //{title: "Swift Programming"}
 
 //#[Swag.PrintBc]
 #test

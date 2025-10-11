@@ -1,10 +1,7 @@
 using Swag
-struct ErrToto{}
+struct ErrToto {}
 
-struct AA
-{
-    x, y = 555
-}
+struct AA { x, y = 555 }
 
 #[Inline]
 func toto()->[2] AA throw

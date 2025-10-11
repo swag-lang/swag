@@ -5,7 +5,7 @@ interface Itf
 
 struct AA
 {
-    v: s32
+    v:   s32
 }
 
 impl Itf for AA

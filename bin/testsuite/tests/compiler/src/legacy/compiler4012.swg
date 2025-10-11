@@ -1,6 +1,6 @@
 #test
 {
-    with var v: {a,b: s32}
+    with var v: { a, b: s32 }
     {
         .item0 = 1
         .item1 = 2

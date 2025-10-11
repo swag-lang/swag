@@ -1,6 +1,4 @@
-struct AA
-{
-}
+struct AA {}
 
 impl AA
 {

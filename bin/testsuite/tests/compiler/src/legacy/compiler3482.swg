@@ -15,13 +15,13 @@ func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
 //#[Swag.Safety("", false)]
 #test
 {
-    var x = [1,2]
+    var x = [1, 2]
 
     func toto(x, y: s32)->s32
     {
         return 0
     }
 
-                //@breakpoint()
-    insertionSort(cast() x,&toto)
+    //@breakpoint()
+    insertionSort(cast() x, &toto)
 }

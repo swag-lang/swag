@@ -1,13 +1,9 @@
 #global testerror "Err0078"
 
 #[Swag.NoCopy]
-struct AA
-{
-}
+struct AA {}
 
-struct(T) BB
-{
-}
+struct(T) BB {}
 
 impl BB
 {

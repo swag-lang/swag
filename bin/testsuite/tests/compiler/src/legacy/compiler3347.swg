@@ -3,5 +3,5 @@
 struct A
 {
     #[Swag.Align(3)]
-    x: s32
+    x:   s32
 }

@@ -4,7 +4,7 @@ interface I
     mtd toto();
 }
 
-struct A{}
+struct A {}
 impl I for A
 {
     mtd toto()->s32

@@ -1,7 +1,7 @@
 //#global testerror "Err0561"
 
 //#[Swag.PrintBc]
-func toto(x: const & const [..] s32)
+func toto(x: const &const [..] s32)
 {
     @assert(@countof(x) == 2)
     @assert(x[0] == 4)

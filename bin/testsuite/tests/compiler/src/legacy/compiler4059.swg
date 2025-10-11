@@ -1,7 +1,7 @@
 //#[Swag.PrintBc]
 func toto()
 {
-    var toto = 0
+    var toto  = 0
     var toto1 = 1
     var toto2 = 2
 

@@ -1,14 +1,14 @@
 //#global skip
-struct A 
-{ 
-    str: string 
-    x:   s32
+struct A
+{
+    str:     string
+    x:       s32
 }
 
-struct B 
-{ 
-    using a: A
-    y: bool
+struct B
+{
+    using a:     A
+    y:           bool
 }
 
 #test

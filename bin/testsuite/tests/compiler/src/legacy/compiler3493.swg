@@ -2,7 +2,7 @@
 
 struct A
 {
-    a: s32 = 666
+    a:   s32 = 666
 }
 
 impl A
@@ -24,6 +24,6 @@ struct B
 #test
 {
     var v: B
-    let x = v[0]
+    let x  = v[0]
     @assert(x == 10)
 }

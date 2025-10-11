@@ -1,10 +1,10 @@
-struct A 
-{ 
-    x: s32 
+struct A
+{
+    x:   s32
 }
 
 var G: A
-func toto()->*A 
+func toto()->*A
 {
     return &G
 }

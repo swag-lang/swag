@@ -1,7 +1,7 @@
 #test
 {
     var x: s32
-    let y = &x
+    let y  = &x
     //var z: &s32 = y
     let z = #ref y
     @assert(#typeof(z).name == "&s32")

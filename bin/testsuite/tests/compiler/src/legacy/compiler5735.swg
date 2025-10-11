@@ -1,8 +1,12 @@
 #global testerror "Err0019"
 
-interface I {}
+interface I
+{
+}
 
-impl I for A {}
+impl I for A
+{
+}
 
 struct A
 {
@@ -11,8 +15,8 @@ struct A
 
 struct B
 {
-    using root:  A
-    using root1: A
+    using root:      A
+    using root1:     A
 }
 
 //#assert(#typeof(B) == B)

@@ -1,6 +1,6 @@
-func decode(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLength: u64)->{write, read: u64} throw
+func decode(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLength: u64)->{ write, read: u64 } throw
 {
-    func(TD, TS) doIt(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLength: u64)->{write, read: u64}
+    func(TD, TS) doIt(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLength: u64)->{ write, read: u64 }
     {
         var dst = cast([*] TD) destBuffer
         var src = cast([*] TS) srcBuffer
@@ -10,13 +10,13 @@ func decode(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLengt
         {
             if write + #sizeof(TD) > destLength:
                 break
-            dst[0] = ((cast(TD) src[0]) - 128) << 8
+            dst[0] = (cast(TD) src[0] - 128) << 8
             dst += 1
             src += 1
             write += #sizeof(TD)
         }
 
-        return {write, write/2}
+        return {write, write / 2}
     }
 
     return doIt'(s16, s8)(destBuffer, destLength, srcBuffer, srcLength)

@@ -19,5 +19,5 @@ impl Duration
 
 #test
 {
-    var x:  Duration = 1.0's
+    var x: Duration = 1.0's
 }

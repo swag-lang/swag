@@ -1,5 +1,5 @@
 struct(T) Point
-    where T == s32
+        where T == s32
 {
 }
 

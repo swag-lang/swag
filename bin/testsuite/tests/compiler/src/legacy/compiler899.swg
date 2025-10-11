@@ -1,15 +1,13 @@
-
-
 //#[Swag.PrintBc]
 func arithmeticMean(numbers: s32...)
 {
-	@assert(numbers[0] == 10)
-	@assert(numbers[1] == 20)
-	@assert(numbers[2] == 30)
+    @assert(numbers[0] == 10)
+    @assert(numbers[1] == 20)
+    @assert(numbers[2] == 30)
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	arithmeticMean(10, 20, 30)
+    arithmeticMean(10, 20, 30)
 }

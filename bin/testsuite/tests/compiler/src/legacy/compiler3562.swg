@@ -1,6 +1,6 @@
 struct Arr
 {
-    a: CB
+    a:   CB
 }
 
 impl Arr
@@ -16,6 +16,6 @@ alias CB = func||()
 #test
 {
     var arr: Arr
-    let x = func(){}
+    let x    = func() {}
     arr.add(x)
 }

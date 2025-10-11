@@ -6,5 +6,6 @@ func toto()->bool
 
 #test
 {
-    #assert(#run toto())
+    #assert(#run toto()
+)
 }

@@ -2,14 +2,12 @@
 
 struct A
 {
-    z: f32
+    z:   f32
 }
 
 impl A
 {
-    mtd titi()
-    {
-    }
+    mtd titi() {}
 }
 
 func toto(x: A)

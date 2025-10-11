@@ -1,4 +1,4 @@
-var G = 0
+var G  = 0
 var G1 = 1
 
 //#[Swag.PrintBc]
@@ -8,7 +8,7 @@ var G1 = 1
     //@breakpoint()
 
     let firstIdx = G
-    let lastIdx = G1
+    let lastIdx  = G1
 
     for i in firstIdx to lastIdx
     {

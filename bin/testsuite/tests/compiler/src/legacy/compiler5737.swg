@@ -2,7 +2,8 @@ struct A
 {
     enum Kind
     {
-        X, Y
+        X
+        Y
     }
 
     kind: Kind

@@ -1,16 +1,9 @@
-
-
-
-struct(T) Point
-{
-}
+struct(T) Point {}
 
 //#[Swag.PrintBc]
-func toto(x: Point)
-{
-}
+func toto(x: Point) {}
 
 #test
 {
-	//var x: Point
+    //var x: Point
 }

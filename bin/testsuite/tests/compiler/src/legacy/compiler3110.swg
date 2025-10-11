@@ -1,6 +1,6 @@
 #global testerror "Err0315"
 
-struct ErrTiti{}
+struct ErrTiti {}
 
 #[Swag.Macro]
 func toto(stmt: #code void)

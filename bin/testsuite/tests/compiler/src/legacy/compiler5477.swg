@@ -1,22 +1,18 @@
-struct Toto
-{
-    x, y: s32 = 10
-}
+struct Toto { x, y: s32 = 10 }
 
 impl Toto
 {
-    #[Swag.Implicit]
-    #[Swag.Inline]
-	func opCast(me)->string
-	{
+    #[Swag.Implicit, Swag.Inline]
+    func opCast(me)->string
+    {
         return "x + y"
-	}
+    }
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var x: Toto
+    var x: Toto
     let z: string = x
     @assert(z == "x + y")
 }

@@ -1,9 +1,9 @@
 namespace A
 {
-	namespace B
-	{
-		alias tt1 = bool;
-	}
+    namespace B
+    {
+        alias tt1 = bool
+    }
 }
 
-var a: A.B.tt1 = true;
+var a: A.B.tt1 = true

@@ -1,6 +1,6 @@
 struct TT
 {
-    value:  s64 = 456
+    value: s64 = 456
 }
 
 //#[Swag.PrintBc]
@@ -11,8 +11,8 @@ struct TT
     var value: TT
 
     addr[0] = cast([*] [*] TT) &addr1
-    addr1 = cast([*] TT) &value
+    addr1   = cast([*] TT) &value
 
     //@print(addr1.value)
-    @assert(addr[0,0].value == 456)
+    @assert(addr[0, 0].value == 456)
 }

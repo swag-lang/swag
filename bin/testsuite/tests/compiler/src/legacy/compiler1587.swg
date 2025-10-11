@@ -1,13 +1,8 @@
 #global testerror "Err0213"
 
-struct A
-{
+struct A {}
 
-}
-
-struct(T) B
-{
-}
+struct(T) B {}
 
 impl B
 {
@@ -19,7 +14,7 @@ impl B
 
 #test
 {
-    var arr: B'A
+    var arr:   B'A
     var value: A
 
     arr.emplace(value)

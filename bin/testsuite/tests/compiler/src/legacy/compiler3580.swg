@@ -1,8 +1,6 @@
 //#global skip
 
-struct(T) A
-{
-}
+struct(T) A {}
 
 impl A
 {
@@ -12,5 +10,5 @@ impl A
 #test
 {
     var xxxx: A'func||(s32)
-    xxxx += func(a) { }
+    xxxx += func(a) {}
 }

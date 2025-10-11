@@ -2,7 +2,7 @@
 #test
 {
     var g = 0
-    for #reverse i in -4  to -1
+    for #reverse i in -4 to -1
     {
         //@print(i)
         g += i

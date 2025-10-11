@@ -18,7 +18,7 @@ const C = [
 
 #test
 {
-    let p = &C[0, 1]//, 1, 2]
+    let p = &C[0, 1] //, 1, 2]
     @assert(dref p == 255)
     let p1 = &C[0, 1, 0, 0]
     @assert(dref p1 == 145)

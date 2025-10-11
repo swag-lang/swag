@@ -1,4 +1,4 @@
-enum E : string
+enum E: string
 {
     RED = "RED"
 }

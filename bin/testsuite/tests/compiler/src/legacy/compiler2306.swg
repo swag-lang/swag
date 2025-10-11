@@ -13,5 +13,5 @@ func arithmeticMean(x: string, numbers: string...)->string
 //#[Swag.PrintBc]
 #test
 {
-	var r = arithmeticMean("666", "10", "20")
+    var r = arithmeticMean("666", "10", "20")
 }

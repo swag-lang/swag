@@ -8,7 +8,7 @@ enum ContextFlags: u64
 
 struct A
 {
-    x =  ContextFlags.None
+    x    = ContextFlags.None
 }
 
 var G: A

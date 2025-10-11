@@ -1,7 +1,4 @@
-struct Vec2
-{
-    x, y: f32
-}
+struct Vec2 { x, y: f32 }
 
 #test
 {

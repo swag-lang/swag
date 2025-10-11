@@ -1,18 +1,10 @@
-
-
-struct Point
-{
-}
+struct Point {}
 
 //#[Swag.PrintBc]
-func(T) toto()
-{
-
-}
-
+func(T) toto() {}
 
 //#[Swag.PrintBc]
 #test
 {
-	toto'Point()
+    toto'Point()
 }

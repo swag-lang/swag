@@ -1,9 +1,6 @@
 #global testerror "Err0480"
 
-struct A
-{
-
-}
+struct A {}
 
 impl A
 {

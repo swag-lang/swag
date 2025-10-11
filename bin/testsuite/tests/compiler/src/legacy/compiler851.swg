@@ -1,18 +1,12 @@
-
-
-struct Point
-{
-}
+struct Point {}
 
 impl Point
 {
-	func opDrop(me)
-	{
-	}
+    func opDrop(me) {}
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	var pt: Point
+    var pt: Point
 }

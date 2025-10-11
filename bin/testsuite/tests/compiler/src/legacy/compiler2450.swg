@@ -3,10 +3,7 @@ interface Error
     func toString(me)->string;
 }
 
-struct MyError
-{
-    x, y, z = 3.14
-}
+struct MyError { x, y, z = 3.14 }
 
 //#[Swag.PrintBc]
 func toto()->Error

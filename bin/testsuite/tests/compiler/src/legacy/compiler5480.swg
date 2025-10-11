@@ -1,7 +1,7 @@
 //#global skip
 struct AA
 {
-    x = 0
+    x    = 0
 }
 
 impl AA
@@ -24,7 +24,7 @@ impl AA
 
 //#[Swag.PrintBc]//, Swag.Optimize("", false)]
 #[Swag.Inline]
-func toto()->{x: AA}
+func toto()->{ x: AA }
 {
     return {AA.from()}
 }

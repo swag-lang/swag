@@ -1,6 +1,4 @@
-func(T) AA()
-{
-}
+func(T) AA() {}
 
 //#[Swag.PrintBc]
 #test

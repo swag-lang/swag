@@ -12,6 +12,6 @@ impl A
 #test
 {
     var x: A
-    let y = x[0 to ]
+    let y  = x[0 to ]
     @assert(y == "")
 }

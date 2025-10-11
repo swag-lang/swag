@@ -1,8 +1,6 @@
 #global testerror "Err0561"
 
-func(T) toto(x: s32, y: T)
-{
-}
+func(T) toto(x: s32, y: T) {}
 
 #test
 {

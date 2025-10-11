@@ -2,7 +2,7 @@ struct R { a: s32 }
 struct C { x: s32 }
 
 func toto(x: R, y: C)
-{    
+{
     @assert(x.a == 1)
 }
 

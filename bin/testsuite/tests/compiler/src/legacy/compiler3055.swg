@@ -1,22 +1,14 @@
-struct AA
-{
-
-}
+struct AA {}
 
 struct BB
 {
-    v1:     *CC
-    using   base: AA
+    v1:             *CC
+    using base:     AA
 }
 
-struct CC
-{
+struct CC {}
 
-}
-
-func toto(x: AA)
-{
-}
+func toto(x: AA) {}
 
 func titi()
 {

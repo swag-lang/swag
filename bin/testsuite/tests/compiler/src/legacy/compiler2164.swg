@@ -1,6 +1,4 @@
-struct A
-{
-}
+struct A {}
 
 var G1: s32 = 0
 
@@ -11,7 +9,7 @@ func close(p: *A)
 
 struct B
 {
-    x: A
+    x:   A
 }
 
 var G: s32 = 0

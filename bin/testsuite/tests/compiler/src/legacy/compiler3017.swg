@@ -1,6 +1,6 @@
 struct IntPoint
 {
-    Y: s32
+    Y:   s32
 }
 
 impl IntPoint
@@ -15,5 +15,7 @@ impl IntPoint
 func GetBottomPt()
 {
     var pp: IntPoint = undefined
-    while pp != pp {}
+    while pp != pp
+    {
+    }
 }

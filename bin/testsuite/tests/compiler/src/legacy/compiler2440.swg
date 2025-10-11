@@ -1,11 +1,11 @@
 struct A
 {
-    v = 10
+    v    = 10
 }
 
 struct B
 {
-    v = 5
+    v    = 5
 }
 
 impl A

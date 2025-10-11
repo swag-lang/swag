@@ -9,8 +9,8 @@ interface I
 
 impl I for A
 {
-    mtd opDrop(){}
-    mtd impl x(){}
+    mtd opDrop() {}
+    mtd impl x() {}
 }
 
 #test

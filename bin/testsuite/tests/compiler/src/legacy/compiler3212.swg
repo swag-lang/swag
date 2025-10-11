@@ -1,6 +1,4 @@
-public struct Event3212
-{
-}
+public struct Event3212 {}
 
 public struct KeyEvent3212
 {

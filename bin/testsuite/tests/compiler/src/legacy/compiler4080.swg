@@ -1,12 +1,11 @@
 struct A
 {
-    x: s32
-    name: string
+    x:        s32
+    name:     string
 }
 
 const countries: [?] A = [
-    { name: "titi", x: 10 },
-]
+    {name: "titi", x: 10}]
 
 #test
 {

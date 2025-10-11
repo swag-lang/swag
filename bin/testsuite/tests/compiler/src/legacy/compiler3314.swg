@@ -7,9 +7,7 @@ struct Duration
 impl Duration
 {
     #[Swag.Implicit]
-    mtd(suffix: string) opAffectLiteral(v: f32)
-    {
-    }
+    mtd(suffix: string) opAffectLiteral(v: f32) {}
 }
 
 func toto(x: Duration) {}

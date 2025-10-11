@@ -1,8 +1,8 @@
 #test
 {
-    var x: {a:f32}
-    var y: {a:f32}
+    var x: { a: f32 }
+    var y: { a: f32 }
     y.item0 = 100
-    x = y
+    x       = y
     @assert(x.item0 == 100)
 }

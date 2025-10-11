@@ -1,6 +1,6 @@
 struct String
 {
-aa: u64
+    aa:  u64
 }
 
 impl String

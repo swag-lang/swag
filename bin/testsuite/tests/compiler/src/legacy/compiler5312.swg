@@ -5,7 +5,7 @@ func toto(x: string)->u64
     for x:
         tt += 1
 
-    let y = tt-2
+    let y = tt - 2
     return y
 }
 

@@ -2,8 +2,8 @@
 
 struct(T) Point
 {
-	x: T = 5
-	y: T = 100
+    x:     T = 5
+    y:     T = 100
 }
 
 /*struct Array
@@ -14,5 +14,5 @@ struct(T) Point
 //#[Swag.PrintBc]
 #test
 {
-	var pt: Point
+    var pt: Point
 }

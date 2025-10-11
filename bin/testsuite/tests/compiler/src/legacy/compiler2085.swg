@@ -1,12 +1,9 @@
-struct BB
-{
-    x, y: u32 = 444
-}
+struct BB { x, y: u32 = 444 }
 
 struct AA
 {
-    x: u32 = 444
-    y: BB = {555, 666}
+    x:     u32 = 444
+    y:     BB = {555, 666}
 }
 
 //#[Swag.PrintBc]

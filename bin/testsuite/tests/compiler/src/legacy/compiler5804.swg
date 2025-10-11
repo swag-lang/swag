@@ -3,7 +3,7 @@ func toto() {}
 
 struct A
 {
-    x = &toto
+    x    = &toto
 }
 /*
 #global skip

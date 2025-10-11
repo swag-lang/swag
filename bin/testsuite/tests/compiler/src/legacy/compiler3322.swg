@@ -1,7 +1,5 @@
 //#global skip
-struct AA
-{
-}
+struct AA {}
 
 interface BB
 {
@@ -22,7 +20,7 @@ impl BB for AA
 //#[Swag.PrintBc]
 #test
 {
-    var x: AA
+    var x:  AA
     let ptr = &x
     let itf = cast(BB) ptr
     @assert(itf.x() == 555)

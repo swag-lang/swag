@@ -1,4 +1,4 @@
-struct Err{}
+struct Err {}
 
 func titi() throw { throw Err{}; }
 

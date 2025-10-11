@@ -1,7 +1,5 @@
 #global testerror "Err0561"
-func(N: s32, T) toto(v: [N] T)
-{
-}
+func(N: s32, T) toto(v: [N] T) {}
 
 #test
 {

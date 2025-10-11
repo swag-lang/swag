@@ -1,6 +1,6 @@
 #global testerror "Err0458"
 
-enum A : string
+enum A: string
 {
     R = ""
 }

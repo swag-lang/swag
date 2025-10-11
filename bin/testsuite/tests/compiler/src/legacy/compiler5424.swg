@@ -1,6 +1,6 @@
 struct(T) A
 {
-    a: [..] T
+    a:   [..] T
 }
 
 impl A

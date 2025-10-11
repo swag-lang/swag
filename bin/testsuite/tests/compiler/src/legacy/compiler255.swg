@@ -4,7 +4,7 @@ namespace A
 {
 }
 
-func main ()
+func main()
 {
-	A.@assert(true);
+    A.@assert(true)
 }

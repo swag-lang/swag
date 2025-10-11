@@ -6,6 +6,7 @@
     var g: bool
     if g == false:
         g = true
-    else: if g == true:
-        g = false
+    else:
+        if g == true:
+            g = false
 }

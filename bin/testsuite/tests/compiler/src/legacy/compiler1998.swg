@@ -1,12 +1,12 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 struct B
 {
-    using val: A
-    v: s32
+    using val:     A
+    v:             s32
 }
 
 #test

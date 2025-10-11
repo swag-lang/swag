@@ -4,7 +4,7 @@ alias CC = C
 
 struct A
 {
-    x: s32 = 555
+    x:   s32 = 555
 }
 
 struct B

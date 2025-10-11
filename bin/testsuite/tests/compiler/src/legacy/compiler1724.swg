@@ -1,8 +1,6 @@
 #test
 {
-    func B(a: s32)
-    {
-    }
+    func B(a: s32) {}
 
     func A()
     {

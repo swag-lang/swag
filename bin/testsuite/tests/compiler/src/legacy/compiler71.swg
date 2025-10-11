@@ -1,3 +1,3 @@
-﻿#global testpass syntax
+#global testpass syntax
 
 alias myType = u32

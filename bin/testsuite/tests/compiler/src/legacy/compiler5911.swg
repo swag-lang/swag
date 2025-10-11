@@ -9,7 +9,8 @@ impl A
 
     mtd toto()
     {
-        let f = mtd||() {
+        let f = mtd||()
+        {
             .titi()
         }
     }

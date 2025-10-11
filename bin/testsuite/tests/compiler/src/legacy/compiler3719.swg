@@ -1,6 +1,5 @@
-struct ErrToto{}
-struct ErrRead{}
-
+struct ErrToto {}
+struct ErrRead {}
 
 var READ, TOTO: s32
 

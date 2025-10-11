@@ -1,11 +1,11 @@
-#global testerror "Err0506";
+#global testerror "Err0506"
 
 #[Swag.Overload]
-func main (){}
+func main() {}
 #[Swag.Overload]
-func main (b: string){}
+func main(b: string) {}
 
 #run
 {
-	main(1);
+    main(1)
 }

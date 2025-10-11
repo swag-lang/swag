@@ -2,8 +2,6 @@
 #global testerror "Wrn0002"
 
 #[Swag.Deprecated("use something else this instead")]
-struct CC
-{
-}
+struct CC {}
 
 var cc: CC

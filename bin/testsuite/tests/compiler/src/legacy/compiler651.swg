@@ -1,12 +1,12 @@
-func toto() -> {x: s32, y: s32}
+func toto()->{ x: s32, y: s32 }
 {
-	return {1, 2}
+    return {1, 2}
 }
 
 //#[Swag.PrintBc]
 #test
 {
-	let res = toto()
-	@assert(res.x == 1)
-	@assert(res.y == 2)
+    let res = toto()
+    @assert(res.x == 1)
+    @assert(res.y == 2)
 }

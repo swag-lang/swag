@@ -1,9 +1,6 @@
 struct(T) Arr
 {
-    struct ST
-    {
-        x, y: T
-    }
+    struct ST { x, y: T }
 }
 
 //#[Swag.PrintBc]

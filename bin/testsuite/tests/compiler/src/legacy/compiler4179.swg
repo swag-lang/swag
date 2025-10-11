@@ -5,7 +5,7 @@
 func toto(str: string, x: cvarargs)
 {
     var valist: Swag.CVaList
-    var ptr = &valist
+    var ptr     = &valist
     ptr = null
     @cvastart(ptr)
 }

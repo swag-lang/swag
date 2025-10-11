@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y: f64
-}
+struct AA { x, y: f64 }
 
 impl AA
 {

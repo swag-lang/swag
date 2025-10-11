@@ -1,9 +1,10 @@
 //#global testerror
-struct ErrToto{}
+struct ErrToto {}
 
 func(T) toto()
 {
-#if false: throw ErrToto{}
+    #if false:
+        throw ErrToto{}
 }
 
 #test

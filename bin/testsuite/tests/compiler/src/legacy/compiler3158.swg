@@ -1,6 +1,4 @@
-func printf(format: cstring, args: cvarargs)
-{
-}
+func printf(format: cstring, args: cvarargs) {}
 
 #test
 {

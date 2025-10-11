@@ -1,7 +1,4 @@
-struct AA
-{
-    x, y, z: f64 = 666
-}
+struct AA { x, y, z: f64 = 666 }
 
 //#[Swag.PrintBc]
 func inc(x: AA)->AA

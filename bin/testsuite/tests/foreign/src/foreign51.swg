@@ -1,7 +1,4 @@
-public struct AA50
-{
-    x, y: s32
-}
+public struct AA50 { x, y: s32 }
 
 #[Swag.Inline]
 public func toto50()

@@ -1,7 +1,7 @@
 //#global skip
 struct B
 {
-    x: s32 = 6
+    x:   s32 = 6
 }
 
 struct A

@@ -1,8 +1,6 @@
 //#global skip
 
-struct A
-{
-}
+struct A {}
 
 var g0 = 4's64
 var g1 = -7's64
@@ -22,6 +20,6 @@ impl A
 #test
 {
     var a: A
-    let b = a[0] - a[1]
+    let b  = a[0] - a[1]
     @assert(b == 11)
 }

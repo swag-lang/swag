@@ -1,5 +1,5 @@
-func toto()-> s32 { return -1; }
-func titi()-> s32 { return 1; }
+func toto()->s32 { return -1; }
+func titi()->s32 { return 1; }
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test

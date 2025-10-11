@@ -1,9 +1,9 @@
 struct AA
 {
-    x = 0
+    x    = 0
 }
 
-struct ErrToto{}
+struct ErrToto {}
 
 //#[Swag.PrintBc]
 func toto()->AA throw

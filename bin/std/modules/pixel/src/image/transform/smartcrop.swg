@@ -170,7 +170,7 @@ public impl Image
         let mec = cast #unconst (*Image) me
         mec.visitPixels(&f)
         {
-            let p = image.getPixelColor(x, y)
+            let p      = image.getPixelColor(x, y)
             let params = cast(*#decltype(f)) userData
 
             // linear luminance

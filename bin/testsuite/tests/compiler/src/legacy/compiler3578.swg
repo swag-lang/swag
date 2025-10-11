@@ -1,8 +1,6 @@
 //#global testerror
 
-struct A
-{
-}
+struct A {}
 
 var G = 0
 
@@ -21,6 +19,6 @@ impl A
 #test
 {
     var xxxx: A
-    xxxx += func||(a, b) { }
+    xxxx += func||(a, b) {}
     @assert(G == 1)
 }

@@ -1,5 +1,5 @@
 //#global testerror "Err0512"
-struct A { x: s32; }
+struct A { x: s32 }
 
 func(T) toto(x: T)
 {

@@ -10,6 +10,6 @@ func mac(stmt: #code void)
 {
     mac()
     {
-         return 1
+        return 1
     }
 }

@@ -1,13 +1,12 @@
-
 #global testerror "Err0143"
 
 #[Swag.Compiler, Swag.Inline]
 func toto()
 {
-	//@print(x)
+    //@print(x)
 }
 
 func toto1()
 {
-	toto()
+    toto()
 }

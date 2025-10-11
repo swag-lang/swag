@@ -1,7 +1,5 @@
-using Swag;
+using Swag
 
 //#global testerror;
 
-func main()
-{
-}
+func main() {}

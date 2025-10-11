@@ -1,7 +1,7 @@
 #global testerror "Err0078"
 
 struct(T, N: u32) Arr
-    where N > 0
+        where N > 0
 {
     array: [N] T
 }

@@ -1,2 +1,2 @@
 #[Swag.EnumFlags]
-private enum A5244 {B}
+private enum A5244 { B }

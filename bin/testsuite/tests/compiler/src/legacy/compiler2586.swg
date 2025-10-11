@@ -1,17 +1,11 @@
 namespace N1
 {
-    struct A
-    {
-
-    }
+    struct A {}
 }
 
 namespace N2
 {
-    struct A
-    {
-
-    }
+    struct A {}
 }
 
 func(T) toto()->typeinfo

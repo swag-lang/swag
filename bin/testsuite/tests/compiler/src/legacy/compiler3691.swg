@@ -1,12 +1,8 @@
 alias F = func()
 
-func toto()
-{
-}
+func toto() {}
 
-func titi(x: F)
-{
-}
+func titi(x: F) {}
 
 #test
 {

@@ -1,4 +1,3 @@
-
 /*
 #[Swag.PrintBc]
 func lambda(x: f32)
@@ -20,10 +19,10 @@ func(T) toto(x: (T))
 
 func toto(x: f32)
 {
-	@assert(x == 666)
+    @assert(x == 666)
 }
 
 #test
 {
-	toto(666)
+    toto(666)
 }

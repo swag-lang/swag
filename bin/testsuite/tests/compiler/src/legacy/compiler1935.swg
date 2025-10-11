@@ -1,7 +1,4 @@
-struct SALUTE
-{
-    s, t: f64
-}
+struct SALUTE { s, t: f64 }
 
 //#[Swag.PrintBc]
 func cc(st: *SALUTE)

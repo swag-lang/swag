@@ -1,5 +1,7 @@
-#global testerror "Err0485";
+#global testerror "Err0485"
 
-namespace A{}
+namespace A
+{
+}
 
-#assert(A and A);
+#assert(A and A)

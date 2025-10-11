@@ -2,7 +2,7 @@
 
 struct A0
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 impl A0
@@ -16,7 +16,7 @@ impl A0
 
 struct A1
 {
-    x: s32 = 666
+    x:   s32 = 666
 }
 
 impl A1
@@ -30,13 +30,13 @@ impl A1
 
 struct B
 {
-    using a: A0
-    using b: A1
+    using a:     A0
+    using b:     A1
 }
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
     var v: B
-    var x = v[0]
+    var x  = v[0]
 }

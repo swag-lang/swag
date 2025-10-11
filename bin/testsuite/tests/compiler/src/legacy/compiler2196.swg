@@ -6,13 +6,9 @@ struct CStr
 impl CStr
 {
     //#[Swag.PrintBc]
-    func opDrop(me)
-    {
-    }
+    func opDrop(me) {}
 
-    func opPostMove(me)
-    {
-    }
+    func opPostMove(me) {}
 }
 
 #[Swag.Inline]

@@ -1,6 +1,4 @@
-struct AA
-{
-}
+struct AA {}
 
 interface BB
 {
@@ -9,15 +7,12 @@ interface BB
 
 impl BB for AA
 {
-    func impl fct(me)
-    {
-
-    }
+    func impl fct(me) {}
 }
 
 #test
 {
-    var a: AA
+    var a:   AA
     let itf: BB = a
 
     let ptr = cast(*AA) itf

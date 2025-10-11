@@ -9,7 +9,8 @@ func toto(v: func||(s32))
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test
 {
-    toto(func(x: s32) {
+    toto(func(x: s32)
+    {
         G = x
     })
 

@@ -2,7 +2,7 @@
 
 func replace(dst, src: string, inSwg, inCpp: &s32)
 {
-                       toto()
+    toto()
 }
 
 func toto()->s32

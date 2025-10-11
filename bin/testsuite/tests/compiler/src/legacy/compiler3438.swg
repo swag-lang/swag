@@ -1,5 +1,5 @@
 var C: func||(s32)
-var G = 0
+var G  = 0
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
 #test

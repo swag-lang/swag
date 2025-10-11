@@ -1,6 +1,4 @@
-struct Y
-{
-}
+struct Y {}
 
 impl Y
 {
@@ -33,7 +31,7 @@ impl X
 
 struct A
 {
-    x: X
+    x:   X
 }
 
 impl A

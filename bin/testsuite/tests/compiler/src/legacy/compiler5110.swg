@@ -3,7 +3,5 @@
 struct A {}
 impl A
 {
-    mtd(x, y, z, a: string) opVisit()
-    {
-    }
+    mtd(x, y, z, a: string) opVisit() {}
 }

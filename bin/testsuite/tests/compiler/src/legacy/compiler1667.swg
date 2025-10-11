@@ -3,7 +3,7 @@
 
 struct TT
 {
-    value:  s64 = 456
+    value: s64 = 456
 }
 
 //#[Swag.PrintBc]

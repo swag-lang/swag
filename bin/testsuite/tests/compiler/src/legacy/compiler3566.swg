@@ -1,8 +1,6 @@
 //#global testerror "Err0579"
 
-struct A
-{
-}
+struct A {}
 
 impl A
 {

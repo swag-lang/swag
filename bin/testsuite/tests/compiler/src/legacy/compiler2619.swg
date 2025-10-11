@@ -1,9 +1,7 @@
 #global testerror "Err0090"
 
 #[Swag.NoCopy]
-struct AA
-{
-}
+struct AA {}
 
 #test
 {

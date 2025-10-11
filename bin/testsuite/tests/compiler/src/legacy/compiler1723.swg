@@ -18,5 +18,5 @@
     @assert(value == 0b00000110)
     @assert(value & MyFlags.B == MyFlags.B)
     @assert(value & MyFlags.C == MyFlags.C)
-    @assert(cast()(value & MyFlags.B))
+    @assert(cast() (value & MyFlags.B))
 }

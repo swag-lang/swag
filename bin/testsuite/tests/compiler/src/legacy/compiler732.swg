@@ -1,5 +1,3 @@
-
-
 /*func(T) toto(x: T)
 {
 	var d: T = x
@@ -15,8 +13,8 @@
 
 #test
 {
-	var arr = ["toto", "titi"]
-	let ptr: [*] string = &arr
-	@assert(ptr[0] == "toto")
-	@assert(ptr[1] == "titi")
+    var arr  = ["toto", "titi"]
+    let ptr: [*] string = &arr
+    @assert(ptr[0] == "toto")
+    @assert(ptr[1] == "titi")
 }

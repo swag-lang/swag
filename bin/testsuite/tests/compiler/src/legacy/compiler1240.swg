@@ -1,6 +1,6 @@
 struct A
 {
-    x: s32
+    x:   s32
 }
 
 impl A
@@ -9,8 +9,6 @@ impl A
     {
         //toto1()
     }
-    
-    func toto1()
-    {
-    }
+
+    func toto1() {}
 }

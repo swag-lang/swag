@@ -1,6 +1,4 @@
-struct(T: const [..] typeinfo) AA
-{
-}
+struct(T: const [..] typeinfo) AA {}
 
 impl AA
 {
@@ -8,7 +6,8 @@ impl AA
     {
         var ms: u64 = 0
         foreach p in T:
-            if p == V: return true
+            if p == V:
+                return true
         return false
     }
 }

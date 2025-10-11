@@ -1,16 +1,12 @@
 #global testerror "Err0592"
 
 #[Swag.Overload]
-func(op: string) toto()
-{
-}
+func(op: string) toto() {}
 
 #[Swag.Overload]
-func(op: s32) toto()
-{
-}
+func(op: s32) toto() {}
 
 #test
 {
-	toto'(true)()
+    toto'(true)()
 }
