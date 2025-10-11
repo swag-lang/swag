@@ -14,7 +14,7 @@ var spaceTest: [?] rune = [
 #test
 {
     var g = 0
-    foreach c in spaceTest:
+    foreach c in spaceTest do
         g += 1
     @assert(g == 10)
 }

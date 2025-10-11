@@ -8,7 +8,7 @@ impl A
     #[Swag.Macro]
     func toto(me)
     {
-        if !me.myTruc:
+        if !me.myTruc do
             return
 
         //@print(cast(s64) myTruc)

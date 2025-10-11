@@ -5,9 +5,9 @@ func toto(x: string)
 {
     func(v: string) titi()
     {
-        #if v == "titi":
+        #if v == "titi" do
             G += 1
-        #if v == "tata":
+        #if v == "tata" do
             G += 2
     }
 

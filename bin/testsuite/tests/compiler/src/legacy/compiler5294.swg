@@ -31,6 +31,6 @@ func toto()->Array'u32
 #[Swag.Optimize("", false)]
 #test
 {
-    foreach v in toto()[1 to ]:
+    foreach v in toto()[1 to ] do
         @assert(v > 0)
 }

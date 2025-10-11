@@ -315,6 +315,7 @@ void LanguageSpec::setupKeywords()
     keywords.add("in", TokenId::KwdIn);
     keywords.add("as", TokenId::KwdAs);
     keywords.add("is", TokenId::KwdIs);
+    keywords.add("do", TokenId::KwdDo);
 
     keywords.add("using", TokenId::KwdUsing);
     keywords.add("with", TokenId::KwdWith);
@@ -353,7 +354,6 @@ void LanguageSpec::setupKeywords()
     keywords.add("moveref", TokenId::KwdMoveRef);
 
     keywords.add("not", TokenId::KwdReserved);
-    keywords.add("do", TokenId::KwdReserved);
 
     keywords.add("#global", TokenId::CompilerGlobal);
 

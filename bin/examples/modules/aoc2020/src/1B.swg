@@ -15,7 +15,7 @@ func day1B()
     let lines    = assume File.readAllLines(dataPath)
 
     var arr: Array's32
-    foreach v in lines:
+    foreach v in lines do
         arr.add(assume StrConv.toS32(v))
 
     arr.sort()
@@ -25,7 +25,7 @@ func day1B()
         foreach v1, i1 in arr[i0 to ]
         {
             let v2 = 2020 - (v0 + v1)
-            if v2 < 0:
+            if v2 < 0 do
                 continue
 
             if Slice.containsSorted(arr[i1 to ], v2)

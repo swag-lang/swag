@@ -52,11 +52,11 @@ func day6A()
         }
 
         var val: String
-        for i in blocks.count:
+        for i in blocks.count do
             val += Format.toString("%.", blocks[i])
 
         total += 1
-        if set.contains(val):
+        if set.contains(val) do
             break
         set.add(val)
     }

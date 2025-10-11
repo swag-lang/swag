@@ -6,7 +6,7 @@ enum Color
     Green
     Blue
 
-    #if ALPHA:
+    #if ALPHA do
         Alpha
 }
 

@@ -43,7 +43,7 @@ public impl Image
     #[Swag.Inline]
     private func srgbToLinear(c: f32)->f32
     {
-        if c <= 0.04045:
+        if c <= 0.04045 do
             return c / 12.92
         return Math.pow((c + 0.055) / 1.055, 2.4)
     }
@@ -79,7 +79,7 @@ public impl Image
 
     private func boxBlurViaIntegral(src: Array'f32, w, h, radius: s32)->Array'f32
     {
-        if radius <= 0:
+        if radius <= 0 do
             return src
 
         var ii = buildIntegral(src, w, h)
@@ -127,8 +127,8 @@ public impl Image
 
         var T: retval
         T.resize(w * h)
-        for y in 0 to (h - 1):
-            for x in 0 to (w - 1):
+        for y in 0 to (h - 1) do
+            for x in 0 to (w - 1) do
                 T[y * w + x] = Math.pow(tx[x] * ty[y], 1.5)
         return T
     }
@@ -217,7 +217,7 @@ public impl Image
 
         if N <= K
         {
-            for i in 0 to (N - 1):
+            for i in 0 to (N - 1) do
                 tmp[i] = buf[i]
         }
         else
@@ -226,7 +226,7 @@ public impl Image
             var w    = 0's32
             for var i = 0; i < N; i += step
             {
-                if w >= M:
+                if w >= M do
                     break
                 tmp[w] = buf[i]
                 w += 1
@@ -241,7 +241,7 @@ public impl Image
         let ih = Math.max(0, Math.min(M - 1, cast(s32) Math.floor(pHigh * cast(f32) (M - 1))))
         let lo = tmp[il]
         let hi = tmp[ih]
-        if hi <= lo:
+        if hi <= lo do
             return {lo, lo + 1e-6}
         return {lo, hi}
     }
@@ -309,12 +309,12 @@ public impl Image
                 let ovar = Math.max(0.0, (sumSq / n) - mean * mean)
                 contrast[i] = cast(f32) Math.sqrt(ovar)
 
-                if x + 1 < w:
+                if x + 1 < w do
                     contrast[i + 1] = contrast[i]
                 if y + 1 < h
                 {
                     contrast[i + w] = contrast[i]
-                    if x + 1 < w:
+                    if x + 1 < w do
                         contrast[i + w + 1] = contrast[i]
                 }
             }
@@ -350,7 +350,7 @@ public impl Image
     {
         var tmp: retval
         tmp.resize(w * h)
-        if enabled:
+        if enabled do
             return buildThirdsMap(w, h, THIRDS_SIGMA)
         return tmp
     }
@@ -375,7 +375,7 @@ public impl Image
         else
         {
             E.resize(w * h)
-            for i in 0 to (w * h - 1):
+            for i in 0 to (w * h - 1) do
                 E[i] = 1.0
         }
 
@@ -510,22 +510,22 @@ public impl Image
 
         for i in 0 to 4
         {
-            if i == 2:
+            if i == 2 do
                 continue
             let cw = Math.roundS32(bestW * scales[i])
             let ch = Math.roundS32(bestH * scales[i])
-            if cw < 4 or ch < 4:
+            if cw < 4 or ch < 4 do
                 continue
-            if cw > ctx.w or ch > ctx.h:
+            if cw > ctx.w or ch > ctx.h do
                 continue
 
             let (fw, fh) = fitAspect(cw, ch, ctx.w, ctx.h, aspect, imgAspect)
-            if fw < 4 or fh < 4:
+            if fw < 4 or fh < 4 do
                 continue
 
             let maxX = ctx.w - fw
             let maxY = ctx.h - fh
-            if maxX < 0 or maxY < 0:
+            if maxX < 0 or maxY < 0 do
                 continue
 
             let x0 = Math.clamp(bestX + (bestW - fw) / 2, 0, maxX)
@@ -650,11 +650,11 @@ public impl Image
                 ch = Math.min(h, Math.roundS32(cw / aspect))
             }
 
-            if cw < 4 or ch < 4:
+            if cw < 4 or ch < 4 do
                 continue
             let maxX = w - cw
             let maxY = h - ch
-            if maxX < 0 or maxY < 0:
+            if maxX < 0 or maxY < 0 do
                 continue
 
             let strideX = Math.max(1, Math.roundS32(opts.strideFrac * cw))
@@ -732,7 +732,7 @@ public impl Image
         let aspect    = targetWidth / targetHeight
         let imgAspect = cast(f32) w / h
 
-        if opts.minCoverage >= 0.95:
+        if opts.minCoverage >= 0.95 do
             return .calculateSingleScale(aspect, imgAspect, w, h, opts)
         return .calculateMultiScale(aspect, imgAspect, w, h, opts)
     }
@@ -849,7 +849,7 @@ public impl Image
         }
 
         // Original (no-downscale) path remains unchanged
-        if opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01:
+        if opts.edgePenalty <= 0.01 and opts.shrinkPrior <= 0.01 and opts.centerWeight <= 0.01 do
             return .evaluateCropScoreFast(rect, opts)
         return .evaluateCropScoreFull(rect, opts)
     }

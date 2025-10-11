@@ -9,6 +9,6 @@ struct S
 {
     let allFiles: Array'S
     var allLines: Array'string
-    foreach fff in allFiles:
+    foreach fff in allFiles do
         allLines.add(cast(string) fff.fullname)
 }

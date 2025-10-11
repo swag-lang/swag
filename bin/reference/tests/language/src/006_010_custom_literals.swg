@@ -46,27 +46,19 @@ impl Duration
         // The `value` parameter is the numeric part of the literal.
 
         // Check if the suffix is 's' (seconds)
-        #if suffix == "s":
+        #if suffix == "s" do
             // Directly assign the value as seconds
-            me.timeInSeconds = value
-
-        // Check if the suffix is 'ms' (milliseconds)
-        #elif suffix == "ms":
+            .timeInSeconds = value
+        #elif suffix == "ms" do
             // Convert milliseconds to seconds and assign
-            me.timeInSeconds = value / 1000.0
-
-        // Check if the suffix is 'min' (minutes)
-        #elif suffix == "min":
+            .timeInSeconds = value / 1000.0
+        #elif suffix == "min" do
             // Convert minutes to seconds (1 min = 60 seconds)
-            me.timeInSeconds = value * 60.0
-
-        // Check if the suffix is 'h' (hours)
-        #elif suffix == "h":
+            .timeInSeconds = value * 60.0
+        #elif suffix == "h" do
             // Convert hours to seconds (1 hour = 3600 seconds)
-            me.timeInSeconds = value * 3600.0
-
-        // Handle unsupported or invalid suffixes
-        #else:
+            .timeInSeconds = value * 3600.0
+        #else do
             // Raise a compile-time error if an invalid suffix is encountered
             #error("invalid duration literal suffix '" ++ suffix ++ "'")
     }
@@ -80,13 +72,12 @@ func toto(x: Duration) {}
 
 #test
 {
-    let delay1: Duration = 5's    // Represents 5 seconds
-    let delay2: Duration = 500'ms // Represents 500 milliseconds
-    let delay3: Duration = 2'min  // Represents 2 minutes
-    let delay4: Duration = 1'h    // Represents 1 hour
+    let delay1: Duration = 5's        // Represents 5 seconds
+    let delay2: Duration = 500'ms     // Represents 500 milliseconds
+    let delay3: Duration = 2'min      // Represents 2 minutes
+    let delay4: Duration = 1'h        // Represents 1 hour
 
     // Use the `Duration` type in functions
     toto(5'ms)
     toto(100'h)
 }
-

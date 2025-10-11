@@ -99,7 +99,7 @@ impl Decoder
             }
         }
 
-        if invalid:
+        if invalid do
             throw InvalidFormatError{"invalid source buffer"}
     }
 }
@@ -117,7 +117,7 @@ public impl IImageDecoder for Decoder
         let countof = @countof(buffer)
         let last    = dataof + countof
 
-        if countof <= #sizeof(Header):
+        if countof <= #sizeof(Header) do
             throw InvalidFormatError{"invalid source buffer"}
         let header = cast(const *Header) dataof
         dataof += #sizeof(Header)
@@ -134,7 +134,7 @@ public impl IImageDecoder for Decoder
             throw UnsupportedFormatError{"unsupported bit depth"}
         }
 
-        if !options.decodePixels:
+        if !options.decodePixels do
             return result
         result.allocPixels()
 
@@ -142,7 +142,7 @@ public impl IImageDecoder for Decoder
         switch header.imageTypeCode
         {
         case TYPE_MAP, TYPE_RGB, TYPE_MONO:
-            if dataof + result.size > last:
+            if dataof + result.size > last do
                 throw InvalidFormatError{"invalid source buffer"}
             Memory.copy(result.pixels.buffer, dataof, result.size)
 

@@ -53,7 +53,7 @@ impl IForm for FormPolygon
     {
         if evt.kind == .MouseDoubleClick and evt.button == .Left
         {
-            if .points.count > 3:
+            if .points.count > 3 do
                 .points.removeBack()
             return false
         }
@@ -132,7 +132,7 @@ impl IForm for FormPolygon
 
     mtd impl boundRect()->Math.Rectangle
     {
-        if !.points.count:
+        if !.points.count do
             .setDefaultShape()
 
         var result: retval
@@ -167,7 +167,7 @@ impl IForm for FormPolygon
         if flags.has(.Hot | .Selected)
         {
             .gizmo.anchors.clear()
-            foreach pt in .points:
+            foreach pt in .points do
                 .gizmo.anchors.add({pt.x * z, pt.y * z})
             let col = .subKind == .PixSel ? Argb.Yellow : Argb.White
             .gizmo.paint(null, painter, !flags.has(.Selected), col)
@@ -192,7 +192,7 @@ impl IForm for FormPolygon
 
         let backBrush = Brush.createHatch(.CheckBoardLarge, Argb.DarkGray)
         var bk        = .backColor
-        if cxt.quickMode and .alpha != 100 and .subKind == .Highlight:
+        if cxt.quickMode and .alpha != 100 and .subKind == .Highlight do
             bk.a = cast(u8) Math.map(cast(f32) .alpha, 0, 100, 0, 255)
 
         if .subKind == .PixSel
@@ -219,9 +219,9 @@ impl IForm for FormPolygon
         .linePath.start(.points[0].x * z, .points[0].y * z)
         for i in 1 until .points.count
         {
-            if .bezier:
+            if .bezier do
                 .linePath.curveTo(.points[i].x * z, .points[i].y * z)
-            else:
+            else do
                 .linePath.lineTo(.points[i].x * z, .points[i].y * z)
         }
 
@@ -229,11 +229,11 @@ impl IForm for FormPolygon
 
         if cxt.quickMode
         {
-            if .alpha != 100 and .subKind == .Highlight:
+            if .alpha != 100 and .subKind == .Highlight do
                 painter.fillPath(&.linePath, backBrush)
             painter.fillPath(&.linePath, bk)
         }
-        else:
+        else do
             painter.fillPolygon(&.linePath, bk)
 
         pen.joinStyle = .joinStyle

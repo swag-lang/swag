@@ -1,5 +1,5 @@
 #test
 {
-    #if false:
+    #if false do
         #error("toto" ++ "titi")
 }

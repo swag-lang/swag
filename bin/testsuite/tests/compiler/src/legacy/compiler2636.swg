@@ -12,6 +12,6 @@ var G2 = 0's64
 #test
 {
     scopedLock(G1)
-    if G2 == 0:
+    if G2 == 0 do
         return
 }

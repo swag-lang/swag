@@ -52,7 +52,7 @@ impl IWnd for LibraryView
             return
         }
 
-        if evt.kind == .MouseWheel:
+        if evt.kind == .MouseWheel do
             evt.accepted = false
 
         var pos = .surfaceToLocal(evt.surfacePos)
@@ -80,14 +80,14 @@ impl IWnd for LibraryView
 
         if evt.kind == .MouseReleased and .hotItem != Swag.U32.Max and evt.button == .Left
         {
-            if !ctrlPressed and !shiftPressed:
+            if !ctrlPressed and !shiftPressed do
                 .selModel.unselectAll()
 
-            if shiftPressed and .focusItem < .items.count:
+            if shiftPressed and .focusItem < .items.count do
                 .selModel.select(.hotItem, .focusItem, true)
-            elif ctrlPressed and .selModel.isSelected(.hotItem):
+            elif ctrlPressed and .selModel.isSelected(.hotItem) do
                 .selModel.select(.hotItem, false)
-            else:
+            else do
                 .selModel.select(.hotItem, true)
 
             .focusItem = .hotItem
@@ -123,7 +123,7 @@ impl IWnd for LibraryView
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if !g_UpdatingLib:
+        if !g_UpdatingLib do
             .imgSpin.hide()
 
         let painter    = evt.bc.painter
@@ -143,9 +143,9 @@ impl IWnd for LibraryView
         foreach it, i in .items
         {
             it.visible = true
-            if y + h < spos.y:
+            if y + h < spos.y do
                 it.visible = false
-            if y > spos.y + .position.height:
+            if y > spos.y + .position.height do
                 it.visible = false
 
             // Retrieve the loaded capture if it exists
@@ -154,7 +154,7 @@ impl IWnd for LibraryView
             .mutexLoaded.unlock()
 
             // We have a capture but not yet a texture. Create it.
-            if capture and !it.texture.isValid():
+            if capture and !it.texture.isValid() do
                 it.texture = evt.bc.renderer.addImage(capture.preview)
 
             it.rect = Math.Rectangle{x, y, w, h}
@@ -253,15 +253,15 @@ impl LibraryView
             let capture = it.capture
             .mutexLoaded.unlock()
 
-            if !capture:
+            if !capture do
                 continue
-            if !capture.linkedImage.isEmpty() and !.libWnd.showLinkedImage:
+            if !capture.linkedImage.isEmpty() and !.libWnd.showLinkedImage do
                 continue
-            if capture.linkedImage.isEmpty() and !.libWnd.showUnLinkedImage:
+            if capture.linkedImage.isEmpty() and !.libWnd.showUnLinkedImage do
                 continue
-            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !.libWnd.showUpToDateLinkedImage:
+            if capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !.libWnd.showUpToDateLinkedImage do
                 continue
-            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !.libWnd.showUnSavedLinkedImage:
+            if !capture.linkedUpToDate and !capture.linkedImage.isEmpty() and !.libWnd.showUnSavedLinkedImage do
                 continue
 
             it.filtered = false
@@ -275,7 +275,7 @@ impl LibraryView
     mtd loadOne(it: *LibraryItem)
     {
         let capture = catch Capture.load(it.fi.fullname, preview: true)
-        if !capture:
+        if !capture do
             return
 
         capture.haar = ImageStatistics.extractHaarFeatures(capture.preview, 64)
@@ -291,7 +291,7 @@ impl LibraryView
     {
         // Work on a copy, as 'items' can be changed by sorting during loading
         var copy: Array'*LibraryItem
-        foreach it in .allItems:
+        foreach it in .allItems do
             copy.add(it)
 
         for
@@ -300,9 +300,9 @@ impl LibraryView
 
             foreach it in copy
             {
-                if th.requestEnd:
+                if th.requestEnd do
                     break
-                if it.capture:
+                if it.capture do
                     continue
 
                 if it.visible
@@ -311,7 +311,7 @@ impl LibraryView
                     break
                 }
 
-                if !notVisItem:
+                if !notVisItem do
                     notVisItem = it
             }
 
@@ -324,7 +324,7 @@ impl LibraryView
             {
                 .loadOne(notVisItem)
             }
-            else:
+            else do
                 break
         }
 
@@ -334,13 +334,13 @@ impl LibraryView
 
     mtd sortSimilar()
     {
-        if .items.isEmpty():
+        if .items.isEmpty() do
             return
 
         var remaining: Array'*LibraryItem
-        foreach it in .items:
+        foreach it in .items do
             remaining.add(it)
-        if remaining.isEmpty():
+        if remaining.isEmpty() do
             return
 
         var nitems: Array'*LibraryItem
@@ -356,7 +356,7 @@ impl LibraryView
                 continue
             }
 
-            if remaining.isEmpty():
+            if remaining.isEmpty() do
                 continue
 
             var best:      f32
@@ -382,7 +382,7 @@ impl LibraryView
         }
 
         .mutexLoaded.lock()
-        foreach it, i in nitems:
+        foreach it, i in nitems do
             .items[i] = nitems[i]
         .mutexLoaded.unlock()
     }
@@ -401,7 +401,7 @@ impl LibraryView
                 value = b.fi.size <=> a.fi.size
             }
 
-            if libWnd.invertSort:
+            if libWnd.invertSort do
                 return -value
             return value
         })
@@ -409,14 +409,14 @@ impl LibraryView
 
     mtd sort()
     {
-        if .items.isEmpty():
+        if .items.isEmpty() do
             return
 
         Cursor.wait()
 
-        if .libWnd.sortMethod == .Similar:
+        if .libWnd.sortMethod == .Similar do
             .sortSimilar()
-        else:
+        else do
             .sortFiles()
 
         .invalidate()
@@ -443,7 +443,7 @@ impl LibraryView
         }
 
         let renderer = .getApp().getRenderer()
-        foreach it in .items:
+        foreach it in .items do
             renderer.removeTexture(&it.texture)
 
         // Add items
@@ -490,9 +490,9 @@ impl LibraryView
 
     mtd scrollToFocus()
     {
-        if .focusItem == Swag.U32.Max:
+        if .focusItem == Swag.U32.Max do
             return
-        if .items[.focusItem].visible:
+        if .items[.focusItem].visible do
             return
         .scrollWnd.setScrollPos(0, .items[.focusItem].rect.y - 4)
     }

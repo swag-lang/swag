@@ -17,11 +17,11 @@ func compareLeft(src, dst: const [..] u8)->s32
         let dga = isDigit(ca)
         let dgb = isDigit(cb)
 
-        if !dga and !dgb:
+        if !dga and !dgb do
             return 0
-        if !dga:
+        if !dga do
             return -1
-        if !dgb:
+        if !dgb do
             return 1
 
         //ai, bi += 1

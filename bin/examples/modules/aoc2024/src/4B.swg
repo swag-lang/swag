@@ -36,14 +36,14 @@ func day4B()
     func test(a, b, c, d, e: rune)->bool
     {
         var cpt = 0
-        if a == 'M' and c == 'A' and e == 'S':
+        if a == 'M' and c == 'A' and e == 'S' do
             cpt += 1
-        elif a == 'S' and c == 'A' and e == 'M':
+        elif a == 'S' and c == 'A' and e == 'M' do
             cpt += 1
 
-        if b == 'M' and c == 'A' and d == 'S':
+        if b == 'M' and c == 'A' and d == 'S' do
             cpt += 1
-        elif b == 'S' and c == 'A' and d == 'M':
+        elif b == 'S' and c == 'A' and d == 'M' do
             cpt += 1
 
         return cpt == 2
@@ -54,7 +54,7 @@ func day4B()
     {
         for x in 0 until lines[y].length - 2
         {
-            if test(lines[y][x], lines[y][x + 2], lines[y + 1][x + 1], lines[y + 2][x], lines[y + 2][x + 2]):
+            if test(lines[y][x], lines[y][x + 2], lines[y + 1][x + 1], lines[y + 2][x], lines[y + 2][x + 2]) do
                 total += 1
         }
     }

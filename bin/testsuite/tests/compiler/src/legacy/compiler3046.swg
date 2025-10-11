@@ -2,7 +2,7 @@
 func maxSize(T: const [..] typeinfo)->u64
 {
     var ms: u32 = 0
-    foreach p in T:
+    foreach p in T do
         ms = @max(p.sizeof, ms)
     return ms
 }
@@ -19,15 +19,15 @@ impl AA
     func isIn(V: typeinfo)->bool
     {
         var ms: u64 = 0
-        foreach p in T:
-            if p == V:
+        foreach p in T do
+            if p == V do
                 return true
         return false
     }
 
     mtd(TV) set(v: TV)
     {
-        #if !isIn(TV):
+        #if !isIn(TV) do
             #error("invalid type " ++ #stringof(#typeof(TV)))
         me.cur                = TV
         dref cast(*TV) me.buf = v
@@ -35,7 +35,7 @@ impl AA
 
     mtd(TV) get()->TV
     {
-        #if !isIn(TV):
+        #if !isIn(TV) do
             #error("invalid type " ++ #stringof(#typeof(TV)))
         @assert(me.cur == TV)
         return dref cast(*TV) me.buf

@@ -1,9 +1,3 @@
-/*
-    :LICENCE
-    This code is based on the Go library (https://github.com/golang/go/blob/master/src/strconv/atof.go)
-    The original code has been modified for Swag
-    See LICENCE.md for the corresponding licence.
-*/
 #global #[Swag.CanOverflow(true)]
 
 struct ErrInvalid {}
@@ -54,7 +48,7 @@ func readF64(str: string)->{ neg: bool, mantissa: u64, exp: s32, trunc: bool, ea
         c = dref buffer
         if c == dotSign
         {
-            if sawdot:
+            if sawdot do
                 break
             sawdot = true
             dp     = nd
@@ -62,7 +56,7 @@ func readF64(str: string)->{ neg: bool, mantissa: u64, exp: s32, trunc: bool, ea
         elif '0''u8 <= c and c <= '9''u8
         {
             sawDigits = true
-            if c == '0''u8 and nd == 0:
+            if c == '0''u8 and nd == 0 do
                 dp -= 1
             else
             {
@@ -79,15 +73,15 @@ func readF64(str: string)->{ neg: bool, mantissa: u64, exp: s32, trunc: bool, ea
                 }
             }
         }
-        else:
+        else do
             break
 
         cpt, buffer += 1
     }
 
-    if !sawDigits:
+    if !sawDigits do
         return result
-    if !sawdot:
+    if !sawdot do
         dp = nd
 
     // Exponent
@@ -95,7 +89,7 @@ func readF64(str: string)->{ neg: bool, mantissa: u64, exp: s32, trunc: bool, ea
     if cpt < countof and (c | 32) == 'e''u8
     {
         cpt, buffer += 1
-        if cpt >= countof:
+        if cpt >= countof do
             throw ErrInvalid{}
 
         var esign = 1
@@ -112,16 +106,16 @@ func readF64(str: string)->{ neg: bool, mantissa: u64, exp: s32, trunc: bool, ea
             c = dref buffer
         }
 
-        if cpt >= countof or c < '0''u8 or c > '9''u8:
+        if cpt >= countof or c < '0''u8 or c > '9''u8 do
             throw ErrInvalid{}
 
         var e = 0
         while cpt < countof
         {
             c = dref buffer
-            if c < '0''u8 or c > '9''u8:
+            if c < '0''u8 or c > '9''u8 do
                 break
-            if e < 10000:
+            if e < 10000 do
                 e = e * 10 + (c - '0''u8)
             buffer, cpt += 1
         }
@@ -129,7 +123,7 @@ func readF64(str: string)->{ neg: bool, mantissa: u64, exp: s32, trunc: bool, ea
         dp += e * esign
     }
 
-    if result.mantissa != 0:
+    if result.mantissa != 0 do
         result.exp = dp - ndMant
 
     result.eat = cpt
@@ -145,12 +139,12 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32)->{ f: f64, ok: bool }
 
     var result: retval
 
-    if mantissa >> f64info.mantbits != 0:
+    if mantissa >> f64info.mantbits != 0 do
         return result
 
     var exp = exponent
     var f   = cast(f64) mantissa
-    if neg:
+    if neg do
         f = -f
 
     switch
@@ -173,7 +167,7 @@ func atoF64Exact(neg: bool, mantissa: u64, exponent: s32)->{ f: f64, ok: bool }
         }
 
         // The exponent was really too large.
-        if f > 1e15 or f < -1e15:
+        if f > 1e15 or f < -1e15 do
             return result
 
         result.f  = f * f64Pow10[exp]
@@ -194,7 +188,7 @@ func atoF64(s: string)->{ value: f64, eat: u32 } throw
 {
     var result: retval
     let countof = @countof(s)
-    if !countof:
+    if !countof do
         return result
 
     /*if val, n, var ok = special(s); ok {
@@ -215,7 +209,7 @@ func atoF64(s: string)->{ value: f64, eat: u32 } throw
     }
 
     let (f, ok) = eiselLemire64(read.neg, read.mantissa, read.exp)
-    if !ok:
+    if !ok do
         throw ErrInvalid{}
     result.value = f
 
@@ -958,12 +952,12 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{ f: f64, ok: bool }
     var man = mantissa
     if man == 0
     {
-        if neg:
+        if neg do
             result.f = cast #bit (f64) 0x8000000000000000 // Negative zero.
         return result
     }
 
-    if exp10 < PowersOfTenMinExp10 or PowersOfTenMaxExp10 < exp10:
+    if exp10 < PowersOfTenMinExp10 or PowersOfTenMaxExp10 < exp10 do
         return result
 
     // Normalization.
@@ -986,10 +980,10 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{ f: f64, ok: bool }
         var mergedHi = xHi
         let mergedLo = xLo + yHi
 
-        if mergedLo < xLo:
+        if mergedLo < xLo do
             mergedHi += 1
 
-        if mergedHi & 0x1FF == 0x1FF and mergedLo + 1 == 0 and yLo + man < man:
+        if mergedHi & 0x1FF == 0x1FF and mergedLo + 1 == 0 and yLo + man < man do
             return result
 
         xHi = mergedHi
@@ -1002,7 +996,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{ f: f64, ok: bool }
     retExp2 -= 1'u64 ^ msb
 
     // Half-way Ambiguity.
-    if xLo == 0 and xHi & 0x1FF == 0 and retMantissa & 3 == 1:
+    if xLo == 0 and xHi & 0x1FF == 0 and retMantissa & 3 == 1 do
         return result
 
     // From 54 to 53 Bits.
@@ -1018,11 +1012,11 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s32)->{ f: f64, ok: bool }
     // f64 space. 0x7FF or above means that we're in Inf/NaN f64 space.
     // The if block is equivalent to (but has fewer branches than):
     //   if retExp2 <= 0 or retExp2 >= 0x7FF { etc }
-    if retExp2 - 1 >= 0x7FF - 1:
+    if retExp2 - 1 >= 0x7FF - 1 do
         return result
 
     var retBits = (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
-    if neg:
+    if neg do
         retBits |= 0x8000000000000000
     result.f  = cast #bit (f64) retBits
     result.ok = true

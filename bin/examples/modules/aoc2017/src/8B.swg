@@ -19,11 +19,11 @@ func day8B()
         @assert(re.match(l))
         var v0 = assume StrConv.toS32(re[3])
         let v1 = assume StrConv.toS32(re[6])
-        if !regs.contains(re[1]):
+        if !regs.contains(re[1]) do
             regs.add(re[1], 0)
-        if !regs.contains(re[4]):
+        if !regs.contains(re[4]) do
             regs.add(re[4], 0)
-        if re[2] == "dec":
+        if re[2] == "dec" do
             v0 = -v0
 
         let test  = regs[re[4]]

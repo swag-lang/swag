@@ -59,33 +59,33 @@ impl DateTime
     // Compares two DateTime values. Returns -1, 0, or 1.
     mtd const opCmp(other: DateTime)->s32
     {
-        if .year < other.year:
+        if .year < other.year do
             return -1
-        if .year > other.year:
+        if .year > other.year do
             return 1
-        if .month < other.month:
+        if .month < other.month do
             return -1
-        if .month > other.month:
+        if .month > other.month do
             return 1
-        if .day < other.day:
+        if .day < other.day do
             return -1
-        if .day > other.day:
+        if .day > other.day do
             return 1
-        if .hour < other.hour:
+        if .hour < other.hour do
             return -1
-        if .hour > other.hour:
+        if .hour > other.hour do
             return 1
-        if .minute < other.minute:
+        if .minute < other.minute do
             return -1
-        if .minute > other.minute:
+        if .minute > other.minute do
             return 1
-        if .second < other.second:
+        if .second < other.second do
             return -1
-        if .second > other.second:
+        if .second > other.second do
             return 1
-        if .millisecond < other.millisecond:
+        if .millisecond < other.millisecond do
             return -1
-        if .millisecond > other.millisecond:
+        if .millisecond > other.millisecond do
             return 1
         return 0
     }
@@ -93,19 +93,19 @@ impl DateTime
     // Returns true if this is a valid DateTime
     mtd const isValid()->bool
     {
-        if .year == 0 or .year > 9999:
+        if .year == 0 or .year > 9999 do
             return false
-        if .month == 0 or .month > 12:
+        if .month == 0 or .month > 12 do
             return false
-        if .day == 0 or .day > daysInMonth(.year, .month):
+        if .day == 0 or .day > daysInMonth(.year, .month) do
             return false
-        if .hour >= 24:
+        if .hour >= 24 do
             return false
-        if .minute >= 60:
+        if .minute >= 60 do
             return false
-        if .second >= 60:
+        if .second >= 60 do
             return false
-        if .millisecond >= 1000:
+        if .millisecond >= 1000 do
             return false
         return true
     }
@@ -137,7 +137,7 @@ impl DateTime
     private func parseU8(buf: &string, eat: &u32)->u16 throw
     {
         let (year, eat0, ovf) = StrConv.parseU8(buf)
-        if ovf:
+        if ovf do
             throw SyntaxError{}
         eat += eat0
         buf = Tokenize.eatCount(buf, cast(u64) eat0)
@@ -148,7 +148,7 @@ impl DateTime
     private func parseU16(buf: &string, eat: &u32)->u16 throw
     {
         let (year, eat0, ovf) = StrConv.parseU16(buf)
-        if ovf:
+        if ovf do
             throw SyntaxError{}
         eat += eat0
         buf = Tokenize.eatCount(buf, cast(u64) eat0)
@@ -158,7 +158,7 @@ impl DateTime
     // Parses a separator character from the buffer and updates the consumed character count
     private func parseSep(buf: &string, sep: u8, eat: &u32) throw
     {
-        if !@countof(buf) or buf[0] != sep:
+        if !@countof(buf) or buf[0] != sep do
             throw SyntaxError{}
         buf = Tokenize.eatCount(buf, 1)
         eat += 1
@@ -170,7 +170,7 @@ impl DateTime
         var result: retval
         var buf     = str
 
-        if !@countof(buf):
+        if !@countof(buf) do
             throw SyntaxError{}
 
         if @countof(buf) >= 1 and
@@ -192,7 +192,7 @@ impl DateTime
                 }
             }
 
-            if !done:
+            if !done do
                 throw SyntaxError{}
 
             done = false
@@ -212,7 +212,7 @@ impl DateTime
                 }
             }
 
-            if !done:
+            if !done do
                 throw SyntaxError{}
 
             parseSep(&buf, ' ', &result.eat)
@@ -221,7 +221,7 @@ impl DateTime
             result.value.year = parseU16(&buf, &result.eat)
 
             // Check day of week
-            if checkDate and dayOfWeek != result.value.dayOfWeek():
+            if checkDate and dayOfWeek != result.value.dayOfWeek() do
                 throw SyntaxError{}
         }
         elif @countof(buf) >= 10 and
@@ -285,7 +285,7 @@ impl DateTime
             }
         }
 
-        if checkDate and !result.value.isValid():
+        if checkDate and !result.value.isValid() do
             throw SyntaxError{}
 
         return result
@@ -373,7 +373,7 @@ impl StrConv.IConvert for DateTime
     mtd impl convert(buf: *ConcatBuffer, convFormat: StrConv.ConvertFormat, strFormat: string)
     {
         var str: String
-        if @countof(strFormat) == 0 or @countof(strFormat) > 1:
+        if @countof(strFormat) == 0 or @countof(strFormat) > 1 do
             str = .toString(.DateTime)
         else
         {

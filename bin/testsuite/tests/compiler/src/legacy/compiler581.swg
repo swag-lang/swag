@@ -23,9 +23,9 @@ impl Point
 {
     func opCmp(me, other: Point)->s32
     {
-        if me.x < other.x or me.y < other.y:
+        if me.x < other.x or me.y < other.y do
             return -1
-        if me.x > other.x or me.y > other.y:
+        if me.x > other.x or me.y > other.y do
             return 1
         return 0
     }

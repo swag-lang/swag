@@ -11,9 +11,9 @@ func toto(stmt: #code void)
         #inject(stmt)
     }
 
-    for 5:
+    for 5 do
         titi(@index)
-    for 5:
+    for 5 do
         titi(@index)
 }
 

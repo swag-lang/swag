@@ -17,11 +17,11 @@ func entry(th: Thread)
 #test
 {
     var th: [N] Thread
-    foreach &t in th:
+    foreach &t in th do
         catch createThread(t, &entry)
-    foreach &t in th:
+    foreach &t in th do
         catch t.start()
-    foreach &t in th:
+    foreach &t in th do
         t.wait()
     @assert(G == N * ITER)
 }

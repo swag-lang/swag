@@ -20,15 +20,15 @@ impl Image
         let srcY = t < 0 ? -t : 0
 
         var srcW = .width8
-        if l < 0:
+        if l < 0 do
             srcW += l * .bpp8
-        if r < 0:
+        if r < 0 do
             srcW += r * .bpp8
 
         var srcH = .height
-        if t < 0:
+        if t < 0 do
             srcH += t
-        if b < 0:
+        if b < 0 do
             srcH += b
 
         var dstPix = dstImage.pixels.buffer + dstY * dstImage.width8

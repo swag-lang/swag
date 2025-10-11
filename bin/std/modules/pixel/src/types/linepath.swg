@@ -70,7 +70,7 @@ public impl LinePath
     mtd lineTo(x, y: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint) do
             return
 
         var elem: Element = undefined
@@ -85,7 +85,7 @@ public impl LinePath
     mtd curveTo(x, y: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint) do
             return
 
         var elem: Element = undefined
@@ -101,7 +101,7 @@ public impl LinePath
     mtd bezierTo(x, y: f32, ctx, cty: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint) do
             return
 
         var elem: Element = undefined
@@ -118,7 +118,7 @@ public impl LinePath
     mtd bezierTo(x, y: f32, ct1x, ct1y: f32, ct2x, ct2y: f32)
     {
         let newEndPoint = Vector2{x, y}
-        if newEndPoint.isEqualEpsilon(.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint) do
             return
 
         var elem: Element = undefined
@@ -135,16 +135,16 @@ public impl LinePath
     mtd arcTo(centerX, centerY: f32, radiusX, radiusY: f32, initAngle, maxAngle: Math.Angle)
     {
         var ia = initAngle.rad
-        while ia < 0:
+        while ia < 0 do
             ia += Math.ConstF32.TwoPi
         var ma = maxAngle.rad
-        while ma < 0:
+        while ma < 0 do
             ma += Math.ConstF32.TwoPi
-        while ma < ia:
+        while ma < ia do
             ma += Math.ConstF32.TwoPi
 
         let newEndPoint = Vector2{centerX + (Math.sin(ma) * radiusX), centerY + (-Math.cos(ma) * radiusY)}
-        if newEndPoint.isEqualEpsilon(.endPoint):
+        if newEndPoint.isEqualEpsilon(.endPoint) do
             return
 
         var elem: Element = undefined
@@ -166,15 +166,15 @@ public impl LinePath
     // Will add a line or a curve to the first point if necessary
     mtd close()
     {
-        if .isClosed or !.elements.count:
+        if .isClosed or !.elements.count do
             return
 
         let v = .endPoint - .startPoint
         if v.lengthSquared() >= 0.5 * 0.5
         {
-            if .elements.backPtr().type == .Curve:
+            if .elements.backPtr().type == .Curve do
                 .curveTo(.startPoint.x, .startPoint.y)
-            else:
+            else do
                 .lineTo(.startPoint.x, .startPoint.y)
         }
 
@@ -271,7 +271,7 @@ public impl LinePath
     // Initialize the path with an arc
     mtd setArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: Math.Angle)
     {
-        if isZeroEpsilon(endAngle.rad - startAngle.rad):
+        if isZeroEpsilon(endAngle.rad - startAngle.rad) do
             return
 
         let cX = Math.round(centerX)
@@ -316,9 +316,9 @@ public impl LinePath
     mtd flatten(quality = PaintQuality.Normal)
     {
         // Already done ?
-        if .isPolyOnly:
+        if .isPolyOnly do
             return
-        if !.isDirty and .flattenQuality == quality and .isFlatten:
+        if !.isDirty and .flattenQuality == quality and .isFlatten do
             return
 
         .isDirty        = false
@@ -328,7 +328,7 @@ public impl LinePath
         .bvMin, .bvMax = .startPoint
         .clearCache()
 
-        if !.elements.count:
+        if !.elements.count do
             return
 
         .endPosBuffer = .startPoint
@@ -467,7 +467,7 @@ impl LinePath
         // Calculate chord length
         let chordLength = startPt.distanceTo(endPt)
 
-        if chordLength < tolerance:
+        if chordLength < tolerance do
             return 1 // Very short curve
 
         // For cubic polynomials, we need to estimate maximum curvature
@@ -532,7 +532,7 @@ impl LinePath
         // Calculate distance from control point to chord line
         let deviation = Geometry.distanceToLine(p1, p0, p2)
 
-        if deviation < tolerance:
+        if deviation < tolerance do
             return 1 // Curve is already flat enough
 
         // For quadratic curves, the relationship is more direct
@@ -582,7 +582,7 @@ impl LinePath
         let chord       = Vector2{x: p3.x - p0.x, y: p3.y - p0.y}
         let chordLength = chord.length()
 
-        if chordLength < tolerance:
+        if chordLength < tolerance do
             return 1 // Very short curve
 
         // Calculate maximum deviation of control points from chord
@@ -639,7 +639,7 @@ impl LinePath
     // Calculate optimal number of segments based on arc properties
     func calculateFlattenArcSegments(angleSpan: f32, radius: f32, quality: PaintQuality)->u32
     {
-        if radius < 0.1:
+        if radius < 0.1 do
             return 1
 
         let minDist = getFlattenDistance(quality)

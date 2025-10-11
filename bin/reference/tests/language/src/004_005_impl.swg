@@ -10,9 +10,9 @@ and organized way to encapsulate logic related to the enum.
 // Define an enum RGB with three possible values
 enum RGB
 {
-    R   // Represents the Red color
-    G   // Represents the Green color
-    B   // Represents the Blue color
+    R     // Represents the Red color
+    G     // Represents the Green color
+    B     // Represents the Blue color
 }
 
 /**

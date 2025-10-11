@@ -93,7 +93,7 @@ func ticksToDate(ticks: Ticks)->{ year: u16, month: u16, day: u16 }
     // y100 = number of whole 100-year periods within 400-year period
     var y100 = n / DaysPer100Years
     // Last 100-year period has an extra day, so decrement result if 4
-    if y100 == 4:
+    if y100 == 4 do
         y100 = 3
     // n = day number within 100-year period
     n -= y100 * DaysPer100Years
@@ -104,7 +104,7 @@ func ticksToDate(ticks: Ticks)->{ year: u16, month: u16, day: u16 }
     // y1 = number of whole years within 4-year period
     var y1 = n / DaysPerYear
     // Last year has an extra day, so decrement result if 4
-    if y1 == 4:
+    if y1 == 4 do
         y1 = 3
     // n = day number within year
     n -= y1 * DaysPerYear
@@ -117,7 +117,7 @@ func ticksToDate(ticks: Ticks)->{ year: u16, month: u16, day: u16 }
     // estimate for the month
     var m = (n >> 5) + 1
     // m = 1-based month number
-    while n >= days[m]:
+    while n >= days[m] do
         m += 1
 
     var result: retval = undefined
@@ -137,7 +137,7 @@ func isLeapYear(year: u16)->bool
 func daysInMonth(year, month: u16)->u16
 {
     Debug.assert(1 <= month and month <= 12)
-    if isLeapYear(year):
+    if isLeapYear(year) do
         return cast() (DaysToMonth366[month] - DaysToMonth366[month - 1])
     return cast() (DaysToMonth365[month] - DaysToMonth365[month - 1])
 }

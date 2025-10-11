@@ -11,13 +11,13 @@ using Core.Input
     while false
     {
         assume k.update()
-        if k.isButtonJustPressed(GamePadButton.RightThumbstickDown):
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickDown) do
             @print("down\n")
-        if k.isButtonJustPressed(GamePadButton.RightThumbstickUp):
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickUp) do
             @print("up\n")
-        if k.isButtonJustPressed(GamePadButton.RightThumbstickLeft):
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickLeft) do
             @print("left\n")
-        if k.isButtonJustPressed(GamePadButton.RightThumbstickRight):
+        if k.isButtonJustPressed(GamePadButton.RightThumbstickRight) do
             @print("right\n")
     }
 }

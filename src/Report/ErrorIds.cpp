@@ -540,7 +540,7 @@ void initErrors()
     SWAG_ERROR(Err0419, "[[Swag.CompilerMsgMask]] parameter missing for [[#message]]                                            $ ");
     SWAG_ERROR(Err0420, "[[#uniq]] missing trailing number ([[#uniq0]], [[#uniq1]], etc.)                                       $ ");
     SWAG_ERROR(Err0423, "closing [[%s]] %s missing                                                                              $ ");
-    SWAG_ERROR(Err0424, "[[:]] or [[{]] missing                                                                                 $ ");
+    SWAG_ERROR(Err0424, "[[do]] or [[{]] missing                                                                                $ ");
     SWAG_ERROR(Err0425, "[[(]] missing to start [[%s]] arguments, got $$TKN$$                                                   $ ");
     SWAG_ERROR(Err0426, "[[(]] missing to start parameters, got $$TKN$$                                                         $ ");
     SWAG_ERROR(Err0427, "[[in]] missing after [[for]] variable [[%s]]                                                           $ hint: write [[for variable in count]]");

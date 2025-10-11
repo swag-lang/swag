@@ -55,7 +55,7 @@ impl Vector2
             .x /= other.x
             .y /= other.y
         }
-        #else:
+        #else do
             #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
@@ -84,7 +84,7 @@ impl Vector2
             .x /= value
             .y /= value
         }
-        #else:
+        #else do
             #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
@@ -93,15 +93,15 @@ impl Vector2
     #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(other: Vector2)->Vector2
     {
-        #if op == "+":
+        #if op == "+" do
             return Vector2{.x + other.x, .y + other.y}
-        #elif op == "-":
+        #elif op == "-" do
             return Vector2{.x - other.x, .y - other.y}
-        #elif op == "*":
+        #elif op == "*" do
             return Vector2{.x * other.x, .y * other.y}
-        #elif op == "/":
+        #elif op == "/" do
             return Vector2{.x / other.x, .y / other.y}
-        #else:
+        #else do
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
@@ -110,15 +110,15 @@ impl Vector2
     #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(value: f32)->Vector2
     {
-        #if op == "+":
+        #if op == "+" do
             return Vector2{.x + value, .y + value}
-        #elif op == "-":
+        #elif op == "-" do
             return Vector2{.x - value, .y - value}
-        #elif op == "*":
+        #elif op == "*" do
             return Vector2{.x * value, .y * value}
-        #elif op == "/":
+        #elif op == "/" do
             return Vector2{.x / value, .y / value}
-        #else:
+        #else do
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
@@ -127,9 +127,9 @@ impl Vector2
     #[Swag.Inline]
     mtd(op: string) const opUnary()->Vector2
     {
-        #if op == "-":
+        #if op == "-" do
             return Vector2{-.x, -.y}
-        #else:
+        #else do
             #error("unsupported unary operation [[" ++ op ++ "]]")
     }
 
@@ -290,7 +290,7 @@ impl Vector2
     mtd const toNormalizedSafe()->Vector2
     {
         var norm = sqrt((.x * .x) + (.y * .y))
-        if Math.isZeroEpsilon(norm):
+        if Math.isZeroEpsilon(norm) do
             return Zero
         norm = 1 / norm
         return Vector2{.x * norm, .y * norm}
@@ -372,7 +372,7 @@ impl Vector2
     {
         var angle = Math.acos(.cosAngleTo(other))
         let sign  = (.x * other.y) - (.y * other.x)
-        if sign > 0:
+        if sign > 0 do
             angle = ConstF32.TwoPi - angle
         return angle
     }
@@ -408,9 +408,9 @@ impl Vector2
     mtd clampLength(minLength, maxLength: f32)
     {
         let len = .length()
-        if len < minLength:
+        if len < minLength do
             .setLength(minLength)
-        elif len > maxLength:
+        elif len > maxLength do
             .setLength(maxLength)
     }
 
@@ -419,9 +419,9 @@ impl Vector2
     mtd const clampedLength(minLength, maxLength: f32)->Vector2
     {
         let len = .length()
-        if len < minLength:
+        if len < minLength do
             return .toNormalized() * minLength
-        elif len > maxLength:
+        elif len > maxLength do
             return .toNormalized() * maxLength
         return dref me
     }
@@ -461,7 +461,7 @@ impl Vector2
     {
         let dotProduct    = .dot(other)
         let otherLengthSq = other.lengthSquared()
-        if Math.isZeroEpsilon(otherLengthSq):
+        if Math.isZeroEpsilon(otherLengthSq) do
             return Zero
         return other * (dotProduct / otherLengthSq)
     }
@@ -500,9 +500,9 @@ impl Vector2
     {
         let dir  = target - dref me
         let dist = dir.length()
-        if dist <= maxDistance:
+        if dist <= maxDistance do
             dref me = target
-        else:
+        else do
             dref me += dir * (maxDistance / dist)
     }
 
@@ -512,7 +512,7 @@ impl Vector2
     {
         let dir  = target - dref me
         let dist = dir.length()
-        if dist <= maxDistance:
+        if dist <= maxDistance do
             return target
         return dref me + (dir * (maxDistance / dist))
     }

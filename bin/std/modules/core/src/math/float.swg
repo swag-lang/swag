@@ -62,7 +62,7 @@ alias ConstF64 = Const'f64
     func moveTowards(current, target, speed: f32)->f32
     {
         let distance = target - current
-        if (abs(distance) <= speed):
+        if (abs(distance) <= speed) do
             return target
         return current + sign(distance) * speed
     }
@@ -70,7 +70,7 @@ alias ConstF64 = Const'f64
     func moveTowards(current, target, speed: f64)->f64
     {
         let distance = target - current
-        if (abs(distance) <= speed):
+        if (abs(distance) <= speed) do
             return target
         return current + sign(distance) * speed
     }
@@ -94,9 +94,9 @@ alias ConstF64 = Const'f64
         let originalTo = target
 
         // Clamp maximum change (optional speed limit)
-        #if T == f32:
+        #if T == f32 do
             let maxChange = Swag.F32.Max * smoothTimeActual
-        #else:
+        #else do
             let maxChange = Swag.F64.Max * smoothTimeActual
         let clampedChange = Math.clamp(change, -maxChange, maxChange)
         let newTarget     = current - clampedChange
@@ -183,14 +183,14 @@ alias ConstF64 = Const'f64
     // Calculates the smallest power of 10 greater than or equal to the given number val
     func powerOf10(val: f32)->s32
     {
-        if val == 0:
+        if val == 0 do
             return 1
         return cast() pow(10, floor(log10(val)) + 1)
     }
 
     func powerOf10(val: f64)->s32
     {
-        if val == 0:
+        if val == 0 do
             return 1
         return cast() pow(10, floor(log10(val)) + 1)
     }

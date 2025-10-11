@@ -88,7 +88,7 @@
       "patterns": [
         {
           "name": "invalid",
-          "match": "\\b(not|do)\\b"
+          "match": "\\b(not)\\b"
         }
       ]
     },
@@ -96,7 +96,7 @@
       "patterns": [
         {
           "name": "keyword.control",
-          "match": "\\b(if|else|elif|for|while|switch|defer|foreach|where|verify|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as|is)\\b"
+          "match": "\\b(do|if|else|elif|for|while|switch|defer|foreach|where|verify|break|fallthrough|unreachable|return|case|continue|default|and|or|orelse|to|until|in|as|is)\\b"
         }
       ]
     },

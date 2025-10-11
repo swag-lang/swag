@@ -80,9 +80,9 @@ impl IActionUI for ActionFile
         case DeleteCapture:
             evt.setFlags |= .Name | .Disabled | .Icon
             evt.name = "Delete"
-            if main.libraryMode:
+            if main.libraryMode do
                 evt.disabled = !main.libWnd.hasSelected()
-            else:
+            else do
                 evt.disabled = !capture
             evt.icon = main.getTheme().getIcon24(.Remove)
 
@@ -107,9 +107,9 @@ impl IActionUI for ActionFile
         case FileDetails:
             evt.setFlags |= .Name | .Disabled
             evt.name = "File Details"
-            if main.libraryMode:
+            if main.libraryMode do
                 evt.disabled = !main.libWnd.hasSelected()
-            else:
+            else do
                 evt.disabled = !capture
         }
 
@@ -175,7 +175,7 @@ impl IActionUI for ActionFile
                     dlg.setExtension(chk)
                 }
 
-                if MessageDlg.confirm(main.surface, txt, options: opt) != Dialog.BtnYes:
+                if MessageDlg.confirm(main.surface, txt, options: opt) != Dialog.BtnYes do
                     break
             }
 
@@ -187,9 +187,9 @@ impl IActionUI for ActionFile
             let res = MessageDlg.confirm(main.surface, "This will delete the capture file(s).")
             if res == MessageDlg.BtnYes
             {
-                if main.libraryMode:
+                if main.libraryMode do
                     main.libWnd.removeSelected()
-                else:
+                else do
                     main.recentWnd.removeRecent()
             }
 
@@ -236,7 +236,7 @@ impl IActionUI for ActionFile
             lt.dockStyle = .Center
             lt.padding   = 5
             addLine(lt, "<b>File<b>", Format.toString("%", capture.file))
-            if capture.linkedImage != null:
+            if capture.linkedImage != null do
                 addLine(lt, "<b>Linked Image<b>", Format.toString("%", capture.linkedImage))
             addLine(lt, "<b>Image Size<b>", Format.toString("%x%", capture.width, capture.height))
             addLine(lt, "<b>File Size<b>", StrConv.toDisplaySize(catch File.getInfo(capture.file).size))
@@ -269,13 +269,13 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(.surface, opt)
-        if dlg.doModal() != Dialog.BtnOk:
+        if dlg.doModal() != Dialog.BtnOk do
             return
 
         let img = catch Image.load(dlg.getSelectedName())
-        if @err != null:
+        if @err != null do
             MessageDlg.error(.surface, "Failed to load image")
-        else:
+        else do
             .newCapture(img, dlg.getSelectedName())
     }
 
@@ -312,7 +312,7 @@ impl MainWnd
         capture.changed        = true
         capture.linkedUpToDate = true
         catch capture.save()
-        if .recentWnd:
+        if .recentWnd do
             .recentWnd.updateRecent()
 
         let txt = Format.toString("Image <url>%</url> has been saved", nameFile)
@@ -326,7 +326,7 @@ impl MainWnd
     mtd saveAsImage(linked = false)
     {
         let fileName = .getSaveAsImageName()
-        if fileName.isEmpty():
+        if fileName.isEmpty() do
             return
         .doSaveAsImage(fileName, linked)
     }
@@ -353,9 +353,9 @@ impl MainWnd
         }
 
         let dlg = FileDlg.create(.surface, opt)
-        if .inPlaceEdit:
+        if .inPlaceEdit do
             dlg.surface.setTopMost()
-        if dlg.doModal() != Dialog.BtnOk:
+        if dlg.doModal() != Dialog.BtnOk do
             return ""
         return dlg.getSelectedName()
     }
@@ -365,7 +365,7 @@ impl MainWnd
         let capture = assume .getCapture()
         Cursor.wait()
         var img = capture.toImage()
-        if linked:
+        if linked do
             capture.linkedImage = fileName
         .doSaveImage(capture, &img, fileName)
     }
@@ -379,7 +379,7 @@ impl MainWnd
         let edit1 = EditCtrl.create(dlg, "Height", "512", {90, 47}, flags: .RightAlign)
         edit0.edit.setInputU64(16, 4096)
         edit1.edit.setInputU64(16, 4096)
-        if dlg.doModal() != Dialog.BtnOk:
+        if dlg.doModal() != Dialog.BtnOk do
             return
 
         let (w, ?, ?) = catch StrConv.parseS32(edit0.edit.text)

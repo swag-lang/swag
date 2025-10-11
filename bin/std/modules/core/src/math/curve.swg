@@ -57,7 +57,7 @@ private func solveQuadratic(a: f32, b: f32, c: f32)->Array'f32
         if Math.abs(b) > 1e-6
         {
             let root = -c / b
-            if root >= 0.0 and root <= 1.0:
+            if root >= 0.0 and root <= 1.0 do
                 roots.add(root)
         }
     }
@@ -71,9 +71,9 @@ private func solveQuadratic(a: f32, b: f32, c: f32)->Array'f32
             let root1 = (-b + sqrtD) / (2.0 * a)
             let root2 = (-b - sqrtD) / (2.0 * a)
 
-            if root1 >= 0.0 and root1 <= 1.0:
+            if root1 >= 0.0 and root1 <= 1.0 do
                 roots.add(root1)
-            if root2 >= 0.0 and root2 <= 1.0:
+            if root2 >= 0.0 and root2 <= 1.0 do
                 roots.add(root2)
         }
     }

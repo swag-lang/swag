@@ -67,7 +67,7 @@ impl IActionUI for ActionGlobal
             main.swapLibraryMode()
 
         case Exit:
-            if main.libWnd:
+            if main.libWnd do
                 main.libWnd.requestClose()
             main.postQuitEvent()
 
@@ -93,7 +93,7 @@ impl MainWnd
 
         .libWnd.show(.libraryMode)
 
-        if .libraryMode:
+        if .libraryMode do
             .libWnd.fill()
 
         .applyLayout()

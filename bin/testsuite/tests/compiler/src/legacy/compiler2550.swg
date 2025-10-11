@@ -3,9 +3,9 @@ struct ErrToto {}
 
 func toto()
 {
-    #if false:
+    #if false do
         throw ErrToto{}
-    #else:
+    #else do
         throw ErrToto{}
 }
 

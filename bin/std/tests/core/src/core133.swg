@@ -3,7 +3,7 @@ using Core
 #test
 {
     var arr: Array'u32
-    for 10:
+    for 10 do
         arr.add(cast(u32) @index)
     arr.sort()
 

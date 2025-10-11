@@ -11,15 +11,15 @@ and efficient way to process each item in a collection, which can be an array, s
     foreach value in "ABC"
     {
         // '@index' is available to store the loop index.
-        let a = @index                                     // Index of the current iteration
+        let a = @index // Index of the current iteration
         switch a
         {
         case 0:
-            @assert(value == 'A')                          // Check if the first value is 'A'
+            @assert(value == 'A') // Check if the first value is 'A'
         case 1:
-            @assert(value == 'B')                          // Check if the second value is 'B'
+            @assert(value == 'B') // Check if the second value is 'B'
         case 2:
-            @assert(value == 'C')                          // Check if the third value is 'C'
+            @assert(value == 'C') // Check if the third value is 'C'
         }
     }
 }
@@ -34,15 +34,15 @@ especially in cases involving nested loops or complex data structures.
 {
     foreach value, index in "ABC"
     {
-        let a = index                                      // The current loop index
+        let a = index // The current loop index
         switch a
         {
         case 0:
-            @assert(value == 'A')                          // Check if the first value is 'A'
+            @assert(value == 'A') // Check if the first value is 'A'
         case 1:
-            @assert(value == 'B')                          // Check if the second value is 'B'
+            @assert(value == 'B') // Check if the second value is 'B'
         case 2:
-            @assert(value == 'C')                          // Check if the third value is 'C'
+            @assert(value == 'C') // Check if the third value is 'C'
         }
     }
 }
@@ -57,16 +57,16 @@ the default aliases `#alias0` for the value and `#alias1` for the index can be u
 {
     foreach "ABC"
     {
-        let a = #alias1                                    // Default alias for the index
-        @assert(a == @index)                               // Ensure alias matches the index
+        let a = #alias1 // Default alias for the index
+        @assert(a == @index) // Ensure alias matches the index
         switch a
         {
         case 0:
-            @assert(#alias0 == 'A')                        // Check if the first alias is 'A'
+            @assert(#alias0 == 'A') // Check if the first alias is 'A'
         case 1:
-            @assert(#alias0 == 'B')                        // Check if the second alias is 'B'
+            @assert(#alias0 == 'B') // Check if the second alias is 'B'
         case 2:
-            @assert(#alias0 == 'C')                        // Check if the third alias is 'C'
+            @assert(#alias0 == 'C') // Check if the third alias is 'C'
         }
     }
 }
@@ -87,17 +87,17 @@ when processing a collection from the last element to the first.
         switch cpt
         {
         case 0:
-            @assert(value == 'C')                          // First value should be 'C'
-            @assert(@index == 2)                           // Index should be 2
+            @assert(value == 'C') // First value should be 'C'
+            @assert(@index == 2) // Index should be 2
         case 1:
-            @assert(value == 'B')                          // Second value should be 'B'
-            @assert(@index == 1)                           // Index should be 1
+            @assert(value == 'B') // Second value should be 'B'
+            @assert(@index == 1) // Index should be 1
         case 2:
-            @assert(value == 'A')                          // Third value should be 'A'
-            @assert(@index == 0)                           // Index should be 0
+            @assert(value == 'A') // Third value should be 'A'
+            @assert(@index == 0) // Index should be 0
         }
 
-        cpt += 1                                           // Increment the counter
+        cpt += 1 // Increment the counter
     }
 }
 
@@ -109,13 +109,13 @@ enabling straightforward processing of each element.
 
 #test
 {
-    var array = [10, 20, 30]                               // Define an array of integers
+    var array = [10, 20, 30] // Define an array of integers
 
     var result = 0
-    foreach it in array:                                   // Iterate over each element in the array
-        result += it                                       // Accumulate the values
+    foreach it in array do  // Iterate over each element in the array
+        result += it // Accumulate the values
 
-    @assert(result == 10 + 20 + 30)                        // Ensure the sum matches the expected result
+    @assert(result == 10 + 20 + 30) // Ensure the sum matches the expected result
 }
 
 /**
@@ -125,13 +125,13 @@ enabling straightforward processing of each element.
 
 #test
 {
-    var array: [2, 2] s32 = [[10, 20], [30, 40]]           // Define a 2x2 array
+    var array: [2, 2] s32 = [[10, 20], [30, 40]] // Define a 2x2 array
 
     var result = 0
-    foreach it in array:                                   // Iterate over each element in the 2D array
-        result += it                                       // Accumulate the values
+    foreach it in array do  // Iterate over each element in the 2D array
+        result += it // Accumulate the values
 
-    @assert(result == 10 + 20 + 30 + 40)                   // Ensure the sum matches the expected result
+    @assert(result == 10 + 20 + 30 + 40) // Ensure the sum matches the expected result
 }
 
 /**
@@ -142,21 +142,21 @@ enabling in-place modification of the elements.
 
 #test
 {
-    var array: [2, 2] s32 = [[1, 2], [3, 4]]               // Define a 2x2 array
+    var array: [2, 2] s32 = [[1, 2], [3, 4]] // Define a 2x2 array
 
     var result = 0
     foreach &it in array
     {
-        result += dref it                                  // Accumulate the values
-        dref it = 555                                      // Modify each element in place
+        result += dref it // Accumulate the values
+        dref it = 555 // Modify each element in place
     }
 
-    @assert(result == 1 + 2 + 3 + 4)                       // Ensure the sum matches the expected result
+    @assert(result == 1 + 2 + 3 + 4) // Ensure the sum matches the expected result
 
-    @assert(array[0, 0] == 555)                            // Verify the first element is modified
-    @assert(array[0, 1] == 555)                            // Verify the second element is modified
-    @assert(array[1, 0] == 555)                            // Verify the third element is modified
-    @assert(array[1, 1] == 555)                            // Verify the fourth element is modified
+    @assert(array[0, 0] == 555) // Verify the first element is modified
+    @assert(array[0, 1] == 555) // Verify the second element is modified
+    @assert(array[1, 0] == 555) // Verify the third element is modified
+    @assert(array[1, 1] == 555) // Verify the fourth element is modified
 }
 
 /**
@@ -167,29 +167,29 @@ This approach is efficient for conditionally applying logic to only the elements
 
 #test
 {
-    var array: [?] s32 = [1, 2, 3, 4]                       // Define an array of integers
+    var array: [?] s32 = [1, 2, 3, 4]     // Define an array of integers
     var result = 0
 
     // Process only even values using `where`.
-    foreach value in array where value & 1 == 0:
-        result += value                                    // Accumulate only even values
+    foreach value in array where value & 1 == 0 do
+        result += value // Accumulate only even values
 
-    @assert(result == 6)                                   // Ensure the sum of even values is correct
+    @assert(result == 6) // Ensure the sum of even values is correct
 
     // Equivalent using an if statement inside the `foreach` loop:
     result = 0
-    foreach value in array:
-        if value & 1 == 0:                                 // Check if the value is even
-            result += value                                // Accumulate even values
-    @assert(result == 6)                                   // Ensure the sum of even values is correct
+    foreach value in array do
+        if value & 1 == 0 do  // Check if the value is even
+            result += value // Accumulate even values
+    @assert(result == 6) // Ensure the sum of even values is correct
 
     // Equivalent using `continue` to skip odd values:
     result = 0
     foreach value in array
     {
-        if (value & 1) != 0:                               // Skip odd values
+        if (value & 1) != 0 do  // Skip odd values
             continue
-        result += value                                    // Accumulate even values
+        result += value // Accumulate even values
     }
-    @assert(result == 6)                                   // Ensure the sum of even values is correct
+    @assert(result == 6) // Ensure the sum of even values is correct
 }

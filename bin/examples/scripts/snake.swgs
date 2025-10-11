@@ -23,7 +23,7 @@ func paintSnake(painter: *Painter)
         let y = p.y * ElemSize
 
         painter.fillCircle(x, y, ElemSize * scale, Argb.Black)
-        if @index == 0:
+        if @index == 0 do
             painter.fillCircle(x, y, ElemSize * 0.45, Argb.Green)
         scale -= 0.025
         scale = Math.max(scale, 0.4)
@@ -76,12 +76,12 @@ func updateCollisions()->bool
 func updateSnakePosition()
 {
     let curTime = Time.nowMilliseconds()
-    if curTime - g_Time < SnakeTime:
+    if curTime - g_Time < SnakeTime do
         return
 
     g_Time = curTime
 
-    if updateCollisions():
+    if updateCollisions() do
         return
 
     var newHeadPos = g_Snake[0]
@@ -177,7 +177,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test"):
+    func test(app: *Application) => if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 512, title: "Snake", hook: &onEvent, init: &test)
 }

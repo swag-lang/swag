@@ -8,11 +8,11 @@ using Core
 
     Jobs.parallelVisit(|buffer| x.toSlice())
     {
-        if !buffer:
+        if !buffer do
             return
         buffer[0] = 666
     }
 
-    for x:
+    for x do
         @assert(x[@index] == 666)
 }

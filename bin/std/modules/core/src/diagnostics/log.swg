@@ -128,7 +128,7 @@ impl Log
     mtd print(text: string, loc = #callerlocation)
     {
         // Get this first, to have the time of the call, before the lock
-        if .flags & (.Date | .Time):
+        if .flags & (.Date | .Time) do
             .dt = Time.DateTime.now()
 
         Sync.scopedLock(&.lock)

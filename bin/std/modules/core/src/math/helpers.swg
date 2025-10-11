@@ -39,9 +39,9 @@ func(T) clamp(x, low, up: T)->T => @max(@min(x, up), low)
 #[ConstExpr, Inline]
 func(T) bigEndianToNative(x: T)->T
 {
-    #if BIG_ENDIAN:
+    #if BIG_ENDIAN do
         return x
-    #else:
+    #else do
         return Math.byteswap(x)
 }
 
@@ -50,9 +50,9 @@ func(T) bigEndianToNative(x: T)->T
 #[ConstExpr, Inline]
 func(T) nativeToBigEndian(x: T)->T
 {
-    #if BIG_ENDIAN:
+    #if BIG_ENDIAN do
         return x
-    #else:
+    #else do
         return Math.byteswap(x)
 }
 
@@ -61,8 +61,8 @@ func(T) nativeToBigEndian(x: T)->T
 #[ConstExpr, Inline]
 func(T) littleEndianToNative(x: T)->T
 {
-    #if BIG_ENDIAN:
+    #if BIG_ENDIAN do
         return Math.byteswap(x)
-    #else:
+    #else do
         return x
 }

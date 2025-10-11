@@ -1,7 +1,7 @@
 func(T, N: u64) dot(x, y: const [N] T)->T
 {
     var result: T
-    for i in x:
+    for i in x do
         result += x[i] * y[i]
     return result
 }

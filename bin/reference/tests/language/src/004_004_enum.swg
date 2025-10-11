@@ -13,20 +13,20 @@ Enums in Swag allow you to define a set of named values. Unlike C/C++, enum valu
 
     enum Values1
     {
-        A,
-        B,
+        A
+        B
     }
 
     // The last comma is not necessary
     enum Values2
     {
-        A,
+        A
         B
     }
 
     enum Values3 { A, B }
-    enum Values4 { A; B; }
-    enum Values5 { A; B }
+    enum Values4 { A, B }
+    enum Values5 { A, B }
 }
 
 /**
@@ -109,8 +109,8 @@ If you omit a value after assigning a specific one, it will be assigned the prev
     enum Value: u32
     {
         A = 10
-        B // Will be 11
-        C // Will be 12
+        B          // Will be 11
+        C          // Will be 12
     }
 
     #assert(Value.A == 10)
@@ -203,10 +203,10 @@ Enums can be used as flags if declared with the `#[Swag.EnumFlags]` attribute. F
     #[Swag.EnumFlags]
     enum MyFlags: u8
     {
-        A   // First value is 1
-        B   // Value is 2
-        C   // Value is 4
-        D   // Value is 8
+        A     // First value is 1
+        B     // Value is 2
+        C     // Value is 4
+        D     // Value is 8
     }
 
     #assert(MyFlags.A == 0b00000001)
@@ -295,7 +295,7 @@ An **automatic cast** occurs when converting a nested enum to its parent enum. F
 */
 #test
 {
-    const E0: MyErrors    = MyErrors.BasicErrors.FailedToLoad
+    const E0: MyErrors = MyErrors.BasicErrors.FailedToLoad
     const E1: BasicErrors = BasicErrors.FailedToLoad
 
     func toto(err: MyErrors)
@@ -319,7 +319,7 @@ You can use `#[Swag.EnumIndex]` to enable an enum value to be used directly as a
     enum MyIndex { First, Second, Third }
 
     const Array = [0, 1, 2]
-    const Valu = Array[MyIndex.First]   // No need to cast 'MyIndex.First'
+    const Valu  = Array[MyIndex.First]     // No need to cast 'MyIndex.First'
 }
 
 /**
@@ -350,7 +350,7 @@ The enum type is not necessary in the assignment expression when declaring a var
 */
 #test
 {
-    enum Values { A; B; }
+    enum Values { A, B }
 
     // The explicit form
     let x: Values = Values.A
@@ -368,21 +368,25 @@ The enum type is not necessary in a `case` expression of a `switch` block, as it
 */
 #test
 {
-    enum Values { A; B; }
+    enum Values { A, B }
     let x = Values.A
 
     // The explicit form
     switch x
     {
-    case Values.A: break
-    case Values.B: break
+    case Values.A:
+        break
+    case Values.B:
+        break
     }
 
     // The simplified form
     switch x
     {
-    case A: break
-    case B: break
+    case A:
+        break
+    case B:
+        break
     }
 }
 
@@ -424,7 +428,7 @@ In most cases, the simplified `.Value` syntax also works when passing enum value
 */
 #test
 {
-    enum Values { A; B; }
+    enum Values { A, B }
     func toto(v1, v2: Values) {}
     toto(.A, .B)
 }
@@ -444,13 +448,19 @@ The `for` construct allows you to iterate over all values in an enum.
 */
 #test
 {
-    enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B
+    enum RGB
+    {
+        R
+        G
+        B
+         // Define a simple enum with three values: R, G, and B
+    }
 
     // Counting Enum Values
     var cpt = 0
-    for idx in RGB:                       // Iterate over all enum values using 'for'
-        cpt += 1                          // Increment counter for each value
-    @assert(cpt == 3)                     // Assert that the enum has exactly 3 values
+    for idx in RGB do  // Iterate over all enum values using 'for'
+        cpt += 1 // Increment counter for each value
+    @assert(cpt == 3) // Assert that the enum has exactly 3 values
 
     // Note that '@countof(RGB)' will give you the exact same result
     @assert(cpt == @countof(RGB))
@@ -469,22 +479,31 @@ The `foreach` statement offers a more structured way to iterate over an enum and
 */
 #test
 {
-    enum RGB { R, G, B }                  // Define a simple enum with three values: R, G, and B
+    enum RGB
+    {
+        R
+        G
+        B
+         // Define a simple enum with three values: R, G, and B
+    }
 
     // Performing Actions Based on Enum Values
-    foreach val in RGB                    // Use 'foreach' to iterate over each value in the enum
+    foreach val in RGB // Use 'foreach' to iterate over each value in the enum
     {
-        switch val                        // A switch statement to perform actions based on the enum value
+        switch val // A switch statement to perform actions based on the enum value
         {
-        case R:                           // Case for the value 'R'
+        case R:
             // Perform action for 'R'
             break
-        case G:                           // Case for the value 'G'
+ // Case for the value 'R'
+        case G:
             // Perform action for 'G'
             break
-        case B:                           // Case for the value 'B'
+ // Case for the value 'G'
+        case B:
             // Perform action for 'B'
             break
+ // Case for the value 'B'
         default:
             // This should never be reached as we are covering all enum cases
             @assert(false)

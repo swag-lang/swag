@@ -51,7 +51,7 @@ func day1B()
     for i in arr0
     {
         var ist = Slice.findLinear(arr1.toSlice(), arr0[i])
-        if ist == Swag.U64.Max:
+        if ist == Swag.U64.Max do
             continue
         while ist < arr0.count and arr1[ist] == arr0[i]
         {

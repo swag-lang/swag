@@ -13,10 +13,10 @@ public func isPodFinal(type: #null typeinfo)->{ raw: bool, sizeof: u64 }
             return {true, type.sizeof}
         }
 
-        if !Reflection.isPod(type):
+        if !Reflection.isPod(type) do
             return {false, 0}
 
-        if Reflection.hasAttribute(type, Serialization.Final):
+        if Reflection.hasAttribute(type, Serialization.Final) do
             return {true, type.sizeof}
     }
 

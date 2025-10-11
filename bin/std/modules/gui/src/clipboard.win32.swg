@@ -16,7 +16,7 @@ func registerFormat(name: string)->ValueFormat throw
 // Returns true if the clipboard contains the given format
 func hasFormat(fmt: ValueFormat)->bool
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return false
     defer discard CloseClipboard()
 
@@ -27,13 +27,13 @@ func hasFormat(fmt: ValueFormat)->bool
 // 'type' can be null to just check for the given clipboard format.
 func hasTypedData(fmt: ValueFormat, type: typeinfo)->bool
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return false
     defer discard CloseClipboard()
 
-    if !IsClipboardFormatAvailable(cast(UINT) fmt):
+    if !IsClipboardFormatAvailable(cast(UINT) fmt) do
         return false
-    if !type:
+    if !type do
         return true
 
     let hglob = GetClipboardData(cast(UINT) fmt)
@@ -46,7 +46,7 @@ func hasTypedData(fmt: ValueFormat, type: typeinfo)->bool
 // 'type' can be null to just check for the given clipboard format.
 func addTypedData(fmt: ValueFormat, type: #null typeinfo, data: const [..] u8)
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return
     defer discard CloseClipboard()
 
@@ -75,7 +75,7 @@ func getTypedData(fmt: ValueFormat, type: #null typeinfo)->Array'u8
 {
     var result: retval
 
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return result
     defer discard CloseClipboard()
 
@@ -89,7 +89,7 @@ func getTypedData(fmt: ValueFormat, type: #null typeinfo)->Array'u8
 
             // Get type CRC, check this is correct
             var pzi = cast([*] u32) pz
-            if type and dref pzi != type.crc:
+            if type and dref pzi != type.crc do
                 return result
             pzi += 1
 
@@ -109,13 +109,13 @@ func getTypedData(fmt: ValueFormat, type: #null typeinfo)->Array'u8
 // Returns true if the clipbboard contains an image
 func hasImage()->bool
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return false
     defer discard CloseClipboard()
 
-    if IsClipboardFormatAvailable(CF_DIB):
+    if IsClipboardFormatAvailable(CF_DIB) do
         return true
-    if IsClipboardFormatAvailable(g_PngFormat):
+    if IsClipboardFormatAvailable(g_PngFormat) do
         return true
 
     return false
@@ -124,7 +124,7 @@ func hasImage()->bool
 // Add an image
 func addImage(image: Image)
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return
     defer discard CloseClipboard()
     discard EmptyClipboard()
@@ -160,7 +160,7 @@ func addImage(image: Image)
 
         opt.compressionLevel = .NoCompression // We want best speed
         catch png.IImageEncoder.encode(&buffer, image, opt)
-        if @err != null:
+        if @err != null do
             break
 
         let hglob = GlobalAlloc(GMEM_MOVEABLE | GMEM_ZEROINIT, buffer.count())
@@ -183,7 +183,7 @@ func getImage()->Image
 {
     var result: retval
 
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return result
     defer discard CloseClipboard()
 
@@ -224,13 +224,13 @@ func getImage()->Image
 // Returns true if the clipboard contains a string
 func hasString()->bool
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return false
     defer discard CloseClipboard()
 
-    if IsClipboardFormatAvailable(CF_UNICODETEXT):
+    if IsClipboardFormatAvailable(CF_UNICODETEXT) do
         return true
-    if IsClipboardFormatAvailable(CF_TEXT):
+    if IsClipboardFormatAvailable(CF_TEXT) do
         return true
 
     return false
@@ -239,7 +239,7 @@ func hasString()->bool
 // Add string to clipboard
 func addString(str: string)
 {
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return
     defer discard CloseClipboard()
 
@@ -270,7 +270,7 @@ func getString()->String
 {
     var result: retval
 
-    if !OpenClipboard(GetDesktopWindow()):
+    if !OpenClipboard(GetDesktopWindow()) do
         return result
     defer discard CloseClipboard()
 

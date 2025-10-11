@@ -5,7 +5,7 @@
 #[Swag.Sanity(true)]
 func titi(x: #null *s32, y: s32)
 {
-    if !x:
+    if !x do
         return
     dref x = 0
 

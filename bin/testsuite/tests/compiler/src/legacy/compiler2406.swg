@@ -8,7 +8,7 @@ impl NumericArray
     func from(values: T...)->NumericArray
     {
         var result: retval
-        for N:
+        for N do
             result.buf[@index] = values[@index]
         return result
     }

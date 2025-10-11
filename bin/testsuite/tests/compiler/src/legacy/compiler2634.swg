@@ -6,7 +6,7 @@ var G = 0
 #[Compiler]
 func toto()
 {
-    for 10:
+    for 10 do
         G += 1
 }
 

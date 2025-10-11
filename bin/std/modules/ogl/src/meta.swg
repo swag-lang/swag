@@ -16,7 +16,7 @@ var g_Functions: Array'OneFunc
 {
     let itf = @compiler
     let msg = itf.getMessage()
-    if !Reflection.hasAttribute(msg.type, Extension):
+    if !Reflection.hasAttribute(msg.type, Extension) do
         return
     g_Functions.add({msg.type, msg.name})
 }
@@ -28,11 +28,11 @@ func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
 
     foreach p, i in typeFunc.parameters
     {
-        if i != 0:
+        if i != 0 do
             result += ","
-        if namedArgs:
+        if namedArgs do
             result += Format.toString("p%: ", i)
-        if p.pointedType.flags & .Nullable:
+        if p.pointedType.flags & .Nullable do
             result += "#null "
         result += p.pointedType.name
     }
@@ -71,7 +71,7 @@ func getSig(typeFunc: const *Swag.TypeInfoFunc, namedArgs: bool)->String
         builderVars.appendFormat("\treturn ext_%(", e.name)
         foreach p, i in typeFunc.parameters
         {
-            if i != 0:
+            if i != 0 do
                 builderVars.appendString(",")
             builderVars.appendFormat("p%", i)
         }

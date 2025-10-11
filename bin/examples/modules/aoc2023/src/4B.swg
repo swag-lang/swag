@@ -51,15 +51,15 @@ func day4B()
         let val1  = Tokenize.split(game[1], ' ''u8)
 
         var v0, v1: Array's32
-        foreach v in val0:
+        foreach v in val0 do
             v0.add(assume StrConv.toS32(v))
-        foreach v in val1:
+        foreach v in val1 do
             v1.add(assume StrConv.toS32(v))
 
         var score = 0
         foreach v in v1
         {
-            if v0.contains(v):
+            if v0.contains(v) do
                 score += 1
         }
 

@@ -8,7 +8,7 @@ var mutex: Sync.Mutex
 func entry(th: Threading.Thread)
 {
     mutex.lock()
-    for ITER:
+    for ITER do
         G += 1
     mutex.unlock()
 }
@@ -17,11 +17,11 @@ func entry(th: Threading.Thread)
 #test
 {
     var th: [N] Threading.Thread
-    foreach &t in th:
+    foreach &t in th do
         catch t.init(&entry)
-    foreach &t in th:
+    foreach &t in th do
         catch t.start()
-    foreach &t in th:
+    foreach &t in th do
         t.wait()
     @assert(G == N * ITER)
 }

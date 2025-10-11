@@ -43,16 +43,16 @@ func day7B()
     foreach l in lines
     {
         let n = r1.grepAll(l)
-        if n.count == 1:
+        if n.count == 1 do
             continue
         let self = set.find(n[0])
-        foreach v in n[1 to ]:
+        foreach v in n[1 to ] do
             self.value.childs.add(v)
     }
 
     func sum(w: Pile)->u64
     {
-        if result:
+        if result do
             return 0
 
         var total: u64

@@ -488,7 +488,7 @@ func createView0(tabView: *Tab, view: *Wnd)
         }
         slider.sigChanged += func|img2|(slider)
         {
-            if !img2.movie.inPause:
+            if !img2.movie.inPause do
                 return
             img2.movie.sigFrameChanged.disable()
             img2.movie.setFrameIndex(cast(s32) slider.getValue())

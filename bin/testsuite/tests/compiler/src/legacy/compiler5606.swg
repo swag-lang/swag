@@ -3,7 +3,7 @@
 
 #test
 {
-    foreach "5":
-        if @index == 0:
+    foreach "5" do
+        if @index == 0 do
             @assert(true)
 }

@@ -73,7 +73,7 @@ func readAllLines(fullname: string, encoding = TextEncoding.Utf8)->Array'String 
 
     var result: retval
     var res:    String
-    while textReader.readLine(&res):
+    while textReader.readLine(&res) do
         result.add(moveref &res)
     return result
 }
@@ -123,7 +123,7 @@ func writeAllBytes(fullname: string, buffer: ConcatBuffer)->u64 throw
     var stream = openWrite(fullname)
 
     var total = 0'u64
-    foreach p in buffer:
+    foreach p in buffer do
         total += stream.write(p.datas, p.count)
 
     return total
@@ -160,7 +160,7 @@ func getFileInfo(fullName: string)->FileInfo throw
     options.wantDirectories = false
     options.recurse         = false
     let file = Directory.enumerate(Path.getDirectoryName(fullName), options)
-    if file.count == 0:
+    if file.count == 0 do
         throw FileNotFoundError{fileName: Errors.mkString(fullName)}
     return file[0]
 }

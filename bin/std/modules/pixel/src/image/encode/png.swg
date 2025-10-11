@@ -201,7 +201,7 @@ impl Encoder
     mtd writeChunk(chunkType: const [4] u8, buf: const *u8, length: u64)
     {
         .writePtr = .writeHeader(chunkType, length)
-        if length:
+        if length do
             Memory.copy(.writePtr, buf, length)
         .finishChunk()
     }
@@ -225,7 +225,7 @@ impl Encoder
     {
         foreach md in image.metaDatas
         {
-            if !md.tag.count or !md.value.count:
+            if !md.tag.count or !md.value.count do
                 continue
             .writePtr = .writeHeader(TypeTEXt, md.tag.count + 1 + md.value.count)
             Memory.copy(.writePtr, md.tag.buffer, md.tag.count)
@@ -237,19 +237,19 @@ impl Encoder
 
     mtd calculateScanlineWidth(width: u32)->u32 throw
     {
-        if !width:
+        if !width do
             throw UnsupportedFormatError{"SPNG_EINTERNAL"}
 
         var res = cast(u64) .numChannels() * .ihdr.bitDepth
-        if res > Swag.U64.Max / width:
+        if res > Swag.U64.Max / width do
             throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
         res = res * width
 
         res += 15
-        if res < 15:
+        if res < 15 do
             throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
         res /= 8
-        if res > Swag.U32.Max:
+        if res > Swag.U32.Max do
             throw UnsupportedFormatError{"SPNG_EOVERFLOW"}
 
         return cast(u32) res
@@ -295,11 +295,11 @@ impl Encoder
 
         for i in 6
         {
-            if .subimage[i].width == 0 or .subimage[i].height == 0:
+            if .subimage[i].width == 0 or .subimage[i].height == 0 do
                 continue
 
             .subimage[i].scanlineWidth = .calculateScanlineWidth(.subimage[i].width)
-            if .subimage[.widestPass].scanlineWidth < .subimage[i].scanlineWidth:
+            if .subimage[.widestPass].scanlineWidth < .subimage[i].scanlineWidth do
                 .widestPass = i
             .lastPass = i
         }
@@ -326,7 +326,7 @@ impl Encoder
     {
         let pass = .rowInfo.pass
 
-        if !.ihdr.interlaceMethod or pass == 6:
+        if !.ihdr.interlaceMethod or pass == 6 do
             return .encodeScanLine(row)
 
         let bitDepth = .ihdr.bitDepth
@@ -374,7 +374,7 @@ impl Encoder
 
     mtd getBestFilter(size: u32)->Filter
     {
-        if .encodeFlags.filterChoice == .Disabled:
+        if .encodeFlags.filterChoice == .Disabled do
             return .None
 
         let chl = cast(s32) .encodeFlags.filterChoice
@@ -382,7 +382,7 @@ impl Encoder
         {
             for i in 5
             {
-                if chl == 1 << (i + 3):
+                if chl == 1 << (i + 3) do
                     return cast() i
             }
         }
@@ -395,7 +395,7 @@ impl Encoder
         for i in 5
         {
             let flag = 1 << (i + 3)
-            if !(chl & flag):
+            if !(chl & flag) do
                 continue
 
             sum             = .filterSum(size, cast(Filter) i)
@@ -417,16 +417,16 @@ impl Encoder
         let pb = Math.abs(cast(s16) (p - b))
         let pc = Math.abs(cast(s16) (p - c))
 
-        if pa <= pb and pa <= pc:
+        if pa <= pb and pa <= pc do
             return a
-        elif pb <= pc:
+        elif pb <= pc do
             return b
         return c
     }
 
     mtd filterSum(size: u32, filter: Filter)->s32
     {
-        if size > Swag.S32.Max / 128:
+        if size > Swag.S32.Max / 128 do
             return Swag.S32.Max
 
         var sum: s32
@@ -540,18 +540,18 @@ impl Encoder
         }
 
         let requiresPrevious = .encodeFlags.filterChoice & (.Up | .Average | .Paeth)
-        if !.rowInfo.scanlineIdx and requiresPrevious:
+        if !.rowInfo.scanlineIdx and requiresPrevious do
             Memory.clear(.prevScanline, cast(u64) scanlineWidth)
 
         var filtered_sl = .filteredScanline
         let filter      = .getBestFilter(scanlineWidth - 1)
-        if filter == .None:
+        if filter == .None do
             filtered_sl = .scanline
         filtered_sl -= 1
         filtered_sl[0] = cast(u8) filter
         filtered_sl += 1
 
-        if filter:
+        if filter do
             .filterScanline(filtered_sl, scanlineWidth - 1, filter)
 
         .writeIDatBytes(filtered_sl - 1, scanlineWidth)
@@ -574,13 +574,13 @@ impl Encoder
 
         if ri.scanlineIdx == sub[ri.pass].height - 1
         {
-            if ri.pass == .lastPass:
+            if ri.pass == .lastPass do
                 return true
 
             ri.scanlineIdx = 0
             ri.pass += 1
 
-            while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < .lastPass):
+            while (!sub[ri.pass].width or !sub[ri.pass].height) and (ri.pass < .lastPass) do
                 ri.pass += 1
         }
         else
@@ -589,7 +589,7 @@ impl Encoder
             ri.scanlineIdx += 1
         }
 
-        if interlacing:
+        if interlacing do
             ri.rowNum = Adam7StartY[ri.pass] + ri.scanlineIdx * Adam7DeltaY[ri.pass]
 
         return false
@@ -618,9 +618,9 @@ public impl IImageEncoder for Encoder
         }
 
         // unsupported pixel format
-        if image.pf.channels() < 3 or image.pf.bitDepth() != 8:
+        if image.pf.channels() < 3 or image.pf.bitDepth() != 8 do
             throw UnsupportedFormatError{"unsupported pixel format"}
-        if image.width == 0 or image.height == 0:
+        if image.width == 0 or image.height == 0 do
             throw UnsupportedFormatError{"unsupported size"}
 
         .swapRB = image.pf == .BGR8 or image.pf == .BGRA8
@@ -632,7 +632,7 @@ public impl IImageEncoder for Encoder
         .ihdr.height    = image.height
         .ihdr.bitDepth  = 8
         .ihdr.colorType = .Color
-        if image.bpp == 32:
+        if image.bpp == 32 do
             .ihdr.colorType |= .Alpha
 
         .writeChunksBeforeIDat()
@@ -655,13 +655,13 @@ public impl IImageEncoder for Encoder
         .filteredScanline = .filteredScanlineBuf + 16
 
         .pixelSize = image.bpp
-        if .userOptions.filtering and .userOptions.compressionLevel != .NoCompression:
+        if .userOptions.filtering and .userOptions.compressionLevel != .NoCompression do
             .encodeFlags.filterChoice = .All
 
         for
         {
             let ioffset = (image.height - .rowInfo.rowNum - 1) * image.width * image.bpp8
-            if .encodeRow(image.pixels.buffer + ioffset):
+            if .encodeRow(image.pixels.buffer + ioffset) do
                 break
         }
 

@@ -44,23 +44,23 @@ func day6A0()
     {
         if r0.match(l)
         {
-            for x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)):
-                for y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)):
+            for x in cast(u64) assume StrConv.toS32(r0.getCapture(1)) to cast(u64) assume StrConv.toS32(r0.getCapture(3)) do
+                for y in assume StrConv.toS32(r0.getCapture(2)) to assume StrConv.toS32(r0.getCapture(4)) do
                     lights.add((x << 32) | y)
         }
         elif r1.match(l)
         {
-            for x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)):
-                for y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)):
+            for x in cast(u64) assume StrConv.toS32(r1.getCapture(1)) to cast(u64) assume StrConv.toS32(r1.getCapture(3)) do
+                for y in assume StrConv.toS32(r1.getCapture(2)) to assume StrConv.toS32(r1.getCapture(4)) do
                     lights.remove((x << 32) | y)
         }
         elif r2.match(l)
         {
-            for x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)):
-                for y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)):
-                    if lights.contains((x << 32) | y):
+            for x in cast(u64) assume StrConv.toS32(r2.getCapture(1)) to cast(u64) assume StrConv.toS32(r2.getCapture(3)) do
+                for y in assume StrConv.toS32(r2.getCapture(2)) to assume StrConv.toS32(r2.getCapture(4)) do
+                    if lights.contains((x << 32) | y) do
                         lights.remove((x << 32) | y)
-                    else:
+                    else do
                         lights.add((x << 32) | y)
         }
     }
@@ -94,18 +94,18 @@ func day6A1()
         {
             for y in y0 to y1
             {
-                if l[6] == 'n':
+                if l[6] == 'n' do
                     lights.ref2(x, y, 1000) = true
-                elif l[6] == 'f':
+                elif l[6] == 'f' do
                     lights.ref2(x, y, 1000) = false
-                else:
+                else do
                     lights.ref2(x, y, 1000) = !lights.ref2(x, y, 1000)
             }
         }
     }
 
     var total: u64
-    foreach v in lights:
+    foreach v in lights do
         total += cast(s32) v
 
     //Console.print("total: ", total)
@@ -138,18 +138,18 @@ func day6A2()
             for y in y0 to y1
             {
                 let coord = x + (y * 1000)
-                if l[6] == 'n':
+                if l[6] == 'n' do
                     lights.set(coord, true)
-                elif l[6] == 'f':
+                elif l[6] == 'f' do
                     lights.set(coord, false)
-                else:
+                else do
                     lights.invert(coord)
             }
         }
     }
 
     var total: u64
-    foreach v in lights:
+    foreach v in lights do
         total += cast(s32) v
 
     //Console.print("total: ", total)

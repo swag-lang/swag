@@ -52,7 +52,7 @@ impl IForm for FormImage
     mtd impl isSame(ptr: *BaseForm)->bool
     {
         let other = cast(*FormImage) ptr
-        if .kind == .Image and .backColor != other.backColor:
+        if .kind == .Image and .backColor != other.backColor do
             return false
         return .borderColor == other.borderColor and
                .borderSize == other.borderSize and
@@ -73,7 +73,7 @@ impl IForm for FormImage
         dstf.kind        = srcf.kind
         dstf.paintShadow = srcf.paintShadow
         dstf.strength    = srcf.strength
-        if srcf.image.isValid():
+        if srcf.image.isValid() do
             dstf.image = srcf.image
     }
 
@@ -265,7 +265,7 @@ impl IForm for FormImage
             var maskImg = cast(*Image) userData
             var pix1    = maskImg.pixels.buffer + x * 4
             pix1 += maskImg.width * y * 4
-            if !pix1[0]:
+            if !pix1[0] do
                 dref cast(*u32) pix = 0
         }
 
@@ -316,9 +316,9 @@ impl IForm for FormImage
                     .textureKind = .kind
                     renderer.removeTexture(&.texture)
                     .texture = renderer.addImage(.image)
-                    if !.freePos.width:
+                    if !.freePos.width do
                         .freePos.width = .image.width
-                    if !.freePos.height:
+                    if !.freePos.height do
                         .freePos.height = .image.height
                 }
 
@@ -390,7 +390,7 @@ impl IForm for FormImage
 
         let iconColor = g_App.theme.colors.btnIcon_Icon
 
-        if .borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize):
+        if .borderColor.a and (pp.width <= 2 * bSize or pp.height < 2 * bSize) do
             painter.fillRect(pp, .borderColor)
         else
         {

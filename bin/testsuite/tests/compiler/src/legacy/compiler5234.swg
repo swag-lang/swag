@@ -9,7 +9,7 @@ var x: [2] s32
     {
         foreach c in x
         {
-            if @index == 0:
+            if @index == 0 do
                 continue
             cpt1 += 1
         }

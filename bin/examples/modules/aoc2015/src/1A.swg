@@ -30,7 +30,7 @@ func day1A()
     let lines    = assume File.readAllText(dataPath)
 
     var total = 0
-    foreach #Bytes c in lines:
+    foreach #Bytes c in lines do
         total += c == '(' ? 1 : -1
 
     //Console.print("total: ", total)

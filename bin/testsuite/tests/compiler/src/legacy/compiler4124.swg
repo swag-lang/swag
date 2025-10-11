@@ -7,9 +7,9 @@ var G: bool
 {
     let a = Swag.F32.NaN
     let b = Swag.F32.NaN
-    if a != b:
+    if a != b do
         G = true
-    else:
+    else do
         G = false
     @assert(G)
 }

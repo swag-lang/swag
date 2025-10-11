@@ -34,7 +34,7 @@ impl SigArray
     // Call all registered lambdas.
     mtd call(params: ...)
     {
-        if .disabled:
+        if .disabled do
             return
 
         // Be sure the call has the right number of arguments
@@ -50,7 +50,7 @@ impl SigArray
                 sb.appendString("fn(")
                 for i in ts.parameters
                 {
-                    if i:
+                    if i do
                         sb.appendString(",")
                     sb.appendFormat("cast(%) params[%]", ts.parameters[i].pointedType.fullname, i)
                 }

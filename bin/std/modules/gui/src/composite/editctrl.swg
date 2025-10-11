@@ -15,7 +15,7 @@ impl IWnd for EditCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !.label:
+        if !.label do
             return
 
         let rect    = .getClientRect()
@@ -23,9 +23,9 @@ impl IWnd for EditCtrl
 
         let y = rect.vertCenter() - metrics.editBox_Height / 2
         .label.setPosition(0, y, .labelSize, metrics.editBox_Height)
-        if .editSize == 0:
+        if .editSize == 0 do
             .edit.setPosition(.label.position.right() + 5, y, .position.width - 5 - .labelSize, metrics.editBox_Height)
-        else:
+        else do
             .edit.setPosition(.label.position.right() + 5, y, .editSize, metrics.editBox_Height)
     }
 }
@@ -37,9 +37,9 @@ impl EditCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position
-        if pos.width == 0:
+        if pos.width == 0 do
             pos.width = metrics.editBox_Width * 2
-        if pos.height == 0:
+        if pos.height == 0 do
             pos.height = metrics.editBox_Height
 
         with let ctrl = Wnd.create'EditCtrl(parent, pos, id)

@@ -3,7 +3,7 @@ using Core
 #test
 {
     var h: HashSet'u64
-    for 65:
+    for 65 do
         h.add(@index)
 
     foreach v in h

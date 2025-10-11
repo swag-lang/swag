@@ -5,21 +5,24 @@ Attributes in Swag serve as a powerful mechanism for annotating various elements
 */
 
 using Swag
-attr AttributeA()   // A simple attribute without parameters
+attr AttributeA()
+// A simple attribute without parameters
 
 /**
 # Attributes with Parameters
 
 Attributes in Swag can accept parameters in a manner similar to functions. These parameters enable the customization of the attribute's behavior or configuration when it is applied to a code element.
 */
-attr AttributeB(x, y: s32, z: string)   // Attribute with multiple parameters
+attr AttributeB(x, y: s32, z: string)
+// Attribute with multiple parameters
 
 /**
 # Attributes with Default Values
 
 Swag attributes support parameters with default values, providing flexibility when applying attributes. This means that when such attributes are used, some or all of the parameters can be omitted, and the default values will be applied automatically.
 */
-attr AttributeBA(x: s32, y: string = "string")  // Attribute with a default parameter
+attr AttributeBA(x: s32, y: string = "string")
+// Attribute with a default parameter
 
 /**
 # Restricting Attribute Usage
@@ -27,7 +30,8 @@ attr AttributeBA(x: s32, y: string = "string")  // Attribute with a default para
 Swag allows developers to control where an attribute can be applied through the `AttrUsage` specifier. By restricting an attribute's usage to specific elements (such as functions or structs), you ensure that the attribute is only used in appropriate contexts, thereby enhancing code safety and clarity.
 */
 #[AttrUsage(AttributeUsage.Function)]
-attr AttributeC()   // Attribute restricted to function usage
+attr AttributeC()
+// Attribute restricted to function usage
 
 /**
 # Applying Attributes
@@ -35,7 +39,10 @@ attr AttributeC()   // Attribute restricted to function usage
 To apply attributes in Swag, use the syntax `#[attribute, attribute...]` immediately before the element you wish to annotate. This syntax supports the application of multiple attributes to a single element by listing them sequentially, separated by commas.
 */
 #[AttributeA, AttributeB(0, 0, "string")]
-func function1() {}   // Function annotated with multiple attributes
+func function1()
+{
+    // Function annotated with multiple attributes
+}
 
 /**
 # Multiple Usages
@@ -43,13 +50,20 @@ func function1() {}   // Function annotated with multiple attributes
 An attribute in Swag can be designed to be applicable to multiple types of code elements by specifying a combination of `AttrUsage` values using a bitwise OR operation. This capability allows a single attribute to be reused across different contexts, such as both functions and structs.
 */
 #[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]
-attr AttributeD(x: s32)  // Attribute applicable to both functions and structs
+attr AttributeD(x: s32)
+// Attribute applicable to both functions and structs
 
 #[AttributeD(6)]
-func function2() {}      // Function annotated with a multi-usage attribute
+func function2()
+{
+    // Function annotated with a multi-usage attribute
+}
 
 #[AttributeD(150)]
-struct struct1 {}        // Struct annotated with the same attribute
+struct struct1
+{
+    // Struct annotated with the same attribute
+}
 
 /**
 # Retrieving Attributes at Runtime
@@ -58,6 +72,6 @@ Swag supports the retrieval and inspection of attributes at runtime through type
 */
 #test
 {
-    let type = #typeof(function2)  // Retrieve the type of the function
-    @assert(@countof(type.attributes) == 1)  // Assert that the function has exactly one attribute
+    let type = #typeof(function2) // Retrieve the type of the function
+    @assert(@countof(type.attributes) == 1) // Assert that the function has exactly one attribute
 }

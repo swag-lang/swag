@@ -147,13 +147,13 @@ func day10A()
 
     // Determin the shape of the start 'S'
     let start = #ref mp(startX, startY)
-    if mp(startX - 1, startY) & .East:
+    if mp(startX - 1, startY) & .East do
         start |= .West
-    if mp(startX + 1, startY) & .West:
+    if mp(startX + 1, startY) & .West do
         start |= .East
-    if mp(startX, startY - 1) & .South:
+    if mp(startX, startY - 1) & .South do
         start |= .North
-    if mp(startX, startY + 1) & .North:
+    if mp(startX, startY + 1) & .North do
         start |= .South
     var visitX = startX
 
@@ -180,7 +180,7 @@ func day10A()
         }
 
         total += 1
-        if visitX == startX and visitY == startY:
+        if visitX == startX and visitY == startY do
             break
     }
 

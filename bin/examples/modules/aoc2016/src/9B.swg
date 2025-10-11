@@ -38,7 +38,7 @@ func day9B()
             let n = assume StrConv.toU64(r[1])
             let x = assume StrConv.toU64(r[2])
             start += @countof(res)
-            for i in n:
+            for i in n do
                 sum[start + i] *= x
         }
         else

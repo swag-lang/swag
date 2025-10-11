@@ -8,7 +8,7 @@ struct A
 #[Swag.Macro, Swag.NoInline]
 func assert(expr: bool)
 {
-    if !expr:
+    if !expr do
         @print("toto")
 }
 

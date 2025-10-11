@@ -4,9 +4,9 @@ func minMax(array: const [..] s32)->{ min: s32, max: s32 }
     for array
     {
         let value = array[@index]
-        if value < currentMin:
+        if value < currentMin do
             currentMin = value
-        elif value > currentMax:
+        elif value > currentMax do
             currentMax = value
     }
 

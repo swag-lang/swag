@@ -91,7 +91,7 @@ func day8A()
     {
         foreach f, c in lines[l]
         {
-            if f != '.':
+            if f != '.' do
                 antennas.add({f, c, l})
         }
     }
@@ -100,13 +100,13 @@ func day8A()
     {
         foreach &antenna1, b in antennas
         {
-            if a == b or antenna0.f != antenna1.f:
+            if a == b or antenna0.f != antenna1.f do
                 continue
             let dx = antenna1.x - antenna0.x
             let dy = antenna1.y - antenna0.y
             let ax = antenna0.x - dx
             let ay = antenna0.y - dy
-            if ax < 0 or ay < 0 or ax >= w or ay >= h:
+            if ax < 0 or ay < 0 or ax >= w or ay >= h do
                 continue
             antinodes.add({cast(u32) ax, cast(u32) ay})
         }

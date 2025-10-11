@@ -67,14 +67,14 @@ func day3A0()
         let width  = assume StrConv.toS32(r[3])
         let height = assume StrConv.toS32(r[4])
 
-        for x in startX until startX + width:
-            for y in startY until startY + height:
+        for x in startX until startX + width do
+            for y in startY until startY + height do
                 count.ref2(x, y, 1000) += 1
     }
 
     var total = 0
-    foreach v in count:
-        if v > 1:
+    foreach v in count do
+        if v > 1 do
             total += 1
 
     //Console.print("total: ", total)
@@ -95,14 +95,14 @@ func day3A1()
         let r = assume Parser.RegExp.grepAll("\\d+", l)
         let v = Slice.map(r[ to ], func(x) => assume StrConv.toS32(x))
 
-        for x in v[1] until v[1] + v[3]:
-            for y in v[2] until v[2] + v[4]:
+        for x in v[1] until v[1] + v[3] do
+            for y in v[2] until v[2] + v[4] do
                 count.ref2(x, y, 1000) += 1
     }
 
     var total = 0
-    foreach v in count:
-        if v > 1:
+    foreach v in count do
+        if v > 1 do
             total += 1
 
     //Console.print("total: ", total)

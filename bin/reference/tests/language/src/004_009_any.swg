@@ -9,7 +9,7 @@
 
 #test
 {
-    var a: any                        // Declare a variable of type 'any'
+    var a: any // Declare a variable of type 'any'
 
     // Store an 's32' literal value in the 'any'
     a = 6
@@ -34,9 +34,9 @@
 
 #test
 {
-    let a: any = 6                          // Store an s32 value in 'a'
-    let ptr = cast(const *s32) @dataof(a)   // Retrieve the pointer to the stored value
-    @assert(dref ptr == 6)                  // Dereference the pointer to get the value
+    let a:  any = 6                           // Store an s32 value in 'a'
+    let ptr = cast(const *s32) @dataof(a)     // Retrieve the pointer to the stored value
+    @assert(dref ptr == 6) // Dereference the pointer to get the value
 }
 
 /**
@@ -47,12 +47,13 @@ When `#typeof` is used on an `any`, it returns `any` as the type because `any` i
 
 #test
 {
-    var a: any = "string"             // Store a string in 'a'
-    #assert(#typeof(a) == any)         // The type of 'a' is 'any'
-    @assert(@kindof(a) == string)     // The underlying type of the value is 'string'
+    var a: any = "string" // Store a string in 'a'
+    #assert(#typeof(a) == any)
+    // The type of 'a' is 'any'
+    @assert(@kindof(a) == string) // The underlying type of the value is 'string'
 
-    a = true                          // Change the stored value to a bool
-    @assert(@kindof(a) == bool)       // Now the underlying type is 'bool'
+    a = true // Change the stored value to a bool
+    @assert(@kindof(a) == bool) // Now the underlying type is 'bool'
 }
 
 /**
@@ -63,13 +64,14 @@ You can retrieve the value stored in an `any` either directly or as a constant r
 
 #test
 {
-    let a: any = 42                   // Store an s32 value in 'a'
-    #assert(#typeof(a) == any)         // The type of 'a' is 'any'
-    @assert(@kindof(a) == s32)        // The underlying type is 's32'
+    let a: any = 42 // Store an s32 value in 'a'
+    #assert(#typeof(a) == any)
+    // The type of 'a' is 'any'
+    @assert(@kindof(a) == s32) // The underlying type is 's32'
 
-    let b = cast(s32) a               // Get the value itself
+    let b = cast(s32) a // Get the value itself
     @assert(b == 42)
-    let c = cast(const &s32) a        // Get a constant reference to the value
+    let c = cast(const &s32) a // Get a constant reference to the value
     @assert(c == 42)
 }
 
@@ -81,11 +83,11 @@ You can create arrays containing multiple types using `any`. This allows you to 
 
 #test
 {
-    var array: [?] any = [true, 2, 3.0, "4"]  // An array containing different types
-    @assert(@kindof(array[0]) == bool)       // The first element is a bool
-    @assert(@kindof(array[1]) == s32)        // The second element is an s32
-    @assert(@kindof(array[2]) == f32)        // The third element is an f32
-    @assert(@kindof(array[3]) == string)     // The fourth element is a string
+    var array: [?] any = [true, 2, 3.0, "4"] // An array containing different types
+    @assert(@kindof(array[0]) == bool) // The first element is a bool
+    @assert(@kindof(array[1]) == s32) // The second element is an s32
+    @assert(@kindof(array[2]) == f32) // The third element is an f32
+    @assert(@kindof(array[3]) == string) // The fourth element is a string
 
     @assert(cast(bool) array[0] == true)
     @assert(cast(s32) array[1] == 2)
@@ -101,18 +103,18 @@ An `any` value can be set to null and tested against null, similar to pointers o
 
 #test
 {
-    var x: any                         // Declare an 'any' type variable
-    @assert(x == null)                 // Initially, 'x' is null
+    var x: any // Declare an 'any' type variable
+    @assert(x == null) // Initially, 'x' is null
 
-    x = 6                              // Store an s32 value in 'x'
-    @assert(x != null)                 // Now 'x' holds a value
+    x = 6 // Store an s32 value in 'x'
+    @assert(x != null) // Now 'x' holds a value
     @assert(cast(s32) x == 6)
 
-    x = "string"                       // Change the stored value to a string
+    x = "string" // Change the stored value to a string
     @assert(x != null)
     @assert(cast(string) x == "string")
 
-    x = null                           // Set 'x' back to null
+    x = null // Set 'x' back to null
     @assert(x == null)
 }
 
@@ -124,19 +126,22 @@ An `any` value can be tested against a type using `==` and `!=`. This effectivel
 
 #test
 {
-    var x: any                         // Declare an 'any' type variable
-    @assert(x == null)                 // 'x' is null
+    var x: any // Declare an 'any' type variable
+    @assert(x == null) // 'x' is null
 
-    x = 6                              // Store an s32 value in 'x'
-    @assert(x == s32)                  // Now 'x' contains an s32
-    @assert(x != bool)                 // But it does not contain a bool
+    x = 6 // Store an s32 value in 'x'
+    @assert(x == s32) // Now 'x' contains an s32
+    @assert(x != bool) // But it does not contain a bool
 
-    x = "string"                       // Change the stored value to a string
-    @assert(x != s32)                  // Now 'x' contains a string, not an s32
-    @assert(x == string)               // Confirm it holds a string
+    x = "string" // Change the stored value to a string
+    @assert(x != s32) // Now 'x' contains a string, not an s32
+    @assert(x == string) // Confirm it holds a string
 
-    struct A {}                        // Define a simple struct
+    struct A
+    {
+        // Define a simple struct
+    }
 
-    x = A{}                            // Store an instance of A in 'x'
-    @assert(x == A)                    // 'x' is of type A
+    x = A{} // Store an instance of A in 'x'
+    @assert(x == A) // 'x' is of type A
 }

@@ -11,7 +11,7 @@ func(T) swap(x, y: *T)
 #[Swag.Inline]
 func(T) orderMinMax(x, y: *T)
 {
-    if dref x > dref y:
+    if dref x > dref y do
         swap(x, y)
 }
 

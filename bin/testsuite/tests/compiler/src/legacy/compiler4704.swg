@@ -4,7 +4,7 @@ var G = 1
 #test
 {
     let x = G
-    if ~x == 0:
+    if ~x == 0 do
         @print("toto")
     @assert(x == 1)
 }

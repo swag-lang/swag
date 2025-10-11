@@ -13,7 +13,7 @@ where the exact number of arguments is not known in advance.
         // This function can now accept any number of additional arguments after 'value'.
     }
 
-    myFunction(true, 4, "true", 5.6)   // Passes 4, "true", and 5.6 as additional parameters.
+    myFunction(true, 4, "true", 5.6) // Passes 4, "true", and 5.6 as additional parameters.
 }
 
 /**
@@ -41,7 +41,7 @@ When a function takes a variadic parameter, the `parameters` variable is treated
         @assert(@kindof(parameters[2]) == f32)
     }
 
-    myFunction(4, "true", 5.6)         // Passes an integer, string, and float.
+    myFunction(4, "true", 5.6) // Passes an integer, string, and float.
 }
 
 /**
@@ -68,7 +68,7 @@ This practice makes the parameters' type explicit, ensuring they are not treated
         @assert(parameters[3] == 40)
     }
 
-    myFunction(true, 10, 20, 30, 40)   // Passes four integers.
+    myFunction(true, 10, 20, 30, 40) // Passes four integers.
 }
 
 /**
@@ -97,7 +97,7 @@ variadic nature of the arguments.
         A(params)
     }
 
-    B("value", true)                   // Passes the parameters to function A through B.
+    B("value", true) // Passes the parameters to function A through B.
 }
 
 /**

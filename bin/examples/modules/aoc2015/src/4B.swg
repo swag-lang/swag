@@ -12,7 +12,7 @@ func day4B()
     #if #cfg == "release"
     {
 
-        if @bytecode:
+        if @bytecode do
             return
 
         //Time.Stopwatch.scopeMeasure()
@@ -36,7 +36,7 @@ func day4B()
             for
             {
                 // Another job is better than us, just quit
-                if Atomic.get(&best) < index:
+                if Atomic.get(&best) < index do
                     return
 
                 let str = Format.toString("yzbqklnj%", index)

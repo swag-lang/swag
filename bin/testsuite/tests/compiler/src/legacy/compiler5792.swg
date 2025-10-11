@@ -10,7 +10,7 @@ func popBack()->*A
 func meshClean()
 {
     let t = popBack()
-    if !t or t.interior:
+    if !t or t.interior do
         return
 
     t.interior = true

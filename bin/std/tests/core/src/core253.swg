@@ -128,7 +128,7 @@ var atoftests: [?] atofTest = [
         let v = catch Atod.parse(t.inT)
         @assert(@err == null or t.error)
         @assert(!t.error or @err != null or v.ovf)
-        if v.ovf:
+        if v.ovf do
             continue
 
         cb.clear()

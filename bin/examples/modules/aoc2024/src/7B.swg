@@ -54,16 +54,16 @@ func day7B()
         func checkMath(target: u64, resin: u64, operands: [..] u64, operator: u8)->bool
         {
             var result: u64
-            if operator == '+':
+            if operator == '+' do
                 result = resin + operands[0]
-            elif operator == '*':
+            elif operator == '*' do
                 result = resin * operands[0]
-            else:
+            else do
                 result = appendNumbers(resin, operands[0])
 
-            if result > target:
+            if result > target do
                 return false
-            if @countof(operands) == 1:
+            if @countof(operands) == 1 do
                 return target == result
 
             return checkMath(target, result, operands[1 to ], '+') or
@@ -73,7 +73,7 @@ func day7B()
 
         if checkMath(res, vals[0], vals[1 to ], '+') or
            checkMath(res, vals[0], vals[1 to ], '*') or
-           checkMath(res, vals[0], vals[1 to ], '|'):
+           checkMath(res, vals[0], vals[1 to ], '|') do
             total += res
     }
 

@@ -57,16 +57,16 @@ to the left operand. The 'affect' versions of these operators make the code conc
 {
     var x: s32 = 10
 
-    x += 1           // Addition assignment
-    x -= 1           // Subtraction assignment
-    x *= 2           // Multiplication assignment
-    x /= 2           // Division assignment
-    x %= 2           // Modulus assignment
-    x ^= 2           // XOR assignment
+    x += 1 // Addition assignment
+    x -= 1 // Subtraction assignment
+    x *= 2 // Multiplication assignment
+    x /= 2 // Division assignment
+    x %= 2 // Modulus assignment
+    x ^= 2 // XOR assignment
     x |= 0b0000_0001 // Bitwise OR assignment
     x &= 0b0000_0001 // Bitwise AND assignment
-    x <<= 1          // Shift left assignment
-    x >>= 1          // Shift right assignment
+    x <<= 1 // Shift left assignment
+    x >>= 1 // Shift right assignment
 }
 
 /**
@@ -142,8 +142,8 @@ of '&&' and '||' found in C/C++.
 #test
 {
     var a = false
-    a = (1 > 10) and (10 < 1)  // Logical AND
-    a = (1 > 10) or (10 < 1)   // Logical OR
+    a = (1 > 10) and (10 < 1) // Logical AND
+    a = (1 > 10) or (10 < 1) // Logical OR
 }
 
 /**
@@ -237,17 +237,20 @@ be promoted if the two sides of an operation do not have the same type.
 #test
 {
     #assert(#typeof(0'u8 + 1'u8) == u8)
-    #assert(#typeof(0'u8 + 1'u16) == u16) // Priority to bigger type
+    #assert(#typeof(0'u8 + 1'u16) == u16)
+    // Priority to bigger type
     #assert(#typeof(0'u8 + 1'u32) == u32)
     #assert(#typeof(0'u8 + 1'u64) == u64)
-    #assert(#typeof(0'u8 + 1's8) == s8)   // Priority to signed type
+    #assert(#typeof(0'u8 + 1's8) == s8)
+    // Priority to signed type
     #assert(#typeof(0'u8 + 1's16) == s16)
     #assert(#typeof(0'u8 + 1's32) == s32)
     #assert(#typeof(0'u8 + 1's64) == s64)
     #assert(#typeof(0'u8 + 1'f32) == f32)
     #assert(#typeof(0'u8 + 1'f64) == f64)
 
-    #assert(#typeof(0's8 + 1'u16) == u16) // Priority to bigger type also
+    #assert(#typeof(0's8 + 1'u16) == u16)
+    // Priority to bigger type also
 }
 
 /**
@@ -258,7 +261,8 @@ to at least 32 bits. The operation will be done accordingly.
 #test
 {
     #assert(#typeof(255'u8 + #prom 1'u8) == u32)
-    #assert(255'u8 + #prom 1'u8 == 256) // No overflow, because the operation is done in 32 bits.
+    #assert(255'u8 + #prom 1'u8 == 256)
+    // No overflow, because the operation is done in 32 bits.
 }
 
 /**

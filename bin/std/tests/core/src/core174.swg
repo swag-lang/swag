@@ -22,6 +22,6 @@ struct ST
         result.add(x)
     }
 
-    foreach &c in result:
+    foreach &c in result do
         @assert(c.str == "AB")
 }

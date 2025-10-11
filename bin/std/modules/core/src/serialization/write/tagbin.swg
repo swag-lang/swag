@@ -180,9 +180,9 @@ impl TagBin
             // Struct version
             .output.addNative(TagBinSignatures.Version)
             let version = Reflection.getAttributeValue(structType, Serialization.Version, "v")
-            if version == null:
+            if version == null do
                 .output.addNative(0'u32)
-            else:
+            else do
                 .output.addNative(cast(u32) version)
 
             // Start unordered section
@@ -205,7 +205,7 @@ impl TagBin
 
         // If section is raw, then we just have values without versioning
         let sec = .sections.back()
-        if sec.kind == .Raw:
+        if sec.kind == .Raw do
             return
 
         // Register the current seek for the fat generation
@@ -220,7 +220,7 @@ impl TagBin
         .output.addNative(val.pointedType.crc)
 
         var valSig: TagBinValueFlags = .Zero
-        if Reflection.hasAttribute(val, Compress) or Reflection.hasAttribute(val.pointedType, Compress):
+        if Reflection.hasAttribute(val, Compress) or Reflection.hasAttribute(val.pointedType, Compress) do
             valSig.add(TagBinValueFlags.Compressed)
         .output.addNative(valSig)
 
@@ -248,12 +248,12 @@ impl TagBin
     {
         // If section is raw, then we just have values without versioning
         let sec = .sections.back()
-        if sec.kind == .Raw:
+        if sec.kind == .Raw do
             return
 
         Debug.assert(.elemStack.count != 0)
         let ctx = .elemStack.popBack()
-        if !ctx.compressed:
+        if !ctx.compressed do
             return
 
         // We must have a previous buffer to append into

@@ -11,14 +11,14 @@ The `switch` statement in Swag operates similarly to those in C/C++, with a key 
     // The corresponding `case` block is executed based on the match.
     switch value
     {
-    case 0:  
-        @assert(false)  // Assertion fails if 'value' is 0.
-    case 5:  
-        @assert(false)  // Assertion fails if 'value' is 5.
-    case 6:  
-        @assert(true)   // Assertion passes if 'value' is 6.
-    default: 
-        @assert(false)  // Assertion fails if no cases match.
+    case 0:
+        @assert(false) // Assertion fails if 'value' is 0.
+    case 5:
+        @assert(false) // Assertion fails if 'value' is 5.
+    case 6:
+        @assert(true) // Assertion passes if 'value' is 6.
+    default:
+        @assert(false) // Assertion fails if no cases match.
     }
 
     let ch = 'A''rune
@@ -27,9 +27,9 @@ The `switch` statement in Swag operates similarly to those in C/C++, with a key 
     switch ch
     {
     case 'B':
-        @assert(false)  // Assertion fails if 'ch' is 'B'.
-    case 'A': 
-        break           // Exits the switch when 'ch' is 'A'.
+        @assert(false) // Assertion fails if 'ch' is 'B'.
+    case 'A':
+        break // Exits the switch when 'ch' is 'A'.
     }
 }
 
@@ -45,10 +45,10 @@ Swag allows you to assign multiple values to a single `case` statement, simplify
     // In this switch, the `case` statement handles multiple values.
     switch value
     {
-    case 2, 4, 6:   
-        @assert(true)   // Assertion passes if 'value' is 2, 4, or 6.
-    default:        
-        @assert(false)  // Assertion fails if 'value' does not match any case.
+    case 2, 4, 6:
+        @assert(true) // Assertion passes if 'value' is 2, 4, or 6.
+    default:
+        @assert(false) // Assertion fails if 'value' does not match any case.
     }
 
     // Listing each value on its own line for enhanced readability.
@@ -57,9 +57,9 @@ Swag allows you to assign multiple values to a single `case` statement, simplify
     case 2,
          4,
          6:
-        @assert(true)   // Assertion passes for any listed value.
+        @assert(true) // Assertion passes for any listed value.
     default:
-        @assert(false)  // Assertion fails if no cases match.
+        @assert(false) // Assertion fails if no cases match.
     }
 }
 
@@ -75,12 +75,12 @@ The `switch` statement in Swag is versatile, supporting any type that implements
     // A `switch` statement can match string values as well.
     switch value
     {
-    case "myString":    
-        @assert(true)   // Assertion passes if 'value' matches "myString".
-    case "otherString": 
-        @assert(false)  // Assertion fails if 'value' matches "otherString".
-    default:            
-        @assert(false)  // Assertion fails if no cases match.
+    case "myString":
+        @assert(true) // Assertion passes if 'value' matches "myString".
+    case "otherString":
+        @assert(false) // Assertion fails if 'value' matches "otherString".
+    default:
+        @assert(false) // Assertion fails if no cases match.
     }
 }
 
@@ -97,11 +97,11 @@ Swag allows for intentional `fallthrough` behavior, similar to C/C++, using the 
     switch value
     {
     case 6:
-        fallthrough     // Explicitly continues to the next `case`.
+        fallthrough // Explicitly continues to the next `case`.
     case 7:
         @assert(value == 6) // Assertion passes, confirming 'value' is 6.
     default:
-        @assert(true)   // Default case is a safeguard; true assertion keeps the test passing.
+        @assert(true) // Default case is a safeguard; true assertion keeps the test passing.
     }
 }
 
@@ -118,11 +118,11 @@ The `break` statement in Swag allows for early exit from a `case` block. This is
     switch value
     {
     case 6:
-        if value == 6:
-            break       // Exits the switch if the condition is true.
-        @assert(false)  // This line is never reached if `value` is 6.
+        if value == 6 do
+            break // Exits the switch if the condition is true.
+        @assert(false) // This line is never reached if `value` is 6.
     default:
-        @assert(false)  // Assertion fails if no cases match.
+        @assert(false) // Assertion fails if no cases match.
     }
 }
 
@@ -138,12 +138,12 @@ In Swag, a `case` statement cannot be left empty. If no action is required for a
     // Handling cases where no action is needed using `break`.
     switch value
     {
-    case 5:     
-        @assert(false)  // Assertion fails if `value` is 5.
-    case 6:     
-        break           // No action is taken; switch exits cleanly.
-    default:    
-        @assert(false)  // Assertion fails if no cases match.
+    case 5:
+        @assert(false) // Assertion fails if `value` is 5.
+    case 6:
+        break // No action is taken; switch exits cleanly.
+    default:
+        @assert(false) // Assertion fails if no cases match.
     }
 }
 
@@ -155,18 +155,21 @@ Swag’s `switch` statement offers the flexibility to use variables and expressi
 #test
 {
     let test = 2
-    let a = 0
-    let b = 1
+    let a    = 0
+    let b    = 1
 
     // Demonstrating the use of variables and expressions in switch cases.
     switch test
     {
-    case a:     // `a` is a variable here, not a constant.
-        @assert(false)  // Assertion fails if `test` equals `a` (0).
-    case b:     // `b` is another variable.
-        @assert(false)  // Assertion fails if `test` equals `b` (1).
-    case b + 1: // This case uses an expression.
-        @assert(true)   // Assertion passes if `test` equals `b + 1` (2).
+    case a:
+        @assert(false) // Assertion fails if `test` equals `a` (0).
+         // `a` is a variable here, not a constant.
+    case b:
+        @assert(false) // Assertion fails if `test` equals `b` (1).
+         // `b` is another variable.
+    case b + 1:
+        @assert(true) // Assertion passes if `test` equals `b + 1` (2).
+         // This case uses an expression.
     }
 }
 
@@ -183,12 +186,12 @@ The `Swag.Complete` attribute ensures exhaustive handling of all possible cases 
     #[Swag.Complete]
     switch color
     {
-    case Color.Red:     
-        break           // Handles the `Red` case.
-    case Color.Green:   
-        @assert(false)  // Assertion fails if `color` is Green.
-    case Color.Blue:    
-        @assert(false)  // Assertion fails if `color` is Blue.
+    case Color.Red:
+        break // Handles the `Red` case.
+    case Color.Green:
+        @assert(false) // Assertion fails if `color` is Green.
+    case Color.Blue:
+        @assert(false) // Assertion fails if `color` is Blue.
     }
 }
 
@@ -200,18 +203,18 @@ Swag supports matching a **range of values** in a `switch` statement, allowing y
 #test
 {
     var success = false
-    let x = 6
+    let x       = 6
 
     // Switch statement using ranges to match a group of values.
     switch x
     {
-    case 0 to 5:  
-        @assert(false)  // Assertion fails if `x` is between 0 and 5.
-    case 6 to 15: 
-        success = true  // Sets `success` to true if `x` is between 6 and 15.
+    case 0 to 5:
+        @assert(false) // Assertion fails if `x` is between 0 and 5.
+    case 6 to 15:
+        success = true // Sets `success` to true if `x` is between 6 and 15.
     }
 
-    @assert(success)   // Ensures the correct case was matched.
+    @assert(success) // Ensures the correct case was matched.
 }
 
 /**
@@ -222,18 +225,18 @@ In Swag, if ranges within a `switch` statement overlap, the first valid range th
 #test
 {
     var success = false
-    let x = 6
+    let x       = 6
 
     // Demonstrating overlapping ranges and their precedence.
     switch x
     {
-    case 0 to 10:    
-        success = true  // This case matches first; subsequent cases are ignored.
-    case 5 until 15: 
-        @assert(false)  // This is not reached because the first range matches.
+    case 0 to 10:
+        success = true // This case matches first; subsequent cases are ignored.
+    case 5 until 15:
+        @assert(false) // This is not reached because the first range matches.
     }
 
-    @assert(success)   // Confirms that the first range was applied correctly.
+    @assert(success) // Confirms that the first range was applied correctly.
 }
 
 /**
@@ -249,12 +252,12 @@ The `where` clause in Swag allows you to add additional conditions to a `case` i
     // Each `case` checks the value of 'x' and applies an additional condition with 'where'.
     switch x
     {
-    case 6 where y == 9:    
-        @assert(false)   // Skipped because `y` is not 9.
-    case 6 where y == 10:   
-        @assert(true)    // Executes because both `x` and `y` match the conditions.
+    case 6 where y == 9:
+        @assert(false) // Skipped because `y` is not 9.
+    case 6 where y == 10:
+        @assert(true) // Executes because both `x` and `y` match the conditions.
     default:
-        @assert(false)   // Fallback case; should not be executed here.
+        @assert(false) // Fallback case; should not be executed here.
     }
 }
 
@@ -271,17 +274,16 @@ The `where` clause can also be applied to a `default` case, providing conditiona
     // Demonstrates different outcomes based on 'where' clauses in default.
     switch x
     {
-    case 6 where y == 10: 
-        @assert(false)   // Skipped because `x` is not 6.
-    case 7 where y == 9:  
-        @assert(false)   // Skipped because `y` is not 9.
-    default where y == 10: 
-        break            // Executes because `y` is 10 and no previous case matched.
+    case 6 where y == 10:
+        @assert(false) // Skipped because `x` is not 6.
+    case 7 where y == 9:
+        @assert(false) // Skipped because `y` is not 9.
+    default where y == 10:
+        break // Executes because `y` is 10 and no previous case matched.
     default:
-        @assert(false)   // General fallback case; should not be executed.
+        @assert(false) // General fallback case; should not be executed.
     }
 }
-
 
 /**
 # Switching on Type with `any` or `interface`
@@ -293,12 +295,12 @@ When using a `switch` statement with a variable of type `any` or `interface`, Sw
     let x: any = "value"
 
     // Switch statement based on the underlying type of 'x'.
-    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    switch x // Implicitly checks the type of `x` using `@kindof`.
     {
-    case string: 
-        break           // Executes if `x` is of type string.
-    default:     
-        @assert(false)  // Assertion fails if `x` is not a string.
+    case string:
+        break // Executes if `x` is of type string.
+    default:
+        @assert(false) // Assertion fails if `x` is not a string.
     }
 }
 
@@ -318,7 +320,7 @@ Key Features:
 
 /**
 Example 1:
- 
+
 The first example checks if `x` is a string. If it is, the value is bound to the variable `str`.
 The `@assert` function is then used to ensure that the value of `str` is equal to "value".
 */
@@ -328,21 +330,21 @@ The `@assert` function is then used to ensure that the value of `str` is equal t
     let x: any = "value"
 
     // Switch statement based on the underlying type of 'x'.
-    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    switch x // Implicitly checks the type of `x` using `@kindof`.
     {
-    case string as str:    // 'str' will contain the value if 'x' is a string
+    case string as str:
         @assert(str == "value")
-        break    
+        break
 
-    default:     
-        @assert(false)  
+    default:
+        @assert(false)
     }
 }
 
 /**
 Example 2:
- 
-The second example showcases conditional matching using the `where` clause. The switch statement evaluates 
+
+The second example showcases conditional matching using the `where` clause. The switch statement evaluates
 whether `x` is a string and checks additional conditions specified in each case.
 */
 
@@ -350,17 +352,19 @@ whether `x` is a string and checks additional conditions specified in each case.
 {
     let x: any = "value"
 
-    switch x    // Implicitly checks the type of `x` using `@kindof`.
+    switch x // Implicitly checks the type of `x` using `@kindof`.
     {
-    case string as str where str == "value":       // Matches if `x` is a string and equals "value"
-        @assert(str == "value")                     // Asserts that `str` is equal to "value"
-        break   
+    case string as str where str == "value":
+        @assert(str == "value") // Asserts that `str` is equal to "value"
+        break
+ // Matches if `x` is a string and equals "value"
 
-    case string as str where str == "not_a_value": // Matches if `x` is a string and equals "not_a_value"
-        @assert(str == "not_a_value")               // Asserts that `str` is equal to "not_a_value"
-        break     
+    case string as str where str == "not_a_value":
+        @assert(str == "not_a_value") // Asserts that `str` is equal to "not_a_value"
+        break
+ // Matches if `x` is a string and equals "not_a_value"
 
-    default:     
+    default:
         @assert(false) // Asserts false if no case matches
     }
 }
@@ -372,18 +376,18 @@ A `switch` statement in Swag can operate without an expression, behaving like a 
 
 #test
 {
-    let value = 6
+    let value  = 6
     let value1 = "true"
 
     // Switch statement without an expression, behaving like an if-else chain.
     switch
     {
     case value == 6 or value > 10:
-        @assert(true)   // Passes if `value` is 6 or greater than 10.
-        fallthrough     // Continues to the next case regardless.
+        @assert(true) // Passes if `value` is 6 or greater than 10.
+        fallthrough // Continues to the next case regardless.
     case value1 == "true":
-        @assert(true)   // Passes if `value1` is "true".
+        @assert(true) // Passes if `value1` is "true".
     default:
-        @assert(false)  // Fails if no cases match.
+        @assert(false) // Fails if no cases match.
     }
 }

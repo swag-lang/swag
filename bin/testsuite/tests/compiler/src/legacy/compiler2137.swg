@@ -1,9 +1,9 @@
 #test
 {
     var a: string
-    if a:
+    if a do
         @assert(false)
     a = ""
-    if !a:
+    if !a do
         @assert(false)
 }

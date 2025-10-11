@@ -65,7 +65,7 @@ impl Properties
                     val2s = dref cast(const *string) v.value
                 }
 
-                if val1 == val2 and val1s == val2s:
+                if val1 == val2 and val1s == val2s do
                     idxSel = idx
             }
 
@@ -82,9 +82,9 @@ impl Properties
             {
                 let p  = cast(*T) item.data
                 let p1 = cast(*T) item.checkBox.userData
-                if item.checkBox.checked == .Checked:
+                if item.checkBox.checked == .Checked do
                     dref p |= dref p1
-                else:
+                else do
                     dref p &= ~(dref p1)
             }
 
@@ -146,7 +146,7 @@ impl Properties
             with let line = Wnd.create'Wnd(me.edView)
             {
                 .wndFlags.set(.PreChildsPaint)
-                if me.kind == .List:
+                if me.kind == .List do
                     .margin.x = me.leftMargin
                 .margin.z = me.rightMargin
                 .margin.y = me.listNameMarginAfter
@@ -171,7 +171,7 @@ impl Properties
 
             with let ed = CheckButton.create(line, "", {0, 0, me.gridLineHeight, 0})
             {
-                if me.kind == .Grid:
+                if me.kind == .Grid do
                     .margin.x = me.leftMargin
                 .dockStyle = .Left
                 .userData  = cast #unconst (*void) v.value
@@ -218,15 +218,15 @@ impl Properties
         with let ed = ComboBox.create(item.line, kind: .CheckBox)
         {
             .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
-            if me.kind == .Grid:
+            if me.kind == .Grid do
                 .dockStyle = .CenterKeepSizeVert
-            else:
+            else do
                 .anchorStyle = .X
         }
 
         item.comboBox = ed
 
-        foreach v, idx in typeEnum.values:
+        foreach v, idx in typeEnum.values do
             ed.addItem(v.name)
 
         refreshEnum(item)

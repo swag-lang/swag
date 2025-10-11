@@ -31,7 +31,7 @@ func day4A()
             var count: [26] s32
             while Latin1.isLetter(l[idx]) or l[idx] == '-'
             {
-                if l[idx] != '-':
+                if l[idx] != '-' do
                     count[l[idx] - 'a'] += 1
                 idx += 1
             }
@@ -58,7 +58,7 @@ func day4A()
                 count[maxi] = 0
             }
 
-            if valid:
+            if valid do
                 total += res.value
         }
 

@@ -61,7 +61,7 @@ func day6B()
     }
 
     var total = 0
-    foreach v in arr:
+    foreach v in arr do
         total += cast(s32) (v < 10000)
 
     //Console.print("total: ", total)

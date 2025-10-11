@@ -47,7 +47,7 @@ func day9BA()
     foreach t in line
     {
         let r = t - '0'
-        if @index & 1:
+        if @index & 1 do
             map.add({-1, r})
         else
         {
@@ -60,14 +60,14 @@ func day9BA()
     while toCheck
     {
         toCheck -= 1
-        while map[last].what != toCheck:
+        while map[last].what != toCheck do
             last -= 1
 
         var i = 0'u64
-        while i < last and (map[i].what != -1 or map[i].num < map[last].num):
+        while i < last and (map[i].what != -1 or map[i].num < map[last].num) do
             i += 1
 
-        if i >= last:
+        if i >= last do
             continue
 
         map[i].what    = map[last].what
@@ -119,7 +119,7 @@ func day9BB()
     var filesBySize: [10] Array's32
     var moved:       HashTable'(s32, u8)
 
-    for var i = 0; i < line.length; i += 2:
+    for var i = 0; i < line.length; i += 2 do
         filesBySize[line[i] - '0'].add(i)
 
     var total = 0'u64
@@ -150,7 +150,7 @@ func day9BB()
                 for j in 1 to numSpaces
                 {
                     let temp = &filesBySize[j]
-                    if temp.isEmpty():
+                    if temp.isEmpty() do
                         continue
                     if maxIdx < temp.back() and temp.back() > idx
                     {
@@ -176,7 +176,7 @@ func day9BB()
             line[maxIdx] = '0'
             line[idx] -= numSpaces
 
-            if line[idx] == '0':
+            if line[idx] == '0' do
                 idx += 1
         }
     }

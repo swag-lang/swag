@@ -7,7 +7,7 @@ struct(N: s32) Vector
         for i in N
         {
             sb.appendFormat("%", cast(rune) ('a''u32 + i))
-            if i != N - 1:
+            if i != N - 1 do
                 sb.appendString(",")
         }
 

@@ -61,7 +61,7 @@ struct InvalidVersion
 // That kind of string can be stored in an error struct.
 func mkString(str: #null string)->#null string
 {
-    if str == null:
+    if str == null do
         return null
 
     let count = @countof(str)

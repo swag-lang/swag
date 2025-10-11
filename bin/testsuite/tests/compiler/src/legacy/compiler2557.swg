@@ -2,9 +2,9 @@
 
 func toto()
 {
-    #if false:
+    #if false do
         alias AA = s32
-    #else:
+    #else do
         alias AA = s64
     var x: AA
     @assert(#typeof(x) == s64)

@@ -33,9 +33,9 @@ impl JSon
     // Writes indentation based on the current indent level and settings.
     mtd writeIndent()
     {
-        if !.options.saveBlanks:
+        if !.options.saveBlanks do
             return
-        for .indent * .options.indentLevel:
+        for .indent * .options.indentLevel do
             .output.addNative(' ''u8)
     }
 
@@ -130,7 +130,7 @@ impl JSon
         .output.addNative('"''u8)
         .output.addBytes(val.name)
         .output.addBytes("\":")
-        if .options.saveBlanks:
+        if .options.saveBlanks do
             .output.addBytes(" ")
     }
 
@@ -147,7 +147,7 @@ impl JSon
     {
         .lastSeekValue = .output.getSeek()
         .output.addBytes(",")
-        if .options.saveBlanks:
+        if .options.saveBlanks do
             .output.addBytes("\n")
         .writeIndent()
     }

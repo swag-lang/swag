@@ -8,7 +8,7 @@ func getArgs()->const [..] string => @args
 func getArg(idx: u32)->#null string
 {
     let args = @args
-    if idx >= @countof(args):
+    if idx >= @countof(args) do
         return null
     return args[idx]
 }
@@ -23,7 +23,7 @@ func hasArg(arg: string)->bool
 func getExe()->string
 {
     let args = @args
-    if @countof(args) == 0:
+    if @countof(args) == 0 do
         return ""
     return args[0]
 }
@@ -63,7 +63,7 @@ func getMonitorForPoint(pt: Math.Point)->Env.Monitor
     foreach m in monitors
     {
         let r = m.rect
-        if pt.x >= r.x and pt.x <= r.right() and pt.y >= r.y and pt.y <= r.bottom():
+        if pt.x >= r.x and pt.x <= r.right() and pt.y >= r.y and pt.y <= r.bottom() do
             return m
     }
 
@@ -106,7 +106,7 @@ func getMonitorForRect(rect: Math.Rectangle)->Env.Monitor
         }
     }
 
-    if bestSurf == 0:
+    if bestSurf == 0 do
         result = monitors[0]
     return result
 }
@@ -126,7 +126,7 @@ enum Metrics
     if !(@rtflags & .FromCompiler)
     {
         let str = getNativeArgs()
-        if @countof(str):
+        if @countof(str) do
             @pinfos.args = str
     }
 }

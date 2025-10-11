@@ -3,6 +3,6 @@ using Swag
 
 func main()->s32
 {
-    if true:
+    if true do
         return 0
 }

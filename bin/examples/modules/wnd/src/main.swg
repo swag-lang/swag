@@ -52,12 +52,12 @@ const MAX_PAGES = 8
         {
             Threading.Thread.sleep(100'ms)
             g_Page = (g_Page + 1) % MAX_PAGES
-            if g_Page == 0:
+            if g_Page == 0 do
                 Env.exit(0)
             g_Tab.select(g_Page)
         }
     }
-    else:
+    else do
         tab.select(0)
     surface0.show()
 

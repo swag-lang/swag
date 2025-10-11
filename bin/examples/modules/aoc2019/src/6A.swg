@@ -68,13 +68,13 @@ func day6A()
     func count(m: *#decltype(map), name: string)->u32
     {
         let it = m.tryFind(name)
-        if !it:
+        if !it do
             return 0
         return 1 + count(m, it.value)
     }
 
     var total = 0
-    foreach v in map:
+    foreach v in map do
         total += count(&map, v)
 
     //Console.print("total: ", total)

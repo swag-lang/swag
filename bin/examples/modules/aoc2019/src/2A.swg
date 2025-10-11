@@ -54,7 +54,7 @@ func day2A()
     let lines    = assume File.readAllLines(dataPath)
 
     var op: Array's32
-    foreach v in Tokenize.split(lines[0], ',''u8):
+    foreach v in Tokenize.split(lines[0], ',''u8) do
         op.add(assume StrConv.toS32(v))
 
     op[1] = 12
@@ -63,9 +63,9 @@ func day2A()
     var ip = 0
     while op[ip] != 99
     {
-        if op[ip] == 1:
+        if op[ip] == 1 do
             op[op[ip + 3]] = op[op[ip + 1]] + op[op[ip + 2]]
-        else:
+        else do
             op[op[ip + 3]] = op[op[ip + 1]] * op[op[ip + 2]]
         ip += 4
     }

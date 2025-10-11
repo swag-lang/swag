@@ -3,18 +3,18 @@
 func append(buf: #null *void, fmt: string, values: ...)
     verify
     {
-        if !#isconstexpr(fmt):
+        if !#isconstexpr(fmt) do
             return true
 
         var cptPercent = 0
         for var i = 0; i < @countof(fmt); i += 1
         {
-            if fmt[i] != '%''u8:
+            if fmt[i] != '%''u8 do
                 continue
 
-            if i == @countof(fmt) - 1 or fmt[i + 1] != '%''u8:
+            if i == @countof(fmt) - 1 or fmt[i + 1] != '%''u8 do
                 cptPercent += 1
-            else:
+            else do
                 i += 1
         }
 

@@ -25,7 +25,7 @@ with or modify variables outside the macro, preventing potential naming conflict
         // This variable 'a' is local to the macro and does not affect or interfere
         // with any 'a' outside the macro.
 
-        var a = 666     // 'a' is confined to the macro's scope
+        var a = 666 // 'a' is confined to the macro's scope
     }
 
     // Declare a variable 'a' in the outer scope and initialize it to 0.
@@ -34,7 +34,7 @@ with or modify variables outside the macro, preventing potential naming conflict
     // Call the macro `myMacro()`. The macro defines its own 'a', but this does not
     // conflict with the outer 'a'.
 
-    myMacro()          // No conflict with the outer 'a'
+    myMacro() // No conflict with the outer 'a'
 
     // Verify that the outer 'a' remains unchanged.
     @assert(a == 0)
@@ -55,22 +55,21 @@ This allows the macro to interact with the caller's environment.
         // macro is called). Without `#up`, `a` would be assumed to be a variable within the macro's
         // own scope (which might not exist).
 
-        #up a += 1  // Increments the outer 'a' by 1
+        #up a += 1 // Increments the outer 'a' by 1
     }
 
     // Declare a variable `a` in the outer scope
     var a = 0
 
     // Call the macro `myMacro()`, which increments the outer `a` by 1 using `#up`
-    myMacro()   // `a` becomes 1
+    myMacro() // `a` becomes 1
 
     // Call the macro `myMacro()` again, which increments `a` by 1 again
-    myMacro()   // `a` becomes 2
+    myMacro() // `a` becomes 2
 
     // Verify that `a` has been incremented twice
     @assert(a == 2)
 }
-
 
 /**
 # Macros with '#code' Parameters
@@ -81,7 +80,8 @@ Macros can take `#code` parameters, enabling you to pass and insert code blocks 
     #[Swag.Macro]
     func myMacro(what: #code void)
     {
-        #inject(what)     // Inserts the provided code block
+        #inject(what)
+        // Inserts the provided code block
     }
 
     var a = 0
@@ -110,7 +110,7 @@ A `#code` parameter can be typed:
 #test
 {
     #[Swag.Macro]
-    func myMacro(what: #code bool)   // Here we need a code expression that returns a 'bool' type
+    func myMacro(what: #code bool)
     {
         @assert(#inject(what))
     }
@@ -136,21 +136,23 @@ This technique negates the need for the `#up` keyword when referencing the calle
     #[Swag.Macro]
     func myMacro(what: #code void)
     {
-        var a = 666                            // Declare 'a' in the macro's own scope
+        var a = 666 // Declare 'a' in the macro's own scope
 
-        #macro                                 // Ensures the following code operates in the caller's scope
+        #macro
         {
-            #inject(#up what)                  // References the caller's 'a'
+            #inject(#up what)
+            // References the caller's 'a'
         }
+ // Ensures the following code operates in the caller's scope
     }
 
     var a = 1
     myMacro()
     {
-        a += 2                                 // 'a' references the caller's 'a' due to '#macro'
+        a += 2 // 'a' references the caller's 'a' due to '#macro'
     }
 
-    @assert(a == 3)                            // Verifies that the caller's 'a' was incremented
+    @assert(a == 3) // Verifies that the caller's 'a' was incremented
 }
 
 /**
@@ -168,8 +170,9 @@ This avoids the overhead associated with lambda calls, making macros a performan
         {
             #macro
             {
-                var index = #up a              // 'index' references 'a' from the caller's scope
-                #inject(#up what)                // Insert the provided code block
+                var index = #up a // 'index' references 'a' from the caller's scope
+                #inject(#up what)
+                // Insert the provided code block
             }
             a += 1
         }
@@ -178,15 +181,15 @@ This avoids the overhead associated with lambda calls, making macros a performan
     var a = 0
     repeat(5)
     {
-        a += index                             // Sum 'index' values from the macro's loop
+        a += index // Sum 'index' values from the macro's loop
     }
-    @assert(a == 0 + 1 + 2 + 3 + 4)            // Verifies the sum after the first repeat
+    @assert(a == 0 + 1 + 2 + 3 + 4) // Verifies the sum after the first repeat
 
     repeat(3)
     {
-        a += index                             // Continue summing with a new loop
+        a += index // Continue summing with a new loop
     }
-    @assert(a == 10 + 3)                       // Verifies the final sum after both repeats
+    @assert(a == 10 + 3) // Verifies the final sum after both repeats
 }
 
 /**
@@ -230,14 +233,14 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
     repeatSquare(5)
     {
         a += 1
-        if a == 10:
+        if a == 10 do
             // This `break` statement is replaced by `break to Up` due to the macro,
             // meaning it will exit the outermost `for`, not just the inner `for`.
             break
     }
 
     // Assertion to check if `a` is indeed 10 after the `for` exits
-    @assert(a == 10)  // Verifies that the loop exited when `a` reached 10
+    @assert(a == 10) // Verifies that the loop exited when `a` reached 10
 }
 
 /**
@@ -279,14 +282,14 @@ By using a macro, you can define aliases for `break` and `continue` that allow y
         a += 1
 
         // If `a` is divisible by 3, skip to the next iteration of the outer loop (both loops)
-        if a % 3 == 0:
+        if a % 3 == 0 do
             continue
 
         // Increment `b` only if `continue` was not called
         b += 1
 
         // If `a` equals 8, exit both loops
-        if a == 8:
+        if a == 8 do
             break
     }
 
@@ -307,26 +310,27 @@ These aliases allow you to define and access specific variables within a macro.
     #[Swag.Macro]
     func call(v: s32, stmt: #code void)
     {
-        let #alias0 = v                        // Assign 'v' to '#alias0'
-        let #alias1 = v * 2                    // Assign 'v * 2' to '#alias1'
-        #inject(stmt)                            // Insert the provided code block
+        let #alias0 = v         // Assign 'v' to '#alias0'
+        let #alias1 = v * 2     // Assign 'v * 2' to '#alias1'
+        #inject(stmt)
+        // Insert the provided code block
     }
 
     call(20)
     {
-        @assert(#alias0 == 20)                 // Verifies '#alias0' equals 20
-        @assert(#alias1 == 40)                 // Verifies '#alias1' equals 40
+        @assert(#alias0 == 20) // Verifies '#alias0' equals 20
+        @assert(#alias1 == 40) // Verifies '#alias1' equals 40
     }
 
     call(|x| 20)
     {
-        @assert(x == 20)                       // 'x' is used as an alias for '#alias0'
-        @assert(#alias1 == 40)                 // '#alias1' remains unchanged
+        @assert(x == 20) // 'x' is used as an alias for '#alias0'
+        @assert(#alias1 == 40) // '#alias1' remains unchanged
     }
 
     call(|x, y| 20)
     {
-        @assert(x == 20)                       // 'x' replaces '#alias0'
-        @assert(y == 40)                       // 'y' replaces '#alias1'
+        @assert(x == 20) // 'x' replaces '#alias0'
+        @assert(y == 40) // 'y' replaces '#alias1'
     }
 }

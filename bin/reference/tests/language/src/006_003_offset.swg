@@ -10,12 +10,12 @@ between different fields.
 {
     struct MyStruct
     {
-        x: s32
+        x:   s32
 
         // 'y' is located at the same offset as 'x', meaning they share the same memory space.
         // This effectively creates an overlay, where changes to one field affect the other.
         #[Swag.Offset("x")]
-        y: s32
+        y:   s32
     }
 
     // Although there are two fields defined, they occupy the same space, so the struct only uses 4 bytes.

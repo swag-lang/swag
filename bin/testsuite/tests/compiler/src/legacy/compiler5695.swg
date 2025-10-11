@@ -33,12 +33,12 @@ impl IEvent for Evt2
 
 func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
-    if @typecmp(toType, fromType, .Strict):
+    if @typecmp(toType, fromType, .Strict) do
         return true
 
     foreach ft in toType.fields
     {
-        if ft.flags & .HasUsing and can(cast(const *Swag.TypeInfoStruct) ft.pointedType, fromType):
+        if ft.flags & .HasUsing and can(cast(const *Swag.TypeInfoStruct) ft.pointedType, fromType) do
             return true
     }
 

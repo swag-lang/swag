@@ -58,12 +58,12 @@ impl IWnd for ColorPickerCtrl
 
         let brush = Brush.createHatch(.CheckBoardLarge, .getThemeColors().colorPicker_BackAlpha)
 
-        if .oldColor.a != 255:
+        if .oldColor.a != 255 do
             painter.fillRect(rect, brush)
         painter.fillRect(rect, .oldColor)
 
         rect.x += rect.width
-        if .color.a != 255:
+        if .color.a != 255 do
             painter.fillRect(rect, brush)
         painter.fillRect(rect, .color)
     }
@@ -107,9 +107,9 @@ internal impl ColorPickerCtrl
         t = Format.toString("%", .color.a)
         .editA.setText(t)
 
-        if .pickerFlags.has(.Alpha):
+        if .pickerFlags.has(.Alpha) do
             t = Format.toString("%{X08}", .color.argb)
-        else:
+        else do
             t = Format.toString("%{X02}%{X02}%{X02}", .color.r, .color.g, .color.b)
         .editH.setText(t)
 
@@ -131,9 +131,9 @@ impl ColorPickerCtrl
     func create(parent: *Wnd, position: Math.Rectangle, flags = ColorPickerFlags.All, id: WndId = null)->*ColorPickerCtrl
     {
         var pos = position
-        if pos.width == 0:
+        if pos.width == 0 do
             pos.width = 340
-        if pos.height == 0:
+        if pos.height == 0 do
             pos.height = 330
 
         with let v = Wnd.create'ColorPickerCtrl(parent, "", pos, id)
@@ -194,7 +194,7 @@ impl ColorPickerCtrl
                     var col = Application.pickColorAtMouse()
                     v.setColor(col)
 
-                    if app.mouse.isButtonPressed(.Left):
+                    if app.mouse.isButtonPressed(.Left) do
                         app.exitModal()
                 })
 
@@ -203,7 +203,7 @@ impl ColorPickerCtrl
 
             .pickBox.sigChanged += func|v|(cb)
             {
-                if !v.pickerFlags.has(.Alpha):
+                if !v.pickerFlags.has(.Alpha) do
                     v.color.a = 255
                 switch v.mode
                 {
@@ -319,7 +319,7 @@ impl ColorPickerCtrl
             .editH.sigLoseFocus += func|v|(ed)
             {
                 var res = catch StrConv.parseX64(ed.text)
-                if !v.pickerFlags.has(.Alpha):
+                if !v.pickerFlags.has(.Alpha) do
                     res.value |= 0xFF000000
                 v.color.argb = cast(u32) res.value
                 v.pickAlpha.setColor(v.color)
@@ -381,9 +381,9 @@ impl ColorPickerCtrl
                     case 7:
                         .addColor(Argb.Purple)
                     case 8:
-                        if flags.has(.Alpha):
+                        if flags.has(.Alpha) do
                             .addColor(Color.fromArgb(0))
-                        else:
+                        else do
                             .addColor(Argb.Gold)
                     }
                 }
@@ -396,9 +396,9 @@ impl ColorPickerCtrl
             .boxSize = 32
             .sigChanged += func|picker|(pal)
             {
-                if !pal.selectedColor.a or !picker.color.a:
+                if !pal.selectedColor.a or !picker.color.a do
                     picker.setColor(pal.selectedColor)
-                else:
+                else do
                     picker.setColorKeepAlpha(pal.selectedColor)
             }
         }
@@ -452,7 +452,7 @@ impl ColorPickerCtrl
     mtd setColor(color: Color)
     {
         var col = color
-        if !.pickerFlags.has(.Alpha):
+        if !.pickerFlags.has(.Alpha) do
             col.a = 255
 
         if !.oldColorDone

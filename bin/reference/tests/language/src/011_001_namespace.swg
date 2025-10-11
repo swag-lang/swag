@@ -27,8 +27,8 @@ namespace A.B.C
 #test
 {
     // Accessing functions using their fully qualified namespace paths.
-    @assert(A.a() == 1)          // Calls the 'a' function from namespace 'A'
-    @assert(A.B.C.a() == 2)      // Calls the 'a' function from nested namespace 'A.B.C'
+    @assert(A.a() == 1) // Calls the 'a' function from namespace 'A'
+    @assert(A.B.C.a() == 2) // Calls the 'a' function from nested namespace 'A.B.C'
 }
 
 /**
@@ -38,7 +38,7 @@ The `using` keyword allows you to import symbols from a namespace into the curre
 */
 using namespace Private
 {
-    const FileSymbol = 0         // A constant defined within the 'Private' namespace
+    const FileSymbol = 0 // A constant defined within the 'Private' namespace
 }
 
 const B = Private.FileSymbol     // Accessing 'FileSymbol' with the full namespace path
@@ -51,10 +51,10 @@ In addition to named namespaces, Swag allows you to define a private scope using
 */
 private
 {
-    const OtherSymbol = 0        // A constant defined within an unnamed private scope
+    const OtherSymbol = 0 // A constant defined within an unnamed private scope
 }
 
-const D = OtherSymbol            // Direct access to 'OtherSymbol' as it is private to the file
+const D = OtherSymbol // Direct access to 'OtherSymbol' as it is private to the file
 
 /**
 # Exporting Symbols

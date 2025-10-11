@@ -5,7 +5,7 @@ func getArgs()->const [..] string => @args
 func getArg(idx: u32)->#null string
 {
     let args = @args
-    if idx >= @countof(args):
+    if idx >= @countof(args) do
         return null
     return args[idx]
 }

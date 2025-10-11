@@ -103,8 +103,8 @@ func day6A()
     }
 
     var total = 0
-    foreach v in count:
-        if !borders[@index]:
+    foreach v in count do
+        if !borders[@index] do
             total = Math.max(v, total)
 
     //Console.print("total: ", total)

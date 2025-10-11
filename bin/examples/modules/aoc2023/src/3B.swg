@@ -37,7 +37,7 @@ private func hasSymbol(x, y: s32)->bool
 {
     foreach s in symbols
     {
-        if s.x == x and s.y == y:
+        if s.x == x and s.y == y do
             return true
     }
 
@@ -61,7 +61,7 @@ func day3B()
                 while x < l.length
                 {
                     c = l[x]
-                    if c < '0' or c > '9':
+                    if c < '0' or c > '9' do
                         break
                     num *= 10
                     num += c - '0'
@@ -100,14 +100,14 @@ func day3B()
 
     foreach s in symbols
     {
-        if s.s != '*':
+        if s.s != '*' do
             continue
 
         var gear = 1
         var cpt  = 0
         foreach n in nums
         {
-            if n.y < s.y - 1 or n.y > s.y + 1:
+            if n.y < s.y - 1 or n.y > s.y + 1 do
                 continue
             if (s.x >= n.x - 1 and s.x <= n.lx + 1)
             {

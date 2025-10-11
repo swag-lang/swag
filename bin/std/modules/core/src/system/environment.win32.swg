@@ -57,7 +57,7 @@ public func getMonitors()->Array'Monitor
     {
         var mi: MONITORINFO
         catch GetMonitorInfoA(hMonitor, &mi)
-        if @err != null:
+        if @err != null do
             return TRUE
 
         var m:  Monitor
@@ -239,7 +239,7 @@ func getNativeArgs()->string
     let ptr = GetCommandLineW()
     g_StoreArgs = Utf8.fromUtf16(@mkslice(ptr, Utf16.lengthZeroTerminated(ptr)))
 
-    if @countof(@pinfos.args):
+    if @countof(@pinfos.args) do
         g_StoreArgs.append(@pinfos.args)
 
     return g_StoreArgs

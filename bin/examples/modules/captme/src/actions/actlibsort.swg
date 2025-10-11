@@ -49,9 +49,9 @@ impl IActionUI for ActionLibSort
 
         case Invert:
             evt.setFlags |= .Name | .Checked
-            if libWnd.sortMethod == .Recent:
+            if libWnd.sortMethod == .Recent do
                 evt.name = "Oldest First"
-            elif libWnd.sortMethod == .FileSize:
+            elif libWnd.sortMethod == .FileSize do
                 evt.name = "Smaller First"
             else
             {

@@ -76,9 +76,9 @@ func day10B()
     var arr: Array'Pos
     var tot: Array's32
 
-    foreach l, y in lines:
-        foreach c, x in l:
-            if c == '#':
+    foreach l, y in lines do
+        foreach c, x in l do
+            if c == '#' do
                 arr.add({{cast(f32) x, cast(f32) y}})
     tot.resize(arr.count)
 
@@ -91,7 +91,7 @@ func day10B()
             var hit = false
             for k in arr
             {
-                if k == i or k == j:
+                if k == i or k == j do
                     continue
                 let f = Math.Geometry.distanceToSegment(arr[k].pos, v0, v1)
                 if Math.isZeroEpsilon(f)
@@ -124,7 +124,7 @@ func day10B()
     // Sort from small angle to big angle. If angles are the same, sort by distance (closest first)
     arr.sort(func(x, y)
     {
-        if Math.isEqualEpsilon(x.angle, y.angle):
+        if Math.isEqualEpsilon(x.angle, y.angle) do
             return x.dist <=> y.dist
         return x.angle <=> y.angle
     })
@@ -145,7 +145,7 @@ func day10B()
         arr.removeAtOrdered(index)
 
         var nindex = index
-        while Math.isEqualEpsilon(arr[nindex].angle, curAngle):
+        while Math.isEqualEpsilon(arr[nindex].angle, curAngle) do
             nindex = (nindex + 1) % arr.count
         index = nindex
     }

@@ -19,27 +19,27 @@ impl Queue
         gpa = alloc
     }
 
-    mtd enqueue(value: T) 
+    mtd enqueue(value: T)
     {
         const node = try gpa.alloc(Node)
         node.data = value
-        if end:
+        if end do
             end.next = node
-        else:
+        else do
             start = node
         end = node
     }
 
-    mtd dequeue() s32//*T 
+    mtd dequeue() s32//*T
     {
         let start = start orelse null
         defer gpa.destroy(start)
-        if start.next:
+        if start.next do
             start = next
         else
             start, end = null
         return data;
-    }        
+    }
 }
 
 /*

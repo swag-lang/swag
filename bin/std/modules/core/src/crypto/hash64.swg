@@ -10,20 +10,20 @@ public interface IHash64
 #[ConstExpr, Safety("", false)]
 public func(T) hash64(value: T)->u64
 {
-    #if T == string:
+    #if T == string do
         return Hash.murmur3(@dataof(value), @countof(value), 0)
-    #elif Reflection.isStruct(T) and #defined(T.IHash64):
+    #elif Reflection.isStruct(T) and #defined(T.IHash64) do
         #ast "return " ++ #typeof(T).fullname ++ ".IHash64.compute(value)"
-    #elif Reflection.isStruct(T) and #defined(T.IHash32):
+    #elif Reflection.isStruct(T) and #defined(T.IHash32) do
         #ast "return " ++ #typeof(T).fullname ++ ".IHash32.compute(value)"
-    #elif Reflection.isStruct(T):
+    #elif Reflection.isStruct(T) do
         return Hash.murmur3(cast(const [*] u8) &value, #sizeof(T), 0)
-    #elif #sizeof(T) == 8:
+    #elif #sizeof(T) == 8 do
         return murmur3(cast #bit (u64) value)
-    #elif #sizeof(T) == 4:
+    #elif #sizeof(T) == 4 do
         return murmur3(cast #bit (u32) value)
-    #elif Reflection.isInteger(T):
+    #elif Reflection.isInteger(T) do
         return murmur3(cast(u64) value)
-    #else:
+    #else do
         return 0
 }

@@ -7,9 +7,9 @@ struct(A, B) Foozle
 var G = 0
 func yes_auto(x: Foozle)
 {
-    if (#typeof(x.a) == s32):
+    if (#typeof(x.a) == s32) do
         G |= 1
-    if (#typeof(x.a) == bool):
+    if (#typeof(x.a) == bool) do
         G |= 2
 }
 

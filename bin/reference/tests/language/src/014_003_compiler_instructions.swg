@@ -5,7 +5,8 @@ It ensures that a particular condition is true at compile time. If the condition
 compilation will fail, providing an error message. This is particularly useful for enforcing
 compile-time invariants and validating assumptions within your code.
 */
-#assert(true) // This assertion always passes, so no error is triggered.
+#assert(true)
+// This assertion always passes, so no error is triggered.
 
 /**
 # `#defined(SYMBOL)`
@@ -14,9 +15,11 @@ at compile time. It returns `true` if the symbol is defined, and `false` otherwi
 useful for conditional compilation, allowing you to verify the existence of variables,
 constants, or functions before using them.
 */
-#assert(!#defined(DOES_NOT_EXISTS)) // Ensures that the symbol 'DOES_NOT_EXISTS' is not defined.
-#assert(#defined(Global))            // Confirms that the symbol 'Global' is defined.
-var Global = 0                      // Define a global variable 'Global'.
+#assert(!#defined(DOES_NOT_EXISTS))
+// Ensures that the symbol 'DOES_NOT_EXISTS' is not defined.
+#assert(#defined(Global))
+// Confirms that the symbol 'Global' is defined.
+var Global = 0 // Define a global variable 'Global'.
 
 /**
 # `#if`/`#elif`/`#else`
@@ -51,8 +54,10 @@ during the build process.
 */
 #if false
 {
-    #error("this is an error")       // Raises a compile-time error if this block is reached.
-    #warning("this is a warning")    // Raises a compile-time warning if this block is reached.
+    #error("this is an error")
+    // Raises a compile-time error if this block is reached.
+    #warning("this is a warning")
+    // Raises a compile-time warning if this block is reached.
 }
 
 /**

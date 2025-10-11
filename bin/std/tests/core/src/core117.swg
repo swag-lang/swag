@@ -7,7 +7,7 @@ using Core
     arr.add("val1", 11)
 
     var total = 0's64
-    foreach k, v in arr:
+    foreach k, v in arr do
         total += v
 
     @assert(total == 21)

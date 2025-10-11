@@ -51,7 +51,7 @@ impl Image
         let ptrDecoder = Memory.new(decoder.type)
         defer
         {
-            if decoder.type.opDrop:
+            if decoder.type.opDrop do
                 decoder.type.opDrop(ptrDecoder)
             Memory.free(ptrDecoder, cast(u64) decoder.type.sizeof)
         }
@@ -81,7 +81,7 @@ public impl Image
     {
         foreach &decoder in decoders
         {
-            if decoder.itf.canDecode(fileName):
+            if decoder.itf.canDecode(fileName) do
                 return true
         }
 
@@ -93,7 +93,7 @@ public impl Image
     func decode(fileName: string, bytes: const [..] u8, options: DecodeOptions = {})->Image throw
     {
         let found = getDecoder(fileName)
-        if !found:
+        if !found do
             throw UnsupportedFormatError{"no matching image decoder"}
         return decode(found, bytes, options)
     }
@@ -102,7 +102,7 @@ public impl Image
     func load(fileName: string, options: DecodeOptions = {})->Image throw
     {
         let found = getDecoder(fileName)
-        if !found:
+        if !found do
             throw UnsupportedFormatError{"no matching image decoder"}
         var bytes = File.readAllBytes(fileName)
         return decode(found, bytes.toSlice(), options)

@@ -4,7 +4,7 @@ var a: [*] bool
 func toto(x: s32)->bool
 {
     var i = 0
-    while a[x] and a[x + 1]:
+    while a[x] and a[x + 1] do
         i += 41
     return true
 }

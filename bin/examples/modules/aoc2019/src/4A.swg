@@ -50,7 +50,7 @@ func day4A0()
             }
         }
 
-        if ok:
+        if ok do
             total += 1
     }
 
@@ -90,7 +90,7 @@ func day4A1()
             }
         }
 
-        if ok:
+        if ok do
             total += 1
     }
 

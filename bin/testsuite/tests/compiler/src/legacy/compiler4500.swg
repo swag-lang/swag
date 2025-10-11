@@ -23,7 +23,7 @@ impl BitArray
     {
         me.count    = maxBits
         me.capacity = maxBits >> 5
-        if me.capacity << 5 < maxBits:
+        if me.capacity << 5 < maxBits do
             me.capacity += 1
 
         me.capacity *= 4

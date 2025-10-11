@@ -74,7 +74,7 @@ impl IWnd for IconButton
 {
     mtd hidePopup()
     {
-        if !.popup:
+        if !.popup do
             return
 
         .getApp().unregisterHookEvents(me)
@@ -87,14 +87,14 @@ impl IWnd for IconButton
 
     mtd impl onHookEvent(evt: IEvent)
     {
-        if !.popup:
+        if !.popup do
             return
 
         if let ptr = evt as MouseEvent where ptr.kind == .MousePressed
         {
-            if ptr.target == me or ptr.target == .popup:
+            if ptr.target == me or ptr.target == .popup do
                 return
-            if ptr.target and .popup.isParentOf(ptr.target):
+            if ptr.target and .popup.isParentOf(ptr.target) do
                 return
             .hidePopup()
         }
@@ -107,7 +107,7 @@ impl IWnd for IconButton
 
     mtd impl onApplyStateEvent(evt: *CommandStateEvent)
     {
-        if evt.id != .id:
+        if evt.id != .id do
             return
 
         if evt.setFlags.has(.ToolTip)
@@ -174,20 +174,20 @@ impl IWnd for IconButton
             colorChecked = colors.btnIcon_CheckedMark
         }
 
-        if bc.isDisabled:
+        if bc.isDisabled do
             paintFlags.add(.Disabled)
-        if .isChecked:
+        if .isChecked do
             paintFlags.add(.Checked)
-        if .isHot:
+        if .isHot do
             paintFlags.add(.Hot)
-        if .isPressed:
+        if .isPressed do
             paintFlags.add(.Pressed)
 
-        if .icon.color.a:
+        if .icon.color.a do
             colorIcon = .icon.color
-        if .iconColor.a:
+        if .iconColor.a do
             colorIcon = .iconColor
-        if .textColor.a:
+        if .textColor.a do
             colorText = .textColor
 
         // Background
@@ -208,11 +208,11 @@ impl IWnd for IconButton
             case Right:
                 subRectBk = &rects.btnIcon_CheckedRight
             case Full:
-                if .form == .Square:
+                if .form == .Square do
                     subRectBk = &rects.btnIcon_CheckedSquare
-                elif .form == .Round:
+                elif .form == .Round do
                     subRectBk = &rects.btnIcon_CheckedRound
-                else:
+                else do
                     subRectBk = &rects.btnIcon_CheckedRoundSquare
             }
 
@@ -222,9 +222,9 @@ impl IWnd for IconButton
         var pos     = .getClientRectPadding()
         let hasIcon = .icon.isValid() or .sigPaintIcon != null
 
-        if .iconSizeX:
+        if .iconSizeX do
             .icon.sizeX = .iconSizeX
-        if .iconSizeY:
+        if .iconSizeY do
             .icon.sizeY = .iconSizeY
 
         // Center everything
@@ -348,12 +348,12 @@ impl IWnd for IconButton
             {
             case Left:
                 sf.horzAlignment = .Left
-                if !hasIcon and (.arrowPos == .Top or .arrowPos == .Bottom):
+                if !hasIcon and (.arrowPos == .Top or .arrowPos == .Bottom) do
                     sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &.name, sf)
                 pos.moveLeft(.name.boundRect.width + metrics.btnIcon_SpacingTextH)
 
-                if !.icon.isValid():
+                if !.icon.isValid() do
                     .icon.sizeX = pos.width
                 if pos.width < .icon.sizeX
                 {
@@ -369,12 +369,12 @@ impl IWnd for IconButton
 
             case Right:
                 sf.horzAlignment = .Right
-                if !hasIcon and (.arrowPos == .Top or .arrowPos == .Bottom):
+                if !hasIcon and (.arrowPos == .Top or .arrowPos == .Bottom) do
                     sf.horzAlignment = .Center
                 bc.painter.drawRichString(pos, &.name, sf)
                 pos.width -= .name.boundRect.width + metrics.btnIcon_SpacingTextH
 
-                if !.icon.isValid():
+                if !.icon.isValid() do
                     .icon.sizeX = pos.width
                 if pos.width < .icon.sizeX
                 {
@@ -392,7 +392,7 @@ impl IWnd for IconButton
                 bc.painter.drawRichString(pos, &.name, sf)
                 pos.moveTop(sf.font.regular.height + metrics.btnIcon_SpacingTextV)
 
-                if !.icon.isValid():
+                if !.icon.isValid() do
                     .icon.sizeY = pos.height
                 if pos.height < .icon.sizeY
                 {
@@ -411,7 +411,7 @@ impl IWnd for IconButton
                 bc.painter.drawRichString(pos, &.name, sf)
 
                 pos.height -= sf.font.regular.height + metrics.btnIcon_SpacingTextV
-                if !.icon.isValid():
+                if !.icon.isValid() do
                     .icon.sizeY = pos.height
                 if pos.height < .icon.sizeY
                 {
@@ -419,7 +419,7 @@ impl IWnd for IconButton
                     .icon.sizeX = pos.height * ratio
                     .icon.sizeY = pos.height
                 }
-                else:
+                else do
                     pos.height = .icon.sizeY
             }
         }
@@ -487,7 +487,7 @@ impl IWnd for IconButton
                 if !.popup
                 {
                     .sigShowPopup.call(me)
-                    if .popup:
+                    if .popup do
                         .getApp().registerHookEvents(me)
                 }
             }
@@ -502,14 +502,14 @@ impl IconButton
     {
         Debug.assert(parent != null)
         var pos = position
-        if pos.height == 0:
+        if pos.height == 0 do
             pos.height = parent.getThemeMetrics().btnPush_Height
-        if pos.width == 0:
+        if pos.width == 0 do
             pos.width = parent.getThemeMetrics().btnPush_Width
         let res = Wnd.create'IconButton(parent, null, pos, id)
         res.icon    = icon
         res.padding = res.getThemeMetrics().btnIcon_Padding
-        if id != null:
+        if id != null do
             res.updateCommandState()
         return res
     }
@@ -517,9 +517,9 @@ impl IconButton
     // Set the check state of the button (if the button is checkable)
     mtd setCheck(checked: bool)
     {
-        if !.iconBtnFlags.has(.Checkable):
+        if !.iconBtnFlags.has(.Checkable) do
             return
-        if .isChecked == checked:
+        if .isChecked == checked do
             return
         .isChecked = checked
         .postCommandEvent(.id)

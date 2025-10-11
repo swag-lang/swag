@@ -2,6 +2,6 @@
 
 #test
 {
-    for 4:
+    for 4 do
         break to TOTO
 }

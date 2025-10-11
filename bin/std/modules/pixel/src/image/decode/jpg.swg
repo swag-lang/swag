@@ -220,7 +220,7 @@ impl Decoder
         .bitsLeft = 16
         .getBits1(16)
         .getBits1(16)
-        for i in MaxBlocksPerRow:
+        for i in MaxBlocksPerRow do
             .blockMaxZagSet[i] = 64
 
         .locateSofMarker()
@@ -229,9 +229,9 @@ impl Decoder
     mtd start() throw
     {
         .initFrame()
-        if .progressiveFlag:
+        if .progressiveFlag do
             .initProgressive()
-        else:
+        else do
             .initSequential()
     }
 
@@ -247,7 +247,7 @@ impl Decoder
             pdest += (.imageSizeY - 1) * .imageSizeX * 3
             for
             {
-                if .decode(&scanLineOfs, &scanLineLen):
+                if .decode(&scanLineOfs, &scanLineLen) do
                     break
 
                 var pdest1 = pdest
@@ -272,7 +272,7 @@ impl Decoder
             pdest += (.imageSizeY - 1) * .imageSizeX * 3
             for
             {
-                if .decode(&scanLineOfs, &scanLineLen):
+                if .decode(&scanLineOfs, &scanLineLen) do
                     break
                 Memory.copy(pdest, scanLineOfs, cast(u64) .imageSizeX * 3)
                 pdest -= .imageSizeX * 3
@@ -311,20 +311,20 @@ impl Decoder
                 var i = 63
                 while i > 0
                 {
-                    if p[Zag[cast(u32) i]]:
+                    if p[Zag[cast(u32) i]] do
                         break
                     i -= 1
                 }
 
                 while i >= 0
                 {
-                    if p[Zag[cast(u32) i]]:
+                    if p[Zag[cast(u32) i]] do
                         p[Zag[cast(u32) i]] *= q[cast(u32) i]
                     i -= 1
                 }
 
                 rowBlock += 1
-                if .compsInScan == 1:
+                if .compsInScan == 1 do
                     blockMcuX[componentId] += 1
                 else
                 {
@@ -343,7 +343,7 @@ impl Decoder
             }
         }
 
-        if .compsInScan == 1:
+        if .compsInScan == 1 do
             .blockMcuY[.compList[0]] += 1
         else
         {
@@ -360,26 +360,26 @@ impl Decoder
         var i = 1536
         while i > 0
         {
-            if .getChar() == 0xFF:
+            if .getChar() == 0xFF do
                 break
             i -= 1
         }
 
-        if i == 0:
+        if i == 0 do
             throw InvalidFormatError{"bad restart marker"}
 
         var c = 0
         while i > 0
         {
             c = .getChar()
-            if c != 0xFF:
+            if c != 0xFF do
                 break
             i -= 1
         }
 
-        if i == 0:
+        if i == 0 do
             throw InvalidFormatError{"bad restart marker"}
-        if c != (.nextRestartNum + cast(u32) Marker.M_RST0):
+        if c != (.nextRestartNum + cast(u32) Marker.M_RST0) do
             throw InvalidFormatError{"bad restart marker"}
 
         Memory.clear(&.lastDcVal, cast(u64) .compsInFrame * #sizeof(u32))
@@ -402,7 +402,7 @@ impl Decoder
             for
             {
                 symbol = ph.tree[~symbol + (1 - .getBits2(1))]
-                if symbol >= 0:
+                if symbol >= 0 do
                     break
             }
         }
@@ -419,7 +419,7 @@ impl Decoder
         var rowBlock = 0
         for .mcusPerRow
         {
-            if .restartInterval and (.restartsLeft == 0):
+            if .restartInterval and (.restartsLeft == 0) do
                 .restartProcess()
 
             for mcuBlock in .blocksPerMcu
@@ -453,7 +453,7 @@ impl Decoder
                     {
                         if r
                         {
-                            if (k + r) > 63:
+                            if (k + r) > 63 do
                                 throw InvalidFormatError{"decode error"}
                             if k < prevNumSet
                             {
@@ -471,7 +471,7 @@ impl Decoder
                         }
 
                         r = cast(s32) .getBits2(s)
-                        if s > 15:
+                        if s > 15 do
                             throw InvalidFormatError{"decode error"}
 
                         s         = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
@@ -481,7 +481,7 @@ impl Decoder
                     {
                         if r == 15
                         {
-                            if (k + 15) > 63:
+                            if (k + 15) > 63 do
                                 throw InvalidFormatError{"decode error"}
 
                             if k < prevNumSet
@@ -737,16 +737,16 @@ impl Decoder
 
     mtd decode(scanLineOfs: **void, scanLineLen: *u32)->s32 throw
     {
-        if .totalLinesLeft == 0:
+        if .totalLinesLeft == 0 do
             return Done
 
         if .mcuLinesLeft == 0
         {
-            if .progressiveFlag:
+            if .progressiveFlag do
                 .loadNextRow()
-            else:
+            else do
                 .decodeNextRow()
-            if .totalLinesLeft <= .maxMcuSizeY:
+            if .totalLinesLeft <= .maxMcuSizeY do
                 .findEoi()
             .transformRow()
             .mcuLinesLeft = .maxMcuSizeY
@@ -760,7 +760,7 @@ impl Decoder
                 .convertH2V2()
                 dref scanLineOfs = .scanLine0.buffer
             }
-            else:
+            else do
                 dref scanLineOfs = .scanLine1.buffer
 
         case YH2V1:
@@ -773,7 +773,7 @@ impl Decoder
                 .convertH1V2()
                 dref scanLineOfs = .scanLine0.buffer
             }
-            else:
+            else do
                 dref scanLineOfs = .scanLine1.buffer
 
         case YH1V1:
@@ -843,9 +843,9 @@ impl Decoder
         var d1  = .scanLine1.buffer
 
         var y: [*] u8 = undefined
-        if row < 8:
+        if row < 8 do
             y = .pSampleBuf + row * 8
-        else:
+        else do
             y = .pSampleBuf + 64 * 1 + (row & 7) * 8
 
         var c = .pSampleBuf + 64 * 2 + (row >> 1) * 8
@@ -925,9 +925,9 @@ impl Decoder
         var d1  = .scanLine1.buffer
 
         var y: [*] u8 = undefined
-        if row < 8:
+        if row < 8 do
             y = .pSampleBuf + row * 8
-        else:
+        else do
             y = .pSampleBuf + 64 * 2 + (row & 7) * 8
         var c = .pSampleBuf + 64 * 4 + (row >> 1) * 8
 
@@ -988,7 +988,7 @@ impl Decoder
         }
         elif .compsInFrame == 3
         {
-            if (.compSampH[1] != 1) or (.compSampV[1] != 1) or (.compSampH[2] != 1) or (.compSampV[2] != 1):
+            if (.compSampH[1] != 1) or (.compSampV[1] != 1) or (.compSampH[2] != 1) or (.compSampV[2] != 1) do
                 throw InvalidFormatError{"invalid samp factors"}
 
             if (.compSampH[0] == 1) and (.compSampV[0] == 1)
@@ -1019,18 +1019,18 @@ impl Decoder
                 .maxMcuSizeX     = 16
                 .maxMcuSizeY     = 16
             }
-            else:
+            else do
                 throw InvalidFormatError{"invalid samp factors"}
         }
-        else:
+        else do
             throw UnsupportedFormatError{"unsupported color space"}
 
         .maxMcusPerRow = (.imageSizeX + (.maxMcuSizeX - 1)) / .maxMcuSizeX
         .maxMcusPerCol = (.imageSizeY + (.maxMcuSizeY - 1)) / .maxMcuSizeY
 
-        if .scanType == GrayScale:
+        if .scanType == GrayScale do
             .destBytesPerPixel = 1
-        else:
+        else do
             .destBytesPerPixel = 4
 
         .destBytesPerScanLine     = ((.imageSizeX + 15) & 0xFFF0) * .destBytesPerPixel
@@ -1043,7 +1043,7 @@ impl Decoder
         Memory.clear(.scanLine1.buffer, cast(u64) .destBytesPerScanLine)
 
         .maxBlocksPerRow = .maxMcusPerRow * .maxBlocksPerMcu
-        if .maxBlocksPerRow > MaxBlocksPerRow:
+        if .maxBlocksPerRow > MaxBlocksPerRow do
             throw InvalidFormatError{"assertion error"}
 
         .quantBuf.resize(cast(u64) .maxBlocksPerRow * 64 * #sizeof(s16) + 8)
@@ -1082,7 +1082,7 @@ impl Decoder
     mtd initScan()->bool throw
     {
         let res = .locateSosMarker()
-        if !res:
+        if !res do
             return false
 
         .calcMcuBlockOrder()
@@ -1111,9 +1111,9 @@ impl Decoder
 
     mtd fixInBuffer()
     {
-        if .bitsLeft == 16:
+        if .bitsLeft == 16 do
             .stuffChar(cast(u8) ((.bitBuf >> 16) & 0xFF))
-        if .bitsLeft >= 8:
+        if .bitsLeft >= 8 do
             .stuffChar(cast(u8) ((.bitBuf >> 24) & 0xFF))
 
         .stuffChar(cast(u8) (.bitBuf & 0xFF))
@@ -1128,7 +1128,7 @@ impl Decoder
     {
         for i in .compsInScan
         {
-            if .quant[.compQuant[.compList[i]]].count == 0:
+            if .quant[.compQuant[.compList[i]]].count == 0 do
                 throw InvalidFormatError{"undefined quant table"}
         }
     }
@@ -1201,7 +1201,7 @@ impl Decoder
                 cde <<= (16 - (codeSize - 8))
                 for var l = codeSize; l > 9; l -= 1
                 {
-                    if (cde & 0x8000) == 0:
+                    if (cde & 0x8000) == 0 do
                         currentEntry -= 1
 
                     if hs.tree[-currentEntry - 1] == 0
@@ -1210,13 +1210,13 @@ impl Decoder
                         currentEntry               = nextFreeEntry
                         nextFreeEntry -= 2
                     }
-                    else:
+                    else do
                         currentEntry = hs.tree[-currentEntry - 1]
 
                     cde <<= 1
                 }
 
-                if (cde & 0x8000) == 0:
+                if (cde & 0x8000) == 0 do
                     currentEntry -= 1
                 hs.tree[-currentEntry - 1] = i
             }
@@ -1229,10 +1229,10 @@ impl Decoder
     {
         for i in .compsInScan
         {
-            if (.spectralStart == 0) and (.huffNum[.compDcTab[.compList[i]]].count == 0):
+            if (.spectralStart == 0) and (.huffNum[.compDcTab[.compList[i]]].count == 0) do
                 throw InvalidFormatError{"undefined huff table"}
 
-            if (.spectralEnd > 0) and (.huffNum[.compAcTab[.compList[i]]].count == 0):
+            if (.spectralEnd > 0) and (.huffNum[.compAcTab[.compList[i]]].count == 0) do
                 throw InvalidFormatError{"undefined huff table"}
         }
 
@@ -1360,10 +1360,10 @@ impl Decoder
             if s
             {
                 k += r
-                if k > 63:
+                if k > 63 do
                     throw InvalidFormatError{"decode error"}
                 r = .getBits2(s)
-                if s > 15:
+                if s > 15 do
                     throw InvalidFormatError{"decode error"}
 
                 s         = (r < ExtendTest[s] ? r + ExtendOff[s] : r)
@@ -1374,13 +1374,13 @@ impl Decoder
                 if r == 15
                 {
                     k += 15
-                    if k > 63:
+                    if k > 63 do
                         throw InvalidFormatError{"decode error"}
                 }
                 else
                 {
                     .eobRun = 1 << r
-                    if r:
+                    if r do
                         .eobRun += .getBits2(r)
                     .eobRun -= 1
                     break
@@ -1397,7 +1397,7 @@ impl Decoder
         var k  = .spectralStart
         if .eobRun == 0
         {
-            if .spectralEnd >= 64:
+            if .spectralEnd >= 64 do
                 throw InvalidFormatError{"decode error"}
 
             while k <= .spectralEnd
@@ -1408,11 +1408,11 @@ impl Decoder
 
                 if s
                 {
-                    if s != 1:
+                    if s != 1 do
                         throw InvalidFormatError{"decode error"}
-                    if .getBits2(1):
+                    if .getBits2(1) do
                         s = p1
-                    else:
+                    else do
                         s = m1
                 }
                 else
@@ -1420,7 +1420,7 @@ impl Decoder
                     if r != 15
                     {
                         .eobRun = 1 << r
-                        if r:
+                        if r do
                             .eobRun += .getBits2(r)
                         break
                     }
@@ -1435,9 +1435,9 @@ impl Decoder
                         {
                             if (dref thisCoef & cast(s16) p1) == 0
                             {
-                                if dref thisCoef >= 0:
+                                if dref thisCoef >= 0 do
                                     dref thisCoef += cast(s16) p1
-                                else:
+                                else do
                                     dref thisCoef += cast(s16) m1
                             }
                         }
@@ -1445,12 +1445,12 @@ impl Decoder
                     else
                     {
                         r -= 1
-                        if r < 0:
+                        if r < 0 do
                             break
                     }
 
                     k += 1
-                    if k > .spectralEnd:
+                    if k > .spectralEnd do
                         break
                 }
 
@@ -1465,7 +1465,7 @@ impl Decoder
 
         if .eobRun > 0
         {
-            if .spectralEnd >= 64:
+            if .spectralEnd >= 64 do
                 throw InvalidFormatError{"decode error"}
             while k <= .spectralEnd
             {
@@ -1476,9 +1476,9 @@ impl Decoder
                     {
                         if (dref thisCoef & cast(s16) p1) == 0
                         {
-                            if dref thisCoef >= 0:
+                            if dref thisCoef >= 0 do
                                 dref thisCoef += cast(s16) p1
-                            else:
+                            else do
                                 dref thisCoef += cast(s16) m1
                         }
                     }
@@ -1504,7 +1504,7 @@ impl Decoder
                 var blockMcuOfsX = 0
                 var blockMcuOfsY = 0
 
-                if .restartInterval and (.restartsLeft == 0):
+                if .restartInterval and (.restartsLeft == 0) do
                     .restartProcess()
 
                 for mcuBlock in .blocksPerMcu
@@ -1512,7 +1512,7 @@ impl Decoder
                     let componentId = .mcuOrg[mcuBlock]
                     fn(me, componentId, blockMcutX[componentId] + blockMcuOfsX, blockMcutY[componentId] + blockMcuOfsY)
 
-                    if .compsInScan == 1:
+                    if .compsInScan == 1 do
                         blockMcutX[componentId] += 1
                     else
                     {
@@ -1533,7 +1533,7 @@ impl Decoder
                 .restartsLeft -= 1
             }
 
-            if .compsInScan == 1:
+            if .compsInScan == 1 do
                 blockMcutY[.compList[0]] += 1
             else
             {
@@ -1548,7 +1548,7 @@ impl Decoder
 
     mtd initProgressive() throw
     {
-        if .compsInFrame == 4:
+        if .compsInFrame == 4 do
             throw UnsupportedFormatError{"unsupported color space"}
 
         for i in .compsInFrame
@@ -1560,18 +1560,18 @@ impl Decoder
         for
         {
             let res = .initScan()
-            if !res:
+            if !res do
                 break
 
             let dcOnlyScan     = (.spectralStart == 0)
             let refinementScan = (.successiveHigh != 0)
 
-            if (.spectralStart > .spectralEnd) or (.spectralEnd > 63):
+            if (.spectralStart > .spectralEnd) or (.spectralEnd > 63) do
                 throw InvalidFormatError{"bad sos spectral"}
 
             if dcOnlyScan
             {
-                if .spectralEnd:
+                if .spectralEnd do
                     throw InvalidFormatError{"bad sos spectral"}
             }
             elif .compsInScan != 1
@@ -1579,22 +1579,22 @@ impl Decoder
                 throw InvalidFormatError{"bad sos spectral"}
             }
 
-            if refinementScan and (.successiveLow != .successiveHigh - 1):
+            if refinementScan and (.successiveLow != .successiveHigh - 1) do
                 throw InvalidFormatError{"bad sos successive"}
 
             var decodeBlockFunc: func(*Decoder, u32, s32, s32) throw
             if dcOnlyScan
             {
-                if refinementScan:
+                if refinementScan do
                     decodeBlockFunc = &decodeBlockDcRefine
-                else:
+                else do
                     decodeBlockFunc = &decodeBlockDcFirst
             }
             else
             {
-                if refinementScan:
+                if refinementScan do
                     decodeBlockFunc = &decodeBlockAcRefine
-                else:
+                else do
                     decodeBlockFunc = &decodeBlockAcFirst
             }
 
@@ -1607,7 +1607,7 @@ impl Decoder
         }
 
         .compsInScan = .compsInFrame
-        for i in .compsInFrame:
+        for i in .compsInFrame do
             .compList[i] = i
         .calcMcuBlockOrder()
     }
@@ -1615,7 +1615,7 @@ impl Decoder
     mtd initSequential() throw
     {
         let res = .initScan()
-        if !res:
+        if !res do
             throw InvalidFormatError{"unexpected marker"}
     }
 
@@ -1634,7 +1634,7 @@ impl Decoder
             .bitBuf = rol(.bitBuf, cast(u32) -.bitsLeft)
             .bitsLeft += 16
         }
-        else:
+        else do
             .bitBuf = rol(.bitBuf, cast(u32) numBits)
 
         return i
@@ -1655,7 +1655,7 @@ impl Decoder
             .bitBuf = rol(.bitBuf, cast(u32) -.bitsLeft)
             .bitsLeft += 16
         }
-        else:
+        else do
             .bitBuf = rol(.bitBuf, cast(u32) numBits)
 
         return i
@@ -1667,7 +1667,7 @@ impl Decoder
         var c            = .getChar(&paddingFlag)
         if c == 0xFF
         {
-            if paddingFlag:
+            if paddingFlag do
                 return 0xFF
 
             c = .getChar(&paddingFlag)
@@ -1677,7 +1677,7 @@ impl Decoder
                 return 0xFF
             }
 
-            if c == 0x00:
+            if c == 0x00 do
                 return 0xFF
 
             .stuffChar(cast(u8) c)
@@ -1699,7 +1699,7 @@ impl Decoder
                 dref paddingFlag = true
                 let t = .temFlag
                 .temFlag ^= 1
-                if t:
+                if t do
                     return 0xD9
                 return 0xFF
             }
@@ -1722,7 +1722,7 @@ impl Decoder
             {
                 let t = .temFlag
                 .temFlag ^= 1
-                if t:
+                if t do
                     return 0xD9
                 return 0xFF
             }
@@ -1777,9 +1777,9 @@ impl Decoder
             case M_DRI:
                 .readDriMarker()
             default:
-                if cast(u32) c & cast(u32) M_APP0 == cast(u32) M_APP0:
+                if cast(u32) c & cast(u32) M_APP0 == cast(u32) M_APP0 do
                     .readAppMarker(c)
-                else:
+                else do
                     .readVariableMarker(c)
             }
         }
@@ -1790,7 +1790,7 @@ impl Decoder
     mtd readVariableMarker(_marker: Marker) throw
     {
         var left = .getBits1(16)
-        if left < 2:
+        if left < 2 do
             throw InvalidFormatError{"bad variable marker"}
         left -= 2
 
@@ -1808,7 +1808,7 @@ impl Decoder
         var huffValt: [256] u8
 
         var left = .getBits1(16)
-        if left < 2:
+        if left < 2 do
             throw InvalidFormatError{"bad dht marker"}
         left -= 2
 
@@ -1823,7 +1823,7 @@ impl Decoder
                 count += huffNumt[i]
             }
 
-            if count > 255:
+            if count > 255 do
                 throw InvalidFormatError{"bad dht counts"}
             for i in count
             {
@@ -1831,15 +1831,15 @@ impl Decoder
             }
 
             let i = 1 + 16 + count
-            if left < i:
+            if left < i do
                 throw InvalidFormatError{"bad dht marker"}
 
             left -= i
-            if (index & 0x10) > 0x10:
+            if (index & 0x10) > 0x10 do
                 throw InvalidFormatError{"bad dht index"}
 
             index = (index & 0x0F) + ((index & 0x10) >> 4) * (MaxHuffTables >> 1)
-            if index >= MaxHuffTables:
+            if index >= MaxHuffTables do
                 throw InvalidFormatError{"bad dht index"}
 
             .huffNum[index].resize(17)
@@ -1852,7 +1852,7 @@ impl Decoder
     mtd readDqtMarker() throw
     {
         var left = .getBits1(16)
-        if left < 2:
+        if left < 2 do
             throw InvalidFormatError{"bad dqt marker"}
         left -= 2
 
@@ -1861,22 +1861,22 @@ impl Decoder
             var n    = .getBits1(8)
             let prec = n >> 4
             n &= 0x0F
-            if n >= MaxQuantTables:
+            if n >= MaxQuantTables do
                 throw InvalidFormatError{"bad dqt table"}
 
             .quant[n].resize(64)
             for i in 64
             {
                 var temp = .getBits1(8)
-                if prec:
+                if prec do
                     temp = (temp << 8) + .getBits1(8)
                 .quant[n].buffer[i] = cast(s16) temp
             }
 
             var i = 64 + 1
-            if prec:
+            if prec do
                 i += 64
-            if left < i:
+            if left < i do
                 throw InvalidFormatError{"bad dqt length"}
             left -= i
         }
@@ -1884,7 +1884,7 @@ impl Decoder
 
     mtd readDriMarker() throw
     {
-        if .getBits1(16) != 4:
+        if .getBits1(16) != 4 do
             throw InvalidFormatError{"bad dri length"}
         .restartInterval = .getBits1(16)
     }
@@ -1892,21 +1892,21 @@ impl Decoder
     mtd readSofMarker() throw
     {
         let left = .getBits1(16)
-        if .getBits1(8) != 8:
+        if .getBits1(8) != 8 do
             throw InvalidFormatError{"bad precision"}
 
         .imageSizeY = .getBits1(16)
         .imageSizeX = .getBits1(16)
 
-        if (.imageSizeY < 1) or (.imageSizeY > MaxHeight):
+        if (.imageSizeY < 1) or (.imageSizeY > MaxHeight) do
             throw InvalidFormatError{"bad height"}
-        if (.imageSizeX < 1) or (.imageSizeX > MaxWidth):
+        if (.imageSizeX < 1) or (.imageSizeX > MaxWidth) do
             throw InvalidFormatError{"bad width"}
 
         .compsInFrame = .getBits1(8)
-        if .compsInFrame > MaxComponents:
+        if .compsInFrame > MaxComponents do
             throw InvalidFormatError{"too many components"}
-        if left != (.compsInFrame * 3 + 8):
+        if left != (.compsInFrame * 3 + 8) do
             throw InvalidFormatError{"bad sof length"}
 
         for i in .compsInFrame
@@ -1921,7 +1921,7 @@ impl Decoder
     mtd readAppMarker(marker: Marker) throw
     {
         var left = .getBits1(16)
-        if left < 2:
+        if left < 2 do
             throw InvalidFormatError{"Bad app marker"}
         left -= 2
 
@@ -1942,7 +1942,7 @@ impl Decoder
             {
                 let c = cast(u8) .getBits1(8)
                 left -= 1
-                if c == 0:
+                if c == 0 do
                     break
                 meta.tag.add(c)
             }
@@ -1965,7 +1965,7 @@ impl Decoder
         .compsInScan = n
         left -= 3
 
-        if (left != (n * 2 + 3)) or (n < 1) or (n > MaxCompsInScan):
+        if (left != (n * 2 + 3)) or (n < 1) or (n > MaxCompsInScan) do
             throw InvalidFormatError{"bad sos length"}
 
         for i in n
@@ -1977,12 +1977,12 @@ impl Decoder
             var ci = 0
             while ci < .compsInFrame
             {
-                if cc == .compIdent[ci]:
+                if cc == .compIdent[ci] do
                     break
                 ci += 1
             }
 
-            if ci >= .compsInFrame:
+            if ci >= .compsInFrame do
                 throw InvalidFormatError{"bad sos comp id"}
 
             .compList[i]   = ci
@@ -2012,9 +2012,9 @@ impl Decoder
     mtd locateSosMarker()->bool throw
     {
         let c = .processMarkers()
-        if c == .M_EOI:
+        if c == .M_EOI do
             return false
-        elif c != .M_SOS:
+        elif c != .M_SOS do
             throw InvalidFormatError{"unexpected marker"}
         .readSosMarker()
         return true
@@ -2024,22 +2024,22 @@ impl Decoder
     {
         var lastRune = .getBits1(8)
         var thisChar = .getBits1(8)
-        if (lastRune == 0xFF) and (thisChar == Marker.M_SOI):
+        if (lastRune == 0xFF) and (thisChar == Marker.M_SOI) do
             return
         var bytesLeft = 512
         for
         {
             bytesLeft -= 1
-            if bytesLeft == 0:
+            if bytesLeft == 0 do
                 throw InvalidFormatError{"not a jpeg"}
             lastRune = thisChar
             thisChar = .getBits1(8)
-            if (lastRune == 0xFF) and (thisChar == Marker.M_SOI):
+            if (lastRune == 0xFF) and (thisChar == Marker.M_SOI) do
                 break
         }
 
         thisChar = (.bitBuf >> 8) & 0xFF
-        if thisChar != 0xFF:
+        if thisChar != 0xFF do
             throw InvalidFormatError{"not a jpeg"}
     }
 
@@ -2075,7 +2075,7 @@ impl Decoder
     {
         .inBufLeft = 0
         .inBufOfs  = .inBuf
-        if .eofReached:
+        if .eofReached do
             return
 
         for
@@ -2091,7 +2091,7 @@ impl Decoder
             Memory.copy(&.inBuf[0] + .inBufLeft, .stream + .streamSeek, cast(u64) size)
             .streamSeek += size
             .inBufLeft += bytesRead
-            if .inBufLeft >= InBufSize or .eofReached:
+            if .inBufLeft >= InBufSize or .eofReached do
                 break
         }
 
@@ -2118,7 +2118,7 @@ public impl IImageDecoder for Decoder
 
         // Creates image
         result.init(.imageSizeX, .imageSizeY, PixelFormat.BGR8)
-        if !options.decodePixels:
+        if !options.decodePixels do
             return result
         result.allocPixels()
 

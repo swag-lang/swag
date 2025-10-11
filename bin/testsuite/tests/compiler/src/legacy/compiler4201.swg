@@ -22,7 +22,7 @@ impl A
     #[Swag.Inline]
     mtd toto()
     {
-        #if #defined(T.titi):
+        #if #defined(T.titi) do
             me.rng.titi()
     }
 }

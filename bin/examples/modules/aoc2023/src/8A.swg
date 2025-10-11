@@ -46,15 +46,15 @@ func day8A()
 
     foreach l, i in lines
     {
-        if i == 0:
+        if i == 0 do
             instructions = l.toString()
         elif i > 1
         {
             let name = l[0 to 2]
             nameToNode.add(name, i - 2)
-            if name == "AAA":
+            if name == "AAA" do
                 startNode = i - 2
-            elif name == "ZZZ":
+            elif name == "ZZZ" do
                 endNode = i - 2
         }
     }
@@ -62,7 +62,7 @@ func day8A()
     nodes.resize(lines.count - 2)
     foreach l, i in lines
     {
-        if i <= 1:
+        if i <= 1 do
             continue
         let left   = l[7 to 9]
         let right  = l[12 to 14]
@@ -77,12 +77,12 @@ func day8A()
     {
         foreach inst in instructions
         {
-            if inst == 'L':
+            if inst == 'L' do
                 curNode = nodes[curNode].left
-            else:
+            else do
                 curNode = nodes[curNode].right
             total += 1
-            if curNode == endNode:
+            if curNode == endNode do
                 break
         }
     }

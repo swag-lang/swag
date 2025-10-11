@@ -24,9 +24,9 @@ impl Queue
         const node = @alloc(#sizeof(Node))
         @init(node)
         node.data = value
-        if end:
+        if end do
             end.next = node
-        else:
+        else do
             start = node
         end = node
     }
@@ -35,9 +35,9 @@ impl Queue
     {
         let start = start orelse null
         defer gpa.destroy(start)
-        if start.next:
+        if start.next do
             me.start = me.next
-        else:
+        else do
             me.start, me.end = null
         return data
     }

@@ -59,9 +59,9 @@ func day2A()
             if @index
             {
                 let diff = a - prev
-                if @abs(diff) < 1 or @abs(diff) > 3:
+                if @abs(diff) < 1 or @abs(diff) > 3 do
                     bad = true
-                if ls and Math.sign(diff) != ls:
+                if ls and Math.sign(diff) != ls do
                     bad = true
                 ls = Math.sign(diff)
             }

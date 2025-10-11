@@ -78,8 +78,8 @@ var g_Game:      GameInfo
 
 func moveIsPossible(fromP, toP: s8)->bool
 {
-    foreach move in g_Game.possibleMoves:
-        if move.fromP == fromP and move.toP == toP:
+    foreach move in g_Game.possibleMoves do
+        if move.fromP == fromP and move.toP == toP do
             return true
     return false
 }
@@ -98,7 +98,7 @@ func initCells()
         let y = i / 12
 
         g_Board[i].piece = .None
-        if x < 2 or x >= 10:
+        if x < 2 or x >= 10 do
             g_Board[i].content = .Invalid
         else
         {
@@ -125,14 +125,14 @@ func initCells()
 func getCellWithOffset(board: [*] Cell, source, offset: s8)->s8
 {
     let result = source + offset
-    if result < 0 or result >= 96 or board[result].content == .Invalid:
+    if result < 0 or result >= 96 or board[result].content == .Invalid do
         return -1
     return result
 }
 
 func getKingCell(board: [*] Cell, color: ContentEnum)->s8
 {
-    for i in 96's8 where board[i].content == color and board[i].piece == .King:
+    for i in 96's8 where board[i].content == color and board[i].piece == .King do
         return i
     return -1
 }
@@ -140,24 +140,24 @@ func getKingCell(board: [*] Cell, color: ContentEnum)->s8
 func isCheck(board: [*] Cell, white: bool)->bool
 {
     let kingCell = getKingCell(board, white ? .White : .Black)
-    if kingCell == -1:
+    if kingCell == -1 do
         return false
 
     var moves: Array's8
     getKnightMoves(board, kingCell, &moves)
-    foreach v in moves where board[v].piece == .Knight:
+    foreach v in moves where board[v].piece == .Knight do
         return true
     moves.clear()
     getPawnAttacks(board, kingCell, &moves)
-    foreach v in moves where board[v].piece == .Pawn:
+    foreach v in moves where board[v].piece == .Pawn do
         return true
     moves.clear()
     getBishopMoves(board, kingCell, &moves)
-    foreach v in moves where board[v].piece == .Bishop or board[v].piece == .Queen:
+    foreach v in moves where board[v].piece == .Bishop or board[v].piece == .Queen do
         return true
     moves.clear()
     getRookMoves(board, kingCell, &moves)
-    foreach v in moves where board[v].piece == .Rook or board[v].piece == .Queen:
+    foreach v in moves where board[v].piece == .Rook or board[v].piece == .Queen do
         return true
     return false
 }
@@ -169,7 +169,7 @@ func computeMoves()
 
     foreach cell in g_Board
     {
-        if cell.content != contentToTreat:
+        if cell.content != contentToTreat do
             continue
 
         var moves: Array's8
@@ -196,7 +196,7 @@ func computeMoves()
         foreach move in moves
         {
             var board = doMove(g_Board, i, move)
-            if !isCheck(board, g_Game.whiteTurn):
+            if !isCheck(board, g_Game.whiteTurn) do
                 g_Game.possibleMoves.add({i, move})
         }
     }
@@ -213,7 +213,7 @@ func computeMoves()
        g_Board[ki + 3].content == contentToTreat and g_Board[ki + 3].piece == .Rook
     {
         var board = doMove(g_Board, ki, ki + 2)
-        if !isCheck(board, g_Game.whiteTurn):
+        if !isCheck(board, g_Game.whiteTurn) do
             g_Game.possibleMoves.add({ki, ki + 2})
     }
     if bigCastle and
@@ -223,11 +223,11 @@ func computeMoves()
        g_Board[ki - 4].content == contentToTreat and g_Board[ki - 4].piece == .Rook
     {
         var board = doMove(g_Board, ki, ki - 2)
-        if !isCheck(board, g_Game.whiteTurn):
+        if !isCheck(board, g_Game.whiteTurn) do
             g_Game.possibleMoves.add({ki, ki - 2})
     }
 
-    if g_Game.possibleMoves.isEmpty():
+    if g_Game.possibleMoves.isEmpty() do
         g_Game.gameStatus = Format.toString("% player wins", !g_Game.whiteTurn ? "White" : "Black")
 }
 
@@ -236,14 +236,14 @@ func getPawnMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
     let isWhite = board[fromP].content == .White
     let offset  = isWhite ? 12's8 : -12's8
     var target  = getCellWithOffset(board, fromP, offset)
-    if target != -1 and board[target].content == .Empty:
+    if target != -1 and board[target].content == .Empty do
         moves.add(target)
 
     // double move when pawn is in its original row
     if fromP / 12 == (isWhite ? 1 : 6)
     {
         target = getCellWithOffset(board, fromP, 2 * offset)
-        if target != -1 and board[target].content == .Empty:
+        if target != -1 and board[target].content == .Empty do
             moves.add(target)
     }
 }
@@ -254,20 +254,20 @@ func getPawnAttacks(board: [*] Cell, fromP: s8, moves: *Array's8)
     let targetContent = isWhite ? ContentEnum.Black : ContentEnum.White
     let offset        = isWhite ? 12's8 : -12's8
     var target        = getCellWithOffset(board, fromP, offset - 1)
-    if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target):
+    if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target) do
         moves.add(target)
     target = getCellWithOffset(board, fromP, offset + 1)
-    if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target):
+    if target != -1 and (board[target].content == targetContent or g_Game.priseEnPassant == target) do
         moves.add(target)
 }
 
 func getPieceMove(board: [*] Cell, fromP, offset: s8, moves: *Array's8)->bool
 {
     let target = getCellWithOffset(board, fromP, offset)
-    if target == -1:
+    if target == -1 do
         return false
 
-    if board[fromP].content == board[target].content:
+    if board[fromP].content == board[target].content do
         return false
 
     moves.add(target)
@@ -277,14 +277,14 @@ func getPieceMove(board: [*] Cell, fromP, offset: s8, moves: *Array's8)->bool
 const KnightMovesDeltas = [10's8, 23, 25, 14, -10, -23, -25, -14]
 func getKnightMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
-    foreach delta in KnightMovesDeltas:
+    foreach delta in KnightMovesDeltas do
         discard getPieceMove(board, fromP, delta, moves)
 }
 
 const KingMovesDeltas = [11's8, 12, 13, 1, -11, -12, -13, -1]
 func getKingMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 {
-    foreach delta in KingMovesDeltas:
+    foreach delta in KingMovesDeltas do
         discard getPieceMove(board, fromP, delta, moves)
 }
 
@@ -294,7 +294,7 @@ func getBishopMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
     foreach delta in BishopMovesDeltas
     {
         var offset = delta
-        while getPieceMove(board, fromP, offset, moves):
+        while getPieceMove(board, fromP, offset, moves) do
             offset += delta
     }
 }
@@ -305,7 +305,7 @@ func getRookMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
     foreach delta in RookMovesDeltas
     {
         var offset = delta
-        while getPieceMove(board, fromP, offset, moves):
+        while getPieceMove(board, fromP, offset, moves) do
             offset += delta
     }
 }
@@ -314,7 +314,7 @@ func getRookMoves(board: [*] Cell, fromP: s8, moves: *Array's8)
 func doMove(fromP, toP: s8)
 {
     let content = g_Board[fromP].content
-    if content > ContentEnum.Black:
+    if content > ContentEnum.Black do
         return
 
     // castle update and params
@@ -328,9 +328,9 @@ func doMove(fromP, toP: s8)
     g_Board[fromP].content = .Empty
 
     // castle, king has moved, move rook
-    if fromP == ki and toP == ki + 2 and g_Board[ki + 2].piece == .King:
+    if fromP == ki and toP == ki + 2 and g_Board[ki + 2].piece == .King do
         doMove(ki + 3, ki + 1)
-    if fromP == ki and toP == ki - 1 and g_Board[ki - 2].piece == .King:
+    if fromP == ki and toP == ki - 1 and g_Board[ki - 2].piece == .King do
         doMove(ki - 4, ki - 1)
 
     // prise en passant
@@ -341,13 +341,13 @@ func doMove(fromP, toP: s8)
         g_Board[otherTo].content = .Empty
     }
 
-    if g_Board[toP].piece == .Pawn and Math.abs(cast(s8) (fromP - toP)) == 24:
+    if g_Board[toP].piece == .Pawn and Math.abs(cast(s8) (fromP - toP)) == 24 do
         g_Game.priseEnPassant = cast(s8) ((fromP + #prom toP) / 2)
-    else:
+    else do
         g_Game.priseEnPassant = -1
 
     // promotion
-    if g_Board[toP].piece == .Pawn and (toP > 84 or toP < 12):
+    if g_Board[toP].piece == .Pawn and (toP > 84 or toP < 12) do
         g_Board[toP].piece = .Queen
 }
 
@@ -356,7 +356,7 @@ func doMove(board: [*] Cell, fromP, toP: s8)->[96] Cell
 {
     var result: [96] Cell
 
-    for i in 96:
+    for i in 96 do
         result[i] = board[i]
 
     result[toP].piece     = result[fromP].piece
@@ -369,19 +369,19 @@ func doMove(board: [*] Cell, fromP, toP: s8)->[96] Cell
 func paintCell(painter: *Pixel.Painter, index: s8)
 {
     let cell = &g_Board[index]
-    if cell.content == .Invalid:
+    if cell.content == .Invalid do
         return
     let cellInfo = &g_BoardInfo[index]
     painter.fillRect(cellInfo.rect, cellInfo.odd ? ColorOdd : ColorEven)
-    if cell.piece == .None:
+    if cell.piece == .None do
         return
 
     var texture: Texture
-    if cell.content == .White:
+    if cell.content == .White do
         texture = Res.piecesTexture[0, cast(u8) cell.piece - 1]
-    elif cell.content == .Black:
+    elif cell.content == .Black do
         texture = Res.piecesTexture[1, cast(u8) cell.piece - 1]
-    else:
+    else do
         return
     painter.drawTexture(cellInfo.rect, texture)
 }
@@ -425,7 +425,7 @@ func paintBoard(paintEvt: *PaintEvent)
         rect.y += CellSize
     }
 
-    for i in 96's8:
+    for i in 96's8 do
         paintCell(painter, i)
 
     if g_Game.selectedCell != -1
@@ -485,10 +485,10 @@ func paintStates(paintEvt: *PaintEvent)
 func pickCell(pos: Math.Point)->s8
 {
     let xpix = pos.x - BorderSize
-    if xpix < 0 or xpix >= BoardSize:
+    if xpix < 0 or xpix >= BoardSize do
         return -1
     let ypix = pos.y - BorderSize
-    if ypix < 0 or ypix >= BoardSize:
+    if ypix < 0 or ypix >= BoardSize do
         return -1
 
     let x = cast(s32) (xpix / CellSize)
@@ -531,19 +531,19 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             {
                 if cell != -1
                 {
-                    if g_Board[cell].content == .Empty:
+                    if g_Board[cell].content == .Empty do
                         cell = -1
                     else
                     {
                         let isWhite = g_Board[cell].content == .White
-                        if isWhite != g_Game.whiteTurn:
+                        if isWhite != g_Game.whiteTurn do
                             cell = -1
                     }
                 }
                 g_Game.selectedCell = cell == g_Game.selectedCell ? -1 : cell
             }
         }
-        elif mouseEvt.button == .Right:
+        elif mouseEvt.button == .Right do
             g_Game.selectedCell = -1
 
         wnd.invalidate()
@@ -560,7 +560,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 #main
 {
     var app: Gui.Application
-    if Env.hasArg("swag.test"):
+    if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
 
     let surface = try app.createSurface(100, 100, 1024, 1024, flags: (.OverlappedWindow & ~.Sizeable), hook: &onEvent)

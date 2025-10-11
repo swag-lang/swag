@@ -1,68 +1,68 @@
 func toto()
 {
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
-    #if false:
+    #if false do
         struct AA {}
 }
 

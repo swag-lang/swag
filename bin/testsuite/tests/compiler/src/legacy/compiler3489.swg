@@ -2,6 +2,6 @@
 #test
 {
     var v: func||()
-    if v:
+    if v do
         v()
 }

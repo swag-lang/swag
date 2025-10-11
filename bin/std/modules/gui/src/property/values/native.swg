@@ -161,9 +161,9 @@ impl Properties
             {
                 .labelSize = 0
                 .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
-                if me.kind == .Grid:
+                if me.kind == .Grid do
                     .dockStyle = .CenterKeepSizeVert
-                else:
+                else do
                     .anchorStyle = .X
             }
 
@@ -188,12 +188,12 @@ impl Properties
 
             with let ed = EditBox.create(item.line, value.name)
             {
-                if unit != null:
+                if unit != null do
                     .unit = cast(string) unit
                 .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
-                if me.kind == .Grid:
+                if me.kind == .Grid do
                     .dockStyle = .CenterKeepSizeVert
-                else:
+                else do
                     .anchorStyle = .X
             }
 
@@ -210,51 +210,51 @@ impl Properties
             switch typeNative.nativeKind
             {
             case U8:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputU64(Swag.U8.Min, Swag.U8.Max)
-                else:
+                else do
                     ed.setInputU64(cast() minV, cast() maxV)
             case U16:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputU64(Swag.U16.Min, Swag.U16.Max)
-                else:
+                else do
                     ed.setInputU64(cast() minV, cast() maxV)
             case U32:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputU64(Swag.U32.Min, Swag.U32.Max)
-                else:
+                else do
                     ed.setInputU64(cast() minV, cast() maxV)
             case U64:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputU64(Swag.U64.Min, Swag.U64.Max)
-                else:
+                else do
                     ed.setInputU64(cast() minV, cast() maxV)
 
             case S8:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputS64(Swag.S8.Min, Swag.S8.Max)
-                else:
+                else do
                     ed.setInputS64(cast() minV, cast() maxV)
             case S16:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputS64(Swag.S16.Min, Swag.S16.Max)
-                else:
+                else do
                     ed.setInputS64(cast() minV, cast() maxV)
             case S32:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputS64(Swag.S32.Min, Swag.S32.Max)
-                else:
+                else do
                     ed.setInputS64(cast() minV, cast() maxV)
             case S64:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputS64(Swag.S64.Min, Swag.S64.Max)
-                else:
+                else do
                     ed.setInputS64(cast() minV, cast() maxV)
 
             case F32, F64:
-                if !hasMinMax:
+                if !hasMinMax do
                     ed.setInputF64()
-                else:
+                else do
                     ed.setInputF64(cast() minV, cast() maxV)
             }
         }
@@ -272,9 +272,9 @@ impl Properties
         {
             item.editBox.sigLoseFocus += mtd|item|(ed)
             {
-                if ed.isValid():
+                if ed.isValid() do
                     .validateNative(item)
-                else:
+                else do
                     ed.restoreText()
             }
         }

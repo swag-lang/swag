@@ -3,7 +3,7 @@ using Core
 #test
 {
     var arr: Array'u8
-    for i in 100:
+    for i in 100 do
         arr.add(6)
 
     var comp: Compress.Deflate
@@ -17,6 +17,6 @@ using Core
     try decomp.decompress(&res1, res.toSlice())
 
     @assert(res1.count == 100)
-    foreach v, i in res1:
+    foreach v, i in res1 do
         @assert(v == 6)
 }

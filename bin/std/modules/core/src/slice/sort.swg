@@ -20,7 +20,7 @@ func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
 func(T) quickSort(values: [..] T, cb: func||(T, T)->s32)
 {
     let count = cast(s64) @countof(values)
-    if count == 0:
+    if count == 0 do
         return
 
     var begin  = 0's64
@@ -41,11 +41,11 @@ func(T) quickSort(values: [..] T, cb: func||(T, T)->s32)
         var high  = end
         for
         {
-            while low < high and cb(buffer[low], buffer[pivot]) <= 0:
+            while low < high and cb(buffer[low], buffer[pivot]) <= 0 do
                 low += 1
-            while cb(buffer[high], buffer[pivot]) > 0:
+            while cb(buffer[high], buffer[pivot]) > 0 do
                 high -= 1
-            if low >= high:
+            if low >= high do
                 break
             swap(&buffer[low], &buffer[high])
         }
@@ -74,11 +74,11 @@ func(T) quickSort(values: [..] T, cb: func||(T, T)->s32)
 
             quickSort(@mkslice(buffer + first, (last - first) + 1), cb)
         }
-        elif set1 > 0:
+        elif set1 > 0 do
             end = high - 1
-        elif set2 > 0:
+        elif set2 > 0 do
             begin = high + 1
-        else:
+        else do
             break
     }
 }
@@ -88,9 +88,9 @@ func(T) quickSort(values: [..] T, cb: func||(T, T)->s32)
 #[Swag.Overload]
 func(T) sort(values: [..] T, bigFirst = false)
 {
-    if bigFirst:
+    if bigFirst do
         sort(values, func(x, y: T)->s32 => y <=> x)
-    else:
+    else do
         sort(values, func(x, y: T)->s32 => x <=> y)
 }
 
@@ -100,9 +100,9 @@ func(T) sort(values: [..] T, bigFirst = false)
 func(T) sort(values: [..] T, cb: func||(T, T)->s32)
 {
     Debug.assert(cb != null)
-    if @countof(values) <= 10:
+    if @countof(values) <= 10 do
         insertionSort(values, cb)
-    else:
+    else do
         quickSort(values, cb)
 }
 
@@ -121,7 +121,7 @@ func(T) isSorted(values: const [..] T, cb: func||(T, T)->s32)->bool
     let countof = @countof(values)
     for i in countof - 1
     {
-        if cb(values[i], values[i + 1]) > 0:
+        if cb(values[i], values[i + 1]) > 0 do
             return false
     }
 

@@ -34,9 +34,9 @@ impl Properties
             .sigLoseFocus += mtd|color, item, opaque, keepAlpha|(ed)
             {
                 var result = cast(u32) (catch StrConv.parseX64(ed.text).value & 0xFFFFFFFF)
-                if opaque:
+                if opaque do
                     result |= 0xFF000000
-                elif keepAlpha:
+                elif keepAlpha do
                     result |= color.a << 24
                 color.argb = result
                 .hasChanged(item)
@@ -46,24 +46,24 @@ impl Properties
         btn.sigPaintIcon = func|color|(btn, bc, pos, paintFlags)
         {
             bc.painter.setParams(.Antialiased)
-            if !color.isOpaque():
+            if !color.isOpaque() do
                 bc.painter.fillRoundRect(pos, 5, 5, Brush.createHatch(.CheckBoardLarge, Argb.DarkGray))
             bc.painter.fillRoundRect(pos, 5, 5, dref color)
         }
 
         btn.sigShowPopup += mtd|color, item, opaque, keepAlpha|(btn)
         {
-            if !btn:
+            if !btn do
                 return
             let frame = btn.createAnchorPopup(356, 382)
             .editPopup = frame
 
             var pal: Array'Color
-            for i in 9:
+            for i in 9 do
                 pal.add(Color.getBlendKeepAlpha(Argb.White, Argb.Black, i / 8.0))
 
             var flags = ColorPickerFlags.All
-            if opaque or keepAlpha:
+            if opaque or keepAlpha do
                 flags.remove(ColorPickerFlags.Alpha)
 
             let picker = ColorPickerCtrl.createWithPalette(frame, {8, 54}, pal, flags)
@@ -71,9 +71,9 @@ impl Properties
             picker.sigChanged += mtd|color, item, opaque, keepAlpha|(pk)
             {
                 var result = pk.getColor().argb
-                if opaque:
+                if opaque do
                     result |= 0xFF000000
-                elif keepAlpha:
+                elif keepAlpha do
                     result |= color.a << 24
                 color.argb = result
                 .hasChanged(item)
@@ -87,9 +87,9 @@ impl Properties
 
         item.sigRefresh += func|ed, btn, color, editAlpha|(item)
         {
-            if editAlpha:
+            if editAlpha do
                 ed.setText(Format.toString("%{X08}", color.argb))
-            else:
+            else do
                 ed.setText(Format.toString("%{X06}", color.argb & 0xFFFFFF))
             btn.invalidate()
         }

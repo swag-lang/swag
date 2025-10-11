@@ -8,7 +8,7 @@ var G = 0
     if nc
     {
         var p: *s32
-        if !nc:
+        if !nc do
             dref p = 1
     }
 }

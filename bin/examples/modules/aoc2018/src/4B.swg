@@ -22,12 +22,12 @@ func day4B()
     {
         curMin = assume StrConv.parseS32(l[15 to ]).value
 
-        if Utf8.contains(l, "begins shift"):
+        if Utf8.contains(l, "begins shift") do
             curGuard = assume StrConv.parseS32(l[26 to ]).value
-        elif Utf8.contains(l, "falls asleep"):
+        elif Utf8.contains(l, "falls asleep") do
             startSleep = curMin
-        elif Utf8.contains(l, "wakes up"):
-            for i in startSleep until curMin:
+        elif Utf8.contains(l, "wakes up") do
+            for i in startSleep until curMin do
                 count[i].findOrAdd(curGuard).value += 1
     }
 

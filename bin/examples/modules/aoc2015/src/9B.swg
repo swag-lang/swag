@@ -32,17 +32,17 @@ func day9B()
         dist.add(town.find(r[2]).value << 32 | town.find(r[1]).value, assume StrConv.toU64(r[3]))
     }
 
-    for i in town.count:
+    for i in town.count do
         combi.add(i)
 
     var total = 0'u64
     for
     {
         var calc = 0'u64
-        for i in cast(s64) combi.count - 1:
+        for i in cast(s64) combi.count - 1 do
             calc += dist.find(combi[i] << 32 | combi[i + 1]).value
         total = Math.max(total, calc)
-        if !Slice.nextPermutation(combi.toSlice()):
+        if !Slice.nextPermutation(combi.toSlice()) do
             break
     }
 

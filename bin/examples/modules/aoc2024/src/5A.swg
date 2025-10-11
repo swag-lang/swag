@@ -127,7 +127,7 @@ func day5A()
                 }
             }
 
-            if ok:
+            if ok do
                 total += assume StrConv.toS32(split[split.count / 2])
         }
     }

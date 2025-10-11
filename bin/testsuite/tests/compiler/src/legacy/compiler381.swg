@@ -7,7 +7,7 @@
     for @countof(toto)
     {
         //@print("toto");
-        cpt += 1; if (cpt == 2):
+        cpt += 1; if (cpt == 2) do
             break
     }
 

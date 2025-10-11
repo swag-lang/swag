@@ -7,6 +7,6 @@ interface I
 #test
 {
     var x: I
-    if x:
+    if x do
         @assert(false)
 }

@@ -3,7 +3,7 @@ using Core
 #test
 {
     var a: StaticArray'(s32, 50)
-    for 5's32:
+    for 5's32 do
         a.add(@index)
     @assert(a.count == 5)
     @assert(a[0] == 0)

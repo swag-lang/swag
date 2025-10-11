@@ -43,7 +43,7 @@ func day3B()
                 re = id
             }
         }
-        if alone:
+        if alone do
             here.add(id)
     }
 

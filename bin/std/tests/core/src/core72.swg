@@ -8,7 +8,7 @@ using Core
     @assert(str == "⺗AA⺗")
 
     str.clear()
-    for 50:
+    for 50 do
         str += "    "
     str.trimStart()
     @assert(str.length == 0)

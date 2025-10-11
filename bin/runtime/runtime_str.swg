@@ -16,7 +16,7 @@ func __itoa(result: [*] u8, value: s64)->[*] u8
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
-        if !orgValue:
+        if !orgValue do
             break
     }
 
@@ -56,7 +56,7 @@ func __utoa(result: [*] u8, value: u64)->[*] u8
         orgValue /= 10
         dref ptr = conv[35 + (tmpValue - (orgValue * 10))]
         ptr += 1
-        if !orgValue:
+        if !orgValue do
             break
     }
 
@@ -95,7 +95,7 @@ func __ftoa(result: [*] u8, value: f64)
         n[0] = '0'
         n += 1
     }
-    else:
+    else do
         n = __itoa(result, ipart)
 
     n[0] = '.'
@@ -103,20 +103,20 @@ func __ftoa(result: [*] u8, value: f64)
 
     const AfterFracN = 8
     var afterPoint   = AfterFracN
-    if fpart < 0:
+    if fpart < 0 do
         fpart = -fpart
 
     var leadingZeros = 0
     while afterPoint
     {
         fpart *= 10
-        if fpart < 1:
+        if fpart < 1 do
             leadingZeros += 1
         afterPoint -= 1
     }
 
     // Zeros before the value part
-    if leadingZeros == AfterFracN:
+    if leadingZeros == AfterFracN do
         leadingZeros = 0
     while leadingZeros
     {
@@ -126,7 +126,7 @@ func __ftoa(result: [*] u8, value: f64)
     }
 
     ipart = cast(s64) fpart
-    if fpart - ipart > 0.5:
+    if fpart - ipart > 0.5 do
         ipart += 1
     __itoa(n, ipart)
 }
@@ -238,15 +238,15 @@ func @stringcmp(str1: string, str2: string)->bool
 {
     let num1 = @countof(str1)
     let num2 = @countof(str2)
-    if num1 != num2:
+    if num1 != num2 do
         return false
-    if num1 == 0 and num2 == 0:
+    if num1 == 0 and num2 == 0 do
         return true
     let data1 = @dataof(str1)
     let data2 = @dataof(str2)
-    if data1 == null or data2 == null:
+    if data1 == null or data2 == null do
         return data1 == data2
-    if data1 == data2:
+    if data1 == data2 do
         return true
     return !@memcmp(data1, data2, num1)
 }

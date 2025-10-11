@@ -12,7 +12,7 @@ impl Theme
     #[Swag.Overload]
     func drawSubRect(painter: *Painter, texture: Texture, dstRect: Math.Rectangle, subRect: *ThemeImageRect, color: Color, center = true, interpol = InterpolationMode.Linear)
     {
-        if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0:
+        if subRect == null or subRect.rect.isEmpty() or dstRect.isEmpty() or color.a == 0 do
             return
 
         painter.setInterpolationMode(interpol)
@@ -26,9 +26,9 @@ impl Theme
 
         let cx, cy = subRect.corner
         var cxd, cyd = subRect.corner
-        if cxd * 2 > dstRect.width:
+        if cxd * 2 > dstRect.width do
             cxd = dstRect.width / 2
-        if cyd * 2 > dstRect.height:
+        if cyd * 2 > dstRect.height do
             cyd = dstRect.height / 2
 
         if subRect.keepBordersRatio
@@ -82,7 +82,7 @@ impl Theme
                 d.height = dstRect.height - (cyd * 2)
                 s.width  = subRect.rect.width - (cx * 2)
                 s.height = subRect.rect.height - (cy * 2)
-                if center:
+                if center do
                     painter.drawTexture(d, s, texture, color)
 
             case 5:
@@ -109,7 +109,7 @@ impl Theme
     func drawIconText(painter: *Painter, position: Math.Rectangle, icon: Icon, name: *RichString, stringFormat: RichStringFormat, iconMargin = 4'f32)
     {
         let count = @countof(dref name)
-        if count == 0 and !icon.isValid():
+        if count == 0 and !icon.isValid() do
             return
 
         var pos       = position
@@ -124,14 +124,14 @@ impl Theme
         }
 
         // Text + icon
-        if icon.isValid():
+        if icon.isValid() do
             pos.moveLeft(icon.sizeX + iconMargin)
 
         // Text
         painter.drawRichString(pos, name, stringFormat)
 
         // Icon
-        if icon.isValid():
+        if icon.isValid() do
             icon.paint(painter, name.boundRect.x - icon.sizeX - iconMargin, name.boundRect.vertCenter() - (icon.sizeY * 0.5), iconColor)
     }
 

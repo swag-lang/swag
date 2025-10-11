@@ -84,7 +84,7 @@ impl IActionUI for ActionSelection
         {
         case SelectAll:
             capture.selection.clear()
-            for i in capture.forms:
+            for i in capture.forms do
                 capture.selection.add(i)
             capture.selectionHasChanged()
 
@@ -93,7 +93,7 @@ impl IActionUI for ActionSelection
             capture.selection.clear()
             foreach form, i in capture.forms
             {
-                if @kindof(form) == firstType:
+                if @kindof(form) == firstType do
                     capture.selection.add(i)
             }
 
@@ -105,7 +105,7 @@ impl IActionUI for ActionSelection
 
         case InvertSelection:
             var newSel: Array'u64
-            for i in capture.forms where !capture.selection.contains(i):
+            for i in capture.forms where !capture.selection.contains(i) do
                 newSel.add(i)
             capture.selection = newSel
             capture.selectionHasChanged()

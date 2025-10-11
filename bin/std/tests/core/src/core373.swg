@@ -12,7 +12,7 @@ struct Toto1
     var enc: Encoder'Write.TagBin
 
     var x: Toto1
-    for 1000:
+    for 1000 do
         x.x.add({1, 2, 3, 4})
     var buf: ConcatBuffer
     try enc.writeAll(&buf, x)

@@ -23,17 +23,17 @@ impl DriverNative
         if initCOM
         {
             result = CoInitializeEx(null, 0)
-            if result != S_OK:
+            if result != S_OK do
                 throw SystemError{"failed to initialize COM", errorID: cast(u64) result}
             .hasInitCOM = initCOM
         }
 
         result = XAudio2Create(&.xAudio2, 0)
-        if result != S_OK:
+        if result != S_OK do
             throw SystemError{"cannot create xaudio2 device", errorID: cast(u64) result}
 
         result = .xAudio2.vtbl.createMasteringVoice(.xAudio2, &.masteringVoice)
-        if result != S_OK:
+        if result != S_OK do
             throw SystemError{"cannot create xaudio2 mastering voice", errorID: cast(u64) result}
 
         var debug: XAUDIO2_DEBUG_CONFIGURATION
@@ -42,11 +42,11 @@ impl DriverNative
         .xAudio2.vtbl.setDebugConfiguration(.xAudio2, &debug, null)
 
         result = .masteringVoice.vtbl.getChannelMask(.masteringVoice, &.channelMask)
-        if result != S_OK:
+        if result != S_OK do
             throw SystemError{"cannot get xaudio2 channel mask", errorID: cast(u64) result}
 
         result = X3DAudioInitialize(.channelMask, X3DAUDIO_SPEED_OF_SOUND, .x3DInstance)
-        if result != S_OK:
+        if result != S_OK do
             throw SystemError{"cannot initialize X3D audio", errorID: cast(u64) result}
 
         // Context for xaudio2 threads
@@ -81,16 +81,16 @@ impl Driver
 {
     mtd setOutputVolume(volume: f32) throw
     {
-        if !.masteringVoice:
+        if !.masteringVoice do
             return
         let hr = .masteringVoice.vtbl.setVolume(cast() .masteringVoice, volume, 0)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"setOutputVolume", errorID: cast(u64) hr}
     }
 
     mtd getOutputVolume()->f32
     {
-        if !.masteringVoice:
+        if !.masteringVoice do
             return 0
         var volume: f32
         .masteringVoice.vtbl.getVolume(cast() .masteringVoice, &volume)
@@ -118,11 +118,11 @@ private
     func onBufferEnd(_me: *IXAudio2VoiceCallback, pBufferContext: *void)
     {
         let voice = cast(*Voice) pBufferContext
-        if voice.hasState(.PendingDestroy):
+        if voice.hasState(.PendingDestroy) do
             return
 
         // Called by xaudio2 thread, so we must have a valid Swag context
-        if !@getcontext():
+        if !@getcontext() do
             @setcontext(&g_ThreadCxt)
 
         g_Driver.updateVoice(voice, .UpdateBuffers)
@@ -182,18 +182,18 @@ impl Voice
         wfx.samples.wValidBitsPerSample = wfx.format.wBitsPerSample
 
         var flags: DWORD
-        if createFlags.has(.AcceptFilters):
+        if createFlags.has(.AcceptFilters) do
             flags |= XAUDIO2_VOICE_USEFILTER
-        if !createFlags.has(.AcceptPitch):
+        if !createFlags.has(.AcceptPitch) do
             flags |= XAUDIO2_VOICE_NOPITCH
         let hr = g_Driver.xAudio2.vtbl.createSourceVoice(g_Driver.xAudio2, &voice.handle, cast() &wfx.format, flags, XAUDIO2_DEFAULT_FREQ_RATIO, &g_Cb, null, null)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"createSourceVoice", errorID: cast(u64) hr}
     }
 
     mtd destroyNative()
     {
-        if !.handle:
+        if !.handle do
             return
         .handle.vtbl.destroyVoice(cast() .handle)
         .handle = null
@@ -201,7 +201,7 @@ impl Voice
 
     mtd updateNative()->bool throw
     {
-        if !.handle:
+        if !.handle do
             return false
 
         var voiceState: XAUDIO2_VOICE_STATE
@@ -209,7 +209,7 @@ impl Voice
         while voiceState.buffersQueued < NumDecodedBuffers - 1
         {
             let (ptrBuffer, sizeBuffer) = .readBuffer()
-            if !sizeBuffer:
+            if !sizeBuffer do
                 break
 
             var buffer: XAUDIO2_BUFFER
@@ -217,7 +217,7 @@ impl Voice
             buffer.audioBytes = cast() sizeBuffer
             buffer.pContext   = me
             let hr = .handle.vtbl.submitSourceBuffer(.handle, &buffer, null)
-            if hr != S_OK:
+            if hr != S_OK do
                 throw SystemError{"submitSourceBuffer", errorID: cast(u64) hr}
             .handle.vtbl.getState(.handle, &voiceState, 0)
         }
@@ -227,19 +227,19 @@ impl Voice
 
     mtd playNative(batchID: u32 = 0) throw
     {
-        if !.handle:
+        if !.handle do
             return
         let hr = .handle.vtbl.start(.handle, 0, batchID)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"start", errorID: cast(u64) hr}
     }
 
     mtd stopNative(batchID: u32 = 0) throw
     {
-        if !.handle:
+        if !.handle do
             return
         let hr = .handle.vtbl.stop(.handle, 0, batchID)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"stop", errorID: cast(u64) hr}
     }
 }
@@ -249,18 +249,18 @@ public impl Voice
     // Set the playing voice volume between [0..1].
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
-        if !.handle:
+        if !.handle do
             return
         let v  = Math.clamp(volume, 0, 1)
         let hr = .handle.vtbl.setVolume(cast() .handle, v, batchID)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"setVolume", errorID: cast(u64) hr}
     }
 
     // Returns the actual volume.
     mtd getVolume()->f32 throw
     {
-        if !.handle:
+        if !.handle do
             return 0
         var volume: f32
         .handle.vtbl.getVolume(cast() .handle, &volume)
@@ -272,10 +272,10 @@ public impl Voice
     // See [[Voice.create]]
     mtd setFrequencyRatio(ratio: f32, batchID: u32 = 0) throw
     {
-        if !.handle:
+        if !.handle do
             return
         let hr = .handle.vtbl.setFrequencyRatio(.handle, ratio, batchID)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"setFrequencyRatio", errorID: cast(u64) hr}
     }
 
@@ -290,7 +290,7 @@ public impl Voice
         var pSFXSEndList: *XAUDIO2_VOICE_SENDS
 
         let count = @countof(buses)
-        if count >= MaxBus:
+        if count >= MaxBus do
             throw SystemError{"too many buses", errorID: count}
 
         if count
@@ -307,7 +307,7 @@ public impl Voice
         }
 
         let hr = .handle.vtbl.setOutputVoices(cast() .handle, pSFXSEndList)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"setOutputVoices", errorID: cast(u64) hr}
     }
 }
@@ -328,7 +328,7 @@ impl Bus
 
         if parent
         {
-            if parent.handle == null:
+            if parent.handle == null do
                 throw BadParameterError{"parent bus invalid"}
 
             sfxSend.pOutputVoice  = cast() parent.handle
@@ -338,13 +338,13 @@ impl Bus
         }
 
         let hr = g_Driver.xAudio2.vtbl.createSubmixVoice(g_Driver.xAudio2, &bus.handle, numChannels, 44100, XAUDIO2_VOICE_USEFILTER, 0, pSFXSEndList, null)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"createSubmixVoice", errorID: cast(u64) hr}
     }
 
     mtd destroyNative()
     {
-        if !.handle:
+        if !.handle do
             return
         .handle.vtbl.destroyVoice(cast() .handle)
         .handle = null
@@ -356,18 +356,18 @@ public impl Bus
     // Set the playing bus volume between [0..1]
     mtd setVolume(volume: f32, batchID: u32 = 0) throw
     {
-        if !.handle:
+        if !.handle do
             return
         let v  = Math.clamp(volume, 0, 1)
         let hr = .handle.vtbl.setVolume(cast() .handle, v, batchID)
-        if hr != S_OK:
+        if hr != S_OK do
             throw SystemError{"setVolume", errorID: cast(u64) hr}
     }
 
     // Returns the actual volume
     mtd getVolume()->f32 throw
     {
-        if !.handle:
+        if !.handle do
             return 0
         var volume: f32
         .handle.vtbl.getVolume(cast() .handle, &volume)

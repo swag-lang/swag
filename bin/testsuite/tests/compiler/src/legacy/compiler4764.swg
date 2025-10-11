@@ -5,11 +5,11 @@ func toto(x, y: s32)
     var cpt = 0
     for #reverse x to y
     {
-        if cpt == 0:
+        if cpt == 0 do
             @assert(@index == 3)
-        if cpt == 1:
+        if cpt == 1 do
             @assert(@index == 2)
-        if cpt == 2:
+        if cpt == 2 do
             @assert(@index == 1)
         cpt += 1
 

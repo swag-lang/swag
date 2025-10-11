@@ -166,7 +166,7 @@ impl IForm for FormStep
 
         let face = g_App.theme.res.defaultTypeFaceR
 
-        if fSize != .cachefSize or .typeIndex != .cacheTypeIndex:
+        if fSize != .cachefSize or .typeIndex != .cacheTypeIndex do
             .isDirty = true
 
         if .isDirty
@@ -197,7 +197,7 @@ impl IForm for FormStep
         }
 
         var bk = .backColor
-        if cxt.quickMode and .alpha != 100:
+        if cxt.quickMode and .alpha != 100 do
             bk.a = cast(u8) Math.map(cast(f32) .alpha, 0, 100, 0, 255)
 
         let pp = .boundRect() * z
@@ -208,19 +208,19 @@ impl IForm for FormStep
         case Ellipse:
             let sizeX = pp.width * 0.5
             let sizeY = pp.height * 0.5
-            if cxt.quickMode and .alpha != 100:
+            if cxt.quickMode and .alpha != 100 do
                 painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, backBrush)
             painter.fillEllipse(pp.x + sizeX, pp.y + sizeY, sizeX, sizeY, .backColor)
 
         case Rectangle:
-            if cxt.quickMode and .alpha != 100:
+            if cxt.quickMode and .alpha != 100 do
                 painter.fillRect(pp, backBrush)
             painter.fillRect(pp, bk)
 
         case RoundRectangle:
             var round = cast(f32) Math.min(.w, .h)
             round /= 3
-            if cxt.quickMode and .alpha != 100:
+            if cxt.quickMode and .alpha != 100 do
                 painter.fillRoundRect(pp, round, round, backBrush)
             painter.fillRoundRect(pp, round, round, .backColor)
         }

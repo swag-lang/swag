@@ -4,7 +4,7 @@ var G = 0
 func toto()
 {
     let x = 0
-    if x == 0:
+    if x == 0 do
         return
     defer G = 1
 }

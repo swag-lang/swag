@@ -12,7 +12,7 @@ func toto()->*A
 #[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
 func assert(expr: bool, message: string = null, loc = #callerlocation)
 {
-    if !expr:
+    if !expr do
         @panic(message, loc)
 }
 

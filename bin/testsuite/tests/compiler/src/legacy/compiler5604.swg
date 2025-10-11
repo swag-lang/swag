@@ -2,8 +2,8 @@
 #global #[Swag.Warning("Wrn0009", Swag.WarningLevel.Enable)]
 
 const g: bool = true
-#if g == false:
+#if g == false do
     const g1: bool = true
-#else:
-    #if g == true:
+#else do
+    #if g == true do
         const g1: bool = true

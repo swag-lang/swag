@@ -2,7 +2,7 @@
 The order of all **top-level** declarations does not matter. This feature allows you to reference constants, variables, or functions before they are defined, either within the same file or even across multiple files. This flexibility can be particularly useful in large codebases, where the natural flow of logic or readability may benefit from organizing code independently of its declaration order.
 */
 
-// In this example, we declare a constant 'A' and initialize it with 'B', 
+// In this example, we declare a constant 'A' and initialize it with 'B',
 // even though 'B' has not yet been declared or defined.
 const A = B
 
@@ -10,9 +10,9 @@ const A = B
 // which is also not declared or defined at this point.
 const B = C
 
-// Finally, we declare and define 'C' as a constant of type 'u64' 
+// Finally, we declare and define 'C' as a constant of type 'u64'
 // (an unsigned 64-bit integer) with a value of 1.
-// This retroactively assigns values to both 'A' and 'B', 
+// This retroactively assigns values to both 'A' and 'B',
 // based on the earlier assignments.
 const C: u64 = 1
 

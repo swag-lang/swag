@@ -107,9 +107,9 @@ func day10A()
     var arr: Array'Math.Vector2
     var tot: Array's32
 
-    foreach l, y in lines:
-        foreach c, x in l:
-            if c == '#':
+    foreach l, y in lines do
+        foreach c, x in l do
+            if c == '#' do
                 arr.add({cast(f32) x + 0.5, cast(f32) y + 0.5})
     tot.resize(arr.count)
 
@@ -122,7 +122,7 @@ func day10A()
             var hit = false
             for k in arr
             {
-                if k == i or k == j:
+                if k == i or k == j do
                     continue
                 let f = Math.Geometry.distanceToSegment(arr[k], v0, v1)
                 if Math.isZeroEpsilon(f)

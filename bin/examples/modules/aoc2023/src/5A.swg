@@ -126,7 +126,7 @@ func day5A()
     var mode = Mode.Invalid
     foreach l in lines
     {
-        if l.isEmpty():
+        if l.isEmpty() do
             continue
 
         switch l.toString()
@@ -158,7 +158,7 @@ func day5A()
         {
             let tokens = Tokenize.split(l, ':''u8)
             let values = Tokenize.split(tokens[1], ' ''u8)
-            foreach v in values:
+            foreach v in values do
                 seeds.add(assume StrConv.toU64(v))
             continue
         }

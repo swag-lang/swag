@@ -13,15 +13,15 @@ fields needs to be used at any given moment.
     // Define a union with three fields: x, y, and z, all of type f32.
     union MyUnion
     {
-        x, y, z: f32                                              // Each field shares the same memory location
+        x, y, z: f32 // Each field shares the same memory location
     }
 
     // Initialize the union, setting the value of the 'x' field to 666.
-    let v = MyUnion{x: 666}                                       // 'x' is set, and by extension, 'y' and 'z' as well
+    let v = MyUnion{x: 666} // 'x' is set, and by extension, 'y' and 'z' as well
 
     // Since all fields share the same memory, setting 'x' also sets 'y' and 'z' to the same value.
-    @assert(v.y == 666)                                           // Assert that 'y' equals 666
-    @assert(v.z == 666)                                           // Assert that 'z' equals 666
+    @assert(v.y == 666) // Assert that 'y' equals 666
+    @assert(v.z == 666) // Assert that 'z' equals 666
 }
 
 /**

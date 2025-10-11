@@ -31,7 +31,7 @@ impl C
 
         var v = .target - .pos
         var d = v.length()
-        if d < 100:
+        if d < 100 do
             d = map(d, 0, 100, 0, 120)
         v.setLength(d)
         var steer = v - .speed
@@ -98,7 +98,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test"):
+    func test(app: *Application) => if Env.hasArg("swag.test") do
         app.maxRunFrame = 50
     Application.runSurface(100, 100, 800, 512, title: "Swag (move mouse on me!)", hook: &onEvent, init: &test)
 }

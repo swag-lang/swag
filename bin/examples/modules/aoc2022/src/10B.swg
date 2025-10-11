@@ -133,7 +133,7 @@ func day10B()
     {
         {
             let tt = cycle % 40
-            if x >= tt - 1 and x <= tt + 1:
+            if x >= tt - 1 and x <= tt + 1 do
                 crt[cycle] = '#''u8
             cycle += 1
         }
@@ -142,7 +142,7 @@ func day10B()
     var cycle, x = 1
 
     var crt: String
-    for 40 * 6:
+    for 40 * 6 do
         crt.append(" ")
 
     foreach l in lines

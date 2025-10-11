@@ -37,7 +37,7 @@ impl IEvent for Evt3
 
 func can(toType, fromType: const *Swag.TypeInfoStruct)->bool
 {
-    if @typecmp(toType, fromType, .Strict):
+    if @typecmp(toType, fromType, .Strict) do
         return true
 
     foreach ft in fromType.usingFields

@@ -23,7 +23,7 @@ When a function encounters an error and exits early, the actual return value is 
 
 // The function 'count()' is defined to take a string parameter named 'name' and return an unsigned 64-bit integer (u64).
 // The 'throw' keyword at the end of the function's signature indicates that this function can potentially raise an error.
-func count(name: string) -> u64 throw
+func count(name: string)->u64 throw
 {
     // Inside the function, we first check if the input parameter 'name' is null (i.e., it has no value assigned to it).
     if name == null
@@ -32,12 +32,12 @@ func count(name: string) -> u64 throw
         // The error is initialized with a string message "null pointer" to describe the problem.
         // When an error is thrown, the function will not proceed to return the intended value.
         // Instead, it will return 0, which is the default value for the u64 type.
-        throw MyError{"null pointer"}  // Error is thrown with the message: "null pointer"
+        throw MyError{"null pointer"} // Error is thrown with the message: "null pointer"
     }
 
     // If 'name' is not null, the function proceeds to count the number of characters in the string.
     // The '@countof(name)' function is used to determine this count, and the result is returned.
-    return @countof(name)  // Return the count of characters in the string
+    return @countof(name) // Return the count of characters in the string
 }
 
 /**
@@ -56,7 +56,7 @@ func myFunc()
     {
         // `@err` returns an 'any' type, representing the caught error.
         // Here, we assert that the error is of type `MyError` to ensure correct error handling.
-        @assert(@err == MyError)  // Validate that the error is indeed a `MyError`.
+        @assert(@err == MyError) // Validate that the error is indeed a `MyError`.
 
         // Also, assert that the value returned by `count()` is the default value (0 in this case),
         // which happens when an error is thrown.
@@ -64,7 +64,7 @@ func myFunc()
 
         // Inform the user that an error was encountered during the execution.
         @print("An error was raised")
-        return  // Exit the function early since an error was handled.
+        return // Exit the function early since an error was handled.
     }
 
     // If no error was caught, the function would proceed normally from this point.
@@ -83,8 +83,8 @@ func myOtherFunc()
 
     // The above `trycatch` block is equivalent to using `catch` followed by an error check:
     var cpt2 = catch count("filename")
-    if @err != null:
-        return  // If an error is caught, exit the function silently
+    if @err != null do
+        return // If an error is caught, exit the function silently
 }
 
 /**
@@ -97,7 +97,7 @@ func myFunc1() throw
 {
     // Attempt to call the `count()` function. If it raises an error,
     // `try` will automatically propagate the error to the caller of `myFunc1`.
-    var cpt = try count("filename")  // Propagate the error if one occurs
+    var cpt = try count("filename") // Propagate the error if one occurs
 }
 
 /**
@@ -110,7 +110,7 @@ func myFunc2() throw
     if @err != null
     {
         // If an error is caught, re-throw the same error, propagating it to the caller.
-        throw @err  // Re-throw the caught error
+        throw @err // Re-throw the caught error
     }
 }
 
@@ -125,7 +125,7 @@ func myFunc3()
 {
     // If the `count()` function throws an error, the program will panic and terminate,
     // displaying an error message. The error is not propagated or handled.
-    var cpt = assume count("filename")  // Panic on error
+    var cpt = assume count("filename") // Panic on error
 }
 
 /**
@@ -178,13 +178,13 @@ When a function is annotated with `throw`, any function calls within it that can
     // Define a function 'mySubFunc2' that throws an error.
     func mySubFunc2() throw
     {
-        throw MyError{"error from mySubFunc2"}  // Raise a custom error
+        throw MyError{"error from mySubFunc2"} // Raise a custom error
     }
 
     // Define another function 'mySubFunc3' that also throws an error.
     func mySubFunc3() throw
     {
-        throw MyError{"error from mySubFunc3"}  // Raise a custom error
+        throw MyError{"error from mySubFunc3"} // Raise a custom error
     }
 
     // Define 'mySubFunc1', which is marked with 'throw' indicating it can propagate errors.
@@ -192,15 +192,15 @@ When a function is annotated with `throw`, any function calls within it that can
     {
         // When calling 'mySubFunc2()', there's no need for an explicit 'try' since 'mySubFunc1'
         // is marked with 'throw'. The 'try' is implicit, reducing the need for additional syntax.
-        mySubFunc2()  // Implicit 'try'
+        mySubFunc2() // Implicit 'try'
 
         // However, you can still use an explicit 'try' if specific error handling is desired.
-        try mySubFunc3()  // Explicit 'try'
+        try mySubFunc3() // Explicit 'try'
     }
 
     // Catch the error raised by 'mySubFunc1' and confirm that it is of type 'MyError'.
     catch mySubFunc1()
-    @assert(@err == MyError)  // Ensure the error is of type 'MyError'
+    @assert(@err == MyError) // Ensure the error is of type 'MyError'
 }
 
 /**
@@ -229,39 +229,39 @@ The `defer` statement schedules a block of code to be executed when the function
 | `defer #noerr` | Executes only when the function returns normally without errors.
 | `defer`        | Executes regardless of how the function exits (either by returning normally or by throwing an error).
 */
-var g_Defer = 0  // A global variable to track the execution of defer statements
+var g_Defer = 0 // A global variable to track the execution of defer statements
 
 // A function that raises an error based on the provided input
 func raiseError() throw
 {
-    throw MyError{"error"}  // Raise a custom error
+    throw MyError{"error"} // Raise a custom error
 }
 
 // A function that demonstrates the use of defer with different modes
 func testDefer(err: bool) throw
 {
     // Schedules this block to execute only if an error is raised.
-    defer #err g_Defer += 1  // Increment if an error occurs
+    defer #err g_Defer += 1 // Increment if an error occurs
 
     // Schedules this block to execute only if the function exits without an error.
-    defer #noerr g_Defer += 2  // Increment if no error occurs
+    defer #noerr g_Defer += 2 // Increment if no error occurs
 
     // Schedules this block to execute regardless of whether an error occurs.
-    defer g_Defer += 3  // Increment regardless of error state
+    defer g_Defer += 3 // Increment regardless of error state
 
-    if err:
-        raiseError()  // If 'err' is true, raise an error
+    if err do
+        raiseError() // If 'err' is true, raise an error
 }
 
 #test
 {
     // Test case where an error is raised
     g_Defer = 0
-    catch testDefer(true)  // Execute the function with error condition
-    @assert(g_Defer == 4)  // Expect g_Defer to be 4 (1 + 3) since only 'defer #err' and the general 'defer' executed
+    catch testDefer(true) // Execute the function with error condition
+    @assert(g_Defer == 4) // Expect g_Defer to be 4 (1 + 3) since only 'defer #err' and the general 'defer' executed
 
     // Test case where no error is raised
     g_Defer = 0
-    catch testDefer(false)  // Execute the function without error condition
-    @assert(g_Defer == 5)   // Expect g_Defer to be 5 (2 + 3) since only 'defer #noerr' and the general 'defer' executed
+    catch testDefer(false) // Execute the function without error condition
+    @assert(g_Defer == 5) // Expect g_Defer to be 5 (2 + 3) since only 'defer #noerr' and the general 'defer' executed
 }

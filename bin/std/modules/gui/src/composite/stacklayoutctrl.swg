@@ -57,7 +57,7 @@ impl IWnd for StackLayoutCtrl
         if .layoutKind == .HorzCenter or .layoutKind == .HorzCenterVertCenter
         {
             var totalW = 0'f32
-            foreach c, i in .childs:
+            foreach c, i in .childs do
                 totalW += c.position.width + c.margin.x + c.margin.z
             totalW += cast(f32) ((.childs.count - 1) * .spacing)
 
@@ -67,7 +67,7 @@ impl IWnd for StackLayoutCtrl
             foreach c in .childs
             {
                 var pos = c.position
-                if .layoutKind == .HorzCenterVertCenter:
+                if .layoutKind == .HorzCenterVertCenter do
                     pos.y = y - (pos.height * 0.5)
                 pos.x = Math.round(x + c.margin.x)
                 c.setPosition(pos)
@@ -77,7 +77,7 @@ impl IWnd for StackLayoutCtrl
         elif .layoutKind == .VertCenter
         {
             var totalH = 0'f32
-            foreach c, i in .childs:
+            foreach c, i in .childs do
                 totalH += c.position.height + c.margin.y + c.margin.w
             totalH += cast(f32) ((.childs.count - 1) * .spacing)
 
@@ -99,19 +99,19 @@ impl IWnd for StackLayoutCtrl
                 {
                 case Top, VertFit:
                     c.dockStyle = .Top
-                    if i > 0:
+                    if i > 0 do
                         c.margin.y = Math.max(c.margin.y, .spacing)
                 case Bottom:
                     c.dockStyle = .Bottom
-                    if i > 0:
+                    if i > 0 do
                         c.margin.w = Math.max(c.margin.w, .spacing)
                 case Left, HorzFit:
                     c.dockStyle = .Left
-                    if i > 0:
+                    if i > 0 do
                         c.margin.x = Math.max(c.margin.x, .spacing)
                 case Right:
                     c.dockStyle = .Right
-                    if i > 0:
+                    if i > 0 do
                         c.margin.z = Math.max(c.margin.z, .spacing)
                 }
             }

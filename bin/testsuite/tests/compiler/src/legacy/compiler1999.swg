@@ -1,6 +1,6 @@
 func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
 {
-    if (@countof(values) == 0):
+    if (@countof(values) == 0) do
         return
 
     var begin  = 0'u64
@@ -20,11 +20,11 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
         var high = end
         for
         {
-            while low < high and cb(buffer[low], med) <= 0:
+            while low < high and cb(buffer[low], med) <= 0 do
                 low += 1
-            while low < high and cb(buffer[high], med) >= 0:
+            while low < high and cb(buffer[high], med) >= 0 do
                 high -= 1
-            if low >= high:
+            if low >= high do
                 break
             let tmp = low
             low  = high
@@ -54,11 +54,11 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
                 end = low - 1
             }
         }
-        elif set1 > 0:
+        elif set1 > 0 do
             end = low - 1
-        elif set2 > 0:
+        elif set2 > 0 do
             begin = high + 1
-        else:
+        else do
             break
     }
 }
@@ -69,14 +69,14 @@ func(T) sortQuick(values: [..] T, cb: func(T, T)->s32)
     sortQuick(cast([..] s32) x, func(x, y) => x <=> y)
     for i in x
     {
-        if i != @countof(x) - 1:
+        if i != @countof(x) - 1 do
             @assert(x[i] <= x[i + 1])
     }
 
     sortQuick(cast([..] s32) x, func(x, y) => y <=> x)
     for i in x
     {
-        if i != @countof(x) - 1:
+        if i != @countof(x) - 1 do
             @assert(x[i] >= x[i + 1])
     }
 }

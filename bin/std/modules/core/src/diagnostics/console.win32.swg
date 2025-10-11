@@ -79,15 +79,15 @@ public func resetColor()
 public func printf(message: string, params: ...)
     verify
     {
-        if !#isconstexpr(message) or !#isconstexpr(params):
+        if !#isconstexpr(message) or !#isconstexpr(params) do
             return true
         Format.checkFormat(#curlocation.funcName, message, params)
         return true
     }
 {
-    if g_SilentMode:
+    if g_SilentMode do
         return
-    if message == null:
+    if message == null do
         return
 
     if @countof(params)
@@ -115,12 +115,12 @@ public func prompt()->String
     let h = GetStdHandle(STD_INPUT_HANDLE)
     for
     {
-        if !ReadFile(h, &buffer[0], BufSize, &dwRead, null):
+        if !ReadFile(h, &buffer[0], BufSize, &dwRead, null) do
             break
         result.append(@mkstring(&buffer[0], dwRead))
-        if dwRead < BufSize:
+        if dwRead < BufSize do
             break
-        if buffer[BufSize - 1] == '\n':
+        if buffer[BufSize - 1] == '\n' do
             break
     }
 

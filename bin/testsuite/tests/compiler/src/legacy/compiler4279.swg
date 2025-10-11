@@ -1,9 +1,9 @@
 #[Swag.ConstExpr]
 func getType(x: s32)->typeinfo
 {
-    if x == 0:
+    if x == 0 do
         return s32
-    else:
+    else do
         return bool
 }
 

@@ -13,7 +13,7 @@ func toto(cpt: s64, stmt: #code void)
         #inject(stmt)
     }
 
-    for 10:
+    for 10 do
         titi()
 }
 

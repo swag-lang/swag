@@ -224,7 +224,7 @@ func memmove(dst: *void, src: const *void, size: u64)
 func memcmp(dst, src: const [*] void, size: u64)->s32
 {
     let len = __Win32RT.RtlCompareMemory(dst, src, size)
-    if len == size:
+    if len == size do
         return 0
     let p1 = cast(const [*] s8) dst
     let p2 = cast(const [*] s8) src
@@ -234,7 +234,7 @@ func memcmp(dst, src: const [*] void, size: u64)->s32
 ////////////////////////////////////////////////////////////
 func __printString(message: string)
 {
-    if !@dataof(message) or !@countof(message):
+    if !@dataof(message) or !@countof(message) do
         return
     using __Win32RT
     let len = cast(u32) @countof(message)
@@ -265,7 +265,7 @@ func __tlsGetPtr(id: u64, size: u64, init: const *void)->*void
 {
     using __Win32RT
     var ptr = TlsGetValue(cast(u32) id)
-    if ptr:
+    if ptr do
         return ptr
     ptr = @alloc(size)
     @memcpy(ptr, init, size)
@@ -308,7 +308,7 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
 
     if !__logStackTraceInitDone
     {
-        if !SymInitialize(GetCurrentProcess(), null, TRUE):
+        if !SymInitialize(GetCurrentProcess(), null, TRUE) do
             return
         __logStackTraceInitDone = true
     }
@@ -331,34 +331,34 @@ func __logStackTrace(wh: [..] *void, startAfter: *Swag.SourceCodeLocation = null
         let hasSymbol = SymFromAddr(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], &displacement, psym)
         let hasLine   = SymGetLineFromAddr64(GetCurrentProcess(), cast(ULONG64) cast(u64) wh[i], cast() &displacement, &line)
         let fileName  = hasLine ? @mkstring(line.FileName, @strlen(line.FileName)) : null
-        if !hasLine and !printNoLine:
+        if !hasLine and !printNoLine do
             continue
 
         // Do not print the call until a given location has been reached.
         // For DebugAllocator leaks
         if !hasStarted and startAfter
         {
-            if !hasLine or !fileName:
+            if !hasLine or !fileName do
                 continue
-            if startAfter.lineStart + 1 != line.LineNumber:
+            if startAfter.lineStart + 1 != line.LineNumber do
                 continue
-            if @countof(fileName) != @countof(startAfter.fileName):
+            if @countof(fileName) != @countof(startAfter.fileName) do
                 continue
 
             var samePath = true
             for it in @countof(fileName)
             {
-                if fileName[it] == startAfter.fileName[it]:
+                if fileName[it] == startAfter.fileName[it] do
                     continue
-                if fileName[it] == '\\' and startAfter.fileName[it] == '/':
+                if fileName[it] == '\\' and startAfter.fileName[it] == '/' do
                     continue
-                if fileName[it] == '/' and startAfter.fileName[it] == '\\':
+                if fileName[it] == '/' and startAfter.fileName[it] == '\\' do
                     continue
                 samePath = false
                 break
             }
 
-            if !samePath:
+            if !samePath do
                 continue
             hasStarted = true
             continue

@@ -5,8 +5,8 @@ A pointer to a **single element** is declared using the `*` symbol. This allows 
 */
 #test
 {
-    var ptr1: *u8           // This is a pointer to a single 'u8' value
-    var ptr2: **u8          // This is a pointer to another pointer, which in turn points to a single 'u8' value
+    var ptr1: *u8      // This is a pointer to a single 'u8' value
+    var ptr2: **u8     // This is a pointer to another pointer, which in turn points to a single 'u8' value
 }
 
 /**
@@ -16,8 +16,8 @@ In Swag, a pointer can be `null`, indicating that it does not point to any valid
 */
 #test
 {
-    var ptr1: *u8                  // Declaring a pointer to 'u8' without initialization
-    @assert(ptr1 == null)          // By default, the pointer is null, indicating it doesn't point to any valid memory location
+    var ptr1: *u8 // Declaring a pointer to 'u8' without initialization
+    @assert(ptr1 == null) // By default, the pointer is null, indicating it doesn't point to any valid memory location
 }
 
 /**
@@ -27,9 +27,9 @@ You can obtain the address of a variable using the `&` operator. This operation 
 */
 #test
 {
-    var arr = 1                          // Declare an integer variable
-    let ptr = &arr                        // Take the address of the variable 'arr'
-    @assert(#typeof(ptr) == *s32)         // The type of 'ptr' is a pointer to 's32', the type of 'arr'
+    var arr = 1        // Declare an integer variable
+    let ptr = &arr     // Take the address of the variable 'arr'
+    @assert(#typeof(ptr) == *s32) // The type of 'ptr' is a pointer to 's32', the type of 'arr'
 }
 
 /**
@@ -39,9 +39,9 @@ Dereferencing a pointer involves accessing the value stored at the memory locati
 */
 #test
 {
-    var arr = 42                          // Declare an integer variable with value 42
-    let ptr = &arr                        // Take the address of 'arr'
-    @assert(dref ptr == 42)               // Dereference the pointer to access the value of 'arr', which should be 42
+    var arr = 42       // Declare an integer variable with value 42
+    let ptr = &arr     // Take the address of 'arr'
+    @assert(dref ptr == 42) // Dereference the pointer to access the value of 'arr', which should be 42
 }
 
 /**
@@ -53,7 +53,7 @@ A `const` pointer in Swag refers to a pointer that cannot change the memory loca
 {
     let str  = "string"                   // Declare a string variable
     let ptr: const *u8 = @dataof(str)     // A const pointer to a 'u8' value
-    @assert(dref ptr == 's')              // Dereferencing the pointer to get the first character of the string
+    @assert(dref ptr == 's') // Dereferencing the pointer to get the first character of the string
 }
 
 /**
@@ -63,9 +63,9 @@ Swag allows you to combine `const` with pointers in different ways, depending on
 */
 #test
 {
-    var ptr:  *const *u8              // A pointer to a const pointer to 'u8'
-    var ptr1: const *const *u8        // A const pointer to a const pointer to 'u8'
-    var ptr2: const **u8              // A const pointer to a normal pointer to 'u8'
+    var ptr:  *const *u8           // A pointer to a const pointer to 'u8'
+    var ptr1: const *const *u8     // A const pointer to a const pointer to 'u8'
+    var ptr2: const **u8           // A const pointer to a normal pointer to 'u8'
 }
 
 /**
@@ -76,10 +76,10 @@ For cases where you need **pointer arithmetic** and want a pointer to **multiple
 #[Swag.Sanity(false)]
 #test
 {
-    var ptr: [*] u8                        // Declaring a pointer to a memory block of 'u8' values
+    var ptr: [*] u8 // Declaring a pointer to a memory block of 'u8' values
 
     // Pointer arithmetic allows you to navigate through the memory block by modifying the pointer's address
-    ptr = ptr - 1                       // Move the pointer back by one 'u8'
+    ptr = ptr - 1 // Move the pointer back by one 'u8'
 }
 
 /**
@@ -89,12 +89,13 @@ When you take the address of an array element, the resulting pointer is treated 
 */
 #test
 {
-    var x: [4] s32                      // Declare an array of 4 's32' elements
-    var ptr = &x[1]                     // Take the address of the second element
+    var x:  [4] s32     // Declare an array of 4 's32' elements
+    var ptr = &x[1]     // Take the address of the second element
 
     // Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values
-    ptr = ptr - 1                       // Move the pointer back to the first element
-    #assert(#typeof(ptr) == [*] s32)        // The type of 'ptr' is now a pointer to multiple 's32' values
+    ptr = ptr - 1 // Move the pointer back to the first element
+    #assert(#typeof(ptr) == [*] s32)
+    // The type of 'ptr' is now a pointer to multiple 's32' values
 }
 
 /**
@@ -104,21 +105,24 @@ When pointer arithmetic is enabled, you can dereference the pointer using an ind
 */
 #test
 {
-    var arr = [1, 2, 3, 4]             // Declare and initialize an array of 's32' elements
-    let ptr = &arr[0]                  // Take the address of the first element
-    @assert(#typeof(ptr) == [*] s32)      // The pointer type allows pointer arithmetic
+    var arr = [1, 2, 3, 4]     // Declare and initialize an array of 's32' elements
+    let ptr = &arr[0]          // Take the address of the first element
+    @assert(#typeof(ptr) == [*] s32) // The pointer type allows pointer arithmetic
 
     // Dereferencing by index to access the elements
-    let value1 = ptr[0]                // Access the first element
-    @assert(value1 == 1)               // Verify the first element's value is 1
-    #assert(#typeof(value1) == s32)     // Assert the type of value1 is 's32'
+    let value1 = ptr[0] // Access the first element
+    @assert(value1 == 1) // Verify the first element's value is 1
+    #assert(#typeof(value1) == s32)
+    // Assert the type of value1 is 's32'
 
-    let value2 = ptr[1]                // Access the second element
-    @assert(value2 == 2)               // Verify the second element's value is 2
-    #assert(#typeof(value2) == s32)     // Assert the type of value2 is 's32'
+    let value2 = ptr[1] // Access the second element
+    @assert(value2 == 2) // Verify the second element's value is 2
+    #assert(#typeof(value2) == s32)
+    // Assert the type of value2 is 's32'
 
     // Using 'dref' for the first element, equivalent to ptr[0]
-    let value = dref ptr               // Dereference the pointer to access the first element
-    @assert(value == 1)                // Verify the dereferenced value is 1
-    #assert(#typeof(value) == s32)      // Assert the type of the dereferenced value is 's32'
+    let value = dref ptr // Dereference the pointer to access the first element
+    @assert(value == 1) // Verify the dereferenced value is 1
+    #assert(#typeof(value) == s32)
+    // Assert the type of the dereferenced value is 's32'
 }

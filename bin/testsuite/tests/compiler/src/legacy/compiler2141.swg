@@ -14,19 +14,19 @@ impl PointBase
         #elif op == "*="
         {
             me.x *= value; me.y *= value; }
-        #else:
+        #else do
             #error("unsupported assign operation '" ++ op ++ "'")
     }
 
     func(op: string) opBinary(me, other: PointBase)->PointBase
     {
-        #if op == "+":
+        #if op == "+" do
             return PointBase{me.x + other.x, me.y + other.y}
-        #elif op == "-":
+        #elif op == "-" do
             return PointBase{me.x - other.x, me.y - other.y}
-        #elif op == "*":
+        #elif op == "*" do
             return PointBase{me.x * other.x, me.y * other.y}
-        #else:
+        #else do
             #error("unsupported binary operation '" ++ op ++ "'")
     }
 

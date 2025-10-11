@@ -120,7 +120,7 @@ impl Decoder
         var result: retval
 
         result.header = ch
-        if .stream.curPtr() + ch.length > .stream.startPtr() + .stream.size():
+        if .stream.curPtr() + ch.length > .stream.startPtr() + .stream.size() do
             throw InvalidFormatError{"invalid chunk"}
         result.datas = @mkslice(.stream.curPtr(), ch.length)
         .stream.curByte += ch.length
@@ -131,7 +131,7 @@ impl Decoder
 
         var vcrc: u32
         .stream.peek32Be(cast([*] u8) &vcrc)
-        if vcrc != crc.crc:
+        if vcrc != crc.crc do
             throw InvalidFormatError{"invalid checksum"}
 
         return result
@@ -146,26 +146,26 @@ impl Decoder
 
         with me.header
         {
-            if .width == 0 or .height == 0:
+            if .width == 0 or .height == 0 do
                 throw InvalidFormatError{"invalid dimensions"}
-            if .compressionMethod != 0:
+            if .compressionMethod != 0 do
                 throw InvalidFormatError{"invalid compression mtd"}
-            if .filterMethod != 0:
+            if .filterMethod != 0 do
                 throw InvalidFormatError{"invalid filter mtd"}
-            if .interlaceMethod != .None and .interlaceMethod != .Adam7:
+            if .interlaceMethod != .None and .interlaceMethod != .Adam7 do
                 throw InvalidFormatError{"invalid interlace mtd"}
 
-            if .colorType > 7:
+            if .colorType > 7 do
                 throw InvalidFormatError{"invalid color type"}
-            if .bitDepth > 8:
+            if .bitDepth > 8 do
                 throw UnsupportedFormatError{"unsupported bit depth"}
 
             me.outChannels = 3
-            if me.header.colorType & .Paletted:
+            if me.header.colorType & .Paletted do
                 me.inChannels = 1
-            elif me.header.colorType & .Color:
+            elif me.header.colorType & .Color do
                 me.inChannels = 3
-            else:
+            else do
                 me.inChannels = 1
 
             if me.header.colorType & .Alpha
@@ -174,7 +174,7 @@ impl Decoder
                 me.outChannels += 1
             }
 
-            if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8:
+            if .bitDepth != 1 and .bitDepth != 2 and .bitDepth != 4 and .bitDepth != 8 do
                 throw UnsupportedFormatError{"invalid bit depth"}
         }
     }
@@ -188,9 +188,9 @@ impl Decoder
         let pa = Math.abs(cast(s16) (p - aa))
         let pb = Math.abs(cast(s16) (p - bb))
         let pc = Math.abs(cast(s16) (p - cc))
-        if pa <= pb and pa <= pc:
+        if pa <= pb and pa <= pc do
             return left
-        if pb <= pc:
+        if pb <= pc do
             return up
         return upLeft
     }
@@ -233,17 +233,17 @@ impl Decoder
                 {
                     let c = src[0]
                     dest[0] = cast #bit (u8) ((c >> 7) * mul)
-                    if k > 1:
+                    if k > 1 do
                         dest[1] = cast #bit (u8) (((c >> 6) & 1) * mul)
-                    if k > 2:
+                    if k > 2 do
                         dest[2] = cast #bit (u8) (((c >> 5) & 1) * mul)
-                    if k > 3:
+                    if k > 3 do
                         dest[3] = cast #bit (u8) (((c >> 4) & 1) * mul)
-                    if k > 4:
+                    if k > 4 do
                         dest[4] = cast #bit (u8) (((c >> 3) & 1) * mul)
-                    if k > 5:
+                    if k > 5 do
                         dest[5] = cast #bit (u8) (((c >> 2) & 1) * mul)
-                    if k > 6:
+                    if k > 6 do
                         dest[6] = cast #bit (u8) (((c >> 1) & 1) * mul)
                 }
             }
@@ -274,9 +274,9 @@ impl Decoder
                 {
                     let c = src[0]
                     dest[0] = cast #bit (u8) ((c >> 6) * mul)
-                    if k > 1:
+                    if k > 1 do
                         dest[1] = cast #bit (u8) (((c >> 4) & 3) * mul)
-                    if k > 2:
+                    if k > 2 do
                         dest[2] = cast #bit (u8) (((c >> 2) & 3) * mul)
                 }
             }
@@ -311,7 +311,7 @@ impl Decoder
 
     mtd getStrideIn(width: u32)->u64
     {
-        if .header.bitDepth < 8:
+        if .header.bitDepth < 8 do
             return cast(u64) ((.inChannels * width * .header.bitDepth) + 7) / 8
         return cast(u64) .inChannels * width
     }
@@ -324,7 +324,7 @@ impl Decoder
 
         var src  = input
         var dest = output
-        if !.orderDefilter:
+        if !.orderDefilter do
             dest += rowStrideOut * (height - 1)
 
         // A temporary line "before" the first one, if filter needs one
@@ -346,13 +346,13 @@ impl Decoder
                 Memory.copy(destOff, src, rowStrideIn)
 
             case Sub:
-                for i in .inChannels:
+                for i in .inChannels do
                     destOff[i] = src[i]
-                for k in nk:
+                for k in nk do
                     destOff[.inChannels + k] = cast #bit (u8) (src[.inChannels + k] + #wrap destOff[k])
 
             case Up:
-                for k in rowStrideIn:
+                for k in rowStrideIn do
                     destOff[k] = cast #bit (u8) (src[k] + #wrap up[k])
 
             case Average:
@@ -382,9 +382,9 @@ impl Decoder
 
             src += rowStrideIn
             up = destOff
-            if .orderDefilter:
+            if .orderDefilter do
                 dest += rowStrideOut
-            else:
+            else do
                 dest -= rowStrideOut
         }
     }
@@ -414,7 +414,7 @@ impl Decoder
         {
             let x = (.header.width - Adam7OrigX[p] + Adam7SpacingX[p] - 1) / Adam7SpacingX[p]
             let y = (.header.height - Adam7OrigY[p] + Adam7SpacingY[p] - 1) / Adam7SpacingY[p]
-            if x <= 0 or y <= 0:
+            if x <= 0 or y <= 0 do
                 continue
 
             tmpArr.resize(cast(u64) (x * y * .inChannels))
@@ -431,7 +431,7 @@ impl Decoder
                     let out_x   = (i * Adam7SpacingX[p]) + Adam7OrigX[p]
                     var out_off = out_y * .header.width * .inChannels
                     out_off += out_x * .inChannels
-                    for z in .inChannels:
+                    for z in .inChannels do
                         .dstPixels[out_off + z] = t[z]
                     t += .inChannels
                 }
@@ -463,7 +463,7 @@ impl Decoder
 
         var signature: u64 = undefined
         .stream.peekBytes(#sizeof(signature), cast([*] u8) &signature)
-        if signature != 0x0a1a0a0d474e5089:
+        if signature != 0x0a1a0a0d474e5089 do
             throw InvalidFormatError{"not a png"}
 
         var result:   retval
@@ -485,13 +485,13 @@ impl Decoder
             }
 
             chIsHere = false
-            if .stream.eof:
+            if .stream.eof do
                 throw InvalidFormatError{"invalid chunk"}
 
             switch ch.type
             {
             case IHDR:
-                if !firstChunk:
+                if !firstChunk do
                     throw InvalidFormatError{"invalid first chunk"}
                 .readHeader(ch)
                 if .decOptions.decodePixels
@@ -514,7 +514,7 @@ impl Decoder
                 discard .readChunk(ch)
 
             case IDAT:
-                if seenIDAT:
+                if seenIDAT do
                     throw InvalidFormatError{"invalid IDAT chunk"}
                 while ch.type == IDAT
                 {
@@ -522,18 +522,18 @@ impl Decoder
                     iDataBuf.add(chunk.datas)
                     .stream.peek32Be(cast([*] u8) &ch.length)
                     .stream.peek32(cast([*] u8) &ch.type)
-                    if .stream.eof:
+                    if .stream.eof do
                         throw InvalidFormatError{"invalid chunk"}
                 }
 
                 chIsHere, seenIDAT = true
 
             case PLTE:
-                if seenIDAT:
+                if seenIDAT do
                     throw InvalidFormatError{"invalid PLTE chunk"}
                 let chunk = .readChunk(ch)
                 let len   = @countof(chunk.datas)
-                if len % 3 != 0 or len > 768:
+                if len % 3 != 0 or len > 768 do
                     throw InvalidFormatError{"invalid PLTE chunk"}
                 .seenPLTE = true
                 for var i = 0; i < len; i += 3
@@ -553,7 +553,7 @@ impl Decoder
                     {
                         var md: ImageMetaData
                         md.tag = cast(string) chunk.datas[ until len]
-                        if len != @countof(chunk.datas) - 1:
+                        if len != @countof(chunk.datas) - 1 do
                             md.value = cast(string) chunk.datas[len + 1 to ]
                         result.metaDatas.add(md)
                     }
@@ -566,19 +566,19 @@ impl Decoder
             firstChunk = false
         }
 
-        if !seenIDAT:
+        if !seenIDAT do
             throw InvalidFormatError{"missing IDAT chunk"}
-        if .header.colorType & .Paletted and !.seenPLTE:
+        if .header.colorType & .Paletted and !.seenPLTE do
             throw InvalidFormatError{"missing PLTE chunk"}
 
         // Initialize image depending on number of wanted channels
-        if .outChannels == 4:
+        if .outChannels == 4 do
             result.init(cast(s32) .header.width, cast(s32) .header.height, PixelFormat.RGBA8)
-        else:
+        else do
             result.init(cast(s32) .header.width, cast(s32) .header.height, PixelFormat.RGB8)
 
         // We are done if user does not want pixels
-        if !.decOptions.decodePixels:
+        if !.decOptions.decodePixels do
             return result
 
         // deflate content
@@ -619,7 +619,7 @@ impl Decoder
                 pix[0] = cast() ((color >> 16) & 0xFF)
                 pix[1] = cast() ((color >> 8) & 0xFF)
                 pix[2] = cast() (color & 0xFF)
-                if image.bpp == 32:
+                if image.bpp == 32 do
                     pix[3] = 255
             }
         }
@@ -652,7 +652,7 @@ impl Decoder
                 pix[0] = src[0]
                 pix[1] = src[0]
                 pix[2] = src[0]
-                if image.bpp == 32:
+                if image.bpp == 32 do
                     pix[3] = 255
             }
         }
@@ -686,7 +686,7 @@ impl Decoder
                 pix[0] = src[0]
                 pix[1] = src[0]
                 pix[2] = src[0]
-                if image.bpp == 32:
+                if image.bpp == 32 do
                     pix[3] = src[1]
             }
         }
@@ -707,9 +707,9 @@ impl Decoder
                 pix[0] = src[0]
                 pix[1] = src[1]
                 pix[2] = src[2]
-                if src[0] == params.key0 and src[1] == params.key1 and src[2] == params.key2:
+                if src[0] == params.key0 and src[1] == params.key1 and src[2] == params.key2 do
                     pix[3] = 0
-                else:
+                else do
                     pix[3] = 255
             }
         }

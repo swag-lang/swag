@@ -4,20 +4,20 @@ Swag provides various signed integer types: `s8`, `s16`, `s32`, and `s64`. These
 */
 #test
 {
-    let a: s8 = -1               // 8-bit signed integer, range: -128 to 127
-    let b: s16 = -2              // 16-bit signed integer, range: -32,768 to 32,767
-    let c: s32 = -3              // 32-bit signed integer, range: -2^31 to 2^31-1
-    let d: s64 = -4              // 64-bit signed integer, range: -2^63 to 2^63-1
+    let a: s8 = -1      // 8-bit signed integer, range: -128 to 127
+    let b: s16 = -2     // 16-bit signed integer, range: -32,768 to 32,767
+    let c: s32 = -3     // 32-bit signed integer, range: -2^31 to 2^31-1
+    let d: s64 = -4     // 64-bit signed integer, range: -2^63 to 2^63-1
 
-    @assert(a == -1)             // Verifies that 'a' holds the value -1.
-    @assert(b == -2)             // Verifies that 'b' holds the value -2.
-    @assert(c == -3)             // Verifies that 'c' holds the value -3.
-    @assert(d == -4)             // Verifies that 'd' holds the value -4.
+    @assert(a == -1) // Verifies that 'a' holds the value -1.
+    @assert(b == -2) // Verifies that 'b' holds the value -2.
+    @assert(c == -3) // Verifies that 'c' holds the value -3.
+    @assert(d == -4) // Verifies that 'd' holds the value -4.
 
-    @assert(#sizeof(a) == 1)     // 'a' is an s8, so its size is 1 byte.
-    @assert(#sizeof(b) == 2)     // 'b' is an s16, so its size is 2 bytes.
-    @assert(#sizeof(c) == 4)     // 'c' is an s32, so its size is 4 bytes.
-    @assert(#sizeof(d) == 8)     // 'd' is an s64, so its size is 8 bytes.
+    @assert(#sizeof(a) == 1) // 'a' is an s8, so its size is 1 byte.
+    @assert(#sizeof(b) == 2) // 'b' is an s16, so its size is 2 bytes.
+    @assert(#sizeof(c) == 4) // 'c' is an s32, so its size is 4 bytes.
+    @assert(#sizeof(d) == 8) // 'd' is an s64, so its size is 8 bytes.
 }
 
 /**
@@ -26,20 +26,20 @@ Swag also supports various unsigned integer types: `u8`, `u16`, `u32`, and `u64`
 */
 #test
 {
-    let a: u8 = 1               // 8-bit unsigned integer, range: 0 to 255
-    let b: u16 = 2              // 16-bit unsigned integer, range: 0 to 65,535
-    let c: u32 = 3              // 32-bit unsigned integer, range: 0 to 2^32-1
-    let d: u64 = 4              // 64-bit unsigned integer, range: 0 to 2^64-1
+    let a: u8 = 1      // 8-bit unsigned integer, range: 0 to 255
+    let b: u16 = 2     // 16-bit unsigned integer, range: 0 to 65,535
+    let c: u32 = 3     // 32-bit unsigned integer, range: 0 to 2^32-1
+    let d: u64 = 4     // 64-bit unsigned integer, range: 0 to 2^64-1
 
-    @assert(a == 1)             // Verifies that 'a' holds the value 1.
-    @assert(b == 2)             // Verifies that 'b' holds the value 2.
-    @assert(c == 3)             // Verifies that 'c' holds the value 3.
-    @assert(d == 4)             // Verifies that 'd' holds the value 4.
+    @assert(a == 1) // Verifies that 'a' holds the value 1.
+    @assert(b == 2) // Verifies that 'b' holds the value 2.
+    @assert(c == 3) // Verifies that 'c' holds the value 3.
+    @assert(d == 4) // Verifies that 'd' holds the value 4.
 
-    @assert(#sizeof(a) == 1)    // 'a' is a u8, so its size is 1 byte.
-    @assert(#sizeof(b) == 2)    // 'b' is a u16, so its size is 2 bytes.
-    @assert(#sizeof(c) == 4)    // 'c' is a u32, so its size is 4 bytes.
-    @assert(#sizeof(d) == 8)    // 'd' is a u64, so its size is 8 bytes.
+    @assert(#sizeof(a) == 1) // 'a' is a u8, so its size is 1 byte.
+    @assert(#sizeof(b) == 2) // 'b' is a u16, so its size is 2 bytes.
+    @assert(#sizeof(c) == 4) // 'c' is a u32, so its size is 4 bytes.
+    @assert(#sizeof(d) == 8) // 'd' is a u64, so its size is 8 bytes.
 }
 
 /**
@@ -48,14 +48,14 @@ Swag supports floating-point types `f32` and `f64`. These types represent single
 */
 #test
 {
-    let a: f32 = 3.14           // 32-bit floating-point value (single-precision)
-    let b: f64 = 3.14159        // 64-bit floating-point value (double-precision)
+    let a: f32 = 3.14        // 32-bit floating-point value (single-precision)
+    let b: f64 = 3.14159     // 64-bit floating-point value (double-precision)
 
-    @assert(a == 3.14)          // Verifies that 'a' holds the value 3.14.
-    @assert(b == 3.14159)       // Verifies that 'b' holds the value 3.14159.
+    @assert(a == 3.14) // Verifies that 'a' holds the value 3.14.
+    @assert(b == 3.14159) // Verifies that 'b' holds the value 3.14159.
 
-    @assert(#sizeof(a) == 4)    // 'a' is an f32, so its size is 4 bytes.
-    @assert(#sizeof(b) == 8)    // 'b' is an f64, so its size is 8 bytes.
+    @assert(#sizeof(a) == 4) // 'a' is an f32, so its size is 4 bytes.
+    @assert(#sizeof(b) == 8) // 'b' is an f64, so its size is 8 bytes.
 }
 
 /**
@@ -64,14 +64,14 @@ The boolean type `bool` is used to represent true or false values. In Swag, a bo
 */
 #test
 {
-    let a: bool = true           // Boolean value, representing 'true'
-    let b: bool = false          // Boolean value, representing 'false'
+    let a: bool = true      // Boolean value, representing 'true'
+    let b: bool = false     // Boolean value, representing 'false'
 
-    @assert(a == true)           // Verifies that 'a' is true.
-    @assert(b == false)          // Verifies that 'b' is false.
+    @assert(a == true) // Verifies that 'a' is true.
+    @assert(b == false) // Verifies that 'b' is false.
 
-    @assert(#sizeof(a) == 1)     // The size of a boolean is 1 byte.
-    @assert(#sizeof(b) == 1)     // The size of a boolean is 1 byte.
+    @assert(#sizeof(a) == 1) // The size of a boolean is 1 byte.
+    @assert(#sizeof(b) == 1) // The size of a boolean is 1 byte.
 }
 
 /**
@@ -80,9 +80,9 @@ The `string` type represents text. In Swag, strings are **UTF-8** encoded and ar
 */
 #test
 {
-    let a: string = "string 是"  // A string containing UTF-8 encoded characters
+    let a: string = "string 是" // A string containing UTF-8 encoded characters
 
-    @assert(a == "string 是")    // Verifies that 'a' holds the correct string.
+    @assert(a == "string 是") // Verifies that 'a' holds the correct string.
     @assert(#sizeof(a) == 2 * #sizeof(*void)) // A string is stored as two 64-bit values (pointer and length).
 }
 
@@ -92,10 +92,10 @@ The `rune` type represents a 32-bit Unicode code point. It is used to store indi
 */
 #test
 {
-    let a: rune = '是'              // A single Unicode character, represented by a 32-bit code point
+    let a: rune = '是' // A single Unicode character, represented by a 32-bit code point
 
-    @assert(a == '是')              // Verifies that 'a' holds the correct Unicode code point.
-    @assert(#sizeof(a) == 4)        // The size of a rune is 4 bytes (32 bits).
+    @assert(a == '是') // Verifies that 'a' holds the correct Unicode code point.
+    @assert(#sizeof(a) == 4) // The size of a rune is 4 bytes (32 bits).
 }
 
 /**
@@ -113,8 +113,9 @@ You can use `#decltype` to create a type based on an expression. This is useful 
     let b: #decltype(a) = 1     // 'b' is declared with the same type as 'a' (which is 's32').
 
     @assert(#typeof(a) == #typeof(b)) // Verifies that 'a' and 'b' have the same type.
-    @assert(#typeof(a) == s32)        // Verifies that the type of 'a' is 's32'.
+    @assert(#typeof(a) == s32) // Verifies that the type of 'a' is 's32'.
 
-    #assert(#typeof(a) == #typeof(b))  // Compile-time validation using '#assert'.
+    #assert(#typeof(a) == #typeof(b))
+    // Compile-time validation using '#assert'.
     #assert(#typeof(a) == s32)
 }

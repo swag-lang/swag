@@ -6,7 +6,7 @@ func assert(expr: #code bool, message: string = null, loc = #callerlocation)
 {
     #if ASSERT
     {
-        if !#inject(expr):
+        if !#inject(expr) do
             @panic(message, loc)
     }
 }
@@ -16,7 +16,7 @@ func(what: string) safety(expr: #code bool, message: string = null, loc = #calle
 {
     #if #safety(what)
     {
-        if !#inject(expr):
+        if !#inject(expr) do
             @panic(message, loc)
     }
 }

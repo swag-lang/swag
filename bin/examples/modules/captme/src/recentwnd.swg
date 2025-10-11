@@ -35,7 +35,7 @@ impl RecentView
 {
     mtd select(idx: u64, force = false)
     {
-        if .selected == idx and !force:
+        if .selected == idx and !force do
             return
 
         if idx >= .items.count
@@ -47,7 +47,7 @@ impl RecentView
         let view = .main.editWnd.editView
 
         // Save current zoom
-        if .selected < .items.count:
+        if .selected < .items.count do
             .items[.selected].zoom = view.zoom
 
         // Select new recent item
@@ -56,12 +56,12 @@ impl RecentView
         let capture = catch Capture.load(item.file)
         if capture
         {
-            if .main.getCapture():
+            if .main.getCapture() do
                 catch .main.getCapture().save()
             view.setCapture(capture)
-            if item.zoom == 0:
+            if item.zoom == 0 do
                 view.zoomToFit(false)
-            else:
+            else do
                 view.setZoom(item.zoom)
             view.main.freezeSelection(false)
             .invalidate()
@@ -73,7 +73,7 @@ impl IWnd for RecentView
 {
     mtd impl onMouseEvent(evt: *MouseEvent)
     {
-        if evt.kind == .MouseWheel:
+        if evt.kind == .MouseWheel do
             evt.accepted = false
 
         var pos = .surfaceToLocal(evt.surfacePos)
@@ -168,9 +168,9 @@ impl IWnd for RecentView
             icon.paint(painter, rect.x + 8, rect.y + 8, backColor.getContrasting())
         }
 
-        if infos.hot:
+        if infos.hot do
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 2)
-        if infos.selected:
+        if infos.selected do
             painter.drawRoundRect(rect, 8, 8, colors.hilightLight, 4)
     }
 
@@ -216,7 +216,7 @@ impl IWnd for RecentWnd
 {
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if .timer:
+        if .timer do
             .getApp().deleteTimer(.timer)
     }
 
@@ -264,7 +264,7 @@ impl RecentWnd
 
     mtd loadRecent()
     {
-        if .loadDone:
+        if .loadDone do
             return
         .loadDone = true
 
@@ -302,7 +302,7 @@ impl RecentWnd
         {
             let capture = catch .addRecent(r.fullname, front: false)
             defer #err Memory.delete(capture)
-            if @err != null:
+            if @err != null do
                 continue
 
             if idx == 0
@@ -310,26 +310,26 @@ impl RecentWnd
                 .recentView.selected = 0
                 .main.editWnd.editView.setCapture(capture)
             }
-            else:
+            else do
                 Memory.delete(capture)
 
             cptRecent += 1
-            if cptRecent > MaxRecent:
+            if cptRecent > MaxRecent do
                 break
         }
     }
 
     mtd updateRecent()
     {
-        if .recentView.selected >= .recentView.items.count:
+        if .recentView.selected >= .recentView.items.count do
             return
 
-        if .timer:
+        if .timer do
             .getApp().deleteTimer(.timer)
         .timer = .getApp().addTimer(1's, me)
 
         let capture = .main.getCapture()
-        if !capture:
+        if !capture do
             return
 
         let item = .recentView.items[.recentView.selected]
@@ -340,13 +340,13 @@ impl RecentWnd
 
     mtd removeRecent()
     {
-        if .recentView.selected >= .recentView.items.count:
+        if .recentView.selected >= .recentView.items.count do
             return
 
         let item = .recentView.items[.recentView.selected]
 
         // Be sure there's no pending save
-        if .timer:
+        if .timer do
             .getApp().deleteTimer(.timer)
         .timer = null
 
@@ -364,7 +364,7 @@ impl RecentWnd
         if front and .recentView.items.count > MaxRecent
         {
             let back = .recentView.items.back()
-            if back.preview.isValid():
+            if back.preview.isValid() do
                 .getApp().getRenderer().removeTexture(&back.preview)
             .recentView.items.deletePtr(back)
             .recentView.items.count -= 1
@@ -390,7 +390,7 @@ impl RecentWnd
                     idxSel = 0
                 }
 
-                if sel:
+                if sel do
                     .recentView.select(idxSel, true)
 
                 it.linked = linked
@@ -415,7 +415,7 @@ impl RecentWnd
         else
         {
             .recentView.items.add(item)
-            if sel:
+            if sel do
                 .recentView.select(.recentView.items.count - 1, force: true)
         }
 

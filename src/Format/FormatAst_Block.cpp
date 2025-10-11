@@ -141,7 +141,9 @@ bool FormatAst::outputDoStatement(FormatContext& context, AstNode* node)
         }
         else
         {
-            concat->addChar(':');
+            concat->addBlank();
+            concat->addString("do");
+            concat->addBlank();
             beautifyAfter(context, node);
             concat->addEol();
             context.indent++;

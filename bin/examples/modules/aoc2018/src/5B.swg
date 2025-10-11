@@ -38,7 +38,7 @@ func day5B0()
 
         while idx < line.length - 1
         {
-            while Latin1.toLower(line[idx]) == x + 'a':
+            while Latin1.toLower(line[idx]) == x + 'a' do
                 line.remove(idx, 1)
             idx += 1
         }
@@ -50,9 +50,9 @@ func day5B0()
                   Latin1.toLower(line[idx]) == Latin1.toLower(line[idx + 1])
             {
                 line.remove(idx, 2)
-                if idx >= line.length:
+                if idx >= line.length do
                     break
-                if idx:
+                if idx do
                     idx -= 1
             }
 
@@ -83,9 +83,9 @@ func day5B1()
         var result: String
         foreach c, i in line
         {
-            if i and result.back() ^ c == 32:
+            if i and result.back() ^ c == 32 do
                 result.removeBack()
-            else:
+            else do
                 result += c
         }
 

@@ -17,13 +17,13 @@ var G = 0
 {
     let itf = @compiler
     var msg = itf.getMessage()
-    if msg.type.kind != .Struct:
+    if msg.type.kind != .Struct do
         return
 
     var typeS = cast(const *TypeInfoStruct) msg.type
-    if @countof(typeS.attributes) != 1:
+    if @countof(typeS.attributes) != 1 do
         return
-    if typeS.attributes[0].name != "__compiler3555.GenStuff":
+    if typeS.attributes[0].name != "__compiler3555.GenStuff" do
         return
     itf.compileString("impl A {\n mtd opDrop() {\nG += 1\n}\n}")
 }

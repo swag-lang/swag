@@ -21,7 +21,7 @@ impl Image
     public mtd fillHsl(fillType: FillHslType, color: Color = Argb.White)
     {
         // unsupported pixel format
-        if .pf.channels() < 3 or .pf.bitDepth() != 8:
+        if .pf.channels() < 3 or .pf.bitDepth() != 8 do
             return
 
         let hsl    = color.toHsl()
@@ -48,7 +48,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -70,7 +70,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if .pf.hasAlpha():
+                if .pf.hasAlpha() do
                     pix[3] = 255
                 pix += .bpp8
             }
@@ -100,7 +100,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -122,7 +122,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if .pf.hasAlpha():
+                if .pf.hasAlpha() do
                     pix[3] = 255
                 pix += .bpp8
             }
@@ -152,7 +152,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -174,7 +174,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if .pf.hasAlpha():
+                if .pf.hasAlpha() do
                     pix[3] = 255
                 pix += .bpp8
             }
@@ -204,7 +204,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -228,7 +228,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -254,7 +254,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -278,7 +278,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -302,7 +302,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
 
@@ -326,7 +326,7 @@ impl Image
                     pix[1] = col.g
                     pix[2] = col.r
                 }
-                if image.pf.hasAlpha():
+                if image.pf.hasAlpha() do
                     pix[3] = 255
             }
         }

@@ -38,7 +38,7 @@ impl IWnd for EmbInfoCtrl
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if .timer:
+        if .timer do
             .getApp().deleteTimer(.timer)
     }
 
@@ -119,7 +119,7 @@ impl EmbInfoCtrl
             }
         }
 
-        if flags.has(.AutoHide):
+        if flags.has(.AutoHide) do
             ctrl.timer = ctrl.addTimer(4's)
 
         ctrl.setColors()

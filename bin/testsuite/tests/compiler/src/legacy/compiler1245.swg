@@ -2,8 +2,8 @@
 {
     var x: func()->void
     x = null
-    if (x != null):
+    if (x != null) do
         @assert(false)
-    if (null != x):
+    if (null != x) do
         @assert(false)
 }

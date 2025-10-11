@@ -6,7 +6,7 @@ func(T, V) contains(values: const [..] T, value: V)->bool
 {
     foreach v in values
     {
-        if v == value:
+        if v == value do
             return true
     }
 

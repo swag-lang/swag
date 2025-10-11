@@ -9,9 +9,9 @@ func haarTransform2D(data: [*] f32, size: u32, output: [*] f32)
     var currentSize = size
     while currentSize > 1
     {
-        for row in currentSize:
+        for row in currentSize do
             haarTransform1D(output, row * size, currentSize)
-        for col in currentSize:
+        for col in currentSize do
             haarTransform1DVertical(output, col, currentSize, size)
         currentSize /= 2
     }
@@ -20,7 +20,7 @@ func haarTransform2D(data: [*] f32, size: u32, output: [*] f32)
 // 1D Haar transform on a row
 func haarTransform1D(data: [*] f32, offset: s32, length: s32)
 {
-    if length <= 1:
+    if length <= 1 do
         return
 
     var temp: Array'f32
@@ -28,19 +28,19 @@ func haarTransform1D(data: [*] f32, offset: s32, length: s32)
 
     let half = length / 2
 
-    for i in half:
+    for i in half do
         temp[i] = (data[offset + i * 2] + data[offset + i * 2 + 1]) * 0.70710678118 // sqrt(2)/2 normalization
-    for i in half:
+    for i in half do
         temp[half + i] = (data[offset + i * 2] - data[offset + i * 2 + 1]) * 0.70710678118
 
-    for i in length:
+    for i in length do
         data[offset + i] = temp[i]
 }
 
 // 1D Haar transform on a column
 func haarTransform1DVertical(data: [*] f32, col: s32, length: s32, stride: s32)
 {
-    if length <= 1:
+    if length <= 1 do
         return
 
     var temp: Array'f32
@@ -48,12 +48,12 @@ func haarTransform1DVertical(data: [*] f32, col: s32, length: s32, stride: s32)
 
     let half = length / 2
 
-    for i in half:
+    for i in half do
         temp[i] = (data[col + i * 2 * stride] + data[col + (i * 2 + 1) * stride]) * 0.70710678118
-    for i in half:
+    for i in half do
         temp[half + i] = (data[col + i * 2 * stride] - data[col + (i * 2 + 1) * stride]) * 0.70710678118
 
-    for i in length:
+    for i in length do
         data[col + i * stride] = temp[i]
 }
 
@@ -163,7 +163,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
             let levelSize = size >> level
 
             // LH (horizontal details): top-right
-            for y in 0 until levelSize:
+            for y in 0 until levelSize do
                 for x in levelSize until levelSize * 2
                 {
                     let idx = y * size + x
@@ -175,7 +175,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
                 }
 
             // HL (vertical details): bottom-left
-            for y in levelSize until levelSize * 2:
+            for y in levelSize until levelSize * 2 do
                 for x in 0 until levelSize
                 {
                     let idx = y * size + x
@@ -187,7 +187,7 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
                 }
 
             // HH (diagonal details): bottom-right
-            for y in levelSize until levelSize * 2:
+            for y in levelSize until levelSize * 2 do
                 for x in levelSize until levelSize * 2
                 {
                     let idx = y * size + x
@@ -200,16 +200,16 @@ public func compareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
         }
 
         let denominator = Math.sqrt(levelNorm1 * levelNorm2)
-        if denominator > 1e-10:
+        if denominator > 1e-10 do
             levelSimilarity = Math.abs(levelSimilarity / denominator)
-        else:
+        else do
             levelSimilarity = (levelNorm1 == 0.0 and levelNorm2 == 0.0) ? 1.0 : 0.0
 
         totalSimilarity += levelSimilarity * weight
         totalWeight += weight
     }
 
-    if totalWeight > 0.0:
+    if totalWeight > 0.0 do
         return cast(f32) (totalSimilarity / totalWeight)
 
     return 0.0'f32 // Considered more neutral than 1.0
@@ -280,7 +280,7 @@ public func quickCompareHaarCoefficients(haar1, haar2: HaarFeatures)->f32
     }
 
     let denominator = Math.sqrt(norm1 * norm2)
-    if denominator > 1e-10:
+    if denominator > 1e-10 do
         return cast(f32) Math.abs(correlation / denominator)
     return (norm1 == 0.0 and norm2 == 0.0) ? 1.0'f32 : 0.0'f32
 }

@@ -13,7 +13,7 @@ func gen(type: const *Swag.TypeInfoStruct)->String
 
     foreach f in type.fields
     {
-        if @index:
+        if @index do
             result += " and "
         result += "me."
         result += f.name

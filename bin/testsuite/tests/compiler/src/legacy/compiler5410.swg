@@ -10,7 +10,7 @@ impl A
     #[Swag.Overload, Swag.Inline]
     mtd const opIndex(i: u64)->const &s64
     {
-        if i == 0:
+        if i == 0 do
             return &g0
         return &g1
     }

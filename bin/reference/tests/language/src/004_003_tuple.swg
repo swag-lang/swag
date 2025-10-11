@@ -5,8 +5,8 @@ In Swag, a tuple represents an anonymous structure, sometimes referred to as a s
 */
 #test
 {
-    let tuple1 = {2, 2}                    // A tuple containing two integer elements.
-    let tuple2 = {"string", 2, true}       // A tuple with a string, an integer, and a boolean element.
+    let tuple1 = {2, 2}                  // A tuple containing two integer elements.
+    let tuple2 = {"string", 2, true}     // A tuple with a string, an integer, and a boolean element.
 }
 
 /**
@@ -16,10 +16,10 @@ By default, the values in a tuple are accessed using automatically generated fie
 */
 #test
 {
-    let tuple = {"string", 2, true}        // A tuple containing three elements.
-    @assert(tuple.item0 == "string")       // Accesses the first element (index 0).
-    @assert(tuple.item1 == 2)              // Accesses the second element (index 1).
-    @assert(tuple.item2 == true)           // Accesses the third element (index 2).
+    let tuple = {"string", 2, true} // A tuple containing three elements.
+    @assert(tuple.item0 == "string") // Accesses the first element (index 0).
+    @assert(tuple.item1 == 2) // Accesses the second element (index 1).
+    @assert(tuple.item2 == true) // Accesses the third element (index 2).
 }
 
 /**
@@ -29,11 +29,11 @@ In Swag, it is possible to assign custom names to tuple fields, enhancing the re
 */
 #test
 {
-    let tuple = {x: 1.0, y: 2.0}           // A tuple with named fields 'x' and 'y'.
-    @assert(tuple.x == 1.0)                // Accesses the value of 'x' via its custom name.
-    @assert(tuple.item0 == 1.0)            // Accesses the value of 'x' using the default 'item0'.
-    @assert(tuple.y == 2.0)                // Accesses the value of 'y' via its custom name.
-    @assert(tuple.item1 == 2.0)            // Accesses the value of 'y' using the default 'item1'.
+    let tuple = {x: 1.0, y: 2.0} // A tuple with named fields 'x' and 'y'.
+    @assert(tuple.x == 1.0) // Accesses the value of 'x' via its custom name.
+    @assert(tuple.item0 == 1.0) // Accesses the value of 'x' using the default 'item0'.
+    @assert(tuple.y == 2.0) // Accesses the value of 'y' via its custom name.
+    @assert(tuple.item1 == 2.0) // Accesses the value of 'y' using the default 'item1'.
 }
 
 /**
@@ -45,11 +45,11 @@ When creating a tuple using variables, Swag automatically assigns the field name
 {
     let x = 555
     let y = 666
-    let t = {x, y}                         // Tuple fields are automatically named 'x' and 'y'.
-    @assert(t.x == 555)                    // Accesses the value of 'x' using the variable name.
-    @assert(t.item0 == t.x)                // 'item0' corresponds to the variable 'x'.
-    @assert(t.y == 666)                    // Accesses the value of 'y' using the variable name.
-    @assert(t.item1 == t.y)                // 'item1' corresponds to the variable 'y'.
+    let t = {x, y}     // Tuple fields are automatically named 'x' and 'y'.
+    @assert(t.x == 555) // Accesses the value of 'x' using the variable name.
+    @assert(t.item0 == t.x) // 'item0' corresponds to the variable 'x'.
+    @assert(t.y == 666) // Accesses the value of 'y' using the variable name.
+    @assert(t.item1 == t.y) // 'item1' corresponds to the variable 'y'.
 }
 
 /**
@@ -59,13 +59,21 @@ Swag provides flexibility in assigning tuples to each other, even if the field n
 */
 #test
 {
-    var x: { a: s32, b: s32 }              // A tuple with fields 'a' and 'b'.
-    var y: { c: s32, d: s32 }              // A tuple with fields 'c' and 'd'.
+    var x:
+    {
+        a: s32, b: s32
+        // A tuple with fields 'a' and 'b'.
+    }
+    var y:
+    {
+        c: s32, d: s32
+        // A tuple with fields 'c' and 'd'.
+    }
 
-    y = {1, 2}                             // Initializes 'y' with integer values.
-    x = y                                  // Assigns 'y' to 'x', field names do not need to match.
-    @assert(x.a == 1)                      // 'x.a' acquires the value of 'y.c'.
-    @assert(x.b == 2)                      // 'x.b' acquires the value of 'y.d'.
+    y = {1, 2}
+    x = y // Assigns 'y' to 'x', field names do not need to match.
+    @assert(x.a == 1) // 'x.a' acquires the value of 'y.c'.
+    @assert(x.b == 2) // 'x.b' acquires the value of 'y.d'.
 
     // Although 'x' and 'y' have different field names, their types are not identical.
     #assert(#typeof(x) != #typeof(y))
@@ -78,15 +86,15 @@ Swag allows tuples to be unpacked, meaning their individual elements can be extr
 */
 #test
 {
-    let tuple1 = {x: 1.0, y: 2.0}          // A tuple with fields 'x' and 'y'.
+    let tuple1 = {x: 1.0, y: 2.0} // A tuple with fields 'x' and 'y'.
 
     // Unpacking the tuple: 'value0' gets the value of 'x', and 'value1' gets the value of 'y'.
     let (value0, value1) = tuple1
     @assert(value0 == 1.0)
     @assert(value1 == 2.0)
 
-    let tuple2 = {"name", true}            // A tuple containing a string and a boolean.
-    let (name, value) = tuple2             // Unpacking into 'name' and 'value'.
+    let tuple2 = {"name", true} // A tuple containing a string and a boolean.
+    let (name, value) = tuple2 // Unpacking into 'name' and 'value'.
     @assert(name == "name")
     @assert(value == true)
 }
@@ -98,9 +106,9 @@ When unpacking a tuple, you can choose to ignore specific fields using the `?` p
 */
 #test
 {
-    let tuple1 = {x: 1.0, y: 2.0}          // A tuple with fields 'x' and 'y'.
-    let (x, ?) = tuple1                    // Unpacks 'x' and ignores the second field.
+    let tuple1 = {x: 1.0, y: 2.0} // A tuple with fields 'x' and 'y'.
+    let (x, ?) = tuple1 // Unpacks 'x' and ignores the second field.
     @assert(x == 1.0)
-    let (?, y) = tuple1                    // Ignores the first field and unpacks 'y'.
+    let (?, y) = tuple1 // Ignores the first field and unpacks 'y'.
     @assert(y == 2.0)
 }

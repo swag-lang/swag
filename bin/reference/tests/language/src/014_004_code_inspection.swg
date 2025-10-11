@@ -36,7 +36,7 @@ and type information.
     let nameFunc = msg.name
 
     // Example: Count functions whose names start with "XX"
-    if @countof(nameFunc) > 2 and nameFunc[0] == 'X' and nameFunc[1] == 'X':
+    if @countof(nameFunc) > 2 and nameFunc[0] == 'X' and nameFunc[1] == 'X' do
         G += 1
 }
 

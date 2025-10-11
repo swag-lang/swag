@@ -72,7 +72,7 @@ impl BaseForm
 {
     func adaptSize(size: f32, minSize, maxSize: f32, cxt: FormPaintContext, dstMin: f32 = 4, dstMax: f32 = 8)->f32
     {
-        if !cxt.quickMode:
+        if !cxt.quickMode do
             return size * cxt.z
         return Math.map(size * cxt.z, minSize, maxSize, dstMin, dstMax)
     }
@@ -92,7 +92,7 @@ impl BaseForm
         let pos = Math.Vector2{pt.x, pt.y}
         foreach cmd in painter.commandBuffer
         {
-            if cmd.id != .DrawTriangles:
+            if cmd.id != .DrawTriangles do
                 continue
             for var i = 0; i < cmd.drawTriangles.count; i += 3
             {
@@ -100,7 +100,7 @@ impl BaseForm
                 let xx0 = painter.vertexBuffer[tri].pos
                 let xx1 = painter.vertexBuffer[tri + 1].pos
                 let xx2 = painter.vertexBuffer[tri + 2].pos
-                if Math.Geometry.isInTriangle(pos, xx0, xx1, xx2):
+                if Math.Geometry.isInTriangle(pos, xx0, xx1, xx2) do
                     return true
             }
         }

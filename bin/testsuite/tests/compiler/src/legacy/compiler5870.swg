@@ -13,10 +13,10 @@ public func(T) hash64(value: T)->u64
 {
     /*#if T == string:
         return 0*/
-     /*isStruct(T) and*/
-    #if #defined(T.IHash64):
+    /*isStruct(T) and*/
+    #if #defined(T.IHash64) do
         #ast "return 0" // ++ #typeof(T).fullname ++ ".IHash64.compute(value)"
-    #else:
+    #else do
         return 0
 }
 

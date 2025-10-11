@@ -38,7 +38,7 @@ impl BitStream
         while .numBits <= width
         {
             // Detect and reset broken state (if buffer was empty and numBits was max)
-            if .codeBuffer == 0 and .numBits == cast #bit (u8) -1:
+            if .codeBuffer == 0 and .numBits == cast #bit (u8) -1 do
                 .numBits = 0
 
             // If buffer is already full, prevent overflow
@@ -67,7 +67,7 @@ impl BitStream
     #[Swag.Inline]
     mtd peekBits(width: u8)->u32
     {
-        if .numBits < width:
+        if .numBits < width do
             .refill()
         return .codeBuffer & ~(0xffffffff << width)
     }
@@ -147,7 +147,7 @@ impl BitStream
     // Peeks 4 bytes (big-endian) into 'dest', auto-switches based on platform
     mtd peek32Be(dest: [*] u8)
     {
-        #if BIG_ENDIAN:
+        #if BIG_ENDIAN do
             peek32(dest) // Already big-endian
         #else
         {

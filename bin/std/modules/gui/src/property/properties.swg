@@ -137,11 +137,11 @@ internal impl Properties
         let pt = ptLoc + .scrollWnd.getScrollPos()
         foreach item in .items
         {
-            if !item.line.isVisible():
+            if !item.line.isVisible() do
                 continue
             var r = item.line.position
             r.inflate(item.extendFocus)
-            if r.contains(pt):
+            if r.contains(pt) do
                 return item
         }
 
@@ -156,7 +156,7 @@ internal impl Properties
         var scan = item
         while scan
         {
-            if scan.ntfyItf:
+            if scan.ntfyItf do
                 scan.ntfyItf.fillPopupMenu(me, item, menu)
             scan = scan.parent
         }
@@ -179,7 +179,7 @@ internal impl Properties
 
         if item.data and item.type
         {
-            if menu.items.count:
+            if menu.items.count do
                 menu.addSeparator()
             menu.addItem("Copy", "Copy", .getTheme().getIcon24(.Copy))
             itemDisabled = !canChange or !Clipboard.hasTypedValue(item.type)
@@ -199,12 +199,12 @@ internal impl Properties
         switch result
         {
         case "ClearArray":
-            if MessageDlg.confirm(.wnd.surface, "This will remove all elements") != Dialog.BtnYes:
+            if MessageDlg.confirm(.wnd.surface, "This will remove all elements") != Dialog.BtnYes do
                 break
             .clearArray(item)
 
         case "ClearElementArray":
-            if MessageDlg.confirm(.wnd.surface, "This will remove the element") != Dialog.BtnYes:
+            if MessageDlg.confirm(.wnd.surface, "This will remove the element") != Dialog.BtnYes do
                 break
             .removeArrayValue(item)
 
@@ -223,13 +223,13 @@ internal impl Properties
     func onHookChildEvent(wnd: *Wnd, evt: IEvent)->bool
     {
         let prop = cast(*Properties) wnd
-        if prop.editPopup:
+        if prop.editPopup do
             return false
 
         switch evt
         {
         case FocusEvent as focusEvt where focusEvt.kind == .CanSetFocus:
-            if prop.cursorSet:
+            if prop.cursorSet do
                 focusEvt.canChangeFocus = false
 
         case MouseEvent as mouseEvt where mouseEvt.kind == .MousePressed:
@@ -238,7 +238,7 @@ internal impl Properties
             prop.selItem = prop.hitTest(pt)
             wnd.invalidate()
 
-            if mouseEvt.button != .Left:
+            if mouseEvt.button != .Left do
                 break
 
             // On column bar
@@ -279,7 +279,7 @@ internal impl Properties
             prop.resizingColumn = false
 
         case MouseEvent as mouseEvt where mouseEvt.kind == .MouseLeave:
-            if prop.hotItem and prop.kind == .Grid:
+            if prop.hotItem and prop.kind == .Grid do
                 ToolTip.hide(prop.hotItem.line)
             prop.hotItem = null
 
@@ -301,7 +301,7 @@ internal impl Properties
                 if hit and hit.label and prop.kind == .Grid
                 {
                     pt = hit.label.surfaceToLocal(mouseEvt.surfacePos)
-                    if hit.label.getClientRect().contains(pt):
+                    if hit.label.getClientRect().contains(pt) do
                         ToolTip.show(hit.line, mouseEvt.surfacePos, hit.description)
                 }
 
@@ -363,11 +363,11 @@ internal impl Properties
         }
 
         // Background
-        if .kind == .Grid and item.flags.has(.Section):
+        if .kind == .Grid and item.flags.has(.Section) do
             colBkBk = colors.prop_SectionBk
-        elif .kind == .Grid and item.flags.has(.Category):
+        elif .kind == .Grid and item.flags.has(.Category) do
             colBkBk = colors.prop_CategBk
-        elif .kind == .Grid and item.level > 1:
+        elif .kind == .Grid and item.level > 1 do
             colBkBk = colors.prop_Bk1
         painter.fillRect(r, colBkBk)
 
@@ -411,7 +411,7 @@ internal impl Properties
 
     mtd onItemEvent(item: *PropertiesItem, wndItem: *Wnd, evt: IEvent)->bool
     {
-        if wndItem.childs.isEmpty():
+        if wndItem.childs.isEmpty() do
             return false
 
         switch evt
@@ -440,18 +440,18 @@ internal impl Properties
         {
             if scan.ntfyItf
             {
-                if !scan.ntfyItf.isItemVisible(me, item):
+                if !scan.ntfyItf.isItemVisible(me, item) do
                     result.visible = false
-                if !scan.ntfyItf.isItemEnabled(me, item):
+                if !scan.ntfyItf.isItemEnabled(me, item) do
                     result.enable = false
             }
 
-            if !result.visible and !result.enable:
+            if !result.visible and !result.enable do
                 return result
 
             scan = scan.parent
 
-            if scan and .kind == .Grid and scan.numChilds and !scan.flags.has(.Expanded):
+            if scan and .kind == .Grid and scan.numChilds and !scan.flags.has(.Expanded) do
                 result.visible = false
         }
 
@@ -469,22 +469,22 @@ internal impl Properties
         let pointed = item.type orelse item.typeValue.pointedType
         if pointed
         {
-            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags):
+            if Reflection.isEnum(pointed) and Reflection.hasAttribute(pointed, Swag.EnumFlags) do
                 refreshEnumFlags(item)
-            elif Reflection.isEnum(pointed):
+            elif Reflection.isEnum(pointed) do
                 refreshEnum(item)
-            elif Reflection.isBool(pointed):
+            elif Reflection.isBool(pointed) do
                 refreshBool(item)
-            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed):
+            elif Reflection.isInteger(pointed) or Reflection.isFloat(pointed) do
                 refreshNative(item)
-            elif Reflection.isString(pointed) and item.editBox:
+            elif Reflection.isString(pointed) and item.editBox do
                 item.editBox.setText(dref cast(*string) item.data)
-            elif pointed == Core.String and item.editBox:
+            elif pointed == Core.String and item.editBox do
                 item.editBox.setText(dref cast(*String) item.data)
             elif Reflection.isStruct(pointed)
             {
                 let typeStruct = cast(const *Swag.TypeInfoStruct) pointed
-                if typeStruct.fromGeneric == Array:
+                if typeStruct.fromGeneric == Array do
                     .refreshArray(item)
             }
         }
@@ -494,7 +494,7 @@ internal impl Properties
     {
         var line: *Wnd
 
-        if .kind == .Grid:
+        if .kind == .Grid do
             line = Wnd.create'Wnd(.edView, {0, 0, .position.width, height orelse .gridLineHeight})
         else
         {
@@ -513,7 +513,7 @@ internal impl Properties
                 .margin.y = me.gridLineMargin * 0.5
                 .margin.w = me.gridLineMargin * 0.5
             }
-            else:
+            else do
                 .margin.x = me.leftMargin
         }
 
@@ -526,7 +526,7 @@ internal impl Properties
             .parent    = parentItem
             .level     = parentItem ? parentItem.level + 1 : 0
             .section   = parentItem ? parentItem.section : 0
-            if me.kind == .Grid:
+            if me.kind == .Grid do
                 .extendFocus = me.gridLineMargin * 0.5
         }
 
@@ -538,9 +538,9 @@ internal impl Properties
             var dispName: String
 
             let attrName = Reflection.getAttributeValue(value, Properties.Name, "name")
-            if attrName != null:
+            if attrName != null do
                 dispName = cast(string) attrName
-            else:
+            else do
                 dispName = Utf8.beautifyName(value.name)
 
             if !dispName.isEmpty()
@@ -680,7 +680,7 @@ internal impl Properties
         var newParent = parentItem
 
         // If the struct has implemented the notify interface, store it
-        if parentItem:
+        if parentItem do
             parentItem.ntfyItf = @mkinterface(addr, typeStruct, IPropertyNotify)
 
         var categItem: *PropertiesItem
@@ -702,7 +702,7 @@ internal impl Properties
 
             let numItemsBefore = .items.count
             .addValue(value, addr + value.offset, newParent)
-            if categItem:
+            if categItem do
                 categItem.numChilds += cast(u32) (.items.count - numItemsBefore)
         }
     }
@@ -805,7 +805,7 @@ impl Properties
     // Refresh all displayed values.
     mtd refresh()
     {
-        foreach it in .items:
+        foreach it in .items do
             .refreshItem(it)
     }
 
@@ -819,19 +819,19 @@ impl Properties
         var scan = item
         while scan
         {
-            if scan.ntfyItf:
+            if scan.ntfyItf do
                 scan.ntfyItf.itemHasChanged(me, item)
             scan = scan.parent
         }
 
-        if Reflection.hasAttribute(item.typeValue, .RecalcLayout):
+        if Reflection.hasAttribute(item.typeValue, .RecalcLayout) do
             .updateStates()
     }
 
     // Show hidden content depending on the input 'filter'.
     mtd setStringFilter(filter: string)
     {
-        if .stringFilter == filter:
+        if .stringFilter == filter do
             return
         .stringFilter = filter
         .updateStates()
@@ -848,16 +848,16 @@ impl Properties
     // Returns true if the given item can be changed
     func canChangeItem(item: *PropertiesItem)->bool
     {
-        if !item.data or !item.type:
+        if !item.data or !item.type do
             return false
 
-        if item.type == string:
+        if item.type == string do
             return false
 
         var scan = item
         while scan
         {
-            if scan.line and scan.line.isDisabled():
+            if scan.line and scan.line.isDisabled() do
                 return false
             scan = scan.parent
         }
@@ -873,12 +873,12 @@ impl Properties
 
         if item.section == .currentSectionIndex or .currentSectionIndex >= .sections.count
         {
-            if .stringFilter.length == 0:
+            if .stringFilter.length == 0 do
                 mustShow = true
-            elif Utf8.indexOf(item.filter.toSlice(), .stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max:
+            elif Utf8.indexOf(item.filter.toSlice(), .stringFilter, comparisonType: Utf8.ComparisonType.Latin1NoCase) != Swag.U64.Max do
                 mustShow = true
 
-            if mustShow:
+            if mustShow do
                 (mustShow, mustEnable) = .getItemState(item)
         }
 
@@ -905,7 +905,7 @@ impl Properties
     // Update the show/hide state of all content
     mtd updateStates()
     {
-        foreach it in .items:
+        foreach it in .items do
             .updateItemState(it)
         .applyLayout()
         .scrollWnd.view.sendResizeEvent()
@@ -914,13 +914,13 @@ impl Properties
     // Set the grid mode column size
     mtd setColumnSize(size: s32)
     {
-        if .kind != .Grid:
+        if .kind != .Grid do
             return
 
         .gridColumnSize = Math.clamp(size, .gridMarginColumn, cast(s32) .position.width - .gridMarginColumn - .leftMargin - .rightMargin)
         foreach item in .items
         {
-            if !item.label:
+            if !item.label do
                 continue
             item.label.position.width = .gridColumnSize
         }

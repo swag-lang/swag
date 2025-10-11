@@ -66,7 +66,7 @@ impl IForm for FormLine
         .xb += xbu
         .yb += ybu
 
-        if evt.kind == .MouseReleased and evt.button == .Left:
+        if evt.kind == .MouseReleased and evt.button == .Left do
             return false
         return true
     }
@@ -119,7 +119,7 @@ impl IForm for FormLine
         {
             let newCoords  = Math.Rectangle{.xa, .ya, .xb, .yb}
             let newCoords2 = Math.Point{.xc, .yc}
-            if .cacheCoords == newCoords and .cacheCoords2 == newCoords2:
+            if .cacheCoords == newCoords and .cacheCoords2 == newCoords2 do
                 return .cacheBv
             .cacheCoords  = newCoords
             .cacheCoords2 = newCoords2
@@ -215,9 +215,9 @@ impl IForm for FormLine
         }
 
         let z = cxt.z
-        if .bezier:
+        if .bezier do
             painter.drawBezier(.xa * z, .ya * z, .xb * z, .yb * z, (.xa + .xc) * z, (.ya + .yc) * z, pen)
-        else:
+        else do
             painter.drawLine(.xa * z, .ya * z, .xb * z, .yb * z, pen)
     }
 

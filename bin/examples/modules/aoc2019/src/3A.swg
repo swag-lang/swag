@@ -86,7 +86,7 @@ func day3A0()
             {
                 x = x + dx
                 y = y + dy
-                if idx == 0:
+                if idx == 0 do
                     grid[x, y] = true
                 if idx == 1 and grid[x, y]
                 {

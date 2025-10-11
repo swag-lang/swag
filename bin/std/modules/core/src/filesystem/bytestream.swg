@@ -62,7 +62,7 @@ public impl ByteStream
     {
         Debug.assert(writeBuffer != null)
 
-        if seek + #sizeof(T) > writeBuffer.count:
+        if seek + #sizeof(T) > writeBuffer.count do
             writeBuffer.reserve(seek + #sizeof(T))
         var ptr = cast(*T) (writeBuffer.buffer + seek)
         dref ptr = val
@@ -76,10 +76,10 @@ public impl ByteStream
         Debug.assert(.writeBuffer != null)
 
         let count = @countof(slice)
-        if !count:
+        if !count do
             return
 
-        if .seek + count > .writeBuffer.count:
+        if .seek + count > .writeBuffer.count do
             .writeBuffer.reserve(.seek + count)
         let ptr = .writeBuffer.buffer + .seek
         Memory.copy(ptr, @dataof(slice), count)
@@ -90,7 +90,7 @@ public impl ByteStream
     // Reads a native value of type 'T' from the stream
     mtd(T) readNative()->T throw
     {
-        if .seek + #sizeof(T) > .length():
+        if .seek + #sizeof(T) > .length() do
             throw OverflowError{"byte stream overflow"}
         let val = dref cast(const *T) (.readData() + .seek)
         .seek += #sizeof(T)
@@ -100,7 +100,7 @@ public impl ByteStream
     // Reads 'count' bytes from the stream into 'dest'
     mtd readBytes(dest: *u8, count: u64) throw
     {
-        if .seek + count > .length():
+        if .seek + count > .length() do
             throw OverflowError{"byte stream overflow"}
         Memory.copy(dest, .readData() + .seek, count)
         .seek += count
@@ -117,7 +117,7 @@ public impl ByteStream
     // Peeks at a single byte without consuming it
     mtd peekU8()->u8
     {
-        if .seek >= .length():
+        if .seek >= .length() do
             return 0
         return .readBuffer[.seek]
     }

@@ -82,7 +82,7 @@ impl InPlaceEditWnd
             {"close", ThemeIcons24.WndClose, "Cancel and discard capture"}]
 
         let theme = .getTheme()
-        foreach action in actions:
+        foreach action in actions do
             .actionBar.addItem(theme.getIcon24(action.item1), action.item0).toolTip = action.item2
 
         .actionBar.sigPressed += mtd||(btn) { .handleActionBarPress(btn.id); }
@@ -103,7 +103,7 @@ impl InPlaceEditWnd
             {"text", 4, "Add text annotation"},
             {"marker", 9, "Highlight with marker"}]
 
-        foreach tool in editTools:
+        foreach tool in editTools do
             .editBar.addCheckableItem(Icon.from(&main.icons48, tool.item1), tool.item0).toolTip = tool.item2
 
         .editBar.sigCheckChanged += mtd||(btn) { .handleEditModeChange(btn.id); }
@@ -130,9 +130,9 @@ impl InPlaceEditWnd
             let picker = PropWnd.createColorPicker(cast(*IconButton) btn, color)
             picker.sigChanged += mtd|picker, btn|(pk)
             {
-                if .editMode == .Marker:
+                if .editMode == .Marker do
                     .editColorHilight = picker.getColor()
-                else:
+                else do
                     .editColor = picker.getColor()
                 .updateEditMode()
                 btn.invalidate()
@@ -162,7 +162,7 @@ impl InPlaceEditWnd
             exitWithResult(true)
         case "save":
             let fileName = .newMain.getSaveAsImageName()
-            if !fileName.isEmpty():
+            if !fileName.isEmpty() do
                 .capture.crop()
             .newMain.doSaveAsImage(fileName)
             exitWithResult(false)
@@ -220,10 +220,10 @@ impl InPlaceEditWnd
         grabRect.height *= scale
 
         capture.backImg.crop(grabRect)
-        if capture.backImgOriginal.isValid():
+        if capture.backImgOriginal.isValid() do
             capture.backImgOriginal = capture.backImg
 
-        foreach f in capture.forms:
+        foreach f in capture.forms do
             f.scaleBaseForm(scale)
     }
 
@@ -336,11 +336,11 @@ impl InPlaceEditWnd
         let width    = .actionBar.position.width
         let x        = Math.max(10, rect.right() - width)
 
-        if rect.bottom() < g_ScreenHeight - HEIGHT + MARGIN:
+        if rect.bottom() < g_ScreenHeight - HEIGHT + MARGIN do
             .actionBar.setPosition(x, rect.bottom() + MARGIN, width, HEIGHT)
-        elif rect.y > HEIGHT + MARGIN:
+        elif rect.y > HEIGHT + MARGIN do
             .actionBar.setPosition(x, rect.y - HEIGHT - MARGIN, width, HEIGHT)
-        else:
+        else do
             .actionBar.setPosition(x, rect.bottom() - HEIGHT - MARGIN, width, HEIGHT)
     }
 
@@ -350,11 +350,11 @@ impl InPlaceEditWnd
         const WIDTH  = 40.0
         let height   = .editBar.position.height
 
-        if rect.right() < g_ScreenWidth - WIDTH + MARGIN:
+        if rect.right() < g_ScreenWidth - WIDTH + MARGIN do
             .editBar.setPosition(rect.right() + MARGIN, rect.bottom() - height, WIDTH, height)
-        elif rect.x > WIDTH + MARGIN:
+        elif rect.x > WIDTH + MARGIN do
             .editBar.setPosition(rect.x - WIDTH - MARGIN, rect.bottom() - height, WIDTH, height)
-        else:
+        else do
             .editBar.setPosition(rect.right() - WIDTH - MARGIN, rect.bottom() - height - MARGIN, WIDTH, height)
     }
 }
@@ -364,7 +364,7 @@ impl IWnd for InPlaceEditWnd
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
         evt.accepted = false
-        if evt.kind == .KeyPressed and evt.key == .Escape:
+        if evt.kind == .KeyPressed and evt.key == .Escape do
             g_Exit = true
     }
 }

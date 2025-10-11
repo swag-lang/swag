@@ -3,9 +3,9 @@
     #[Swag.ConstExpr]
     func getType(str: bool)->typeinfo
     {
-        if str:
+        if str do
             return #typeof(string)
-        else:
+        else do
             return #typeof(s32)
     }
 

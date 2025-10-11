@@ -110,18 +110,18 @@ impl IWnd for Circular
             colorCircle = colors.circular_Circle
             colorStep   = colors.circular_Step
 
-            if .isPressed1:
+            if .isPressed1 do
                 colorMark1 = colors.circular_PressedMark
-            elif .isHot1:
+            elif .isHot1 do
                 colorMark1 = colors.circular_HotMark
-            else:
+            else do
                 colorMark1 = colors.circular_Mark
 
-            if .isPressed2:
+            if .isPressed2 do
                 colorMark2 = colors.circular_PressedMark
-            elif .isHot2:
+            elif .isHot2 do
                 colorMark2 = colors.circular_HotMark
-            else:
+            else do
                 colorMark2 = colors.circular_Mark
         }
 
@@ -130,14 +130,14 @@ impl IWnd for Circular
         bc.painter.setAntialiased(true)
 
         // Draw range arc if enabled
-        if .circularFlags.has(.Range):
+        if .circularFlags.has(.Range) do
             .drawRangeArc(bc.painter)
 
         // Draw circular track
         .drawCircularTrack(bc.painter, colorCircle)
 
         // Draw steps if enabled
-        if .stepForm != .None and .tickCount > 0:
+        if .stepForm != .None and .tickCount > 0 do
             .drawSteps(bc.painter, colorStep)
 
         // Draw value1 marker
@@ -177,9 +177,9 @@ impl IWnd for Circular
             let angle           = .getAngleFromPosition(pos)
             let normalizedValue = .angleToValue(angle)
 
-            if .isPressed1:
+            if .isPressed1 do
                 .setValue1(normalizedValue)
-            elif .isPressed2:
+            elif .isPressed2 do
                 .setValue2(normalizedValue)
             .invalidate()
 
@@ -251,7 +251,7 @@ internal impl Circular
         .centerY = clientRect.y + clientRect.height * 0.5
         .radius  = Math.min(clientRect.width, clientRect.height) * 0.5
         .radius -= 2
-        if .tickOuterRadiusFactor > 0:
+        if .tickOuterRadiusFactor > 0 do
             .radius -= .tickOuterRadiusFactor
     }
 
@@ -269,13 +269,13 @@ internal impl Circular
 
             // If we're closer to the start (going around the circle), snap to 0
             // Otherwise snap to the end
-            if distanceToStart < distanceToEnd:
+            if distanceToStart < distanceToEnd do
                 normalizedAngle = 0
-            else:
+            else do
                 normalizedAngle = totalAngle
         }
 
-        if normalizedAngle < 0:
+        if normalizedAngle < 0 do
             normalizedAngle = 0
 
         return normalizedAngle / totalAngle
@@ -300,9 +300,9 @@ internal impl Circular
         angle = angle - .startAngle
 
         // Normalize to range [0, 2π]
-        while angle < 0:
+        while angle < 0 do
             angle += Math.ConstF32.TwoPi
-        while angle > Math.ConstF32.TwoPi:
+        while angle > Math.ConstF32.TwoPi do
             angle -= Math.ConstF32.TwoPi
 
         return angle
@@ -402,7 +402,7 @@ internal impl Circular
     // Dots implementation
     mtd drawStepDots(painter: *Painter, color: Color)
     {
-        if .tickCount <= 1:
+        if .tickCount <= 1 do
             return
 
         let totalAngle  = .endAngle - .startAngle
@@ -423,7 +423,7 @@ internal impl Circular
     // Tick marks implementation
     mtd drawStepTicks(painter: *Painter, color: Color)
     {
-        if .tickCount <= 1:
+        if .tickCount <= 1 do
             return
 
         let totalAngle = .endAngle - .startAngle
@@ -447,7 +447,7 @@ internal impl Circular
     {
         let pen = Pen.createSolid(color, 2.0)
         painter.drawCircle(.centerX, .centerY, .radius - .circleGap * 0.5, pen)
-        if .circleGap != 0:
+        if .circleGap != 0 do
             painter.drawCircle(.centerX, .centerY, .radius + .circleGap * 0.5, pen)
     }
 
@@ -472,9 +472,9 @@ internal impl Circular
     mtd setValue1(f: f32)
     {
         var fc = .clamp(f)
-        if .circularFlags.has(.Range):
+        if .circularFlags.has(.Range) do
             fc = Math.min(fc, .value2)
-        if fc == .value1 and .hasValue1:
+        if fc == .value1 and .hasValue1 do
             return
         .hasValue1 = true
         .value1    = fc
@@ -485,9 +485,9 @@ internal impl Circular
     mtd setValue2(f: f32)
     {
         var fc = .clamp(f)
-        if .circularFlags.has(.Range):
+        if .circularFlags.has(.Range) do
             fc = Math.max(fc, .value1)
-        if fc == .value2 and .hasValue2:
+        if fc == .value2 and .hasValue2 do
             return
         .hasValue2 = true
         .value2    = fc
@@ -613,9 +613,9 @@ impl Circular
         Debug.assert(steps < (max - min))
         .min = min
         .max = max
-        if steps > 0:
+        if steps > 0 do
             .steps = steps / (max - min) // Convert to normalized step size
-        else:
+        else do
             .steps = 0
     }
 
@@ -654,13 +654,13 @@ impl Circular
         Debug.assert(parent != null)
         var pos = position
 
-        if pos.width == 0:
+        if pos.width == 0 do
             pos.width = parent.getThemeMetrics().circular_Size
-        if pos.height == 0:
+        if pos.height == 0 do
             pos.height = pos.width
 
         let res = Wnd.create'Circular(parent, null, pos, id)
-        if range:
+        if range do
             res.circularFlags.add(.Range)
         return res
     }

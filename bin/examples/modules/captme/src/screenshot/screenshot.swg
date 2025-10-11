@@ -37,7 +37,7 @@ func waitForCapture()->bool
 {
     g_Exit     = false
     g_GrabDone = false
-    while !g_Exit:
+    while !g_Exit do
         g_App.runFrame()
     return g_GrabDone
 }
@@ -78,7 +78,7 @@ func performScreenCapture(main: *MainWnd)->{ img: Image, sf: *Surface } throw
 // In place edition of capture image
 func performInPlaceEdit(img: Image, surface: *Surface, main: *MainWnd)->#null *Capture throw
 {
-    if !surface:
+    if !surface do
         return null
 
     let grabRect = getGrabRect()
@@ -133,7 +133,7 @@ func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
 
     case .ActiveWindow:
         let r = getBackgroundWndRect()
-        if r.isEmpty():
+        if r.isEmpty() do
             return false
         g_StartGrabX = r.x
         g_StartGrabY = r.y
@@ -149,7 +149,7 @@ func setGrabBounds(main: *MainWnd, captureMode: CaptureMode)->bool
         g_EndGrabY   = rect.y + rect.height
 
     case .LastArea:
-        if g_EndGrabX == g_StartGrabX or g_EndGrabY == g_StartGrabY:
+        if g_EndGrabX == g_StartGrabX or g_EndGrabY == g_StartGrabY do
             return false
 
     case .Area:
@@ -164,11 +164,11 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
     // Hide editor before capture
     let surface   = main.surface
     let wasHidden = surface.isHidden
-    if main.captureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized:
+    if main.captureOptions.hideEditorBefore and !surface.isHidden and !surface.isMinimized do
         surface.hide()
 
     // Force a delay
-    if main.captureOptions.delay:
+    if main.captureOptions.delay do
         Threading.Thread.sleep(main.captureOptions.delay * 1000)
 
     g_ScreenWidth  = Env.getMetric(.DesktopWidth)
@@ -176,7 +176,7 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
 
     // Capture
     var capture: *Capture
-    if !setGrabBounds(main, captureMode):
+    if !setGrabBounds(main, captureMode) do
         capture = captureRect(main)
     else
     {
@@ -194,20 +194,20 @@ func screenShot(main: *MainWnd, captureMode: CaptureMode) throw
             .backImg = img
         }
 
-        if main.captureOptions.sendToClipboard:
+        if main.captureOptions.sendToClipboard do
             Clipboard.addImage(capture.backImg)
-        if !main.captureOptions.sendToEditor:
+        if !main.captureOptions.sendToEditor do
             capture = null
     }
 
     if (capture or !wasHidden)
     {
-        if surface.isMinimized:
+        if surface.isMinimized do
             surface.showNormal()
-        else:
+        else do
             surface.show()
     }
 
-    if capture:
+    if capture do
         main.newCapture(capture.backImg, null, capture)
 }

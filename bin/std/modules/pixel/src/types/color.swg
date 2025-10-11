@@ -235,19 +235,19 @@ impl Color
         func hueToCol(m1, m2, hue: f32)->u8
         {
             var h = hue
-            if h < 0:
+            if h < 0 do
                 h += 1
-            if h > 1:
+            if h > 1 do
                 h -= 1
 
             var v: f32 = undefined
-            if 6 * h < 1:
+            if 6 * h < 1 do
                 v = m1 + (m2 - m1) * h * 6
-            elif 2 * h < 1:
+            elif 2 * h < 1 do
                 v = m2
-            elif 3 * h < 2:
+            elif 3 * h < 2 do
                 v = m1 + (m2 - m1) * ((2.0 / 3.0) - h) * 6
-            else:
+            else do
                 v = m1
 
             return cast(u8) (v * 255)
@@ -290,25 +290,25 @@ impl Color
             return result
         }
 
-        if result.l < 0.5:
+        if result.l < 0.5 do
             result.s = delta / (max + min)
-        else:
+        else do
             result.s = delta / (2 - max - min)
 
         let delr = (((max - rf) / 6) + (delta * 0.5)) / delta
         let delg = (((max - gf) / 6) + (delta * 0.5)) / delta
         let delb = (((max - bf) / 6) + (delta * 0.5)) / delta
 
-        if rf == max:
+        if rf == max do
             result.h = delb - delg
-        elif gf == max:
+        elif gf == max do
             result.h = (1.0 / 3.0) + delr - delb
-        else:
+        else do
             result.h = (2.0 / 3.0) + delg - delr
 
-        if result.h < 0:
+        if result.h < 0 do
             result.h += 1
-        if result.h > 1:
+        if result.h > 1 do
             result.h -= 1
 
         return result
@@ -503,7 +503,7 @@ impl Color
         let initialContrast = .getContrastRatio(target)
 
         // If already meets the contrast requirement, return unchanged
-        if initialContrast >= requiredContrast:
+        if initialContrast >= requiredContrast do
             return
 
         // Decide direction: should we go lighter or darker?
@@ -535,9 +535,9 @@ impl Color
     {
         let hsl  = .toHsl()
         var newH = hsl.h + (degrees / 360.0)
-        if newH > 1.0:
+        if newH > 1.0 do
             newH -= 1.0
-        elif newH < 0.0:
+        elif newH < 0.0 do
             newH += 1.0
         var result = Color.fromHsl(newH, hsl.s, hsl.l)
         result.a = .a // Preserve alpha
@@ -595,7 +595,7 @@ impl Color
     func generateDistinctColors(n: u32, startHue: f32 = 0.113, lum: f32 = 0.44, sat: f32 = 0.68)->Array'Color
     {
         var colors: retval
-        if n == 0:
+        if n == 0 do
             return colors
 
         const G    = 0.61803398875     // Golden ratio conjugate for low-discrepancy hue sampling
@@ -629,38 +629,38 @@ impl Core.StrConv.IPokeValue for Color
         var ovf: bool
 
         var one = Tokenize.eatSpaces(buf)
-        if @countof(one) == 0:
+        if @countof(one) == 0 do
             throw SyntaxError{}
 
         if buf[0] == '0' and buf[1] | 32 == 'x'
         {
             (.argb, eat, ovf) = try parseU32(one)
-            if ovf:
+            if ovf do
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }
         elif Latin1.isDigit(buf[0])
         {
             (.a, eat, ovf) = try parseU8(one)
-            if ovf:
+            if ovf do
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (.r, eat, ovf) = try parseU8(one)
-            if ovf:
+            if ovf do
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (.g, eat, ovf) = try parseU8(one)
-            if ovf:
+            if ovf do
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
 
             one = Tokenize.eatSpaces(one)
             (.b, eat, ovf) = try parseU8(one)
-            if ovf:
+            if ovf do
                 throw OverflowError{}
             one = Tokenize.eatCount(one, eat)
         }

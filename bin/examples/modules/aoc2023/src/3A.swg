@@ -56,7 +56,7 @@ func day3A()
                 while x < l.length
                 {
                     c = l[x]
-                    if c < '0' or c > '9':
+                    if c < '0' or c > '9' do
                         break
                     num *= 10
                     num += c - '0'

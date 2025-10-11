@@ -76,9 +76,9 @@ func updatePlayer()
     let kb = g_Wnd.getApp().getKeyboard()
 
     // Move
-    if kb.isKeyPressed(.Left):
+    if kb.isKeyPressed(.Left) do
         g_Player.x -= PLAYER_SPEED * g_Dt
-    elif kb.isKeyPressed(.Right):
+    elif kb.isKeyPressed(.Right) do
         g_Player.x += PLAYER_SPEED * g_Dt
     g_Player.x = Math.clamp(g_Player.x, 40, g_Rect.width - 40.0 - g_PlayerImg.width)
 
@@ -98,7 +98,7 @@ func updateLasers()
         if laser.player
         {
             laser.y -= LASER_SPEED_PLAYER * g_Dt
-            if laser.y - LASER_LENGTH < 0:
+            if laser.y - LASER_LENGTH < 0 do
                 laser.dead = true
         }
 
@@ -157,7 +157,7 @@ func checkCollisions()
             {
                 laser.dead = true
                 obs.dead   = true
-                if !laser.player:
+                if !laser.player do
                     g_NumAlienLasers -= 1
                 catch Audio.Voice.play(&g_SoundExplosion)
                 continue
@@ -213,9 +213,9 @@ func addAliens()
             let y = 140 + yc * DIST
 
             var type = &g_RedImg
-            if yc == 0:
+            if yc == 0 do
                 type = &g_YellowImg
-            elif yc >= 1 and yc <= 2:
+            elif yc >= 1 and yc <= 2 do
                 type = &g_GreenImg
             g_Aliens.add({x, y, type})
         }
@@ -239,7 +239,7 @@ func addObstacle(xi, yi: f32)
         var x = xi
         foreach c in line
         {
-            if c == 'x':
+            if c == 'x' do
                 g_Obstacles.add({x, y})
             x += OBS_SIZE
         }
@@ -269,14 +269,14 @@ func startGame()
 func display()
 {
     // Aliens
-    foreach alien in g_Aliens where !alien.dead:
+    foreach alien in g_Aliens where !alien.dead do
         g_Painter.drawTexture(alien.x, alien.y, dref alien.type)
 
     // Player
     g_Painter.drawTexture(g_Player.x, g_Player.y, g_PlayerImg)
 
     // Obstacles
-    foreach obs in g_Obstacles where !obs.dead:
+    foreach obs in g_Obstacles where !obs.dead do
         g_Painter.fillRect(obs.x, obs.y, OBS_SIZE, OBS_SIZE, Argb.White)
 
     // Lasers

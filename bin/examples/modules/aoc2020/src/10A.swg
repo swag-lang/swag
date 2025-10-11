@@ -94,9 +94,9 @@ func day10A()
     var cpt1, cpt3, prev = 0's64
     foreach v in vals
     {
-        if v - prev == 1:
+        if v - prev == 1 do
             cpt1 += 1
-        elif v - prev == 3:
+        elif v - prev == 3 do
             cpt3 += 1
         prev = v
     }

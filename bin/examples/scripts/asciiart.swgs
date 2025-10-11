@@ -27,17 +27,17 @@ func openImage(surface: *Surface)
     }
 
     let dlg = FileDlg.create(surface, opt)
-    if dlg.doModal() != Dialog.BtnOk:
+    if dlg.doModal() != Dialog.BtnOk do
         return
 
     g_Img = catch Image.load(dlg.getSelectedName())
-    if @err != null:
+    if @err != null do
         MessageDlg.error(surface, "Failed to load image")
 }
 
 func compute(render: *RenderOgl)
 {
-    if !g_Img.isValid():
+    if !g_Img.isValid() do
         return
 
     g_Img.resize(128, 128)
@@ -62,7 +62,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
         g_Font = wnd.getTheme().createDefaultFont(10)
 
     case PaintEvent as paintEvt:
-        if !g_Img.isValid():
+        if !g_Img.isValid() do
             break
 
         let painter = paintEvt.bc.painter
@@ -88,7 +88,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test"):
+    func test(app: *Application) => if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Ascii art", hook: &onEvent, init: &test)
 }

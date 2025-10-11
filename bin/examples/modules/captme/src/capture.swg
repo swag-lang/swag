@@ -101,7 +101,7 @@ impl Capture
 
     mtd computePreview()
     {
-        if !.editView:
+        if !.editView do
             return
         let zoom = Math.min(PreviewWidth / .width, PreviewHeight / .height)
         .preview = .toImage(zoom)
@@ -134,7 +134,7 @@ impl Capture
             {
                 let f = .forms[sel]
                 let b = cast(*BaseForm) @dataof(f)
-                if b.subKind == .PixSel:
+                if b.subKind == .PixSel do
                     continue
                 paintForm(&painter, {}, rect, f, zoom, snapMode: true)
             }
@@ -144,7 +144,7 @@ impl Capture
             foreach f in .forms
             {
                 let b = cast(*BaseForm) @dataof(f)
-                if b.subKind == .PixSel:
+                if b.subKind == .PixSel do
                     continue
                 paintForm(&painter, {}, rect, f, zoom, snapMode: true)
             }
@@ -189,7 +189,7 @@ impl Capture
 
     mtd save() throw
     {
-        if !.changed:
+        if !.changed do
             return
         .changed = false
 
@@ -216,7 +216,7 @@ impl Capture
         let capture = decoder.readAll'Capture(res.toSlice())
         capture.file = file
 
-        foreach itf in capture.forms:
+        foreach itf in capture.forms do
             itf.setup(capture)
 
         //capture.changed = true
@@ -270,7 +270,7 @@ impl Capture
     mtd pasteImageInside()
     {
         let img = Clipboard.getImage()
-        if !img.isValid():
+        if !img.isValid() do
             return
 
         let undo = .newUndo(.SetImageInside)
@@ -302,7 +302,7 @@ impl Capture
                 formImg.backColor.a   = 0
                 res.add(cast(IForm) formImg)
             }
-            else:
+            else do
                 return
         }
 
@@ -315,9 +315,9 @@ impl Capture
         {
             itf.setup(me)
             let bound = itf.boundRect()
-            if idx == 0:
+            if idx == 0 do
                 boundRect = bound
-            else:
+            else do
                 boundRect.setUnion(bound)
         }
 
@@ -346,7 +346,7 @@ impl Capture
 
         // Select added forms
         .selection.clear()
-        for i in undo.oldForms:
+        for i in undo.oldForms do
             .selection.add(countBefore + i)
 
         .selectionHasChanged()
@@ -379,17 +379,17 @@ impl Capture
 
             if !quickMode and !clip.isEmpty()
             {
-                if .paintPos.x >= clip.right():
+                if .paintPos.x >= clip.right() do
                     return
-                if .paintPos.y >= clip.bottom():
+                if .paintPos.y >= clip.bottom() do
                     return
-                if .paintPos.x < clip.x:
+                if .paintPos.x < clip.x do
                     clipOffset.x = clip.x - .paintPos.x
-                if .paintPos.y < clip.y:
+                if .paintPos.y < clip.y do
                     clipOffset.y = clip.y - .paintPos.y
-                if .paintPos.right() > clip.right():
+                if .paintPos.right() > clip.right() do
                     .paintPos.setRight(clip.right())
-                if .paintPos.bottom() > clip.bottom():
+                if .paintPos.bottom() > clip.bottom() do
                     .paintPos.setBottom(clip.bottom())
             }
 
@@ -510,11 +510,11 @@ impl Capture
         }
 
         var colForm: Color
-        if quickMode and base.subKind == .Highlight:
+        if quickMode and base.subKind == .Highlight do
             colForm = Argb.White
-        elif quickMode and base.subKind == .PixSel:
+        elif quickMode and base.subKind == .PixSel do
             colForm = Argb.White
-        else:
+        else do
             colForm = Color.fromArgb(cast(u8) Math.map(cast(f32) base.alpha, 0, 100, 0, 255), Argb.White)
 
         let srcRect = Math.Rectangle{0, 0, wt, ht}
@@ -525,7 +525,7 @@ impl Capture
         paintRect.width  = wt
         paintRect.height = ht
 
-        if base.paintShadow:
+        if base.paintShadow do
             paintRect.offset(base.shadowOffsetX - Margin, base.shadowOffsetY - Margin)
 
         // Rotation
@@ -578,7 +578,7 @@ impl Capture
             .setAntialiased(true)
         }
 
-        if snapMode:
+        if snapMode do
             base.paintPos = savePaintPos
     }
 
@@ -642,7 +642,7 @@ impl Capture
         foreach f in .forms
         {
             var pp = f.boundRect() * zoom
-            if !pp.intersectWith(clip):
+            if !pp.intersectWith(clip) do
                 continue
 
             if f.mustClipToBound()
@@ -662,9 +662,9 @@ impl Capture
         foreach f, i in .forms
         {
             var flags = FormFlags.Zero
-            if i == .hotForm:
+            if i == .hotForm do
                 flags.add(.Hot)
-            if .selection.contains(i):
+            if .selection.contains(i) do
                 flags.add(.Selected)
 
             painter.pushTransform()
@@ -690,9 +690,9 @@ impl Capture
         }
 
         // Snap
-        if .snapX != -1:
+        if .snapX != -1 do
             painter.drawLine(rect.x + .snapX * zoom, rect.y, rect.x + .snapX * zoom, rect.bottom(), Argb.Purple, 2)
-        if .snapY != -1:
+        if .snapY != -1 do
             painter.drawLine(rect.x, rect.y + .snapY * zoom, rect.right(), rect.y + .snapY * zoom, Argb.Purple, 2)
     }
 
@@ -707,9 +707,9 @@ impl Capture
         var form: IForm
         var type: typeinfo
 
-        if editForm:
+        if editForm do
             form = editForm
-        else:
+        else do
             form = .forms[.selection[0]]
 
         type = @kindof(form)
@@ -750,7 +750,7 @@ impl Capture
 
     mtd getSelectionBoundRect(editForm: IForm = null)->Math.Rectangle
     {
-        if editForm:
+        if editForm do
             return editForm.boundRect()
 
         var bound = Math.Rectangle{Swag.F32.Max, Swag.F32.Max, 0, 0}
@@ -771,13 +771,13 @@ impl Capture
     {
         const SnapToler = 10
 
-        if x:
+        if x do
             .snapX = -1
-        if y:
+        if y do
             .snapY = -1
 
         let ctrlPressed = Input.Keyboard.isKeyPressed(.Control) or Input.Keyboard.isKeyPressed(.RControl)
-        if !.editView.main.snap and !ctrlPressed:
+        if !.editView.main.snap and !ctrlPressed do
             return
 
         var nx = x ? dref x : 0
@@ -804,9 +804,9 @@ impl Capture
             {
             case FormLine, FormArrow:
                 let form2 = cast(*FormLine) form
-                if !autoSel or (idxPt != 0 and Math.abs(form2.ya - form2.yb) > 25):
+                if !autoSel or (idxPt != 0 and Math.abs(form2.ya - form2.yb) > 25) do
                     arrX.add(cast(s32) form2.xa)
-                if !autoSel or (idxPt != 0 and Math.abs(form2.xa - form2.xb) > 25):
+                if !autoSel or (idxPt != 0 and Math.abs(form2.xa - form2.xb) > 25) do
                     arrY.add(cast(s32) form2.ya)
 
                 if !autoSel or idxPt != 1
@@ -827,7 +827,7 @@ impl Capture
                 }
 
             case FormDraw:
-                if autoSel:
+                if autoSel do
                     continue
                 let boundR = f.boundRect()
                 arrX.add(cast(s32) boundR.x)
@@ -836,7 +836,7 @@ impl Capture
                 arrY.add(cast(s32) boundR.bottom())
 
             default:
-                if autoSel:
+                if autoSel do
                     continue
                 arrX.add(cast(s32) form.x)
                 arrX.add(cast(s32) (form.x + form.w))
@@ -892,9 +892,9 @@ impl Capture
             ny = cast(s32) (bestCoordY - p.y)
         }
 
-        if x:
+        if x do
             dref x = nx
-        if y:
+        if y do
             dref y = ny
     }
 
@@ -986,7 +986,7 @@ impl Capture
             {
                 view.invalidate()
                 evt.accepted = true
-                if evt.kind != .MouseLeave:
+                if evt.kind != .MouseLeave do
                     return true
             }
 
@@ -1000,7 +1000,7 @@ impl Capture
                     if selForm.mouse(view, localPos, evt)
                     {
                         evt.accepted = true
-                        if evt.kind != .MouseLeave:
+                        if evt.kind != .MouseLeave do
                             return true
                     }
                 }
@@ -1023,7 +1023,7 @@ impl Capture
                 if ht != Swag.U64.Max
                 {
                     let p = cast(*BaseForm) @dataof(.forms[ht])
-                    if view.main.freezeSel and p.freeze:
+                    if view.main.freezeSel and p.freeze do
                         ht = Swag.U64.Max
                 }
 
@@ -1035,7 +1035,7 @@ impl Capture
             }
         }
 
-        if .hotForm != Swag.U64.Max:
+        if .hotForm != Swag.U64.Max do
             app.setFrameCursor(Cursor.from(.SizeAll))
 
         let shiftPressed = Input.Keyboard.isKeyPressed(.Shift) or Input.Keyboard.isKeyPressed(.RShift)
@@ -1072,7 +1072,7 @@ impl Capture
 
                         let res = .hitTests(localPos, false)
                         .lastSelectHit += 1
-                        if .lastSelectHit >= res.count:
+                        if .lastSelectHit >= res.count do
                             .lastSelectHit = 0
                         .hotForm = res[.lastSelectHit]
                         here     = .selection.contains(.hotForm)
@@ -1142,7 +1142,7 @@ impl Capture
         case Selecting:
             var r: Math.Rectangle
 
-            if !ctrlPressed:
+            if !ctrlPressed do
                 .selection.clear()
             .movingEnd = localPos
 
@@ -1151,7 +1151,7 @@ impl Capture
             foreach f, idx in .forms
             {
                 let pp = f.boundRect() * view.zoom
-                if pp.intersectWith(r) and !.selection.contains(idx):
+                if pp.intersectWith(r) and !.selection.contains(idx) do
                     .selection.add(idx)
             }
 
@@ -1166,11 +1166,11 @@ impl Capture
 
             if .firstMouseMove
             {
-                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3:
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 do
                     return true
                 .firstMouseMove = false
             }
-            else:
+            else do
                 .undo()
 
             let u = .newUndo(.OffsetSelection)
@@ -1192,14 +1192,14 @@ impl Capture
                 .snapX    = saveSnapX
                 u.newPosX = nx
             }
-            else:
+            else do
                 u.newPosX = nx1
             if Math.abs(ny - newPosY) > Math.abs(ny1 - newPosY)
             {
                 .snapY    = saveSnapY
                 u.newPosY = ny
             }
-            else:
+            else do
                 u.newPosY = ny1
 
             .pushUndo(u)
@@ -1212,16 +1212,16 @@ impl Capture
 
             if .firstMouseMove
             {
-                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and .editView.main.editMode != .Step:
+                if Math.abs(newPosX) <= 3 and Math.abs(newPosY) <= 3 and .editView.main.editMode != .Step do
                     return true
                 .firstMouseMove = false
 
                 let mode = .editView.main.getEditMode()
                 let itf  = .editView.main.newFormFromModel(mode, clear: true)
-                if itf:
+                if itf do
                     itf.setup(me)
                 let base = cast(*BaseForm) @dataof(itf)
-                if base and .editView.main.editMode == .PixSel:
+                if base and .editView.main.editMode == .PixSel do
                     base.subKind = .PixSel
                 let undo = .newUndo(.CreateForm)
                 undo.oldForms.add(itf)
@@ -1252,10 +1252,10 @@ impl Capture
 
     mtd hitTest(localPos: Math.Point)->u64
     {
-        if g_App.keyb.isKeyPressed(Input.Key.O):
+        if g_App.keyb.isKeyPressed(Input.Key.O) do
             return Swag.U64.Max
         let res = .hitTests(localPos, true)
-        if res.isEmpty():
+        if res.isEmpty() do
             return Swag.U64.Max
         return res[0]
     }
@@ -1263,15 +1263,15 @@ impl Capture
     mtd hitTests(localPos: Math.Point, retFirst: bool)->Array'u64
     {
         var result: retval
-        if !.forms.count:
+        if !.forms.count do
             return result
         for #reverse i in .forms
         {
             let f = .forms[i]
-            if !f.hitTest(localPos, .editView.zoom):
+            if !f.hitTest(localPos, .editView.zoom) do
                 continue
             result.add(i)
-            if retFirst:
+            if retFirst do
                 break
         }
 
@@ -1284,14 +1284,14 @@ impl Capture
 
     mtd getSelectedBaseForm()->#null *BaseForm
     {
-        if .selection.count == 0:
+        if .selection.count == 0 do
             return null
         return cast(*BaseForm) @dataof(.forms[.selection.back()])
     }
 
     mtd getSelectedFormType()->#null typeinfo
     {
-        if .selection.count == 0:
+        if .selection.count == 0 do
             return null
         let i = .forms[.selection.back()]
         return @kindof(i)
@@ -1299,11 +1299,11 @@ impl Capture
 
     mtd updateEditModeFromSelection()
     {
-        if !.selection.count:
+        if !.selection.count do
             return
 
         let main = .editView.main
-        if main.editMode == .Selection:
+        if main.editMode == .Selection do
             return
 
         let f = .forms[.selection.back()]
@@ -1312,7 +1312,7 @@ impl Capture
 
     mtd updateModelValuesFromSelection()
     {
-        if !.selection.count:
+        if !.selection.count do
             return
         let f = .forms[.selection.back()]
         .editView.main.updateModelValues(f)
@@ -1320,7 +1320,7 @@ impl Capture
 
     mtd updateModelFromSelection()
     {
-        if !.selection.count:
+        if !.selection.count do
             return
         let f = .forms[.selection.back()]
         .editView.main.updateModel(f)
@@ -1342,7 +1342,7 @@ impl Capture
     {
         let ptr = .undos.newPtr()
         ptr.kind = kind
-        if serial:
+        if serial do
             ptr.serial = serial
         else
         {
@@ -1365,7 +1365,7 @@ impl Capture
 
     mtd undo()
     {
-        if !.canUndo():
+        if !.canUndo() do
             return
 
         let serial = .undos[.nextUndo - 1].serial
@@ -1380,7 +1380,7 @@ impl Capture
 
     mtd redo()
     {
-        if !.canRedo():
+        if !.canRedo() do
             return
 
         let serial = .undos[.nextUndo].serial

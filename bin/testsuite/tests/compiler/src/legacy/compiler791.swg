@@ -6,9 +6,9 @@ struct Point {}
 func(T) toto()
 {
     let t = #typeof(T)
-    if (t == #typeof(s32)):
+    if (t == #typeof(s32)) do
         cpt |= 1
-    if (t == #typeof(f32)):
+    if (t == #typeof(f32)) do
         cpt |= 2
     //if(t == #typeof(Point))
     //	cpt |= 4

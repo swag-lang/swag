@@ -27,17 +27,17 @@ func day2B()
     {
         foreach b, j in lines
         {
-            if i == j:
+            if i == j do
                 continue
             var diff    = 0
             var result: String
             for k in b
             {
-                if b[k] != a[k]:
+                if b[k] != a[k] do
                     diff += 1
-                else:
+                else do
                     result += b[k]
-                if diff > 1:
+                if diff > 1 do
                     break
             }
 

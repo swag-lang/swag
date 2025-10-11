@@ -12,7 +12,7 @@ impl Properties
     mtd validateBool(item: *PropertiesItem)
     {
         var data = cast(*bool) item.data
-        if item.checkBox:
+        if item.checkBox do
             dref data = item.checkBox.checked == .Checked ? true : false
         .hasChanged(item)
     }

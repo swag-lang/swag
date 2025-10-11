@@ -66,9 +66,9 @@ func day4A()
         let v1a   = assume StrConv.toS32(pair1[0])
         let v1b   = assume StrConv.toS32(pair1[1])*/
 
-        if v0a >= v1a and v0b <= v1b:
+        if v0a >= v1a and v0b <= v1b do
             total += 1
-        elif v1a >= v0a and v1b <= v0b:
+        elif v1a >= v0a and v1b <= v0b do
             total += 1
     }
 

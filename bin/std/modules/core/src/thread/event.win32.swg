@@ -40,7 +40,7 @@ impl Event
     // Destroy an existing event
     mtd release()
     {
-        if !.handle:
+        if !.handle do
             return
         CloseHandle(.handle)
         .handle = null

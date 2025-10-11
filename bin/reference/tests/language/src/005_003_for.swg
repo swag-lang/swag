@@ -8,14 +8,12 @@ The `for` loop also offers a versatile way to iterate over a range of values. Th
     var cpt = 0
 
     // A standard 'for' loop with initialization, condition, and increment.
-    for var i = 0; i < 10; i += 1:
+    for var i = 0; i < 10; i += 1 do
         cpt += 1
     @assert(cpt == 10)
 
     // Alternative syntax: Semicolons ';' can be replaced by newlines for cleaner, more readable code.
-    for var i = 0
-        i < 10
-        i += 1
+    for var i = 0; i < 10; i += 1
     {
         cpt += 1
     }
@@ -32,14 +30,14 @@ Similar to other looping constructs like `for`, `foreach`, and `while`, the `for
     var cpt = 0'u64
 
     // Using `@index` to accumulate the for indices.
-    for var i: u32 = 10; i < 15; i += 1:
+    for var i: u32 = 10; i < 15; i += 1 do
         cpt += @index
-    @assert(cpt == 0+1+2+3+4)
+    @assert(cpt == 0 + 1 + 2 + 3 + 4)
 
     var cpt1 = 0'u64
-    for var i = 10; i < 15; i += 1:
+    for var i = 10; i < 15; i += 1 do
         cpt1 += @index
-    @assert(cpt1 == 0+1+2+3+4)
+    @assert(cpt1 == 0 + 1 + 2 + 3 + 4)
 }
 
 /**
@@ -53,22 +51,22 @@ In Swag, `break` and `continue` work within `for` loops just as they do in other
 
     for var i = 0; i < 10; i += 1
     {
-        if i == 5:
-            break  // Exit the for when 'i' equals 5
+        if i == 5 do
+            break // Exit the for when 'i' equals 5
         sum += i
     }
 
-    @assert(sum == 0+1+2+3+4)  // Sum is 10
+    @assert(sum == 0 + 1 + 2 + 3 + 4) // Sum is 10
 
     sum = 0
     for var i = 0; i < 10; i += 1
     {
-        if i % 2 == 0:
-            continue  // Skip even numbers
+        if i % 2 == 0 do
+            continue // Skip even numbers
         sum += i
     }
 
-    @assert(sum == 1+3+5+7+9)  // Sum is 25
+    @assert(sum == 1 + 3 + 5 + 7 + 9) // Sum is 25
 }
 
 /**
@@ -86,11 +84,11 @@ Swag supports nested `for` loops, which are useful for more complex iteration pa
         // Inner for
         for var j = 0; j < 5; j += 1
         {
-            result += @index  // Adds the index of the inner for
+            result += @index // Adds the index of the inner for
         }
     }
 
-    @assert(result == 10 * 5)  // Each inner for runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5
+    @assert(result == 10 * 5) // Each inner for runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5
 }
 
 /**
@@ -101,12 +99,12 @@ The `for` for can also be used to iterate over elements of an array or other ite
 #test
 {
     var array = [1, 2, 3, 4, 5]
-    var sum = 0
+    var sum   = 0
 
     for var i = 0; i < @countof(array); i += 1
     {
         sum += array[i]
     }
 
-    @assert(sum == 1+2+3+4+5)  // Sum is 15
+    @assert(sum == 1 + 2 + 3 + 4 + 5) // Sum is 15
 }

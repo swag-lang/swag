@@ -188,9 +188,9 @@ impl IWnd for Tab
         v.aniImg.apply(me, colorImg)
         v.aniBorder.apply(me, colorBorder)
 
-        if subRect:
+        if subRect do
             theme.drawSubRect(painter, labelPos, subRect, v.aniImg.cur())
-        if subRectBorder:
+        if subRectBorder do
             theme.drawSubRect(painter, labelPos, subRectBorder, v.aniBorder.cur())
 
         var format: RichStringFormat
@@ -250,10 +250,10 @@ impl IWnd for Tab
             clientRect = .getBarRectItems()
             for idx in .firstVisibleIdx until cast(u32) .views.count
             {
-                if idx == .selectedIdx:
+                if idx == .selectedIdx do
                     continue
                 let v = .views[idx]
-                if v.pos + v.width > clientRect.right():
+                if v.pos + v.width > clientRect.right() do
                     break
                 .paintItem(painter, v, cast(u32) idx)
             }
@@ -265,7 +265,7 @@ impl IWnd for Tab
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if .views.isEmpty():
+        if .views.isEmpty() do
             return
 
         .computeTabLayout()
@@ -322,12 +322,12 @@ internal impl Tab
     mtd showPopup(x, y: f32)
     {
         .popup = PopupListCtrl.create(me)
-        foreach item in .views:
+        foreach item in .views do
             .popup.addItem(item.name.raw, item.id, item.icon, item.userData0)
 
         .popup.sigSelected = mtd||(list, idx)
         {
-            if idx != Swag.U32.Max:
+            if idx != Swag.U32.Max do
                 .select(idx)
             .hidePopup()
         }
@@ -344,7 +344,7 @@ internal impl Tab
     mtd getBarRectItems()->Math.Rectangle
     {
         var rect = .getClientRectPadding()
-        if .buttonPopup:
+        if .buttonPopup do
             rect.setRight(.buttonPopup.position.x - 4)
         return rect
     }
@@ -352,16 +352,16 @@ internal impl Tab
     mtd hitTest(surfacePos: Math.Point)->u32
     {
         let pos = .surfaceToLocal(surfacePos)
-        if pos.y >= .barHeight:
+        if pos.y >= .barHeight do
             return Swag.U32.Max
 
         let rect = .getBarRectItems()
         for idx in .firstVisibleIdx until cast(u32) .views.count
         {
             let v = .views[idx]
-            if v.pos + v.width > rect.right():
+            if v.pos + v.width > rect.right() do
                 break
-            if pos.x >= v.pos and pos.x < v.pos + v.width:
+            if pos.x >= v.pos and pos.x < v.pos + v.width do
                 return cast() idx
         }
 
@@ -401,7 +401,7 @@ internal impl Tab
                 v.width = mes.width
 
                 // Icon
-                if v.item.icon.isValid():
+                if v.item.icon.isValid() do
                     v.width += v.item.icon.sizeX + .getThemeMetrics().iconText_Margin
 
                 // Margin
@@ -461,7 +461,7 @@ internal impl Tab
             while .firstVisibleIdx
             {
                 x -= .views[.firstVisibleIdx - 1].width
-                if x < rect.x:
+                if x < rect.x do
                     break
                 .firstVisibleIdx -= 1
             }
@@ -525,9 +525,9 @@ impl Tab
     {
         if view
         {
-            if .views.isEmpty():
+            if .views.isEmpty() do
                 view.wndFlags &= ~.Hidden
-            else:
+            else do
                 view.wndFlags |= .Hidden
             view.setParent(me)
         }
@@ -551,13 +551,13 @@ impl Tab
     // Select one tab at the given index
     mtd select(idx: u32)
     {
-        if .selectedIdx == idx or .selectedIdx >= .views.count:
+        if .selectedIdx == idx or .selectedIdx >= .views.count do
             return
 
-        if .views[.selectedIdx].view:
+        if .views[.selectedIdx].view do
             .views[.selectedIdx].view.wndFlags |= .Hidden
         .selectedIdx = idx
-        if .views[.selectedIdx].view:
+        if .views[.selectedIdx].view do
             .views[.selectedIdx].view.wndFlags &= ~.Hidden
 
         .sigSelChanged.call(me)

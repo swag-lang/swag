@@ -8,7 +8,7 @@ impl A
     #[Swag.Macro]
     mtd titi()
     {
-        if !.x:
+        if !.x do
             return
     }
 }

@@ -7,9 +7,9 @@ impl Painter
     #[Swag.Overload]
     mtd drawArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: Math.Angle, color: Color, penSize: f32 = 1)
     {
-        if radius == 0 or color.a == 0:
+        if radius == 0 or color.a == 0 do
             return
-        if Math.isZeroEpsilon(endAngle.rad - startAngle.rad):
+        if Math.isZeroEpsilon(endAngle.rad - startAngle.rad) do
             return
         Debug.assert(endAngle.rad > startAngle.rad)
 
@@ -21,9 +21,9 @@ impl Painter
     #[Swag.Overload]
     mtd drawArc(centerX, centerY: f32, radius: f32, startAngle, endAngle: Math.Angle, pen: Pen)
     {
-        if radius == 0 or pen.brush.color.a == 0:
+        if radius == 0 or pen.brush.color.a == 0 do
             return
-        if Math.isZeroEpsilon(endAngle.rad - startAngle.rad):
+        if Math.isZeroEpsilon(endAngle.rad - startAngle.rad) do
             return
         .sharedLinePath.setArc(centerX, centerY, radius, startAngle, endAngle)
         .drawPath(&.sharedLinePath, pen)
@@ -33,7 +33,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawCircle(centerX, centerY: f32, radius: f32, color: Color, penSize: f32 = 1)
     {
-        if radius == 0 or color.a == 0:
+        if radius == 0 or color.a == 0 do
             return
 
         let pen = Pen.createSolid(color, penSize)
@@ -50,7 +50,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillCircle(centerX, centerY: f32, radius: f32, brush: Brush)
     {
-        if radius == 0 or brush.color.a == 0:
+        if radius == 0 or brush.color.a == 0 do
             return
         .sharedLinePath.setEllipse(centerX, centerY, radius, radius)
         .fillPath(&.sharedLinePath, brush)
@@ -59,7 +59,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillCircle(centerX, centerY: f32, radius: f32, color: Color)
     {
-        if radius == 0 or color.a == 0:
+        if radius == 0 or color.a == 0 do
             return
 
         let brush = Brush.createSolid(color)
@@ -71,7 +71,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawEllipse(centerX, centerY: f32, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
-        if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0:
+        if radiusX == 0 or radiusY == 0 or color.a == 0 or penSize == 0 do
             return
 
         let pen = Pen.createSolid(color, penSize)
@@ -81,7 +81,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawEllipse(centerX, centerY: f32, radiusX, radiusY: f32, pen: Pen)
     {
-        if radiusX == 0 or radiusY == 0 or pen.brush.color.a == 0:
+        if radiusX == 0 or radiusY == 0 or pen.brush.color.a == 0 do
             return
 
         var rX = radiusX
@@ -117,7 +117,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillEllipse(centerX, centerY: f32, radiusX, radiusY: f32, brush: Brush)
     {
-        if radiusX == 0 or radiusY == 0 or brush.color.a == 0:
+        if radiusX == 0 or radiusY == 0 or brush.color.a == 0 do
             return
         .sharedLinePath.setEllipseRaw(centerX, centerY, radiusX, radiusY)
         .fillPath(&.sharedLinePath, brush)
@@ -126,7 +126,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillEllipse(centerX, centerY: f32, radiusX, radiusY: f32, color: Color)
     {
-        if radiusX == 0 or radiusY == 0 or color.a == 0:
+        if radiusX == 0 or radiusY == 0 or color.a == 0 do
             return
 
         let brush = Brush.createSolid(color)

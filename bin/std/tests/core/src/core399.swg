@@ -47,7 +47,7 @@ func process(intro: &Node)->&Node
     intro.print()
 
     var totalDepth = 0
-    for i in 200_000:
+    for i in 200_000 do
         totalDepth += intro.calcTotalDepth()
 
     //Console.printf("Total depth: %", totalDepth)

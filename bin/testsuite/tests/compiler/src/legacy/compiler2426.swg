@@ -15,6 +15,6 @@ func print(f: string)
 {
     print("tt()")
     print("tt1()")
-    if @bytecode:
+    if @bytecode do
         @assert(G == 2)
 }

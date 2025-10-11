@@ -40,7 +40,7 @@ impl IForm for FormDraw
 
     mtd impl edit(evt: *MouseEvent, movingStart: Math.Point, localPos: Math.Point, zoom: f32)->bool
     {
-        if evt.kind == .MouseReleased and evt.button == .Left:
+        if evt.kind == .MouseReleased and evt.button == .Left do
             return false
 
         let x0 = localPos.x / zoom
@@ -57,7 +57,7 @@ impl IForm for FormDraw
         {
             let xs = Math.abs(x0 - .points.back().x)
             let ys = Math.abs(y0 - .points.back().y)
-            if xs > 5 or ys > 5:
+            if xs > 5 or ys > 5 do
                 .points.add({x0, y0})
         }
         else
@@ -122,7 +122,7 @@ impl IForm for FormDraw
 
     mtd impl boundRect()->Math.Rectangle
     {
-        if !.points.count:
+        if !.points.count do
             .setDefaultShape()
 
         var result: retval
@@ -188,7 +188,7 @@ impl IForm for FormDraw
         let z   = cxt.z
         var pl: LinePath
         pl.start(.points[0].x * z, .points[0].y * z)
-        for i in 1 until .points.count:
+        for i in 1 until .points.count do
             pl.lineTo(.points[i].x * z, .points[i].y * z)
 
         if .subKind == .PixSel

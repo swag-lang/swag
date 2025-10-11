@@ -11,8 +11,8 @@ To reinitialize a single variable to its default value, simply pass the variable
 #test
 {
     var x = 666
-    @init(x)           // Reinitialize 'x' to its default value
-    @assert(x == 0)    // The default value for a simple variable like 'x' is 0
+    @init(x) // Reinitialize 'x' to its default value
+    @assert(x == 0) // The default value for a simple variable like 'x' is 0
 }
 
 /**
@@ -23,13 +23,13 @@ You can also specify a pointer to a memory block and the count of elements to re
 #test
 {
     var x = [1, 2]
-    @init(&x, 2)       // Reinitialize the first 2 elements of the array 'x'
+    @init(&x, 2) // Reinitialize the first 2 elements of the array 'x'
     @assert(x[0] == 0) // Both elements are reset to 0
     @assert(x[1] == 0)
 
     x[0] = 1
     x[1] = 2
-    @init(x)           // You can also reinitialize the entire variable directly
+    @init(x) // You can also reinitialize the entire variable directly
     @assert(x[0] == 0)
     @assert(x[1] == 0)
 }
@@ -42,7 +42,7 @@ The `@init` intrinsic can also initialize a variable with a specific value inste
 #test
 {
     var x = 666'f32
-    @init(x)(3.14)      // Reinitialize 'x' to 3.14 instead of 0
+    @init(x)(3.14) // Reinitialize 'x' to 3.14 instead of 0
     @assert(x == 3.14)
 }
 
@@ -54,7 +54,7 @@ The `@init` intrinsic can be applied to arrays to reinitialize all elements with
 #test
 {
     var x = [1, 2]
-    @init(&x, 2)(555)  // Reinitialize both elements of the array to 555
+    @init(&x, 2)(555) // Reinitialize both elements of the array to 555
     @assert(x[0] == 555)
     @assert(x[1] == 555)
 }
@@ -74,7 +74,7 @@ When applied to structs, `@init` restores the struct to its default state as def
     @assert(rgb.g == 20)
     @assert(rgb.b == 30)
 
-    @init(rgb)          // Reset 'rgb' to its default values
+    @init(rgb) // Reset 'rgb' to its default values
     @assert(rgb.r == 1)
     @assert(rgb.g == 2)
     @assert(rgb.b == 3)
@@ -116,7 +116,7 @@ The `@init` intrinsic can be used with arrays of structs, allowing you to reinit
     @assert(rgb[3].g == 6)
     @assert(rgb[3].b == 7)
 
-    @init(rgb)(50, 60, 70)  // Reinitialize the array with new values
+    @init(rgb)(50, 60, 70) // Reinitialize the array with new values
     @assert(rgb[3].r == 50)
     @assert(rgb[3].g == 60)
     @assert(rgb[3].b == 70)

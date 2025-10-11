@@ -3,7 +3,7 @@
 // Throw a [[Swag.SystemError]]
 func throwWinError(errorMessageID: u32) throw
 {
-    if errorMessageID == 0:
+    if errorMessageID == 0 do
         return
 
     var err: Swag.SystemError
@@ -24,7 +24,7 @@ func throwWinError(errorMessageID: u32) throw
             // Trim right, remove trailing dots, remove trailing non printable characters
             for var idx = len - 1; idx >= 0; idx -= 1
             {
-                if errorMsg[idx] > 32 and errorMsg[idx] != '.':
+                if errorMsg[idx] > 32 and errorMsg[idx] != '.' do
                     break
                 len -= 1
             }

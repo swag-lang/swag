@@ -24,7 +24,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             let pos = wnd.surfaceToLocal(mouseEvt.surfacePos)
             let x   = cast(s32) (pos.x / cellSize)
             let y   = cast(s32) (pos.y / cellSize)
-            if x < 1 or x >= GridSize - 1 or y < 1 or y >= GridSize - 1:
+            if x < 1 or x >= GridSize - 1 or y < 1 or y >= GridSize - 1 do
                 break
             g_Grid[g_CurGen, x, y] = leftPressed ? true : false
         }
@@ -58,18 +58,18 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
                     {
                         for y in -1 to 1
                         {
-                            if x == 0 and y == 0:
+                            if x == 0 and y == 0 do
                                 continue
                             cpt += g_Grid[g_CurGen, i + x, j + y] ? 1 : 0
                         }
                     }
 
                     // Game of life rules
-                    if !g_Grid[g_CurGen, i, j] and cpt == 3:
+                    if !g_Grid[g_CurGen, i, j] and cpt == 3 do
                         g_Grid[nextGen, i, j] = true
-                    elif g_Grid[g_CurGen, i, j] and (cpt == 2 or cpt == 3):
+                    elif g_Grid[g_CurGen, i, j] and (cpt == 2 or cpt == 3) do
                         g_Grid[nextGen, i, j] = true
-                    else:
+                    else do
                         g_Grid[nextGen, i, j] = false
                 }
             }
@@ -110,7 +110,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test"):
+    func test(app: *Application) => if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 1024, title: "Game of Life", hook: &onEvent, init: &test)
 }

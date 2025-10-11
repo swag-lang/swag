@@ -27,9 +27,9 @@ impl Rectangle
     // Multiplies all components (position and dimensions) by the given 'value'.
     mtd(op: string) const opBinary(value: f32)->Rectangle
     {
-        #if op == "*":
+        #if op == "*" do
             return {.x * value, .y * value, .width * value, .height * value}
-        #else:
+        #else do
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
@@ -326,7 +326,7 @@ impl Rectangle
         let x2 = min(a.x + a.width, b.x + b.width)
         let y1 = max(a.y, b.y)
         let y2 = min(a.y + a.height, b.y + b.height)
-        if x2 >= x1 and y2 >= y1:
+        if x2 >= x1 and y2 >= y1 do
             return Rectangle{x1, y1, x2 - x1, y2 - y1}
         return Zero
     }
@@ -376,7 +376,7 @@ impl Rectangle
     // Returns width / height, or 0 if height is zero.
     mtd const aspectRatio()->f32
     {
-        if .height == 0:
+        if .height == 0 do
             return 0
         return .width / .height
     }
@@ -475,7 +475,7 @@ impl Rectangle
     // Scales the rectangle to fit inside 'bounds' without distortion.
     mtd fitWithin(bounds: Rectangle)
     {
-        if .width == 0 or .height == 0:
+        if .width == 0 or .height == 0 do
             return
 
         let scaleX = bounds.width / .width

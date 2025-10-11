@@ -40,8 +40,8 @@ var notupperTest: [?] rune = [
 //#[Swag.PrintBc]
 #test
 {
-    foreach c in upperTest:
+    foreach c in upperTest do
         @assert(Unicode.isUpper(c))
-    foreach c in notupperTest:
+    foreach c in notupperTest do
         @assert(!Unicode.isUpper(c))
 }

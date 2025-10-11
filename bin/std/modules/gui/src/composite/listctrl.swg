@@ -102,7 +102,7 @@ impl ListLine
     mtd isParentOf(other: *ListLine)->bool
     {
         var l = other.parent
-        while l and l != me:
+        while l and l != me do
             l = l.parent
         return l ? true : false
     }
@@ -119,7 +119,7 @@ impl ListLine
         Debug.assert(column < .items.count)
         foreach item in .items
         {
-            if item.column == column:
+            if item.column == column do
                 return item
         }
 
@@ -153,24 +153,24 @@ impl IWnd for ListView
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if .list:
+        if .list do
             .list.computeLayout()
     }
 
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
         evt.accepted = true
-        if evt.kind != .KeyPressed:
+        if evt.kind != .KeyPressed do
             return
 
         .list.sigKeyPressed.call(.list, evt)
 
         let lineCount = .list.getLineCount()
-        if !lineCount:
+        if !lineCount do
             return
 
         var focusLine: *ListLine
-        if .list.focusIndex < .list.lines.count:
+        if .list.focusIndex < .list.lines.count do
             focusLine = .list.lines[.list.focusIndex]
 
         var shift = cast(bool) (evt.modifiers & .Shift)
@@ -178,7 +178,7 @@ impl IWnd for ListView
 
         if .list.focusIndex == Swag.U32.Max
         {
-            if evt.key != .Down:
+            if evt.key != .Down do
                 return
         }
 
@@ -193,7 +193,7 @@ impl IWnd for ListView
                 foreach l in .list.selModel
                 {
                     let idx = .list.idxLineToIdxList.find(l).value
-                    if !.list.lines[idx].canCheck:
+                    if !.list.lines[idx].canCheck do
                         continue
                     let checked = !.list.checkModel.isSelected(l)
                     .list.checkModel.select(l, checked)
@@ -213,7 +213,7 @@ impl IWnd for ListView
                 foreach l in .list.selModel
                 {
                     let idx = .list.idxLineToIdxList.find(l).value
-                    if !.list.lines[idx].canCheck:
+                    if !.list.lines[idx].canCheck do
                         continue
                     .list.checkModel.select(l, true)
                 }
@@ -227,7 +227,7 @@ impl IWnd for ListView
             }
 
         case A:
-            if !ctrl or .list.selectionMode == .Single:
+            if !ctrl or .list.selectionMode == .Single do
                 break
             shift = true
             .list.selModel.unselectAll()
@@ -246,18 +246,18 @@ impl IWnd for ListView
             selChanged  = true
 
         case Up:
-            if .list.focusIndex == 0:
+            if .list.focusIndex == 0 do
                 startSelIdx, endSelIdx = 0
-            else:
+            else do
                 startSelIdx, endSelIdx = .list.focusIndex - 1
             selChanged = true
 
         case Down:
-            if .list.focusIndex == lineCount - 1:
+            if .list.focusIndex == lineCount - 1 do
                 startSelIdx, endSelIdx = lineCount - 1
-            elif .list.focusIndex == Swag.U32.Max:
+            elif .list.focusIndex == Swag.U32.Max do
                 .list.focusIndex = 0
-            else:
+            else do
                 startSelIdx, endSelIdx = .list.focusIndex + 1
             selChanged = true
 
@@ -278,9 +278,9 @@ impl IWnd for ListView
             let first  = .list.getFirstVisibleLineIndex()
             let last   = .list.getLastVisibleLineIndex()
             let offset = last - first
-            if offset > .list.focusIndex:
+            if offset > .list.focusIndex do
                 startSelIdx, endSelIdx = 0
-            else:
+            else do
                 startSelIdx, endSelIdx = .list.focusIndex - offset
             selChanged = true
         }
@@ -293,7 +293,7 @@ impl IWnd for ListView
                 startSelIdx = endSelIdx
             }
 
-            for i in startSelIdx to endSelIdx:
+            for i in startSelIdx to endSelIdx do
                 .list.selectLine(i, true)
             .list.focusIndex = endSelIdx
             .list.ensureVisibleLine(.list.focusIndex)
@@ -356,7 +356,7 @@ impl IWnd for ListView
             return
         }
 
-        if evt.button != .Left:
+        if evt.button != .Left do
             return
 
         if idx != Swag.U32.Max and !.list.isVirtual
@@ -375,13 +375,13 @@ impl IWnd for ListView
                 if .list.lines[idx].canExpand()
                 {
                     var eatCheck = false
-                    if localPos.x < widthLeft:
+                    if localPos.x < widthLeft do
                         eatCheck = true
                     widthLeft += Math.min(metrics.btnCheck_Size, .list.getLineHeight())
 
                     if eatCheck
                     {
-                        if evt.kind == .MouseReleased:
+                        if evt.kind == .MouseReleased do
                             return
                         .list.toggleExpand(.list.lines[idx])
                         return
@@ -395,23 +395,23 @@ impl IWnd for ListView
                 if hitLine.canCheck
                 {
                     var eatCheck = false
-                    if evt.kind == .MouseDoubleClick:
+                    if evt.kind == .MouseDoubleClick do
                         eatCheck = true
-                    elif localPos.x < widthLeft:
+                    elif localPos.x < widthLeft do
                         eatCheck = true
 
                     if eatCheck
                     {
-                        if evt.kind == .MouseReleased:
+                        if evt.kind == .MouseReleased do
                             return
 
                         let checked = !.list.checkModel.isSelected(idxLine)
                         if .list.selModel.isSelected(idxLine)
                         {
-                            foreach l in .list.selModel:
+                            foreach l in .list.selModel do
                                 .list.checkModel.select(l, checked)
                         }
-                        else:
+                        else do
                             .list.checkModel.select(idxLine, checked)
                         .list.sigCheckChanged.call(.list)
                         .invalidate()
@@ -426,7 +426,7 @@ impl IWnd for ListView
 
         if evt.kind == .MouseDoubleClick
         {
-            if idx != Swag.U32.Max:
+            if idx != Swag.U32.Max do
                 .list.toggleExpand(.list.lines[idx])
             let pt = .surfaceToLocal(evt.surfacePos)
             .list.sigLeftDoubleClick.call(.list, pt)
@@ -436,7 +436,7 @@ impl IWnd for ListView
         // Selection by left button
         // ============================
 
-        if .list.selectionMode == .None:
+        if .list.selectionMode == .None do
             return
 
         // We select by mouse release when the hittest line is selected
@@ -454,7 +454,7 @@ impl IWnd for ListView
         .discardMouseRelease = evt.kind == .MousePressed
 
         let canUnsel = idx != Swag.U32.Max or !.list.listFlags.has(.NoMouseEmptySel)
-        if canUnsel and (.list.selectionMode == .Single or (!ctrl and !shift)):
+        if canUnsel and (.list.selectionMode == .Single or (!ctrl and !shift)) do
             .list.selModel.unselectAll()
 
         if idx != Swag.U32.Max
@@ -481,16 +481,16 @@ impl IWnd for ListView
             }
         }
 
-        if canUnsel:
+        if canUnsel do
             .list.focusIndex = idx
         .invalidate()
-        if canUnsel or idx != Swag.U32.Max:
+        if canUnsel or idx != Swag.U32.Max do
             .list.sigSelChanged.call(.list)
     }
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if .list.getLineCount() == 0:
+        if .list.getLineCount() == 0 do
             return
 
         let bc      = evt.bc
@@ -525,7 +525,7 @@ impl IWnd for ListView
                 .paintLine(bc, i, &line, rect)
                 rect.y = rect.bottom()
 
-                if .list.listFlags.has(.HorzLines):
+                if .list.listFlags.has(.HorzLines) do
                     painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
             }
         }
@@ -537,7 +537,7 @@ impl IWnd for ListView
                 .paintLine(bc, i, line, rect)
                 rect.y = rect.bottom()
 
-                if .list.listFlags.has(.HorzLines):
+                if .list.listFlags.has(.HorzLines) do
                     painter.drawLine(rect.x, rect.y, rect.right(), rect.y, colors.listItem_Line, 1)
             }
         }
@@ -620,9 +620,9 @@ internal impl ListView
             colorText   = line.colorFg
             colorExpand = colors.listItem_Text
         default:
-            if line.separator:
+            if line.separator do
                 colorText, colorExpand = colors.listItem_Separator
-            else:
+            else do
                 colorText, colorExpand = colors.listItem_Text
         }
 
@@ -630,9 +630,9 @@ internal impl ListView
         foreach item, idxItem in line.items
         {
             var colorFg: Color = undefined
-            if item.colorFg.a and !isSelected:
+            if item.colorFg.a and !isSelected do
                 colorFg = item.colorFg
-            else:
+            else do
                 colorFg = colorText
             theme.setTextColors(&format, colorFg)
             format.horzAlignment = item.horzAlign
@@ -716,23 +716,23 @@ internal impl ListView
             }
 
             // Take care of header item margin
-            if .list.header:
+            if .list.header do
                 labelPos.moveLeft(.list.header.marginItems)
 
             // Left margin, or icon
             var icon = item.icon
             if .list.iconSize > 0
             {
-                if icon.isValid():
+                if icon.isValid() do
                     icon.sizeX, icon.sizeY = .list.iconSize
                 else
                 {
                     var iconMargin = .list.iconMarginFirstCol
-                    if !idxItem and line.parent:
+                    if !idxItem and line.parent do
                         iconMargin = line.parent.iconMargin
-                    elif idxItem:
+                    elif idxItem do
                         iconMargin = .list.header.getItem(cast(u32) idxItem).iconMargin
-                    if iconMargin:
+                    if iconMargin do
                         labelPos.moveLeft(.list.iconSize + metrics.iconText_Margin)
                 }
             }
@@ -745,20 +745,20 @@ internal impl ListView
     {
         let lc  = .list.getLineCount()
         var res = .surfaceToLocal(surfacePos)
-        if res.x < 0 or res.y < 0:
+        if res.x < 0 or res.y < 0 do
             return Swag.U32.Max
         res.y += .scrollPos.y
         let idx = cast(u32) (res.y / .list.getLineHeight())
-        if idx >= lc:
+        if idx >= lc do
             return Swag.U32.Max
-        if !.list.isVirtual and .list.lines[idx].separator:
+        if !.list.isVirtual and .list.lines[idx].separator do
             return Swag.U32.Max
         return idx
     }
 
     mtd getDisplayWidth()->f32
     {
-        if .list.horizontalExtent > 0:
+        if .list.horizontalExtent > 0 do
             return .list.horizontalExtent
         return .position.width
     }
@@ -796,12 +796,12 @@ impl ListCtrl
         // Adapt header to the frame container
         list.hookOnEvent = func(wnd, evt)
         {
-            if !evt is ResizeEvent:
+            if !evt is ResizeEvent do
                 return false
 
             var list   = cast(*ListCtrl) wnd
             var header = list.header
-            if header.form == .Transparent:
+            if header.form == .Transparent do
                 return false
             switch list.frameForm
             {
@@ -861,7 +861,7 @@ impl ListCtrl
     // Unselect all lines
     mtd unselectAll()
     {
-        if .selModel.isEmpty():
+        if .selModel.isEmpty() do
             return
         .selModel.unselectAll()
         .invalidate()
@@ -872,9 +872,9 @@ impl ListCtrl
     mtd isLineSelected(idx: u32)->bool
     {
         Debug.assert(idx < .getLineCount())
-        if .selectionMode == .None:
+        if .selectionMode == .None do
             return false
-        if .isVirtual:
+        if .isVirtual do
             return .selModel.isSelected(idx)
         return !.lines[idx].separator and .selModel.isSelected(.lines[idx].index)
     }
@@ -885,12 +885,12 @@ impl ListCtrl
         let lineCount = .getLineCount()
         Debug.assert(idx < lineCount)
 
-        if .selectionMode == .None or lineCount == 0:
+        if .selectionMode == .None or lineCount == 0 do
             return
-        if !.isVirtual and .lines[idx].separator:
+        if !.isVirtual and .lines[idx].separator do
             return
 
-        if .selectionMode == .Single:
+        if .selectionMode == .Single do
             .selModel.unselectAll()
 
         let idxLine = .isVirtual ? idx : .lines[idx].index
@@ -907,7 +907,7 @@ impl ListCtrl
         Debug.assert(start < lineCount)
         Debug.assert(end < lineCount)
 
-        if .selectionMode == .None or lineCount == 0:
+        if .selectionMode == .None or lineCount == 0 do
             return
 
         for i in start to end
@@ -927,11 +927,11 @@ impl ListCtrl
         let clientRect = .scrollWnd.getClientRectPadding()
 
         var scrollWidth: f32 = undefined
-        if .horizontalExtent > 0:
+        if .horizontalExtent > 0 do
             scrollWidth = .horizontalExtent
-        elif .header:
+        elif .header do
             scrollWidth = .header.getTotalItemsWidth()
-        else:
+        else do
             scrollWidth = clientRect.width
         let scrollHeight = .getLineCount() * .getLineHeight()
         .scrollWnd.setScrollSize(scrollWidth, scrollHeight)
@@ -953,7 +953,7 @@ impl ListCtrl
     // Returns the number of lines in the list
     mtd getLineCount()->u32
     {
-        if .isVirtual:
+        if .isVirtual do
             return .virtualCount
         return cast(u32) .lines.count
     }
@@ -1029,7 +1029,7 @@ impl ListCtrl
     {
         let lc  = .getLineCount()
         let idx = cast(u32) (.listView.scrollPos.y / .getLineHeight())
-        if idx >= lc:
+        if idx >= lc do
             return Swag.U32.Max
         return idx
     }
@@ -1038,16 +1038,16 @@ impl ListCtrl
     mtd getLastVisibleLineIndex()->u32
     {
         let lc = .getLineCount()
-        if lc == 0:
+        if lc == 0 do
             return Swag.U32.Max
 
         var y = .listView.scrollPos.y + .scrollWnd.view.position.height
         y -= .scrollWnd.view.padding.y
         y -= .scrollWnd.view.padding.w
-        if y < 0:
+        if y < 0 do
             return cast(u32) (.listView.scrollPos.y / .getLineHeight())
         let idx = cast(u32) (y / .getLineHeight())
-        if idx >= lc:
+        if idx >= lc do
             return cast(u32) lc - 1
         return idx
     }
@@ -1057,7 +1057,7 @@ impl ListCtrl
     {
         let first = .getFirstVisibleLineIndex()
         let last  = .getLastVisibleLineIndex()
-        if idx > first and idx < last:
+        if idx > first and idx < last do
             return
         let sc = .scrollWnd.getScrollPos()
         .scrollWnd.setScrollPos(sc.x, idx * .getLineHeight())
@@ -1073,7 +1073,7 @@ impl ListCtrl
     // Get the line with the keyboard focus
     mtd const getFocusLine()->#null *ListLine
     {
-        if .focusIndex >= .lines.count:
+        if .focusIndex >= .lines.count do
             return null
         return .lines[.focusIndex]
     }
@@ -1082,13 +1082,13 @@ impl ListCtrl
     mtd const getSelectedLines()->Array'(*ListLine)
     {
         var result: retval
-        if .isVirtual or .selModel.isEmpty():
+        if .isVirtual or .selModel.isEmpty() do
             return result
 
         foreach i in .selModel
         {
             let res = .idxLineToIdxList.tryFind(i)
-            if !res:
+            if !res do
                 continue
             result.add(.lines[res.value])
         }
@@ -1100,13 +1100,13 @@ impl ListCtrl
     mtd const getCheckedLines()->Array'(*ListLine)
     {
         var result: retval
-        if .isVirtual or .checkModel.isEmpty():
+        if .isVirtual or .checkModel.isEmpty() do
             return result
 
         foreach i in .checkModel
         {
             let res = .idxLineToIdxList.tryFind(i)
-            if !res:
+            if !res do
                 continue
             result.add(.lines[res.value])
         }
@@ -1118,11 +1118,11 @@ impl ListCtrl
     // Mostly for singlesel mode
     mtd const getSelectedLine()->#null *ListLine
     {
-        if .isVirtual or .selModel.isEmpty():
+        if .isVirtual or .selModel.isEmpty() do
             return null
         let range = .selModel.selection.front()
         let res   = .idxLineToIdxList.tryFind(range.start)
-        if !res:
+        if !res do
             return null
         let idx = res.value
         return .lines[idx]
@@ -1131,7 +1131,7 @@ impl ListCtrl
     internal mtd mapIndexes()
     {
         .idxLineToIdxList.clear()
-        foreach l, idx in .lines:
+        foreach l, idx in .lines do
             .idxLineToIdxList.add(l.index, cast(u32) idx)
     }
 
@@ -1145,28 +1145,28 @@ impl ListCtrl
             let sort0 = it0.sortKey.isEmpty() ? &it0.name.raw : &it0.sortKey
             let sort1 = it1.sortKey.isEmpty() ? &it1.name.raw : &it1.sortKey
             var res   = Latin1.compareNatural(dref sort0, dref sort1)
-            if descentOrder:
+            if descentOrder do
                 res *= -1
             return res
         }
 
         let cb = mtd|column, descentOrder|(a, b: *ListLine)->s32
         {
-            if .sigSort:
+            if .sigSort do
                 return .sigSort(a, b, column, descentOrder)
 
             if a.parent != b.parent
             {
-                if a.isParentOf(b):
+                if a.isParentOf(b) do
                     return -1
-                if b.isParentOf(a):
+                if b.isParentOf(a) do
                     return 1
 
                 var a1 = a
                 var b1 = b
-                while a1.level > b1.level:
+                while a1.level > b1.level do
                     a1 = a1.parent
-                while b1.level > a1.level:
+                while b1.level > a1.level do
                     b1 = b1.parent
                 while a1.parent != b1.parent
                 {
@@ -1189,7 +1189,7 @@ impl ListCtrl
     #[Swag.Overload]
     mtd sort(column: u32, descentOrder, persistent = false)
     {
-        if .isVirtual:
+        if .isVirtual do
             return
 
         .sort(column, descentOrder, &.lines)
@@ -1209,16 +1209,16 @@ impl ListCtrl
     #[Swag.Overload]
     mtd sort()
     {
-        if .header and .header.sortMark != 0:
+        if .header and .header.sortMark != 0 do
             .sort(.header.sortColumn, .header.sortMark == -1 ? true : false)
-        else:
+        else do
             .sort(0)
     }
 
     // Expand the given line
     mtd expand(line: *ListLine)
     {
-        if !line.canExpand() or line.expanded:
+        if !line.canExpand() or line.expanded do
             return
         line.expanded = true
         .sigExpand.call(me, line)
@@ -1227,7 +1227,7 @@ impl ListCtrl
         tmp.add(line)
 
         // Auto sort
-        if .header and .header.sortMark:
+        if .header and .header.sortMark do
             .sort(.header.sortColumn, .header.sortMark == -1 ? true : false, &line.lines)
 
         var cptIdxLine = cast(u32) .lines.count
@@ -1236,7 +1236,7 @@ impl ListCtrl
         {
             let toI = tmp.popBack()
             let res = .idxLineToIdxList.tryFind(toI.index)
-            if !res:
+            if !res do
                 continue
             let idxInsert = res.value
             foreach l, i in toI.lines
@@ -1245,12 +1245,12 @@ impl ListCtrl
                 cptIdxLine += 1
                 .idxLineToIdxList.add(l.index, idxInsert + cptIdx + 1)
                 cptIdx += 1
-                if l.expanded:
+                if l.expanded do
                     tmp.add(l)
             }
 
             // Update indexes after the insertion
-            for var idx = idxInsert + 1; idx < cast(u32) .lines.count; idx += 1:
+            for var idx = idxInsert + 1; idx < cast(u32) .lines.count; idx += 1 do
                 .idxLineToIdxList.add(.lines[idx].index, cast(u32) (idx + toI.lines.count))
 
             // Insert at the right position
@@ -1263,7 +1263,7 @@ impl ListCtrl
     // Collapse the given line
     mtd collapse(line: *ListLine)
     {
-        if !line.canExpand() or !line.expanded:
+        if !line.canExpand() or !line.expanded do
             return
         line.expanded = false
         .sigCollapse.call(me, line)
@@ -1278,20 +1278,20 @@ impl ListCtrl
             foreach l in toI.lines
             {
                 removeCount += 1
-                if l.expanded:
+                if l.expanded do
                     tmp.add(l)
             }
         }
 
         // Insert at the right position
         let res = .idxLineToIdxList.tryFind(line.index)
-        if !res:
+        if !res do
             return
         let idxInsert = res.value
         .lines.removeAtOrdered(cast(u64) (idxInsert + 1), cast(u64) removeCount)
 
         // Update indexes after the insertion
-        for var idx = idxInsert + 1; idx < cast(u32) .lines.count; idx += 1:
+        for var idx = idxInsert + 1; idx < cast(u32) .lines.count; idx += 1 do
             .idxLineToIdxList.add(.lines[idx].index, idx)
 
         // Update selection
@@ -1319,7 +1319,7 @@ impl ListCtrl
 
         foreach l in .lines
         {
-            if l.expanded:
+            if l.expanded do
                 .collapse(l)
         }
 
@@ -1330,9 +1330,9 @@ impl ListCtrl
     // Collapse the given line
     mtd toggleExpand(line: *ListLine)
     {
-        if line.expanded:
+        if line.expanded do
             .collapse(line)
-        else:
+        else do
             .expand(line)
     }
 

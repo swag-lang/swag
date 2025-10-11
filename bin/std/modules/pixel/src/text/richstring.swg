@@ -57,7 +57,7 @@ impl RichString
     #[Swag.Mixin]
     internal mtd addChunk(idx: u64, space, eol, url: bool = false)
     {
-        if idx - startChunk == 0:
+        if idx - startChunk == 0 do
             return
 
         chunk.isSpace      = space
@@ -67,7 +67,7 @@ impl RichString
         chunk.under        = under.back()
         chunk.hasFontStyle = false
 
-        if url:
+        if url do
             .hasUrl = true
 
         if isBold.back() and isItalic.back()
@@ -121,7 +121,7 @@ impl RichString
     // ```swag
     mtd set(text: #null string)
     {
-        if .raw == text and .chunks.count:
+        if .raw == text and .chunks.count do
             return
         .raw   = text
         .dirty = true
@@ -176,18 +176,18 @@ impl RichString
     // If an url does not exists, returns 'null'.
     mtd getUrlChunkAt(at: Math.Point)->#null *RichChunk
     {
-        if !.hasUrl:
+        if !.hasUrl do
             return null
         foreach &c in .chunks
         {
-            if !c.isUrl:
+            if !c.isUrl do
                 continue
 
             var r = c.boundRect
             r.offset(c.pos)
             r.scale(1)
 
-            if r.contains(at):
+            if r.contains(at) do
                 return c
         }
 
@@ -199,7 +199,7 @@ impl RichString
     // will only be recomputed if it's dirty (the text has changed) or if 'force' is true.
     mtd compute(force = false)
     {
-        if !.dirty or force:
+        if !.dirty or force do
             return
 
         .dirty  = false
@@ -208,7 +208,7 @@ impl RichString
         .layoutRect.clear()
 
         var count = .raw.length
-        if !count:
+        if !count do
             return
 
         var startChunk = 0'u64
@@ -241,7 +241,7 @@ impl RichString
                 continue
             case Utf8.startsWith(sl, "</u>"):
                 .addChunk(byteIdx)
-                if under.count > 1:
+                if under.count > 1 do
                     under.removeBack()
                 byteIdx, scan, startChunk += 4
                 count -= 4
@@ -255,7 +255,7 @@ impl RichString
                 continue
             case Utf8.startsWith(sl, "</b>"):
                 .addChunk(byteIdx)
-                if isBold.count > 1:
+                if isBold.count > 1 do
                     isBold.removeBack()
                 byteIdx, scan, startChunk += 4
                 count -= 4
@@ -269,7 +269,7 @@ impl RichString
                 continue
             case Utf8.startsWith(sl, "</i>"):
                 .addChunk(byteIdx)
-                if isItalic.count > 1:
+                if isItalic.count > 1 do
                     isItalic.removeBack()
                 byteIdx, scan, startChunk += 4
                 count -= 4
@@ -296,7 +296,7 @@ impl RichString
 
             case Utf8.startsWith(sl, "</p>"):
                 .addChunk(byteIdx)
-                if colorFg.count > 1:
+                if colorFg.count > 1 do
                     colorFg.removeBack()
                 byteIdx, scan, startChunk += 4
                 count -= 4
@@ -315,7 +315,7 @@ impl RichString
             }
 
             var (c, eat) = Utf8.decodeRune(sl)
-            if eat == 0:
+            if eat == 0 do
                 break
 
             if c == "\n"
@@ -348,7 +348,7 @@ impl RichString
 
         // Remaining chunk
         Debug.assert(startChunk <= .raw.length)
-        if startChunk < .raw.length:
+        if startChunk < .raw.length do
             .addChunk(.raw.length)
     }
 }

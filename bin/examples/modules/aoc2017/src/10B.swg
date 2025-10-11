@@ -35,7 +35,7 @@ func day10B()
     nums += [17, 31, 73, 47, 23]
 
     var arr, tmp: Array's32
-    for i in 256:
+    for i in 256 do
         arr.add(i)
 
     var cur, skip = 0
@@ -44,10 +44,10 @@ func day10B()
         foreach n in nums
         {
             tmp.clear()
-            for i in n:
+            for i in n do
                 tmp.add(arr[(cur + i) % 256])
             Slice.reverse(tmp.toSlice())
-            foreach v, i in tmp:
+            foreach v, i in tmp do
                 arr[(cur + i) % 256] = v
             cur = (cur + n + skip) % 256
             skip += 1
@@ -59,7 +59,7 @@ func day10B()
     for i in 16
     {
         var v = arr[i * 16]
-        for j in 15:
+        for j in 15 do
             v ^= arr[(i * 16) + j + 1]
         res += Format.toString("%{X}", v)
     }

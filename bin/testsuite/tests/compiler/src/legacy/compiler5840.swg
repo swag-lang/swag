@@ -5,7 +5,7 @@ func(safetyWhat: string) safety(expr: #code bool, message: string = null, loc = 
     #if #safety(safetyWhat)
     {
         let #uniq0 = #inject(expr)
-        if !#uniq0:
+        if !#uniq0 do
             @panic(message, loc)
         @assert(#uniq0 == true)
     }

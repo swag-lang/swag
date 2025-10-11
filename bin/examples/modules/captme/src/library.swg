@@ -11,7 +11,7 @@ impl Library
     func init() throw
     {
         let str = getFolder()
-        if !Directory.exists(str):
+        if !Directory.exists(str) do
             Directory.create(str)
     }
 
@@ -55,7 +55,7 @@ impl Library
     mtd addFile(name: string)
     {
         let file = catch File.getFileInfo(name)
-        if @err != null:
+        if @err != null do
             return
         .files.add(file)
     }

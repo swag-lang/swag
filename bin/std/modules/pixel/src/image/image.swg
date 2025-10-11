@@ -32,7 +32,7 @@ impl Image
         var result: retval
         result.init(width, height, pf)
         result.allocPixels()
-        if buffer:
+        if buffer do
             Memory.copy(result.pixels.buffer, @dataof(buffer), @countof(buffer))
         return result
     }
@@ -152,7 +152,7 @@ impl Image
         var p = {me, userData}
         Jobs.parallelVisit(|buffer, data| .pixels.toSlice(), cast(u32) (.bpp8 * stride), &p)
         {
-            if !data:
+            if !data do
                 return
             let p = cast(*#decltype(p)) data
             #macro
@@ -309,7 +309,7 @@ impl Image
     // Returns true if the image is square
     mtd const isSquare()->bool
     {
-        if !.isValid():
+        if !.isValid() do
             return false
         return .width == .height
     }

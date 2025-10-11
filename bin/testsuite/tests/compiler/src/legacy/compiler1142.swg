@@ -3,9 +3,9 @@ var g: bool = false
 #[Swag.Inline]
 func toto()->s32
 {
-    if g:
+    if g do
         return 1
-    else:
+    else do
         return 0
 }
 

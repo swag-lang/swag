@@ -1,7 +1,7 @@
 func strlen(value: const [*] u8)->u32
 {
     var idx = 0'u32
-    while value[idx]:
+    while value[idx] do
         idx += 1
     return idx
 }

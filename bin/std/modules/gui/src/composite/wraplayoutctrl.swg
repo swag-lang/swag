@@ -27,7 +27,7 @@ impl IWnd for WrapLayoutCtrl
         var y = .padding.y
         foreach c in .childs
         {
-            if c.wndFlags & .Hidden:
+            if c.wndFlags & .Hidden do
                 continue
             .resultHeight = y + .wrapHeight
             let rect = Math.Rectangle{x, y, .wrapWidth, .wrapHeight}

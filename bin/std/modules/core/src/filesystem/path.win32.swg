@@ -6,24 +6,24 @@ using Win32
 // Returns true if the given path name is valid
 func isValidPathName(fullname: string)->bool
 {
-    if @countof(fullname) == 0:
+    if @countof(fullname) == 0 do
         return false
 
     foreach c in fullname
     {
-        if c < 32:
+        if c < 32 do
             return false
-        if c == '"':
+        if c == '"' do
             return false
-        if c == '<':
+        if c == '<' do
             return false
-        if c == '>':
+        if c == '>' do
             return false
-        if c == '|':
+        if c == '|' do
             return false
-        if c == '*':
+        if c == '*' do
             return false
-        if c == '?':
+        if c == '?' do
             return false
     }
 
@@ -33,29 +33,29 @@ func isValidPathName(fullname: string)->bool
 // Returns true if the given file name is valid
 func isValidFileName(fullname: string)->bool
 {
-    if @countof(fullname) == 0:
+    if @countof(fullname) == 0 do
         return false
     foreach c in fullname
     {
-        if c < 32:
+        if c < 32 do
             return false
-        if c == '"':
+        if c == '"' do
             return false
-        if c == '<':
+        if c == '<' do
             return false
-        if c == '>':
+        if c == '>' do
             return false
-        if c == '|':
+        if c == '|' do
             return false
-        if c == ':':
+        if c == ':' do
             return false
-        if c == '*':
+        if c == '*' do
             return false
-        if c == '?':
+        if c == '?' do
             return false
-        if c == '\\':
+        if c == '\\' do
             return false
-        if c == '/':
+        if c == '/' do
             return false
     }
 
@@ -65,19 +65,19 @@ func isValidFileName(fullname: string)->bool
 // Returns the length of the root part of the path
 func getRootLength(fullname: string)->u32
 {
-    if fullname == null:
+    if fullname == null do
         return 0
 
     func startsWithOrdinal(source, value: string)->bool
     {
         let sourceLength = @countof(source)
         let valueLength  = @countof(value)
-        if sourceLength < valueLength:
+        if sourceLength < valueLength do
             return false
 
         for i in valueLength
         {
-            if value[i] != source[i]:
+            if value[i] != source[i] do
                 return false
         }
 
@@ -136,7 +136,7 @@ func getRootLength(fullname: string)->u32
         // Path is at least longer than where we expect a colon, and has a colon (\\?\A:, A:)
         // If the colon is followed by a directory separator, #move past it
         i = volumeSeparatorLength
-        if pathLength >= volumeSeparatorLength + 1 and isDirectorySeparator(fullname[volumeSeparatorLength]):
+        if pathLength >= volumeSeparatorLength + 1 and isDirectorySeparator(fullname[volumeSeparatorLength]) do
             i += 1
     }
 

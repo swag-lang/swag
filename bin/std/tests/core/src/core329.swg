@@ -25,7 +25,7 @@ impl AA
                 sb.appendString("fn(")
                 for i in @countof(ts.parameters)
                 {
-                    if i:
+                    if i do
                         sb.appendString(",")
                     sb.appendFormat("params[%]", i)
                 }

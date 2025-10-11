@@ -15,7 +15,7 @@ impl IWnd for ComboCtrl
 {
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !.label:
+        if !.label do
             return
 
         let rect    = .getClientRect()
@@ -32,9 +32,9 @@ impl ComboCtrl
     {
         let metrics = parent.getThemeMetrics()
         var pos     = position
-        if pos.width == 0:
+        if pos.width == 0 do
             pos.width = metrics.comboBox_Width * 2
-        if pos.height == 0:
+        if pos.height == 0 do
             pos.height = metrics.comboBox_Height
 
         with let ctrl = Wnd.create'ComboCtrl(parent, pos, id)

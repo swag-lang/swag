@@ -59,7 +59,7 @@ impl IWnd for FrameWnd
 
     mtd impl onPaintEvent(evt: *PaintEvent)
     {
-        if .frameForm == .Transparent:
+        if .frameForm == .Transparent do
             return
 
         let bc      = evt.bc
@@ -84,7 +84,7 @@ impl IWnd for FrameWnd
         if showFocus
         {
             let focus = .getFocus()
-            if !focus or !.isParentOf(focus):
+            if !focus or !.isParentOf(focus) do
                 showFocus = false
         }
 
@@ -105,9 +105,9 @@ impl IWnd for FrameWnd
 
     mtd impl onPostPaintEvent(evt: *PaintEvent)
     {
-        if .frameForm == .Transparent:
+        if .frameForm == .Transparent do
             return
-        if !(.frameFlags & .Borders):
+        if !(.frameFlags & .Borders) do
             return
 
         let bc      = evt.bc
@@ -133,7 +133,7 @@ impl IWnd for FrameWnd
         if showFocus
         {
             let focus = .getFocus()
-            if !focus or !.isParentOf(focus):
+            if !focus or !.isParentOf(focus) do
                 showFocus = false
         }
 
@@ -206,7 +206,7 @@ impl IWnd for FrameWnd
 
     mtd impl onResizeEvent(evt: *ResizeEvent)
     {
-        if !.view:
+        if !.view do
             return
         var rect = .getClientRectPadding()
         rect.applyPadding(.view.margin)
@@ -227,7 +227,7 @@ impl FrameWnd
 
     mtd setView(what: *Wnd)
     {
-        if .view:
+        if .view do
             .view.destroy()
         what.setParent(me)
         .view = what
@@ -240,21 +240,21 @@ impl FrameWnd
         .frameFlags.add(add)
         .frameFlags.remove(remove)
 
-        if .frameFlags.has(.SmallShadow):
+        if .frameFlags.has(.SmallShadow) do
             .wndFlags.add(.PreChildsPaint)
-        else:
+        else do
             .wndFlags.remove(.PreChildsPaint)
 
-        if .frameFlags.has(.SmallShadow):
+        if .frameFlags.has(.SmallShadow) do
             .invalidatePadding = -.getThemeMetrics().frameWnd_SmallShadowSize
-        else:
+        else do
             .invalidatePadding.setZero()
     }
 
     // Set the frame wnd form
     mtd setFrameForm(form: FrameWndForm)
     {
-        if .frameForm == form:
+        if .frameForm == form do
             return
         .frameForm = form
 

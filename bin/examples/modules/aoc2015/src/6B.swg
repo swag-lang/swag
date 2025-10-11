@@ -43,18 +43,18 @@ func day6B()
         {
             for y in y0 to y1
             {
-                if l[6] == 'n':
+                if l[6] == 'n' do
                     lights.ref2(x, y, 1000) += 1
-                elif l[6] == 'f' and lights.ref2(x, y, 1000):
+                elif l[6] == 'f' and lights.ref2(x, y, 1000) do
                     lights.ref2(x, y, 1000) -= 1
-                elif l[6] == ' ':
+                elif l[6] == ' ' do
                     lights.ref2(x, y, 1000) += 2
             }
         }
     }
 
     var total: s64
-    foreach v in lights:
+    foreach v in lights do
         total += v
 
     //Console.print("total: ", total)

@@ -3,7 +3,7 @@
 func print(s: string, f: ...)
     verify
     {
-        if @countof(f) != 3:
+        if @countof(f) != 3 do
             @compilererror("invalid number of arguments", #location(f))
         return true
     }

@@ -38,7 +38,7 @@ public impl MessageDlg
             .setAllPaddings(metrics.dialog_Padding)
         }
 
-        if options.sigCreate:
+        if options.sigCreate do
             options.sigCreate(dlg)
 
         dlg.setIcon(options.icon)
@@ -70,7 +70,7 @@ public impl MessageDlg
 
         // Width
         var w = 0'f32
-        foreach btn in .buttons:
+        foreach btn in .buttons do
             w += btn.position.width
         w += cast(f32) ((.buttons.count - 1) * metrics.dialog_BtnPadding)
         w += 2 * metrics.dialog_Padding
@@ -89,18 +89,18 @@ public impl MessageDlg
 
         // Height
         var h = Math.min(512, .label.name.boundRect.height + .label.padding.y + .label.padding.w)
-        if .labelIcon:
+        if .labelIcon do
             h += .labelIcon.position.height
-        else:
+        else do
             h += metrics.dialog_Padding
         h += .wndBottom.position.height
         h += 2 * metrics.wnd_BorderSize
-        if .surface.flags & .SmallCaption:
+        if .surface.flags & .SmallCaption do
             h += metrics.wnd_SmallCaptionCY
-        elif .surface.flags & .BigCaption:
+        elif .surface.flags & .BigCaption do
             h += metrics.wnd_BigCaptionCY
 
-        if .extension:
+        if .extension do
             h += .extension.position.height
 
         var pos = .surface.position
@@ -131,10 +131,10 @@ public impl MessageDlg
     // Set big icon
     mtd setIcon(icon: Icon, color: Color = Argb.Zero)
     {
-        if !icon.isValid():
+        if !icon.isValid() do
             return
 
-        if !.labelIcon:
+        if !.labelIcon do
             .labelIcon = Label.create(.surface.wnd.view, "", {0, 0, 0, icon.sizeX + icon.sizeX * 0.5})
         .label.padding.y = 0
 
@@ -215,7 +215,7 @@ public impl MessageDlg
     func confirm(from: *Surface, message: string, question: string = null, defaultId = Dialog.BtnNo, options: MessageDlgOptions = {})->WndId
     {
         var txt = String.from(message)
-        while !txt.isEmpty() and txt.back() == '\n':
+        while !txt.isEmpty() and txt.back() == '\n' do
             txt.removeBack()
         txt += "\n\n"
         txt += question orelse "<b>Do you want to continue ?</b>"
@@ -228,7 +228,7 @@ public impl MessageDlg
     func error(from: *Surface, message: string = null, options: MessageDlgOptions = {})
     {
         var txt: String = String.from(message)
-        if !txt.isEmpty():
+        if !txt.isEmpty() do
             txt += "\n"
 
         if @err != null

@@ -6,12 +6,12 @@ when interacting with the struct.
 
 struct Struct
 {
-    x, y: s32   // Define two properties, x and y, of type s32 (signed 32-bit integer)
+    x, y: s32 // Define two properties, x and y, of type s32 (signed 32-bit integer)
 }
 
-alias OneType      = bool   // Alias for boolean type
-alias AnotherType  = s32    // Alias for signed 32-bit integer type
-alias WhateverType = bool   // Another alias for boolean type
+alias OneType      = bool // Alias for boolean type
+alias AnotherType  = s32 // Alias for signed 32-bit integer type
+alias WhateverType = bool // Another alias for boolean type
 
 impl Struct
 {

@@ -50,7 +50,7 @@ func day9B()
             min = Math.min(min, v1)
             max = Math.max(max, v1)
             sum += v1
-            if sum > target:
+            if sum > target do
                 break
             if sum == target
             {

@@ -106,9 +106,9 @@ func day6A()
         if !sx
         {
             let f = l.indexOf("^")
-            if f != Swag.U64.Max:
+            if f != Swag.U64.Max do
                 sx = cast() f
-            else:
+            else do
                 sy += 1
         }
 
@@ -120,7 +120,7 @@ func day6A()
     var total = 1
     for
     {
-        if sx + dx < 0 or sx + dx >= w or sy + dy < 0 or sy + dy >= h:
+        if sx + dx < 0 or sx + dx >= w or sy + dy < 0 or sy + dy >= h do
             break
 
         if arr.ref2(sx + dx, sy + dy, w) == '#'

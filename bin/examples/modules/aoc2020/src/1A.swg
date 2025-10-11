@@ -33,7 +33,7 @@ func day1A()
     let lines    = assume File.readAllLines(dataPath)
 
     var arr: Array's32
-    foreach v in lines:
+    foreach v in lines do
         arr.add(assume StrConv.toS32(v))
 
     arr.sort()

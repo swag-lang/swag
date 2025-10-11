@@ -6,7 +6,7 @@ using Swag
 #[Inline]
 func copy(dest: [*] void, src: const [*] void, size: u64)
 {
-    if size:
+    if size do
         @memcpy(dest, src, size)
 }
 
@@ -14,7 +14,7 @@ func copy(dest: [*] void, src: const [*] void, size: u64)
 #[Inline]
 func copyOver(dest: [*] void, src: const [*] void, size: u64)
 {
-    if size:
+    if size do
         @memmove(dest, src, size)
 }
 
@@ -22,7 +22,7 @@ func copyOver(dest: [*] void, src: const [*] void, size: u64)
 #[Inline]
 func compare(dest, src: const [*] void, size: u64)->s32
 {
-    if !size:
+    if !size do
         return 0
     return @memcmp(dest, src, size)
 }
@@ -38,7 +38,7 @@ func(T) equals(dest, src: const *T)->bool
 #[Inline]
 func clear(dest: [*] void, size: u64)
 {
-    if size:
+    if size do
         @memset(dest, 0, size)
 }
 
@@ -46,7 +46,7 @@ func clear(dest: [*] void, size: u64)
 #[Inline]
 func set(dest: [*] void, value: u8, size: u64)
 {
-    if size:
+    if size do
         @memset(dest, value, size)
 }
 

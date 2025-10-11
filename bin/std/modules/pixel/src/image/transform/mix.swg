@@ -48,7 +48,7 @@ impl Image
                         copyPixelDirect'BPP(pixDst, pixSrc)
 
                     case AlphaBlend:
-                        if BPP != 32:
+                        if BPP != 32 do
                             copyPixelDirect'BPP(pixDst, pixSrc)
                         else
                         {

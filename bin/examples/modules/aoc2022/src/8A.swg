@@ -45,21 +45,21 @@ func day8A()
 
     foreach l, line in lines
     {
-        if line == 0 or line == lines.count - 1:
+        if line == 0 or line == lines.count - 1 do
             continue
 
         var maxLeft: u8
 
         foreach #Bytes c, col in l
         {
-            if col == 0 or col == l.length - 1:
+            if col == 0 or col == l.length - 1 do
                 continue
 
             var hidden = 0
 
-            if l[col] <= maxLeft:
+            if l[col] <= maxLeft do
                 hidden += 1
-            else:
+            else do
                 for x in 0 until col
                 {
                     if l[x] >= l[col]
@@ -97,7 +97,7 @@ func day8A()
                 }
             }
 
-            if hidden != 4:
+            if hidden != 4 do
                 total += 1
         }
     }

@@ -23,9 +23,9 @@ impl Queue
     {
         const node = try me.gpa.alloc(Node)
         node.data = value
-        if me.end:
+        if me.end do
             me.end.next = node
-        else:
+        else do
             me.start = node
         me.end = node
     }
@@ -34,9 +34,9 @@ impl Queue
     {
         let start = me.start orelse null
         defer me.gpa.destroy(start)
-        if me.start.next:
+        if me.start.next do
             me.start = next
-        else:
+        else do
             me.start, me.end = null
         return data
     }

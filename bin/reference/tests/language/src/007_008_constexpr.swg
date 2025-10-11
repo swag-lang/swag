@@ -7,7 +7,7 @@ into the code, reducing runtime computation and potentially improving performanc
 */
 
 #[Swag.ConstExpr]
-func sum(x, y: f32) => x + y     // This function can be executed at compile time.
+func sum(x, y: f32) => x + y // This function can be executed at compile time.
 
 /**
 # Example: Compile-Time Computation
@@ -18,7 +18,8 @@ computed during the compilation process, ensuring no runtime overhead for this c
 */
 
 const G = sum(1, 2)
-#assert(G == 3)                   // The result of `sum(1, 2)` is computed at compile time and verified.
+#assert(G == 3)
+// The result of `sum(1, 2)` is computed at compile time and verified.
 
 /**
 # Example: Using `Swag.ConstExpr` with Complex Expressions
@@ -32,7 +33,8 @@ computed during compilation.
 func complexCalc(a, b, c: f32) => (a + b) * c / 2
 
 const result = complexCalc(4, 5, 6)
-#assert(result == 27.0)           // The complex expression is evaluated at compile time.
+#assert(result == 27.0)
+// The complex expression is evaluated at compile time.
 
 /**
 # Example: Compile-Time Execution of Array Initializations
@@ -59,11 +61,12 @@ you can use the `#run` directive. This forces the compiler to execute the functi
 compilation and use the result in your code.
 */
 
-func mul(x, y: f32) => x * y      // This is a normal function, not marked as `Swag.ConstExpr`.
+func mul(x, y: f32) => x * y // This is a normal function, not marked as `Swag.ConstExpr`.
 
 // The `#run` directive forces the compile-time execution of `mul(3, 6)`.
 const G1 = #run mul(3, 6)
-#assert(G1 == 18)                  // The result of `mul(3, 6)` is computed at compile time and verified.
+#assert(G1 == 18)
+// The result of `mul(3, 6)` is computed at compile time and verified.
 
 /**
 # Example: Compile-Time Evaluation of Conditional Logic
@@ -76,7 +79,8 @@ enabling the embedding of decision results directly into your constants.
 func max(a, b: s32) => a > b ? a : b
 
 const MaxValue = max(10, 20)
-#assert(MaxValue == 20)            // The comparison is performed at compile time.
+#assert(MaxValue == 20)
+// The comparison is performed at compile time.
 
 /**
 # Example: Compile-Time Initialization of Structs
@@ -92,7 +96,8 @@ struct Point { x, y: s32 }
 func createPoint(a, b: s32) => Point{a, b}
 
 const Origin = createPoint(1, 2)
-#assert(Origin.x == 1 and Origin.y == 2) // The Point is initialized at compile time.
+#assert(Origin.x == 1 and Origin.y == 2)
+// The Point is initialized at compile time.
 
 /**
 # Example: Using `#run` with User-Defined Types
@@ -105,6 +110,7 @@ struct Rectangle { width, height: s32 }
 
 func area(rect: Rectangle) => rect.width * rect.height
 
-const RectStatic = Rectangle{ 5, 10 }
-const RectArea = #run area(RectStatic)
-#assert(RectArea == 50)            // The area of the rectangle is computed at compile time.
+const RectStatic = Rectangle{5, 10}
+const RectArea   = #run area(RectStatic)
+#assert(RectArea == 50)
+// The area of the rectangle is computed at compile time.

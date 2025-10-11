@@ -68,11 +68,11 @@ impl Surface
 
     internal mtd applySurfaceFlags()
     {
-        if .flags.has(.BigCaption):
+        if .flags.has(.BigCaption) do
             .wnd.padding.y = .app.theme.metrics.wnd_BigCaptionCY
-        elif .flags.has(.SmallCaption):
+        elif .flags.has(.SmallCaption) do
             .wnd.padding.y = .app.theme.metrics.wnd_SmallCaptionCY
-        else:
+        else do
             .wnd.padding.y = 0
 
         if .flags.has(.Border)
@@ -186,7 +186,7 @@ impl Surface
     // Constraint a window position to be inside the closest monitor
     mtd constaintPositionToScreen(topLeft, bottomRight = true, margin = 0'f32)
     {
-        if .isMaximized or .isMinimized:
+        if .isMaximized or .isMinimized do
             return
 
         let monitor = Env.getMonitorForPoint({.position.x, .position.y})
@@ -226,7 +226,7 @@ impl Surface
     {
         .createRT()
 
-        if !.isDirty:
+        if !.isDirty do
             return
         let clipRect = .dirtyRect
         .dirtyRect = {Swag.F32.Max, Swag.F32.Max, 0, 0}
@@ -318,7 +318,7 @@ impl Surface
 
     mtd setView(view: *Wnd)
     {
-        if .wnd.view:
+        if .wnd.view do
             .wnd.view.destroy()
         .wnd.view = view
         .wnd.sendResizeEvent()

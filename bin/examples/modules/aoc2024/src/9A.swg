@@ -61,7 +61,7 @@ func day9A()
     foreach t in line
     {
         let r = t - '0'
-        if @index & 1:
+        if @index & 1 do
             map.add({-1, r})
         else
         {
@@ -73,11 +73,11 @@ func day9A()
     var last = map.count - #wrap 1
     for i in map
     {
-        if map[i].what != -1:
+        if map[i].what != -1 do
             continue
-        while map[last].what == -1:
+        while map[last].what == -1 do
             last -= 1
-        if i >= last:
+        if i >= last do
             break
 
         map[i].what = map[last].what
@@ -103,7 +103,7 @@ func day9A()
     var idx, total: u64
     foreach v, i in map
     {
-        if v.what == -1:
+        if v.what == -1 do
             break
         for v.num
         {

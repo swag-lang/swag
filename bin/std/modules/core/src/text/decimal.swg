@@ -102,12 +102,12 @@ impl Decimal
     // If we chop a at nd digits, should we round up?
     mtd shouldRoundUp(nd1: s64)->bool
     {
-        if nd1 < 0 or nd1 >= .nd:
+        if nd1 < 0 or nd1 >= .nd do
             return false
         if .d[nd1] == '5' and nd1 + 1 == .nd // exactly halfway - round to even
         {
             // if we truncated, a little higher than what's recorded - always round up
-            if .trunc:
+            if .trunc do
                 return true
             return nd1 > 0 and (.d[nd1 - 1] - '0') % 2 != 0
         }
@@ -122,18 +122,18 @@ impl Decimal
     // 0.09 -> 0.1.
     mtd round(nd1: s64)
     {
-        if nd1 < 0 or nd1 >= .nd:
+        if nd1 < 0 or nd1 >= .nd do
             return
-        if .shouldRoundUp(nd1):
+        if .shouldRoundUp(nd1) do
             .roundUp(nd1)
-        else:
+        else do
             .roundDown(nd1)
     }
 
     // Round a down to nd digits (or fewer).
     mtd roundDown(nd1: s64)
     {
-        if nd1 < 0 or nd1 >= .nd:
+        if nd1 < 0 or nd1 >= .nd do
             return
         .nd = nd1
         .trim()
@@ -142,7 +142,7 @@ impl Decimal
     // Round a up to nd digits (or fewer).
     mtd roundUp(nd1: s64)
     {
-        if nd1 < 0 or nd1 >= .nd:
+        if nd1 < 0 or nd1 >= .nd do
             return
         // round up
         for var i = nd1 - 1; i >= 0; i -= 1
@@ -195,9 +195,9 @@ impl Decimal
 
     mtd trim()
     {
-        while .nd > 0 and .d[.nd - 1] == '0':
+        while .nd > 0 and .d[.nd - 1] == '0' do
             .nd -= 1
-        if .nd == 0:
+        if .nd == 0 do
             .dp = 0
     }
 
@@ -275,9 +275,9 @@ impl Decimal
     {
         for var i = 0; i < @countof(s); i += 1
         {
-            if i >= @countof(b):
+            if i >= @countof(b) do
                 return true
-            if b[i] != s[i]:
+            if b[i] != s[i] do
                 return b[i] < s[i]
         }
 
@@ -287,7 +287,7 @@ impl Decimal
     mtd leftShift(k: u32)
     {
         var delta = LeftCheats[k].delta
-        if prefixIsLessThan(@mkslice(&.d[0], .nd), LeftCheats[k].cutoff):
+        if prefixIsLessThan(@mkslice(&.d[0], .nd), LeftCheats[k].cutoff) do
             delta -= 1
 
         var r = .nd             // read index
@@ -302,9 +302,9 @@ impl Decimal
             let quo = n / 10
             let rem = n - (10 * quo)
             w -= 1
-            if w < @countof(.d):
+            if w < @countof(.d) do
                 .d[w] = cast(u8) (rem + '0')
-            elif rem != 0:
+            elif rem != 0 do
                 .trunc = true
             n = quo
             r -= 1
@@ -316,15 +316,15 @@ impl Decimal
             let quo = n / 10
             let rem = n - (10 * quo)
             w -= 1
-            if w < @countof(.d):
+            if w < @countof(.d) do
                 .d[w] = cast(u8) (rem + '0')
-            elif rem != 0:
+            elif rem != 0 do
                 .trunc = true
             n = quo
         }
 
         .nd += delta
-        if .nd >= @countof(.d):
+        if .nd >= @countof(.d) do
             .nd = cast(s32) @countof(.d)
         .dp += delta
         .trim()
@@ -373,13 +373,13 @@ impl Decimal
         {
             buffer, cpt += 1
             .neg = true
-            if !Latin1.isDigit(dref buffer) and cpt == countof:
+            if !Latin1.isDigit(dref buffer) and cpt == countof do
                 throw ParseIncompleteError{}
         }
         elif c == plusSign
         {
             buffer, cpt += 1
-            if !Latin1.isDigit(dref buffer) and cpt == countof:
+            if !Latin1.isDigit(dref buffer) and cpt == countof do
                 throw ParseIncompleteError{}
         }
 
@@ -397,7 +397,7 @@ impl Decimal
             c = dref buffer
             if c == dotSign
             {
-                if sawdot:
+                if sawdot do
                     break
                 sawdot = true
                 .dp    = .nd
@@ -405,7 +405,7 @@ impl Decimal
             elif '0' <= c and c <= '9'
             {
                 sawDigits = true
-                if c == '0' and .nd == 0:
+                if c == '0' and .nd == 0 do
                     .dp -= 1
                 else
                 {
@@ -420,22 +420,22 @@ impl Decimal
                             .mantissa += cast(u64) (c - '0')
                             ndMant += 1
                         }
-                        elif c != '0':
+                        elif c != '0' do
                             .trunc = true
                     }
-                    elif c != '0':
+                    elif c != '0' do
                         .bigtrunc = true
                 }
             }
-            else:
+            else do
                 break
 
             cpt, buffer += 1
         }
 
-        if !sawDigits:
+        if !sawDigits do
             throw SyntaxError{}
-        if !sawdot:
+        if !sawdot do
             .dp = .nd
 
         // Exponent
@@ -443,7 +443,7 @@ impl Decimal
         if cpt < countof and (c | 32) == 'e'
         {
             cpt, buffer += 1
-            if cpt >= countof:
+            if cpt >= countof do
                 throw ParseIncompleteError{}
 
             var esign = 1
@@ -453,27 +453,27 @@ impl Decimal
                 buffer, cpt += 1
                 esign = -1
                 c     = dref buffer
-                if !Latin1.isDigit(c) and cpt >= countof:
+                if !Latin1.isDigit(c) and cpt >= countof do
                     throw ParseIncompleteError{}
             }
             elif c == plusSign
             {
                 buffer, cpt += 1
                 c = dref buffer
-                if !Latin1.isDigit(c) and cpt >= countof:
+                if !Latin1.isDigit(c) and cpt >= countof do
                     throw ParseIncompleteError{}
             }
 
-            if cpt >= countof or c < '0' or c > '9':
+            if cpt >= countof or c < '0' or c > '9' do
                 throw SyntaxError{}
 
             var e = 0
             while cpt < countof
             {
                 c = dref buffer
-                if c < '0' or c > '9':
+                if c < '0' or c > '9' do
                     break
-                if e < 10000:
+                if e < 10000 do
                     e = e * 10 + (c - '0')
                 buffer, cpt += 1
             }
@@ -481,7 +481,7 @@ impl Decimal
             .dp += e * esign
         }
 
-        if .mantissa != 0:
+        if .mantissa != 0 do
             .exp = .dp - ndMant
 
         return cpt
@@ -525,9 +525,9 @@ impl Decimal
             while .dp > 0
             {
                 var n: s64
-                if .dp >= @countof(PowTab):
+                if .dp >= @countof(PowTab) do
                     n = 27
-                else:
+                else do
                     n = PowTab[.dp]
                 .shift(-cast(s32) n)
                 .exp += n
@@ -536,9 +536,9 @@ impl Decimal
             while .dp < 0 or .dp == 0 and .d[0] < '5'
             {
                 var n: s64
-                if -.dp >= @countof(PowTab):
+                if -.dp >= @countof(PowTab) do
                     n = 27
-                else:
+                else do
                     n = PowTab[-.dp]
                 .shift(cast(s32) n)
                 .exp -= n
@@ -580,7 +580,7 @@ impl Decimal
             }
 
             // Denormalized?
-            if mant & (1'u64 << Swag.F64.MantBits) == 0:
+            if mant & (1'u64 << Swag.F64.MantBits) == 0 do
                 .exp = Swag.F64.Bias
             break
         }
@@ -595,7 +595,7 @@ impl Decimal
         var result: retval
         var bits    = mant & ((1'u64 << Swag.F64.MantBits) - 1)
         bits |= cast(u64) ((.exp - Swag.F64.Bias) & ((1's64 << Swag.F64.MantBits) - 1)) << Swag.F64.MantBits
-        if .neg:
+        if .neg do
             bits |= (1'u64 << 63)
         result.b        = bits
         result.overflow = overflow
@@ -604,7 +604,7 @@ impl Decimal
 
     mtd roundedInteger()->u64
     {
-        if .dp > 20:
+        if .dp > 20 do
             return 0xFFFFFFFFFFFFFFFF
 
         var i = 0's64
@@ -621,7 +621,7 @@ impl Decimal
             i += 1
         }
 
-        if .shouldRoundUp(.dp):
+        if .shouldRoundUp(.dp) do
             n += 1
         return n
     }

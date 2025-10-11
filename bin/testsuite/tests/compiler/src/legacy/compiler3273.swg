@@ -11,9 +11,9 @@ var G: s32
     let itf = @compiler
     let msg = itf.getMessage()
     @assert(msg.type != null)
-    if msg.type.name == "S_AA3273":
+    if msg.type.name == "S_AA3273" do
         G += 1
-    if msg.type.name == "E_AA3273":
+    if msg.type.name == "E_AA3273" do
         G += 1
 }
 

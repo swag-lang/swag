@@ -1,8 +1,8 @@
 struct MyStruct
 {
-    x:     s32 = 10  // Field 'x' initialized with default value 10
-    y:     s32 = 20  // Field 'y' initialized with default value 20
-    z:     s32 = 30  // Field 'z' initialized with default value 30
+    x:     s32 = 10     // Field 'x' initialized with default value 10
+    y:     s32 = 20     // Field 'y' initialized with default value 20
+    z:     s32 = 30     // Field 'z' initialized with default value 30
 }
 
 /**
@@ -29,10 +29,10 @@ impl MyStruct
         // The `ptr` and `back` parameters offer flexibility, allowing for reference-based
         // or reverse-order iterations.
 
-        #if ptr:
+        #if ptr do
             #error("Visiting by pointer is not supported in this example.")
 
-        #if back:
+        #if back do
             #error("Reverse visiting is not supported in this example.")
 
         // Example of visiting the fields of `MyStruct`. This demonstrates a common use case of `opVisit`.
@@ -48,11 +48,11 @@ impl MyStruct
                 switch #up idx
                 {
                 case 0:
-                    #alias0 = #up me.x  // Accessing field 'x'
+                    #alias0 = #up me.x // Accessing field 'x'
                 case 1:
-                    #alias0 = #up me.y  // Accessing field 'y'
+                    #alias0 = #up me.y // Accessing field 'y'
                 case 2:
-                    #alias0 = #up me.z  // Accessing field 'z'
+                    #alias0 = #up me.z // Accessing field 'z'
                 }
 
                 // `#alias1` holds the current index of the iteration.
@@ -74,7 +74,7 @@ The same approach can be extended to foreach more complex data structures.
 #test
 {
     var myStruct = MyStruct{}
-    var cpt = 0
+    var cpt      = 0
 
     // Visit each field of `MyStruct` in declaration order.
     // `v` corresponds to the value (i.e., #alias0).
@@ -117,11 +117,11 @@ impl MyStruct
                 switch #up idx
                 {
                 case 0:
-                    #alias0 = #up me.z  // Accessing field 'z' in reverse order
+                    #alias0 = #up me.z // Accessing field 'z' in reverse order
                 case 1:
-                    #alias0 = #up me.y  // Accessing field 'y' in reverse order
+                    #alias0 = #up me.y // Accessing field 'y' in reverse order
                 case 2:
-                    #alias0 = #up me.x  // Accessing field 'x' in reverse order
+                    #alias0 = #up me.x // Accessing field 'x' in reverse order
                 }
 
                 var #alias1 = @index
@@ -140,7 +140,7 @@ providing flexibility depending on the needs of your application.
 #test
 {
     var myStruct = MyStruct{}
-    var cpt = 0
+    var cpt      = 0
 
     // Call the variant `opVisitReverse` to iterate over the fields in reverse order.
     foreach #Reverse v, i in myStruct
@@ -172,7 +172,7 @@ For example, consider a struct with a slice:
 */
 struct SliceStruct
 {
-    buffer: [?] s32 = [1, 2, 3, 4, 5]  // A dynamic array (slice) initialized with values
+    buffer: [?] s32 = [1, 2, 3, 4, 5] // A dynamic array (slice) initialized with values
 }
 
 /**
@@ -212,7 +212,7 @@ operations such as summing the elements.
 #test
 {
     var arrStruct = SliceStruct{}
-    var sum = 0
+    var sum       = 0
 
     // Visit each element in the dynamic array buffer.
     foreach v, i in arrStruct
@@ -220,5 +220,5 @@ operations such as summing the elements.
         sum += v
     }
 
-    @assert(sum == 1 + 2 + 3 + 4 + 5)  // Ensuring the sum of the elements is correct
+    @assert(sum == 1 + 2 + 3 + 4 + 5) // Ensuring the sum of the elements is correct
 }

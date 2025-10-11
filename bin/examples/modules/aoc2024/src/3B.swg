@@ -33,9 +33,9 @@ func day3B()
     foreach v in d
     {
         var cpy: String = v
-        if cpy == "do()":
+        if cpy == "do()" do
             enable = true
-        elif cpy == "don't()":
+        elif cpy == "don't()" do
             enable = false
         elif enable
         {

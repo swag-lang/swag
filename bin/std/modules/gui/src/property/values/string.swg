@@ -3,7 +3,7 @@ impl Properties
     mtd validateDynamicString(item: *PropertiesItem)
     {
         var data = cast(*String) item.data
-        if item.editBox:
+        if item.editBox do
             dref data = item.editBox.getText()
         .hasChanged(item)
     }
@@ -14,9 +14,9 @@ impl Properties
         with let ed = EditBox.create(item.line, dref cast(*String) data)
         {
             .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
-            if me.kind == .Grid:
+            if me.kind == .Grid do
                 .dockStyle = .CenterKeepSizeVert
-            else:
+            else do
                 .anchorStyle = .X
             .sigLoseFocus += mtd|item|(ed) { .validateDynamicString(item); }
         }
@@ -31,9 +31,9 @@ impl Properties
         with let ed = EditBox.create(item.line, dref cast(*string) data)
         {
             .maxSize.x = cast() Reflection.getAttributeValue(value, me.EditSize, "size", me.sizeEditValue)
-            if me.kind == .Grid:
+            if me.kind == .Grid do
                 .dockStyle = .CenterKeepSizeVert
-            else:
+            else do
                 .anchorStyle = .X
             .editBoxFlags = .ReadOnly
         }

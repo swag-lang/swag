@@ -94,7 +94,7 @@ impl IActionUI for ActionImage
         let main    = cast(*MainWnd) cxt.wnd
         let capture = assume main.getCapture()
 
-        if !capture.backImgOriginal.isValid():
+        if !capture.backImgOriginal.isValid() do
             capture.backImgOriginal = capture.backImg
 
         switch cxt.id
@@ -216,16 +216,16 @@ impl MainWnd
 
         let res = dlg.doModal()
         g_KeepRatio = btnRatio.checked == .Checked
-        if res != Dialog.BtnOk:
+        if res != Dialog.BtnOk do
             return
 
         let w = trycatch StrConv.toS32(edit0.edit.text)
-        if w < Capture.MinSize or w > Capture.MaxSize:
+        if w < Capture.MinSize or w > Capture.MaxSize do
             return
         let h = trycatch StrConv.toS32(edit1.edit.text)
-        if h < Capture.MinSize or h > Capture.MaxSize:
+        if h < Capture.MinSize or h > Capture.MaxSize do
             return
-        if w == capture.width and h == capture.height:
+        if w == capture.width and h == capture.height do
             return
 
         .doProcessImage(ActionImage.ResizeImage, w: w, h: h)
@@ -333,16 +333,16 @@ impl MainWnd
     {
         let capture = assume .getCapture()
         let res     = .createExpandDialog("Expand Image", capture.backImg.width, capture.backImg.height)
-        if res != Dialog.BtnOk:
+        if res != Dialog.BtnOk do
             return
 
         let w = g_Width
-        if w < Capture.MinSize or w > Capture.MaxSize:
+        if w < Capture.MinSize or w > Capture.MaxSize do
             return
         let h = g_Height
-        if h < Capture.MinSize or h > Capture.MaxSize:
+        if h < Capture.MinSize or h > Capture.MaxSize do
             return
-        if w == capture.backImg.width and h == capture.backImg.height:
+        if w == capture.backImg.width and h == capture.backImg.height do
             return
 
         var l, t, r, b: s32 = 0
@@ -376,16 +376,16 @@ impl MainWnd
     {
         let capture = assume .getCapture()
         let res     = .createExpandDialog("Expand Capture", capture.width, capture.height)
-        if res != Dialog.BtnOk:
+        if res != Dialog.BtnOk do
             return
 
         let w = g_Width
-        if w < Capture.MinSize or w > Capture.MaxSize:
+        if w < Capture.MinSize or w > Capture.MaxSize do
             return
         let h = g_Height
-        if h < Capture.MinSize or h > Capture.MaxSize:
+        if h < Capture.MinSize or h > Capture.MaxSize do
             return
-        if w == capture.width and h == capture.height:
+        if w == capture.width and h == capture.height do
             return
 
         let nw = w - capture.width
@@ -427,13 +427,13 @@ impl MainWnd
         foreach f, idx in capture.forms
         {
             let r = f.boundRect()
-            if r.x > 0:
+            if r.x > 0 do
                 minX = Math.min(minX, r.x)
-            if r.y > 0:
+            if r.y > 0 do
                 minY = Math.min(minY, r.y)
-            if r.right() < capture.width:
+            if r.right() < capture.width do
                 maxX = Math.max(maxX, r.right())
-            if r.bottom() < capture.height:
+            if r.bottom() < capture.height do
                 maxY = Math.max(maxY, r.bottom())
 
             // Select forms outside capture
@@ -449,7 +449,7 @@ impl MainWnd
         #scope(Left)
         for x in capture.backImg.width
         {
-            if x + capture.backImagePos.x < 0:
+            if x + capture.backImagePos.x < 0 do
                 continue
             for y in capture.backImg.height
             {
@@ -465,7 +465,7 @@ impl MainWnd
         #scope(Right)
         for #reverse x in capture.backImg.width
         {
-            if x + capture.backImagePos.x >= capture.width:
+            if x + capture.backImagePos.x >= capture.width do
                 continue
             for y in capture.backImg.height
             {
@@ -481,7 +481,7 @@ impl MainWnd
         #scope(Up)
         for y in capture.backImg.height
         {
-            if y + capture.backImagePos.y < 0:
+            if y + capture.backImagePos.y < 0 do
                 continue
             for x in capture.backImg.width
             {
@@ -497,7 +497,7 @@ impl MainWnd
         #scope(Down)
         for #reverse y in capture.backImg.height
         {
-            if y + capture.backImagePos.y >= capture.height:
+            if y + capture.backImagePos.y >= capture.height do
                 continue
             for x in capture.backImg.width
             {

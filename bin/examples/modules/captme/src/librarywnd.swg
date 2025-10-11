@@ -59,7 +59,7 @@ impl LibraryWnd
 
     mtd getCapture()->#null *Capture
     {
-        if .view.focusItem < .view.items.count:
+        if .view.focusItem < .view.items.count do
             return .view.items[.view.focusItem].capture
         return null
     }
@@ -82,17 +82,17 @@ impl LibraryWnd
     {
         foreach it, i in .view.items
         {
-            if it.filtered:
+            if it.filtered do
                 continue
 
-            if .view.selModel.isSelected(cast() i):
+            if .view.selModel.isSelected(cast() i) do
                 g_Library.removeFile(it.fi.fullname)
         }
     }
 
     mtd moveSelHome()
     {
-        if .view.items.isEmpty():
+        if .view.items.isEmpty() do
             return
         .view.setFocusItem(0)
         .view.scrollToFocus()
@@ -100,7 +100,7 @@ impl LibraryWnd
 
     mtd moveSelEnd()
     {
-        if .view.items.isEmpty():
+        if .view.items.isEmpty() do
             return
         .view.setFocusItem(cast(u32) .view.items.count - 1)
         .view.scrollToFocus()
@@ -108,9 +108,9 @@ impl LibraryWnd
 
     mtd moveSelLeft()
     {
-        if .view.items.isEmpty():
+        if .view.items.isEmpty() do
             return
-        if .view.focusItem == 0 or .view.focusItem == Swag.U32.Max:
+        if .view.focusItem == 0 or .view.focusItem == Swag.U32.Max do
             return
         .view.focusItem -= 1
         .view.setFocusItem(.view.focusItem)
@@ -119,9 +119,9 @@ impl LibraryWnd
 
     mtd moveSelRight()
     {
-        if .view.items.isEmpty():
+        if .view.items.isEmpty() do
             return
-        if .view.focusItem == .view.items.count - 1 or .view.focusItem == Swag.U32.Max:
+        if .view.focusItem == .view.items.count - 1 or .view.focusItem == Swag.U32.Max do
             return
         .view.focusItem += 1
         .view.setFocusItem(.view.focusItem)
@@ -130,10 +130,10 @@ impl LibraryWnd
 
     mtd moveSelTop()
     {
-        if .view.items.isEmpty():
+        if .view.items.isEmpty() do
             return
         let n = .view.numImagesPerLine()
-        if .view.focusItem < n or .view.focusItem == Swag.U32.Max:
+        if .view.focusItem < n or .view.focusItem == Swag.U32.Max do
             return
         .view.focusItem -= n
         .view.setFocusItem(.view.focusItem)
@@ -142,10 +142,10 @@ impl LibraryWnd
 
     mtd moveSelBottom()
     {
-        if .view.items.isEmpty():
+        if .view.items.isEmpty() do
             return
         let n = .view.numImagesPerLine()
-        if .view.focusItem >= .view.items.count - n or .view.focusItem == Swag.U32.Max:
+        if .view.focusItem >= .view.items.count - n or .view.focusItem == Swag.U32.Max do
             return
         .view.focusItem += n
         .view.setFocusItem(.view.focusItem)
@@ -154,7 +154,7 @@ impl LibraryWnd
 
     mtd fill()
     {
-        if .listCtrl.getLineCount():
+        if .listCtrl.getLineCount() do
             return
         g_Library.onDeleteFile += mtd||(file)
         {
@@ -329,7 +329,7 @@ impl LibraryWnd
             .sigSelChanged += func|view|(list)
             {
                 var sel = list.getSelectedLine()
-                if !sel:
+                if !sel do
                     return
                 view.filterYear  = cast(u64) sel.userData0
                 view.filterMonth = cast(u64) sel.userData1

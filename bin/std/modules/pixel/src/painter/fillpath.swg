@@ -24,24 +24,24 @@ public impl Painter
             if .curState.paintParams & .Antialiased
             {
                 var e = tri.points[0].border[0]
-                if e:
+                if e do
                     .addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[0].border[1]
-                if e:
+                if e do
                     .addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[1].border[0]
-                if e:
+                if e do
                     .addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[1].border[1]
-                if e:
+                if e do
                     .addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
 
                 e = tri.points[2].border[0]
-                if e:
+                if e do
                     .addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
                 e = tri.points[2].border[1]
-                if e:
+                if e do
                     .addEdgeAA(prim, e.p.x, e.p.y, e.q.x, e.q.y)
             }
         }
@@ -51,7 +51,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPath(pathList: *LinePathList, color: Color)
     {
-        if !pathList.paths.count:
+        if !pathList.paths.count do
             return
 
         let brush = Brush.createSolid(color)
@@ -62,7 +62,7 @@ public impl Painter
     mtd fillPath(path: *LinePath, brush: Brush)
     {
         path.flatten(.curState.paintQuality)
-        if Math.isZeroEpsilon(path.polygon.totalLen):
+        if Math.isZeroEpsilon(path.polygon.totalLen) do
             return
 
         let polygon = &path.polygon
@@ -185,7 +185,7 @@ public impl Painter
         }
 
         // If everything has been computed, then just paint them (no need to generate polylines as 'triangulate' will not use them)
-        if flush and !flush.triangles.triIndices.count:
+        if flush and !flush.triangles.triIndices.count do
             dirty = true
 
         serial = 0
@@ -203,12 +203,12 @@ public impl Painter
             if p.polygon.points.count >= 3
             {
                 flush = p
-                if dirty:
+                if dirty do
                     .tess.addPolyLine(p.polygon)
             }
         }
 
-        if flush:
+        if flush do
             .fillPath(dirty ? &.tess : null, flush, pathList.bvMin, pathList.bvMax, brush)
     }
 
@@ -216,7 +216,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, color: Color)
     {
-        if color.a == 0:
+        if color.a == 0 do
             return
 
         let brush = Brush.createSolid(color)
@@ -227,7 +227,7 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPolygon(path: *LinePath, brush: Brush)
     {
-        if brush.color.a == 0:
+        if brush.color.a == 0 do
             return
 
         path.flatten(.curState.paintQuality)
@@ -239,7 +239,7 @@ public impl Painter
         {
             path.polygon.isClockwise = true
             let res = path.polygon.getClean()
-            foreach p in res.paths:
+            foreach p in res.paths do
                 .fillPath(p, brush)
         }
     }
@@ -248,12 +248,12 @@ public impl Painter
     #[Swag.Overload]
     mtd fillPolygon(points: [..] Math.Vector2, brush: Brush)
     {
-        if @countof(points) < 3:
+        if @countof(points) < 3 do
             return
 
         var path: LinePath
         path.start(points[0].x, points[0].y)
-        foreach pt in points where @index:
+        foreach pt in points where @index do
             path.lineTo(pt.x, pt.y)
         path.close()
         .fillPath(&path, brush)

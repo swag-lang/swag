@@ -15,17 +15,17 @@ func(T, V) findSorted(values: #null const [..] T, value: V)->u64
     while min <= max
     {
         let mid = (max + min) / 2
-        if mid >= countof:
+        if mid >= countof do
             break
 
         let res = values[mid] <=> value
-        if res == 0:
+        if res == 0 do
             return mid
-        if res < 0:
+        if res < 0 do
             min = mid + 1
-        elif mid == 0:
+        elif mid == 0 do
             break
-        else:
+        else do
             max = mid - 1
     }
 
@@ -37,7 +37,7 @@ func(T, V) findSorted(values: #null const [..] T, value: V)->u64
 // Returns Swag.U64.Max if not found.
 func(T, V) findLinear(values: #null const [..] T, value: V)->u64
 {
-    foreach v, i in values where v == value:
+    foreach v, i in values where v == value do
         return i
     return Swag.U64.Max
 }
@@ -45,9 +45,9 @@ func(T, V) findLinear(values: #null const [..] T, value: V)->u64
 // Returns true if the given slice contains the sub slice 'value'
 func(T) findSlice(values: #null const [..] T, value: const [..] T)->u32
 {
-    if !@countof(values):
+    if !@countof(values) do
         return Swag.U32.Max
-    if @countof(value) > @countof(values):
+    if @countof(value) > @countof(values) do
         return Swag.U32.Max
 
     for it0 in 0 to @countof(values) - @countof(value)
@@ -62,7 +62,7 @@ func(T) findSlice(values: #null const [..] T, value: const [..] T)->u32
             }
         }
 
-        if ok:
+        if ok do
             return cast() it0
     }
 
@@ -81,7 +81,7 @@ func(T, V) containsSorted(values: #null const [..] T, value: V)->bool
 #[Swag.ConstExpr, Swag.Overload]
 func(T, V) contains(values: #null const [..] T, value: V)->bool
 {
-    foreach v in values where v == value:
+    foreach v in values where v == value do
         return true
     return false
 }
@@ -90,12 +90,12 @@ func(T, V) contains(values: #null const [..] T, value: V)->bool
 #[Swag.ConstExpr]
 func(T) equals(dst, src: #null const [..] T)->bool
 {
-    if @countof(dst) != @countof(src):
+    if @countof(dst) != @countof(src) do
         return false
-    if !@countof(dst) or !@countof(src):
+    if !@countof(dst) or !@countof(src) do
         return true
 
-    for i in dst where dst[i] != src[i]:
+    for i in dst where dst[i] != src[i] do
         return false
     return true
 }

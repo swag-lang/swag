@@ -1,7 +1,7 @@
 func(T) toto(x: T...)->T
 {
     var res: T
-    foreach c in x:
+    foreach c in x do
         res += c
     return res
 }

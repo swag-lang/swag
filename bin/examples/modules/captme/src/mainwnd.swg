@@ -107,10 +107,10 @@ impl IWnd for MainWnd
 
         sf.show()
         sf.bringToTop()
-        while !menu.endModal:
+        while !menu.endModal do
             .surface.app.runFrame()
         sf.hide()
-        if menu.endModalResult:
+        if menu.endModalResult do
             .postCommandEvent(menu.endModalResult)
         sf.destroy()
     }
@@ -127,11 +127,11 @@ impl IWnd for MainWnd
                     .surface.show()
                     .surface.bringToTop()
                 }
-                elif evt.param1 == Win32.WM_RBUTTONDOWN:
+                elif evt.param1 == Win32.WM_RBUTTONDOWN do
                     .popupBar()
 
             case Win32.WM_USER + 1:
-                if Clipboard.hasString():
+                if Clipboard.hasString() do
                     .loadExternalImage(Clipboard.getString())
             }
         }
@@ -143,16 +143,16 @@ impl IWnd for MainWnd
         if evt.kind == .Close
         {
             evt.accepted = true
-            if .editorOptions.hideOnClose:
+            if .editorOptions.hideOnClose do
                 .surface.hide()
-            else:
+            else do
                 .postCommandEvent(ActionGlobal.Exit)
         }
     }
 
     mtd impl onDestroyEvent(evt: *DestroyEvent)
     {
-        if !.firstShow:
+        if !.firstShow do
             catch g_App.saveState()
     }
 
@@ -173,7 +173,7 @@ impl IWnd for MainWnd
 
     mtd impl onSerializeStateEvent(evt: *SerializeStateEvent)
     {
-        if .inPlaceEdit:
+        if .inPlaceEdit do
             return
 
         catch
@@ -204,7 +204,7 @@ impl IWnd for MainWnd
 
     mtd impl onFrameEvent(evt: *FrameEvent)
     {
-        if evt.firstFrame:
+        if evt.firstFrame do
             .quickWnd.setDefault()
     }
 }
@@ -233,7 +233,7 @@ impl MainWnd
             }
         }
 
-        if !done:
+        if !done do
             .newCapture(imgToLoad, arg)
 
         if .libraryMode
@@ -252,7 +252,7 @@ impl MainWnd
         case Selection:
             .editMode = .Shape
             let capture = .getCapture()
-            if capture:
+            if capture do
                 capture.updateEditModeFromSelection()
             let edMode = .editMode
             .editMode = .Selection
@@ -300,9 +300,9 @@ impl MainWnd
     mtd updateState()
     {
         .updateCommandState()
-        if .propWnd:
+        if .propWnd do
             .propWnd.selectionHasChanged()
-        if .quickWnd:
+        if .quickWnd do
             .quickWnd.updateQuickStyles()
     }
 
@@ -318,14 +318,14 @@ impl MainWnd
 
     mtd getCapture()->#null *Capture
     {
-        if .libraryMode:
+        if .libraryMode do
             return .libWnd.getCapture()
         return .editWnd.getCapture()
     }
 
     mtd updateRecent()
     {
-        if .recentWnd:
+        if .recentWnd do
             .recentWnd.updateRecent()
     }
 
@@ -339,7 +339,7 @@ impl MainWnd
     mtd updateSizeDisplay()
     {
         let capture = .getCapture()
-        if !capture or !.sizeBtn:
+        if !capture or !.sizeBtn do
             return
         .sizeBtn.name = Format.toString("% x %", capture.width, capture.height)
         .sizeBtn.invalidate()
@@ -462,7 +462,7 @@ impl MainWnd
             .addItems([ActionCapture.Area, ActionCapture.LastArea, ActionCapture.FullScreen, ActionCapture.ActiveWnd])
 
             let screenActions = [ActionCapture.Screen0, ActionCapture.Screen1, ActionCapture.Screen2, ActionCapture.Screen3]
-            foreach m, idx in me.monitors:
+            foreach m, idx in me.monitors do
                 .addItem(screenActions[idx])
 
             .addSeparator()
@@ -563,9 +563,9 @@ impl MainWnd
 
     mtd setTheme()
     {
-        if .editorOptions.theme == .Dark:
+        if .editorOptions.theme == .Dark do
             .getApp().theme.colors.setDark()
-        else:
+        else do
             .getApp().theme.colors.setLight()
         .getApp().themeHasChanged()
     }
@@ -575,12 +575,12 @@ impl MainWnd
         var icons: Array'(*IconButton)
         foreach c in .topBar.childs
         {
-            if c.type == IconButton:
+            if c.type == IconButton do
                 icons.add(cast(*IconButton) c)
         }
         foreach c in .editToolBar.childs
         {
-            if c.type == IconButton:
+            if c.type == IconButton do
                 icons.add(cast(*IconButton) c)
         }
 

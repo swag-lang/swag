@@ -7,7 +7,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y, width, height: f32, texture: Texture, color: Color = Argb.White)
     {
-        if width == 0 or height == 0 or color.a == 0:
+        if width == 0 or height == 0 or color.a == 0 do
             return
 
         let brush: Brush{color: color, type: BrushType.Texture, texture: texture, uvMode: .Fill}
@@ -23,7 +23,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y: f32, texture: Texture, color: Color = Argb.White)
     {
-        if color.a == 0:
+        if color.a == 0 do
             return
 
         let brush: Brush{color: color, type: BrushType.Texture, texture: texture, uvMode: .Fill}
@@ -34,7 +34,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y, width, height: f32, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
-        if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0:
+        if srcRect.isEmpty() or width == 0 or height == 0 or color.a == 0 do
             return
 
         let brush: Brush{color: color, type: BrushType.Texture, texture: texture, uvMode: .FillSubRect, uvRect: srcRect}
@@ -50,7 +50,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawTexture(x, y: f32, srcRect: Math.Rectangle, texture: Texture, color: Color = Argb.White)
     {
-        if srcRect.isEmpty() or color.a == 0:
+        if srcRect.isEmpty() or color.a == 0 do
             return
 
         let brush: Brush{color: color, type: BrushType.Texture, texture: texture, uvMode: .FillSubRect, uvRect: srcRect}

@@ -8,7 +8,7 @@ func decode(destBuffer: [*] void, destLength: u64, srcBuffer: [*] void, srcLengt
         var write = 0
         for i in srcLength
         {
-            if write + #sizeof(TD) > destLength:
+            if write + #sizeof(TD) > destLength do
                 break
             dst[0] = (cast(TD) src[0] - 128) << 8
             dst += 1

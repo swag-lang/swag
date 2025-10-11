@@ -114,14 +114,14 @@ private func execute(lines: Array'String)
             let low  = #ref getBot(assume StrConv.toS32(r1[3]))
             let high = #ref getBot(assume StrConv.toS32(r1[5]))
 
-            if r1[2] == "bot":
+            if r1[2] == "bot" do
                 low.add(bot.eatLow())
-            else:
+            else do
                 low.out = bot.eatLow()
 
-            if r1[4] == "bot":
+            if r1[4] == "bot" do
                 high.add(bot.eatHigh())
-            else:
+            else do
                 high.out = bot.eatHigh()
 
             low.execute()

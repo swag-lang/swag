@@ -90,7 +90,7 @@ bool Parser::doCompilerIfFor(AstNode* parent, AstNode** result, AstNodeKind kind
 
 bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNodeKind kind, bool forIf)
 {
-    if (tokenParse.is(TokenId::SymColon))
+    if (tokenParse.is(TokenId::KwdDo))
     {
         const auto tokenDo = tokenParse.token;
         SWAG_CHECK(eatToken());
@@ -110,7 +110,7 @@ bool Parser::doCompilerIfStatementFor(AstNode* parent, AstNode** result, AstNode
 
         if (forIf)
             parent = parent->parent;
-        err.addNote(parent, parent->token, form("the [[%s]] block should start with [[:]] or be enclosed in [[{}]]", parent->token.cstr()));
+        err.addNote(parent, parent->token, form("the [[%s]] block should start with [[do]] or be enclosed in [[{}]]", parent->token.cstr()));
         return context->report(err);
     }
 

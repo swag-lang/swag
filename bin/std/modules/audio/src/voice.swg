@@ -116,7 +116,7 @@ public impl Voice
     #[Swag.Overload]
     mtd play(playFlags = VoicePlayFlags.Zero) throw
     {
-        if .hasState(.Playing):
+        if .hasState(.Playing) do
             return
         .playFlags = playFlags
         .playNative()
@@ -132,7 +132,7 @@ public impl Voice
     // Pause the playing voice
     mtd pause() throw
     {
-        if !.hasState(.Playing):
+        if !.hasState(.Playing) do
             return
         .stopNative()
         .resetState(.Playing)
@@ -141,18 +141,18 @@ public impl Voice
     // Stop the playing voice
     mtd stop() throw
     {
-        if !.hasState(.Playing):
+        if !.hasState(.Playing) do
             return
         .stopNative()
         .resetState(.Playing)
-        if .playFlags.has(.DestroyOnStop):
+        if .playFlags.has(.DestroyOnStop) do
             .destroy()
     }
 
     // Destroy the voice
     mtd destroy()
     {
-        if .hasState(.PendingDestroy):
+        if .hasState(.PendingDestroy) do
             return
         .setState(.PendingDestroy)
         g_Driver.updateVoice(me, .Destroy)
@@ -161,7 +161,7 @@ public impl Voice
     // Returns true if the voice is currently playing
     mtd isPlaying()->bool
     {
-        if !.handle:
+        if !.handle do
             return false
         return .hasState(.Playing)
     }

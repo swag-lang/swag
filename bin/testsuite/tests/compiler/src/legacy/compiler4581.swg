@@ -3,7 +3,7 @@ func toto(x: func||() = null)
 {
     var y: func||()
     y = x
-    if y:
+    if y do
         y()
 }
 

@@ -67,9 +67,9 @@ func day5B()
             {
                 split.sort(func(x, y)
                 {
-                    if let r0 = order.tryFind(x) where r0.value.contains(y):
+                    if let r0 = order.tryFind(x) where r0.value.contains(y) do
                         return -1
-                    if let r1 = order.tryFind(y) where r1.value.contains(x):
+                    if let r1 = order.tryFind(y) where r1.value.contains(x) do
                         return 1
 
                     return x <=> y

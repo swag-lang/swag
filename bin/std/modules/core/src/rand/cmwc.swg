@@ -16,7 +16,7 @@ impl CMWC4096
     {
         var rng: MWC
         rng.seedU32(value)
-        for idx in .q:
+        for idx in .q do
             .q[idx] = rng.nextU32()
         .i = 4095
         .c = value % 809430660
@@ -30,14 +30,14 @@ impl CMWC4096
         const r = 0xfffffffe
 
         // Be sure we have seeded
-        if .i > 4095:
+        if .i > 4095 do
             .seedU32(362436)
 
         .i = (.i + 1) & 4095
         let t = a * .q[.i] + .c
         .c = cast(u32) (t >> 32)
         var x = t + .c
-        if x < .c:
+        if x < .c do
             x, .c += 1
         let v = cast #bit (u32) (r - x)
         .q[.i] = v

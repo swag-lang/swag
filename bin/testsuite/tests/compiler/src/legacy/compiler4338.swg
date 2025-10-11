@@ -3,7 +3,7 @@ func(T) largest(list: [..] T)->&T
     var largest = #ref &list[0]
     foreach item in list
     {
-        if item > largest:
+        if item > largest do
             largest = item
     }
 

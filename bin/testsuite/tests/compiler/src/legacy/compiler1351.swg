@@ -2,6 +2,6 @@ const CONST = true
 
 interface TOTO
 {
-    #if CONST:
+    #if CONST do
         func print(v: *TOTO, x: bool);
 }

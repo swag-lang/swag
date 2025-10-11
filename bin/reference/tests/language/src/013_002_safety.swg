@@ -27,7 +27,7 @@ Operators that can cause overflows include: `+ - * << >>` and their compound ass
 */
 #test
 {
-    var x = 255'u8                                // Initialize x with the maximum value for u8
+    var x = 255'u8 // Initialize x with the maximum value for u8
     // x += 1                                      // Uncommenting this will cause a panic due to overflow
 }
 
@@ -39,9 +39,9 @@ operation to bypass the safety check.
 */
 #test
 {
-    var x = 255'u8                                // Initialize x with the maximum value for u8
-    x += #wrap 1                                  // This will wrap around without causing a panic
-    @assert(x == 0)                               // Assert that x has wrapped around to 0
+    var x = 255'u8 // Initialize x with the maximum value for u8
+    x += #wrap 1 // This will wrap around without causing a panic
+    @assert(x == 0) // Assert that x has wrapped around to 0
 }
 
 /**
@@ -53,9 +53,9 @@ prevents overflows from causing panics for all operations in the scope.
 #[Swag.CanOverflow(true)]
 #test
 {
-    var x = 255'u8                                // Initialize x with the maximum value for u8
-    x += 1                                        // Overflow occurs, but no panic due to global setting
-    @assert(x == 0)                               // Assert that x has wrapped around to 0
+    var x = 255'u8 // Initialize x with the maximum value for u8
+    x += 1 // Overflow occurs, but no panic due to global setting
+    @assert(x == 0) // Assert that x has wrapped around to 0
 }
 
 /**
@@ -66,9 +66,9 @@ operation to 32-bit, thereby avoiding overflow by widening the operand types.
 */
 #test
 {
-    let x = 255'u8 + #prom 1                      // Promote the addition to 32-bit to avoid overflow
-    @assert(x == 256)                             // Assert that the result is 256
-    @assert(#typeof(x) == u32)                    // Assert that the type of x is u32
+    let x = 255'u8 + #prom 1 // Promote the addition to 32-bit to avoid overflow
+    @assert(x == 256) // Assert that the result is 256
+    @assert(#typeof(x) == u32) // Assert that the type of x is u32
 }
 
 /**
@@ -79,19 +79,19 @@ between different integer types.
 */
 #test
 {
-    let x1 = 255'u8                               // Initialize x1 with the maximum value for u8
+    let x1 = 255'u8 // Initialize x1 with the maximum value for u8
 
     // var y0 = cast(s8) x1                       // This would cause a panic because 255 cannot be
-                                                  // represented as s8
+    // represented as s8
 
-    let y1 = cast #wrap (s8) x1                    // Use #wrap to bypass safety checks and allow this
-                                                  // cast
-    @assert(y1 == -1)                             // Assert that y1 is -1 after wrapping
+    let y1 = cast #wrap (s8) x1 // Use #wrap to bypass safety checks and allow this
+    // cast
+    @assert(y1 == -1) // Assert that y1 is -1 after wrapping
 
-    let x2 = -1's8                                // Initialize x2 with the minimum value for s8
+    let x2 = -1's8 // Initialize x2 with the minimum value for s8
     // var y2 = cast(u8) x2                       // This would cause a panic because x2 is negative
-    let y2 = cast #wrap (u8) x2                    // Use #wrap to bypass safety checks
-    @assert(y2 == 255)                            // Assert that y2 is 255 after wrapping
+    let y2 = cast #wrap (u8) x2 // Use #wrap to bypass safety checks
+    @assert(y2 == 255) // Assert that y2 is 255 after wrapping
 }
 
 /**
@@ -103,11 +103,11 @@ panic due to overflow to proceed normally.
 #[Swag.CanOverflow(true)]
 #test
 {
-    var x = 255'u8                                // Initialize x with the maximum value for u8
-    x += 255                                      // x becomes 254 after wrapping
-    x += 1                                        // x becomes 255
-    x >>= 1                                       // x becomes 127 after right shift
-    @assert(x == 127)                             // Assert that x is 127
+    var x = 255'u8 // Initialize x with the maximum value for u8
+    x += 255 // x becomes 254 after wrapping
+    x += 1 // x becomes 255
+    x >>= 1 // x becomes 127 after right shift
+    @assert(x == 127) // Assert that x is 127
 }
 
 /**
@@ -120,8 +120,8 @@ when working with dynamic types.
 */
 #test
 {
-    let x: any = "1"                              // Initialize x with a string
-    let y  = cast(string) x                       // This is valid because the underlying type is correct
+    let x: any = "1"            // Initialize x with a string
+    let y  = cast(string) x     // This is valid because the underlying type is correct
     // var z = cast(s32) x                        // This is invalid and will cause a panic
     // @assert(z == 0)
 }
@@ -140,8 +140,8 @@ slice, or a string.
 */
 #test
 {
-    var x   = [0, 1, 2]                           // Initialize an array
-    var idx = 10                                  // Set an out-of-bounds index
+    var x   = [0, 1, 2]     // Initialize an array
+    var idx = 10            // Set an out-of-bounds index
     // @assert(x[idx] == 1)                       // This will cause a panic due to out-of-bounds access
 }
 
@@ -152,10 +152,10 @@ Swag ensures that indexing operations on slices are within bounds to prevent run
 */
 #test
 {
-    let x: const [..] s32 = [0, 1, 2]             // Initialize a slice
-    var idx = 1                                   // Set a valid index
-    @assert(x[idx] == 1)                          // Assert that x[1] is 1
-    idx += 9                                      // Move the index out of bounds
+    let x:  const [..] s32 = [0, 1, 2]     // Initialize a slice
+    var idx = 1                            // Set a valid index
+    @assert(x[idx] == 1) // Assert that x[1] is 1
+    idx += 9 // Move the index out of bounds
     // @assert(x[idx] == 1)                       // This will cause a panic due to out-of-bounds access
 }
 
@@ -166,15 +166,15 @@ Swag will panic if a slice operation goes out of bounds, ensuring safe slicing o
 */
 #test
 {
-    var x: const [..] s32 = [0, 1, 2]             // Initialize a slice
+    var x: const [..] s32 = [0, 1, 2] // Initialize a slice
     // var slice = x[1..4]                        // This will cause a panic due to out-of-bounds access
     // @assert(slice[0] == 1)
 }
 
 #test
 {
-    var x   = "string"                            // Initialize a string
-    var idx = 10                                  // Set an out-of-bounds index for slicing
+    var x   = "string"     // Initialize a string
+    var idx = 10           // Set an out-of-bounds index for slicing
     // var slice = x[0..idx]                      // This will cause a panic due to out-of-bounds slicing
     // @assert(slice[0] == 's')
 }
@@ -189,8 +189,8 @@ arguments to math functions.
 */
 #test
 {
-    var x = 1'f32                                 // Initialize x with a float value
-    var y = 0'f32                                 // Initialize y with zero
+    var x = 1'f32     // Initialize x with a float value
+    var y = 0'f32     // Initialize y with zero
     // var z = x / y                              // Division by zero will cause a panic
     // @print(z)
 }
@@ -224,19 +224,26 @@ cases, ensuring exhaustive pattern matching.
 */
 #test
 {
-    enum Color { Red, Green, Blue }               // Define an enum with three values
+    enum Color
+    {
+        Red
+        Green
+        Blue
+        // Define an enum with three values
+    }
 
-    func colorToString(color: Color) -> string
+    func colorToString(color: Color)->string
     {
         // #[Swag.Complete]                       // Mark the switch as complete
         switch color
         {
-            case Color.Red: return "Red"          // Handle Red
-            case Color.Green: return "Green"      // Handle Green
-            // If `Color.Blue` is not covered, this will cause a panic due to missing case
+        case Color.Red:
+            return "Red" // Handle Red
+        case Color.Green:
+            return "Green" // Handle Green
         }
 
-        return ""                                 // Return an empty string as a fallback
+        return "" // Return an empty string as a fallback
     }
 }
 
@@ -250,7 +257,7 @@ boolean type safety.
 */
 #test
 {
-    var b: u8 = 2                                 // Initialize b with an invalid boolean value
+    var b: u8 = 2 // Initialize b with an invalid boolean value
     // if b { ... }                               // This will panic because b is not a valid boolean
 }
 

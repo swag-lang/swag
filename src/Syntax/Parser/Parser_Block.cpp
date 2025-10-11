@@ -364,7 +364,7 @@ bool Parser::doFor(AstNode* parent, AstNode** result)
     // Post statement
     SWAG_CHECK(doEmbeddedInstruction(node, &node->postStatement));
 
-    // For optimisation purposes in the bytecode generation, we must generate postExpression first,
+    // For optimization purposes in the bytecode generation, we must generate postExpression first,
     // then the bool expression. So here we put the bool expression after the post one.
     Ast::removeFromParent(node->boolExpression);
     Ast::addChildBack(node, node->boolExpression);

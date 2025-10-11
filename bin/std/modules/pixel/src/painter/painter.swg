@@ -193,7 +193,7 @@ impl Painter
 
     internal mtd setTexture0(bvMin, bvMax: Vector2, brush: Brush)
     {
-        if !.canSetTexture0:
+        if !.canSetTexture0 do
             return
         if brush.type == .SolidColor
         {
@@ -233,9 +233,9 @@ impl Painter
         params.hatch   = brush.hatch
         params.texture = brush.texture
         params.uvMode  = brush.uvMode
-        if brush.type == .Hatch:
+        if brush.type == .Hatch do
             params.interpolationMode = .Pixel
-        else:
+        else do
             params.interpolationMode = .curState.interpolationMode
 
         .lastTexture0Handle = brush.texture.handle
@@ -254,7 +254,7 @@ impl Painter
 
     internal mtd resetTextureFont()
     {
-        if !.hasTextureFont:
+        if !.hasTextureFont do
             return
         .hasTextureFont = false
         discard .newCommand(.ResetTextureFont, true)
@@ -275,7 +275,7 @@ impl Painter
         if .commandBuffer.count
         {
             let last = .commandBuffer.buffer + .commandBuffer.count - 1
-            if last.id == CommandId.DrawTriangles:
+            if last.id == CommandId.DrawTriangles do
                 cmd = last
         }
 
@@ -340,7 +340,7 @@ impl Painter
     internal mtd addEdgeAA(tri: u64, startx, starty, endx, endy: f32)
     {
         var ptr = .vertexBuffer.buffer + tri
-        if ptr.aanum == MaxAAEdge:
+        if ptr.aanum == MaxAAEdge do
             return
 
         let idx = cast(u32) ptr.aanum
@@ -381,7 +381,7 @@ impl Painter
         Debug.assert(.drawingBegin, "begin() not called before")
 
         // Take the previous command if it's the same
-        if replaceLast and .commandBuffer.count and .commandBuffer.buffer[.commandBuffer.count - 1].id == cmd:
+        if replaceLast and .commandBuffer.count and .commandBuffer.buffer[.commandBuffer.count - 1].id == cmd do
             return .commandBuffer.buffer + .commandBuffer.count - 1
 
         let ptr = .commandBuffer.emplaceAddress(1)
@@ -391,7 +391,7 @@ impl Painter
 
     internal mtd updateFont(fontRef: *Font)
     {
-        if !fontRef.dirty:
+        if !fontRef.dirty do
             return
         let cmd = .newCommand(.UpdateFont, false)
         cmd.font.fontRef = fontRef
@@ -400,11 +400,11 @@ impl Painter
     internal mtd startOverlapMode(pen: Pen)
     {
         var alpha = false
-        if pen.brush.color.argb & 0xFF000000 != 0xFF000000:
+        if pen.brush.color.argb & 0xFF000000 != 0xFF000000 do
             alpha = true
-        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha():
+        if pen.brush.type == .Texture and pen.brush.texture.pf.hasAlpha() do
             alpha = true
-        if .curRT and .curRT.paintAlpha and .curState.paintParams & .Antialiased:
+        if .curRT and .curRT.paintAlpha and .curState.paintParams & .Antialiased do
             alpha = true
         if alpha and .curState.blendingMode == .Alpha
         {
@@ -521,9 +521,9 @@ impl Painter
     // Set antialiased mode on/off
     mtd setAntialiased(aa = true)
     {
-        if aa:
+        if aa do
             .curState.paintParams |= .Antialiased
-        else:
+        else do
             .curState.paintParams &= ~.Antialiased
     }
 
@@ -541,7 +541,7 @@ impl Painter
     // Set the paint position
     mtd translateTransform(x, y: f32)
     {
-        if isZeroEpsilon(x) and isZeroEpsilon(y):
+        if isZeroEpsilon(x) and isZeroEpsilon(y) do
             return
         let tr = Transform2.createTranslation(x, y)
         .curState.transform.multiply(tr)
@@ -552,7 +552,7 @@ impl Painter
     #[Swag.Overload]
     mtd rotateTransform(angle: Math.Angle)
     {
-        if isZeroEpsilon(angle.rad):
+        if isZeroEpsilon(angle.rad) do
             return
         let tr = Transform2.createRotation(angle.rad, 0, 0)
         .curState.transform.multiply(tr)
@@ -563,7 +563,7 @@ impl Painter
     #[Swag.Overload]
     mtd rotateTransform(angle: Math.Angle, centerX, centerY: f32)
     {
-        if isZeroEpsilon(angle.rad):
+        if isZeroEpsilon(angle.rad) do
             return
         let tr = Transform2.createRotation(angle.rad, centerX, centerY)
         .curState.transform.multiply(tr)
@@ -574,7 +574,7 @@ impl Painter
     // Will rotate around the current transformation position.
     mtd rotateTransformInPlace(angle: Math.Angle)
     {
-        if isZeroEpsilon(angle.rad):
+        if isZeroEpsilon(angle.rad) do
             return
         let tr = Transform2.createRotation(angle.rad, .curState.transform.tx, .curState.transform.ty)
         .curState.transform.multiply(tr)
@@ -585,7 +585,7 @@ impl Painter
     #[Swag.Overload]
     mtd scaleTransform(x, y: f32)
     {
-        if isZeroEpsilon(x) and isZeroEpsilon(y):
+        if isZeroEpsilon(x) and isZeroEpsilon(y) do
             return
         let tr = Transform2.createScale(x, y, 0, 0)
         .curState.transform.multiply(tr)
@@ -596,7 +596,7 @@ impl Painter
     #[Swag.Overload]
     mtd scaleTransform(x: f32)
     {
-        if isZeroEpsilon(x):
+        if isZeroEpsilon(x) do
             return
         let tr = Transform2.createScale(x, x, 0, 0)
         .curState.transform.multiply(tr)
@@ -654,7 +654,7 @@ impl Painter
     #[Swag.Overload]
     mtd setClippingRect(rect: Rectangle)
     {
-        if .curState.clippingRect == rect and .curState.clippingRectOn:
+        if .curState.clippingRect == rect and .curState.clippingRectOn do
             return
         .curState.clippingRect   = rect
         .curState.clippingRectOn = true
@@ -683,7 +683,7 @@ impl Painter
     mtd pushClippingRect(rect: Rectangle, isSurfacePos = false)
     {
         var rrect = rect
-        if !isSurfacePos:
+        if !isSurfacePos do
             rrect.offset(.curState.transform.tx, .curState.transform.ty)
         rrect.round()
 
@@ -717,7 +717,7 @@ impl Painter
     // Get the current clipping rectangle
     mtd getClippingRect()->Rectangle
     {
-        if .curState.clippingRectOn:
+        if .curState.clippingRectOn do
             return .curState.clippingRect
         return {0, 0, Swag.F32.Max, Swag.F32.Max}
     }
@@ -796,7 +796,7 @@ impl Painter
         cmd.renderTgt.paintAlpha = paintAlpha
         .resetState()
 
-        if .curRT:
+        if .curRT do
             .stackRT.add(.curRT)
         .curRT = tgt
     }
@@ -807,7 +807,7 @@ impl Painter
         discard .newCommand(.UnbindRenderTarget, true)
         .popState()
 
-        if .stackRT.count:
+        if .stackRT.count do
             .curRT = .stackRT.popBack()
         else
         {
@@ -819,7 +819,7 @@ impl Painter
     // Release the render target
     mtd releaseRenderTarget(tgt: *RenderTarget)
     {
-        if !tgt:
+        if !tgt do
             return
         let cmd = .newCommand(.ReleaseRenderTarget)
         cmd.renderTgt.tgt = tgt

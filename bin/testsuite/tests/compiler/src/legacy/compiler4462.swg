@@ -76,7 +76,7 @@ func advance(bodies: [..] Planet, dt: f64, steps: u64)
 {
     for s in steps
     {
-        for var i = 0; i < 5; i += 1//for i in 3
+        for var i = 0; i < 5; i += 1 //for i in 3
         //foreach &bi, j in  bodies[..@countof(bodies)-2]
         {
             let bi = &bodies[i]
@@ -84,7 +84,7 @@ func advance(bodies: [..] Planet, dt: f64, steps: u64)
             var vy = bi.vy
             var vz = bi.vz
 
-            for var j = i + 1; j < 5; j += 1//foreach &bj in bodies[j+1 ..]
+            for var j = i + 1; j < 5; j += 1 //foreach &bj in bodies[j+1 ..]
             {
                 let bj = &bodies[j]
 

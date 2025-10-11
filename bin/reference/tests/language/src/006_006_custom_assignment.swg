@@ -17,7 +17,8 @@ impl Struct
     #[Swag.Overload]
     mtd opAffect(value: s32)
     {
-        me.x, me.y = value // Assign the provided `value` to both 'x' and 'y'
+        me.x, me.y = value
+        // Assign the provided `value` to both 'x' and 'y'
     }
 
     // Overloaded `opAffect` to handle assignments of type `bool`

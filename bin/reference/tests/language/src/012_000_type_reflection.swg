@@ -20,7 +20,7 @@ itself. This is particularly useful for type inspection and validation at compil
     // Using #typeof to retrieve the type information of the basic type 's8'
     let ptr1 = #typeof(s8)
     @assert(ptr1.name == "s8") // Verifies that the name of the type is 's8'
-    @assert(ptr1 == s8)        // Confirms that the retrieved type matches 's8'
+    @assert(ptr1 == s8) // Confirms that the retrieved type matches 's8'
 
     // Retrieving the type of another basic type 's16' using #typeof
     let ptr2 = #typeof(s16)
@@ -84,9 +84,12 @@ between various kinds of types and handle them appropriately.
 
     // Evaluating these type checks at compile time
     using Swag
-    #assert(#typeof(*u8).kind == TypeInfoKind.Pointer)  // Ensures the type is recognized as a pointer
-    #assert(#typeof([1, 2, 3]).kind == TypeInfoKind.Array)  // Ensures the type is recognized as an array
-    #assert(#typeof({1, 2, 3}).kind == TypeInfoKind.Struct)  // Ensures the type is recognized as a struct
+    #assert(#typeof(*u8).kind == TypeInfoKind.Pointer)
+    // Ensures the type is recognized as a pointer
+    #assert(#typeof([1, 2, 3]).kind == TypeInfoKind.Array)
+    // Ensures the type is recognized as an array
+    #assert(#typeof({1, 2, 3}).kind == TypeInfoKind.Struct)
+    // Ensures the type is recognized as a struct
 }
 
 /**
@@ -101,7 +104,8 @@ information and then use that type within your code.
 {
     // Using #decltype to declare a variable of type s32 based on its typeinfo
     var x: #decltype(#typeof(s32))
-    #assert(#typeof(x) == s32)  // Confirms that the variable 'x' is indeed of type 's32'
+    #assert(#typeof(x) == s32)
+    // Confirms that the variable 'x' is indeed of type 's32'
 }
 
 /**
@@ -115,21 +119,23 @@ depends on compile-time logic, allowing for dynamic yet type-safe programming pa
 {
     // A function that returns a typeinfo based on a compile-time condition
     #[Swag.ConstExpr]
-    func getType(needAString: bool) -> typeinfo
+    func getType(needAString: bool)->typeinfo
     {
-        if needAString:
+        if needAString do
             return string
-        else:
+        else do
             return s32
     }
 
     // Using #decltype to determine the type of 'x' based on the compile-time condition
     var x: #decltype(getType(needAString: false))
-    #assert(#typeof(x) == s32)  // Confirms that 'x' is of type s32
+    #assert(#typeof(x) == s32)
+    // Confirms that 'x' is of type s32
     x = 0
 
     // Another example with the condition evaluating to true
     var x1: #decltype(getType(needAString: true))
-    #assert(#typeof(x1) == string)  // Confirms that 'x1' is of type string
+    #assert(#typeof(x1) == string)
+    // Confirms that 'x1' is of type string
     x1 = "0"
 }

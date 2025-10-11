@@ -8,7 +8,7 @@ impl Point
 {
     func opIndex(me, i, j: u64)->s32
     {
-        if (i == 0):
+        if (i == 0) do
             return cast() j
         return cast() (j * 2)
     }

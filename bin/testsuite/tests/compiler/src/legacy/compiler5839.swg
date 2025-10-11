@@ -3,7 +3,7 @@
 func safety(expr: #code bool, message: string = null, loc = #callerlocation)
 {
     let b = #inject(expr)
-    if !b:
+    if !b do
         @panic(message, loc)
     @assert(b)
 }

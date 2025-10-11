@@ -43,9 +43,9 @@ func day2B()
                 if @index
                 {
                     let diff = a - prev
-                    if @abs(diff) < 1 or @abs(diff) > 3:
+                    if @abs(diff) < 1 or @abs(diff) > 3 do
                         bad = true
-                    if ls and Math.sign(diff) != ls:
+                    if ls and Math.sign(diff) != ls do
                         bad = true
                     ls = Math.sign(diff)
                 }
@@ -55,7 +55,7 @@ func day2B()
 
             if bad
             {
-                if tor == first0.count:
+                if tor == first0.count do
                     break
                 first = first0
                 first.removeAtOrdered(tor)

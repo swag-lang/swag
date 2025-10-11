@@ -7,7 +7,7 @@ func toto()
 
     #macro
     {
-        for 10:
+        for 10 do
             #up cpt += 1
     }
 

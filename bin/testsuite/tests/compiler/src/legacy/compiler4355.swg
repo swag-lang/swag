@@ -4,7 +4,7 @@ struct(T) S
     #if T == bool
     {
     }
-    #else:
+    #else do
         #error("error")
     x:   T
 }

@@ -25,7 +25,7 @@ impl Image
     // Change the alpha channel
     public mtd setAlpha(value: u8 = 0)
     {
-        if .pf != .BGRA8:
+        if .pf != .BGRA8 do
             return
         .setChannel(Image.ChannelMode.Alpha, Image.ChannelValueMode.Color, value)
     }
@@ -33,7 +33,7 @@ impl Image
     // Change specified color channels
     public mtd setChannel(mode: ChannelMode, value: ChannelValueMode, color: u8 = 0)
     {
-        if .pf != .BGR8 and .pf != .BGRA8:
+        if .pf != .BGR8 and .pf != .BGRA8 do
             return
 
         // Remove alpha change if it does not exists
@@ -41,7 +41,7 @@ impl Image
         if .pf == .BGR8
         {
             rmode &= ~.Alpha
-            if rmode == 0 or value == .Alpha:
+            if rmode == 0 or value == .Alpha do
                 return
         }
 
@@ -67,13 +67,13 @@ impl Image
                 color = pix[3]
             }
 
-            if mode & .Blue:
+            if mode & .Blue do
                 pix[0] = color
-            if mode & .Green:
+            if mode & .Green do
                 pix[1] = color
-            if mode & .Red:
+            if mode & .Red do
                 pix[2] = color
-            if mode & .Alpha:
+            if mode & .Alpha do
                 pix[3] = color
         }
     }

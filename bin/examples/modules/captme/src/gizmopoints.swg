@@ -22,9 +22,9 @@ impl GizmoPoints
         switch evt.kind
         {
         case MousePressed:
-            if .moving:
+            if .moving do
                 return true
-            if evt.button != .Left or .hotAnchor == Swag.U32.Max:
+            if evt.button != .Left or .hotAnchor == Swag.U32.Max do
                 break
             .moving, .firstMoving = true
             .movingStart = pos
@@ -48,10 +48,10 @@ impl GizmoPoints
             if .moving
             {
                 let diff = pos - .movingStart
-                if .firstMoving and .sigChanged:
+                if .firstMoving and .sigChanged do
                     .sigChanged(diff, .hotAnchor, true)
                 .firstMoving = false
-                if .sigChanged:
+                if .sigChanged do
                     .sigChanged(diff, .hotAnchor, false)
             }
             else
@@ -97,7 +97,7 @@ impl GizmoPoints
     {
         let form    = cast(*BaseForm) @dataof(iform)
         let capture = form.capture
-        if !first:
+        if !first do
             capture.undo()
         let undo = capture.newUndo(.MovePoint)
         let zoom = capture.editView.zoom

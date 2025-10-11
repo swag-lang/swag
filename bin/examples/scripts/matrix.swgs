@@ -28,7 +28,7 @@ var g_Rng:  Random.Rng
 func initC(i: s32)
 {
     g_RD[i].length = g_Rng.nextS32(MinTrailSize, MaxTrailSize - 1)
-    for j in g_RD[i].length:
+    for j in g_RD[i].length do
         g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
     g_RD[i].speed = g_Rng.nextF32(400, 800)
     g_RD[i].y     = 0
@@ -40,7 +40,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
     {
     case CreateEvent:
         g_Font = wnd.getTheme().createDefaultFont(FontSize)
-        for i in MaxColumns:
+        for i in MaxColumns do
             initC(i)
 
     case PaintEvent as paintEvt:
@@ -56,7 +56,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             for j in g_RD[i].length
             {
                 // Once in a while, change the rune in the trail
-                if g_Rng.nextU32(0, 300) < 2:
+                if g_Rng.nextU32(0, 300) < 2 do
                     g_RD[i].c[j] = cast(rune) g_Rng.nextS32(FirstRune, LastRune)
                 let c = g_RD[i].c[j]
 
@@ -64,9 +64,9 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
                 y -= j * FontSize
 
                 // No need to paint if rune is outside window
-                if y > rect.bottom():
+                if y > rect.bottom() do
                     continue
-                if y < rect.y - FontSize:
+                if y < rect.y - FontSize do
                     break
 
                 // If the move is equivalent to one fontsize, then insert a new rune
@@ -82,9 +82,9 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
                 // First rune is white, the rest blends to black
                 var color: Color = undefined
-                if j == 0:
+                if j == 0 do
                     color = Color.getBlend(Argb.Green, Argb.White, 0.5)
-                else:
+                else do
                     color = Color.getBlend(Argb.Green, Argb.Black, j / cast(f32) g_RD[i].length)
 
                 y = yi * FontSize
@@ -97,7 +97,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
             g_RD[i].y += g_RD[i].speed * wnd.getApp().getDt()
 
             // If the full trail is outside the window, randomize a new one
-            if g_RD[i].y - (g_RD[i].length * FontSize) > rect.bottom() + FontSize:
+            if g_RD[i].y - (g_RD[i].length * FontSize) > rect.bottom() + FontSize do
                 initC(i)
         }
 
@@ -109,7 +109,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test"):
+    func test(app: *Application) => if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 1024, 800, title: "Matrix", hook: &onEvent, init: &test)
 }

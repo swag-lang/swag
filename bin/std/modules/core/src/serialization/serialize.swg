@@ -64,27 +64,27 @@ impl Serializer
     // End encoding/decoding
     mtd end() throw
     {
-        if .isWrite:
+        if .isWrite do
             .encode.end()
-        else:
+        else do
             .decode.end()
     }
 
     // Start a new section
     mtd beginSection(kind = SectionKind.Unordered) throw
     {
-        if .isWrite:
+        if .isWrite do
             .encode.beginSection(kind)
-        else:
+        else do
             .decode.beginSection(kind)
     }
 
     // End the previous section
     mtd endSection() throw
     {
-        if .isWrite:
+        if .isWrite do
             .encode.endSection()
-        else:
+        else do
             .decode.endSection()
     }
 
@@ -102,60 +102,60 @@ impl Serializer
             .encode.beginField(value)
             defer #noerr .encode.endField(value)
 
-            #if MT == s8:
+            #if MT == s8 do
                 .encode.writeS8(dref res)
-            #elif MT == s16:
+            #elif MT == s16 do
                 .encode.writeS16(dref res)
-            #elif MT == s32:
+            #elif MT == s32 do
                 .encode.writeS32(dref res)
-            #elif MT == s64:
+            #elif MT == s64 do
                 .encode.writeS64(dref res)
-            #elif MT == u8:
+            #elif MT == u8 do
                 .encode.writeU8(dref res)
-            #elif MT == u16:
+            #elif MT == u16 do
                 .encode.writeU16(dref res)
-            #elif MT == u32 or MT == rune:
+            #elif MT == u32 or MT == rune do
                 .encode.writeU32(dref res)
-            #elif MT == u64:
+            #elif MT == u64 do
                 .encode.writeU64(dref res)
-            #elif MT == bool:
+            #elif MT == bool do
                 .encode.writeBool(dref res)
-            #elif MT == f32:
+            #elif MT == f32 do
                 .encode.writeF32(dref res)
-            #elif MT == f64:
+            #elif MT == f64 do
                 .encode.writeF64(dref res)
-            #else:
+            #else do
                 .encode.write(res, #typeof(MT))
         }
         else
         {
-            if !.decode.beginField(value):
+            if !.decode.beginField(value) do
                 return
             defer #noerr .decode.endField(value)
 
-            #if MT == s8:
+            #if MT == s8 do
                 dref res = .decode.readS8()
-            #elif MT == s16:
+            #elif MT == s16 do
                 dref res = .decode.readS16()
-            #elif MT == s32:
+            #elif MT == s32 do
                 dref res = .decode.readS32()
-            #elif MT == s64:
+            #elif MT == s64 do
                 dref res = .decode.readS64()
-            #elif MT == u8:
+            #elif MT == u8 do
                 dref res = .decode.readU8()
-            #elif MT == u16:
+            #elif MT == u16 do
                 dref res = .decode.readU16()
-            #elif MT == u32 or MT == rune:
+            #elif MT == u32 or MT == rune do
                 dref res = .decode.readU32()
-            #elif MT == u64:
+            #elif MT == u64 do
                 dref res = .decode.readU64()
-            #elif MT == bool:
+            #elif MT == bool do
                 dref res = .decode.readBool()
-            #elif MT == f32:
+            #elif MT == f32 do
                 dref res = .decode.readF32()
-            #elif MT == f64:
+            #elif MT == f64 do
                 dref res = .decode.readF64()
-            #else:
+            #else do
                 .decode.read(res, #typeof(MT))
         }
     }

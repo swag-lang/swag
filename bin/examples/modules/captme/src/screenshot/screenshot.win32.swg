@@ -10,10 +10,10 @@ private
 
     func enumProc(hWnd: HWND, _lParam: LPARAM)->BOOL
     {
-        if !IsWindowVisible(hWnd):
+        if !IsWindowVisible(hWnd) do
             return TRUE
 
-        if hWnd == g_Ignore:
+        if hWnd == g_Ignore do
             return TRUE
 
         var r: RECT
@@ -33,7 +33,7 @@ private
 
             foreach s in systemClasses
             {
-                if str == s:
+                if str == s do
                     return TRUE
             }
 
@@ -53,7 +53,7 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
     g_Hit    = null
     g_Ignore = srf.hWnd
     EnumWindows(cast() &enumProc, 0)
-    if !g_Hit:
+    if !g_Hit do
         return {}
 
     for
@@ -63,12 +63,12 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
         pt1.y = g_HitTest.y
         ScreenToClient(g_Hit, &pt1)
         let child = ChildWindowFromPointEx(g_Hit, pt1, CWP_SKIPINVISIBLE | CWP_SKIPDISABLED | CWP_SKIPTRANSPARENT)
-        if !child or child == g_Hit:
+        if !child or child == g_Hit do
             break
         g_Hit = child
     }
 
-    if !g_Hit:
+    if !g_Hit do
         return {}
 
     var r: RECT
@@ -79,7 +79,7 @@ func getWndRectAtPos(srf: *Surface, x, y: f32)->Math.Rectangle
 func getBackgroundWndRect()->Math.Rectangle
 {
     let hit = GetForegroundWindow()
-    if !hit:
+    if !hit do
         return {}
 
     let awareness = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE)

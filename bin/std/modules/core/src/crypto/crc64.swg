@@ -88,7 +88,7 @@ impl Crc64
     public mtd update(data: #null const [..] u8, kind: Crc64Kind)
     {
         let length = @countof(data)
-        if length == 0:
+        if length == 0 do
             return
 
         let bytes = cast(const [*] u8) @dataof(data)

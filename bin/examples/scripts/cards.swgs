@@ -509,7 +509,7 @@ func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
         foreach &im in fi.images
         {
             var img = catch Image.load(dref im)
-            if @err == null:
+            if @err == null do
                 all.add(moveref &img)
         }
 
@@ -553,7 +553,7 @@ func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
         rsf.flags |= .WordWrap
         rsf.palette[0] = Argb.Black
         rs.set(fi.text)
-        if !fi.text2.isEmpty():
+        if !fi.text2.isEmpty() do
             rectText.height *= 0.5
         dc.drawRichString(rectText, &rs, rsf)
 
@@ -697,7 +697,7 @@ func paintObjects(what: string, colorDeck: Color)
     foreach l in lines
     {
         let tokens = Tokenize.split(l, ';''rune, removeEmpty: false)
-        if tokens.count == 0:
+        if tokens.count == 0 do
             continue
 
         var fi: ImageInfo
@@ -719,7 +719,7 @@ func paintObjects(what: string, colorDeck: Color)
             {
                 var imgPath = Path.combine(dataPath, "img", fi.what)
                 imgPath = Path.combine(imgPath, tokens[4])
-                if i:
+                if i do
                     imgPath += Format.toString("%", 'a''rune + (i - 1))
                 imgPath += ".png"
                 fi.images.add(imgPath)
@@ -740,7 +740,7 @@ func paintObjects(what: string, colorDeck: Color)
     {
         let fileN = Format.toString("%-%.jpg", what, pageNum)
         let pOut  = Path.combine(dataPath, "out")
-        if !Directory.exists(pOut):
+        if !Directory.exists(pOut) do
             assume Directory.create(pOut)
         assume page.save(Path.combine(dataPath, "out", cast(string) fileN))
     }
@@ -811,7 +811,7 @@ func paintObjects(what: string, colorDeck: Color)
         g_Id += 1
     }
 
-    if !empty:
+    if !empty do
         flushPage()
 }
 
@@ -841,7 +841,7 @@ var g_DataPath: String
     foreach f, i in files
     {
         let fn = assume Path.getFileNameWithoutExtension(f.fullname)
-        if Path.getFileName(f.fullname) == "objets.txt":
+        if Path.getFileName(f.fullname) == "objets.txt" do
             paintObjects(fn, deckColors[i])
     }
 }

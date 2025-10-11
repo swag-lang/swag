@@ -11,43 +11,43 @@ Unlike in C/C++, the condition in an `if` statement does not need to be enclosed
 {
     var a = 0
 
-    if a == 1:                    // No curly braces, so a colon ':' is required after the condition
-        @assert(false)            // This block will not execute since 'a' is not equal to 1
+    if a == 1 do  // No curly braces, so a colon ':' is required after the condition
+        @assert(false) // This block will not execute since 'a' is not equal to 1
 
-    if (a == 1):                  // Parentheses can be used for grouping or clarity, but are optional
-        @assert(false)            // This block will also not execute
+    if (a == 1) do  // Parentheses can be used for grouping or clarity, but are optional
+        @assert(false) // This block will also not execute
 
-    if a == 0                     // Curly braces are used, no colon is needed here
+    if a == 0 // Curly braces are used, no colon is needed here
     {
-        @assert(true)             // This block will execute because 'a' equals 0
+        @assert(true) // This block will execute because 'a' equals 0
     }
 
     // The 'else' keyword can be used as in most programming languages.
     // When not using curly braces, the colon ':' after the condition is mandatory.
-    if a == 0:
-        a += 1                    // This block will execute, setting 'a' to 1
-    else:
-        a += 2                    // This block is skipped because the 'if' condition is true
-    @assert(a == 1)               // Asserts that 'a' is now 1
+    if a == 0 do
+        a += 1 // This block will execute, setting 'a' to 1
+    else do
+        a += 2 // This block is skipped because the 'if' condition is true
+    @assert(a == 1) // Asserts that 'a' is now 1
 
     // The 'elif' keyword is used for else-if chains, functioning similarly to 'else if' in other languages.
-    if a == 1:
-        a += 1                    // This block will execute, making 'a' equal to 2
-    else:
-        if a == 2:                // This nested 'if' will not execute
+    if a == 1 do
+        a += 1 // This block will execute, making 'a' equal to 2
+    else do
+        if a == 2 do  // This nested 'if' will not execute
             @assert(false)
-        elif a == 3:              // This condition is also false
+        elif a == 3 do  // This condition is also false
             @assert(false)
-        elif a == 4:              // This condition is false as well
+        elif a == 4 do  // This condition is false as well
             @assert(false)
 
     // Logical expressions using 'and' and 'or' work as expected
-    if a == 0 and a == 1:         // This condition is false because 'a' cannot be both 0 and 1
-        @assert(false)            // This block will not execute
-    if a == 0 or a == 1:          // This condition is false because 'a' is 2
+    if a == 0 and a == 1 do  // This condition is false because 'a' cannot be both 0 and 1
+        @assert(false) // This block will not execute
+    if a == 0 or a == 1 do  // This condition is false because 'a' is 2
         @assert(false)
-    if a == 1 or a == 2:          // This condition is true because 'a' is 2
-        @assert(true)             // This block will execute
+    if a == 1 or a == 2 do  // This condition is true because 'a' is 2
+        @assert(true) // This block will execute
 }
 
 /**
@@ -63,21 +63,21 @@ The condition in the `if` statement will automatically convert the declared vari
     // The variable 'a' is only scoped within this 'if' block.
     if let a = 0
     {
-        @assert(false)            // This block will not execute
+        @assert(false) // This block will not execute
     }
 
     // You can redeclare 'a' as a constant in another block.
     // Since 'a' is 1, the 'if' block will execute.
-    if const a = 1:
-        @assert(a == 1)           // This block will execute and assert that 'a' is 1
-    else:
-        @assert(false)            // This block will not execute
+    if const a = 1 do
+        @assert(a == 1) // This block will execute and assert that 'a' is 1
+    else do
+        @assert(false) // This block will not execute
 
     // Another example using 'let'
-    if let a = 1:
-        @assert(a == 1)           // This block will execute, confirming that 'a' is 1
-    else:
-        @assert(false)            // This block will not execute
+    if let a = 1 do
+        @assert(a == 1) // This block will execute, confirming that 'a' is 1
+    else do
+        @assert(false) // This block will not execute
 }
 
 /**
@@ -87,19 +87,19 @@ When an `if` statement includes a variable declaration, you can add an additiona
 
 #test
 {
-    func retSomething()->string  => "string"
+    func retSomething()->string     => "string"
     func retNothing()->#null string => null
 
     // The 'where' clause is only evaluated if 'str' is not null.
-    if let str = retSomething() where str[0] == 's':
-        @assert(true)             // This block will execute since 'str' starts with 's'
-    else:
-        @assert(false)            // This block will not execute
+    if let str = retSomething() where str[0] == 's' do
+        @assert(true) // This block will execute since 'str' starts with 's'
+    else do
+        @assert(false) // This block will not execute
 
     // In this example, the initial test fails because 'str' is null,
     // so the 'where' clause is not evaluated.
-    if let str = retNothing() where str[0] == 's':
-        @assert(false)            // This block will not execute
-    else:
-        @assert(true)             // This block will execute since the initial test fails
+    if let str = retNothing() where str[0] == 's' do
+        @assert(false) // This block will not execute
+    else do
+        @assert(true) // This block will execute since the initial test fails
 }

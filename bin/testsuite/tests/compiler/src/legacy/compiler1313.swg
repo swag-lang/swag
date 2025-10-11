@@ -19,7 +19,7 @@ impl A
     {
         var x: A
         defer cpt = 1
-        for 10:
+        for 10 do
             break to outer
         @assert(false)
     }

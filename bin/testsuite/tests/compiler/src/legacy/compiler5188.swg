@@ -22,7 +22,7 @@ impl A
     {
         //@print(ep, " ", eq, " ", tri, " ", p, "\n")
         @assert(tri == 1)
-        if cpt == 2:
+        if cpt == 2 do
             return
         cpt += 1
         var t  = tri

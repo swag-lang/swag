@@ -13,7 +13,7 @@ impl A
 #[Swag.Macro]
 func toto(stmt: #code void)
 {
-    if true:
+    if true do
         return
     for 4
     {

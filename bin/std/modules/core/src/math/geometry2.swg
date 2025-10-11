@@ -55,11 +55,11 @@ func distanceToSegment(self, a, b: Vector2)->f32
     let ae = self - a
 
     let abbe = ab.dot(be)
-    if abbe > 0:
+    if abbe > 0 do
         return be.length()
 
     let abae = ab.dot(ae)
-    if abae < 0:
+    if abae < 0 do
         return ae.length()
 
     let x1  = ab.x
@@ -106,9 +106,9 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
             {
                 t = 0
                 let nd = -d
-                if nd >= a:
+                if nd >= a do
                     s = 1
-                elif nd > 0:
+                elif nd > 0 do
                     s = nd / a
             }
             elif e < c
@@ -119,9 +119,9 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
             {
                 t = 1
                 let bmd = b - d
-                if bmd >= a:
+                if bmd >= a do
                     s = 1
-                elif bmd > 0:
+                elif bmd > 0 do
                     s = bmd / a
             }
         }
@@ -136,9 +136,9 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
                 {
                     t = 0
                     let nd = -d
-                    if nd <= 0:
+                    if nd <= 0 do
                         s = 0
-                    elif nd < a:
+                    elif nd < a do
                         s = nd / a
                 }
                 elif bpe < c
@@ -149,9 +149,9 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
                 {
                     t = 1
                     let bmd = b - d
-                    if bmd <= 0:
+                    if bmd <= 0 do
                         s = 0
-                    elif bmd < a:
+                    elif bmd < a do
                         s = bmd / a
                 }
             }
@@ -163,11 +163,11 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
                 {
                     t = 0
                     let nd = -d
-                    if nd <= 0:
+                    if nd <= 0 do
                         s = 0
-                    elif nd >= a:
+                    elif nd >= a do
                         s = 1
-                    else:
+                    else do
                         s = nd / a
                 }
                 else
@@ -177,11 +177,11 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
                     {
                         t = 1
                         let bmd = b - d
-                        if bmd <= 0:
+                        if bmd <= 0 do
                             s = 0
-                        elif bmd >= a:
+                        elif bmd >= a do
                             s = 1
-                        else:
+                        else do
                             s = bmd / a
                     }
                     else
@@ -199,22 +199,22 @@ func nearestPointsSegSeg(p0, p1, q0, q1: Math.Vector2)->{ a: Math.Vector2, b: Ma
         {
             t = 0
             let nd = -d
-            if nd <= 0:
+            if nd <= 0 do
                 s = 0
-            elif nd >= a:
+            elif nd >= a do
                 s = 1
-            else:
+            else do
                 s = nd / a
         }
         elif e >= c
         {
             t = 1
             let bmd = b - d
-            if bmd <= 0:
+            if bmd <= 0 do
                 s = 0
-            elif bmd >= a:
+            elif bmd >= a do
                 s = 1
-            else:
+            else do
                 s = bmd / a
         }
         else
@@ -262,7 +262,7 @@ func lineLineIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = Const
     var result: retval
 
     let (yes, d0, ?) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-    if !yes:
+    if !yes do
         return result
 
     result.yes   = true
@@ -278,10 +278,10 @@ func segSegIntersect(start0, end0, start1, end1: Vector2, epsilon: f32 = ConstF3
     var result: retval
 
     let (yes, d0, d1) = getLineLineIntersectCoefs(start0, end0, start1, end1, epsilon)
-    if !yes:
+    if !yes do
         return result
 
-    if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon:
+    if d0 < -epsilon or d0 > 1 + epsilon or d1 < -epsilon or d1 > 1 + epsilon do
         return result
 
     result.yes   = true

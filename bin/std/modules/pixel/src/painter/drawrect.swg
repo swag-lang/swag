@@ -7,7 +7,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawRect(left, top, width, height: f32, color: Color, penSize: f32 = 1)
     {
-        if width == 0 or height == 0 or color.a == 0 or penSize == 0:
+        if width == 0 or height == 0 or color.a == 0 or penSize == 0 do
             return
 
         let pen = Pen.createSolid(color, penSize)
@@ -23,7 +23,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawRect(left, top, width, height: f32, pen: Pen)
     {
-        if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0:
+        if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0 do
             return
 
         var l = Math.round(left)
@@ -72,7 +72,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillRect(left, top, width, height: f32, brush: Brush)
     {
-        if width == 0 or height == 0 or brush.color.a == 0:
+        if width == 0 or height == 0 or brush.color.a == 0 do
             return
 
         var l = Math.round(left)
@@ -102,7 +102,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillRect(left, top, width, height: f32, color: Color)
     {
-        if width == 0 or height == 0 or color.a == 0:
+        if width == 0 or height == 0 or color.a == 0 do
             return
 
         let brush = Brush.createSolid(color)
@@ -119,7 +119,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawRoundRect(left, top, width, height: f32, radiusX, radiusY: f32, color: Color, penSize: f32 = 1)
     {
-        if width == 0 or height == 0 or color.a == 0 or penSize == 0:
+        if width == 0 or height == 0 or color.a == 0 or penSize == 0 do
             return
 
         let pen = Pen.createSolid(color, penSize)
@@ -129,7 +129,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawRoundRect(left, top, width, height: f32, radiusX, radiusY: f32, pen: Pen)
     {
-        if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0:
+        if width == 0 or height == 0 or pen.brush.color.a == 0 or pen.size == 0 do
             return
 
         var l = Math.round(left)
@@ -185,7 +185,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillRoundRect(left, top, width, height: f32, radiusX, radiusY: f32, brush: Brush)
     {
-        if width == 0 or height == 0 or brush.color.a == 0:
+        if width == 0 or height == 0 or brush.color.a == 0 do
             return
         .sharedLinePath.setRoundRect(left, top, width, height, radiusX, radiusY)
         .fillPath(&.sharedLinePath, brush)
@@ -194,7 +194,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillRoundRect(rect: Math.Rectangle, radiusX, radiusY: f32, brush: Brush)
     {
-        if rect.width == 0 or rect.height == 0 or brush.color.a == 0:
+        if rect.width == 0 or rect.height == 0 or brush.color.a == 0 do
             return
         .sharedLinePath.setRoundRect(rect.x, rect.y, rect.width, rect.height, radiusX, radiusY)
         .fillPath(&.sharedLinePath, brush)
@@ -203,7 +203,7 @@ impl Painter
     #[Swag.Overload]
     mtd fillRoundRect(left, top, width, height: f32, radiusX, radiusY: f32, color: Color)
     {
-        if width == 0 or height == 0 or color.a == 0:
+        if width == 0 or height == 0 or color.a == 0 do
             return
 
         let brush = Brush.createSolid(color)

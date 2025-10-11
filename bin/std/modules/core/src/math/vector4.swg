@@ -68,7 +68,7 @@ impl Vector4
             .z /= other.z
             .w /= other.w
         }
-        #else:
+        #else do
             #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
@@ -105,7 +105,7 @@ impl Vector4
             .z /= value
             .w /= value
         }
-        #else:
+        #else do
             #error("unsupported assign operation [[" ++ op ++ "]]")
     }
 
@@ -114,15 +114,15 @@ impl Vector4
     #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(other: Vector4)->Vector4
     {
-        #if op == "+":
+        #if op == "+" do
             return Vector4{.x + other.x, .y + other.y, .z + other.z, .w + other.w}
-        #elif op == "-":
+        #elif op == "-" do
             return Vector4{.x - other.x, .y - other.y, .z - other.z, .w - other.w}
-        #elif op == "*":
+        #elif op == "*" do
             return Vector4{.x * other.x, .y * other.y, .z * other.z, .w * other.w}
-        #elif op == "/":
+        #elif op == "/" do
             return Vector4{.x / other.x, .y / other.y, .z / other.z, .w / other.w}
-        #else:
+        #else do
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
@@ -131,15 +131,15 @@ impl Vector4
     #[Swag.Overload, Swag.Inline]
     mtd(op: string) const opBinary(value: f32)->Vector4
     {
-        #if op == "+":
+        #if op == "+" do
             return Vector4{.x + value, .y + value, .z + value, .w + value}
-        #elif op == "-":
+        #elif op == "-" do
             return Vector4{.x - value, .y - value, .z - value, .w - value}
-        #elif op == "*":
+        #elif op == "*" do
             return Vector4{.x * value, .y * value, .z * value, .w * value}
-        #elif op == "/":
+        #elif op == "/" do
             return Vector4{.x / value, .y / value, .z / value, .w / value}
-        #else:
+        #else do
             #error("unsupported binary operation [[" ++ op ++ "]]")
     }
 
@@ -148,9 +148,9 @@ impl Vector4
     #[Swag.Inline]
     mtd(op: string) const opUnary()->Vector4
     {
-        #if op == "-":
+        #if op == "-" do
             return Vector4{-.x, -.y, -.z, -.w}
-        #else:
+        #else do
             #error("unsupported unary operation [[" ++ op ++ "]]")
     }
 
@@ -311,7 +311,7 @@ impl Vector4
     mtd const toNormalizedSafe()->Vector4
     {
         var norm = sqrt((.x * .x) + (.y * .y) + (.z * .z) + (.w * .w))
-        if Math.isZeroEpsilon(norm):
+        if Math.isZeroEpsilon(norm) do
             return Zero
         norm = 1 / norm
         return Vector4{.x * norm, .y * norm, .z * norm, .w * norm}
@@ -420,9 +420,9 @@ impl Vector4
     mtd clampLength(minLength, maxLength: f32)
     {
         let len = .length()
-        if len < minLength:
+        if len < minLength do
             .setLength(minLength)
-        elif len > maxLength:
+        elif len > maxLength do
             .setLength(maxLength)
     }
 
@@ -431,9 +431,9 @@ impl Vector4
     mtd const clampedLength(minLength, maxLength: f32)->Vector4
     {
         let len = .length()
-        if len < minLength:
+        if len < minLength do
             return .toNormalized() * minLength
-        elif len > maxLength:
+        elif len > maxLength do
             return .toNormalized() * maxLength
         return dref me
     }
@@ -461,7 +461,7 @@ impl Vector4
     {
         let dotProduct    = .dot(other)
         let otherLengthSq = other.lengthSquared()
-        if Math.isZeroEpsilon(otherLengthSq):
+        if Math.isZeroEpsilon(otherLengthSq) do
             return Zero
         return other * (dotProduct / otherLengthSq)
     }
@@ -500,9 +500,9 @@ impl Vector4
     {
         let dir  = target - dref me
         let dist = dir.length()
-        if dist <= maxDistance:
+        if dist <= maxDistance do
             dref me = target
-        else:
+        else do
             dref me += dir * (maxDistance / dist)
     }
 
@@ -512,7 +512,7 @@ impl Vector4
     {
         let dir  = target - dref me
         let dist = dir.length()
-        if dist <= maxDistance:
+        if dist <= maxDistance do
             return target
         return dref me + (dir * (maxDistance / dist))
     }
@@ -534,7 +534,7 @@ impl Vector4
     // Returns a Vector3 representing the 3D position when w != 0. Handles w = 0 case safely.
     mtd const toVector3()->Vector3
     {
-        if Math.isZeroEpsilon(.w):
+        if Math.isZeroEpsilon(.w) do
             return Vector3{.x, .y, .z}
         return Vector3{.x / .w, .y / .w, .z / .w}
     }

@@ -167,7 +167,7 @@ impl Image
     {
         Debug.assert(.pixels.buffer != null)
 
-        if newPf == .pf:
+        if newPf == .pf do
             return
 
         .allocWorkingBuffer(.width, .height, newPf)
@@ -180,7 +180,7 @@ impl Image
     {
         Debug.assert(.pixels.buffer != null)
 
-        if newPf == .pf:
+        if newPf == .pf do
             return dref me
 
         var result: retval = create(.width, .height, newPf)

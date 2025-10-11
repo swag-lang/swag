@@ -12,7 +12,7 @@ using Core.Memory
 
     {
         var ptr = new'String(10)
-        for 10:
+        for 10 do
             ptr[@index] = "toto"
         delete(ptr, 10)
     }

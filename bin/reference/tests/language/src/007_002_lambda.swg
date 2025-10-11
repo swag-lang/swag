@@ -104,7 +104,7 @@ inferable from the variable's type. This reduces verbosity while maintaining typ
     {
         return x != y
     }
-    
+
     @assert(fct(20, 120))
 }
 

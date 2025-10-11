@@ -4,7 +4,7 @@ using Core
 func toto(rep: u32)->String
 {
     var result: retval
-    for rep:
+    for rep do
         result += "X"
     return result
 }

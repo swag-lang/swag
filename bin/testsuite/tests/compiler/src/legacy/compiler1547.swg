@@ -3,7 +3,7 @@ using Swag
 #[ConstExpr]
 func hasMember(type: const *TypeInfo, name: string)->bool
 {
-    if (name == "titi"):
+    if (name == "titi") do
         return true
     return false
 }

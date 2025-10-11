@@ -13,7 +13,7 @@ impl ImageMetaData
     // Returns true if the metadata has the tag 'val'
     mtd isTag(val: const [..] u8)->bool
     {
-        if @countof(val) != .tag.count:
+        if @countof(val) != .tag.count do
             return false
         return Memory.compare(@dataof(val), .tag.buffer, @countof(val)) == 0
     }

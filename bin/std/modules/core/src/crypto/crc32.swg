@@ -503,7 +503,7 @@ public impl Crc32
     mtd update(data: #null const [..] u8)
     {
         var length = @countof(data)
-        if !length:
+        if !length do
             return
         var current = cast(const [*] u32) @dataof(data)
 

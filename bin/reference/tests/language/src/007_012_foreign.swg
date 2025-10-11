@@ -15,11 +15,11 @@ modules varies by operating system, so it is important to specify the correct mo
 */
 
 #[Swag.Foreign("kernel32")]
-func ExitProcess(uExitCode: u32);                 // Declares the 'ExitProcess' function from 'kernel32.dll'
+func ExitProcess(uExitCode: u32); // Declares the 'ExitProcess' function from 'kernel32.dll'
 
 #[Swag.Foreign("kernel32")]
 {
-    func Sleep(dwMilliseconds: u32);              // Declares the 'Sleep' function from 'kernel32.dll'
+    func Sleep(dwMilliseconds: u32); // Declares the 'Sleep' function from 'kernel32.dll'
 }
 
 /**

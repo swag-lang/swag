@@ -25,7 +25,7 @@ impl ThemeStyle
 
     internal mtd free()
     {
-        if !.refr:
+        if !.refr do
             return
         .refr.count -= 1
         if .refr.count == 0
@@ -64,7 +64,7 @@ impl ThemeStyle
 
         // If parent is dirty, or i am dirty, then we need
         // to compute.
-        if !.dirty and !parent.dirty:
+        if !.dirty and !parent.dirty do
             return
         .dirty = true
 
@@ -93,7 +93,7 @@ impl ThemeStyle
         }
 
         // Make a new tweak as a copy of the parent
-        if .refr == parent.refr:
+        if .refr == parent.refr do
             .create(parent)
 
         // Then tweak it with the stylesheet

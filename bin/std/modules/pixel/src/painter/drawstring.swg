@@ -91,7 +91,7 @@ impl Painter
     func measureRune(c: rune, font: #null *Font)->Math.Point
     {
         var result: retval
-        if !font:
+        if !font do
             return result
         let desc = font.getGlyphDesc(c)
         result.x = desc.advanceX
@@ -138,7 +138,7 @@ impl Painter
     #[Swag.Overload]
     mtd drawString(left, top: f32, text: string, font: *Font, color: Color, under = UnderlineStyle.None, zoom = 1.0)
     {
-        if @countof(text) == 0 or color.a == 0:
+        if @countof(text) == 0 or color.a == 0 do
             return
 
         let brush = Brush.createSolid(color)
@@ -149,13 +149,13 @@ impl Painter
     #[Swag.Overload]
     mtd drawString(left, top: f32, text: string, font: *Font, brush: Brush, under = UnderlineStyle.None, zoom = 1.0)
     {
-        if @countof(text) == 0 or brush.color.a == 0:
+        if @countof(text) == 0 or brush.color.a == 0 do
             return
-        if .fake:
+        if .fake do
             return
 
         let arr = getGlyphs(text, font)
-        if arr.isEmpty():
+        if arr.isEmpty() do
             return
 
         var x = Math.round(left)
@@ -163,15 +163,15 @@ impl Painter
 
         // Compute text extent only if necessary
         var ms: StringMetrics = undefined
-        if under != .None or brush.type != .SolidColor:
+        if under != .None or brush.type != .SolidColor do
             ms = measureString(text, font)
 
         .startFont()
 
         // Set brush main texture
-        if brush.type != .SolidColor:
+        if brush.type != .SolidColor do
             .setTexture0({x, y - ms.ascent * zoom}, {x + ms.width * zoom, y + ms.height * zoom}, brush)
-        else:
+        else do
             .resetTexture0()
 
         // Underline
@@ -308,7 +308,7 @@ impl Painter
             if format.flags & .WordWrap or format.horzAlignment == .Justify
             {
                 var curW = line.measure.width
-                if format.horzAlignment == .Justify:
+                if format.horzAlignment == .Justify do
                     curW += line.whiteSpaces
 
                 if curW + c.boundRect.width > pos.width
@@ -322,9 +322,9 @@ impl Painter
                         if lastWasSpace and idx
                         {
                             line.countSpaces -= 1
-                            if format.horzAlignment != .Justify:
+                            if format.horzAlignment != .Justify do
                                 line.measure.width -= text.chunks[idx - 1].boundRect.width
-                            else:
+                            else do
                                 line.whiteSpaces -= text.chunks[idx - 1].boundRect.width
                             line.end -= 1
                         }
@@ -339,7 +339,7 @@ impl Painter
                     line.whiteSpaces = 0
 
                     // We: not want the new line to start with a space
-                    if c.isSpace:
+                    if c.isSpace do
                         startLine += 1
                     else
                     {
@@ -357,12 +357,12 @@ impl Painter
             if c.isSpace
             {
                 line.countSpaces += 1
-                if format.horzAlignment != .Justify:
+                if format.horzAlignment != .Justify do
                     line.measure.width += ms.width
-                else:
+                else do
                     line.whiteSpaces += ms.width
             }
-            else:
+            else do
                 line.measure.width += ms.width
             line.measure.ascent  = Math.max(line.measure.ascent, ms.ascent)
             line.measure.descent = Math.max(line.measure.descent, ms.descent)
@@ -392,9 +392,9 @@ impl Painter
         }
         elif singleLine
         {
-            if format.flags & .DontAdaptSingleLineHeight:
+            if format.flags & .DontAdaptSingleLineHeight do
                 totalHeight = format.font.regular.height
-            else:
+            else do
                 totalHeight = lines[0].measure.height
         }
 
@@ -412,7 +412,7 @@ impl Painter
         text.boundRect.height = totalHeight
 
         // Y correction if single line
-        if singleLine and !(format.flags & .DontAdaptSingleLineHeight):
+        if singleLine and !(format.flags & .DontAdaptSingleLineHeight) do
             y -= (format.font.regular.ascent - lines[0].measure.ascent)
 
         // Layout
@@ -444,12 +444,12 @@ impl Painter
                     if c.isSpace and format.horzAlignment == .Justify and idxLine != lines.count - 1 and !l.hasEol
                     {
                         let spaceW = (pos.width - l.measure.width) / l.countSpaces
-                        if spaceW < l.measure.height * format.justifyLimit:
+                        if spaceW < l.measure.height * format.justifyLimit do
                             x1 += spaceW
-                        else:
+                        else do
                             x1 += c.boundRect.width
                     }
-                    else:
+                    else do
                         x1 += c.boundRect.width
                     c.pos.y = y1
                 }
@@ -465,11 +465,11 @@ impl Painter
     mtd drawRichString(pos: Math.Rectangle, text: *RichString, format: RichStringFormat, forceCompute = false)
     {
         text.compute()
-        if text.chunks.count == 0:
+        if text.chunks.count == 0 do
             return
 
         // Recompute layout if rectangle has changed
-        if text.layoutRect != pos or forceCompute:
+        if text.layoutRect != pos or forceCompute do
             computeLayout(pos, text, format)
 
         // Clipping
@@ -487,25 +487,25 @@ impl Painter
         var brush = format.brush
         foreach &c in text.chunks
         {
-            if c.isEol:
+            if c.isEol do
                 continue
 
-            if c.isHotUrl:
+            if c.isHotUrl do
                 brush.color = format.colorHotUrl
-            elif c.isUrl:
+            elif c.isUrl do
                 brush.color = format.colorUrl
-            else:
+            else do
                 brush.color = format.palette[c.colorIdx]
 
             var under = c.under
-            if c.isHotUrl:
+            if c.isHotUrl do
                 under = .Underline
 
             .drawString(c.pos.x, c.pos.y, c.slice, c.font, brush, under)
         }
 
         // Restore clipping to its previous value
-        if format.flags & .Clip:
+        if format.flags & .Clip do
             .popClippingRect()
     }
 }

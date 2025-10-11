@@ -30,7 +30,7 @@ impl IWnd for CaptureRectWnd
 
     mtd impl onKeyEvent(evt: *KeyEvent)
     {
-        if evt.kind == .KeyPressed and evt.key == .Escape:
+        if evt.kind == .KeyPressed and evt.key == .Escape do
             g_Exit = true
 
         .invalidate()
@@ -120,7 +120,7 @@ impl IWnd for CaptureRectWnd
             .lerpGrab.height = Math.moveTowards(.lerpGrab.height, grabRect.height, dt)
             var roundRect = .lerpGrab
             roundRect.round()
-            if !grabRect.isEqualEpsilon(roundRect):
+            if !grabRect.isEqualEpsilon(roundRect) do
                 .invalidate()
             grabRect = roundRect
         }

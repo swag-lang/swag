@@ -422,7 +422,7 @@ impl IRichEditLexer for RichEditLexerSwag
                     cpt += 1
                 }
 
-                if cpt < line.chars.count and line.chars[cpt] == '{':
+                if cpt < line.chars.count and line.chars[cpt] == '{' do
                     str += '\t''rune
             }
 
@@ -445,7 +445,7 @@ impl IRichEditLexer for RichEditLexerSwag
         #[Swag.Mixin]
         func getCur()->rune
         {
-            if seek >= line.chars.count:
+            if seek >= line.chars.count do
                 return 0
             return line.chars[seek]
         }
@@ -453,9 +453,9 @@ impl IRichEditLexer for RichEditLexerSwag
         #[Swag.Mixin]
         func getNext()->rune
         {
-            if !line.chars.count:
+            if !line.chars.count do
                 return 0
-            if seek >= line.chars.count - 1:
+            if seek >= line.chars.count - 1 do
                 return 0
             return line.chars[seek + 1]
         }
@@ -463,7 +463,7 @@ impl IRichEditLexer for RichEditLexerSwag
         #[Swag.Mixin]
         mtd seekNext()
         {
-            if seek >= line.chars.count:
+            if seek >= line.chars.count do
                 return
             line.styles[seek] = .mapStyles[currentState]
             seek += 1
@@ -496,7 +496,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 if c == 'e'
                 {
                     .seekNext()
-                    if cn == '+' or cn == '-':
+                    if cn == '+' or cn == '-' do
                         .seekNext()
                     currentState = State.Numeric
                     continue
@@ -529,7 +529,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     currentState = State.Default
                     .seekNext()
-                    if getCur() == '\'':
+                    if getCur() == '\'' do
                         .seekNext()
                     continue
                 }
@@ -553,7 +553,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     currentState = State.Default
                     .seekNext()
-                    if getCur() == '\'':
+                    if getCur() == '\'' do
                         .seekNext()
                     continue
                 }
@@ -570,7 +570,7 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     .seekNext()
                     currentState = State.Default
-                    if getCur() == '\'':
+                    if getCur() == '\'' do
                         .seekNext()
                     continue
                 }
@@ -604,9 +604,9 @@ impl IRichEditLexer for RichEditLexerSwag
                 {
                     .seekNext()
                     .seekNext()
-                    if currentCptCmt:
+                    if currentCptCmt do
                         currentCptCmt -= 1
-                    if !currentCptCmt:
+                    if !currentCptCmt do
                         currentState = State.Default
                     continue
                 }
@@ -658,27 +658,27 @@ impl IRichEditLexer for RichEditLexerSwag
                     let seekEnd = seek
                     seek = saveSeek
 
-                    if Utf8.startsWith(word, "opVisit"):
+                    if Utf8.startsWith(word, "opVisit") do
                         currentState = State.FunctionSpecOp
                     elif !word.isEmpty()
                     {
                         let res = .mapWords.tryFind(word.toString())
-                        if res:
+                        if res do
                             currentState = res.value
-                        elif word == "@":
+                        elif word == "@" do
                             currentState = State.Keyword
-                        elif Latin1.isUpper(word[0]):
+                        elif Latin1.isUpper(word[0]) do
                             currentState = State.UserType
-                        elif c == '(' and (Latin1.isLetter(word[0]) or word[0] == '_'):
+                        elif c == '(' and (Latin1.isLetter(word[0]) or word[0] == '_') do
                             currentState = State.FunctionCall
-                        else:
+                        else do
                             currentState = State.Default
                     }
 
-                    while seek != seekEnd:
+                    while seek != seekEnd do
                         .seekNext()
                     currentState = State.Default
-                    if c == '\'':
+                    if c == '\'' do
                         .seekNext()
                     continue
                 }
@@ -741,20 +741,20 @@ impl IRichEditLexer for RichEditLexerSwag
             .seekNext()
         }
 
-        if currentState == State.LineComment:
+        if currentState == State.LineComment do
             currentState = State.Default
 
         if line.lexerEndingState != currentState
         {
             line.lexerEndingState = currentState
-            if lineNext:
+            if lineNext do
                 lineNext.dirtyStyle = true
         }
 
         if line.lexerCptCmt != currentCptCmt
         {
             line.lexerCptCmt = currentCptCmt
-            if lineNext:
+            if lineNext do
                 lineNext.dirtyStyle = true
         }
     }

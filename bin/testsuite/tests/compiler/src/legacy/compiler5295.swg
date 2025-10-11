@@ -5,7 +5,7 @@ impl Array
     #[Swag.Macro]
     mtd(ptr: bool, back: bool) opVisit(stmt: #code void)
     {
-        for 7:
+        for 7 do
             #inject(stmt)
     }
 

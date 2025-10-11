@@ -4,9 +4,9 @@
 #test
 {
     var g: bool
-    if g == false:
+    if g == false do
         g = true
-    else:
-        if g == true:
+    else do
+        if g == true do
             g = false
 }

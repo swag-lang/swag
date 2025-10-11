@@ -30,9 +30,9 @@ impl GizmoRect
         switch evt.kind
         {
         case MousePressed:
-            if .moving:
+            if .moving do
                 return true
-            if evt.button != .Left or .hotAnchor == Swag.U32.Max:
+            if evt.button != .Left or .hotAnchor == Swag.U32.Max do
                 break
             .moving, .firstMoving = true
             .startRect   = .rect
@@ -49,9 +49,9 @@ impl GizmoRect
                     .moving, .firstMoving = false
                     .hotAnchor = Swag.U32.Max
                     view.releaseMouse()
-                    if !.trackChange and .sigChanged:
+                    if !.trackChange and .sigChanged do
                         .sigChanged(me, false, 0)
-                    if .sigHasChanged:
+                    if .sigHasChanged do
                         .sigHasChanged()
                 }
 
@@ -69,7 +69,7 @@ impl GizmoRect
             if .moving
             {
                 var hitMove = 0'u32
-                if .firstMoving and .sigChanged and .trackChange:
+                if .firstMoving and .sigChanged and .trackChange do
                     .sigChanged(me, true, 0)
 
                 .firstMoving = false
@@ -82,9 +82,9 @@ impl GizmoRect
                 case 0:
                     if prop
                     {
-                        if Math.abs(diff.x) > Math.abs(diff.y):
+                        if Math.abs(diff.x) > Math.abs(diff.y) do
                             diff.y = diff.x
-                        else:
+                        else do
                             diff.x = diff.y
                     }
 
@@ -102,9 +102,9 @@ impl GizmoRect
                 case 2:
                     if prop
                     {
-                        if Math.abs(diff.x) > Math.abs(diff.y):
+                        if Math.abs(diff.x) > Math.abs(diff.y) do
                             diff.y = -diff.x
-                        else:
+                        else do
                             diff.x = -diff.y
                     }
 
@@ -125,9 +125,9 @@ impl GizmoRect
                 case 5:
                     if prop
                     {
-                        if Math.abs(diff.x) > Math.abs(diff.y):
+                        if Math.abs(diff.x) > Math.abs(diff.y) do
                             diff.y = -diff.x
-                        else:
+                        else do
                             diff.x = -diff.y
                     }
 
@@ -143,9 +143,9 @@ impl GizmoRect
                 case 7:
                     if prop
                     {
-                        if Math.abs(diff.x) > Math.abs(diff.y):
+                        if Math.abs(diff.x) > Math.abs(diff.y) do
                             diff.y = diff.x
-                        else:
+                        else do
                             diff.x = diff.y
                     }
 
@@ -154,7 +154,7 @@ impl GizmoRect
                     hitMove            = 4 | 8
                 }
 
-                if .trackChange and .sigChanged:
+                if .trackChange and .sigChanged do
                     .sigChanged(me, false, hitMove)
             }
             else
@@ -179,7 +179,7 @@ impl GizmoRect
                 view.getApp().setFrameCursor(Cursor.from(.SizeWE))
             }
 
-            if .hotAnchor != Swag.U32.Max:
+            if .hotAnchor != Swag.U32.Max do
                 return true
         }
 
@@ -192,7 +192,7 @@ impl GizmoRect
 
         let color = Color.getBlend(Argb.Black, col, hot ? 0.8 : 1)
 
-        if .moving and !.trackChange:
+        if .moving and !.trackChange do
             painter.drawRect(.movingRect, Pen.createDash(.Dot, color, 2))
 
         if !hot
@@ -241,7 +241,7 @@ impl GizmoRect
     {
         let form    = cast(*BaseForm) @dataof(iform)
         let capture = form.capture
-        if !first:
+        if !first do
             capture.undo()
         let undo = capture.newUndo(.MoveBaseForm)
         undo.baseForm = iform
@@ -251,23 +251,23 @@ impl GizmoRect
         let dy = cast(s32) ((.movingRect.y - .startRect.y) / zoom)
         undo.newPosX = dx
         undo.newPosY = dy
-        if hitMove & 1:
+        if hitMove & 1 do
             capture.snap(&undo.newPosX, null, false, false)
-        if hitMove & 2:
+        if hitMove & 2 do
             capture.snap(null, &undo.newPosY, false, false)
 
         let dsx = cast(s32) ((.movingRect.width - .startRect.width) / zoom)
         let dsy = cast(s32) ((.movingRect.height - .startRect.height) / zoom)
         undo.newSizeX = dsx
         undo.newSizeY = dsy
-        if hitMove & 4:
+        if hitMove & 4 do
             capture.snap(&undo.newSizeX, null, true, true)
-        if hitMove & 8:
+        if hitMove & 8 do
             capture.snap(null, &undo.newSizeY, true, true)
 
-        if hitMove & 1:
+        if hitMove & 1 do
             undo.newSizeX -= (undo.newPosX - dx)
-        if hitMove & 2:
+        if hitMove & 2 do
             undo.newSizeY -= (undo.newPosY - dy)
 
         capture.pushUndo(undo)

@@ -17,7 +17,7 @@ impl Printable for Book
 {
     mtd const impl printDetails()
     {
-        if me.title == "Swift Programming":
+        if me.title == "Swift Programming" do
             G += 1
     }
 }

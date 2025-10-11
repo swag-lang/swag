@@ -118,7 +118,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
         simulate(dt)
 
-        foreach v in g_Objs:
+        foreach v in g_Objs do
             painter.fillCircle(v.positionCurrent.x, v.positionCurrent.y, v.radius, v.color)
 
         wnd.invalidate()
@@ -129,7 +129,7 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test"):
+    func test(app: *Application) => if Env.hasArg("swag.test") do
         app.maxRunFrame = 100
     Application.runSurface(100, 100, 800, 600, title: "Verlet", hook: &onEvent, init: &test)
 }

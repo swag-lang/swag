@@ -5,7 +5,7 @@ func toto(x: H = null)
 {
     var y: func||()
     y = x
-    if y:
+    if y do
         y()
 }
 

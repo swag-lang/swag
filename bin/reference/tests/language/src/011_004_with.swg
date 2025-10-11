@@ -11,7 +11,8 @@ impl Point
 {
     mtd setOne()
     {
-        me.x, me.y = 1   // Set both x and y to 1 within the Point instance.
+        me.x, me.y = 1
+        // Set both x and y to 1 within the Point instance.
     }
 }
 
@@ -23,15 +24,15 @@ clutter, especially when working with objects that have multiple fields or metho
 */
 #test
 {
-    var pt: Point           // Declare a variable of type Point.
+    var pt: Point // Declare a variable of type Point.
     with pt
     {
-        .x = 1             // Equivalent to pt.x = 1, sets the x field.
-        .y = 2             // Equivalent to pt.y = 2, sets the y field.
+        .x = 1 // Equivalent to pt.x = 1, sets the x field.
+        .y = 2 // Equivalent to pt.y = 2, sets the y field.
     }
 
-    @assert(pt.x == 1)      // Verify that x was set correctly.
-    @assert(pt.y == 2)      // Verify that y was set correctly.
+    @assert(pt.x == 1) // Verify that x was set correctly.
+    @assert(pt.y == 2) // Verify that y was set correctly.
 }
 
 /**
@@ -42,17 +43,17 @@ cleaner and more intuitive code by reducing the repetition of the object or vari
 */
 #test
 {
-    var pt: Point           // Declare a variable of type Point.
+    var pt: Point // Declare a variable of type Point.
     with pt
     {
-        .setOne()           // Equivalent to pt.setOne(), sets both x and y to 1.
-        .y = 2              // Modify the y field directly within the block.
-        @assert(.x == 1)    // Equivalent to pt.x == 1, verifies that x is set to 1.
-        @assert(.y == 2)    // Equivalent to pt.y == 2, verifies that y is set to 2.
+        .setOne() // Equivalent to pt.setOne(), sets both x and y to 1.
+        .y = 2 // Modify the y field directly within the block.
+        @assert(.x == 1) // Equivalent to pt.x == 1, verifies that x is set to 1.
+        @assert(.y == 2) // Equivalent to pt.y == 2, verifies that y is set to 2.
     }
 
-    @assert(pt.x == 1)      // Confirm that x remains correct after the with block.
-    @assert(pt.y == 2)      // Confirm that y remains correct after the with block.
+    @assert(pt.x == 1) // Confirm that x remains correct after the with block.
+    @assert(pt.y == 2) // Confirm that y remains correct after the with block.
 }
 
 /**
@@ -65,8 +66,8 @@ when working with large namespaces or when multiple calls to namespace members a
 {
     with NameSpace
     {
-        .inside0()          // Equivalent to NameSpace.inside0(), calls the inside0 function.
-        .inside1()          // Equivalent to NameSpace.inside1(), calls the inside1 function.
+        .inside0() // Equivalent to NameSpace.inside0(), calls the inside0 function.
+        .inside1() // Equivalent to NameSpace.inside1(), calls the inside1 function.
     }
 }
 
@@ -78,24 +79,24 @@ the `with` block, streamlining initialization and setup tasks.
 */
 #test
 {
-    with var pt = Point{1, 2}  // Declare and initialize 'pt' with x=1, y=2.
+    with var pt = Point{1, 2} // Declare and initialize 'pt' with x=1, y=2.
     {
-        .x = 10             // Modify x within the block.
-        .y = 20             // Modify y within the block.
+        .x = 10 // Modify x within the block.
+        .y = 20 // Modify y within the block.
     }
 
-    @assert(pt.x == 10 and pt.y == 20)  // Ensure both fields are correctly updated.
+    @assert(pt.x == 10 and pt.y == 20) // Ensure both fields are correctly updated.
 }
 
 #test
 {
-    with var pt: Point      // Declare 'pt' without initialization.
+    with var pt: Point // Declare 'pt' without initialization.
     {
-        .x = 10             // Set x to 10 within the block.
-        .y = 20             // Set y to 20 within the block.
+        .x = 10 // Set x to 10 within the block.
+        .y = 20 // Set y to 20 within the block.
     }
 
-    @assert(pt.x == 10 and pt.y == 20)  // Ensure fields are set as expected.
+    @assert(pt.x == 10 and pt.y == 20) // Ensure fields are set as expected.
 }
 
 /**
@@ -106,18 +107,24 @@ to initialize or adjust an object’s fields immediately after creation or assig
 */
 #test
 {
-    var pt: Point           // Declare a variable of type Point.
-    with pt = Point{1, 2}   // Assign a new Point instance to 'pt'.
+    var pt: Point // Declare a variable of type Point.
+    with pt = Point{1, 2} // Assign a new Point instance to 'pt'.
     {
-        .x = 10             // Modify x within the block.
-        .y = 20             // Modify y within the block.
+        .x = 10 // Modify x within the block.
+        .y = 20 // Modify y within the block.
     }
 
-    @assert(pt.x == 10 and pt.y == 20)  // Ensure fields are updated correctly.
+    @assert(pt.x == 10 and pt.y == 20) // Ensure fields are updated correctly.
 }
 
 namespace NameSpace
 {
-    func inside0() {}        // Define a function inside the namespace.
-    func inside1() {}        // Define another function inside the namespace.
+    func inside0()
+    {
+        // Define a function inside the namespace.
+    }
+    func inside1()
+    {
+        // Define another function inside the namespace.
+    }
 }

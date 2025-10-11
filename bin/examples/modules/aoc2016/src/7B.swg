@@ -28,9 +28,9 @@ func day7B()
         var outside, inside: String
         foreach it, i in Tokenize.split(l, '[''u8)
         {
-            if !(i & 1):
+            if !(i & 1) do
                 outside += it
-            else:
+            else do
                 inside += it
         }
 

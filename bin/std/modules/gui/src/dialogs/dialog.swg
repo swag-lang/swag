@@ -13,7 +13,7 @@ impl IWnd for Dialog
 {
     mtd impl onSysCommandEvent(evt: *SysCommandEvent)
     {
-        if evt.kind == .Close:
+        if evt.kind == .Close do
             .validateId(BtnCancel)
         evt.accepted = true
     }
@@ -137,7 +137,7 @@ impl Dialog
     {
         .surface.bringToTop()
         .surface.show()
-        if .fromSurface and .fromSurface.isTopMost():
+        if .fromSurface and .fromSurface.isTopMost() do
             .surface.setTopMost()
         return .surface.app.doModalLoop(.surface)
     }
@@ -152,14 +152,14 @@ impl Dialog
 
             .sigPressed += mtd||(btn)
             {
-                if !.sigPressedButton or .sigPressedButton(me, btn.id):
+                if !.sigPressedButton or .sigPressedButton(me, btn.id) do
                     btn.getApp().exitModal(btn.id)
             }
 
             me.buttons.add(btn)
         }
 
-        if id == BtnCancel or id == BtnNo:
+        if id == BtnCancel or id == BtnNo do
             .surface.setSurfaceFlags(add: .CloseBtn)
 
         return btn
@@ -167,7 +167,7 @@ impl Dialog
 
     mtd validateId(btnId: WndId)
     {
-        if !.sigPressedButton or .sigPressedButton(me, btnId):
+        if !.sigPressedButton or .sigPressedButton(me, btnId) do
             .getApp().exitModal(btnId)
     }
 }

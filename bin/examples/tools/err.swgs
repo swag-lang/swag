@@ -27,18 +27,18 @@ func replace(dst, src: string, inSwg, inCpp: &s32)
         for
         {
             idx = f.content.indexOf(src, idx, Utf8.ComparisonType.Latin1NoCase)
-            if idx == Swag.U64.Max:
+            if idx == Swag.U64.Max do
                 break
 
-            if Path.getExtension(f.name) == ".swg":
+            if Path.getExtension(f.name) == ".swg" do
                 inSwg += 1
-            elif Path.getFileName(f.name) != "ErrorIds.cpp" and Path.getFileName(f.name) != "ErrorList.h":
+            elif Path.getFileName(f.name) != "ErrorIds.cpp" and Path.getFileName(f.name) != "ErrorList.h" do
                 inCpp += 1
 
             if f.newContent[idx to idx + 6] != dst[ to 6]
             {
                 Console.printf("% => % %\n", f.content[idx to idx + 6], dst, f.name)
-                for i in 7:
+                for i in 7 do
                     f.newContent[idx + i] = dst[i]
                 f.changed = true
             }
@@ -74,11 +74,11 @@ func addFiles(folder: string, extension: string)
     foreach l in lines
     {
         l = Latin1.trim(l)
-        if !l.startsWith("SWAG_ERROR("):
+        if !l.startsWith("SWAG_ERROR(") do
             continue
         let what = l[11 to 13]
 
-        if what != "Err":
+        if what != "Err" do
             continue
 
         ids.findOrAdd(what).value += 1
@@ -90,7 +90,7 @@ func addFiles(folder: string, extension: string)
         var inSwg, inCpp: s32
         replace(dst, l[11 to 17], &inSwg, &inCpp)
 
-        if !inCpp:
+        if !inCpp do
             Console.printf("UNUSED: %\n", dst)
 
         if !inSwg and what != "Fat" and what != "Nte"
@@ -103,7 +103,7 @@ func addFiles(folder: string, extension: string)
 
     foreach f in files
     {
-        if !f.changed:
+        if !f.changed do
             continue
         assume File.writeAllBytes(f.name, f.newContent)
     }

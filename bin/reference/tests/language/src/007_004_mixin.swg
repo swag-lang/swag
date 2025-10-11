@@ -8,7 +8,10 @@ This documentation provides an overview of Swag Mixins with various examples, de
 #test
 {
     #[Swag.Mixin]
-    func myMixin() {}  // Declaring a basic mixin with no functionality
+    func myMixin()
+    {
+        // Declaring a basic mixin with no functionality
+    }
 }
 
 /**
@@ -21,13 +24,13 @@ In this example, the mixin increments a variable `a` by 1 each time it is called
     #[Swag.Mixin]
     func myMixin()
     {
-        a += 1                          // Incrementing 'a' by 1
+        a += 1 // Incrementing 'a' by 1
     }
 
     var a = 0
-    myMixin()                           // Equivalent to writing 'a += 1' directly in the scope
-    myMixin()                           // Again, equivalent to 'a += 1'
-    @assert(a == 2)                     // Verifies that 'a' has been incremented twice
+    myMixin() // Equivalent to writing 'a += 1' directly in the scope
+    myMixin() // Again, equivalent to 'a += 1'
+    @assert(a == 2) // Verifies that 'a' has been incremented twice
 }
 
 /**
@@ -40,13 +43,13 @@ This example demonstrates a mixin with an `increment` parameter that defaults to
     #[Swag.Mixin]
     func myMixin(increment: s32 = 1)
     {
-        a += increment                  // Incrementing 'a' by the value of 'increment'
+        a += increment // Incrementing 'a' by the value of 'increment'
     }
 
     var a = 0
-    myMixin()                           // Equivalent to 'a += 1', using the default value
-    myMixin(2)                          // Equivalent to 'a += 2', using the passed parameter
-    @assert(a == 3)                     // Verifies that 'a' has been incremented by 1 and 2
+    myMixin() // Equivalent to 'a += 1', using the default value
+    myMixin(2) // Equivalent to 'a += 2', using the passed parameter
+    @assert(a == 3) // Verifies that 'a' has been incremented by 1 and 2
 }
 
 /**
@@ -59,14 +62,16 @@ The mixin can execute this code block multiple times using the `#inject` keyword
     #[Swag.Mixin]
     func doItTwice(what: #code void)
     {
-        #inject(what)                      // Executing the passed code block the first time
-        #inject(what)                      // Executing the passed code block the second time
+        #inject(what)
+        // Executing the passed code block the first time
+        #inject(what)
+        // Executing the passed code block the second time
     }
 
     var a = 0
 
-    doItTwice(#code { a += 1; })         // Incrementing 'a' twice through the mixin
-    @assert(a == 2)                      // Verifies that 'a' was incremented twice
+    doItTwice(#code { a += 1; }) // Incrementing 'a' twice through the mixin
+    @assert(a == 2) // Verifies that 'a' was incremented twice
 }
 
 /**
@@ -79,20 +84,22 @@ This provides a more natural syntax for passing code blocks.
     #[Swag.Mixin]
     func doItTwice(value: s32, what: #code void)
     {
-        #inject(what)                      // Executing the passed code block the first time
-        #inject(what)                      // Executing the passed code block the second time
+        #inject(what)
+        // Executing the passed code block the first time
+        #inject(what)
+        // Executing the passed code block the second time
     }
 
     var a = 0
 
-    doItTwice(4, #code { a += value; })  // Passing code block with direct syntax
+    doItTwice(4, #code { a += value; }) // Passing code block with direct syntax
 
-    doItTwice(2)                         // Alternatively, pass the code block naturally
+    doItTwice(2) // Alternatively, pass the code block naturally
     {
-        a += value                       // Incrementing 'a' by 'value' twice
+        a += value // Incrementing 'a' by 'value' twice
     }
 
-    @assert(a == 12)                     // Verifies that 'a' was incremented as expected
+    @assert(a == 12) // Verifies that 'a' was incremented as expected
 }
 
 /**
@@ -105,13 +112,13 @@ This enables flexible manipulation of variables through mixins.
     #[Swag.Mixin]
     func inc10()
     {
-        #alias0 += 10                    // Incrementing the aliased variable by 10
+        #alias0 += 10 // Incrementing the aliased variable by 10
     }
 
     var a, b = 0
-    inc10(|a|)                           // Use 'a' as the alias
-    inc10(|b|)                           // Use 'b' as the alias
-    @assert(a == b and b == 10)          // Verifies that both 'a' and 'b' were incremented by 10
+    inc10(|a|) // Use 'a' as the alias
+    inc10(|b|) // Use 'b' as the alias
+    @assert(a == b and b == 10) // Verifies that both 'a' and 'b' were incremented by 10
 }
 
 #test
@@ -119,15 +126,15 @@ This enables flexible manipulation of variables through mixins.
     #[Swag.Mixin]
     func setVar(value: s32)
     {
-        let #alias0 = value              // Setting the aliased variable to 'value'
+        let #alias0 = value // Setting the aliased variable to 'value'
     }
 
-    setVar(|a| 10)                       // Set 'a' to 10
-    setVar(|b| 20)                       // Set 'b' to 20
-    @assert(a == 10)                     // Verifies that 'a' was set to 10
-    @assert(b == 20)                     // Verifies that 'b' was set to 20
-    setVar(30)                           // No alias provided, so default alias '#alias0' is used
-    @assert(#alias0 == 30)               // Verifies that '#alias0' was set to 30
+    setVar(|a| 10) // Set 'a' to 10
+    setVar(|b| 20) // Set 'b' to 20
+    @assert(a == 10) // Verifies that 'a' was set to 10
+    @assert(b == 20) // Verifies that 'b' was set to 20
+    setVar(30) // No alias provided, so default alias '#alias0' is used
+    @assert(#alias0 == 30) // Verifies that '#alias0' was set to 30
 }
 
 /**
@@ -142,13 +149,13 @@ These variables receive a unique name each time the mixin is invoked, preventing
     #[Swag.Mixin]
     func toScope()
     {
-        var #uniq0: s32 = 1               // Declaring a unique variable named '#uniq0'
-        total += #uniq0                   // Adding the value of '#uniq0' to 'total'
+        var #uniq0: s32 = 1 // Declaring a unique variable named '#uniq0'
+        total += #uniq0 // Adding the value of '#uniq0' to 'total'
     }
 
-    toScope()                            // First invocation of the mixin
-    toScope()                            // Second invocation
-    toScope()                            // Third invocation
+    toScope() // First invocation of the mixin
+    toScope() // Second invocation
+    toScope() // Third invocation
 
-    @assert(total == 3)                  // Verifies that 'total' is the sum of all mixin invocations
+    @assert(total == 3) // Verifies that 'total' is the sum of all mixin invocations
 }

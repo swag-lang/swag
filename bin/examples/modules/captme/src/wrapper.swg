@@ -15,9 +15,9 @@ impl MainWnd
     {
         let form = cast(*BaseForm) @dataof(f)
 
-        if form.subKind == .Highlight:
+        if form.subKind == .Highlight do
             .mdlHighlight = f
-        elif form.subKind == .PixSel:
+        elif form.subKind == .PixSel do
             .mdlPixSel = f
 
         #[Swag.Complete]
@@ -197,7 +197,7 @@ impl MainWnd
         case Image:
             let mdl = Memory.new'FormImage()
             mdl.IForm.copy(mdl, &.mdlFormImage)
-            if clear:
+            if clear do
                 mdl.image.release()
             return mdl
         case Step:
@@ -211,7 +211,7 @@ impl MainWnd
         case Polygon:
             let mdl = Memory.new'FormPolygon()
             mdl.IForm.copy(mdl, &.mdlFormPolygon)
-            if clear:
+            if clear do
                 mdl.points.clear()
             return mdl
         case Text:
@@ -221,7 +221,7 @@ impl MainWnd
         case Draw:
             let mdl = Memory.new'FormDraw()
             mdl.IForm.copy(mdl, &.mdlFormDraw)
-            if clear:
+            if clear do
                 mdl.points.clear()
             return mdl
         case Favorites, Highlight, Selection, PixSel:

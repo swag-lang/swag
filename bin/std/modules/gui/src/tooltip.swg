@@ -23,7 +23,7 @@ private
 
 func update(dt: f32)
 {
-    if !g_Pending:
+    if !g_Pending do
         return
 
     g_Pending.delay -= dt
@@ -39,7 +39,7 @@ func update(dt: f32)
 #[Swag.Overload]
 public func hide()
 {
-    if g_Current:
+    if g_Current do
         g_Current.destroy()
 
     g_Current      = null
@@ -53,9 +53,9 @@ public func hide()
 #[Swag.Overload]
 func hide(owner: *Wnd)
 {
-    if g_Pending and g_Pending.owner == owner:
+    if g_Pending and g_Pending.owner == owner do
         hide()
-    elif owner == g_CurrentOwner:
+    elif owner == g_CurrentOwner do
         hide()
 }
 
@@ -72,12 +72,12 @@ func resetTimer(mousePos: Math.Point)
 // Show a tooltip
 public func show(owner: *Wnd, surfacePos: Math.Point, str: string, delay: Time.Duration = 500'ms)
 {
-    if str == null or @countof(str) == 0:
+    if str == null or @countof(str) == 0 do
         return
 
     if !g_Current and delay.timeInSeconds > 0
     {
-        if !g_Pending:
+        if !g_Pending do
             g_Pending = Memory.new'ToolTipVal()
         g_Pending.owner      = owner
         g_Pending.surfacePos = surfacePos

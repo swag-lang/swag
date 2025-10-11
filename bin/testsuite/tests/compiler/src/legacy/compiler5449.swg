@@ -2,7 +2,7 @@
 func roundDownToPowerOf2A(x: u32)->u32
 {
     var i = 1'u32
-    while (i << 1) <= x:
+    while (i << 1) <= x do
         i <<= 1
     return i
 }

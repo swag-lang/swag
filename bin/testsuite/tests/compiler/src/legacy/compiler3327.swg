@@ -3,7 +3,7 @@
 {
     var a = #run
     {
-        for 1:
+        for 1 do
             return 66.0
         return
     }

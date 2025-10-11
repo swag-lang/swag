@@ -7,19 +7,19 @@ using Core
 
 func filter(file: File.FileInfo)->bool
 {
-    if Utf8.contains(file.fullname, "/vendor/"):
+    if Utf8.contains(file.fullname, "/vendor/") do
         return false
-    if Utf8.contains(file.fullname, "/output/"):
+    if Utf8.contains(file.fullname, "/output/") do
         return false
-    if Utf8.contains(file.fullname, "/dependencies/"):
+    if Utf8.contains(file.fullname, "/dependencies/") do
         return false
-    if Utf8.contains(file.fullname, "/public/"):
+    if Utf8.contains(file.fullname, "/public/") do
         return false
-    if Utf8.contains(file.fullname, "/datas/"):
+    if Utf8.contains(file.fullname, "/datas/") do
         return true
-    if Utf8.contains(file.fullname, "/paint/theme/"):
+    if Utf8.contains(file.fullname, "/paint/theme/") do
         return true
-    if Utf8.contains(file.fullname, "/shaders/"):
+    if Utf8.contains(file.fullname, "/shaders/") do
         return true
 
     var ext = Path.getExtensionLowerCase(file.fullname)
@@ -53,7 +53,7 @@ func filter(file: File.FileInfo)->bool
 
     // Generate list of files
     var allLines: Array'string
-    foreach f in allFiles:
+    foreach f in allFiles do
         allLines.add(cast(string) f.fullname[9 to ])
 
     let mo = try Directory.getCurrent()

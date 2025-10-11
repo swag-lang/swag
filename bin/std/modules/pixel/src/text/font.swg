@@ -48,7 +48,7 @@ internal var g_HashFont: HashTable'(String, *Font)
 
 #drop
 {
-    foreach k, v in g_HashFont:
+    foreach k, v in g_HashFont do
         Memory.delete(v)
     g_HashFont.free()
 }
@@ -59,7 +59,7 @@ public impl Font
 
     mtd opDrop()
     {
-        foreach k, v in .unicodeRef:
+        foreach k, v in .unicodeRef do
             Memory.delete(v)
     }
 
@@ -72,7 +72,7 @@ public impl Font
     // Clear internal caches
     func clearCaches()
     {
-        foreach a, b in g_HashFont:
+        foreach a, b in g_HashFont do
             Memory.delete(b)
         g_HashFont.clear()
     }
@@ -80,7 +80,7 @@ public impl Font
     // Release the given font
     func release(font: *Font)
     {
-        if !font:
+        if !font do
             return
         Sync.scopedLock(&lock)
         g_HashFont.remove(font.fullname)
@@ -99,7 +99,7 @@ public impl Font
         Sync.scopedLock(&lock)
 
         let here = g_HashFont.tryFind(str)
-        if here:
+        if here do
             return here.value
 
         let font = Memory.new'Font()
@@ -138,13 +138,13 @@ public impl Font
         // Already there ?
         if c < 128
         {
-            if .asciiRef[cast(u32) c].atlasIndex >= 0:
+            if .asciiRef[cast(u32) c].atlasIndex >= 0 do
                 return &.asciiRef[cast(u32) c]
         }
         else
         {
             let entry = .unicodeRef.tryFind(c)
-            if entry:
+            if entry do
                 return entry.value
         }
 
@@ -158,9 +158,9 @@ public impl Font
             if atlas.curX + bmp.width > atlas.width
             {
                 atlas.curX = 0
-                if atlas.nextY + bmp.rows > atlas.height:
+                if atlas.nextY + bmp.rows > atlas.height do
                     atlas = null
-                else:
+                else do
                     atlas.curY = atlas.nextY
             }
             elif atlas.curY + bmp.rows > atlas.height
@@ -199,7 +199,7 @@ public impl Font
 
         // Setup GlyphDesc
         var refr: *GlyphDesc
-        if c < 128:
+        if c < 128 do
             refr = &.asciiRef[cast(u32) c]
         else
         {

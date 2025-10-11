@@ -23,7 +23,7 @@ impl QuickStyle
 
     mtd clear()
     {
-        foreach i in .forms:
+        foreach i in .forms do
             deleteOne(i)
         .forms.clear()
     }
@@ -97,25 +97,25 @@ impl QuickWnd
 {
     mtd setDefault()
     {
-        if .qsArrow.forms.isEmpty():
+        if .qsArrow.forms.isEmpty() do
             .defaultQuickStyleArrow()
-        if .qsShape.forms.isEmpty():
+        if .qsShape.forms.isEmpty() do
             .defaultQuickStyleShape()
-        if .qsImage.forms.isEmpty():
+        if .qsImage.forms.isEmpty() do
             .defaultQuickStyleImage()
-        if .qsStep.forms.isEmpty():
+        if .qsStep.forms.isEmpty() do
             .defaultQuickStyleStep()
-        if .qsLine.forms.isEmpty():
+        if .qsLine.forms.isEmpty() do
             .defaultQuickStyleLine()
-        if .qsPolygon.forms.isEmpty():
+        if .qsPolygon.forms.isEmpty() do
             .defaultQuickStylePolygon()
-        if .qsText.forms.isEmpty():
+        if .qsText.forms.isEmpty() do
             .defaultQuickStyleText()
-        if .qsDraw.forms.isEmpty():
+        if .qsDraw.forms.isEmpty() do
             .defaultQuickStyleDraw()
-        if .qsHighlight.forms.isEmpty():
+        if .qsHighlight.forms.isEmpty() do
             .defaultQuickStyleHighlight()
-        if .qsPixSel.forms.isEmpty():
+        if .qsPixSel.forms.isEmpty() do
             .defaultQuickStylePixSel()
 
         .updateQuickStyles()
@@ -174,9 +174,9 @@ impl QuickWnd
             form.borderSize = borderSize
             form.endSize    = endSize
             form.dashStyle  = dash
-            if startSize != 0:
+            if startSize != 0 do
                 form.beginCap = startCap
-            if endSize != 0:
+            if endSize != 0 do
                 form.endCap = .ArrowAnchor
             form.borderColor = color
             let it = cast(IForm) form
@@ -273,7 +273,7 @@ impl QuickWnd
             form.borderColor = color
             form.backColor   = Argb.Gray
             form.kind        = kind
-            if borderSize == 0:
+            if borderSize == 0 do
                 form.paintShadow = false
             let it = cast(IForm) form
             it.setup(null)
@@ -502,7 +502,7 @@ impl QuickWnd
 
     mtd updateSelection()
     {
-        if !.currentStyle:
+        if !.currentStyle do
             return
         var done = false
         let mode = .main.getEditMode()
@@ -510,7 +510,7 @@ impl QuickWnd
         var firstVisible = 0's32
         foreach c in .layout.childs
         {
-            if c.isVisible():
+            if c.isVisible() do
                 break
             firstVisible += 1
         }
@@ -540,7 +540,7 @@ impl QuickWnd
                 btn.isChecked = mode == .Draw and it.isSame(&.main.mdlFormDraw)
             }
 
-            if btn.isChecked:
+            if btn.isChecked do
                 done = true
         }
 
@@ -548,7 +548,7 @@ impl QuickWnd
         if curMdl.userData
         {
             curMdl.show(!done)
-            if !done:
+            if !done do
                 curMdl.isChecked = true
             .layout.computeLayout()
             .setScrollSize(0, .layout.resultHeight)
@@ -559,11 +559,11 @@ impl QuickWnd
 
     mtd resetQuickStyles()
     {
-        if !.currentStyle:
+        if !.currentStyle do
             return
 
         let res = MessageDlg.confirm(.surface, "This will reset the styles to the default values.")
-        if res != MessageDlg.BtnYes:
+        if res != MessageDlg.BtnYes do
             return
 
         .currentStyle.clear()
@@ -683,9 +683,9 @@ impl QuickWnd
             return
         }
 
-        foreach c in .layout.childs:
+        foreach c in .layout.childs do
             c.destroy()
-        if !.currentStyle:
+        if !.currentStyle do
             return
 
         foreach it in .currentStyle.forms
@@ -708,7 +708,7 @@ impl QuickWnd
 
             btn.sigCheckChanged += mtd|it|(btn)
             {
-                if !btn.isChecked:
+                if !btn.isChecked do
                     return
                 .main.updateModel(it)
 
@@ -739,7 +739,7 @@ impl QuickWnd
             canAddModel = true
             if .main.editMode == .Highlight
             {
-                if baseForm.subKind != .Highlight:
+                if baseForm.subKind != .Highlight do
                     canAddModel = false
             }
             elif .main.editMode == .PixSel

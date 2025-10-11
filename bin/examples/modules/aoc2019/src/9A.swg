@@ -62,9 +62,9 @@ private func run(op: &Array's64, input: s64)->s64
         let inst  = op[ip] % 10
 
         var param0, param1 = 0's64
-        if inst != 3:
+        if inst != 3 do
             param0 = mode0 == 1 ? addr(ip + 1) : mode0 == 2 ? addr(op[ip + 1] + base) : addr(op[ip + 1])
-        if inst != 3 and inst != 4 and inst != 9:
+        if inst != 3 and inst != 4 and inst != 9 do
             param1 = mode1 == 1 ? addr(ip + 2) : mode1 == 2 ? addr(op[ip + 2] + base) : addr(op[ip + 2])
         /*
         switch inst
@@ -120,7 +120,7 @@ func day9A()
     let lines    = assume File.readAllLines(dataPath)
 
     var prg: Array's64
-    foreach v in Tokenize.split(lines[0], ',''u8):
+    foreach v in Tokenize.split(lines[0], ',''u8) do
         prg.add(assume StrConv.toS64(v))
 
     let total = run(&prg, 1)

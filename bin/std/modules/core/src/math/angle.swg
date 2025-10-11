@@ -24,11 +24,11 @@ impl Angle
     #[ConstExpr, Implicit, Inline]
     mtd(suffix: string) opAffectLiteral(value: f32)
     {
-        #if suffix == "rad":
+        #if suffix == "rad" do
             .rad = value
-        #elif suffix == "deg":
+        #elif suffix == "deg" do
             .rad = toRadians(value)
-        #else:
+        #else do
             #error("invalid angle literal suffix [[" ++ suffix ++ "]]")
     }
 

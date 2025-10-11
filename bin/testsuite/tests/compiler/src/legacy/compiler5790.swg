@@ -11,7 +11,7 @@ struct A
 #[Swag.Macro]
 func assert(expr: bool)
 {
-    if !expr:
+    if !expr do
         G = 2
 }
 

@@ -21,13 +21,13 @@ using Core
         {
             l.makeUpper()
             result += "private const "
-            if r.match(#"(\w+) -> B"#, l):
+            if r.match(#"(\w+) -> B"#, l) do
                 result += Format.toString("B = %", 46065)
-            elif r.match(#"(\w+) -> (\w+)"#, l):
+            elif r.match(#"(\w+) -> (\w+)"#, l) do
                 result += Format.toString("% = %", r[2], r[1])
-            elif r.match(#"(\w+) (\w+) (\w+) -> (\w+)"#, l):
+            elif r.match(#"(\w+) (\w+) (\w+) -> (\w+)"#, l) do
                 result += Format.toString("% = % % %", r[4], r[1], map.find(r[2]).value, r[3])
-            elif r.match(#"NOT (\w+) -> (\w+)"#, l):
+            elif r.match(#"NOT (\w+) -> (\w+)"#, l) do
                 result += Format.toString("% = ~%", r[2], r[1])
             result += "\n"
         }

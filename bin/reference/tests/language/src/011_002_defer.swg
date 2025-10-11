@@ -8,8 +8,8 @@ resources, ensuring cleanup operations, and maintaining code clarity.
 #test
 {
     var v = 0
-    defer @assert(v == 1)   // Ensures that v equals 1 when leaving the scope.
-    v += 1                  // Increment v by 1.
+    defer @assert(v == 1) // Ensures that v equals 1 when leaving the scope.
+    v += 1 // Increment v by 1.
 
     // When the scope is exited, the deferred expression will be executed here, verifying that v is 1.
 }
@@ -25,11 +25,11 @@ of your logic and ensuring that all necessary actions are performed.
     var v = 0
     defer
     {
-        v += 10            // Increment v by 10.
-        @assert(v == 15)   // Ensure v equals 15 after the block execution.
+        v += 10 // Increment v by 10.
+        @assert(v == 15) // Ensure v equals 15 after the block execution.
     }
 
-    v += 5                // Increment v by 5.
+    v += 5 // Increment v by 5.
 
     // Upon scope exit, the defer block is executed, adding 10 to v and ensuring the final value is 15.
 }
@@ -46,15 +46,15 @@ cleanup or ensuring that certain conditions are met, regardless of how the code 
     var G = 0
     for 10
     {
-        defer G += 1   // Ensure G is incremented each loop iteration, even if the loop is exited early.
+        defer G += 1 // Ensure G is incremented each loop iteration, even if the loop is exited early.
 
-        if G == 2:
-            break      // Exit the loop when G equals 2. Defer will execute before breaking out.
+        if G == 2 do
+            break // Exit the loop when G equals 2. Defer will execute before breaking out.
 
         // The defer expression is executed at the end of each iteration.
     }
 
-    @assert(G == 3)    // Check that G has been correctly incremented, even after the loop is broken.
+    @assert(G == 3) // Check that G has been correctly incremented, even after the loop is broken.
 }
 
 /**
@@ -66,8 +66,8 @@ providing a predictable and manageable flow of operations.
 #test
 {
     var x = 1
-    defer @assert(x == 2)   // Executed second, after x is multiplied by 2.
-    defer x *= 2            // Executed first, doubling the value of x.
+    defer @assert(x == 2) // Executed second, after x is multiplied by 2.
+    defer x *= 2 // Executed first, doubling the value of x.
 
     // The deferred statements execute in reverse, ensuring logical and predictable order.
 }
@@ -91,15 +91,15 @@ early exit.
         resource = createResource()
         defer
         {
-            @assert(resource.isResourceCreated())   // Validate that the resource was created.
-            releaseResource(&resource)              // Release the resource when exiting the loop.
+            @assert(resource.isResourceCreated()) // Validate that the resource was created.
+            releaseResource(&resource) // Release the resource when exiting the loop.
         }
 
-        if @index == 2:
-            break      // Exit for early, defer block still ensures resource release.
+        if @index == 2 do
+            break // Exit for early, defer block still ensures resource release.
     }
 
-    @assert(!resource.isResourceCreated())   // Ensure the resource is no longer created post-loop.
+    @assert(!resource.isResourceCreated()) // Ensure the resource is no longer created post-loop.
 }
 
 /**
@@ -115,10 +115,10 @@ cleanup is performed.
     func releaseResource(resource: *bool) => dref resource = false
     func isResourceCreated(b: bool)       => b
 
-    func performTask() -> bool
+    func performTask()->bool
     {
         var resource = createResource()
-        defer releaseResource(&resource)   // Guarantee resource release on function exit.
+        defer releaseResource(&resource) // Guarantee resource release on function exit.
 
         if !resource.isResourceCreated()
         {
@@ -132,6 +132,6 @@ cleanup is performed.
     }
 
     let success = performTask()
-    @assert(success)   // Ensure that the task was successful and resources were managed correctly.
+    @assert(success) // Ensure that the task was successful and resources were managed correctly.
     // The resource is released correctly regardless of the function's outcome.
 }

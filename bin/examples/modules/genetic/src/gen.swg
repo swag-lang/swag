@@ -39,7 +39,7 @@ func genInit()
     {
         let soluce = g_Gen[0].all.addNewPtr()
         soluce.genes.resize(cast(u64) g_NumGenes)
-        for i in g_NumGenes:
+        for i in g_NumGenes do
             soluce.genes[i] = i
         g_Rng.shuffle(soluce.genes.toSlice())
         evaluateSolution(soluce)
@@ -48,7 +48,7 @@ func genInit()
     // Sort solutions from best to worst
     g_Gen[0].all.sort(func(x, y)
     {
-        if !x or !y:
+        if !x or !y do
             return 0
         return x.score <=> y.score
     })
@@ -84,7 +84,7 @@ func evaluateSolution(idxSrc, idxDst: u32)->f32
 func evaluateSolution(soluce: *Solution)
 {
     soluce.score = 0
-    for i in soluce.genes:
+    for i in soluce.genes do
         soluce.score += evaluateSolution(soluce.genes[i], cast() i)
     soluce.score /= g_NumGenes
 }
@@ -94,7 +94,7 @@ func pickToMate(other: *Solution = null)->*Solution
     var rnd = g_Rng.nextF32(0, g_TotalWeight)
     foreach child in g_Gen[g_CurGen].all
     {
-        if rnd <= child.weight and child != other:
+        if rnd <= child.weight and child != other do
             return child
         rnd -= child.weight
     }
@@ -191,7 +191,7 @@ func genGo()->*u8
         // Copy solution from father
         let child1 = g_Gen[nextGenIdx].all[index]
         Memory.copy(child1.genes.buffer, father.genes.buffer, cast(u64) crossPoint1 * #sizeof(u32))
-        for i in crossPoint1:
+        for i in crossPoint1 do
             done[child1.genes.buffer[i]] = true
 
         // Copy solution from mother, in order, except of already present
@@ -216,7 +216,7 @@ func genGo()->*u8
         // Fill the rest
         for i in g_NumGenes
         {
-            if done[i]:
+            if done[i] do
                 continue
 
             var bestRes  = Swag.F32.Max
@@ -257,7 +257,7 @@ func genGo()->*u8
     // Mutate
     g_Gen[nextGenIdx].all.sort(func(x, y)
     {
-        if !x or !y:
+        if !x or !y do
             return 0
         return x.score <=> y.score
     })
@@ -273,7 +273,7 @@ func genGo()->*u8
     // Sort solutions from best to worst
     g_Gen[g_CurGen].all.sort(func(x, y)
     {
-        if !x or !y:
+        if !x or !y do
             return 0
         return x.score <=> y.score
     })

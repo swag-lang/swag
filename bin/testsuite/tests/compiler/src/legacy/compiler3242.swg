@@ -4,6 +4,6 @@
 #test
 {
     var x: any = 1.0
-    if !x:
+    if !x do
         @print("toto")
 }

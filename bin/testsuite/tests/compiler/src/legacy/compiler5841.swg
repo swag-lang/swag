@@ -11,7 +11,7 @@ struct A
 #[Swag.Macro]
 func assert(expr: bool, msg: string)
 {
-    if !expr:
+    if !expr do
         @panic("toto", #curlocation)
 }
 

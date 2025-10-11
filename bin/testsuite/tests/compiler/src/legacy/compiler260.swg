@@ -3,7 +3,7 @@ using Swag
 //#[PrintBc]
 func fact(v: s32)->s32
 {
-    if v == 1:
+    if v == 1 do
         return 1
     let res = fact(v - 1) * v
     return res

@@ -7,7 +7,7 @@ struct ErrTata {}
 func tata()->s32 throw
 {
     G += 1
-    if G == 3:
+    if G == 3 do
         throw ErrTata{}
     return 0
 }

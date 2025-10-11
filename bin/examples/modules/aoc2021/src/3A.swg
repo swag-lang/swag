@@ -46,7 +46,7 @@ func day3A()
         gamma, epsilon <<= 1
 
         var count = 0
-        foreach l in lines:
+        foreach l in lines do
             count += cast(s32) (l[c] == '1')
 
         gamma |= cast(s32) (count > lines.count / 2)

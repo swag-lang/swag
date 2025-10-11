@@ -79,7 +79,7 @@ func day9A()
         let vals = Tokenize.split(l, ' ''u8)
 
         var values: Array's64
-        foreach v in vals:
+        foreach v in vals do
             values.add(assume StrConv.toS64(v))
         total += values.back()
 

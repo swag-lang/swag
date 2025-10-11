@@ -38,10 +38,10 @@ and improving overall performance.
 // By marking it with 'Swag.ConstExpr', the factorial is computed during compilation,
 // avoiding the need for runtime computation.
 #[Swag.ConstExpr]
-func factorial(x: s32) -> s32
+func factorial(x: s32)->s32
 {
     // Base case: return 1 when x equals 1
-    if x == 1:
+    if x == 1 do
         return 1
 
     // Recursive case: multiply x by the factorial of (x - 1)
@@ -50,7 +50,8 @@ func factorial(x: s32) -> s32
 
 // The `#assert` directive ensures that 'factorial(4)' equals 24. As 'factorial'
 // is evaluated at compile time, this assertion is verified before execution begins.
-#assert(factorial(4) == 24) // Evaluated at compile time
+#assert(factorial(4) == 24)
+// Evaluated at compile time
 
 /**
 # Compile-Time Constant Expressions
@@ -62,7 +63,7 @@ expression. The function returns a fixed value that the compiler resolves during
 // The 'getMagicNumber' function returns a constant value of 42.
 // Since it's a compile-time constant expression, this value is resolved at compile time.
 #[Swag.ConstExpr]
-func getMagicNumber() -> s32
+func getMagicNumber()->s32
 {
     return 42
 }
@@ -81,7 +82,7 @@ the compilation phase.
 // The 'isEven' function checks whether a number is even.
 // With the 'Swag.ConstExpr' annotation, this check occurs at compile time.
 #[Swag.ConstExpr]
-func isEven(x: s32) -> bool
+func isEven(x: s32)->bool
 {
     return x % 2 == 0
 }
@@ -103,10 +104,10 @@ The summation is performed during the compilation, optimizing runtime performanc
 // The 'arraySum' function calculates the sum of all elements in an array.
 // Since it is a compile-time function, the sum is computed during the compilation phase.
 #[Swag.ConstExpr]
-func arraySum(arr: const [..] s32) -> s32
+func arraySum(arr: const [..] s32)->s32
 {
     var sum = 0
-    foreach val in arr:
+    foreach val in arr do
         sum += val
     return sum
 }
@@ -125,9 +126,9 @@ compute the Fibonacci sequence at compile time, optimizing the execution.
 // The 'fibonacci' function calculates the nth Fibonacci number recursively.
 // The result is computed during the compilation when marked with 'Swag.ConstExpr'.
 #[Swag.ConstExpr]
-func fibonacci(n: s32) -> s32
+func fibonacci(n: s32)->s32
 {
-    if n <= 1:
+    if n <= 1 do
         return n
     return fibonacci(n - 1) + fibonacci(n - 2)
 }
@@ -145,7 +146,7 @@ This example demonstrates how to check if a specific bit is set within a number.
 // The 'isBitSet' function checks whether a particular bit is set in a number.
 // With 'Swag.ConstExpr', this operation is performed at compile time.
 #[Swag.ConstExpr]
-func isBitSet(num: s32, bit: s32) -> bool
+func isBitSet(num: s32, bit: s32)->bool
 {
     return (num & (1 << bit)) != 0
 }

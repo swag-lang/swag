@@ -158,7 +158,7 @@ impl GUID64
         var startIdx = 0
 
         // Skip "0x" prefix if present
-        if @countof(str) >= 2 and str[0] == '0' and (str[1] == 'x' or str[1] == 'X'):
+        if @countof(str) >= 2 and str[0] == '0' and (str[1] == 'x' or str[1] == 'X') do
             startIdx = 2
 
         // Parse hex digits
@@ -168,13 +168,13 @@ impl GUID64
             let c      = str[startIdx + i]
             var digit: u64 = 0
 
-            if c >= '0' and c <= '9':
+            if c >= '0' and c <= '9' do
                 digit = cast(u64) (c - '0')
-            elif c >= 'A' and c <= 'F':
+            elif c >= 'A' and c <= 'F' do
                 digit = cast(u64) (c - 'A' + 10)
-            elif c >= 'a' and c <= 'f':
+            elif c >= 'a' and c <= 'f' do
                 digit = cast(u64) (c - 'a' + 10)
-            else:
+            else do
                 break // Invalid character, stop parsing
 
             value = (value << 4) | digit

@@ -18,7 +18,7 @@ struct(T) IsSet
     {
         var str    = StrConv.StringBuilder{}
         let typeof = #typeof(T)
-        foreach f in typeof.fields:
+        foreach f in typeof.fields do
             str.appendFormat("%: bool\n", f.name)
         return str.toString()
     }
@@ -33,7 +33,7 @@ struct(T) Result
 // Returns true if 'oneArg' is a valid option (starting with a delimiter)
 func isOption(oneArg: string, _options: ParseOptions)->bool
 {
-    if @countof(oneArg) == 0:
+    if @countof(oneArg) == 0 do
         return false
     return oneArg[0] == '-'
 }
@@ -49,7 +49,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
     {
         var oneArg = it
         oneArg = Tokenize.eatSpaces(oneArg)
-        if !@countof(oneArg):
+        if !@countof(oneArg) do
             continue
 
         if !isOption(oneArg, options)
@@ -63,7 +63,7 @@ func splitArguments(args: const [..] string, options: ParseOptions)->Array'strin
         {
             allArgs.add(split[0])
             let other = Tokenize.eatSpaces(split[1])
-            if @countof(other):
+            if @countof(other) do
                 allArgs.add(other)
         }
         else
@@ -80,12 +80,12 @@ func getField(typeStruct: const *Swag.TypeInfoStruct, name: string)->#null const
     foreach it in typeStruct.fields
     {
         // Test normal name (field)
-        if it.name == name:
+        if it.name == name do
             return it
 
         // Test name alias
         let value = Reflection.getAttributeValue(it, ArgParams, "nameAlias")
-        if @dataof(value) and Reflection.isString(@kindof(value)) and cast(string) value == name:
+        if @dataof(value) and Reflection.isString(@kindof(value)) and cast(string) value == name do
             return it
     }
 
@@ -98,7 +98,7 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     #[Swag.Mixin]
     func checkNext() throw
     {
-        if itp + 1 == maxItp or isOption(allArgs[itp + 1], options):
+        if itp + 1 == maxItp or isOption(allArgs[itp + 1], options) do
             throw SyntaxError{Errors.mkString(Format.toString("missing value for option [[%]]", oneArg))}
     }
 
@@ -113,13 +113,13 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
     for var itp = 0; itp < maxItp; itp += 1
     {
         var oneArg = allArgs[itp]
-        if !isOption(oneArg, options):
+        if !isOption(oneArg, options) do
             throw SyntaxError{Errors.mkString(Format.toString("invalid option [[%]]", oneArg))}
 
         oneArg = Tokenize.eatCount(oneArg, 1)
 
         let typeParam = getField(typeof, oneArg)
-        if !typeParam:
+        if !typeParam do
             throw SyntaxError{Errors.mkString(Format.toString("unknown option [[%]]", oneArg))}
 
         let typeField = typeParam.pointedType
@@ -146,9 +146,9 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
             let rest = catch StrConv.parseValue(addr, typeField, allArgs[itp + 1])
             itp += 1
 
-            if @err != null:
+            if @err != null do
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
-            if @countof(rest):
+            if @countof(rest) do
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
         }
 
@@ -174,16 +174,16 @@ func(T) parse(st: *T, args: const [..] string, options = CommandLine.ParseOption
 
                 collect.append(other)
 
-                if isString:
+                if isString do
                     collect.append("\"")
 
                 collect.append(" ")
                 itp += 1
             }
 
-            if collect != null:
+            if collect != null do
                 discard catch StrConv.parseValue(addr, typeField, collect.toString())
-            if @err != null:
+            if @err != null do
                 throw SyntaxError{Errors.mkString(Format.toString("invalid value for option [[%]]", oneArg))}
         }
         else

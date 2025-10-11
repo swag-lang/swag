@@ -5,12 +5,12 @@ var g_App: Application
     let args = Env.getArgs()
     foreach arg in args
     {
-        if !Path.isValidPathName(arg):
+        if !Path.isValidPathName(arg) do
             continue
-        if !Image.canLoad(arg):
+        if !Image.canLoad(arg) do
             continue
         Clipboard.addString(arg)
-        if Surface.sendCustomMessage("Captme", 1, 0):
+        if Surface.sendCustomMessage("Captme", 1, 0) do
             return
     }
 
@@ -28,9 +28,9 @@ var g_App: Application
     let surface = try g_App.createSurface(0, 0, 10, 10, SurfaceFlags.OverlappedWindow, surfaceID: "Captme")
     let mainWnd = MainWnd.create(surface.wnd)
 
-    if Env.hasArg("swag.test"):
+    if Env.hasArg("swag.test") do
         g_App.maxRunFrame = 100
-    if !Env.hasArg("--hide"):
+    if !Env.hasArg("--hide") do
         surface.show()
 
     // Icon task bar
@@ -59,9 +59,9 @@ var g_App: Application
 
     foreach arg in args
     {
-        if !Path.isValidPathName(arg):
+        if !Path.isValidPathName(arg) do
             continue
-        if !Image.canLoad(arg):
+        if !Image.canLoad(arg) do
             continue
         Console.print(arg)
         mainWnd.loadExternalImage(arg)

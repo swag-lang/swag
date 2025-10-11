@@ -107,9 +107,9 @@ func day6B()
         if !sx
         {
             let f = l.indexOf("^")
-            if f != Swag.U64.Max:
+            if f != Swag.U64.Max do
                 sx = cast() f
-            else:
+            else do
                 sy += 1
         }
 
@@ -162,9 +162,9 @@ func day6B()
 
             let r = #ref arr.ref2(sx, sy, w)
 
-            if first:
+            if first do
                 what = 'O'
-            elif r == what:
+            elif r == what do
                 return true
             r = what
 
@@ -182,13 +182,13 @@ func day6B()
     var total = 0
     foreach v in arr0
     {
-        if v != 'O':
+        if v != 'O' do
             continue
 
         var arr1 = arr0
         arr1[@index] = '#'
 
-        if test(&arr1, sx, sy, false):
+        if test(&arr1, sx, sy, false) do
             total += 1
     }
 

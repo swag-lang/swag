@@ -49,7 +49,7 @@ public impl Md5
 
         var index = (.count[0] >> 3) & 0x3F
         .count[0] += inputLen << 3
-        if .count[0] < inputLen << 3:
+        if .count[0] < inputLen << 3 do
             .count[1] += 1
         .count[1] += inputLen >> 29
 

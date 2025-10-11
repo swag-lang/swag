@@ -32,9 +32,9 @@ func day5B0()
         var row1 = 127
         for c in 7
         {
-            if l[c] == 'F':
+            if l[c] == 'F' do
                 row1 = (row1 + row0) / 2
-            else:
+            else do
                 row0 = 1 + (row1 + row0) / 2
         }
         var col0 = 0
@@ -42,9 +42,9 @@ func day5B0()
         var col1 = 7
         for c in 3
         {
-            if l[7 + c] == 'L':
+            if l[7 + c] == 'L' do
                 col1 = (col1 + col0) / 2
-            else:
+            else do
                 col0 = 1 + (col1 + col0) / 2
         }
 
@@ -54,7 +54,7 @@ func day5B0()
     for r in 128
     {
         var cpt = 0
-        for c in 8:
+        for c in 8 do
             cpt += cast(s32) here[r, c]
 
         if cpt == 7 // Search for one missing seat in the row

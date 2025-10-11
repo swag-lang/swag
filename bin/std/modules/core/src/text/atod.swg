@@ -17,12 +17,12 @@ func exact(neg: bool, mantissa: u64, exponent: s64)->{ f: f64, ok: bool }
 
     var result: retval
 
-    if mantissa >> Swag.F64.MantBits != 0:
+    if mantissa >> Swag.F64.MantBits != 0 do
         return result
 
     var exp = exponent
     var f   = cast(f64) mantissa
-    if neg:
+    if neg do
         f = -f
 
     switch
@@ -41,7 +41,7 @@ func exact(neg: bool, mantissa: u64, exponent: s64)->{ f: f64, ok: bool }
         }
 
         // The exponent was really too large.
-        if f > 1e15 or f < -1e15:
+        if f > 1e15 or f < -1e15 do
             return result
 
         result.f  = f * Pow10[exp]
@@ -768,12 +768,12 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
     var man = mantissa
     if man == 0
     {
-        if neg:
+        if neg do
             result.f = cast #bit (f64) 0x8000000000000000 // Negative zero.
         return result
     }
 
-    if exp10 < PowersOfTenMinExp10 or PowersOfTenMaxExp10 < exp10:
+    if exp10 < PowersOfTenMinExp10 or PowersOfTenMaxExp10 < exp10 do
         return result
 
     // Normalization.
@@ -796,10 +796,10 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
         var mergedHi = xHi
         let mergedLo = xLo + yHi
 
-        if mergedLo < xLo:
+        if mergedLo < xLo do
             mergedHi += 1
 
-        if mergedHi & 0x1FF == 0x1FF and mergedLo + 1 == 0 and yLo + man < man:
+        if mergedHi & 0x1FF == 0x1FF and mergedLo + 1 == 0 and yLo + man < man do
             return result
 
         xHi = mergedHi
@@ -812,7 +812,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
     retExp2 -= 1'u64 ^ msb
 
     // Half-way Ambiguity.
-    if xLo == 0 and xHi & 0x1FF == 0 and retMantissa & 3 == 1:
+    if xLo == 0 and xHi & 0x1FF == 0 and retMantissa & 3 == 1 do
         return result
 
     // From 54 to 53 Bits.
@@ -828,11 +828,11 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
     // f64 space. 0x7FF or above means that we're in Inf/NaN f64 space.
     // The if block is equivalent to (but has fewer branches than):
     //   if retExp2 <= 0 or retExp2 >= 0x7FF { etc }
-    if retExp2 - 1 >= 0x7FF - 1:
+    if retExp2 - 1 >= 0x7FF - 1 do
         return result
 
     var retBits = (retExp2 << 52) | (retMantissa & 0x000FFFFFFFFFFFFF)
-    if neg:
+    if neg do
         retBits |= 0x8000000000000000
     result.f  = cast #bit (f64) retBits
     result.ok = true
@@ -867,13 +867,13 @@ public func parse(s: const [..] u8)->{ value: f64, eat: u32, ovf: bool } throw
 {
     var result: retval
     let countof = @countof(s)
-    if !countof:
+    if !countof do
         return result
 
     // Special values, infinity, nan
     #[Swag.Safety("nan", false)]
     (result.value, result.eat) = special(s)
-    if result.eat:
+    if result.eat do
         return result
 
     var read: Decimal

@@ -28,10 +28,10 @@ is a system function, a function from an external module, or a user-defined func
 // The function 'sum' is a regular function that sums a variable number of integers.
 // It is not explicitly marked for compile-time evaluation, as it lacks the
 // 'Swag.ConstExpr' attribute.
-func sum(values: s32...) -> s32
+func sum(values: s32...)->s32
 {
     var result = 0's32
-    foreach v in values:
+    foreach v in values do
         result += v
     return result
 }
@@ -103,7 +103,7 @@ of the block is inferred from the `return` statement within it.
     const Value = #run
     {
         var result: f32
-        for 10:
+        for 10 do
             result += 1
         return result // The inferred type of 'Value' will be 'f32'.
     }
@@ -115,11 +115,11 @@ This technique can also be utilized to initialize a static array.
 */
 #test
 {
-    const N = 4
+    const N           = 4
     const PowerOfTwo: [N] s32 = #run
     {
         var arr: [N] s32
-        for i in arr:
+        for i in arr do
             arr[i] = 1 << cast(u32) i
         return arr
     }

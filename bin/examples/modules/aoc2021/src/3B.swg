@@ -40,19 +40,19 @@ func calc(a, b: u8)->u64
     for c in scan[0]
     {
         var count = 0
-        foreach l in scan:
+        foreach l in scan do
             count += cast(s32) (l[c] == '1')
 
         var next: Array'String
         foreach l in scan
         {
             let v = count >= scan.count - count ? a : b
-            if l[c] == v:
+            if l[c] == v do
                 next.add(l)
         }
 
         scan = #move next
-        if scan.count == 1:
+        if scan.count == 1 do
             break
     }
 

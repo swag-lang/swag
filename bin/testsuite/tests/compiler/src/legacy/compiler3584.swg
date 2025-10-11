@@ -39,6 +39,6 @@ func toto()->A
     //   return cast(string) r //.toString()
     //}
 
-    if @bytecode:
+    if @bytecode do
         @assert(G == 1)
 }

@@ -15,7 +15,7 @@ impl AA
 {
     var x:  AA
     var cpt = 0
-    for x:
+    for x do
         cpt += 1
     @assert(cpt == 4)
 }

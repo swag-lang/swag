@@ -1,7 +1,7 @@
 #[Swag.Macro]
 func assert(expr: #code bool, msg: #code string)
 {
-    if !#inject(expr):
+    if !#inject(expr) do
         @assert(false)
 }
 

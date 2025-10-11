@@ -55,9 +55,9 @@ func day7A()
     var last: u8
     foreach k, v in steps
     {
-        if v.next.length == 0:
+        if v.next.length == 0 do
             last = k
-        if v.prev.length == 0:
+        if v.prev.length == 0 do
             first = Math.min(first, k)
     }
 
@@ -65,13 +65,13 @@ func day7A()
     for
     {
         result.append(first)
-        if first == last:
+        if first == last do
             break
 
         first = Swag.U8.Max
         foreach k, v in steps
         {
-            if Utf8.contains(result.toSlice(), cast(rune) k):
+            if Utf8.contains(result.toSlice(), cast(rune) k) do
                 continue
 
             var bad = false
@@ -84,7 +84,7 @@ func day7A()
                 }
             }
 
-            if !bad and k < first:
+            if !bad and k < first do
                 first = k
         }
     }

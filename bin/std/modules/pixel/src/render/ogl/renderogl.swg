@@ -115,7 +115,7 @@ internal impl RenderOgl
         Debug.assert(@countof(datas) <= 8 * 8)
 
         var arr: [64] u32
-        foreach p, i in datas:
+        foreach p, i in datas do
             arr[i] = p ? 0xFFFFFFFF : 0
 
         var result: GLuint
@@ -213,9 +213,9 @@ impl RenderOgl
 {
     mtd opDrop()
     {
-        foreach rt in .stackReleasedRT:
+        foreach rt in .stackReleasedRT do
             Memory.delete(rt)
-        foreach rt in .stackRT:
+        foreach rt in .stackRT do
             Memory.delete(rt)
         Memory.delete(.curRT)
     }
@@ -255,7 +255,7 @@ impl RenderOgl
     // Get the actual render target size
     mtd getTargetSize()->{ width, height: s32 }
     {
-        if .curRT:
+        if .curRT do
             return {.curRT.colorBuffer.width, .curRT.colorBuffer.height}
         return {.curRC.width, .curRC.height}
     }
@@ -379,16 +379,16 @@ impl RenderOgl
     mtd bindRenderTarget(rt: *RenderTarget, vp: *Math.Rectangle = null)
     {
         Debug.assert(rt != null)
-        if !rt.colorBuffer.valid:
+        if !rt.colorBuffer.valid do
             return
-        if .curRT:
+        if .curRT do
             .stackRT.add(.curRT)
         .curRT            = rt
         .curRT.paintAlpha = false
         glBindFramebuffer(GL_FRAMEBUFFER, cast(GLuint) .curRT.handle)
-        if vp:
+        if vp do
             glViewport(cast() vp.x, cast() vp.y, cast() vp.width, cast() vp.height)
-        else:
+        else do
             glViewport(0, 0, .curRT.colorBuffer.width, .curRT.colorBuffer.height)
     }
 
@@ -457,7 +457,7 @@ impl RenderOgl
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd deleteRenderTarget(rt: *RenderTarget)
     {
-        if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid:
+        if rt.handle == InvalidRenderTargetHandle or !rt.colorBuffer.valid do
             return
 
         var cb: GLuint = cast() rt.colorBuffer.handle
@@ -485,7 +485,7 @@ impl RenderOgl
     #[Warning("Wrn0006", WarningLevel.Disable), Swag.Overload]
     mtd addImage(image: Image)->Texture
     {
-        if !image.isValid():
+        if !image.isValid() do
             return {}
         var fmt:      GLenum = 0
         var tinternal = GL_RGB
@@ -566,7 +566,7 @@ impl RenderOgl
     #[Warning("Wrn0006", WarningLevel.Disable)]
     mtd removeTexture(texture: *Texture)
     {
-        if !texture.valid:
+        if !texture.valid do
             return
         glDeleteTextures(1, cast(*GLuint) &texture.handle)
         texture.valid = false
@@ -747,10 +747,10 @@ impl RenderOgl
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
             foreach &atlas in font.atlases
             {
-                if !atlas.dirty:
+                if !atlas.dirty do
                     continue
                 atlas.dirty = false
-                if atlas.texture.handle == InvalidTextureHandle:
+                if atlas.texture.handle == InvalidTextureHandle do
                     glGenTextures(1, cast(*GLuint) &atlas.texture.handle)
                 atlas.texture.width  = atlas.width / atlas.bpp
                 atlas.texture.height = atlas.height
@@ -865,7 +865,7 @@ impl RenderOgl
     mtd draw(dc: *Painter)
     {
         let (width, height) = .getTargetSize()
-        if width <= 0 or height <= 0:
+        if width <= 0 or height <= 0 do
             return
 
         glBindBuffer(GL_ARRAY_BUFFER, .vertexbuffer)
@@ -890,11 +890,11 @@ impl RenderOgl
         .setBlendingMode(BlendingMode.Alpha)
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE)
 
-        for i in 16:
+        for i in 16 do
             glEnableVertexAttribArray(cast(GLuint) i)
-        foreach cmd, cmdIdx in dc.commandBuffer:
+        foreach cmd, cmdIdx in dc.commandBuffer do
             .executeCommand(dc, cmd, cmdIdx, width, height)
-        for i in 16:
+        for i in 16 do
             glDisableVertexAttribArray(cast(GLuint) i)
     }
 

@@ -146,7 +146,7 @@ impl RegExp
     {
         foreach v in .groups
         {
-            if v.rank == idx:
+            if v.rank == idx do
                 return v.value
         }
 
@@ -198,7 +198,7 @@ impl RegExp
     {
         foreach g in .groups
         {
-            if g.rank == rank:
+            if g.rank == rank do
                 return g.value
         }
 
@@ -209,7 +209,7 @@ impl RegExp
     public mtd getCaptures()->Array'string
     {
         var result: retval
-        foreach v in .groups:
+        foreach v in .groups do
             result.add(v.value)
         return result
     }
@@ -246,7 +246,7 @@ impl RegExp
     {
         var result: retval
 
-        if str == null:
+        if str == null do
             return result
 
         var res = str
@@ -256,7 +256,7 @@ impl RegExp
         for
         {
             let val = .internalGrep(res)
-            if !val:
+            if !val do
                 break
             result.add(val)
             let newStart = @dataof(val) + @countof(val)
@@ -278,7 +278,7 @@ impl RegExp
     #[Swag.Overload]
     public mtd grep(str: string)->#null string
     {
-        if str == null:
+        if str == null do
             return null
         .clearMatch()
         return .internalGrep(str)
@@ -287,13 +287,13 @@ impl RegExp
     // Try to match the start of the string, and returns the matched value or null.
     public mtd partialMatch(str: string)->#null string
     {
-        if str == null:
+        if str == null do
             return null
         let beg  = @dataof(str)
         let last = beg + @countof(str)
 
         let res = .matchInternal(@mkstring(beg, last - beg), true)
-        if res.ok:
+        if res.ok do
             return @mkstring(beg, res.buf - beg)
         return null
     }
@@ -306,7 +306,7 @@ impl RegExp
         while beg != last
         {
             let res = .matchInternal(@mkstring(beg, last - beg), true)
-            if res.ok:
+            if res.ok do
                 return @mkstring(beg, res.buf - beg)
             beg += 1
         }
@@ -332,7 +332,7 @@ impl RegExp
     {
         var result: retval
 
-        if .dfaNodes.isEmpty():
+        if .dfaNodes.isEmpty() do
             return result
 
         .bufStart  = @dataof(str)
@@ -373,21 +373,21 @@ impl RegExp
             var cptReachedEnd = 0
             foreach &v in dref pstack1
             {
-                if v.parseIdx >= .bufLength:
+                if v.parseIdx >= .bufLength do
                     cptReachedEnd += 1
 
-                if v.node.terminal and forGrep:
+                if v.node.terminal and forGrep do
                     grepTerm = dref v
-                elif v.node.terminal and v.parseIdx >= .bufLength:
+                elif v.node.terminal and v.parseIdx >= .bufLength do
                     mustEnd = true
             }
 
-            if cptReachedEnd == pstack1.count:
+            if cptReachedEnd == pstack1.count do
                 mustEnd = true
         }
 
         // Get the latest terminal node for a grep
-        if pstack1.isEmpty() and grepTerm.node:
+        if pstack1.isEmpty() and grepTerm.node do
             pstack1.add(grepTerm)
 
         for
@@ -405,7 +405,7 @@ impl RegExp
                 .dfaMatch(pstack2, RuneEnd, 0, &curState)
             }
 
-            if pstack2.isEmpty():
+            if pstack2.isEmpty() do
                 break
             swap(&pstack1, &pstack2)
         }
@@ -469,7 +469,7 @@ impl RegExp
             {
                 var st = dref curState
                 st.node = #uniq1.value
-                if st.node.group != st.lastGroup:
+                if st.node.group != st.lastGroup do
                     .closeGroup(&st)
                 st.parseIdx += length
                 out.add(st)
@@ -483,21 +483,21 @@ impl RegExp
             .checkTr(RuneStart, 0)
             .checkTr(RuneWordSwap, 0)
             .hasStarted = true
-            if ok:
+            if ok do
                 return
         }
         elif !.wasWord and Unicode.isWord(c)
         {
             .wasWord = true
             .checkTr(RuneWordSwap, 0)
-            if ok:
+            if ok do
                 return
         }
         elif .wasWord and !Unicode.isWord(c)
         {
             .wasWord = false
             .checkTr(RuneWordSwap, 0)
-            if ok:
+            if ok do
                 return
         }
 
@@ -511,49 +511,49 @@ impl RegExp
         {
             let c8 = cast(u8) c
 
-            if Latin1.isDigit(c8):
+            if Latin1.isDigit(c8) do
                 .checkTr(RuneAsciiDigit, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiDigit | RuneInvert, eat)
 
-            if Latin1.isHexDigit(c8):
+            if Latin1.isHexDigit(c8) do
                 .checkTr(RuneAsciiHexa, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiHexa | RuneInvert, eat)
 
-            if Latin1.isLetter(c8):
+            if Latin1.isLetter(c8) do
                 .checkTr(RuneAsciiLetter, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiLetter | RuneInvert, eat)
 
-            if Latin1.isLower(c8):
+            if Latin1.isLower(c8) do
                 .checkTr(RuneAsciiLower, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiLower | RuneInvert, eat)
 
-            if Latin1.isUpper(c8):
+            if Latin1.isUpper(c8) do
                 .checkTr(RuneAsciiUpper, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiUpper | RuneInvert, eat)
 
-            if Latin1.isLetterOrDigit(c8):
+            if Latin1.isLetterOrDigit(c8) do
                 .checkTr(RuneAsciiAlNum, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiAlNum | RuneInvert, eat)
 
-            if Latin1.isLetterOrDigit(c8) or c8 == '_':
+            if Latin1.isLetterOrDigit(c8) or c8 == '_' do
                 .checkTr(RuneAsciiWord, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiWord | RuneInvert, eat)
 
-            if Latin1.isSpace(c8):
+            if Latin1.isSpace(c8) do
                 .checkTr(RuneAsciiSpace, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiSpace | RuneInvert, eat)
 
-            if c8 == ' ' or c8 == '\t':
+            if c8 == ' ' or c8 == '\t' do
                 .checkTr(RuneAsciiBlank, eat)
-            else:
+            else do
                 .checkTr(RuneAsciiBlank | RuneInvert, eat)
 
             .checkTr(RuneAscii, eat)
@@ -563,17 +563,17 @@ impl RegExp
             .checkTr(RuneAscii | RuneInvert, eat)
         }
 
-        if Unicode.isLetter(c):
+        if Unicode.isLetter(c) do
             .checkTr(RuneUnicodeLetter, eat)
-        if Unicode.isLower(c):
+        if Unicode.isLower(c) do
             .checkTr(RuneUnicodeLetterLower, eat)
-        if Unicode.isUpper(c):
+        if Unicode.isUpper(c) do
             .checkTr(RuneUnicodeLetterUpper, eat)
-        if Unicode.isNumber(c):
+        if Unicode.isNumber(c) do
             .checkTr(RuneUnicodeNumber, eat)
-        if Unicode.isSymbol(c):
+        if Unicode.isSymbol(c) do
             .checkTr(RuneUnicodeSymbol, eat)
-        if Unicode.isSymbolMath(c):
+        if Unicode.isSymbolMath(c) do
             .checkTr(RuneUnicodeSymbolMath, eat)
 
         .checkTr(c, eat)
@@ -595,7 +595,7 @@ impl RegExp
 
     mtd nfaPop()->*NfaTable throw
     {
-        if .nfaStack.isEmpty():
+        if .nfaStack.isEmpty() do
             throw SyntaxError{"nfaPop"}
         return .nfaStack.popBack()
     }
@@ -620,9 +620,9 @@ impl RegExp
 
     mtd unionValidate() throw
     {
-        if .orOpStack.isEmpty():
+        if .orOpStack.isEmpty() do
             return
-        if .nfaStack.count < 2:
+        if .nfaStack.count < 2 do
             return
 
         // Check if the two tables have the same nested level
@@ -630,11 +630,11 @@ impl RegExp
         let table1 = .nfaPop()
         .nfaStack.add(table1)
         .nfaStack.add(table2)
-        if table1.level != table2.level:
+        if table1.level != table2.level do
             return
 
         // Operator must be at the same level
-        if .orOpLevel[.orOpLevel.count - 1] != table1.level:
+        if .orOpLevel[.orOpLevel.count - 1] != table1.level do
             return
 
         // Else validate union
@@ -702,7 +702,7 @@ impl RegExp
                 .group += 1
                 foreach n in table1.nodes
                 {
-                    if n.group == 0:
+                    if n.group == 0 do
                         n.group = .group
                 }
             }
@@ -770,7 +770,7 @@ impl RegExp
 
             case ')':
                 .unionValidate()
-                if .openParen.isEmpty():
+                if .openParen.isEmpty() do
                     throw SyntaxError{"unexpected right parenthesis"}
                 let op = .openParen.popBack()
                 .operatorConcat(.nfaStack.count - op)
@@ -813,7 +813,7 @@ impl RegExp
 
         // Remaining operators
         .unionValidate()
-        if !.orOpStack.isEmpty():
+        if !.orOpStack.isEmpty() do
             throw SyntaxError{}
 
         // Concat the remaining nodes
@@ -825,7 +825,7 @@ impl RegExp
         outH.clear()
 
         var stack: Array'(*NfaNode)
-        foreach n in dref inH:
+        foreach n in dref inH do
             stack.add(n)
 
         while stack.count
@@ -834,12 +834,12 @@ impl RegExp
             outH.addOnce(state)
 
             let find = state.transitions.tryFind(0'rune)
-            if !find:
+            if !find do
                 continue
 
             foreach t in find.value
             {
-                if !outH.contains(t):
+                if !outH.contains(t) do
                     stack.add(t)
             }
         }
@@ -850,10 +850,10 @@ impl RegExp
         node.table = #move dref tbl
         foreach n in node.table
         {
-            if node.group == 0:
+            if node.group == 0 do
                 node.group = .groupTransform[n.group]
 
-            if n.terminal:
+            if n.terminal do
                 node.terminal = true
         }
     }
@@ -867,7 +867,7 @@ impl RegExp
             let pfind = state.transitions.tryFind(c)
             if pfind
             {
-                foreach t in pfind.value:
+                foreach t in pfind.value do
                     out.add(t)
             }
         }
@@ -875,11 +875,11 @@ impl RegExp
 
     func equals(s1, s2: *Array'(*NfaNode))->bool
     {
-        if s1.count != s2.count:
+        if s1.count != s2.count do
             return false
         foreach t1 in dref s1
         {
-            if !s2.contains(t1):
+            if !s2.contains(t1) do
                 return false
         }
 
@@ -896,7 +896,7 @@ impl RegExp
 
         // Group transformation
         var grp: Array'u32
-        foreach n in table.nodes:
+        foreach n in table.nodes do
             grp.add(n.group)
         grp.sort()
 
@@ -905,7 +905,7 @@ impl RegExp
         .groupTransform.resize(cast(u64) .group + 1)
         foreach n in grp
         {
-            if n != curGroup:
+            if n != curGroup do
                 curGroupSwap += 1
             curGroup           = n
             .groupTransform[n] = curGroupSwap
@@ -929,7 +929,7 @@ impl RegExp
             foreach c in .charSet
             {
                 dfaMoveNode(&moveRes, c, state.table)
-                if moveRes.count == 0:
+                if moveRes.count == 0 do
                     continue
                 dfaEClosure(&moveRes, &epsilonRes)
 
@@ -968,13 +968,13 @@ impl RegExp
 
         // Negation
         var invert: rune
-        if dref pz == '^':
+        if dref pz == '^' do
             invert = RuneInvert
 
         var firstExp = true
         while pz != pzEnd and pz[0] != ']'
         {
-            if !firstExp:
+            if !firstExp do
                 .preprocessed.add('|')
             firstExp = false
 
@@ -1059,14 +1059,14 @@ impl RegExp
             {
                 var first = pz[0]
                 var end   = pz[2]
-                if first > end:
+                if first > end do
                     swap(&first, &end)
 
-                if first == 'A' and end == 'Z':
+                if first == 'A' and end == 'Z' do
                     .preprocessed.add(RuneAsciiUpper)
-                elif first == 'a' and end == 'z':
+                elif first == 'a' and end == 'z' do
                     .preprocessed.add(RuneAsciiLower)
-                elif first == '0' and end == '9':
+                elif first == '0' and end == '9' do
                     .preprocessed.add(RuneAsciiDigit)
                 else
                 {
@@ -1097,7 +1097,7 @@ impl RegExp
             }
         }
 
-        if pz != pzEnd:
+        if pz != pzEnd do
             pz += 1
         .preprocessed.add(RuneCloseParen)
 
@@ -1106,7 +1106,7 @@ impl RegExp
 
     func toI32(pz, pzEnd: const [*] rune, val: *s32)->const [*] rune throw
     {
-        if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0]):
+        if !Unicode.isLatin1(pz[0]) or !Latin1.isDigit(cast(u8) pz[0]) do
             throw SyntaxError{}
 
         var pzStart = pz
@@ -1127,7 +1127,7 @@ impl RegExp
         var pz    = @dataof(sl)
         let pzEnd = pz + @countof(sl)
 
-        if .preprocessed.count == 0:
+        if .preprocessed.count == 0 do
             throw SyntaxError{"'{' without a previous expression"}
 
         var m = -1
@@ -1142,7 +1142,7 @@ impl RegExp
         {
             m = -1
             pz += 1
-            if pz[0] != '}':
+            if pz[0] != '}' do
                 pz = toI32(pz, pzEnd, &m)
         }
         else
@@ -1150,20 +1150,20 @@ impl RegExp
             m = n
         }
 
-        if pz[0] != '}':
+        if pz[0] != '}' do
             throw SyntaxError{"enum, missing '}'"}
-        if m != -1 and m < n:
+        if m != -1 and m < n do
             throw SyntaxError{"enum m < n in {n,m}"}
-        if m == 0 and n == 0:
+        if m == 0 and n == 0 do
             throw SyntaxError{"enum m and n are zero in {n,m}"}
 
         pz += 1
 
-        if n == 0 and m == -1:
+        if n == 0 and m == -1 do
             .preprocessed.add('*')
-        elif n == 0 and m == 1:
+        elif n == 0 and m == 1 do
             .preprocessed.add('?')
-        elif n == 1 and m == -1:
+        elif n == 1 and m == -1 do
             .preprocessed.add('+')
         elif n != 1 or m != 1 // {1,1}
         {
@@ -1171,18 +1171,18 @@ impl RegExp
             let pze      = .preprocessed.buffer + .preprocessed.count - 1
             var pz1      = pze
             var cptParen = 0
-            if pz1[0] == ')' or pz1[0] == RuneCloseParen:
+            if pz1[0] == ')' or pz1[0] == RuneCloseParen do
                 cptParen += 1
             while cptParen and pz1 != .preprocessed.buffer
             {
                 pz1 -= 1
-                if pz1[0] == ')' or pz1[0] == RuneCloseParen:
+                if pz1[0] == ')' or pz1[0] == RuneCloseParen do
                     cptParen += 1
-                if pz1[0] == '(' or pz1[0] == RuneOpenParen:
+                if pz1[0] == '(' or pz1[0] == RuneOpenParen do
                     cptParen -= 1
             }
 
-            if cptParen:
+            if cptParen do
                 throw SyntaxError{"missing '('"}
 
             var expr: Array'rune
@@ -1192,7 +1192,7 @@ impl RegExp
                 pz1 += 1
             }
 
-            if n == 0:
+            if n == 0 do
                 .preprocessed.add(expr.toSlice())
             else
             {
@@ -1210,7 +1210,7 @@ impl RegExp
             }
             else
             {
-                if n == 0:
+                if n == 0 do
                     m -= 1
                 m -= n
                 while m
@@ -1337,11 +1337,11 @@ impl RegExp
             }
         }
 
-        if c == '^' and !inInter:
+        if c == '^' and !inInter do
             .preprocessed.add(RuneStart)
-        elif c == '$' and !inInter:
+        elif c == '$' and !inInter do
             .preprocessed.add(RuneEnd)
-        else:
+        else do
             .preprocessed.add(c)
 
         return pz + 1
@@ -1371,15 +1371,15 @@ impl RegExp
                     case '}':
                         cpt2 += 1
                     case '[':
-                        if cpt0 == 0:
+                        if cpt0 == 0 do
                             break to Loop
                         cpt0 -= 1
                     case '(':
-                        if cpt1 == 0:
+                        if cpt1 == 0 do
                             break to Loop
                         cpt1 -= 1
                     case '{':
-                        if cpt2 == 0:
+                        if cpt2 == 0 do
                             break to Loop
                         cpt2 -= 1
                     }
@@ -1404,15 +1404,15 @@ impl RegExp
                     case '{':
                         cpt2 += 1
                     case ']':
-                        if cpt0 == 0:
+                        if cpt0 == 0 do
                             break to Loop
                         cpt0 -= 1
                     case ')':
-                        if cpt1 == 0:
+                        if cpt1 == 0 do
                             break to Loop
                         cpt1 -= 1
                     case '}':
-                        if cpt2 == 0:
+                        if cpt2 == 0 do
                             break to Loop
                         cpt2 -= 1
                     }
@@ -1448,7 +1448,7 @@ impl RegExp
                 pz = .preprocessEscape(@mkslice(pz, pzEnd - pz))
             }
 
-            if !pz:
+            if !pz do
                 break
             c = .ignoreCase ? Unicode.toUpper(pz[0]) : pz[0]
         }

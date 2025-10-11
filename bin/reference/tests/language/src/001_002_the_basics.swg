@@ -7,9 +7,9 @@ In Swag, you use `const` to define constants, `var` to define mutable variables,
 */
 #test
 {
-    const Pi = 3.14159    // A constant value, cannot be changed
-    var radius = 10       // A mutable variable, can be modified
-    let height = 100      // An immutable variable, assigned once
+    const Pi   = 3.14159     // A constant value, cannot be changed
+    var radius = 10          // A mutable variable, can be modified
+    let height = 100         // An immutable variable, assigned once
 }
 
 /**
@@ -21,7 +21,7 @@ Variables declared with `var` can be reassigned, allowing you to update their va
 #test
 {
     var counter = 0
-    counter = 5         // Reassigning the value of 'counter'
+    counter = 5 // Reassigning the value of 'counter'
 }
 
 /**
@@ -45,8 +45,8 @@ Swag allows you to omit the type declaration if the compiler can infer it from t
 
 #test
 {
-    let greeting = "Hello, Swag!"  // Type inferred as 'string'
-    var age = 25                   // Type inferred as 's32' (signed 32-bit integer)
+    let greeting = "Hello, Swag!"     // Type inferred as 'string'
+    var age      = 25                 // Type inferred as 's32' (signed 32-bit integer)
 }
 
 /**
@@ -55,7 +55,7 @@ If needed, you can also explicitly declare the type:
 
 #test
 {
-    let name: string = "Alice"
+    let name:  string = "Alice"
     var score: s32 = 100
 }
 
@@ -69,11 +69,11 @@ Swag’s `let` and `const` keywords emphasize immutability. The `let` keyword is
 Swag provides the intrinsic `@print` function for displaying output in the console. Here's an example:
 */
 
-const CanPrint = false  // Must be set to 'true' to show the result of '@print'
+const CanPrint = false // Must be set to 'true' to show the result of '@print'
 
 func print(x: ...)
 {
-    if CanPrint:
+    if CanPrint do
         @print(x)
 }
 
@@ -109,7 +109,9 @@ Semicolons in Swag are optional at the end of a statement. They are primarily us
 
 #test
 {
-    let a = 5; let b = 10; print(a + b, "\n")  // Outputs 15
+    let a = 5
+    let b = 10
+    print(a + b, "\n") // Outputs 15
 }
 
 /**
@@ -120,8 +122,8 @@ Swag provides several types for representing numbers, including signed and unsig
 
 #test
 {
-    let maxHeight: u32 = 500    // Unsigned 32-bit integer
-    let distance: f64 = 42.195  // Double-precision floating-point number
+    let maxHeight: u32 = 500        // Unsigned 32-bit integer
+    let distance:  f64 = 42.195     // Double-precision floating-point number
 
     // You can perform arithmetic operations just as expected:
     let result = maxHeight + 50
@@ -136,7 +138,7 @@ Strings in Swag are UTF-8 encoded, which allows them to handle international tex
 
 #test
 {
-    let message = "Hello, 世界!"  // A string with Unicode characters
+    let message = "Hello, 世界!" // A string with Unicode characters
     print(message, "\n")
 }
 
@@ -166,9 +168,9 @@ Swag offers flexible control structures, such as 'if', 'for', and 'switch', to m
 #test
 {
     let temperature = 30
-    if temperature > 25:
+    if temperature > 25 do
         print("It's hot!\n")
-    else:
+    else do
         print("It's cool!\n")
 }
 
@@ -180,10 +182,12 @@ You can still use curly braces for control blocks if you prefer:
 #test
 {
     let temperature = 30
-    if temperature > 25 {
+    if temperature > 25
+    {
         print("It's hot!\n")
     }
-    else {
+    else
+    {
         print("It's cool!\n")
     }
 }
@@ -222,7 +226,8 @@ Swag provides the `foreach` loop for iterating over collections such as arrays. 
 #test
 {
     let numbers = [1, 2, 3, 4, 5]
-    foreach num in numbers {
+    foreach num in numbers
+    {
         print("Number: ", num, "\n")
     }
 }
@@ -237,12 +242,13 @@ Functions in Swag encapsulate reusable blocks of code. Here’s a simple functio
 
 #test
 {
-    func add(a: s32, b: s32) -> s32 {
+    func add(a: s32, b: s32)->s32
+    {
         return a + b
     }
 
     let result = add(10, 5)
-    print("Result: ", result, "\n")  // Outputs 15
+    print("Result: ", result, "\n") // Outputs 15
 }
 
 /**
@@ -251,7 +257,7 @@ Functions in Swag can return multiple values using tuples:
 
 #test
 {
-    func splitName() -> {x: string, y: string}
+    func splitName()->{ x: string, y: string }
     {
         return {"a", "b"}
     }
@@ -271,7 +277,7 @@ Swag provides robust error handling mechanisms using `throw`, `try`, and `catch`
 In Swag, a function can signal that it might encounter an error by being annotated with the `throw` keyword. This indicates that the function might raise an error during execution, and any function calling it must use the `try` keyword to handle the potential error.
 */
 
-func divide(a: s32, b: s32) -> s32 throw
+func divide(a: s32, b: s32)->s32 throw
 {
     if b == 0
     {
@@ -283,10 +289,9 @@ func divide(a: s32, b: s32) -> s32 throw
 
 #test
 {
-    let result = try divide(10, 2)  // Propagates the error if one occurs
+    let result = try divide(10, 2) // Propagates the error if one occurs
     print("Result: ", result, "\n") // Outputs 5
 }
-
 
 /**
 If an error is raised inside the `divide` function, it will be propagated to the caller. The `try` keyword ensures that the caller handles or propagates the error further.
@@ -299,9 +304,12 @@ Instead of propagating errors, you can catch and handle them within the function
 #test
 {
     let result = catch divide(10, 0)
-    if @err != null {
+    if @err != null
+    {
         print("Error: ", @err, "\n")
-    } else {
+    }
+    else
+    {
         print("Result: ", result, "\n")
     }
 }
@@ -314,7 +322,8 @@ In this case, the `catch` keyword is used to trap the error and prevent it from 
 The `trycatch` construct allows you to dismiss an error and continue execution without propagating it. When using `trycatch`, Swag will assign a default value to the variable if an error occurs, allowing the program to continue without disruption.
 */
 
-func safeDivide(a: s32, b: s32) -> s32 {
+func safeDivide(a: s32, b: s32)->s32
+{
     return trycatch divide(a, b)
 }
 

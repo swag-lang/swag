@@ -11,7 +11,7 @@ using Core.Input
     while false
     {
         assume k.update()
-        if k.isButtonJustPressed(GamePadButton.LeftTrigger):
+        if k.isButtonJustPressed(GamePadButton.LeftTrigger) do
             @print("down\n")
     }
 }

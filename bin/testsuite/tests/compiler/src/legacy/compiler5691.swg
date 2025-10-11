@@ -5,12 +5,14 @@
 {
     let v: any = {4, 5}
 
-    let v1 = cast({
+    let v1 = cast(
     {
-        x: s32
-        y: s32
+        {
+            x:     s32
+            y:     s32
+        }
     }
- }) v
+) v
 
     /*switch v
     {

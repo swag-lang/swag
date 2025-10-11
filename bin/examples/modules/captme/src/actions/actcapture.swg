@@ -146,7 +146,7 @@ impl MainWnd
 {
     mtd newCapture(img: Image, linked: string = null, from: *Capture = null)
     {
-        if !img.isValid():
+        if !img.isValid() do
             return
 
         var capture = from

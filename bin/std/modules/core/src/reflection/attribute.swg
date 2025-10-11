@@ -7,7 +7,7 @@ using Swag
 func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string)->#null any
 {
     let attrib = getAttribute(type, attribute)
-    if !attrib:
+    if !attrib do
         return null
     return getAttributeValue(attrib, value)
 }
@@ -17,10 +17,10 @@ func getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: 
 func(T) getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, value: string, def: T)->T
 {
     let attrib = getAttribute(type, attribute)
-    if !attrib:
+    if !attrib do
         return def
     let attribVal = getAttributeValue(attrib, value)
-    if attribVal == null:
+    if attribVal == null do
         return def
     return cast(T) attribVal
 }
@@ -30,7 +30,7 @@ func(T) getAttributeValue(type: const *Swag.TypeValue, attribute: typeinfo, valu
 func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->#null any
 {
     let attrib = getAttribute(type, attribute)
-    if !attrib:
+    if !attrib do
         return null
     return getAttributeValue(attrib, value)
 }
@@ -39,7 +39,7 @@ func getAttributeValue(type: typeinfo, attribute: typeinfo, value: string)->#nul
 #[Overload, ConstExpr]
 func getAttributeValue(attribute: const *Swag.Attribute, value: string)->#null any
 {
-    foreach p in attribute.params where p.name == value:
+    foreach p in attribute.params where p.name == value do
         return p.value
     return null
 }
@@ -49,7 +49,7 @@ func getAttributeValue(attribute: const *Swag.Attribute, value: string)->#null a
 func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(const *Swag.Attribute)
 {
     var result: retval
-    foreach it in value.attributes where attribute == it.type:
+    foreach it in value.attributes where attribute == it.type do
         result.add(it)
     return result
 }
@@ -58,7 +58,7 @@ func getAttributes(value: const *Swag.TypeValue, attribute: typeinfo)->Array'(co
 #[Overload, ConstExpr]
 func getAttribute(value: const *Swag.TypeValue, attribute: typeinfo)->#null const *Swag.Attribute
 {
-    foreach it in value.attributes where attribute == it.type:
+    foreach it in value.attributes where attribute == it.type do
         return it
     return null
 }
@@ -79,17 +79,17 @@ func getAttributes(type: typeinfo, attribute: typeinfo)->Array'(const *Swag.Attr
     {
     case Func:
         let typeFunc = cast(const *TypeInfoFunc) type
-        foreach it in typeFunc.attributes where attribute == it.type:
+        foreach it in typeFunc.attributes where attribute == it.type do
             result.add(it)
 
     case Struct:
         let typeStruct = cast(const *TypeInfoStruct) type
-        foreach it in typeStruct.attributes where attribute == it.type:
+        foreach it in typeStruct.attributes where attribute == it.type do
             result.add(it)
 
     case Enum:
         let typeEnum = cast(const *TypeInfoEnum) type
-        foreach it in typeEnum.attributes where attribute == it.type:
+        foreach it in typeEnum.attributes where attribute == it.type do
             result.add(it)
     }
 
@@ -104,17 +104,17 @@ func getAttribute(type: typeinfo, attribute: typeinfo)->#null const *Swag.Attrib
     {
     case Func:
         let typeFunc = cast(const *TypeInfoFunc) type
-        foreach it in typeFunc.attributes where attribute == it.type:
+        foreach it in typeFunc.attributes where attribute == it.type do
             return it
 
     case Struct:
         let typeStruct = cast(const *TypeInfoStruct) type
-        foreach it in typeStruct.attributes where attribute == it.type:
+        foreach it in typeStruct.attributes where attribute == it.type do
             return it
 
     case Enum:
         let typeEnum = cast(const *TypeInfoEnum) type
-        foreach it in typeEnum.attributes where attribute == it.type:
+        foreach it in typeEnum.attributes where attribute == it.type do
             return it
     }
 

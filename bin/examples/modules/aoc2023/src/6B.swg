@@ -31,9 +31,9 @@ func day6B()
     var dists: Array'u64
 
     var str0, str1: String = ""
-    foreach v in val0:
+    foreach v in val0 do
         str0 += v
-    foreach v in val1:
+    foreach v in val1 do
         str1 += v
 
     times.add(assume StrConv.toU64(str0))
@@ -47,7 +47,7 @@ func day6B()
         for i in t
         {
             let travel = (t - i) * i
-            if travel > dx:
+            if travel > dx do
                 cpt += 1
         }
 

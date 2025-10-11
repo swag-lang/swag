@@ -58,7 +58,7 @@ public impl IImageEncoder for Encoder
 
                 if align
                 {
-                    for 4 - align:
+                    for 4 - align do
                         result.addNative(0'u8)
                 }
             }
@@ -74,7 +74,7 @@ public impl IImageEncoder for Encoder
                 result.addBytes(@mkslice(psrc, header.biWidth * 3))
                 psrc += header.biWidth * 3
 
-                for 4 - align:
+                for 4 - align do
                     result.addNative(0'u8)
             }
         }
