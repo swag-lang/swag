@@ -181,8 +181,8 @@ bool ByteCodeSanity::loop()
             continue;
         }
 
-        context.node       = ip->node;
-        STATE()->ip        = ip;
+        context.node = ip->node;
+        STATE()->ip  = ip;
         STATE()->ips.push_back(ip);
 
         switch (ip->op)
@@ -437,10 +437,23 @@ bool ByteCodeSanity::loop()
 
             case ByteCodeOp::LocalCall:
             case ByteCodeOp::ForeignCall:
+            {
                 SWAG_CHECK(checkNotNullArguments(pushParams, ""));
-                STATE()->invalidateStack();
+                bool       localChange = false;
+                const auto typeFunc    = reinterpret_cast<TypeInfoFuncAttr*>(ip->b.pointer);
+                for (auto p : typeFunc->parameters)
+                {
+                    if (p->typeInfo->isPointerRef() || p->typeInfo->isPointer())
+                    {
+                        localChange = true;
+                        break;
+                    }
+                }
+                if (localChange)
+                    STATE()->invalidateStack();
                 pushParams.clear();
-                break;
+            }
+            break;
 
                 /////////////////////////////////////////
 

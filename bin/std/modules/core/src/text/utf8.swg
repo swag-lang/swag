@@ -669,7 +669,7 @@ func lastIndexOf(src: const [..] u8, what: string, comparisonType = ComparisonTy
 }
 
 // Return true if the string starts with 'str'
-func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
+func startsWith(src: #null const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
     let length = @countof(src)
     if !length:
@@ -682,7 +682,7 @@ func startsWith(src: const [..] u8, str: string, comparisonType = ComparisonType
 }
 
 // Return true if the string ends with 'str'
-func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
+func endsWith(src: #null const [..] u8, str: string, comparisonType = ComparisonType.Latin1)->bool
 {
     let length = @countof(src)
     if !length:
@@ -695,7 +695,7 @@ func endsWith(src: const [..] u8, str: string, comparisonType = ComparisonType.L
 }
 
 // Returns the first rune of the slice
-func firstRune(src: const [..] u8)->rune
+func firstRune(src: #null const [..] u8)->rune
 {
     let countof = @countof(src)
     if !countof:
@@ -708,7 +708,7 @@ func firstRune(src: const [..] u8)->rune
 }
 
 // Returns the last rune of the slice
-func lastRune(src: const [..] u8)->rune
+func lastRune(src: #null const [..] u8)->rune
 {
     let countof = @countof(src)
     if !countof:

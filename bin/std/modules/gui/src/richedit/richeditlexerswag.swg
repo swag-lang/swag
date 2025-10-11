@@ -660,7 +660,7 @@ impl IRichEditLexer for RichEditLexerSwag
 
                     if Utf8.startsWith(word, "opVisit"):
                         currentState = State.FunctionSpecOp
-                    else
+                    elif !word.isEmpty()
                     {
                         let res = .mapWords.tryFind(word.toString())
                         if res:
