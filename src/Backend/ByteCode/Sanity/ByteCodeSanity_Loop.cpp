@@ -26,7 +26,7 @@ bool ByteCodeSanity::backTrace(ByteCodeSanityState* state, uint32_t reg)
         if (!ip->hasWriteRefToReg(reg))
             break;
 
-        // Store the last value of a given register, to restore it at the end, once the backtrace is done
+        // Store the last value of a given register to restore it at the end, once the backtrace is done
         bool here = false;
         for (const auto& key : map | std::views::keys)
         {
