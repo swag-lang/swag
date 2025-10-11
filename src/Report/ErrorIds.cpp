@@ -178,6 +178,7 @@ void initErrors()
     SWAG_ERROR(Err0051, "[[#[Swag.Mixin]]] and [[#[Swag.NoInline]]] cannot be combined                                          $ ");
     SWAG_ERROR(Err0052, "[[%s]] and [[%s]] cannot be combined                                                                   $ ");
     SWAG_ERROR(Err0053, "division by zero                                                                                       $ ");
+    SWAG_ERROR(Err0054, "division by [[-1]] makes an overflow                                                                   $ ");
     SWAG_ERROR(Err0055, "[[%s]] applied multiple times; [[Swag.AttrMulti]] not specified                                        $ ");
     SWAG_ERROR(Err0056, "struct initialized with both type syntax and assignment                                                $ ");
     SWAG_ERROR(Err0057, "multiple [[%s]] modifiers detected                                                                     $ ");
@@ -904,7 +905,6 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
-    SWAG_ERROR(Err0054, nullptr);
     SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0421, nullptr);
     SWAG_ERROR(Err0309, nullptr);
