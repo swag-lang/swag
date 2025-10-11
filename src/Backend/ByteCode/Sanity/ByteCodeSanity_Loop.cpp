@@ -2231,7 +2231,6 @@ bool ByteCodeSanity::loop()
                 break;
             case ByteCodeOp::BinOpDivF32:
                 BINOP_DIV(/, f32);
-                SWAG_CHECK(STATE()->getImmediateB(vb));
                 break;
             case ByteCodeOp::BinOpDivF64:
                 BINOP_DIV(/, f64);
