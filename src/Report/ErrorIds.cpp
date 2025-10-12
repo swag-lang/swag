@@ -814,15 +814,15 @@ void initErrors()
     SWAG_ERROR(Err0696, "[[\"%s\"]] is not a valid [[#[Swag.Match]]] value                                                      $ hint: use [[\"where\"]] or [[\"me\"]]");
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
-    SWAG_ERROR(Err0701, "tuple has [[%u]] fields, but [[%u]] variables were provided                                            $ ");
-    SWAG_ERROR(Err0702, "tuple has only [[%u]] fields, but [[%u]] variables were provided                                       $ ");
-    SWAG_ERROR(Err0703, "array dimension could not be inferred: missing initialization                                          $ ");
-
+    
+    SWAG_ERROR(Err0701, "tuple has only [[%u]] fields, but [[%u]] variables were provided                                       $ ");
+    SWAG_ERROR(Err0702, "tuple has [[%u]] fields, but only [[%u]] variables were provided                                       $ ");
+    SWAG_ERROR(Err0703, "array length cannot be inferred, missing initialization                                                $ ");
     SWAG_ERROR(Err0704, "flag [[%s]] value cannot be derived                                                                    $ note: previous value ([[%llu]]) not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
-    SWAG_ERROR(Err0705, "generic arguments for %s [[%s]] could not be determined                                                $ ");
+    SWAG_ERROR(Err0705, "generic arguments for %s [[%s]] cannot be determined                                                   $ ");
     SWAG_ERROR(Err0706, "failed to resolve identifier [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0707, "failed to resolve semantic reference                                                                   $ ");
-    SWAG_ERROR(Err0708, "variable type could not be inferred from [[null]] expression                                           $ ");
+    SWAG_ERROR(Err0708, "variable type cannot be inferred from [[null]] expression                                              $ ");
     SWAG_ERROR(Err0709, "[[%s]] contains [[%s]] and cannot be part of a union                                                   $ ");
     SWAG_ERROR(Err0710, "no matching variable found for alias [[%s]]                                                            $ hint: remove the alias");
     SWAG_ERROR(Err0711, "return value of function [[%s]] cannot be ignored                                                      $ hint: use [[discard]] to explicitly ignore the return value if intentional");
@@ -851,7 +851,7 @@ void initErrors()
     SWAG_ERROR(Err0732, "file [[%s]] cannot be opened for writing                                                               $ ");
     SWAG_ERROR(Err0733, "source file [[%s]] cannot be read                                                                      $ ");
     SWAG_ERROR(Err0734, "file [[%s]] cannot be written                                                                          $ ");
-    SWAG_ERROR(Err0735, "directory [[%s]] could not be created                                                                  $ ");
+    SWAG_ERROR(Err0735, "directory [[%s]] cannot be created                                                                  $ ");
     SWAG_ERROR(Err0736, "dependency module folder [[\"%s\"]] not found                                                          $ ");
     SWAG_ERROR(Err0737, "left expression is not assignable                                                                      $ ");
     SWAG_ERROR(Err0738, "expression missing or invalid, got $$TKN$$                                                             $ ");
@@ -896,9 +896,9 @@ void initErrors()
     SWAG_ERROR(Err0777, "module [[%s]] dependency version [[%s]] not found at [[%s]]                                            $ ");
     SWAG_ERROR(Err0778, "module [[%s]] dependency has empty [[location]]                                                        $ ");
     SWAG_ERROR(Err0779, "failed to load module [[%s]] for foreign function [[%s]]                                               $ ");
-    SWAG_ERROR(Err0780, "generic type could not be inferred: embedded tuples too complex                                        $ ");
+    SWAG_ERROR(Err0780, "generic type cannot be inferred: embedded tuples too complex                                        $ ");
     SWAG_ERROR(Err0781, "interface resolution failed for generic type [[%s]]                                                    $ ");
-    SWAG_ERROR(Err0782, "%s [[%s]] type could not be determined                                                                 $ ");
+    SWAG_ERROR(Err0782, "%s [[%s]] type cannot be determined                                                                 $ ");
     SWAG_ERROR(Err0783, "[[#nameof]] argument evaluation failed                                                                 $ ");
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");

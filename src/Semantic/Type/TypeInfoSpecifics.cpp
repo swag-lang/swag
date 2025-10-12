@@ -184,7 +184,8 @@ Utf8 TypeInfoAlias::getDisplayName()
     Utf8 res;
     if (isConst())
         res += "const ";
-    res += rawType->getDisplayName();
+    res += name;
+    res += form(" = %s", rawType->getDisplayNameC());
     return res;
 }
 

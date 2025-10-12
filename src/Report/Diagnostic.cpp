@@ -220,6 +220,7 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
     replace.replace("[[1]] values", "[[1]] value");
     replace.replace("[[1]] fields", "[[1]] field");
     replace.replace("[[1]] variables", "[[1]] variable");
+    replace.replace("[[1]] variable were", "[[1]] variable was");
 
     replace.replace(" [[0]] argument(s)", " [[0]] argument");
     replace.replace(" [[1]] argument(s)", " [[1]] argument");
@@ -1078,17 +1079,7 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 {
     if (!typeInfo)
         return "";
-
-    auto str = form("this type is [[%s]]", typeInfo->getDisplayNameC());
-
-    if (typeInfo->isAlias())
-    {
-        const auto typeAlias = castTypeInfo<TypeInfoAlias>(typeInfo, TypeInfoKind::Alias);
-        if (typeAlias->rawType)
-            str += form(" (aka [[%s]])", typeAlias->rawType->getConcreteAlias()->getDisplayNameC());
-    }
-
-    return str;
+    return form("this type is [[%s]]", typeInfo->getDisplayNameC());
 }
 
 Utf8 Diagnostic::isType(const SymbolOverload* overload)

@@ -1072,7 +1072,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             Diagnostic err{node->type, toErr(Err0703)};
             if (node->type->typeInfo->isAlias())
-                err.addNote(node->type, Diagnostic::isType(concreteNodeType));
+                err.addNote(node->type, Diagnostic::isType(node->type->typeInfo));
             return context->report(err);
         }
 
