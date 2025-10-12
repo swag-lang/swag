@@ -1,8 +1,8 @@
 #global testerror "Saf0018"
 
-#[Swag.Sanity(true), Swag.Safety("", "null", true)]
+#[Swag.Sanity(true), Swag.Safety(.All, "null", true)]
 {
-    #[Swag.Safety("", "memory", true)]
+    #[Swag.Safety(.All, "memory", true)]
     func titi()
     {
         var x: *s32

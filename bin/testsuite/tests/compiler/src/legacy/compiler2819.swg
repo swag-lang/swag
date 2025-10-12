@@ -1,5 +1,5 @@
 #global namespace Hash
-#global #[Swag.Safety("", "", false)]
+#global #[Swag.Safety(.All, "", false)]
 
 #[Swag.Inline]
 func toto() {}

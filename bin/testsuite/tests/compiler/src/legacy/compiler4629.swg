@@ -1,6 +1,6 @@
 #global testerror "Saf0024"
 
-#[Swag.Safety("", "", true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, "", true), Swag.Optimize("", false)]
 #test
 {
     const x = 0xFFFF'u32
@@ -8,7 +8,7 @@
 }
 
 /*
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #[Swag.Optimize("", false)]
 #test
 {
@@ -16,7 +16,7 @@
     let y = cast(u64) x
 }
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #[Swag.Optimize("", false)]
 #test
 {

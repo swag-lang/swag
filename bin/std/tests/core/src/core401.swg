@@ -1,6 +1,6 @@
 using Core
 
-#[Swag.Safety("", "nan", false)]
+#[Swag.Safety(.All, "nan", false)]
 #test
 {
     @assert(Math.isNaN(Swag.F32.NaN))

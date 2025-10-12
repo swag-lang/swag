@@ -1,7 +1,7 @@
 #global testerror "Err0500"
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false), Swag.Safety("", "", true)]
+#[Swag.Optimize("", false), Swag.Safety(.All, "", true)]
 #test
 {
     let x = "toto"

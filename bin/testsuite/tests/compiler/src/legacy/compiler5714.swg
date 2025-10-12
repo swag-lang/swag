@@ -3,7 +3,7 @@
 alias A = string
 
 //#[Swag.PrintGenBc]
-#[Swag.Optimize("", false), Swag.Safety("", "", true), Swag.Sanity(true)]
+#[Swag.Optimize("", false), Swag.Safety(.All, "", true), Swag.Sanity(true)]
 func toto(b: s32)
 {
     var x: A

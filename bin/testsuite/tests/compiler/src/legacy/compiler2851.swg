@@ -1,6 +1,6 @@
 //#global testerror
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     var x = 127's16

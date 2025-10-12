@@ -1,6 +1,6 @@
 #global testerror "Saf0026"
 
-#[Swag.Safety("", "", true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, "", true), Swag.Optimize("", false)]
 #test
 {
     const x = Swag.F64.Max

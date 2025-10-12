@@ -18,7 +18,7 @@ impl City32
     const C2 = 0x1b873593
     func fetch(buf: const [*] u8) => Math.littleEndianToNative(dref cast(const [*] u32) buf)
 
-    #[Swag.Safety("", "overflow", false)]
+    #[Swag.Safety(.All, "overflow", false)]
     mtd len0to4(data: const [..] u8)
     {
         var b = .crc
@@ -32,7 +32,7 @@ impl City32
         .crc = murmur3(murmur3(b, murmur3(cast(u32) @countof(data), c)))
     }
 
-    #[Swag.Safety("", "overflow", false)]
+    #[Swag.Safety(.All, "overflow", false)]
     mtd len5to12(data: const [..] u8)
     {
         let s   = @dataof(data)
@@ -47,7 +47,7 @@ impl City32
         .crc = murmur3(murmur3(c, murmur3(b, murmur3(a, d))))
     }
 
-    #[Swag.Safety("", "overflow", false)]
+    #[Swag.Safety(.All, "overflow", false)]
     mtd len13to24(data: const [..] u8)
     {
         let s   = @dataof(data)
@@ -69,7 +69,7 @@ impl City32
     }
 
     // Update the hash value with 'buffer' content
-    #[Swag.Safety("", "overflow", false)]
+    #[Swag.Safety(.All, "overflow", false)]
     public mtd update(data: const [..] u8)
     {
         let len = cast(u32) @countof(data)

@@ -1,4 +1,4 @@
-#global #[Swag.Safety("", "", false)]
+#global #[Swag.Safety(.All, "", false)]
 
 var G: bool
 

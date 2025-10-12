@@ -1,6 +1,6 @@
 #global testerror "Err0500"
 
-#[Swag.Optimize("", false), Swag.Safety("", "", true)]
+#[Swag.Optimize("", false), Swag.Safety(.All, "", true)]
 #test
 {
     let x = [10]

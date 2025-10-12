@@ -6,6 +6,14 @@ struct ExportedTypeInfo;
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+enum class SafetyContext
+{
+    Compiler,
+    ByteCode,
+    Sanity,
+    Max
+};
+
 using SafetyFlags                        = Flags<uint16_t>;
 constexpr SafetyFlags SAFETY_BOUND_CHECK = 0x0001;
 constexpr SafetyFlags SAFETY_OVERFLOW    = 0x0002;

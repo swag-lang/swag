@@ -7,7 +7,7 @@ func toto() throw
     throw A{42}
 }
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 //#[Swag.PrintBc]
 #test
 {

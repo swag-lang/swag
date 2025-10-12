@@ -2,6 +2,6 @@
 
 #test
 {
-    #[Swag.Safety("", "overflow", true)]
+    #[Swag.Safety(.All, "overflow", true)]
     var x: u64 = 1 + Swag.U64.Max
 }

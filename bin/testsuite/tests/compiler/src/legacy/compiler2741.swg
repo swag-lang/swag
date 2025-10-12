@@ -1,7 +1,7 @@
 #global testerror "Saf0020"
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", "", true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, "", true), Swag.Optimize("", false)]
 #test
 {
     let x = -1's8

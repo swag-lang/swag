@@ -1,7 +1,7 @@
 #global testerror "Err0294"
 
 //#[Swag.Optimize("", false)]
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     let y = Swag.S32.Min

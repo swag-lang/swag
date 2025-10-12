@@ -1,7 +1,7 @@
 #[Swag.CalleeReturn, Swag.Macro]
 func toto()
 {
-    #[Swag.Safety("", "", true)]
+    #[Swag.Safety(.All, "", true)]
     #macro
     {
         return

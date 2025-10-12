@@ -1,10 +1,10 @@
 #global skip
 #global testerror
 
-#[Swag.Safety("", "", false)]
+#[Swag.Safety(.All, "", false)]
 func toto()
 {
-    #[Swag.Safety("", "", true)]
+    #[Swag.Safety(.All, "", true)]
     func titi()
     {
         var x: *s32

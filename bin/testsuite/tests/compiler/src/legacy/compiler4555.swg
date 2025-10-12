@@ -2,7 +2,7 @@
 
 alias A = string
 
-#[Swag.Optimize("", false), Swag.Safety("", "", true), Swag.Sanity(false)]
+#[Swag.Optimize("", false), Swag.Safety(.All, "", true), Swag.Sanity(false)]
 #test
 {
     var x: A

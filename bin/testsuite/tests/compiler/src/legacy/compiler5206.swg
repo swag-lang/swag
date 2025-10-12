@@ -1,6 +1,6 @@
 #global testerror "Saf0019"
 
-#[Swag.Safety("", "null", true)]
+#[Swag.Safety(.All, "null", true)]
 func toto() throw
 {
     throw @err

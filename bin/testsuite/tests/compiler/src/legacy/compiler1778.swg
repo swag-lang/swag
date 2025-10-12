@@ -2,7 +2,7 @@
 #global testerror
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     var x = [1, 2]

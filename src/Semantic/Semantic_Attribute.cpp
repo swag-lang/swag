@@ -475,18 +475,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     auto attrValue = attr->getValue(g_LangSpec->name_value);
                     SWAG_ASSERT(attrValue);
 
-                    auto attrContextText = attrContextParam->value.text;
-                    attrContextText.trim();
-                    auto cxt = SafetyContext::Max;
-                    if (attrContextText == "compiler")
-                        cxt = SafetyContext::Compiler;
-                    else if (attrContextText == "sanity")
-                        cxt = SafetyContext::Sanity;
-                    else if (attrContextText == "bytecode")
-                        cxt = SafetyContext::ByteCode;
-                    else if (!attrContextText.empty())
-                        return context->report({child, attrContextParam->token, formErr(Err0167, attrContextText.cstr())});
-
+                    auto cxt          = static_cast<SafetyContext>(attrContextParam->value.reg.u32);
                     auto attrWhat     = &attrWhatParam->value;
                     auto attrWhatText = attrWhat->text;
                     attrWhatText.trim();

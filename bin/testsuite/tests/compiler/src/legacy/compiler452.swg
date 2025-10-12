@@ -5,7 +5,7 @@
 #test
 {
 	var a: string = null;
-    #[Swag.Safety("", "", true)]
+    #[Swag.Safety(.All, "", true)]
 	if(a[0] == 1)
 	{
 	}

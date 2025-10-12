@@ -1,7 +1,7 @@
 //#global testerror
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false), Swag.Sanity(true), Swag.Safety("", "overflow", true)]
+#[Swag.Optimize("", false), Swag.Sanity(true), Swag.Safety(.All, "overflow", true)]
 func test()
 {
     var x = 1'u8

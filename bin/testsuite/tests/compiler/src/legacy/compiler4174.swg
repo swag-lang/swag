@@ -1,4 +1,4 @@
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 func toto()->s32
 {
     let x = 1

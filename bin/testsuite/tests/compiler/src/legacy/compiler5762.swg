@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[Swag.Sanity(true), Swag.Safety("", "null", true), Swag.Optimize("", false)]
+#[Swag.Sanity(true), Swag.Safety(.All, "null", true), Swag.Optimize("", false)]
 func test()
 {
     var p: *A

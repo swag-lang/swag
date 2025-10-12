@@ -7,7 +7,7 @@ public interface IHash32
 }
 
 // Hash the given value and returns the corresponding u32
-#[ConstExpr, Safety("", "", false)]
+#[ConstExpr, Safety(.All, "", false)]
 public func(T) hash32(value: T)->u32
 {
     #if T == string do

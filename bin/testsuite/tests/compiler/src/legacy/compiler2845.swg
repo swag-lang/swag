@@ -1,4 +1,4 @@
-//#[Swag.Safety("", "", true)]
+//#[Swag.Safety(.All, "", true)]
 //#[Swag.PrintBc]
 #[Swag.Optimize("", false)]
 #test

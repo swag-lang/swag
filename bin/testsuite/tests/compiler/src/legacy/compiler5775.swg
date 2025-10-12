@@ -1,7 +1,7 @@
 #global skip
 #global testerror "Saf0018"
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #[Swag.Optimize("", false)]
 public func doModalLoop(cb: func(*void) = null)
 {
@@ -9,7 +9,7 @@ public func doModalLoop(cb: func(*void) = null)
         cb(null)
 }
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #[Swag.Optimize("", false)]
 func test()
 {

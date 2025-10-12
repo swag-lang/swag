@@ -1,6 +1,6 @@
 #global testerror "Saf0001"
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     let v: any = {4, 5}

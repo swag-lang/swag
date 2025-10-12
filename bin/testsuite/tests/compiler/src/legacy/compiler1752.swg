@@ -5,6 +5,6 @@
 #test
 {
     var x = "64"
-    #[Swag.Safety("", "", true)]
+    #[Swag.Safety(.All, "", true)]
     let y = &x[3]
 }

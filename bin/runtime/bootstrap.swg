@@ -152,16 +152,21 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Sanity(what: bool)
 
+    // To which context the 'Safety' attribute must be applied
+    enum SafetyContext
+    {
+        Compiler = 0    // Compiler context (during compile)
+        ByteCode = 1    // During bytecode generation (dynamic checks)
+        Sanity   = 2    // During sanity pass
+        All
+    }
+
     // Enable/Disable one or more safety checks.
     // For example:
     // ```swag
-    // #[Swag.Safety("", "", "", false)]                    // Disable all
-    // #[Swag.Safety("", "compiler", "boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
+    // #[Swag.Safety(.All, "", false)]                      // Disable all
+    // #[Swag.Safety(.ByteCode, "boundcheck|nan", false)]   // Disable 'boundcheck' and 'nan' checks
     // ```
-    // Safety context is:
-    // | 'compiler'     | Safety done during the compiler pass, and especially constant folding
-    // | 'sanity'       | Safety done during the sanity pass, if enabled
-    // | 'bytecode'     | Safety done at the byte code level; could occur during runtime
     // Safety checks are:
     // | 'boundcheck'   | Check out of bound access
     // | 'overflow'     | Check type conversion lost of bits or precision
@@ -175,7 +180,7 @@ namespace Swag
     // | 'null'         | Panic on dereferencing some null pointers
     // If 'what' is null or empty, every options are will be affected.
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
-    attr Safety(context: string, what: string, value: bool)
+    attr Safety(context: SafetyContext, what: string, value: bool)
 
     // Enable/Disable a given function optimization.
     // Options are:

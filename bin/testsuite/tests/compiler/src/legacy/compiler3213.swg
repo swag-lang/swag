@@ -18,7 +18,7 @@ impl IBase for Base
 
 impl Base
 {
-    //#[Swag.PrintBc, Swag.Safety("", "", false)]
+    //#[Swag.PrintBc, Swag.Safety(.All, "", false)]
     mtd toto()->s32
     {
         return me.itf.toCheck()

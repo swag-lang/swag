@@ -4,7 +4,7 @@
 
 //#[Swag.PrintBc]
 //#[Swag.Optimize("", false)]
-#[Swag.Safety("", "math", true)]
+#[Swag.Safety(.All, "math", true)]
 #test
 {
     /*var x = 0xFFFFFFFF'u32

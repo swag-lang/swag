@@ -905,7 +905,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
-    SWAG_ERROR(Err0167, "[[\"%s\"]] is not a recognized safety context                                                          $ hint: use one of [[\"compiler|sanity|bytecode\"]]");
+    SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0421, nullptr);
     SWAG_ERROR(Err0309, nullptr);
     SWAG_ERROR(Err0422, nullptr);

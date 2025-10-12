@@ -1,6 +1,6 @@
 #global testerror "Saf0027"
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     let x  = 0xFFFFFFFF'u32

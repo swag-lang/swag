@@ -1,7 +1,7 @@
 #global testerror "Saf0027"
 #global testerror "Saf0027"
 
-#[Swag.Safety("", "overflow", true)]
+#[Swag.Safety(.All, "overflow", true)]
 #test
 {
     var x: s32 = Swag.S32.Max

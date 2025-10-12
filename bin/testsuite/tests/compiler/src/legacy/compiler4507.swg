@@ -1,6 +1,6 @@
 #global testerror "Saf0027"
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false), Swag.Safety("", "", true)]
+#[Swag.Optimize("", false), Swag.Safety(.All, "", true)]
 #test
 {
     var x = -128's8

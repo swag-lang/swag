@@ -17,7 +17,7 @@ impl A
     }
 }
 
-#[Swag.Optimize("", false), Swag.Safety("", "", false)]
+#[Swag.Optimize("", false), Swag.Safety(.All, "", false)]
 #test
 {
     var b: B

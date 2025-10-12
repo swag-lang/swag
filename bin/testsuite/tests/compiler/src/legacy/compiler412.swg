@@ -6,7 +6,7 @@
     var c  = [666, 666]
     var d: [..] s32 = c
 
-    #[Swag.Safety("", "", true)]
+    #[Swag.Safety(.All, "", true)]
     d[2] = 100
 
     //var c = {0};

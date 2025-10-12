@@ -1,5 +1,5 @@
 #global testerror "Saf0027"
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     const month = 11'u16

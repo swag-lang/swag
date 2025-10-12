@@ -1,6 +1,6 @@
 #global skip
 
-#[Swag.Safety("", "", false)]
+#[Swag.Safety(.All, "", false)]
 #[Swag.Sanity(true)]
 func toto()
 {

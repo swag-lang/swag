@@ -1,7 +1,7 @@
 #global testerror "Err0500"
 using Swag
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     let b = "XYZ"

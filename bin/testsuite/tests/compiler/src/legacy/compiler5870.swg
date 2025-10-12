@@ -8,7 +8,7 @@ public interface IHash64
 //func isStruct(t: typeinfo) => t.kind == .Struct
 
 // Hash the given value and returns the corresponding u64
-#[ConstExpr, Safety("", "", false)]
+#[ConstExpr, Safety(.All, "", false)]
 public func(T) hash64(value: T)->u64
 {
     /*#if T == string:

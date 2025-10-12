@@ -5,7 +5,7 @@ struct V
     fn:  func||()
 }
 
-#[Swag.Safety("", "null", true), Swag.Sanity(true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, "null", true), Swag.Sanity(true), Swag.Optimize("", false)]
 //#[Swag.PrintBc]
 func test()
 {

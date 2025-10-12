@@ -1,6 +1,6 @@
 #global testerror "Saf0004"
 
-#[Swag.Safety("", "", true)]
+#[Swag.Safety(.All, "", true)]
 #test
 {
     let x: const [..] u8 = [0'u8, 1, 2]

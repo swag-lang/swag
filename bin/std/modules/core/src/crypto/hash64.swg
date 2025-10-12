@@ -7,7 +7,7 @@ public interface IHash64
 }
 
 // Hash the given value and returns the corresponding u64
-#[ConstExpr, Safety("", "", false)]
+#[ConstExpr, Safety(.All, "", false)]
 public func(T) hash64(value: T)->u64
 {
     #if T == string do
