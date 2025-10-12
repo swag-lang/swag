@@ -1,6 +1,6 @@
 /**
-# Introduction to `break` in Swag
-The `break` statement is a control structure in Swag, allowing you to exit from `for`, `foreach`, `while`, `for`, and `switch` constructs. Understanding how and when to use `break` is essential for effective flow control in your programs.
+# Introduction to 'break' in Swag
+The 'break' statement is a control structure in Swag, allowing you to exit from 'for', 'foreach', 'while', 'for', and 'switch' constructs. Understanding how and when to use 'break' is essential for effective flow control in your programs.
 */
 #test
 {
@@ -15,8 +15,8 @@ The `break` statement is a control structure in Swag, allowing you to exit from 
 }
 
 /**
-# Default Behavior of `break`
-By default, the `break` statement exits only the innermost loop or control structure in which it resides. This ensures that nested loops or structures can be controlled independently.
+# Default Behavior of 'break'
+By default, the 'break' statement exits only the innermost loop or control structure in which it resides. This ensures that nested loops or structures can be controlled independently.
 */
 #test
 {
@@ -37,8 +37,8 @@ By default, the `break` statement exits only the innermost loop or control struc
 }
 
 /**
-# Named Scopes with `break`
-Swag allows you to define named scopes using the `#scope` keyword. The `break` statement can then be directed to exit from the named scope, offering a structured approach to control flow within complex nested loops or conditions.
+# Named Scopes with 'break'
+Swag allows you to define named scopes using the '#scope' keyword. The 'break' statement can then be directed to exit from the named scope, offering a structured approach to control flow within complex nested loops or conditions.
 */
 #test
 {
@@ -50,7 +50,7 @@ Swag allows you to define named scopes using the `#scope` keyword. The `break` s
         for 10
         {
             cpt += 1
-            break to BigScope // Exits the entire 'BigScope' scope after incrementing `cpt`
+            break to BigScope // Exits the entire 'BigScope' scope after incrementing 'cpt'
         }
 
         @assert(false) // This assertion is never reached due to the break to statement above
@@ -61,8 +61,8 @@ Swag allows you to define named scopes using the `#scope` keyword. The `break` s
 }
 
 /**
-# Using `continue` with Named Scopes
-The `continue` statement can be used with a named scope to restart the execution from the beginning of the scope. This can be useful for iterating until a specific condition is met.
+# Using 'continue' with Named Scopes
+The 'continue' statement can be used with a named scope to restart the execution from the beginning of the scope. This can be useful for iterating until a specific condition is met.
 */
 #test
 {
@@ -72,8 +72,8 @@ The `continue` statement can be used with a named scope to restart the execution
     {
         cpt += 1
         if cpt == 5 do
-            break // Exits the 'Loop' scope when `cpt` equals 5, ending the loop
-        continue // Restarts the 'Loop' scope, incrementing `cpt` each time
+            break // Exits the 'Loop' scope when 'cpt' equals 5, ending the loop
+        continue // Restarts the 'Loop' scope, incrementing 'cpt' each time
     }
 
     @assert(cpt == 5) // Verifies that the loop runs exactly 5 times before exiting
@@ -91,25 +91,25 @@ Named scopes are optional. You can also use unnamed scopes to manage control flo
         if cpt == 1
         {
             @assert(cpt == 1)
-            break // Exits the unnamed scope if `cpt` equals 1
+            break // Exits the unnamed scope if 'cpt' equals 1
         }
 
         if cpt == 2
         {
             @assert(cpt == 2)
-            break // Exits the unnamed scope if `cpt` equals 2
+            break // Exits the unnamed scope if 'cpt' equals 2
         }
 
         if cpt == 3
         {
             @assert(cpt == 3)
-            break // Exits the unnamed scope if `cpt` equals 3
+            break // Exits the unnamed scope if 'cpt' equals 3
         }
     }
 }
 
 /**
-# Using `break` with Simple Statements
+# Using 'break' with Simple Statements
 A scope in Swag can also be followed by a simple statement rather than a block, providing additional flexibility in controlling the flow of execution.
 */
 #test
