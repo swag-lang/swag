@@ -1,36 +1,31 @@
 /**
 # Slices in Swag
 
-A slice in Swag provides a dynamic view over a contiguous block of memory. Unlike static arrays, slices
-can be resized or point to different segments of memory at runtime. A slice is composed of a pointer to
-the data buffer and a `u64` value that stores the number of elements in the slice.
+A slice provides a dynamic view over a contiguous block of memory. Unlike static arrays,
+slices can point to different memory regions or subsets of existing data at runtime.
 
-This design makes slices a powerful tool for working with subsets of data without the need to copy it,
-enabling efficient manipulation of large datasets.
+A slice consists of a data pointer and a 'u64' count representing the number of elements.
+This allows efficient access to large datasets without copying memory.
 */
-
 #test
 {
-    var a: [..] bool // Declare a slice of boolean values
+    var a: [..] bool
     #assert(#sizeof(a) == #sizeof(*void) + #sizeof(u64))
-    // Ensure slice size includes pointer and element count
 }
 
 /**
 # Initializing Slices
 
-Slices can be initialized in a similar manner to arrays. By assigning an array literal to a slice,
-the slice will reference the elements in the array.
+Slices can be initialized directly with array literals. The slice will reference
+the array’s elements.
 */
-
 #test
 {
-    var a: const [..] u32 = [10, 20, 30, 40, 50] // Initialize a slice with an array literal
-    @assert(@countof(a) == 5) // Verify that the slice contains 5 elements
+    var a: const [..] u32 = [10, 20, 30, 40, 50]
+    @assert(@countof(a) == 5)
     @assert(a[0] == 10)
     @assert(a[4] == 50)
 
-    // Slices are dynamic, allowing for modification of the referenced elements at runtime.
     a = [1, 2]
     @assert(@countof(a) == 2)
     @assert(a[0] == 1)
@@ -40,15 +35,15 @@ the slice will reference the elements in the array.
 /**
 # Accessing Slice Data
 
-At runtime, you can use `@dataof` to retrieve the address of the data buffer and `@countof` to
-get the number of elements in the slice.
+The '@dataof' intrinsic retrieves the slice’s data address, and '@countof' returns
+the number of elements.
 */
-
 #test
 {
-    var a:    const [..] u32 = [10, 20, 30, 40, 50]     // Initialize a slice with an array literal
-    let count = @countof(a)                             // Get the number of elements in the slice
-    let addr  = @dataof(a)                              // Get the address of the slice's data buffer
+    var a:    const [..] u32 = [10, 20, 30, 40, 50]
+    let count = @countof(a)
+    let addr  = @dataof(a)
+
     @assert(count == 5)
     @assert(addr[0] == 10)
     @assert(addr[4] == 50)
@@ -58,33 +53,28 @@ get the number of elements in the slice.
 }
 
 /**
-# Creating Slices with `@mkslice`
+# Creating Slices with '@mkslice'
 
-The `@mkslice` function allows you to create a slice using your own pointer and element count.
+The '@mkslice' intrinsic creates a slice from a pointer and an element count.
 */
-
 #test
 {
     var array: [4] u32 = [10, 20, 30, 40]
 
-    // Create a slice of 'array' starting at index 2, with 2 elements.
     let slice: [..] u32 = @mkslice(&array[0] + 2, 2)
-
     @assert(@countof(slice) == 2)
     @assert(slice[0] == 30)
     @assert(slice[1] == 40)
 
-    @assert(array[2] == 30)
-    slice[0] = 314 // Modify the original array via the slice
+    slice[0] = 314
     @assert(array[2] == 314)
 }
 
 /**
 # Slicing Strings
 
-For strings, the slice must be `const` because strings are immutable.
+Strings can be sliced, but the result must be declared as 'const' since strings are immutable.
 */
-
 #test
 {
     let str       = "string"
@@ -94,29 +84,22 @@ For strings, the slice must be `const` because strings are immutable.
 }
 
 /**
-# Slicing with the `..` Operator
+# Slicing with the '..' Operator
 
-You can create a slice using the `..` operator instead of `@mkslice`. For instance,
-you can slice a string.
+The '..' operator can be used to create slices directly.
 */
-
 #test
 {
-    let str = "string"
-
-    // Create a slice starting at byte 0 and ending at byte 3.
+    let str   = "string"
     let slice = str[1 to 3]
-
     @assert(slice == "tri")
 }
 
 /**
 # Inclusive and Exclusive Slicing
 
-By default, the upper limit in a slice is **inclusive**. To exclude the upper limit, use 'until'
-instead of `..`.
+By default, the upper bound in a slice is inclusive. To exclude it, use 'until' instead of 'to'.
 */
-
 #test
 {
     let str   = "string"
@@ -127,9 +110,8 @@ instead of `..`.
 /**
 # Slicing to the End
 
-You can omit the upper bound to create a slice that extends to the end of the sequence.
+Omitting the upper bound creates a slice extending to the end of the sequence.
 */
-
 #test
 {
     let str   = "string"
@@ -140,25 +122,24 @@ You can omit the upper bound to create a slice that extends to the end of the se
 /**
 # Slicing from the Start
 
-To create a slice from the start (index 0), you can omit the lower bound.
+Omitting the lower bound starts the slice from index 0.
 */
-
 #test
 {
-    let str   = "string"
-    let slice = str[ to 2]     // Index 2 is included
+    let str = "string"
+
+    let slice = str[ to 2]
     @assert(slice == "str")
 
-    let slice1 = str[ until 2] // Index 2 is excluded
+    let slice1 = str[ until 2]
     @assert(slice1 == "st")
 }
 
 /**
 # Slicing Arrays
 
-Arrays can also be sliced similarly to strings.
+Arrays can be sliced the same way as strings.
 */
-
 #test
 {
     let arr   = [10, 20, 30, 40]
@@ -167,7 +148,6 @@ Arrays can also be sliced similarly to strings.
     @assert(slice[1] == 40)
     @assert(@countof(slice) == 2)
 
-    // Create a slice for the entire array.
     let slice1 = arr[ to ]
     @assert(@countof(slice1) == @countof(arr))
 }
@@ -175,9 +155,8 @@ Arrays can also be sliced similarly to strings.
 /**
 # Slicing a Slice
 
-It is possible to create a slice from another slice.
+A slice can be further sliced to produce another slice.
 */
-
 #test
 {
     let arr    = [10, 20, 30, 40]
@@ -192,11 +171,10 @@ It is possible to create a slice from another slice.
 }
 
 /**
-# Transforming a Pointer to a Slice
+# Transforming a Pointer into a Slice
 
-You can transform a pointer into a slice.
+A pointer can be transformed into a slice by specifying a range.
 */
-
 #test
 {
     var arr   = [10, 20, 30, 40]

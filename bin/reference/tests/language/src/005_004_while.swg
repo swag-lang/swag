@@ -1,6 +1,8 @@
 /**
 # Introduction to 'while' Loops
-A 'while' loop is a control flow statement that allows repeated execution of a block of code as long as the specified condition evaluates to 'true'. Once the condition becomes 'false', the loop terminates.
+
+A `while` loop repeatedly executes a block of code as long as its condition evaluates to `true`.
+Once the condition becomes `false`, the loop terminates.
 */
 #test
 {
@@ -12,7 +14,9 @@ A 'while' loop is a control flow statement that allows repeated execution of a b
 
 /**
 # Breaking Out of a 'while' Loop
-The 'break' statement provides a way to exit a 'while' loop before the loop's condition becomes 'false'. This is particularly useful when an early termination of the loop is needed based on a specific condition.
+
+The `break` statement allows an early exit from a `while` loop before the condition becomes `false`.
+This is useful when you need to stop the loop based on a specific condition.
 */
 #test
 {
@@ -23,18 +27,20 @@ The 'break' statement provides a way to exit a 'while' loop before the loop's co
             break
         i += 1
     }
-
     @assert(i == 5)
 }
 
 /**
 # Skipping Iterations with 'continue'
-The 'continue' statement allows you to skip the current iteration and proceed directly to the next iteration of the loop. This is useful for ignoring specific conditions within the loop while continuing its execution.
+
+The `continue` statement skips the current iteration and jumps to the next one.
+It is useful for ignoring specific cases within the loop.
 */
 #test
 {
     var sum = 0
     var i   = 0
+
     while i < 10
     {
         i += 1
@@ -48,7 +54,9 @@ The 'continue' statement allows you to skip the current iteration and proceed di
 
 /**
 # Nested 'while' Loops
-A 'while' loop can contain another 'while' loop, forming a nested loop structure. In such cases, the 'break' and 'continue' statements apply only to the loop in which they are directly placed.
+
+A `while` loop can contain another `while` loop.
+`break` and `continue` only affect the loop in which they are directly used.
 */
 #test
 {
@@ -74,7 +82,9 @@ A 'while' loop can contain another 'while' loop, forming a nested loop structure
 
 /**
 # Using 'while' with Complex Conditions
-The condition in a 'while' loop can involve complex logical expressions, allowing for more sophisticated and controlled execution of the loop.
+
+The condition in a `while` loop can include logical operators such as `and` and `or`
+for more complex and controlled iteration logic.
 */
 #test
 {

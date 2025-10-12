@@ -1,7 +1,11 @@
 /**
 # Default Struct Packing
 
-By default, Swag aligns struct fields similarly to the C programming language. Each field is aligned based on the size of its type, ensuring optimal memory access and usage. This default behavior can be explicitly specified using `#[Swag.Pack(0)]`, meaning no additional packing adjustments are applied. Below is an example illustrating this default alignment strategy.
+By default, Swag aligns struct fields similarly to the C programming language.
+Each field is aligned based on the size of its type, ensuring optimal memory access.
+This default behavior can be explicitly specified using '#[Swag.Pack(0)]', meaning
+no additional packing adjustments are applied. Below is an example illustrating this
+default alignment strategy.
 */
 #test
 {
@@ -21,7 +25,9 @@ By default, Swag aligns struct fields similarly to the C programming language. E
 /**
 # Reducing Packing
 
-Swag allows you to reduce the packing of struct fields using the `#[Swag.Pack]` attribute. This attribute specifies the alignment value to be applied to each field, enabling more compact struct representations. Below are examples demonstrating different levels of packing.
+Swag allows reducing the packing of struct fields using the '#[Swag.Pack]' attribute.
+This attribute specifies the alignment value applied to each field, enabling more compact
+struct representations. Below are examples demonstrating different levels of packing.
 */
 #test
 {
@@ -59,7 +65,9 @@ Swag allows you to reduce the packing of struct fields using the `#[Swag.Pack]` 
 /**
 # Struct Size and Alignment
 
-The total size of a struct in Swag is always a multiple of the largest alignment value among its fields. This ensures that the struct remains correctly aligned when used within larger data structures or arrays.
+The total size of a struct in Swag is always a multiple of the largest alignment value
+among its fields. This ensures correct alignment when used within larger data structures
+or arrays.
 */
 #test
 {
@@ -67,15 +75,17 @@ The total size of a struct in Swag is always a multiple of the largest alignment
     {
         x:     s32      // 4 bytes
         y:     bool     // 1 byte
-        // 3 bytes of padding to align with s32 size
+        // 3 bytes of padding to align to s32 size
     }
+
     #assert(#sizeof(MyStruct1) == 8)
 }
 
 /**
-# Enforcing Alignment with `Swag.Align`
+# Enforcing Alignment with 'Swag.Align'
 
-Swag provides the `#[Swag.Align]` attribute to enforce specific alignment constraints on an entire struct. This attribute can be used to ensure that a struct's alignment meets specific hardware or performance requirements.
+Swag provides the '#[Swag.Align]' attribute to enforce specific alignment constraints on
+an entire struct. Use it to meet hardware or performance requirements.
 */
 #test
 {
@@ -103,7 +113,8 @@ Swag provides the `#[Swag.Align]` attribute to enforce specific alignment constr
 /**
 # Field-Specific Alignment
 
-Swag allows setting specific alignment values for individual struct fields using the `#[Swag.Align]` attribute. This enables fine-grained control over memory layout, which can be crucial for certain low-level optimizations.
+Set specific alignment values for individual fields using the '#[Swag.Align]' attribute.
+This provides fine-grained control over memory layout for low-level optimizations.
 */
 #test
 {

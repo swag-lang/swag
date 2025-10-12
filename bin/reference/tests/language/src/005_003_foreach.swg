@@ -1,7 +1,7 @@
 /**
 # Introduction to 'foreach'
-The 'foreach' statement is designed to iterate over all elements within a collection. It provides a streamlined
-and efficient way to process each item in a collection, which can be an array, slice, string and even a struct.
+The 'foreach' statement iterates over all elements of a collection (arrays, slices, strings, and even structs),
+providing a streamlined and efficient way to process each item.
 */
 
 #test
@@ -23,8 +23,8 @@ and efficient way to process each item in a collection, which can be an array, s
 
 /**
 # Naming the Value and Index
-Both the **value** and the loop **index** can be named explicitly. This enhances code readability,
-especially in cases involving nested loops or complex data structures.
+You can explicitly name both the element 'value' and the loop 'index' to improve readability,
+especially in nested loops or with complex data structures.
 */
 
 #test
@@ -46,8 +46,8 @@ especially in cases involving nested loops or complex data structures.
 
 /**
 # Using Default Aliases
-Both the **value** and the **index** are optional. If names are not explicitly provided,
-the default aliases '#alias0' for the value and '#alias1' for the index can be used.
+If you do not name the element or index, you can access them with the default aliases:
+'#alias0' for the element and '#alias1' for the index.
 */
 
 #test
@@ -70,8 +70,8 @@ the default aliases '#alias0' for the value and '#alias1' for the index can be u
 
 /**
 # Reverse Order with '#reverse'
-To iterate over elements in reverse order, use the '#reverse' modifier. This is particularly useful
-when processing a collection from the last element to the first.
+Iterate from the last element to the first by adding the '#reverse' modifier.
+'@index' still reflects the loop index within the original collection.
 */
 
 #test
@@ -79,7 +79,6 @@ when processing a collection from the last element to the first.
     var cpt = 0
     foreach #reverse value in "ABC"
     {
-        // '@index' still stores the loop index, even in reverse order.
         switch cpt
         {
         case 0:
@@ -92,55 +91,48 @@ when processing a collection from the last element to the first.
             @assert(value == 'A')
             @assert(@index == 0)
         }
-
         cpt += 1
     }
 }
 
 /**
 # Visiting Arrays and Slices
-The 'foreach' statement can be used to iterate over arrays or slices,
-enabling straightforward processing of each element.
+Use 'foreach' to traverse arrays or slices and process each element.
 */
 
 #test
 {
-    var array = [10, 20, 30]
-
+    var array  = [10, 20, 30]
     var result = 0
     foreach it in array do
         result += it
-
     @assert(result == 10 + 20 + 30)
 }
 
 /**
 # Multi-dimensional Arrays
-'foreach' supports multi-dimensional arrays, facilitating the processing of complex data structures.
+'foreach' works with multi-dimensional arrays and visits each element in row-major order.
 */
 
 #test
 {
     var array: [2, 2] s32 = [[10, 20], [30, 40]]
-
     var result = 0
     foreach it in array do
         result += it
-
     @assert(result == 10 + 20 + 30 + 40)
 }
 
 /**
 # Modifying Elements with '&'
-By prefixing the value name with '&', 'foreach' allows you to visit elements by address,
-enabling in-place modification of the elements.
+Prefix the element name with '&' to visit elements by address and modify them in place.
 */
 
 #test
 {
     var array: [2, 2] s32 = [[1, 2], [3, 4]]
-
     var result = 0
+
     foreach &it in array
     {
         result += dref it
@@ -148,7 +140,6 @@ enabling in-place modification of the elements.
     }
 
     @assert(result == 1 + 2 + 3 + 4)
-
     @assert(array[0, 0] == 555)
     @assert(array[0, 1] == 555)
     @assert(array[1, 0] == 555)
@@ -157,8 +148,8 @@ enabling in-place modification of the elements.
 
 /**
 # Filtering with 'where'
-The 'where' clause can be used with 'foreach' to filter the elements processed based on specific conditions.
-This approach is efficient for conditionally applying logic to only the elements that meet certain criteria.
+Add a 'where' clause to process only elements that satisfy a condition.
+This avoids explicit branching inside the loop.
 */
 
 #test
@@ -168,10 +159,9 @@ This approach is efficient for conditionally applying logic to only the elements
 
     foreach value in array where value & 1 == 0 do
         result += value
-
     @assert(result == 6)
 
-    // Equivalent using an if statement inside the 'foreach' loop:
+    // Equivalent with an 'if' guard:
     result = 0
     foreach value in array do
         if value & 1 == 0 do

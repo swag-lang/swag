@@ -1,6 +1,9 @@
 /**
 # Special Keywords
-Special keywords are predefined, reserved identifiers that have specific meanings within the Swag compiler. These cannot be used as identifiers in your code as they are integral to the language's structure.
+
+Special keywords are predefined, reserved identifiers that have specific meanings
+within the Swag compiler. These cannot be used as identifiers in your code, as they
+are integral to the language's structure.
 
 ```swag
 if
@@ -62,10 +65,17 @@ var
 let
 const
 moveref
-```
+````
+
+*/
+
+/**
 
 # Reserved Keywords
-These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to avoid conflicts with language features.
+
+These keywords are reserved by the language and cannot be used by developers,
+even though they may not currently serve an active role in the syntax. They are
+reserved for potential future use or to prevent conflicts with language features.
 
 ```swag
 is
@@ -73,8 +83,15 @@ not
 do
 ```
 
+*/
+
+/**
+
 # Basic Types
-These are the fundamental data types provided by the language. They are reserved keywords and form the core types that can be used to define variables, constants, and function return types.
+
+These are the fundamental data types provided by the language. They are reserved
+keywords and form the core building blocks for variables, constants, and function
+return types.
 
 ```swag
 s8
@@ -98,8 +115,15 @@ cstring
 cvarargs
 ```
 
+*/
+
+/**
+
 # Compiler Instructions
-Compiler instructions are prefixed with `#` and are reserved for specific operations within the Swag compiler. These keywords are used to control various aspects of compilation and code generation. User-defined identifiers cannot start with `#`, ensuring that compiler keywords do not conflict with user-defined names.
+
+Compiler instructions are prefixed with '#'. They are reserved for specific operations
+within the Swag compiler and control various aspects of compilation and code generation.
+User-defined identifiers cannot start with '#', ensuring there are no naming conflicts.
 
 ```swag
 #run
@@ -172,8 +196,16 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 #uniq2 // and more generally #mixinN
 ```
 
+*/
+
+/**
+
 # Intrinsic Values
 
+Intrinsic values begin with '@' and are provided by the compiler for introspection
+or internal state access.
+
+```swag
 @err
 @index
 @args
@@ -183,9 +215,16 @@ Compiler instructions are prefixed with `#` and are reserved for specific operat
 @modules
 @gvtd
 @rtflags
+```
+
+*/
+
+/**
 
 # Miscellaneous Intrinsics
-Intrinsic functions are prefixed with `@` and provide low-level operations that are often directly supported by the compiler or underlying hardware. These keywords offer specialized functionality that can be used during both compile time and runtime, depending on the context.
+
+Intrinsic functions are prefixed with '@' and provide low-level operations directly
+supported by the compiler or hardware. They can be used at both compile time and runtime.
 
 ```swag
 @kindof
@@ -218,8 +257,15 @@ Intrinsic functions are prefixed with `@` and provide low-level operations that 
 @setcontext
 ```
 
-# Intrinsics from *libc*
-These intrinsic functions provide access to standard *libc* functionalities, allowing developers to perform common mathematical, memory, and string operations. They are also prefixed with `@` to avoid conflicts with user-defined identifiers.
+*/
+
+/**
+
+# Intrinsics from 'libc'
+
+These intrinsic functions expose standard 'libc' functionalities, allowing developers
+to perform common mathematical, memory, and string operations. They are also prefixed
+with '@' to prevent conflicts with user-defined identifiers.
 
 ```swag
 @abs
@@ -273,8 +319,14 @@ These intrinsic functions provide access to standard *libc* functionalities, all
 @trunc
 ```
 
+*/
+
+/**
+
 # Modifiers
-Modifiers can be applied to specific keywords or operators to alter their behavior. These modifiers allow developers to fine-tune operations, giving more control over how certain code constructs are executed.
+
+Modifiers can be applied to specific keywords or operators to adjust their behavior.
+They give developers finer control over how code is interpreted or executed.
 
 ```swag
 #prom
@@ -289,4 +341,5 @@ Modifiers can be applied to specific keywords or operators to alter their behavi
 #noerr
 #null
 ```
+
 */

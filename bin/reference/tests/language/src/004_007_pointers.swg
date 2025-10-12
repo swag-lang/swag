@@ -1,128 +1,144 @@
 /**
-# Single Value Pointers
+# Single-Value Pointers
 
-A pointer to a **single element** is declared using the `*` symbol. This allows you to create a pointer that holds the address of one specific instance of a data type. Pointers can be used to reference any type of data, allowing for efficient memory management and manipulation of variables.
+A pointer to a **single element** is declared using the `*` symbol.
+It represents the memory address of one instance of a given type.
+
+Pointers can reference any type of data and are fundamental for efficient memory access and manipulation.
 */
 #test
 {
-    var ptr1: *u8      // This is a pointer to a single 'u8' value
-    var ptr2: **u8     // This is a pointer to another pointer, which in turn points to a single 'u8' value
+    var ptr1: *u8      // Pointer to a single 'u8' value
+    var ptr2: **u8     // Pointer to another pointer to 'u8'
 }
 
 /**
 # Null Pointers
 
-In Swag, a pointer can be `null`, indicating that it does not point to any valid memory location. A null pointer is commonly used to signify that the pointer is uninitialized or that it intentionally points to "nothing". Checking for null pointers before dereferencing is a good practice to avoid runtime errors.
+In Swag, a pointer can be `null`, meaning it does not refer to any valid memory location.
+Null pointers are often used to indicate uninitialized or intentionally empty references.
+
+It is good practice to check for null pointers before dereferencing them to avoid runtime errors.
 */
 #test
 {
-    var ptr1: *u8 // Declaring a pointer to 'u8' without initialization
-    @assert(ptr1 == null) // By default, the pointer is null, indicating it doesn't point to any valid memory location
+    var ptr1: *u8
+    @assert(ptr1 == null) // Uninitialized pointers are null by default
 }
 
 /**
 # Taking the Address of a Variable
 
-You can obtain the address of a variable using the `&` operator. This operation returns a pointer to the variable, which can then be stored and used to access or modify the variable's value indirectly through its memory address.
+The `&` operator returns the **address** of a variable, producing a pointer to it.
+This allows you to access or modify a variable indirectly via its memory address.
 */
 #test
 {
-    var arr = 1        // Declare an integer variable
-    let ptr = &arr     // Take the address of the variable 'arr'
-    @assert(#typeof(ptr) == *s32) // The type of 'ptr' is a pointer to 's32', the type of 'arr'
+    var value = 1
+    let ptr   = &value
+    @assert(#typeof(ptr) == *s32) // The pointer type matches the variable's type
 }
 
 /**
 # Dereferencing a Pointer
 
-Dereferencing a pointer involves accessing the value stored at the memory location that the pointer refers to. In Swag, you use the `dref` intrinsic for dereferencing, which allows you to retrieve the actual data stored at the pointer's address.
+To access the value stored at a pointer’s address, use the `dref` intrinsic.
+Dereferencing retrieves the data located at the memory address referenced by the pointer.
 */
 #test
 {
-    var arr = 42       // Declare an integer variable with value 42
-    let ptr = &arr     // Take the address of 'arr'
-    @assert(dref ptr == 42) // Dereference the pointer to access the value of 'arr', which should be 42
+    var value = 42
+    let ptr   = &value
+    @assert(dref ptr == 42) // Access the value stored at the pointer
 }
 
 /**
 # Const Pointers
 
-A `const` pointer in Swag refers to a pointer that cannot change the memory location it points to. However, the data at that memory location can still be mutable. Const pointers are useful when you want to ensure that a pointer always refers to the same memory address throughout its lifetime.
+A `const` pointer is one whose **target address cannot change** once assigned.
+However, the data at that address may still be modified (unless declared const itself).
+Const pointers help guarantee that a pointer always refers to the same memory location.
 */
 #test
 {
-    let str  = "string"                   // Declare a string variable
-    let ptr: const *u8 = @dataof(str)     // A const pointer to a 'u8' value
-    @assert(dref ptr == 's') // Dereferencing the pointer to get the first character of the string
+    let str  = "string"
+    let ptr: const *u8 = @dataof(str)
+    @assert(dref ptr == 's') // Access the first byte of the string
 }
 
 /**
 # Combining `const` with Pointers
 
-Swag allows you to combine `const` with pointers in different ways, depending on the level of immutability you need. You can create a pointer that is constant itself, a pointer to constant data, or both. The choice depends on whether you want to restrict the pointer from changing its target or the data being pointed to, or both.
+Swag allows fine-grained control over constness in pointer declarations.
+You can define:
+- a **pointer to const data**,
+- a **const pointer**, or
+- a **const pointer to const data**.
+
+This provides strong control over both pointer immutability and data mutability.
 */
 #test
 {
-    var ptr:  *const *u8           // A pointer to a const pointer to 'u8'
-    var ptr1: const *const *u8     // A const pointer to a const pointer to 'u8'
-    var ptr2: const **u8           // A const pointer to a normal pointer to 'u8'
+    var ptr:  *const *u8           // Pointer to a const pointer
+    var ptr1: const *const *u8     // Const pointer to a const pointer
+    var ptr2: const **u8           // Const pointer to a mutable pointer
 }
 
 /**
-# Multiple Values Pointers
+# Multi-Value Pointers
 
-For cases where you need **pointer arithmetic** and want a pointer to **multiple values** (like an array or a memory block), you declare your pointer with `^` instead of `*`. This type of pointer is especially useful for iterating over a sequence of elements stored in contiguous memory locations.
+To enable **pointer arithmetic** or reference **contiguous memory blocks**,
+use `[*]` instead of `*`.
+
+This type of pointer behaves like a view over multiple elements,
+allowing indexed access and pointer movement through memory.
 */
 #[Swag.Sanity(false)]
 #test
 {
-    var ptr: [*] u8 // Declaring a pointer to a memory block of 'u8' values
-
-    // Pointer arithmetic allows you to navigate through the memory block by modifying the pointer's address
-    ptr = ptr - 1 // Move the pointer back by one 'u8'
+    var ptr: [*] u8 // Pointer to a block of 'u8' values
+    ptr = ptr - 1 // Move the pointer back by one element
 }
 
 /**
 # Pointer Arithmetic and Array Elements
 
-When you take the address of an array element, the resulting pointer is treated as pointing to multiple elements, allowing for pointer arithmetic. This enables operations like incrementing or decrementing the pointer, which is useful for traversing arrays.
+When taking the address of an array element, the resulting pointer automatically
+supports pointer arithmetic since it refers to a sequence of elements.
 */
 #test
 {
-    var x:  [4] s32     // Declare an array of 4 's32' elements
-    var ptr = &x[1]     // Take the address of the second element
+    var arr: [4] s32
+    var ptr  = &arr[1]
 
-    // Pointer arithmetic is now enabled because 'ptr' is treated as pointing to multiple values
-    ptr = ptr - 1 // Move the pointer back to the first element
+    // The pointer is treated as a multi-value pointer
+    ptr = ptr - 1
     #assert(#typeof(ptr) == [*] s32)
-    // The type of 'ptr' is now a pointer to multiple 's32' values
 }
 
 /**
-# Dereferencing with Indexes
+# Dereferencing with Indexing
 
-When pointer arithmetic is enabled, you can dereference the pointer using an index, allowing access to elements in an array-like manner. This is particularly useful when working with arrays through pointers, as it allows for flexible element access.
+When pointer arithmetic is available, you can dereference a pointer using indexes,
+just like accessing elements in an array.
+
+This is particularly useful when traversing arrays or buffers via pointers.
 */
 #test
 {
-    var arr = [1, 2, 3, 4]     // Declare and initialize an array of 's32' elements
-    let ptr = &arr[0]          // Take the address of the first element
-    @assert(#typeof(ptr) == [*] s32) // The pointer type allows pointer arithmetic
+    var arr = [1, 2, 3, 4]
+    let ptr = &arr[0]
+    @assert(#typeof(ptr) == [*] s32)
 
-    // Dereferencing by index to access the elements
-    let value1 = ptr[0] // Access the first element
-    @assert(value1 == 1) // Verify the first element's value is 1
+    let value1 = ptr[0]
+    @assert(value1 == 1)
     #assert(#typeof(value1) == s32)
-    // Assert the type of value1 is 's32'
 
-    let value2 = ptr[1] // Access the second element
-    @assert(value2 == 2) // Verify the second element's value is 2
+    let value2 = ptr[1]
+    @assert(value2 == 2)
     #assert(#typeof(value2) == s32)
-    // Assert the type of value2 is 's32'
 
-    // Using 'dref' for the first element, equivalent to ptr[0]
-    let value = dref ptr // Dereference the pointer to access the first element
-    @assert(value == 1) // Verify the dereferenced value is 1
+    let value = dref ptr
+    @assert(value == 1)
     #assert(#typeof(value) == s32)
-    // Assert the type of the dereferenced value is 's32'
 }

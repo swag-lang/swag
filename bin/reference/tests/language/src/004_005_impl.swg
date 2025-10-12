@@ -1,41 +1,36 @@
 /**
-# Utilizing the `impl` Keyword with Enums in Swag
+# Implementing Methods for Enums in Swag
 
-In Swag, the `impl` keyword allows you to define methods and functions within the scope of an enum.
-This is particularly useful for associating specific behaviors directly with the enum values.
-The `me` keyword within these methods refers to the current enum instance, providing a clean
-and organized way to encapsulate logic related to the enum.
+Swag allows the use of the `impl` keyword with enums to define methods directly associated with them.
+This makes it possible to attach behavior to enum values, enhancing code organization and encapsulation.
+
+Within these methods, the `me` keyword refers to the current enum instance, similar to `this` in other languages.
 */
 
-// Define an enum RGB with three possible values
 enum RGB
 {
-    R     // Represents the Red color
-    G     // Represents the Green color
-    B     // Represents the Blue color
+    R     // Represents Red
+    G     // Represents Green
+    B     // Represents Blue
 }
 
 /**
-# Implementing Methods for an Enum
+# Defining Enum Methods with `impl enum`
 
-In the following example, we utilize the `impl enum` syntax to define methods for the `RGB` enum.
-This syntax allows us to extend the functionality of the enum by associating methods with it.
-The methods we define will operate on the enum's values, providing a clear and structured approach
-to handling logic related to these values.
+The `impl enum` block defines methods that operate on enum values.
+This helps group functionality logically with the type it belongs to.
 */
 impl enum RGB
 {
-    // Method to check if the current enum value is `R`.
+    // Check if the current color is Red
     func isRed(me) => me == R
 
-    // Method to check if the current enum value is either `R` or `B`.
+    // Check if the current color is Red or Blue
     func isRedOrBlue(me) => me == R or me == B
 }
 
 #test
 {
-    // Testing the `RGB` enum methods
-
     // Verify if `RGB.R` is recognized as red
     @assert(RGB.isRed(RGB.R))
 
@@ -44,34 +39,32 @@ impl enum RGB
 }
 
 /**
-# Applying the `using` Keyword with Enum Methods
+# Simplifying Calls with `using`
 
-The `using` keyword simplifies method calls by allowing you to omit the enum type when invoking
-methods. This results in more concise and readable code, especially when the enum type is used
-frequently within a block.
+The `using` keyword allows you to call enum methods without qualifying them with the enum name.
+This makes the code cleaner when the enum type is already in scope.
 */
 #test
 {
     using RGB
 
-    // Test the method without specifying the enum type
     @assert(isRedOrBlue(R))
     @assert(isRedOrBlue(B))
 }
 
 /**
-# Introduction to Uniform Function Call Syntax (UFCS)
+# Uniform Function Call Syntax (UFCS)
 
-Uniform Function Call Syntax (UFCS) in Swag enhances code readability by allowing methods to be
-called directly on enum values. This feature leads to more intuitive and clean code, particularly
-when working with enums.
+Swag supports *Uniform Function Call Syntax (UFCS)*, meaning methods can be called directly on enum values.
+This provides a natural, object-oriented style of method invocation.
 */
 #test
 {
     using RGB
 
+    // Call `isRedOrBlue` directly on the enum value
     @assert(R.isRedOrBlue())
 
-    // Verify that `RGB.G` is not recognized as either red or blue
-    @assert(!RGB.G.isRedOrBlue())
+    // Verify that `G` is not recognized as red or blue
+    @assert(!G.isRedOrBlue())
 }

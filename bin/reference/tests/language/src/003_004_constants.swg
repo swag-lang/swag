@@ -1,73 +1,76 @@
 /**
-# Constants with `const`
-Using `const` implies that the value must be **known by the compiler** at compile time.
-This ensures that the value is embedded directly into the compiled code, eliminating any runtime
-memory usage for simple types like integers or strings. Essentially, the compiler replaces occurrences
-of these constants with their respective values wherever they are referenced in the code, leading to
-more optimized and efficient code execution.
-*/
+# Constants with 'const'
 
+Using 'const' means the value must be **known by the compiler** at compile time.
+The compiler embeds the constant’s value directly into the compiled code, removing
+any runtime memory usage for simple types like integers or strings.
+
+In other words, the compiler replaces every occurrence of a constant with its
+literal value, leading to optimized and efficient code execution.
+*/
 #test
 {
-    // These are immutable constants. Once declared, they are fixed and cannot be altered.
-    const a = 666 // 'a' is an integer constant known and resolved at compile time.
+    // Immutable compile-time constants
+    const a = 666
     #assert(a == 666)
-    // Assertion to verify the value of 'a'.
 
-    const b: string = "string" // 'b' is a string constant known and resolved at compile time.
+    const b: string = "string"
     #assert(b == "string")
-    // Assertion to verify the value of 'b'.
 }
 
 /**
 # Constants with Complex Types
-Swag also supports constants with more complex data types, such as arrays or structures. When
-declaring constants with these types, the data is stored in the program's data segment, which incurs
-a memory footprint. Additionally, you can obtain the memory address of these constants at runtime,
-allowing you to manipulate their values indirectly through pointers.
+
+Swag also supports constants with complex data types, such as arrays and
+structures. When declared, the data is stored in the program's data segment,
+which occupies memory. The memory address of such constants can be accessed
+at runtime, allowing indirect manipulation through pointers.
 */
 
 /**
 ## Static Arrays
-The following example demonstrates a static array, which is an array with a fixed size. This array
-contains three elements of type `s32`, a signed 32-bit integer.
+
+A static array has a fixed size. In this example, the constant array 'a' contains
+three elements of type 's32' (signed 32-bit integers).
 */
 #test
 {
-    const a: [3] s32 = [0, 1, 2] // 'a' is a constant static array with 3 signed 32-bit integers.
+    const a: [3] s32 = [0, 1, 2]
 
-    let ptr = &a[0] // Obtain the memory address of the first element of the array.
-    @assert(ptr[0] == 0) // Verify the first element via pointer dereferencing.
-    @assert(ptr[2] == 2) // Verify the third element via pointer dereferencing.
+    let ptr = &a[0]
+    @assert(ptr[0] == 0)
+    @assert(ptr[2] == 2)
 
-    // Compile-time assertions to ensure the array's contents are as expected.
+    // Compile-time verification of array contents
     #assert(a[0] == 0)
-    // Verify the first element of the array at compile time.
     #assert(a[1] == 1)
-    // Verify the second element of the array at compile time.
     #assert(a[2] == 2)
-    // Verify the third element of the array at compile time.
 }
 
 /**
 ## Multidimensional Arrays
-This example illustrates a multidimensional array declared as a constant. The array is a 4x4 matrix of
-32-bit floating-point numbers (`f32`). We will explore arrays in further detail later in this documentation.
+
+This example demonstrates a constant 4×4 matrix of 32-bit floating-point values
+('f32'). Arrays will be explored in more detail later in this documentation.
 */
 #test
 {
     const M4x4: [4, 4] f32 = [
-        [1, 0, 0, 0], // First row of the matrix.
-        [0, 1, 0, 0], // Second row of the matrix.
-        [0, 0, 1, 0], // Third row of the matrix.
-        [0, 0, 0, 1]] // 'M4x4' is a constant 4x4 matrix of 32-bit floating-point numbers.
+        [1, 0, 0, 0],
+        [0, 1, 0, 0],
+        [0, 0, 1, 0],
+        [0, 0, 0, 1]]
 }
 
 /**
-# Key Difference Between `let` and `const`
-The primary distinction between `let` and `const` lies in the timing of value determination. The value
-assigned to a `const` must be determined at compile time, meaning it is fixed and known before the program
-runs. Conversely, a `let` allows for dynamic assignment, where the value can be computed and assigned
-during runtime. Despite this, both `let` and `const` ensure that their values are assigned only once,
-maintaining immutability.
+# Key Difference Between 'let' and 'const'
+
+The key distinction between 'let' and 'const' lies in **when** their values are
+determined:
+
+- A 'const' value is fixed and known **at compile time**.
+- A 'let' value can be assigned **at runtime**, allowing computation before assignment.
+
+Despite this difference, both 'let' and 'const' enforce immutability — once a value
+is assigned, it cannot be changed.
 */

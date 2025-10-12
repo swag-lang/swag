@@ -2,21 +2,20 @@
 # Struct Methods and Constants
 
 In Swag, structs can encapsulate methods and constants within them using the 'impl' block.
-This encapsulation allows for better organization and modularity of the code, keeping
-the functionality related to the struct within the struct itself.
+This keeps related functionality close to the data it operates on.
 */
 
-#[Swag.ExportType("methods")] // This attribute enables method reflection for this struct type
+#[Swag.ExportType("methods")] // Enable method reflection for this struct type
 struct MyStruct
 {
-    x:     s32 = 5      // Field 'x' with a default value of 5
-    y:     s32 = 10     // Field 'y' with a default value of 10
-    z:     s32 = 20     // Field 'z' with a default value of 20
+    x:     s32 = 5      // Default 5
+    y:     s32 = 10     // Default 10
+    z:     s32 = 20     // Default 20
 }
 
 impl MyStruct
 {
-    const MyConst = true // Constant defined within the struct's scope
+    const MyConst = true // Constant in the struct's namespace
 
     func returnTrue() => true
 }
@@ -26,87 +25,85 @@ To access the constant or the function, use the 'MyStruct' namespace.
 */
 #test
 {
-    @assert(MyStruct.MyConst) // Accessing the constant 'MyConst' within the struct's scope
-    @assert(MyStruct.returnTrue()) // Invoking the function 'returnTrue' within the struct's scope
+    @assert(MyStruct.MyConst)
+    @assert(MyStruct.returnTrue())
 }
 
 /**
 # Multiple 'impl' Blocks
 
-Swag allows multiple 'impl' blocks for a single struct. This feature helps organize
-methods logically. Within an 'impl' block, 'me' are defined to refer to
-the current instance and the struct type, respectively.
+Swag allows multiple 'impl' blocks for the same struct. Inside methods,
+'me' refers to the current instance. You can also name the receiver explicitly.
 */
 
 impl MyStruct
 {
-    // 'me' is implicitly defined as 'var me: MyStruct'
+    // 'me' is implicitly 'var me: MyStruct'
     func returnX(me) => me.x
     func returnY(me) => me.y
 
-    func returnZ(self: MyStruct) => self.z // Method to return 'z'
+    // Explicit receiver name and type
+    func returnZ(self: MyStruct) => self.z
 }
 
 /**
 # Method Syntax Sugar
 
-Swag provides syntactic sugar for method definitions. If you use 'mtd' (method) instead
-of 'func', the first parameter is implicitly 'me'. If you use 'mtd const',
-it becomes 'const me'. This feature simplifies method definitions,
-especially for common cases where 'me' is required.
+Using 'mtd' makes the first parameter implicitly 'me'.
+Using 'mtd const' makes it 'const me'. This simplifies common patterns.
 */
 
 impl MyStruct
 {
-    mtd methodReturnX()  => me.x // Equivalent to 'func methodReturnX(me) => x'
-    func funcReturnX(me) => me.x // Using 'me' to return 'x'
+    mtd methodReturnX()  => me.x // Equivalent to 'func methodReturnX(me) => me.x'
+    func funcReturnX(me) => me.x
+    func funcReturnY(me) => .x // 'me' can be omitted
 }
 
 #test
 {
     var c: MyStruct
-    @assert(c.returnX() == 5) // Calling 'returnX' method, expected to return 'x'
-    @assert(c.methodReturnX() == 5) // Using the 'mtd' syntax, expected to return 'x'
-    @assert(c.funcReturnX() == 5) // Explicitly using 'func' syntax, expected to return 'x'
-    @assert(c.returnY() == 10) // Calling 'returnY' method, expected to return 'y'
-    @assert(c.returnZ() == 20) // Calling 'returnZ' method, expected to return 'z'
+
+    @assert(c.returnX() == 5)
+    @assert(c.methodReturnX() == 5)
+    @assert(c.funcReturnX() == 5)
+    @assert(c.returnY() == 10)
+    @assert(c.returnZ() == 20)
 }
 
 /**
 # Method Reflection
 
-To enable reflection on methods within an 'impl' block, the struct must be annotated with
-'#[Swag.ExportType("methods")]'. By default, methods are not exported for reflection,
-but with this annotation, they can be accessed programmatically.
+To enable reflection on methods in an 'impl' block, annotate the struct with
+'#[Swag.ExportType("methods")]'. The 'typeinfo' for the struct then exposes
+a 'methods' array that you can traverse to retrieve function pointers.
 */
 #test
 {
-    // Define a type alias 'Lambda' for a function pointer taking 'MyStruct' and returning 's32'
+    // Type alias for a function pointer taking 'MyStruct' and returning 's32'
     alias Lambda = func(MyStruct)->s32
 
-    var fnX: Lambda     // Function pointer for 'returnX'
-    var fnY: Lambda     // Function pointer for 'returnY'
-    var fnZ: Lambda     // Function pointer for 'returnZ'
+    var fnX: Lambda
+    var fnY: Lambda
+    var fnZ: Lambda
 
-    // The 'typeinfo' of a struct contains a 'methods' field, which is an array of method pointers
     let t = MyStruct
     foreach p in t.methods
     {
-        // The 'value' field of 'methods' contains the function pointer, which we cast to the correct type
+        // 'p.value' is the function pointer; cast it to the expected type
         switch p.name
         {
         case "returnX":
-            fnX = cast(Lambda) p.value // Cast the method pointer to 'Lambda' and assign to 'fnX'
+            fnX = cast(Lambda) p.value
         case "returnY":
-            fnY = cast(Lambda) p.value // Cast the method pointer to 'Lambda' and assign to 'fnY'
+            fnY = cast(Lambda) p.value
         case "returnZ":
-            fnZ = cast(Lambda) p.value // Cast the method pointer to 'Lambda' and assign to 'fnZ'
+            fnZ = cast(Lambda) p.value
         }
     }
 
-    // The function pointers 'fnX', 'fnY', and 'fnZ' are now callable
     let v: MyStruct
-    @assert(fnX(v) == 5) // Calling the function pointer 'fnX', expected to return 5
-    @assert(fnY(v) == 10) // Calling the function pointer 'fnY', expected to return 10
-    @assert(fnZ(v) == 20) // Calling the function pointer 'fnZ', expected to return 20
+    @assert(fnX(v) == 5)
+    @assert(fnY(v) == 10)
+    @assert(fnZ(v) == 20)
 }

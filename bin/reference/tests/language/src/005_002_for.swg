@@ -1,11 +1,16 @@
 /**
 # Introduction to 'for'
-The 'for' construct in Swag is a tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the 'for' construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the 'where' clause.
+
+The `for` construct in Swag enables iteration, allowing a block of code to execute repeatedly.
+This guide explores its features: basic usage, indexing, naming, reverse loops, early exits,
+range iteration, and advanced filtering using the `where` clause.
 */
 
 /**
 # Basic Usage
-The 'for' expression dictates the number of iterations and is evaluated only **once** before the loop begins. This value must be a **positive integer**.
+
+The `for` expression specifies the number of iterations and is evaluated **once** before the loop starts.
+This expression must yield a **positive integer**.
 */
 #test
 {
@@ -17,7 +22,8 @@ The 'for' expression dictates the number of iterations and is evaluated only **o
 
 /**
 # Using '@index'
-Within a 'for', the compiler automatically provides the '@index' keyword, which holds the current iteration index, starting from 0.
+
+Within a `for`, the compiler provides the built-in `@index`, representing the current iteration (starting from 0).
 */
 #test
 {
@@ -26,13 +32,13 @@ Within a 'for', the compiler automatically provides the '@index' keyword, which 
     {
         cpt += @index
     }
-
     @assert(cpt == 0 + 1 + 2 + 3 + 4)
 }
 
 /**
 # Naming the Loop Index
-Assigning a name to the 'for' index can improve code readability and clarify the for's intent.
+
+You can assign a custom name to the loop index for clarity, while `@index` remains accessible.
 */
 #test
 {
@@ -42,7 +48,7 @@ Assigning a name to the 'for' index can improve code readability and clarify the
     for i in 5
     {
         cpt += i
-        cpt1 += @index // '@index' is still accessible and returns the same value as 'i'
+        cpt1 += @index
     }
 
     @assert(cpt == 0 + 1 + 2 + 3 + 4)
@@ -51,7 +57,8 @@ Assigning a name to the 'for' index can improve code readability and clarify the
 
 /**
 # Looping Over Arrays and Slices
-The 'for' construct is versatile and can iterate over any collection type that supports the '@countof' intrinsic, such as arrays, slices, and strings.
+
+The `for` construct can iterate over any type supporting `@countof`, such as arrays, slices, or strings.
 */
 #test
 {
@@ -66,20 +73,21 @@ The 'for' construct is versatile and can iterate over any collection type that s
 
 /**
 > WARNING:
-> When looping over a string, the for will iterate over each byte, **not** over runes. For handling runes (characters that may be encoded in multiple bytes), consider using the Std.Core module.
+> When iterating over strings, `for` loops over **bytes**, not runes.
+> Use `Std.Core` for rune-based iteration.
 */
 #test
 {
     var cpt = 0
     for "⻘" do
         cpt += 1
-
     @assert(cpt == 3)
 }
 
 /**
 # Reverse Looping
-To iterate in reverse order, append the '#reverse' modifier to the 'for' statement.
+
+To iterate in reverse order, add the `#reverse` modifier.
 */
 #test
 {
@@ -93,19 +101,21 @@ To iterate in reverse order, append the '#reverse' modifier to the 'for' stateme
             @assert(@index == 1)
         elif cpt == 2 do
             @assert(@index == 0)
-
         cpt += 1
     }
 }
 
 /**
 # 'break' and 'continue'
-The 'break' and 'continue' keywords provide control over the for's execution flow. 'break' exits the loop early, while 'continue' skips the remainder of the current iteration and proceeds with the next.
+
+The `break` and `continue` keywords control loop flow.
+`break` exits the loop, while `continue` skips to the next iteration.
 */
 
 /**
 # Exiting Early with 'break'
-The 'break' keyword allows you to exit the loop before completing all iterations, useful for optimizing performance or when a specific condition is met.
+
+`break` stops the loop before completing all iterations.
 */
 #test
 {
@@ -122,7 +132,8 @@ The 'break' keyword allows you to exit the loop before completing all iterations
 
 /**
 # Skipping Iterations with 'continue'
-The 'continue' keyword skips the rest of the current for iteration and jumps to the next, which is useful when certain conditions should bypass processing.
+
+`continue` skips the current iteration and proceeds to the next.
 */
 #test
 {
@@ -139,12 +150,14 @@ The 'continue' keyword skips the rest of the current for iteration and jumps to 
 
 /**
 # Ranges
-The 'for' construct supports iteration over a **range** of signed values, enabling flexible iteration over specified intervals.
+
+The `for` loop supports signed integer ranges, offering flexible intervals.
 */
 
 /**
 # Looping Over a Range with 'to'
-The 'to' keyword defines a loop that iterates from one value to another, inclusive.
+
+`to` defines an inclusive range loop.
 
 > WARNING:
 > The start value must be less than or equal to the end value.
@@ -153,6 +166,7 @@ The 'to' keyword defines a loop that iterates from one value to another, inclusi
 {
     var count = 0
     var sum   = 0
+
     for i in -1 to 1
     {
         count += 1
@@ -165,7 +179,8 @@ The 'to' keyword defines a loop that iterates from one value to another, inclusi
 
 /**
 # Excluding the Last Value with 'until'
-The 'until' keyword enables iteration up to, but not including, the end value.
+
+`until` defines a range that excludes the end value.
 */
 #test
 {
@@ -180,7 +195,8 @@ The 'until' keyword enables iteration up to, but not including, the end value.
 
 /**
 # Reverse Range Looping
-When using ranges, you can also iterate in reverse order by adding the '#reverse' modifier after the for statement.
+
+Use `#reverse` to iterate a range in reverse order.
 */
 #test
 {
@@ -199,7 +215,9 @@ When using ranges, you can also iterate in reverse order by adding the '#reverse
 
 /**
 # Infinite Loop
-A 'for' without an expression but with a block of code creates an infinite loop, functionally equivalent to 'while true {}'. Infinite loops are often controlled with 'break' statements.
+
+A `for` without an expression creates an infinite loop, similar to `while true {}`.
+Use `break` to exit.
 */
 #test
 {
@@ -212,12 +230,15 @@ A 'for' without an expression but with a block of code creates an infinite loop,
 
 /**
 # Using 'where' Clause
-The 'where' clause provides conditional filtering within a loop, allowing specific iterations to execute based on defined criteria.
+
+The `where` clause filters iterations based on conditions.
 */
 
 /**
 # Basic 'where' Clause
-The 'where' clause is appended directly after the 'for' statement, applying a condition to the loop's index or value. Only iterations that satisfy this condition are executed.
+
+Attach `where` to apply a filter to the loop index or element.
+Only iterations meeting the condition are executed.
 */
 #test
 {
@@ -233,7 +254,8 @@ The 'where' clause is appended directly after the 'for' statement, applying a co
 
 /**
 # 'where' with Arrays
-When looping over arrays, the 'where' clause can filter elements based on their value or index, enabling targeted iteration.
+
+Use `where` to filter array elements during iteration.
 */
 #test
 {
@@ -250,18 +272,18 @@ When looping over arrays, the 'where' clause can filter elements based on their 
 
 /**
 # Complex Conditions with 'where'
-The 'where' supports combining multiple logical expressions, allowing for complex filtering conditions directly within the for.
+
+The `where` clause supports multiple logical conditions for advanced filtering.
 */
 #test
 {
     var arr         = [10, 15, 20, 25, 30, 35]
     var filteredSum = 0
 
-    for i in arr
-        where arr[i] % 2 == 0 and arr[i] > 15
-        {
-            filteredSum += arr[i]
-        }
+    for i in arr where arr[i] % 2 == 0 and arr[i] > 15
+    {
+        filteredSum += arr[i]
+    }
 
     @assert(filteredSum == 20 + 30)
 }
@@ -281,7 +303,8 @@ The 'where' supports combining multiple logical expressions, allowing for comple
 
 /**
 # 'where' with Ranges
-The 'where' clause can also be applied to loops over ranges, providing precise control over which range values are processed in the 'for'.
+
+The `where` clause can also be applied to ranges.
 */
 #test
 {
@@ -296,8 +319,9 @@ The 'where' clause can also be applied to loops over ranges, providing precise c
 }
 
 /**
-# Combining 'back' and 'where'
-You can combine the '#reverse' modifier with the 'where' clause to filter values while iterating in reverse order.
+# Combining '#reverse' and 'where'
+
+You can combine `#reverse` with `where` for reverse conditional iteration.
 */
 #test
 {
@@ -313,19 +337,20 @@ You can combine the '#reverse' modifier with the 'where' clause to filter values
 }
 
 /**
-# C like for
-The `for` loop also offers a versatile way to iterate over a range of values. The structure closely follows that of C/C++ loops, consisting of a *variable declaration statement*, a *test expression*, and an *ending statement*. This provides fine-grained control over the for's execution, making it a powerful tool for various iteration scenarios.
+# C-like 'for'
+
+Swag also supports a C-style `for` loop with initialization, condition, and increment sections.
 */
 #test
 {
     var cpt = 0
 
-    // A standard 'for' loop with initialization, condition, and increment.
+    // Standard syntax
     for var i = 0; i < 10; i += 1 do
         cpt += 1
     @assert(cpt == 10)
 
-    // Alternative syntax: Semicolons ';' can be replaced by newlines for cleaner, more readable code.
+    // Alternative syntax with newlines
     for var i = 0; i < 10; i += 1
     {
         cpt += 1
@@ -334,15 +359,14 @@ The `for` loop also offers a versatile way to iterate over a range of values. Th
 }
 
 /**
-# Accessing Loop Index with `@index`
+# Accessing Loop Index with '@index'
 
-Similar to other looping constructs like `for`, `foreach`, and `while`, the `for` loop in Swag provides access to the `@index` keyword. This keyword represents the **current for index** and is particularly useful when you need to keep track of the iteration count separately from the for variable.
+In all `for` variants, `@index` provides the current iteration index.
 */
 #test
 {
     var cpt = 0'u64
 
-    // Using `@index` to accumulate the for indices.
     for var i: u32 = 10; i < 15; i += 1 do
         cpt += @index
     @assert(cpt == 0 + 1 + 2 + 3 + 4)
@@ -354,9 +378,9 @@ Similar to other looping constructs like `for`, `foreach`, and `while`, the `for
 }
 
 /**
-# Using `break` and `continue` in `for` Loops
+# Using 'break' and 'continue' in 'for' Loops
 
-In Swag, `break` and `continue` work within `for` loops just as they do in other for structures. Use `break` to exit the loop prematurely, effectively terminating the loop when a specific condition is met. The `continue` statement, on the other hand, skips the remainder of the current for iteration and jumps to the next iteration.
+`break` exits the loop early, and `continue` skips to the next iteration.
 */
 #test
 {
@@ -365,49 +389,46 @@ In Swag, `break` and `continue` work within `for` loops just as they do in other
     for var i = 0; i < 10; i += 1
     {
         if i == 5 do
-            break // Exit the for when 'i' equals 5
+            break
         sum += i
     }
-
-    @assert(sum == 0 + 1 + 2 + 3 + 4) // Sum is 10
+    @assert(sum == 0 + 1 + 2 + 3 + 4)
 
     sum = 0
     for var i = 0; i < 10; i += 1
     {
         if i % 2 == 0 do
-            continue // Skip even numbers
+            continue
         sum += i
     }
-
-    @assert(sum == 1 + 3 + 5 + 7 + 9) // Sum is 25
+    @assert(sum == 1 + 3 + 5 + 7 + 9)
 }
 
 /**
-# Nested `for` Loops
+# Nested 'for' Loops
 
-Swag supports nested `for` loops, which are useful for more complex iteration patterns. In nested loops, the `@index` keyword refers to the current index of the innermost for.
+Swag supports nested loops. In nested contexts, `@index` refers to the current innermost loop.
 */
 #test
 {
     var result = 0'u64
 
-    // Outer for
     for var i = 0; i < 5; i += 1
     {
-        // Inner for
         for var j = 0; j < 5; j += 1
         {
-            result += @index // Adds the index of the inner for
+            result += @index
         }
     }
 
-    @assert(result == 10 * 5) // Each inner for runs 5 times, so the sum of indices (0+1+2+3+4) * 5 = 10*5
+    @assert(result == 10 * 5)
 }
 
 /**
-# Iterating Over Arrays with `for`
+# Iterating Over Arrays with 'for'
 
-The `for` for can also be used to iterate over elements of an array or other iterable collections. This method provides a straightforward way to process or manipulate each element within a collection (but we'll see later that `foreach` is better).
+You can also use `for` to iterate over arrays and collections.
+(Although `foreach` is generally preferred.)
 */
 #test
 {
@@ -419,5 +440,5 @@ The `for` for can also be used to iterate over elements of an array or other ite
         sum += array[i]
     }
 
-    @assert(sum == 1 + 2 + 3 + 4 + 5) // Sum is 15
+    @assert(sum == 1 + 2 + 3 + 4 + 5)
 }

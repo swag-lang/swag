@@ -1,76 +1,94 @@
 /**
 # Type Alias
-An `alias` allows you to create a shorthand for an existing type, making it possible to refer to that type using a new, potentially more descriptive name. This can enhance code clarity, reduce repetition, and make complex types easier to work with.
+
+An 'alias' creates a shorthand or alternative name for an existing type. This can
+improve readability, reduce repetition, and simplify the use of complex types.
+A type alias does not create a new type — it simply provides a new name for an
+existing one.
 */
 
 /**
 # Basic Type Alias
-Using `alias`, you can define an alias for an existing type. This alias can then be used in place of the original type, simplifying the code or improving its readability. It’s important to note that a type alias does not create a new type but merely provides an alternative name for an existing one.
+
+Using 'alias', you can define a shorthand for any existing type. The alias can be
+used interchangeably with the original type throughout your code.
 */
 #test
 {
     enum RGB { R, G, B }
     @assert(RGB.R == 0)
 
-    alias Color = RGB // 'Color' is now a shorthand for 'RGB'
-    @assert(Color.G == 1) // 'Color' can be used wherever 'RGB' is expected.
+    alias Color = RGB
+    @assert(Color.G == 1)
 }
 
 /**
 # Aliasing Primitive Types
-You can create aliases for primitive types, making your code more readable and meaningful, especially when the alias represents a specific domain concept.
+
+Aliases can be created for primitive types to make your code more expressive or
+domain-specific, improving clarity when a type has a specific contextual meaning.
 */
 #test
 {
-    alias Float32 = f32 // 'Float32' is an alias for 'f32'
-    alias Float64 = f64 // 'Float64' is an alias for 'f64'
+    alias Float32 = f32
+    alias Float64 = f64
 
-    var x: Float32 = 1.0     // Equivalent to declaring 'var x: f32'
-    var y: Float64 = 1.0     // Equivalent to declaring 'var y: f64'
+    var x: Float32 = 1.0
+    var y: Float64 = 1.0
+
     #assert(#typeof(Float32) == f32)
     #assert(#typeof(Float64) == f64)
 }
 
 /**
 # Strict Type Alias
-In cases where you need to enforce type safety, Swag provides the `Swag.Strict` attribute, which can be applied to a `alias`. This makes the alias a distinct type, preventing implicit casting between the alias and the original type. Explicit casting is still allowed, but the distinct type ensures that operations requiring type specificity are clear and deliberate.
+
+When you need stronger type safety, you can use the '#[Swag.Strict]' attribute.
+This makes the alias a **distinct type**, disallowing implicit conversions between
+the alias and its base type. Explicit casting is still permitted.
 */
 #test
 {
     #[Swag.Strict]
-    alias MyType = s32 // 'MyType' is a distinct type, not interchangeable with 's32'
+    alias MyType = s32
     #assert(#typeof(MyType) != s32)
 
-    let x: MyType = cast(MyType) 0     // Explicit cast is required to assign a value
-    let y: s32 = cast(s32) x           // Casting back to 's32' also requires an explicit cast
+    let x: MyType = cast(MyType) 0
+    let y: s32 = cast(s32) x
 }
 
 /**
 # Name Alias
-An `alias` allows you also to create an alternative name or shortcut for functions, variables, or namespaces. This can be particularly useful for simplifying code, managing long or complex names, or improving the readability and maintainability of your code.
+
+The 'alias' keyword can also create shortcuts for functions, variables, or
+namespaces. This helps simplify long names and improve code readability.
 */
 
 /**
-# Function Name Alias
-With `alias`, you can define a shorter or more convenient name for a function. This is particularly helpful when dealing with functions that have long or descriptive names, allowing you to simplify your code without sacrificing functionality.
+## Function Name Alias
+
+A function can be aliased to a shorter or more convenient name, which is
+especially useful for lengthy or descriptive function names.
 */
 #test
 {
     func thisIsABigFunctionName(x: s32) => x * x
 
     alias myFunc = thisIsABigFunctionName
-    @assert(myFunc(4) == 16) // 'myFunc' is now an alias for 'thisIsABigFunctionName'
+    @assert(myFunc(4) == 16)
 }
 
 /**
-# Variable and Namespace Alias
-`alias` can also be used to alias variables and namespaces, offering a shorter or more convenient reference that can be used throughout your code. This is particularly useful in large codebases where certain variables or namespaces are frequently referenced.
+## Variable and Namespace Alias
+
+You can alias variables or namespaces to shorter names for easier access,
+especially in large codebases with long identifiers.
 */
 #test
 {
     var myLongVariableName: s32 = 0
     alias short = myLongVariableName
 
-    short += 2 // 'short' is an alias for 'myLongVariableName'
-    @assert(myLongVariableName == 2) // The original variable reflects changes made via the alias
+    short += 2
+    @assert(myLongVariableName == 2)
 }

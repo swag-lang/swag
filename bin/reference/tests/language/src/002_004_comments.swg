@@ -1,7 +1,9 @@
 /**
-Swag supports both single-line and multi-line comments, allowing for flexible documentation
-and inline explanations within your code. This capability is essential for maintaining clarity
-and readability, especially in complex codebases.
+# Comments
+
+Swag supports both single-line and multi-line comments, providing flexibility for
+inline documentation and explanations within your code. This helps maintain clarity
+and readability, especially in larger or more complex codebases.
 */
 
 // Example of a single-line comment
@@ -16,14 +18,16 @@ and readability, especially in complex codebases.
     logic, or provide additional context to developers.
 */
 
-const A = 0        // A constant named 'A' is declared and assigned the value '0'.
-const B = /* false */true // A constant named 'B' is assigned the value 'true', with an inline
-// comment indicating that 'false' was an alternative considered value.
+const A = 0        // A constant named 'A' assigned the value '0'.
+const B = /* false */true // A constant named 'B' assigned the value 'true', with an inline
+// comment noting that 'false' was an alternative value considered.
 
 /**
-Swag also supports nested comments within multi-line comments.
-This feature can be particularly useful when temporarily disabling a block of code
-or when adding additional notes inside an existing comment block.
+# Nested Comments
+
+Swag also supports nested comments within multi-line comments. This can be particularly
+useful when temporarily disabling a block of code or when adding notes inside an
+existing comment block.
 */
 
 /*
@@ -32,4 +36,3 @@ or when adding additional notes inside an existing comment block.
     This demonstrates Swag's ability to handle complex comment structures without
     causing errors or ambiguity.
 */
-
