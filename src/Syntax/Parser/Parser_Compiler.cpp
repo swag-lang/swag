@@ -230,6 +230,7 @@ bool Parser::doCompilerAssert(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#assert]] directive"));
     return true;
@@ -249,6 +250,7 @@ bool Parser::doCompilerPrint(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#print]] directive"));
     return true;
@@ -266,6 +268,7 @@ bool Parser::doCompilerForeignLib(AstNode* parent, AstNode** result)
     SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), error(tokenParse, toErr(Err0415)));
     AstNode* literal;
     SWAG_CHECK(doLiteral(node, &literal));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#foreignlib]] directive"));
     return true;
@@ -285,6 +288,7 @@ bool Parser::doCompilerError(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#error]] directive"));
     return true;
@@ -304,6 +308,7 @@ bool Parser::doCompilerWarning(AstNode* parent, AstNode** result)
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     SWAG_CHECK(eatSemiCol("[[#warning]] directive"));
     return true;
@@ -746,6 +751,7 @@ bool Parser::doCompilerLocation(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
     node->semanticFct = Semantic::resolveIntrinsicLocation;
     return true;
@@ -762,8 +768,8 @@ bool Parser::doCompilerDefined(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doIdentifierRef(node, &dummyResult, IDENTIFIER_NO_PARAMS));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);    
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-
     node->semanticFct = Semantic::resolveIntrinsicDefined;
     return true;
 }
@@ -779,8 +785,8 @@ bool Parser::doCompilerInclude(AstNode* parent, AstNode** result)
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
     ParserPushAstNodeFlags sc(this, AST_SILENT_CHECK);
     SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &dummyResult));
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
-
     node->semanticFct = Semantic::resolveCompilerInclude;
     return true;
 }
@@ -827,10 +833,13 @@ bool Parser::doCompilerLoad(AstNode* parent)
 
     const auto startLoc = tokenParse.token.startLocation;
     SWAG_CHECK(eatTokenError(TokenId::SymLeftParen, formErr(Err0425, node->token.cstr())));
+    
     SWAG_VERIFY(tokenParse.is(TokenId::LiteralString), context->report({sourceFile, tokenParse, toErr(Err0756)}));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(eatToken());
+    
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     SWAG_CHECK(eatSemiCol("[[#load]] directive"));

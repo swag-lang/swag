@@ -1,11 +1,11 @@
 /**
-# Introduction to `for`
-The `for` construct in Swag is a tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the `for` construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the `where` clause.
+# Introduction to 'for'
+The 'for' construct in Swag is a tool for iteration, allowing developers to repeat a block of code a specified number of times. This guide provides an in-depth exploration of the 'for' construct, covering its various features, including basic usage, indexing, naming, reverse loops, early exits, and advanced filtering with the 'where' clause.
 */
 
 /**
 # Basic Usage
-The `for` expression dictates the number of iterations and is evaluated only **once** before the loop begins. This value must be a **positive integer**.
+The 'for' expression dictates the number of iterations and is evaluated only **once** before the loop begins. This value must be a **positive integer**.
 */
 #test
 {
@@ -16,8 +16,8 @@ The `for` expression dictates the number of iterations and is evaluated only **o
 }
 
 /**
-# Using `@index`
-Within a `for`, the compiler automatically provides the `@index` keyword, which holds the current iteration index, starting from 0.
+# Using '@index'
+Within a 'for', the compiler automatically provides the '@index' keyword, which holds the current iteration index, starting from 0.
 */
 #test
 {
@@ -32,14 +32,14 @@ Within a `for`, the compiler automatically provides the `@index` keyword, which 
 
 /**
 # Naming the Loop Index
-Assigning a name to the `for` index can improve code readability and clarify the for's intent.
+Assigning a name to the 'for' index can improve code readability and clarify the for's intent.
 */
 #test
 {
     var cpt  = 0
     var cpt1 = 0
 
-    for i in 5 // The `for` index is named 'i'
+    for i in 5 // The 'for' index is named 'i'
     {
         cpt += i // Use the named index 'i'
         cpt1 += @index // '@index' is still accessible and returns the same value as 'i'
@@ -51,13 +51,12 @@ Assigning a name to the `for` index can improve code readability and clarify the
 
 /**
 # Looping Over Arrays and Slices
-The `for` construct is versatile and can iterate over any collection type that supports the `@countof` intrinsic, such as arrays, slices, and strings.
+The 'for' construct is versatile and can iterate over any collection type that supports the '@countof' intrinsic, such as arrays, slices, and strings.
 */
 #test
 {
     var arr = [10, 20, 30, 40] // Define an array with 4 elements
-    #assert(@countof(arr) == 4)
-    // Verify the array has 4 elements
+    #assert(@countof(arr) == 4) // Verify the array has 4 elements
 
     var cpt = 0
     for arr do  // Loop over the array's elements
@@ -80,7 +79,7 @@ The `for` construct is versatile and can iterate over any collection type that s
 
 /**
 # Reverse Looping
-To iterate in reverse order, append the `#reverse` modifier to the `for` statement.
+To iterate in reverse order, append the '#reverse' modifier to the 'for' statement.
 */
 #test
 {
@@ -101,13 +100,13 @@ To iterate in reverse order, append the `#reverse` modifier to the `for` stateme
 }
 
 /**
-# `break` and `continue`
-The `break` and `continue` keywords provide control over the for's execution flow. `break` exits the loop early, while `continue` skips the remainder of the current iteration and proceeds with the next.
+# 'break' and 'continue'
+The 'break' and 'continue' keywords provide control over the for's execution flow. 'break' exits the loop early, while 'continue' skips the remainder of the current iteration and proceeds with the next.
 */
 
 /**
-# Exiting Early with `break`
-The `break` keyword allows you to exit the loop before completing all iterations, useful for optimizing performance or when a specific condition is met.
+# Exiting Early with 'break'
+The 'break' keyword allows you to exit the loop before completing all iterations, useful for optimizing performance or when a specific condition is met.
 */
 #test
 {
@@ -123,8 +122,8 @@ The `break` keyword allows you to exit the loop before completing all iterations
 }
 
 /**
-# Skipping Iterations with `continue`
-The `continue` keyword skips the rest of the current for iteration and jumps to the next, which is useful when certain conditions should bypass processing.
+# Skipping Iterations with 'continue'
+The 'continue' keyword skips the rest of the current for iteration and jumps to the next, which is useful when certain conditions should bypass processing.
 */
 #test
 {
@@ -141,12 +140,12 @@ The `continue` keyword skips the rest of the current for iteration and jumps to 
 
 /**
 # Ranges
-The `for` construct supports iteration over a **range** of signed values, enabling flexible iteration over specified intervals.
+The 'for' construct supports iteration over a **range** of signed values, enabling flexible iteration over specified intervals.
 */
 
 /**
-# Looping Over a Range with `to`
-The `to` keyword defines a loop that iterates from one value to another, inclusive.
+# Looping Over a Range with 'to'
+The 'to' keyword defines a loop that iterates from one value to another, inclusive.
 
 > WARNING:
 > The start value must be less than or equal to the end value.
@@ -166,8 +165,8 @@ The `to` keyword defines a loop that iterates from one value to another, inclusi
 }
 
 /**
-# Excluding the Last Value with `until`
-The `until` keyword enables iteration up to, but not including, the end value.
+# Excluding the Last Value with 'until'
+The 'until' keyword enables iteration up to, but not including, the end value.
 */
 #test
 {
@@ -182,7 +181,7 @@ The `until` keyword enables iteration up to, but not including, the end value.
 
 /**
 # Reverse Range Looping
-When using ranges, you can also iterate in reverse order by adding the `#reverse` modifier after the for statement.
+When using ranges, you can also iterate in reverse order by adding the '#reverse' modifier after the for statement.
 */
 #test
 {
@@ -201,25 +200,25 @@ When using ranges, you can also iterate in reverse order by adding the `#reverse
 
 /**
 # Infinite Loop
-A `for` without an expression but with a block of code creates an infinite loop, functionally equivalent to `while true {}`. Infinite loops are often controlled with `break` statements.
+A 'for' without an expression but with a block of code creates an infinite loop, functionally equivalent to 'while true {}'. Infinite loops are often controlled with 'break' statements.
 */
 #test
 {
     for
     {
-        if @index == 4 do  // Use `@index` to break the for after 4 iterations
+        if @index == 4 do  // Use '@index' to break the for after 4 iterations
             break
     }
 }
 
 /**
-# Using `where` Clause
-The `where` clause provides conditional filtering within a loop, allowing specific iterations to execute based on defined criteria.
+# Using 'where' Clause
+The 'where' clause provides conditional filtering within a loop, allowing specific iterations to execute based on defined criteria.
 */
 
 /**
-# Basic `where` Clause
-The `where` clause is appended directly after the `for` statement, applying a condition to the loop's index or value. Only iterations that satisfy this condition are executed.
+# Basic 'where' Clause
+The 'where' clause is appended directly after the 'for' statement, applying a condition to the loop's index or value. Only iterations that satisfy this condition are executed.
 */
 #test
 {
@@ -235,8 +234,8 @@ The `where` clause is appended directly after the `for` statement, applying a co
 }
 
 /**
-# `where` with Arrays
-When looping over arrays, the `where` clause can filter elements based on their value or index, enabling targeted iteration.
+# 'where' with Arrays
+When looping over arrays, the 'where' clause can filter elements based on their value or index, enabling targeted iteration.
 */
 #test
 {
@@ -253,8 +252,8 @@ When looping over arrays, the `where` clause can filter elements based on their 
 }
 
 /**
-# Complex Conditions with `where`
-The `where` supports combining multiple logical expressions, allowing for complex filtering conditions directly within the for.
+# Complex Conditions with 'where'
+The 'where' supports combining multiple logical expressions, allowing for complex filtering conditions directly within the for.
 */
 #test
 {
@@ -286,8 +285,8 @@ The `where` supports combining multiple logical expressions, allowing for comple
 }
 
 /**
-# `where` with Ranges
-The `where` clause can also be applied to loops over ranges, providing precise control over which range values are processed in the `for`.
+# 'where' with Ranges
+The 'where' clause can also be applied to loops over ranges, providing precise control over which range values are processed in the 'for'.
 */
 #test
 {
@@ -303,8 +302,8 @@ The `where` clause can also be applied to loops over ranges, providing precise c
 }
 
 /**
-# Combining `back` and `where`
-You can combine the `#reverse` modifier with the `where` clause to filter values while iterating in reverse order.
+# Combining 'back' and 'where'
+You can combine the '#reverse' modifier with the 'where' clause to filter values while iterating in reverse order.
 */
 #test
 {
