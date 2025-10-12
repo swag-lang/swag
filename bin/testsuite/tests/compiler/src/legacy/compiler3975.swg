@@ -11,7 +11,7 @@ func toto1()->const &s32
     return &G1
 }
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     @assert(toto() == toto1())

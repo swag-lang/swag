@@ -1,4 +1,4 @@
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 func(T) toto(y: T)->T
 {
     var x = y

@@ -25,7 +25,7 @@ func tata(c: #code void)
     #inject(c)
 }
 
-#[Swag.NoInline, Swag.Optimize("", false)]
+#[Swag.NoInline, Swag.Optimize(.All, false)]
 func tx(x: ...) {}
 
 var G = 1

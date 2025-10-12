@@ -23,7 +23,7 @@ func(G) toto()
     safetyBoundCheck(true)
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     toto's32()

@@ -5,7 +5,7 @@ var G = 0
 struct A {}
 impl A
 {
-    #[Swag.Optimize("", false)]
+    #[Swag.Optimize(.All, false)]
     mtd toto(x: s32)
     {
         //@print("titi")
@@ -21,7 +21,7 @@ func titi()->#null *A
 
 #[Swag.Sanity(true)]
 #[Swag.Safety(.All, .Null, true)]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintGenBc]
 func test()
 {

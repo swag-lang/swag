@@ -4,7 +4,7 @@ alias AL = A
 //alias AL1 = AL
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 func toto()->AL
 {
     return cast(AL) {1, 2}

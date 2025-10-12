@@ -45,7 +45,7 @@ const solar_bodies: [?] Planet = [
         1.79258772950371181e-01, 2.68067772490389322e-03 * year, 1.62824170038242295e-03 * year, -9.51592254519715870e-05 * year, 5.15138902046611451e-05 * solar_mass}]
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 func energy(bodies: [*] Planet)->f64
 {
     //return bodies.vx * bodies.vx + bodies.vy
@@ -137,7 +137,7 @@ func offset_momentum(bodies: [..] Planet)
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #test
 {
     //Time.Stopwatch.scopeMeasure()

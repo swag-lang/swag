@@ -155,26 +155,26 @@ namespace Swag
     // To what context the 'Safety' attribute must be applied
     enum SafetyContext
     {
-        Compiler = 0    // Compiler context (during compile)
-        ByteCode = 1    // During bytecode generation (dynamic checks)
-        Sanity   = 2    // During sanity pass
+        Compiler = 0     // Compiler context (during compile)
+        ByteCode = 1     // During bytecode generation (dynamic checks)
+        Sanity   = 2     // During sanity pass
         All
     }
 
     // All safety checks
     #[Swag.EnumFlags]
-    enum SafetyWhat : u16
+    enum SafetyWhat: u16
     {
-        BoundCheck  = 0x0001 // Check out of bound access
-        Overflow    = 0x0002 // Check type conversion lost of bits or precision
-        Math        = 0x0004 // Check various math operations (like a negative '@sqrt')
-        DynCast     = 0x0008 // Check if a cast from a 'any' variable does not match the real underlying type
-        Switch      = 0x0010 // Check if an unexpected case value is encountered
-        Bool        = 0x0020 // Check if a 'bool' does not have a valid value ('true' or 'false')
-        NaN         = 0x0040 // Check if a 'NaN' is used in a float arithmetic operation
-        Unreachable = 0x0080 // Check if unreachable is... reached
-        Null        = 0x0100 // Check on dereferencing some null pointers
-        Memory      = 0x0200 // Check some memory things (mostly in sanity pass)
+        BoundCheck  = 0x0001     // Check out of bound access
+        Overflow    = 0x0002     // Check type conversion lost of bits or precision
+        Math        = 0x0004     // Check various math operations (like a negative '@sqrt')
+        DynCast     = 0x0008     // Check if a cast from a 'any' variable does not match the real underlying type
+        Switch      = 0x0010     // Check if an unexpected case value is encountered
+        Bool        = 0x0020     // Check if a 'bool' does not have a valid value ('true' or 'false')
+        NaN         = 0x0040     // Check if a 'NaN' is used in a float arithmetic operation
+        Unreachable = 0x0080     // Check if unreachable is... reached
+        Null        = 0x0100     // Check on dereferencing some null pointers
+        Memory      = 0x0200     // Check some memory things (mostly in sanity pass)
         None        = 0x0000
         All         = 0xFFFF
     }
@@ -183,13 +183,18 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
     attr Safety(context: SafetyContext, what: SafetyWhat, value: bool)
 
+    #[Swag.EnumFlags]
+    enum OptimizeWhat: u16
+    {
+        ByteCode = 0x0001
+        Backend  = 0x0002
+        None     = 0x0000
+        All      = 0xFFFF
+    }
+
     // Enable/Disable a given function optimization.
-    // Options are:
-    // | 'bytecode'   | Enable/Disable bytecode optimization for the function
-    // | 'backend'    | Enable/Disable backend machine code optimization for the function (llvm only)
-    // If 'what' is null or empty, every options will be affected.
     #[AttrUsage(AttributeUsage.Function | AttributeUsage.File), AttrMulti]
-    attr Optimize(what: string, value: bool)
+    attr Optimize(what: OptimizeWhat, value: bool)
 
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File)]
     attr CanOverflow(value: bool)

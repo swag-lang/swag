@@ -1,6 +1,6 @@
 const X: [2] s32 = [10, 20]
 
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

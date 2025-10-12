@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 func toto()->s64
 {
     let r = 666

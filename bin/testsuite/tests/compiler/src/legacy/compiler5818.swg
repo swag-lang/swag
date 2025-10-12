@@ -8,7 +8,7 @@ func(T) totoRor(a: T, b: u8)->T
     return @ror(a, b)
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

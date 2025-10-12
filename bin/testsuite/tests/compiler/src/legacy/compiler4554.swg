@@ -6,7 +6,7 @@ struct A
     f:     F
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var a: A

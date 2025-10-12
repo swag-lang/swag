@@ -7,7 +7,7 @@ impl A
         return null
     }
 
-    #[Swag.Optimize("", true)]
+    #[Swag.Optimize(.All, true)]
     mtd titi()
     {
         if !me.toto() do

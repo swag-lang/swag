@@ -33,7 +33,7 @@ func toto()->{ x: AA }
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("bytecode", true)]
+#[Swag.Optimize(.ByteCode, true)]
 #test
 {
     if @bytecode and @compiler.getBuildCfg().byteCodeOptimizeLevel > Swag.BuildCfgByteCodeOptim.O1

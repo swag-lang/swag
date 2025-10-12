@@ -14,7 +14,7 @@ func toto(val5839: s32)
     safety(val5839 == 55)
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     toto(55)

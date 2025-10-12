@@ -7,7 +7,7 @@ impl Vector
     //mtd tt(other: Vector)->Vector => Vector{x-other.x, y-other.y}
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var a = Vector{1, 1}

@@ -7,7 +7,7 @@ func titi()->#null *s32
     return null
 }
 
-#[Swag.Sanity(true), Swag.Safety(.All, .Null, true), Swag.Optimize("", false)]
+#[Swag.Sanity(true), Swag.Safety(.All, .Null, true), Swag.Optimize(.All, false)]
 //#[Swag.PrintGenBc]
 func toto()
 {

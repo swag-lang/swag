@@ -1,7 +1,7 @@
 //#global testerror
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false), Swag.Sanity(true)]
+#[Swag.Optimize(.All, false), Swag.Sanity(true)]
 func toto()
 {
     var f0, f1: f32 = undefined

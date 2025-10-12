@@ -23,7 +23,7 @@ impl A
     }
 }
 
-#[Swag.Optimize("", true)]
+#[Swag.Optimize(.All, true)]
 func toto()->A
 {
     var res: retval
@@ -32,14 +32,14 @@ func toto()->A
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", true)]
+#[Swag.Optimize(.All, true)]
 func titi()->A
 {
     return toto()
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", true), Swag.Warning("Wrn0003", .Disable)]
+#[Swag.Optimize(.All, true), Swag.Warning("Wrn0003", .Disable)]
 #test
 {
     if @bytecode and @compiler.getBuildCfg().byteCodeOptimizeLevel > Swag.BuildCfgByteCodeOptim.O1

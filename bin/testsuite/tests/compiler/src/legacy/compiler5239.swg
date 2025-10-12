@@ -1,6 +1,6 @@
 var g: [4 * 4] s32 = 5
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

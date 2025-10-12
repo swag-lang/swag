@@ -2,7 +2,7 @@
 #global testerror "Saf0018"
 
 #[Swag.Safety(.All, .All, true)]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 public func doModalLoop(cb: func(*void) = null)
 {
     //if cb:
@@ -10,7 +10,7 @@ public func doModalLoop(cb: func(*void) = null)
 }
 
 #[Swag.Safety(.All, .All, true)]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 func test()
 {
     doModalLoop(null)

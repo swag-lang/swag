@@ -11,7 +11,7 @@ func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
     }
 }
 
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 //#[Swag.Safety(.All, .All, false)]
 #test
 {

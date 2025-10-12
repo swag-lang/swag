@@ -17,7 +17,7 @@ impl A
 
     var cpt = 0
 
-    //#[Swag.PrintBc, Swag.Optimize("", true)]
+    //#[Swag.PrintBc, Swag.Optimize(.All, true)]
     mtd flipEdgeEvent(ep, eq: Point, tri: Triangle, p: Point)
     {
         //@print(ep, " ", eq, " ", tri, " ", p, "\n")

@@ -17,7 +17,7 @@ func add(x: s32)
     @assert(x == 2)
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var a: A

@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     let c  = 0'u8

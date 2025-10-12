@@ -8,7 +8,7 @@ func toto(v: &s32)
     v = 55
 }
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     toto(&G)

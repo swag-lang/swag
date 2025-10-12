@@ -9,7 +9,7 @@ func toto(edge: *E)->*E
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", true)]
+#[Swag.Optimize(.All, true)]
 #test
 {
     var s, t: E

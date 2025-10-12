@@ -26,7 +26,7 @@ func day9B()
     day9BB()
 }
 
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 //#[Swag.PrintAsm]
 func day9BA()
@@ -101,7 +101,7 @@ func day9BA()
     @assert(total == 6183632723350)
 }
 
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 func day9BB()
 {

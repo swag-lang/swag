@@ -2,7 +2,7 @@ var G  = 0
 var G1 = 1
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     //@breakpoint()

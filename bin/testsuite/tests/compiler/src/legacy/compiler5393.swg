@@ -6,14 +6,14 @@ struct A
 
 impl A
 {
-    #[Swag.Optimize("", false)]
+    #[Swag.Optimize(.All, false)]
     mtd opIndex(x: u64)->const &s32
     {
         return &me.t
     }
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var a: A

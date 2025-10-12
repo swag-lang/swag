@@ -8,7 +8,7 @@ func(T) totoMax(a, b: T)->T
     return @max(a, b)
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

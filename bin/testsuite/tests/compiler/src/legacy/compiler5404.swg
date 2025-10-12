@@ -21,7 +21,7 @@ impl A
     mtd toto(x: T) {}
 }
 
-#[Swag.Optimize("", false), Swag.Safety(.All, .All, false)]
+#[Swag.Optimize(.All, false), Swag.Safety(.All, .All, false)]
 #test
 {
     var a: A's32

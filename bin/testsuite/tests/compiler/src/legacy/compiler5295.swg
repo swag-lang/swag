@@ -17,7 +17,7 @@ impl Array
     mtd opCount() => 3'u64
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var arr: Array

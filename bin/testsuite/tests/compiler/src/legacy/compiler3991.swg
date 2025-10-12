@@ -1,6 +1,6 @@
 struct Vector2 { x, y, z: f32 }
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 func toto(y: const &Vector2)
 {
     var tmp: { v: Vector2 } = {y}

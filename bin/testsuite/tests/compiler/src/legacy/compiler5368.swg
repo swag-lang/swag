@@ -9,7 +9,7 @@ impl Arr
     }
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 func toto()
 {
     var arr0: Arr'{ x: s32 }

@@ -21,7 +21,7 @@ impl AA
     }
 }
 
-//#[Swag.PrintBc]//, Swag.Optimize("", false)]
+//#[Swag.PrintBc]//, Swag.Optimize(.All, false)]
 func toto()->[2] AA
 {
     return [AA.from(), AA.from()]

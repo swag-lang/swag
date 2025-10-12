@@ -22,7 +22,7 @@ impl AA
     }
 }
 
-//#[Swag.PrintBc]//, Swag.Optimize("", false)]
+//#[Swag.PrintBc]//, Swag.Optimize(.All, false)]
 //#[Swag.Inline]
 func toto()->{ x: AA }
 {

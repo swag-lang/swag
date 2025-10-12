@@ -22,7 +22,7 @@ struct SerializationError
     err: string
 }
 
-//#[Swag.PrintBc]//, Swag.Optimize("", false)]
+//#[Swag.PrintBc]//, Swag.Optimize(.All, false)]
 func beginStruct(fct: #null *void, structType: typeinfo, _structData: #null const *u8)->bool throw
 {
     if hasAttribute(structType, attrA) or

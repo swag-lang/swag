@@ -1,6 +1,6 @@
 //#[Swag.Safety(.All, .All, true)]
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false), Swag.CanOverflow(true)]
+#[Swag.Optimize(.All, false), Swag.CanOverflow(true)]
 #test
 {
     let mant = 0x12345678_12345678

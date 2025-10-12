@@ -7,7 +7,7 @@ impl AA
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 func toto()->s64
 {
     var x: AA

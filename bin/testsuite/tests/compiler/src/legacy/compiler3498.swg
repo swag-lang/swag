@@ -19,7 +19,7 @@ struct(T) B
     using a: A'(*T)
 }
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     var v: B's32

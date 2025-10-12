@@ -8,7 +8,7 @@ func toto(x, y: s32)->s32
 alias T = func(s32, s32)->s32
 var t: [2] T
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     t[0] = &toto

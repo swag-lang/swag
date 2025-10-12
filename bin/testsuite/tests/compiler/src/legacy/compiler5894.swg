@@ -6,7 +6,7 @@ enum TOTO: string
     B = "str300"
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

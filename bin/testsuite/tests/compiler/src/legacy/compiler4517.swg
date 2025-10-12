@@ -3,7 +3,7 @@ alias Fct = func||(s32)
 var g: [4] Fct
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #test
 {
     var G: s32

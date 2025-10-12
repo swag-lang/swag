@@ -8,7 +8,7 @@ func toto(t: T)->T
     return t
 }
 
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #test
 {
     let x = toto({1, 2})

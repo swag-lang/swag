@@ -4,7 +4,7 @@ struct A { r, g: s32 }
 alias AL = A
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 func toto()->AL
 {
     return {1, 2}

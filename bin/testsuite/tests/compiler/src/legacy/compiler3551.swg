@@ -4,7 +4,7 @@ func toto(x: s32)
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #test
 {
     for i in 0

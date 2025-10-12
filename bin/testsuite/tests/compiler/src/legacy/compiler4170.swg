@@ -1,6 +1,6 @@
 #global testerror "Saf0034"
 
-#[Swag.Optimize("", false), Swag.Sanity(true)]
+#[Swag.Optimize(.All, false), Swag.Sanity(true)]
 func toto(param: s32)
 {
     var pix:   [4] s32

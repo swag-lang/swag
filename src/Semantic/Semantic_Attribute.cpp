@@ -206,7 +206,7 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
     }
 }
 
-void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, const SafetyFlags* safetyOn, const SafetyFlags* safetyOff)
+void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, const SafetyWhatFlags* safetyOn, const SafetyWhatFlags* safetyOff)
 {
     for (int i = 0; i < static_cast<int>(SafetyContext::Max); i++)
     {
@@ -489,35 +489,18 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     auto attrValue = attr->getValue(g_LangSpec->name_value);
                     SWAG_ASSERT(attrValue);
 
-                    auto attrWhat = &attrParam->value;
-                    auto text     = attrWhat->text;
-                    text.trim();
-                    Utf8::tokenize(text, '|', what);
-
-                    if (text.empty())
+                    const auto whatF  = static_cast<OptimizeWhat>(attrParam->value.reg.u32);
+                    const auto whatFl = static_cast<OptimizeWhatFlags>(whatF);
+                    if (whatFl.has(OptimizeWhat::ByteCode))
                     {
-                        flags.remove(ATTRIBUTE_OPTIM_MASK);
+                        flags.remove(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
                         flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF);
-                        flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF);
                     }
 
-                    for (auto& w : what)
+                    if (whatFl.has(OptimizeWhat::Backend))
                     {
-                        w.trim();
-                        if (w == g_LangSpec->name_bytecode)
-                        {
-                            flags.remove(ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
-                            flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BYTECODE_ON : ATTRIBUTE_OPTIM_BYTECODE_OFF);
-                        }
-                        else if (w == g_LangSpec->name_backend)
-                        {
-                            flags.remove(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
-                            flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF);
-                        }
-                        else
-                        {
-                            return context->report({child, attrParam->token, formErr(Err0697, w.cstr())});
-                        }
+                        flags.remove(ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
+                        flags.add(attrValue->reg.b ? ATTRIBUTE_OPTIM_BACKEND_ON : ATTRIBUTE_OPTIM_BACKEND_OFF);
                     }
                 }
             }

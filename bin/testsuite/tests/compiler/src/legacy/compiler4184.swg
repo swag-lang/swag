@@ -1,7 +1,7 @@
 #global testerror "Saf0027"
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false), Swag.Sanity(true), Swag.Safety(.All, .Overflow, true)]
+#[Swag.Optimize(.All, false), Swag.Sanity(true), Swag.Safety(.All, .Overflow, true)]
 func test()
 {
     var x = 1'u8

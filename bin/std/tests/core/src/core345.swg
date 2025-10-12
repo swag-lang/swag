@@ -4,7 +4,7 @@ using Core
 const C = #include(#file)
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     arr.add(@mkslice(&C[0], @countof(C)))
@@ -21,7 +21,7 @@ const C = #include(#file)
 }"""
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var arr: Array'u8

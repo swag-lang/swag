@@ -1,5 +1,5 @@
 #[Swag.NoInline]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 func(C: s64) toto(a: s64)->s64
 {
     return a * C

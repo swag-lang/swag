@@ -4,7 +4,7 @@ struct A { r, g, b, d: s32 }
 alias AL = A
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var a: AL = {1, 2, 3, 4}

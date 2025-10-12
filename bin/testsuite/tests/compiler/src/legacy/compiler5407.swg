@@ -1,7 +1,7 @@
 //#global skip
 var g = 6'u64
 
-#[Swag.Optimize("", false), Swag.Safety(.All, .All, false)]
+#[Swag.Optimize(.All, false), Swag.Safety(.All, .All, false)]
 #test
 {
     let a = @countof(g)

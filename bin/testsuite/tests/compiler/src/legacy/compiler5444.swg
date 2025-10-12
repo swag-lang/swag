@@ -10,7 +10,7 @@ impl Vector2
 }
 
 //#[Swag.PrintAsm]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var p1: Vector2{4}

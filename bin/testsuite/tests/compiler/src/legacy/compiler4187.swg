@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Sanity(false), Swag.Optimize("", true)]
+#[Swag.Sanity(false), Swag.Optimize(.All, true)]
 func toto(z: f32)->f32
 {
     const F = 0'f32

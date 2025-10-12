@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optimize("", true)]
+//#[Swag.PrintBc, Swag.Optimize(.All, true)]
 func toto(b2: s32)->s32
 {
     const A = 128

@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #[Swag.Sanity(true)]
 func toto()->f32
 {

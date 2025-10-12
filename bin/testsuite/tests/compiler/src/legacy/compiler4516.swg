@@ -5,7 +5,7 @@ var g: [4] Fct
 var G: s32
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #test
 {
     g[0] = func||(a) { G = a; }

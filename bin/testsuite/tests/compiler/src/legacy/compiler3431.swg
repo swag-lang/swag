@@ -10,7 +10,7 @@ func toto(x: s32)
     @assert(x == 5)
 }
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     var x: X

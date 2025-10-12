@@ -5,14 +5,14 @@ struct A
 
 impl A
 {
-    #[Swag.Optimize("", false)]
+    #[Swag.Optimize(.All, false)]
     mtd opIndex(x: u64)->const &s32
     {
         return &me.t
     }
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     let C  = [1, 2, 4]

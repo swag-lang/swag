@@ -15,7 +15,7 @@ impl A
 
 func toto(x, y: s32) => x + y
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var v: A

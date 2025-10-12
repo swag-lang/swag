@@ -642,8 +642,8 @@ struct AstNode
     AttributeFlags attributeFlags;
 
     RegisterList resultRegisterRc;
-    SafetyFlags  safetyOn[static_cast<int>(SafetyContext::Max)];
-    SafetyFlags  safetyOff[static_cast<int>(SafetyContext::Max)];
+    SafetyWhatFlags  safetyOn[static_cast<int>(SafetyContext::Max)];
+    SafetyWhatFlags  safetyOff[static_cast<int>(SafetyContext::Max)];
 
 #ifdef SWAG_DEV_MODE
     uint32_t rankId;

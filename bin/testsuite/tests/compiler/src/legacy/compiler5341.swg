@@ -1,4 +1,4 @@
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 func(T) toto(x: T)->T
 {
     return @byteswap(x)

@@ -14,7 +14,7 @@ impl I for A
     mtd impl toto() {}
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var a: A

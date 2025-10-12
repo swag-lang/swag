@@ -1,7 +1,7 @@
 #global testerror "Saf0004"
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     var x = "64"

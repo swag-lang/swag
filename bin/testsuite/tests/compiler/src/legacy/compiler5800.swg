@@ -15,7 +15,7 @@ func from()->C
 }
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     toto({1}, from())

@@ -1,6 +1,6 @@
 #global testerror "Err0294"
 
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #[Swag.Safety(.All, .All, true)]
 #test
 {

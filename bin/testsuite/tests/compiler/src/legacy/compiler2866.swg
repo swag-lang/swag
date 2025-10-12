@@ -1,7 +1,7 @@
 #global testerror "Saf0024"
 
 //#[Swag.PrintBc]
-#[Swag.Safety(.All, .All, true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, .All, true), Swag.Optimize(.All, false)]
 #test
 {
     let x  = 0xFFFFFFFF'u32

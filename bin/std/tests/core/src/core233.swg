@@ -1,6 +1,6 @@
 using Core
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 func toto()->[2] String
 {
     return [String.from("a"), String.from("b")]

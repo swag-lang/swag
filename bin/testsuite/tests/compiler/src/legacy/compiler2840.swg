@@ -1,3 +1,3 @@
 #global internal
 #global #[Swag.Safety(.All, .All, false)]
-#global #[Swag.Optimize("", true)]
+#global #[Swag.Optimize(.All, true)]

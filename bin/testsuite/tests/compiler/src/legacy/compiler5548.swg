@@ -1,5 +1,5 @@
 #global testerror "Err0606"
-#[Swag.Optimize("", false]
+#[Swag.Optimize(.All, false]
 #test
 {
 }

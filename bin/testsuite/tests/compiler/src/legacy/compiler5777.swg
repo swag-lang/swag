@@ -1,6 +1,6 @@
 //alias HookEvent = func||()->bool
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintGenBc]
 func toto(x: func()->bool = null)
 {

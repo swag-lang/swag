@@ -1,4 +1,4 @@
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     let x = {a: 2, b: 3}

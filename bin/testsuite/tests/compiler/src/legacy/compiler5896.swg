@@ -6,7 +6,7 @@ enum TOTO: const [2] s32
     B = [0, 3]
 }
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

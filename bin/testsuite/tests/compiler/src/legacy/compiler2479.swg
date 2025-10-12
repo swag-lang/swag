@@ -5,7 +5,7 @@ func panic(msg: string, loc: Swag.SourceCodeLocation)
 }
 
 //#[Swag.PrintBc]
-#[Swag.Safety(.All, .Overflow, true), Swag.Optimize("", false), Swag.Warning("Wrn0003", Swag.WarningLevel.Disable)]
+#[Swag.Safety(.All, .Overflow, true), Swag.Optimize(.All, false), Swag.Warning("Wrn0003", Swag.WarningLevel.Disable)]
 #test
 {
     {

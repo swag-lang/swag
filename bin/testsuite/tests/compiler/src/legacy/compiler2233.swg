@@ -36,7 +36,7 @@ func toto1()->TOTO
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", true)]
+//#[Swag.Optimize(.All, true)]
 #test
 {
     var res = toto1()

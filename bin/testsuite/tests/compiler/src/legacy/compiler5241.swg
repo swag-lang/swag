@@ -3,7 +3,7 @@ enum Dir { Z = 0, A = 5 }
 
 var g: [4 * 4] Dir = Dir.A
 
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 #test
 {

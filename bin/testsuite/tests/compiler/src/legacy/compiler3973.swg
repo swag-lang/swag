@@ -7,7 +7,7 @@ func toto(v: const &s32)
     @assert(ptr == &G)
 }
 
-//#[Swag.PrintBc, Swag.Optimize("", false)]
+//#[Swag.PrintBc, Swag.Optimize(.All, false)]
 #test
 {
     toto(&G)

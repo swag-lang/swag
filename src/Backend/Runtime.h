@@ -7,6 +7,16 @@ struct ExportedTypeInfo;
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+enum class OptimizeWhat : uint16_t
+{
+    ByteCode = 0x0001,
+    Backend  = 0x0002,
+    None     = 0x0000,
+    All      = 0xFFFF,
+};
+
+using OptimizeWhatFlags = EnumFlags<OptimizeWhat>;
+
 enum class SafetyContext
 {
     Compiler,
@@ -31,7 +41,7 @@ enum class SafetyWhat : uint16_t
     All         = 0xFFFF,
 };
 
-using SafetyFlags = EnumFlags<SafetyWhat>;
+using SafetyWhatFlags = EnumFlags<SafetyWhat>;
 
 constexpr int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
 constexpr int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
@@ -312,14 +322,14 @@ struct BuildCfg
     bool      embeddedImports = false;
 
     // Debug
-    uint32_t    tempAllocatorCapacity      = 4 * 1024 * 1024;
-    uint32_t    errorAllocatorCapacity     = 16 * 1024;
-    SafetyFlags safetyGuards               = SafetyWhat::All;
-    bool        sanity                     = true;
-    bool        debugAllocator             = true;
-    bool        debugAllocatorCaptureStack = true;
-    bool        debugAllocatorLeaks        = true;
-    bool        errorStackTrace            = true;
+    uint32_t        tempAllocatorCapacity      = 4 * 1024 * 1024;
+    uint32_t        errorAllocatorCapacity     = 16 * 1024;
+    SafetyWhatFlags safetyGuards               = SafetyWhat::All;
+    bool            sanity                     = true;
+    bool            debugAllocator             = true;
+    bool            debugAllocatorCaptureStack = true;
+    bool            debugAllocatorLeaks        = true;
+    bool            errorStackTrace            = true;
 
     // Warnings
     SwagSlice warnAsErrors;

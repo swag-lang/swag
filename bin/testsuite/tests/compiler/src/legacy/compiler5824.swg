@@ -1,5 +1,5 @@
 #[Swag.NoInline]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 //#[Swag.PrintBc]
 func toto(a: *s32)->s32
 {

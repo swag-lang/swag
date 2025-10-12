@@ -3,7 +3,7 @@
 )
 
 //#[Swag.PrintBc]
-//#[Swag.Optimize("", false)]
+//#[Swag.Optimize(.All, false)]
 #[Swag.Safety(.All, .Math, true)]
 #test
 {

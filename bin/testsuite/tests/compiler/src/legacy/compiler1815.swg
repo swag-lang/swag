@@ -1,7 +1,7 @@
 #global testerror "Err0502"
 
 //#[Swag.PrintBc]
-#[Swag.Optimize("", false)]
+#[Swag.Optimize(.All, false)]
 #test
 {
     let a = "toto"
