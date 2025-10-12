@@ -19,7 +19,7 @@ func addr(offset: u64)
     @assert(offset == 4)
 }
 
-#[Swag.Optimize("", false), Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", "", false)]
 //#[Swag.PrintBc]
 #test
 {

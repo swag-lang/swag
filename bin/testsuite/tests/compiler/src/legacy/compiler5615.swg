@@ -1,6 +1,6 @@
 #global testerror "Err0054"
 
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 func toto(a: s32)
 {
     let b = -1

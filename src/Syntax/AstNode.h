@@ -10,6 +10,7 @@
 #include "Syntax/Tokenizer/TokenParse.h"
 #include "Threading/Job.h"
 #include "Threading/Mutex.h"
+#include "Wmf/Module.h"
 
 struct AstAttrUse;
 struct AstBreakable;
@@ -59,6 +60,14 @@ constexpr CloneFlags CLONE_RAW             = 0x00000001;
 constexpr CloneFlags CLONE_FORCE_OWNER_FCT = 0x00000002;
 constexpr CloneFlags CLONE_INLINE          = 0x00000004;
 constexpr CloneFlags CLONE_INJECT          = 0x00000008;
+
+enum class SafetyContext
+{
+    Compiler,
+    ByteCode,
+    Sanity,
+    Max
+};
 
 struct CloneUpdateRef
 {
@@ -642,8 +651,8 @@ struct AstNode
     AttributeFlags attributeFlags;
 
     RegisterList resultRegisterRc;
-    SafetyFlags  safetyOn;
-    SafetyFlags  safetyOff;
+    SafetyFlags  safetyOn[static_cast<int>(SafetyContext::Max)];
+    SafetyFlags  safetyOff[static_cast<int>(SafetyContext::Max)];
 
 #ifdef SWAG_DEV_MODE
     uint32_t rankId;

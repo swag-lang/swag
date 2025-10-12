@@ -1,5 +1,5 @@
 //#global #[Swag.PrintBc]
-//#global #[Swag.Safety("", false)]
+//#global #[Swag.Safety("", "", false)]
 
 var t: [?] struct
 {

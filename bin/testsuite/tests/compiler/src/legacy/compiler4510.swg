@@ -1,6 +1,6 @@
 #global testerror "Err0561"
 
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 func(T) toto(v: T)->T
 {
     return v * 2

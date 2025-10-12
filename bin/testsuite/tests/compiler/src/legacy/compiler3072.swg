@@ -1,8 +1,8 @@
 #global testerror "Err0698"
 
-#[Swag.Safety("", false)]
+#[Swag.Safety("", "", false)]
 {
-    #[Swag.Safety("nullp", true)]
+    #[Swag.Safety("", "nullp", true)]
     func titi()
     {
         var x: *s32

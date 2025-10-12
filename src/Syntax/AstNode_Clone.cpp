@@ -137,8 +137,11 @@ void AstNode::copyFrom(CloneContext& context, AstNode* from, bool cloneHie)
     }
 
     attributeFlags = from->attributeFlags;
-    safetyOn       = from->safetyOn;
-    safetyOff      = from->safetyOff;
+    for (int i = 0; i < static_cast<int>(SafetyContext::Max); i++)
+    {
+        safetyOn[i]  = from->safetyOn[i];
+        safetyOff[i] = from->safetyOff[i];
+    }
 
     parent = context.parent;
     if (parent)

@@ -3,7 +3,7 @@ using Core
 impl Image
 {
     // Colorize the image by setting the hue and saturation.
-    #[Swag.Safety("", false)]
+    #[Swag.Safety("", "", false)]
     public mtd colorize(hue, saturation: f32, strength = 1.0)
     {
         // unsupported pixel format

@@ -1,7 +1,7 @@
 #global skip
 #global testerror
 
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 func toto(x: cvarargs)
 {
     @cvastart(cast(*Swag.CVaList) null)

@@ -1,6 +1,6 @@
 #global testerror "Saf0028"
 
-#[Swag.Optimize("", false), Swag.Safety("", true)]
+#[Swag.Optimize("", false), Swag.Safety("", "", true)]
 func toto(b: u32)
 {
     let x: s32 = cast(s32) b

@@ -1,7 +1,7 @@
 #[Swag.Inline]
 public func x3194()
 {
-    #[Swag.Mixin, Swag.Safety("", false)]
+    #[Swag.Mixin, Swag.Safety("", "", false)]
     {
         func xx()
         {

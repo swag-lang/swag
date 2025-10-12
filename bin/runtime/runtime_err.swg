@@ -170,7 +170,7 @@ func @compilerwarning(message: string, loc: SourceCodeLocation)
 }
 
 // Stop the execution and panic
-#[Swag.Safety("", false)]
+#[Swag.Safety("", "", false)]
 func @panic(message: string, loc: SourceCodeLocation)
 {
     let cxt = @getcontext()

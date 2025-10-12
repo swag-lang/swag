@@ -9,13 +9,6 @@
 #include "Syntax/Tokenizer/Token.h"
 #include "Threading/JobGroup.h"
 
-enum class SafetyContext
-{
-    Compiler,
-    ByteCode,
-    Sanity,
-};
-
 enum class ModuleBuildPass
 {
     Init,
@@ -53,6 +46,7 @@ struct SymTable;
 struct TypeInfoStruct;
 struct Utf8;
 struct Workspace;
+enum class SafetyContext;
 
 enum class GlobalVarKind
 {

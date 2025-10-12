@@ -443,7 +443,7 @@ void Module::buildTypesSlice()
         }
         else
         {
-            using FuncCall    = uint8_t* (*)();
+            using FuncCall    = uint8_t* (*) ();
             const auto valPtr = reinterpret_cast<FuncCall>(ptr)();
 
             moduleSlice[i].types.buffer = valPtr + sizeof(uint64_t);
@@ -962,13 +962,14 @@ bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, SafetyContext
             return false;
     }
 
-    if (node->safetyOff.has(what))
+    if (node->safetyOff[static_cast<int>(safeCxt)].has(what))
         return false;
-    if (node->safetyOn.has(what))
+    if (node->safetyOn[static_cast<int>(safeCxt)].has(what))
         return true;
 
-    // at compile time, we must emit safety except if the user has specifically changed it in the code
-    if (safeCxt == SafetyContext::Compiler)
+    // at compile time and during sanity, we must authorize safety except if the user has
+    // specifically changed it in the code
+    if (safeCxt == SafetyContext::Compiler || safeCxt == SafetyContext::Sanity)
         return true;
 
     return buildCfg.safetyGuards.has(what);
@@ -1034,10 +1035,10 @@ bool Module::hasBytecodeToRun() const
     // If we have some #test functions, and we are in test mode
     if (g_CommandLine.test && g_CommandLine.runByteCodeTests && !byteCodeTestFunc.empty())
         runByteCode = true;
-        // If we have #run functions
+    // If we have #run functions
     else if (!byteCodeRunFunc.empty())
         runByteCode = true;
-        // If we need to run in bytecode mode
+    // If we need to run in bytecode mode
     else if (g_CommandLine.run && g_CommandLine.scriptMode)
         runByteCode = true;
     return runByteCode;
@@ -1100,10 +1101,10 @@ bool Module::mustOutputSomething() const
         mustOutput = false;
     else if (files.empty())
         mustOutput = false;
-        // a test module needs swag to be in test mode
+    // a test module needs swag to be in test mode
     else if (is(ModuleKind::Test) && !g_CommandLine.outputTest)
         mustOutput = false;
-        // if all files are exported, then do not generate a module
+    // if all files are exported, then do not generate a module
     else if (buildCfg.backendKind == BuildCfgBackendKind::Export)
         mustOutput = false;
     else if (isNot(ModuleKind::Test) && buildCfg.backendKind == BuildCfgBackendKind::None)

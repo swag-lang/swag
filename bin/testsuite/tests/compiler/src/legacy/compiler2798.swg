@@ -1,7 +1,7 @@
 //#global testerror
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 #test
 {
     var x = 0'u32

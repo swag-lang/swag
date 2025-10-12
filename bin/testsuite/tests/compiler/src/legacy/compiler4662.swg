@@ -2,7 +2,7 @@
 #test
 {
     const a: string = null
-    #[Swag.Safety("", true)]
+    #[Swag.Safety("", "", true)]
     if a[0] == 0
     {
     }

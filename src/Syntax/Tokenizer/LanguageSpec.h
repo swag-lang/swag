@@ -218,6 +218,7 @@ struct LanguageSpec
     Utf8 name_where;
     Utf8 name_usage;
     Utf8 name_what;
+    Utf8 name_context;
     Utf8 name_value;
     Utf8 name_level;
     Utf8 name_disk;

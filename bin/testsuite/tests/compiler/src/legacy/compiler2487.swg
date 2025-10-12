@@ -1,6 +1,6 @@
 using Swag
 
-#[Safety("overflow", true)]
+#[Safety("", "overflow", true)]
 //#[PrintBc]
 #test
 {

@@ -1,7 +1,7 @@
 #global testerror "Err0053"
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 #test
 {
     var x = 10

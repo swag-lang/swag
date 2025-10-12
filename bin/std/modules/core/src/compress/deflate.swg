@@ -239,7 +239,7 @@ impl Deflate
         d.huffCount[0, LenSym[matchLen - MinMatchLen]] += 1
     }
 
-    #[Swag.Safety("", false)]
+    #[Swag.Safety("", "", false)]
     mtd findMatch(laPos, maxDist, maxMatchLen: u32, matchDistAddr, matchLenAddr: *u32)
     {
         let d = .state

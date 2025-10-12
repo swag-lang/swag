@@ -839,7 +839,7 @@ func eiselLemire64(neg: bool, mantissa: u64, exp10: s64)->{ f: f64, ok: bool }
     return result
 }
 
-#[Swag.Safety("nan", false)]
+#[Swag.Safety("", "nan", false)]
 func special(s: const [..] u8)->{ value: f64, eat: u32 }
 {
     var result: retval
@@ -871,7 +871,7 @@ public func parse(s: const [..] u8)->{ value: f64, eat: u32, ovf: bool } throw
         return result
 
     // Special values, infinity, nan
-    #[Swag.Safety("nan", false)]
+    #[Swag.Safety("", "nan", false)]
     (result.value, result.eat) = special(s)
     if result.eat do
         return result

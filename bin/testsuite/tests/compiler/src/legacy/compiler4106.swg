@@ -14,7 +14,7 @@ func toto(x: Entry)
 }
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", false), Swag.Optimize("", false)]
+#[Swag.Safety("", "", false), Swag.Optimize("", false)]
 #test
 {
     var key = 66

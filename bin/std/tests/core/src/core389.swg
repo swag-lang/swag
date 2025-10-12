@@ -1,7 +1,7 @@
 using Core
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", false)]
+#[Swag.Safety("", "", false)]
 #test
 {
     var c: Array's32

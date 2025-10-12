@@ -14,7 +14,7 @@ impl A
     }
 }
 
-#[Swag.Sanity(true), Swag.Safety("null", false), Swag.Optimize("", false)]
+#[Swag.Sanity(true), Swag.Safety("", "null", false), Swag.Optimize("", false)]
 #test
 {
     A.toto(null)

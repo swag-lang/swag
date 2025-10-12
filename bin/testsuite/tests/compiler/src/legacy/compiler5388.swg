@@ -19,7 +19,7 @@ impl A
     }
 }
 
-#[Swag.Safety("", false)]
+#[Swag.Safety("", "", false)]
 func toto()
 {
     var arr: A'I

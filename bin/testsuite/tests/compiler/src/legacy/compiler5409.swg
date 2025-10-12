@@ -12,7 +12,7 @@ func toto()->&s32
     return &g
 }
 
-#[Swag.Optimize("", false), Swag.Safety("", false)]
+#[Swag.Optimize("", false), Swag.Safety("", "", false)]
 #test
 {
     var a: A{toto()}

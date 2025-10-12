@@ -205,7 +205,7 @@ namespace Semantic
     void           disableCompilerIfBlock(SemanticContext* context, AstCompilerIfBlock* block);
     void           flattenStructChildren(SemanticContext* context, AstNode* parent, VectorNative<AstNode*>& result);
     void           forceConstType(SemanticContext* context, AstTypeExpression* node);
-    void           inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, SafetyFlags safetyOn, SafetyFlags safetyOff);
+    void           inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, const SafetyFlags* safetyOn, const SafetyFlags* safetyOff);
     void           inheritAttributesFromOwnerFunc(AstNode* child);
     void           inheritAttributesFromParent(AstNode* child);
     void           launchResolveSubDecl(const JobContext* context, AstNode* node);

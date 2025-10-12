@@ -84,7 +84,7 @@ func reverse(x: u16)->u16
 
 // Reverse all bits in a 32-bit value using bit manipulation.
 // Uses a series of parallel bit operations with magic constants for efficiency.
-#[ConstExpr, Overload, Safety("overflow", false)]
+#[ConstExpr, Overload, Safety("", "overflow", false)]
 func reverse(x: u32)->u32
 {
     const m0 = 0x55555555                            // Binary: 01010101... (alternating bits)
@@ -98,7 +98,7 @@ func reverse(x: u32)->u32
 
 // Reverse all bits in a 64-bit value using bit manipulation.
 // Uses the same parallel bit operation technique as the 32-bit version with 64-bit constants.
-#[ConstExpr, Overload, Safety("overflow", false)]
+#[ConstExpr, Overload, Safety("", "overflow", false)]
 func reverse(x: u64)->u64
 {
     const m0 = 0x55555555_55555555                   // Binary: 01010101... (alternating bits)

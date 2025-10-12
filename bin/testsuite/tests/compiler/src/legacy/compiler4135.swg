@@ -4,7 +4,7 @@
 #assert(#run @compiler.getBuildCfg().byteCodeOptimizeLevel >= 0
 )
 
-#[Swag.Safety("nan", true)]
+#[Swag.Safety("", "nan", true)]
 //#[Swag.PrintBc]
 #test
 {

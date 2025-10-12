@@ -6,7 +6,7 @@ func get()->string
     return "boundcheck"
 }
 
-#[Swag.Safety(get(), false)]
+#[Swag.Safety("", get(), false)]
 func toto() {}
 
 #test

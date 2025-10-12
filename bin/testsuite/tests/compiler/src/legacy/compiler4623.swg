@@ -1,4 +1,4 @@
-#[Swag.Safety("overflow", false), Swag.Optimize("", false)]
+#[Swag.Safety("", "overflow", false), Swag.Optimize("", false)]
 #test
 {
     const x = Swag.F32.Max
@@ -6,7 +6,7 @@
 }
 
 /*
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 #[Swag.Optimize("", false)]
 #test
 {

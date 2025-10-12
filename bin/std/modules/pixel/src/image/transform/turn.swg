@@ -9,7 +9,7 @@ impl Image
         T270
     }
 
-    #[Swag.Safety("", false)]
+    #[Swag.Safety("", "", false)]
     mtd const doTurn(dstImage: *Image, angle: TurnAngle)
     {
         #[Swag.Mixin]

@@ -35,7 +35,7 @@ impl Image
         PrevitVertical3x3A   = [3, 0, 1, 0, -1, 1, 0, -1, 1, 0, -1]
     }
 
-    #[Swag.Safety("", false)]
+    #[Swag.Safety("", "", false)]
     mtd doKernel(dstImage: *Image, kernel: Kernel)
     {
         // unsupported pixel format

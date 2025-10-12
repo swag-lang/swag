@@ -1,4 +1,4 @@
-#global #[Swag.Safety("nan", false)]
+#global #[Swag.Safety("", "nan", false)]
 using Core, Core.StrConv
 
 struct atofTest

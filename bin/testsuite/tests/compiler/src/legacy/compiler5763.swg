@@ -14,7 +14,7 @@ impl A
     }
 }
 
-#[Swag.Sanity(true), Swag.Safety("null", true), Swag.Optimize("", false)]
+#[Swag.Sanity(true), Swag.Safety("", "null", true), Swag.Optimize("", false)]
 func test()
 {
     A.toto(null)

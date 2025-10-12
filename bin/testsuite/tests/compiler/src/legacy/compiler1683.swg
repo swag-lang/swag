@@ -11,7 +11,7 @@ struct TT
 #[Swag.Optimize("", false)]
 func C(x: any)
 {
-    #[Swag.Safety("", true)]
+    #[Swag.Safety("", "", true)]
     var ptr = cast(s32) x
 }
 

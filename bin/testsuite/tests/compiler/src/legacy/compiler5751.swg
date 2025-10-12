@@ -7,7 +7,7 @@ struct B { v = "b" }
 impl I for A {}
 impl I for B {}
 
-#[Swag.Safety("", true)]
+#[Swag.Safety("", "", true)]
 #test
 {
     var a: A
@@ -18,9 +18,9 @@ impl I for B {}
     #[Swag.Complete]
     switch i
     {
-    case A: 
+    case A:
         @print("ptr.a")
-    case B: 
+    case B:
         @print("ptr.v")
     }
 }

@@ -155,9 +155,13 @@ namespace Swag
     // Enable/Disable one or more safety checks.
     // For example:
     // ```swag
-    // #[Swag.Safety("", false)]                    // Disable all
-    // #[Swag.Safety("boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
+    // #[Swag.Safety("", "", "", false)]                    // Disable all
+    // #[Swag.Safety("", "compiler", "boundcheck|nan", false)]      // Disable 'boundcheck' and 'nan' checks
     // ```
+    // Safety context is:
+    // | 'compiler'     | Safety done during the compiler pass, and especially constant folding
+    // | 'sanity'       | Safety done during the sanity pass, if enabled
+    // | 'bytecode'     | Safety done at the byte code level; could occur during runtime
     // Safety checks are:
     // | 'boundcheck'   | Check out of bound access
     // | 'overflow'     | Check type conversion lost of bits or precision
@@ -171,7 +175,7 @@ namespace Swag
     // | 'null'         | Panic on dereferencing some null pointers
     // If 'what' is null or empty, every options are will be affected.
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
-    attr Safety(what: string, value: bool)
+    attr Safety(context: string, what: string, value: bool)
 
     // Enable/Disable a given function optimization.
     // Options are:

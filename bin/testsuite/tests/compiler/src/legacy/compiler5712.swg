@@ -9,7 +9,7 @@ impl IEvent for Mouse
 }
 
 //#[Swag.PrintBc]
-#[Swag.Safety("", true), Swag.Sanity(false)]
+#[Swag.Safety("", "", true), Swag.Sanity(false)]
 #test
 {
     var x:  IEvent

@@ -190,6 +190,7 @@ void LanguageSpec::setupNames()
     name_where    = "where";
     name_usage    = "usage";
     name_what     = "what";
+    name_context  = "context";
     name_value    = "value";
     name_level    = "level";
     name_disk     = "disk";

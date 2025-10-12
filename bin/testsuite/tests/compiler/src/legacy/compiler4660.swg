@@ -2,7 +2,7 @@
 
 func totoXXX(x: s32) {}
 
-//#[Swag.Safety("", false)]
+//#[Swag.Safety("", "", false)]
 #test
 {
     const ptr = #typeof(totoXXX)

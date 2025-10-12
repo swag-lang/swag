@@ -20,7 +20,7 @@ func titi()->#null *A
 }
 
 #[Swag.Sanity(true)]
-#[Swag.Safety("null", true)]
+#[Swag.Safety("", "null", true)]
 #[Swag.Optimize("", false)]
 //#[Swag.PrintGenBc]
 func test()
