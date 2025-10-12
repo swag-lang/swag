@@ -817,7 +817,7 @@ void initErrors()
     
     SWAG_ERROR(Err0701, "cannot unpack%s[[%u]] variables because right tuple has%s[[%u]] fields                                 $ ");
     SWAG_ERROR(Err0703, "array length cannot be inferred, missing initialization                                                $ ");
-    SWAG_ERROR(Err0704, "flag [[%s]] value cannot be derived                                                                    $ note: previous value ([[%llu]]) not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
+    SWAG_ERROR(Err0704, "flag [[%s]] value cannot be deduced from the previous value                                            $ note: previous value ([[%llu]]) is not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
     SWAG_ERROR(Err0705, "generic arguments for %s [[%s]] cannot be determined                                                   $ ");
     SWAG_ERROR(Err0706, "failed to resolve identifier [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0707, "failed to resolve semantic reference                                                                   $ ");
