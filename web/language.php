@@ -750,6 +750,8 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SLgc">where</span>
 <span class="SLgc">in</span>
 <span class="SLgc">as</span>
+<span class="SLgc">is</span>
+<span class="SLgc">do</span>
 
 <span class="SKwd">true</span>
 <span class="SKwd">false</span>
@@ -788,9 +790,7 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="SKwd">moveref</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Reserved Keywords </h4>
 <p>These keywords are reserved by the language and cannot be used by developers, even though they may not currently serve an active role in the syntax. They are reserved for potential future use or to prevent conflicts with language features. </p>
-<div class="code-block"><span class="SCde"><span class="SLgc">is</span>
-<span class="SInv">not</span>
-<span class="SLgc">do</span></span></div>
+<div class="code-block"><span class="SInv">not</span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Basic Types </h4>
 <p>These are the fundamental data types provided by the language. They are reserved keywords and form the core building blocks for variables, constants, and function return types. </p>
 <div class="code-block"><span class="SCde"><span class="STpe">s8</span>
@@ -809,7 +809,6 @@ swag test -w:c:/swag-lang/swag/bin/reference</span></div>
 <span class="STpe">any</span>
 <span class="STpe">typeinfo</span>
 <span class="STpe">void</span>
-code
 <span class="STpe">cstring</span>
 <span class="STpe">cvarargs</span></span></div>
 <h4 id="_002_000_code_structure_swg__002_007_keywords_swg">Compiler Instructions </h4>

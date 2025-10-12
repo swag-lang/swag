@@ -29,6 +29,8 @@ until
 where
 in
 as
+is
+do
 
 true
 false
@@ -78,9 +80,7 @@ even though they may not currently serve an active role in the syntax. They are
 reserved for potential future use or to prevent conflicts with language features.
 
 ```swag
-is
 not
-do
 ```
 
 */
@@ -110,7 +110,6 @@ rune
 any
 typeinfo
 void
-code
 cstring
 cvarargs
 ```
