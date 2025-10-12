@@ -1,6 +1,6 @@
 //#global testerror
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     var x = 1's8

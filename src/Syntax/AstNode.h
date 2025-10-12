@@ -53,7 +53,6 @@ using CollectedScopeFlags = Flags<uint32_t>;
 using BreakableFlags      = Flags<uint32_t>;
 using CloneFlags          = Flags<uint32_t>;
 using SpecFlags           = Flags<uint16_t>;
-using SafetyFlags         = Flags<uint16_t>;
 using TypeFlags           = Flags<uint16_t>;
 
 constexpr CloneFlags CLONE_RAW             = 0x00000001;

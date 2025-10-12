@@ -84,7 +84,7 @@ impl Crc64
     }
 
     // Computes the CRC-64 hash of the provided data.
-    #[ConstExpr, Swag.Safety(.All, "", false)]
+    #[ConstExpr, Swag.Safety(.All, .All, false)]
     public mtd update(data: #null const [..] u8, kind: Crc64Kind)
     {
         let length = @countof(data)

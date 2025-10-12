@@ -243,7 +243,7 @@ namespace ResizeTools
         return res
     }
 
-    #[Swag.Safety(.All, "", false), Swag.Overload]
+    #[Swag.Safety(.All, .All, false), Swag.Overload]
     func scaleRow(imgDst: *Image, imgSrc: const *Image, row: s64, contrib: *LineContrib)
     {
         let bpp8   = imgDst.bpp8
@@ -297,7 +297,7 @@ namespace ResizeTools
         }
     }
 
-    #[Swag.Safety(.All, "", false), Swag.Overload]
+    #[Swag.Safety(.All, .All, false), Swag.Overload]
     func scaleCol(imgDst: *Image, imgSrc: const *Image, col: s64, contrib: *LineContrib)
     {
         let bpp8   = imgDst.bpp8

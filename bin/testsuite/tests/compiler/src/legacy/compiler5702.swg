@@ -37,7 +37,7 @@ impl IEvent for Evt3
 {
 }
 
-#[Swag.Safety(.All, "dyncast", true)]
+#[Swag.Safety(.All, .DynCast, true)]
 func toto(v: IEvent)
 {
     let ptr0 = cast(*Evt1) v

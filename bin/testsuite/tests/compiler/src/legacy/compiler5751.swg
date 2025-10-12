@@ -7,7 +7,7 @@ struct B { v = "b" }
 impl I for A {}
 impl I for B {}
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     var a: A

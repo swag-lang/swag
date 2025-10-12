@@ -13,7 +13,7 @@ impl A
     }
 }
 
-#[Swag.Optimize("", false), Swag.Safety(.All, "", false)]
+#[Swag.Optimize("", false), Swag.Safety(.All, .All, false)]
 #test
 {
     var a: A

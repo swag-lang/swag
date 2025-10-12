@@ -2,7 +2,7 @@
 //#global testerror "Err0401"
 //#global testerror "Saf0001"
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     let v: any = {4, 5}

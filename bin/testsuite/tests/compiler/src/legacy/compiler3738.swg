@@ -1,7 +1,7 @@
 #global testerror "Saf0029"
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     let x = 1

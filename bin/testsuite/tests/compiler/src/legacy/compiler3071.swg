@@ -1,9 +1,9 @@
 #global skip
 #global testerror
 
-#[Swag.Safety(.All, "", false)]
+#[Swag.Safety(.All, .All, false)]
 {
-    #[Swag.Safety(.All, "", true)]
+    #[Swag.Safety(.All, .All, true)]
     func titi()
     {
         var x: *s32

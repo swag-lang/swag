@@ -13,7 +13,7 @@ impl I for B
 }
 
 //#[Swag.PrintBc]
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 func toto(i: #null I)
 {
     #[Swag.Complete]

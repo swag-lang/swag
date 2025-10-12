@@ -63,7 +63,7 @@ func compare(src, dst: const [..] u8, ignoreCase = false)->s32
     var result: s32
     if ignoreCase
     {
-        #[Swag.Safety(.All, "boundcheck", false)]
+        #[Swag.Safety(.All, .BoundCheck, false)]
         for i in minLen
         {
             var c1 = src[i]

@@ -4,7 +4,7 @@
 #global namespace Math
 using Swag
 
-#[ConstExpr, Safety(.All, "overflow", false), Overload]
+#[ConstExpr, Safety(.All, .Overflow, false), Overload]
 {
     func roundUpToPowerOf2(x: u32)->u32   => 1'u32 << 32 - Math.leadingZeros(x)
     func roundUpToPowerOf2(x: u64)->u64   => 1'u64 << cast(u32) (64 - Math.leadingZeros(x))
@@ -17,19 +17,19 @@ using Swag
 }
 
 // Determin if any of the bytes is zero
-#[ConstExpr, Inline, Safety(.All, "overflow", false), Overload]
+#[ConstExpr, Inline, Safety(.All, .Overflow, false), Overload]
 func hasZeroByte(v: u16)->bool
 {
     return hasZeroByte(cast(u32) v)
 }
 
-#[ConstExpr, Inline, Safety(.All, "overflow", false), Overload]
+#[ConstExpr, Inline, Safety(.All, .Overflow, false), Overload]
 func hasZeroByte(v: u32)->bool
 {
     return cast(bool) ((v - 0x01010101) & ~v & 0x80808080)
 }
 
-#[ConstExpr, Inline, Safety(.All, "overflow", false), Overload]
+#[ConstExpr, Inline, Safety(.All, .Overflow, false), Overload]
 func hasZeroByte(v: u64)->bool
 {
     return cast(bool) ((v - 0x01010101_01010101) & ~v & 0x80808080_80808080)

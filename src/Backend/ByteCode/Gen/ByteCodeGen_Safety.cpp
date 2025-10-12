@@ -156,11 +156,11 @@ void ByteCodeGen::emitSafetyAssert(ByteCodeGenContext* context, uint32_t reg, co
     emitAssert(context, reg, message);
 }
 
-bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, SafetyFlags what)
+bool ByteCodeGen::mustEmitSafety(const ByteCodeGenContext* context, SafetyWhat what)
 {
     if (context->contextFlags & BCC_FLAG_NO_SAFETY)
         return false;
-    if (!context->sourceFile->module->mustEmitSafety(context->node, what, SafetyContext::ByteCode))
+    if (!context->sourceFile->module->mustEmitSafety(context->node, SafetyContext::ByteCode, what))
         return false;
     return true;
 }
@@ -183,14 +183,14 @@ void ByteCodeGen::emitSafetyNotZero(ByteCodeGenContext* context, uint32_t r, uin
 
 void ByteCodeGen::emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r)
 {
-    if (!mustEmitSafety(context, SAFETY_NULL))
+    if (!mustEmitSafety(context, SafetyWhat::Null))
         return;
     emitSafetyNotZero(context, r, 64, safetyMsg(SafetyMsg::NullCheck));
 }
 
 void ByteCodeGen::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
 {
-    if (!mustEmitSafety(context, SAFETY_NULL))
+    if (!mustEmitSafety(context, SafetyWhat::Null))
         return;
     emitSafetyNotZero(context, r, 64, safetyMsg(SafetyMsg::ErrCheck));
 }
@@ -199,7 +199,7 @@ void ByteCodeGen::emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r)
 bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NO_SAFETY ||
-        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_UNREACHABLE, SafetyContext::ByteCode))
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SafetyContext::ByteCode, SafetyWhat::Unreachable))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
     }
@@ -215,7 +215,7 @@ bool ByteCodeGen::emitSafetyUnreachable(ByteCodeGenContext* context)
 bool ByteCodeGen::emitSafetySwitchDefault(ByteCodeGenContext* context)
 {
     if (context->contextFlags & BCC_FLAG_NO_SAFETY ||
-        !context->sourceFile->module->mustEmitSafety(context->node->parent, SAFETY_SWITCH, SafetyContext::ByteCode))
+        !context->sourceFile->module->mustEmitSafety(context->node->parent, SafetyContext::ByteCode, SafetyWhat::Switch))
     {
         EMIT_INST0(context, ByteCodeOp::InternalUnreachable);
         return true;
@@ -229,7 +229,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
 {
     if (typeInfo->isNative(NativeTypeKind::Bool))
     {
-        if (!mustEmitSafety(context, SAFETY_BOOL))
+        if (!mustEmitSafety(context, SafetyWhat::Bool))
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
@@ -246,7 +246,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
 
     if (typeInfo->isNative(NativeTypeKind::F32))
     {
-        if (!mustEmitSafety(context, SAFETY_NAN))
+        if (!mustEmitSafety(context, SafetyWhat::NaN))
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
@@ -261,7 +261,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
 
     if (typeInfo->isNative(NativeTypeKind::F64))
     {
-        if (!mustEmitSafety(context, SAFETY_NAN))
+        if (!mustEmitSafety(context, SafetyWhat::NaN))
             return true;
 
         PushICFlags ic(context, BCI_SAFETY);
@@ -279,7 +279,7 @@ bool ByteCodeGen::emitSafetyValue(ByteCodeGenContext* context, int r, const Type
 
 void ByteCodeGen::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uint32_t bits)
 {
-    if (!mustEmitSafety(context, SAFETY_MATH))
+    if (!mustEmitSafety(context, SafetyWhat::Math))
         return;
 
     emitSafetyNotZero(context, r, bits, safetyMsg(SafetyMsg::NotZero));
@@ -287,7 +287,7 @@ void ByteCodeGen::emitSafetyDivZero(ByteCodeGenContext* context, uint32_t r, uin
 
 void ByteCodeGen::emitSafetyDivOverflow(ByteCodeGenContext* context, uint32_t r0, uint32_t r1, uint32_t bits, bool dref)
 {
-    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
+    if (!mustEmitSafety(context, SafetyWhat::Overflow))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -459,7 +459,7 @@ void ByteCodeGen::emitSafetyBoundCheckLowerU64(ByteCodeGenContext* context, uint
 
 void ByteCodeGen::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
+    if (!mustEmitSafety(context, SafetyWhat::BoundCheck))
         return;
 
     emitSafetyBoundCheckLowerU64(context, r0, r1);
@@ -467,7 +467,7 @@ void ByteCodeGen::emitSafetyBoundCheckString(ByteCodeGenContext* context, uint32
 
 void ByteCodeGen::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_t r0, uint32_t r1)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
+    if (!mustEmitSafety(context, SafetyWhat::BoundCheck))
         return;
 
     emitSafetyBoundCheckLowerU64(context, r0, r1);
@@ -475,7 +475,7 @@ void ByteCodeGen::emitSafetyBoundCheckSlice(ByteCodeGenContext* context, uint32_
 
 void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_t r0, const TypeInfoArray* typeInfoArray)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
+    if (!mustEmitSafety(context, SafetyWhat::BoundCheck))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -488,7 +488,7 @@ void ByteCodeGen::emitSafetyBoundCheckArray(ByteCodeGenContext* context, uint32_
 
 void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* exprNode, TypeInfo* toType)
 {
-    if (!mustEmitSafety(context, SAFETY_DYN_CAST))
+    if (!mustEmitSafety(context, SafetyWhat::DynCast))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -518,7 +518,7 @@ void ByteCodeGen::emitSafetyCastAny(ByteCodeGenContext* context, const AstNode* 
 
 void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* node)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
+    if (!mustEmitSafety(context, SafetyWhat::BoundCheck))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -537,7 +537,7 @@ void ByteCodeGen::emitSafetyRange(ByteCodeGenContext* context, const AstRange* n
 
 void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, const AstArrayPointerSlicing* node)
 {
-    if (!mustEmitSafety(context, SAFETY_BOUND_CHECK))
+    if (!mustEmitSafety(context, SafetyWhat::BoundCheck))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);
@@ -589,7 +589,7 @@ void ByteCodeGen::emitSafetyArrayPointerSlicing(ByteCodeGenContext* context, con
 
 void ByteCodeGen::emitSafetyCastOverflow(ByteCodeGenContext* context, TypeInfo* typeInfo, TypeInfo* fromTypeInfo, AstNode* exprNode)
 {
-    if (!mustEmitSafety(context, SAFETY_OVERFLOW))
+    if (!mustEmitSafety(context, SafetyWhat::Overflow))
         return;
     if (!typeInfo->isNative())
         return;
@@ -1298,7 +1298,7 @@ void ByteCodeGen::emitSafetyIntrinsics(ByteCodeGenContext* context)
     const auto node       = castAst<AstIdentifier>(context->node, AstNodeKind::Identifier);
     const auto callParams = castAst<AstNode>(node->firstChild(), AstNodeKind::FuncCallParams);
 
-    if (!mustEmitSafety(context, SAFETY_MATH))
+    if (!mustEmitSafety(context, SafetyWhat::Math))
         return;
 
     PushICFlags ic(context, BCI_SAFETY);

@@ -2,7 +2,7 @@
 
 using Swag
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     let b = "XYZ"

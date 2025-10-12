@@ -1,7 +1,7 @@
 #global testerror "Saf0001"
 using Swag
 
-#[Swag.Safety(.All, "", true), Swag.Sanity(false)]
+#[Swag.Safety(.All, .All, true), Swag.Sanity(false)]
 #test
 {
     var x: any = 6

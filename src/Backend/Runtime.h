@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Flags.h"
 
 struct ExportedTypeInfo;
 
@@ -14,18 +15,23 @@ enum class SafetyContext
     Max
 };
 
-using SafetyFlags                        = Flags<uint16_t>;
-constexpr SafetyFlags SAFETY_BOUND_CHECK = 0x0001;
-constexpr SafetyFlags SAFETY_OVERFLOW    = 0x0002;
-constexpr SafetyFlags SAFETY_MATH        = 0x0004;
-constexpr SafetyFlags SAFETY_DYN_CAST    = 0x0008;
-constexpr SafetyFlags SAFETY_SWITCH      = 0x0010;
-constexpr SafetyFlags SAFETY_BOOL        = 0x0020;
-constexpr SafetyFlags SAFETY_NAN         = 0x0040;
-constexpr SafetyFlags SAFETY_UNREACHABLE = 0x0080;
-constexpr SafetyFlags SAFETY_NULL        = 0x0100;
-constexpr SafetyFlags SAFETY_MEMORY      = 0x0200;
-constexpr SafetyFlags SAFETY_ALL         = 0xFFFF;
+enum class SafetyWhat : uint16_t
+{
+    BoundCheck  = 0x0001,
+    Overflow    = 0x0002,
+    Math        = 0x0004,
+    DynCast     = 0x0008,
+    Switch      = 0x0010,
+    Bool        = 0x0020,
+    NaN         = 0x0040,
+    Unreachable = 0x0080,
+    Null        = 0x0100,
+    Memory      = 0x0200,
+    None        = 0x0000,
+    All         = 0xFFFF,
+};
+
+using SafetyFlags = EnumFlags<SafetyWhat>;
 
 constexpr int SWAG_EXCEPTION_TO_PREV_HANDLER     = 665;
 constexpr int SWAG_EXCEPTION_TO_COMPILER_HANDLER = 666; // must be the same value in __raiseException666 in runtime_windows.h
@@ -308,7 +314,7 @@ struct BuildCfg
     // Debug
     uint32_t    tempAllocatorCapacity      = 4 * 1024 * 1024;
     uint32_t    errorAllocatorCapacity     = 16 * 1024;
-    SafetyFlags safetyGuards               = SAFETY_ALL;
+    SafetyFlags safetyGuards               = SafetyWhat::All;
     bool        sanity                     = true;
     bool        debugAllocator             = true;
     bool        debugAllocatorCaptureStack = true;

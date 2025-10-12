@@ -1,6 +1,6 @@
 //#global testerror
 
-#[Swag.Safety(.All, "overflow", true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, .Overflow, true), Swag.Optimize("", false)]
 #test
 {
     const x = -1'f32
@@ -8,7 +8,7 @@
 }
 
 /*
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #[Swag.Optimize("", false)]
 #test
 {
@@ -16,7 +16,7 @@
     let y = cast(u64) x
 }
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #[Swag.Optimize("", false)]
 #test
 {

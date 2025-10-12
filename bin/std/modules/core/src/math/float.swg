@@ -131,9 +131,9 @@ alias ConstF64 = Const'f64
     func isEqualEpsilon(x, y: f64, eps = ConstF64.Epsilon) => abs(x - y) < eps
 
     // Check if 'x' is NaN (not a number)
-    #[Swag.Safety(.All, "nan", false)]
+    #[Swag.Safety(.All, .NaN, false)]
     func isNaN(x: f32) => x != x
-    #[Swag.Safety(.All, "nan", false)]
+    #[Swag.Safety(.All, .NaN, false)]
     func isNaN(x: f64) => x != x
 
     // Returns true if the value is finite (not infinite and not NaN).

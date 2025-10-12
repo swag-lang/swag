@@ -168,7 +168,7 @@ struct Module
     bool mustOptimizeByteCode(const AstNode* node) const;
     bool mustOptimizeBackend(const AstNode* node) const;
     bool mustEmitSafetyOverflow(const AstNode* node, SafetyContext safeCxt) const;
-    bool mustEmitSafety(const AstNode* node, SafetyFlags what, SafetyContext safeCxt) const;
+    bool mustEmitSafety(const AstNode* node, SafetyContext safeCxt, SafetyWhat what) const;
 
     void setBuildPass(BuildPass buildP);
 

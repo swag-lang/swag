@@ -1,4 +1,4 @@
-//#[Swag.Safety(.All, "", false)]
+//#[Swag.Safety(.All, .All, false)]
 //#[Swag.PrintBc]
 func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
 {
@@ -12,7 +12,7 @@ func(T) insertionSort(values: [..] T, cb: func||(T, T)->s32)
 }
 
 //#[Swag.Optimize("", false)]
-//#[Swag.Safety(.All, "", false)]
+//#[Swag.Safety(.All, .All, false)]
 #test
 {
     var x = [1, 2]

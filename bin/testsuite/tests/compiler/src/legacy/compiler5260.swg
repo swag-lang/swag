@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#[Swag.Safety(.All, "overflow", false)]
+#[Swag.Safety(.All, .Overflow, false)]
 func toto(buffer: *bool)
 {
     var total: u64

@@ -1,6 +1,6 @@
 using test_foreign
 
-#[Swag.Safety(.All, "", false)]
+#[Swag.Safety(.All, .All, false)]
 #test
 {
     var x: tcf_Point

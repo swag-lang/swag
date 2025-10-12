@@ -5,6 +5,6 @@
 #test
 {
     let a = "toto"
-    #[Swag.Safety(.All, "", true)]
+    #[Swag.Safety(.All, .All, true)]
     let c = a[0 to 4]
 }

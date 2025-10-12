@@ -1,6 +1,6 @@
 #global testerror "Saf0027"
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     var b: u8 = 255'u8 + 1'u8

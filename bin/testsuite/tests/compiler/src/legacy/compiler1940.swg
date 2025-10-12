@@ -8,7 +8,7 @@ struct(T) B
 
 impl B
 {
-    #[Swag.Safety(.All, "", true)]
+    #[Swag.Safety(.All, .All, true)]
     func toto(me)
     {
         xxx[0] = 0

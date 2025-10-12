@@ -1,4 +1,4 @@
-#global #[Swag.Safety(.All, "", false)]
+#global #[Swag.Safety(.All, .All, false)]
 
 //#[Swag.PrintBc]
 #test

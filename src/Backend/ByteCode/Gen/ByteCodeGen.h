@@ -1,5 +1,6 @@
 #pragma once
 
+enum class SafetyWhat : uint16_t;
 struct AstArrayPointerSlicing;
 struct AstFuncCallParam;
 struct AstFuncDecl;
@@ -30,7 +31,6 @@ struct TypeInfoStruct;
 enum class ByteCodeOp : uint16_t;
 enum class TokenId : uint16_t;
 enum class TypeInfoKind : uint8_t;
-using SafetyFlags = Flags<uint16_t>;
 
 #define SAFETY_ZERO_EPSILON 0.00001f
 
@@ -299,7 +299,7 @@ namespace ByteCodeGen
     void emitAssert(const ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
 
     const char* safetyMsg(SafetyMsg msg, const TypeInfo* toType = nullptr, const TypeInfo* fromType = nullptr);
-    bool        mustEmitSafety(const ByteCodeGenContext* context, SafetyFlags what);
+    bool        mustEmitSafety(const ByteCodeGenContext* context, SafetyWhat what);
     void        emitSafetyAssert(ByteCodeGenContext* context, uint32_t reg, const char* message = nullptr);
     void        emitSafetyNullCheck(ByteCodeGenContext* context, uint32_t r);
     void        emitSafetyErrCheck(ByteCodeGenContext* context, uint32_t r);

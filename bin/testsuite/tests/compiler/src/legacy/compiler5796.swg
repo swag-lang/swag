@@ -4,7 +4,7 @@ enum A { R, G }
 struct B { x: A }
 
 //#[Swag.PrintGenBc]
-#[Swag.Sanity(true), Swag.Safety(.All, "", false)]
+#[Swag.Sanity(true), Swag.Safety(.All, .All, false)]
 func toto(s: B)
 {
     var a: bool = undefined

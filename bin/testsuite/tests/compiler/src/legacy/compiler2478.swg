@@ -1,4 +1,4 @@
-#global #[Swag.Safety(.All, "overflow", true)]
+#global #[Swag.Safety(.All, .Overflow, true)]
 #global testerror "Saf0024"
 #global testerror "Saf0025"
 

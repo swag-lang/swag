@@ -6,7 +6,7 @@
 #global namespace Hash
 using Swag
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func jenkins(h: u64)->u64
 {
     var key = (h ^ (h >> 30)) * 0xbf58476d1ce4e5b9
@@ -15,7 +15,7 @@ public func jenkins(h: u64)->u64
     return key
 }
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func jenkins(h: u32)->u32
 {
     var key = (h + 0x7ed55d16) + (h << 12)

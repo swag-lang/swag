@@ -85,7 +85,7 @@ bool ByteCodeSanityState::checkStackOffset(uint64_t stackOffset, uint32_t sizeOf
 {
     if (stackOffset + sizeOf <= static_cast<size_t>(stack.size()))
         return true;
-    if (!san->mustEmitSafety(SAFETY_MEMORY))
+    if (!san->mustEmitSafety(SafetyWhat::Memory))
         return true;
 
     const auto err = ByteCodeSanity::raiseError(ip, formErr(Saf0033, stackOffset + sizeOf, stack.size()), locValue);
@@ -100,7 +100,7 @@ bool ByteCodeSanityState::checkStackInitialized(void* addr, uint32_t sizeOf, con
     SWAG_CHECK(getStackKind(&memValue, addr, sizeOf));
     if (memValue.kind != SanityValueKind::Invalid)
         return true;
-    if (!san->mustEmitSafety(SAFETY_MEMORY))
+    if (!san->mustEmitSafety(SafetyWhat::Memory))
         return true;
 
     const auto err = ByteCodeSanity::raiseError(ip, toErr(Saf0034), locValue);

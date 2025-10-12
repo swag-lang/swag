@@ -3,7 +3,7 @@ public func x3195()
 {
     #[Swag.Mixin]
     {
-        #[Swag.Safety(.All, "", false)]
+        #[Swag.Safety(.All, .All, false)]
         {
             func xx()
             {

@@ -4,7 +4,7 @@
 #[Swag.Optimize("", false)]
 func arithmeticMean(numbers: s32...)
 {
-    #[Swag.Safety(.All, "", true)]
+    #[Swag.Safety(.All, .All, true)]
     {
         var cpt = numbers[1]
     }

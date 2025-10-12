@@ -81,14 +81,14 @@ impl NumericArray
         }
     }
 
-    #[Safety(.All, "boundcheck", false), Complete, Overload]
+    #[Safety(.All, .BoundCheck, false), Complete, Overload]
     mtd opAffect(what: T)
     {
         for i in NumericArray.N do
             .buf[i] = what
     }
 
-    #[Safety(.All, "boundcheck", false), Complete, Overload]
+    #[Safety(.All, .BoundCheck, false), Complete, Overload]
     mtd opAffect(what: const [..] T)
     {
         Debug.assert(@countof(what) == NumericArray.N)
@@ -96,7 +96,7 @@ impl NumericArray
             .buf[i] = what[i]
     }
 
-    #[Safety(.All, "boundcheck", false)]
+    #[Safety(.All, .BoundCheck, false)]
     func from(values: T...)->NumericArray
     {
         Debug.assert(@countof(values) == NumericArray.N)
@@ -107,7 +107,7 @@ impl NumericArray
     }
 
     // Set all values
-    #[Safety(.All, "boundcheck", false)]
+    #[Safety(.All, .BoundCheck, false)]
     mtd set(values: T...)
     {
         Debug.assert(@countof(values) == NumericArray.N)
@@ -116,7 +116,7 @@ impl NumericArray
     }
 
     // Multiply & add
-    #[Safety(.All, "boundcheck", false), Overload]
+    #[Safety(.All, .BoundCheck, false), Overload]
     mtd mulAdd(value1, value2: T)
     {
         for i in NumericArray.N do
@@ -124,7 +124,7 @@ impl NumericArray
     }
 
     // Multiply & Add
-    #[Safety(.All, "boundcheck", false), Overload]
+    #[Safety(.All, .BoundCheck, false), Overload]
     mtd mulAdd(value1, value2: NumericArray)
     {
         for i in NumericArray.N do

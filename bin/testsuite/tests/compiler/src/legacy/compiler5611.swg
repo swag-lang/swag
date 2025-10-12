@@ -1,6 +1,6 @@
 #global testerror "Err0294"
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     let a = Swag.S32.Min

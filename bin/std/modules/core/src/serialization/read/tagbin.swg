@@ -683,7 +683,7 @@ impl TagBin
         {
             if .convertNextNative
             {
-                #[Swag.Safety(.All, "", false)]
+                #[Swag.Safety(.All, .All, false)]
                 switch .convertNextNative.nativeKind
                 {
                 case Bool:

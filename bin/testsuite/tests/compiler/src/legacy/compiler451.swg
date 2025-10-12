@@ -5,6 +5,6 @@
 #test
 {
 	var a: *s32 = null;
-    #[Swag.Safety(.All, "", true)]
+    #[Swag.Safety(.All, .All, true)]
 	a[0] = 0
 }

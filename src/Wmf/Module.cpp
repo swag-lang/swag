@@ -60,7 +60,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeInline        = false;
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
-        buildCfg.safetyGuards          = 0;
+        buildCfg.safetyGuards          = SafetyWhat::None;
         buildCfg.sanity                = false;
         buildCfg.errorStackTrace       = false;
         buildCfg.debugAllocator        = true;
@@ -73,7 +73,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeInline        = false;
         buildCfg.byteCodeAutoInline    = false;
         buildCfg.byteCodeEmitAssume    = true;
-        buildCfg.safetyGuards          = SAFETY_ALL;
+        buildCfg.safetyGuards          = SafetyWhat::All;
         buildCfg.sanity                = true;
         buildCfg.errorStackTrace       = true;
         buildCfg.debugAllocator        = true;
@@ -87,9 +87,9 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeInline        = true;
         buildCfg.byteCodeAutoInline    = true;
         buildCfg.byteCodeEmitAssume    = true;
-        buildCfg.safetyGuards          = SAFETY_ALL;
-        buildCfg.safetyGuards.remove(SAFETY_NAN);
-        buildCfg.safetyGuards.remove(SAFETY_BOOL);
+        buildCfg.safetyGuards          = SafetyWhat::All;
+        buildCfg.safetyGuards.remove(SafetyWhat::NaN);
+        buildCfg.safetyGuards.remove(SafetyWhat::Bool);
         buildCfg.sanity            = true;
         buildCfg.errorStackTrace   = true;
         buildCfg.debugAllocator    = true;
@@ -102,7 +102,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
         buildCfg.byteCodeInline                 = true;
         buildCfg.byteCodeAutoInline             = true;
         buildCfg.byteCodeEmitAssume             = false;
-        buildCfg.safetyGuards                   = 0;
+        buildCfg.safetyGuards                   = SafetyWhat::None;
         buildCfg.sanity                         = false;
         buildCfg.errorStackTrace                = false;
         buildCfg.debugAllocator                 = false;
@@ -120,7 +120,7 @@ void Module::setup(const Utf8& moduleName, const Path& modulePath)
     if (g_CommandLine.buildCfgDebug != "default")
         buildCfg.backendDebugInfos = g_CommandLine.buildCfgDebug == "true";
     if (g_CommandLine.buildCfgSafety != "default")
-        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SAFETY_ALL : 0;
+        buildCfg.safetyGuards = g_CommandLine.buildCfgSafety == "true" ? SafetyWhat::All : SafetyWhat::None;
     if (g_CommandLine.buildCfgSanity != "default")
         buildCfg.sanity = g_CommandLine.buildCfgSanity == "true";
     if (g_CommandLine.buildCfgStackTrace != "default")
@@ -951,12 +951,12 @@ void Module::printBC()
 
 bool Module::mustEmitSafetyOverflow(const AstNode* node, SafetyContext safeCxt) const
 {
-    return mustEmitSafety(node, SAFETY_OVERFLOW, safeCxt);
+    return mustEmitSafety(node, safeCxt, SafetyWhat::Overflow);
 }
 
-bool Module::mustEmitSafety(const AstNode* node, SafetyFlags what, SafetyContext safeCxt) const
+bool Module::mustEmitSafety(const AstNode* node, SafetyContext safeCxt, SafetyWhat what) const
 {
-    if (what == SAFETY_OVERFLOW)
+    if (what == SafetyWhat::Overflow)
     {
         if (node->hasAttribute(ATTRIBUTE_CAN_OVERFLOW_ON))
             return false;

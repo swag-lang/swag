@@ -1,6 +1,6 @@
 #global testerror "Saf0003"
 
-#[Swag.Safety(.All, "bool", true)]
+#[Swag.Safety(.All, .Bool, true)]
 #test
 {
     var x   = true

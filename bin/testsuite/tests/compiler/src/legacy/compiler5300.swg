@@ -6,7 +6,7 @@ func swap(x, y: *s32)
 }
 
 //#[Swag.PrintBc]
-//#[Swag.Safety(.All, "", false)]
+//#[Swag.Safety(.All, .All, false)]
 //#[Swag.Optimize("", false)]
 func nextPermutation(arr: [..] s32)
 {

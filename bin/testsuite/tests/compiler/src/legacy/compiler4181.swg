@@ -1,6 +1,6 @@
 #global testerror "Saf0014"
 
-#[Swag.Optimize("", false), Swag.Safety(.All, "", true), Swag.Sanity(true)]
+#[Swag.Optimize("", false), Swag.Safety(.All, .All, true), Swag.Sanity(true)]
 #test
 {
     var y = -10'f32

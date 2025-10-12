@@ -20,9 +20,9 @@ impl String
 }
 
 #[Swag.ConstExpr, Swag.Inline]
-func get()->String
+func get()->Swag.SafetyWhat
 {
-    return "boundcheck"
+    return Swag.SafetyWhat.BoundCheck
 }
 
 #[Swag.Safety(.All, get(), false)]

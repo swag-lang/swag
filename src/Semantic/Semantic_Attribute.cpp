@@ -31,21 +31,6 @@
         }                                                                      \
     } while (0)
 
-#define CHECK_SAFETY_NAME(__cxt, __name, __flag)       \
-    do                                                 \
-    {                                                  \
-        if (w == g_LangSpec->__name)                   \
-        {                                              \
-            done = true;                               \
-            forNode->safetyOn[__cxt].remove(__flag);   \
-            forNode->safetyOff[__cxt].remove(__flag);  \
-            if (attrValue->reg.b)                      \
-                forNode->safetyOn[__cxt].add(__flag);  \
-            else                                       \
-                forNode->safetyOff[__cxt].add(__flag); \
-        }                                              \
-    } while (0)
-
 bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, AstNode* checkNode)
 {
     if (!checkNode || checkNode->is(AstNodeKind::RefSubDecl))
@@ -223,14 +208,11 @@ void Semantic::inheritAttributesFromParent(AstNode* child)
 
 void Semantic::inheritAttributesFrom(AstNode* child, const AttributeFlags& attributeFlags, const SafetyFlags* safetyOn, const SafetyFlags* safetyOff)
 {
-    INHERIT_SAFETY(child, SAFETY_BOUND_CHECK);
-    INHERIT_SAFETY(child, SAFETY_OVERFLOW);
-    INHERIT_SAFETY(child, SAFETY_MATH);
-    INHERIT_SAFETY(child, SAFETY_DYN_CAST);
-    INHERIT_SAFETY(child, SAFETY_SWITCH);
-    INHERIT_SAFETY(child, SAFETY_UNREACHABLE);
-    INHERIT_SAFETY(child, SAFETY_BOOL);
-    INHERIT_SAFETY(child, SAFETY_NAN);
+    for (int i = 0; i < static_cast<int>(SafetyContext::Max); i++)
+    {
+        child->safetyOn[i].add(safetyOn[i]);
+        child->safetyOff[i].add(safetyOff[i]);
+    }
 
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BACKEND_ON | ATTRIBUTE_OPTIM_BACKEND_OFF);
     INHERIT_ATTR(child, ATTRIBUTE_OPTIM_BYTECODE_ON | ATTRIBUTE_OPTIM_BYTECODE_OFF);
@@ -475,53 +457,19 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     auto attrValue = attr->getValue(g_LangSpec->name_value);
                     SWAG_ASSERT(attrValue);
 
-                    auto cxt          = static_cast<SafetyContext>(attrContextParam->value.reg.u32);
-                    auto attrWhat     = &attrWhatParam->value;
-                    auto attrWhatText = attrWhat->text;
-                    attrWhatText.trim();
-                    Utf8::tokenize(attrWhatText, '|', what);
+                    auto       cxt   = static_cast<SafetyContext>(attrContextParam->value.reg.u32);
+                    const auto whatF = static_cast<SafetyWhat>(attrWhatParam->value.reg.u32);
 
-                    if (attrWhatText.empty())
+                    for (int i = 0; i < static_cast<int>(SafetyContext::Max); i++)
                     {
-                        for (int i = 0; i < static_cast<int>(SafetyContext::Max); i++)
+                        if (i == static_cast<int>(cxt) || cxt == SafetyContext::Max)
                         {
-                            if (i == static_cast<int>(cxt) || cxt == SafetyContext::Max)
-                            {
-                                if (attrValue->reg.b)
-                                    forNode->safetyOn[i] = SAFETY_ALL;
-                                else
-                                    forNode->safetyOff[i] = SAFETY_ALL;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        for (auto& w : what)
-                        {
-                            w.trim();
-                            bool done = false;
-
-                            for (int i = 0; i < static_cast<int>(SafetyContext::Max); i++)
-                            {
-                                if (i == static_cast<int>(cxt) || cxt == SafetyContext::Max)
-                                {
-                                    CHECK_SAFETY_NAME(i, name_boundcheck, SAFETY_BOUND_CHECK);
-                                    CHECK_SAFETY_NAME(i, name_overflow, SAFETY_OVERFLOW);
-                                    CHECK_SAFETY_NAME(i, name_math, SAFETY_MATH);
-                                    CHECK_SAFETY_NAME(i, name_dyncast, SAFETY_DYN_CAST);
-                                    CHECK_SAFETY_NAME(i, name_switch, SAFETY_SWITCH);
-                                    CHECK_SAFETY_NAME(i, name_unreachable, SAFETY_UNREACHABLE);
-                                    CHECK_SAFETY_NAME(i, name_bool, SAFETY_BOOL);
-                                    CHECK_SAFETY_NAME(i, name_nan, SAFETY_NAN);
-                                    CHECK_SAFETY_NAME(i, name_null, SAFETY_NULL);
-                                    CHECK_SAFETY_NAME(i, name_memory, SAFETY_MEMORY);
-                                }
-                            }
-
-                            if (!done)
-                            {
-                                return context->report({child, attrWhatParam->token, formErr(Err0698, w.cstr())});
-                            }
+                            forNode->safetyOn[i].remove(whatF);
+                            forNode->safetyOff[i].remove(whatF);
+                            if (attrValue->reg.b)
+                                forNode->safetyOn[i].add(whatF);
+                            else
+                                forNode->safetyOff[i].add(whatF);
                         }
                     }
                 }

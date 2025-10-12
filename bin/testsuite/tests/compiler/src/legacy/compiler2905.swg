@@ -1,6 +1,6 @@
 func totoXXX(x: s32) {}
 
-//#[Swag.Safety(.All, "", false)]
+//#[Swag.Safety(.All, .All, false)]
 //#[Swag.PrintBc]
 #test
 {

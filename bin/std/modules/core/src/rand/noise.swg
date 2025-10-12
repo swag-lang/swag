@@ -5,7 +5,7 @@
 */
 
 #global namespace Noise
-#global #[Swag.Safety(.All, "", false)]
+#global #[Swag.Safety(.All, .All, false)]
 
 const Gradients2D: [?] f32 = [
     0.130526192220052, 0.99144486137381, 0.38268343236509, 0.923879532511287, 0.608761429008721, 0.793353340291235, 0.793353340291235, 0.608761429008721,

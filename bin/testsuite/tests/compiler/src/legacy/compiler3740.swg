@@ -6,7 +6,6 @@
     let x = 1
 
     //#[Swag.Complete]
-    //#[Swag.Safety(.All, "switch", false)]
     switch x
     {
     case 0:

@@ -198,17 +198,6 @@ struct LanguageSpec
     Utf8 name_sharp_bit;
     Utf8 name_sharp_unconst;
 
-    Utf8 name_boundcheck;
-    Utf8 name_overflow;
-    Utf8 name_math;
-    Utf8 name_switch;
-    Utf8 name_unreachable;
-    Utf8 name_bool;
-    Utf8 name_nan;
-    Utf8 name_dyncast;
-    Utf8 name_null;
-    Utf8 name_memory;
-
     Utf8 name_any;
     Utf8 name_name;
     Utf8 name_msg;

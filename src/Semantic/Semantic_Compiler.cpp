@@ -987,16 +987,6 @@ bool Semantic::resolveCompilerSpecialValue(SemanticContext* context)
     }
 }
 
-#define CHECK_SAFETY_NAME(__name, __flag)                                                                 \
-    do                                                                                                    \
-    {                                                                                                     \
-        if (w == g_LangSpec->__name)                                                                      \
-        {                                                                                                 \
-            done                         = true;                                                          \
-            node->computedValue()->reg.b = module->mustEmitSafety(node, __flag, SafetyContext::ByteCode); \
-        }                                                                                                 \
-    } while (0)
-
 bool Semantic::resolveCompilerTag(SemanticContext* context)
 {
     const auto node = context->node;
@@ -1011,27 +1001,8 @@ bool Semantic::resolveCompilerTag(SemanticContext* context)
             SWAG_VERIFY(front->typeInfo->isString(), context->report({front, formErr(Err0565, node->token.cstr(), node->token.cstr(), front->typeInfo->getDisplayNameC())}));
             node->typeInfo = g_TypeMgr->typeInfoBool;
             node->setFlagsValueIsComputed();
-
-            const auto& w      = front->computedValue()->text;
-            const auto  module = node->token.sourceFile->module;
-            bool        done   = false;
-
-            CHECK_SAFETY_NAME(name_boundcheck, SAFETY_BOUND_CHECK);
-            CHECK_SAFETY_NAME(name_overflow, SAFETY_OVERFLOW);
-            CHECK_SAFETY_NAME(name_math, SAFETY_MATH);
-            CHECK_SAFETY_NAME(name_switch, SAFETY_SWITCH);
-            CHECK_SAFETY_NAME(name_unreachable, SAFETY_UNREACHABLE);
-            CHECK_SAFETY_NAME(name_dyncast, SAFETY_DYN_CAST);
-            CHECK_SAFETY_NAME(name_bool, SAFETY_BOOL);
-            CHECK_SAFETY_NAME(name_nan, SAFETY_NAN);
-            CHECK_SAFETY_NAME(name_null, SAFETY_NULL);
-            CHECK_SAFETY_NAME(name_memory, SAFETY_MEMORY);
-
-            if (!done)
-            {
-                return context->report({front, front->token, formErr(Err0698, w.cstr())});
-            }
-
+            const auto  module           = node->token.sourceFile->module;
+            node->computedValue()->reg.b = module->mustEmitSafety(node, SafetyContext::ByteCode, static_cast<SafetyWhat>(front->computedValue()->reg.u32));
             return true;
         }
 

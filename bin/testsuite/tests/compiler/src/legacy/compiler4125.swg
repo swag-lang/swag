@@ -2,7 +2,7 @@
 
 func toto(x: f32) {}
 
-#[Swag.Safety(.All, "nan", true)]
+#[Swag.Safety(.All, .NaN, true)]
 #test
 {
     toto(Swag.F32.NaN)

@@ -23,7 +23,7 @@ with 'buildCfg.safetyGuards'.
 /**
 # 'Overflow Safety'
 Example:
-#[Swag.Safety(.All, "overflow", true)]
+#[Swag.Safety(.All, .Overflow, true)]
 When enabled, Swag panics on arithmetic overflow or when bits are lost
 during integer conversions.
 
@@ -111,7 +111,7 @@ Same as above: '#[Swag.CanOverflow(true)]' allows overflowing operations.
 /**
 # 'Dynamic Cast Type Safety'
 Example:
-#[Swag.Safety(.All, "dyncast", true)]
+#[Swag.Safety(.All, .DynCast, true)]
 Swag panics if a cast from 'any' to another type is invalid.
 */
 #test
@@ -130,7 +130,7 @@ cannot be performed.
 /**
 # 'Array Bounds Checking'
 Example:
-#[Swag.Safety(.All, "boundcheck", true)]
+#[Swag.Safety(.All, .BoundCheck, true)]
 Swag panics if an index is out of range when dereferencing sized values
 (arrays, slices, strings).
 */
@@ -178,7 +178,7 @@ Slice operations are checked for bounds.
 /**
 # 'Math Safety'
 Example:
-#[Swag.Safety(.All, "math", true)]
+#[Swag.Safety(.All, .Math, true)]
 Swag panics for invalid math, such as division by zero or invalid intrinsic
 arguments.
 */
@@ -209,7 +209,7 @@ Swag validates arguments for several math intrinsics and panics if invalid.
 /**
 # 'Switch Safety'
 Example:
-#[Swag.Safety(.All, "switch", true)]
+#[Swag.Safety(.All, .Switch, true)]
 With '#[Swag.Complete]', Swag panics if a switch does not cover all cases.
 */
 #test
@@ -239,7 +239,7 @@ With '#[Swag.Complete]', Swag panics if a switch does not cover all cases.
 /**
 # 'Boolean Safety'
 Example:
-#[Swag.Safety(.All, "bool", true)]
+#[Swag.Safety(.All, .Bool, true)]
 Swag panics if a 'bool' is not 'true' (1) or 'false' (0).
 */
 #test
@@ -251,7 +251,7 @@ Swag panics if a 'bool' is not 'true' (1) or 'false' (0).
 /**
 # 'NaN Safety'
 Example:
-#[Swag.Safety(.All, "nan", true)]
+#[Swag.Safety(.All, .NaN, true)]
 Swag panics if a floating-point 'NaN' participates in an operation,
 preventing propagation of invalid values.
 */

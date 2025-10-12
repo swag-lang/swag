@@ -2548,7 +2548,7 @@ bool TypeManager::castFromAny(SemanticContext* context, TypeInfo* toType, TypeIn
             const auto     newTypeInfo = context->sourceFile->module->typeGen.getRealType(fromNode->computedValue()->storageSegment, any->type);
 
             // need to check the type
-            if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SAFETY_DYN_CAST, SafetyContext::Compiler))
+            if (newTypeInfo && context->sourceFile->module->mustEmitSafety(fromNode, SafetyContext::Compiler, SafetyWhat::DynCast))
             {
                 if (!toRealType->isSame(newTypeInfo, castFlags.with(CAST_FLAG_EXACT)))
                 {

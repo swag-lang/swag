@@ -1,7 +1,7 @@
-#global #[Swag.Safety(.All, "overflow", true)]
+#global #[Swag.Safety(.All, .Overflow, true)]
 //#global testerror
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     var x = 1

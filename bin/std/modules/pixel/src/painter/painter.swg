@@ -336,7 +336,7 @@ impl Painter
         return .vertexBuffer.count - 3
     }
 
-    #[Swag.Safety(.All, "", false), Swag.Overload]
+    #[Swag.Safety(.All, .All, false), Swag.Overload]
     internal mtd addEdgeAA(tri: u64, startx, starty, endx, endy: f32)
     {
         var ptr = .vertexBuffer.buffer + tri

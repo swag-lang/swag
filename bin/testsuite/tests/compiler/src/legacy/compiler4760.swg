@@ -1,6 +1,6 @@
 #global testerror "Saf0005"
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 func toto(x, y: s32)
 {
     for x to y

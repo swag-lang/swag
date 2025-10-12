@@ -152,7 +152,7 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Function)]
     attr Sanity(what: bool)
 
-    // To which context the 'Safety' attribute must be applied
+    // To what context the 'Safety' attribute must be applied
     enum SafetyContext
     {
         Compiler = 0    // Compiler context (during compile)
@@ -161,26 +161,27 @@ namespace Swag
         All
     }
 
+    // All safety checks
+    #[Swag.EnumFlags]
+    enum SafetyWhat : u16
+    {
+        BoundCheck  = 0x0001 // Check out of bound access
+        Overflow    = 0x0002 // Check type conversion lost of bits or precision
+        Math        = 0x0004 // Check various math operations (like a negative '@sqrt')
+        DynCast     = 0x0008 // Check if a cast from a 'any' variable does not match the real underlying type
+        Switch      = 0x0010 // Check if an unexpected case value is encountered
+        Bool        = 0x0020 // Check if a 'bool' does not have a valid value ('true' or 'false')
+        NaN         = 0x0040 // Check if a 'NaN' is used in a float arithmetic operation
+        Unreachable = 0x0080 // Check if unreachable is... reached
+        Null        = 0x0100 // Check on dereferencing some null pointers
+        Memory      = 0x0200 // Check some memory things (mostly in sanity pass)
+        None        = 0x0000
+        All         = 0xFFFF
+    }
+
     // Enable/Disable one or more safety checks.
-    // For example:
-    // ```swag
-    // #[Swag.Safety(.All, "", false)]                      // Disable all
-    // #[Swag.Safety(.ByteCode, "boundcheck|nan", false)]   // Disable 'boundcheck' and 'nan' checks
-    // ```
-    // Safety checks are:
-    // | 'boundcheck'   | Check out of bound access
-    // | 'overflow'     | Check type conversion lost of bits or precision
-    // | 'math'         | Various math checks (like a negative '@sqrt')
-    // | 'switch'       | Check an invalid case in a '#[Swag.Complete]' switch
-    // | 'unreachable'  | Panic if an '@unreachable' instruction is executed
-    // | 'any'          | Panic if a cast from a 'any' variable does not match the real underlying type
-    // | 'bool'         | Panic if a 'bool' does not have a valid value ('true' or 'false')
-    // | 'nan'          | Panic if a 'nan' is used in a float arithmetic operation
-    // | 'sanity'       | Do a 'sanity' check (per function)
-    // | 'null'         | Panic on dereferencing some null pointers
-    // If 'what' is null or empty, every options are will be affected.
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
-    attr Safety(context: SafetyContext, what: string, value: bool)
+    attr Safety(context: SafetyContext, what: SafetyWhat, value: bool)
 
     // Enable/Disable a given function optimization.
     // Options are:
@@ -716,19 +717,6 @@ namespace Swag
         LLVM         // LLVM backend
     }
 
-    const SafetyBoundCheck  = 0x0001
-    const SafetyOverflow    = 0x0002
-    const SafetyMath        = 0x0004
-    const SafetyDynCast     = 0x0008
-    const SafetySwitch      = 0x0010
-    const SafetyBool        = 0x0020
-    const SafetyNaN         = 0x0040
-    const SafetyUnreachable = 0x0080
-    const SafetyNullCheck   = 0x0100
-    const SafetyMemory      = 0x0200
-    const SafetyNone        = 0x0000
-    const SafetyAll         = 0xFFFF
-
     // 'LLVM' backend specific options
     struct BuildCfgBackendLLVM
     {
@@ -837,7 +825,7 @@ namespace Swag
 
         tempAllocatorCapacity          = 4'u32 * 1024 * 1024                // Default capacity of the 'temp' allocator (in bytes)
         errorAllocatorCapacity         = 16'u32 * 1024                      // Default capacity of the 'error' allocator (in bytes)
-        safetyGuards:                  u16 = SafetyAll                      // Activate specific safety checks
+        safetyGuards                   = SafetyWhat.All                     // Activate specific safety checks
         sanity                         = true                               // Make a sanity pass
         debugAllocator                 = true                               // Use Swag.DebugAllocator by default
         debugAllocatorCaptureStack     = true                               // Capture the call stack for each allocation

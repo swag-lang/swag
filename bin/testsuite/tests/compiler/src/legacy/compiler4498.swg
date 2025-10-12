@@ -1,5 +1,5 @@
 #global testerror "executing unreachable code"
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     unreachable

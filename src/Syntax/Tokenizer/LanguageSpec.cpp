@@ -170,17 +170,6 @@ void LanguageSpec::setupNames()
     name_sharp_bit      = "#bit";
     name_sharp_unconst  = "#unconst";
 
-    name_boundcheck  = "boundcheck";
-    name_overflow    = "overflow";
-    name_switch      = "switch";
-    name_unreachable = "unreachable";
-    name_math        = "math";
-    name_bool        = "bool";
-    name_nan         = "nan";
-    name_null        = "null";
-    name_memory      = "memory";
-    name_dyncast     = "dyncast";
-
     name_any      = "any";
     name_name     = "name";
     name_msg      = "msg";

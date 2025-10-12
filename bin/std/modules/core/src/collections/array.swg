@@ -76,6 +76,7 @@ impl Array
         Debug.safetyBoundCheck(lower <= upper, "lower bound greater than upper bound")
         Debug.safetyBoundCheck(lower < .count, "lower bound out of range")
         Debug.safetyBoundCheck(upper < .count, "upper bound out of range")
+        Debug.assert(.buffer != null)
         return @mkslice(.buffer + lower, (upper + 1) - lower)
     }
 
@@ -84,6 +85,7 @@ impl Array
     mtd const opIndex(index: u64)->const &T
     {
         Debug.safetyBoundCheck(index < .count, "index out of range")
+        Debug.assert(.buffer != null)
         return .buffer + index
     }
 
@@ -92,6 +94,7 @@ impl Array
     mtd opIndex(index: u64)->&T
     {
         Debug.safetyBoundCheck(index < .count, "index out of range")
+        Debug.assert(.buffer != null)
         return .buffer + index
     }
 
@@ -101,6 +104,7 @@ impl Array
         where Reflection.canCopy(T)
     {
         Debug.safetyBoundCheck(index < .count, "index out of range")
+        Debug.assert(.buffer != null)
         .buffer[index] = value
     }
 

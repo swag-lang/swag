@@ -11,13 +11,13 @@
 #include "Syntax/Ast.h"
 #include "Syntax/Naming.h"
 
-bool ByteCodeSanity::mustEmitSafety(SafetyFlags what) const
+bool ByteCodeSanity::mustEmitSafety(SafetyWhat what) const
 {
     const auto ip   = STATE()->ip;
     const auto node = ip->node;
     if (!node || !context.sourceFile || !context.sourceFile->module)
         return false;
-    if (!context.sourceFile->module->mustEmitSafety(node, what, SafetyContext::Sanity))
+    if (!context.sourceFile->module->mustEmitSafety(node,SafetyContext::Sanity,  what))
         return false;    
     return true;
 }
@@ -138,7 +138,7 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 {
     if (!value->isConstant() || !isZero)
         return true;
-    if (!mustEmitSafety(SAFETY_MATH))
+    if (!mustEmitSafety(SafetyWhat::Math))
         return true;
 
     const auto ip  = STATE()->ip;
@@ -151,7 +151,7 @@ bool ByteCodeSanity::checkDivZero(const SanityValue* value, bool isZero)
 bool ByteCodeSanity::checkEscapeFrame(const SanityValue* value)
 {
     SWAG_ASSERT(value->reg.u32 < UINT32_MAX);
-    if (!mustEmitSafety(SAFETY_MEMORY))
+    if (!mustEmitSafety(SafetyWhat::Memory))
         return true;
 
     const auto err = raiseError(STATE()->ip, toErr(Saf0032), value);
@@ -164,7 +164,7 @@ bool ByteCodeSanity::checkNotNull(const SanityValue* value)
 {
     if (!value->isZero())
         return true;
-    if (!mustEmitSafety(SAFETY_NULL))
+    if (!mustEmitSafety(SafetyWhat::Null))
         return true;
 
     const auto err = raiseError(STATE()->ip, toErr(Saf0018), value);
@@ -178,7 +178,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
     const auto ip = STATE()->ip;
     if (ip->flags.has(BCI_NOT_NULL))
         return true;
-    if (!mustEmitSafety(SAFETY_NULL))
+    if (!mustEmitSafety(SafetyWhat::Null))
         return true;
 
     SanityValue* ra = nullptr;
@@ -203,7 +203,7 @@ bool ByteCodeSanity::checkNotNullReturn(uint32_t reg)
 
 bool ByteCodeSanity::checkNotNullArguments(VectorNative<uint32_t> pushParams, const Utf8& intrinsic)
 {
-    if (!mustEmitSafety(SAFETY_NULL))
+    if (!mustEmitSafety(SafetyWhat::Null))
         return true;
 
     const auto        ip       = STATE()->ip;

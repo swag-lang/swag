@@ -1,6 +1,6 @@
 #global testerror "Err0530"
 
-#[Swag.Safety(.All, "", true)]
+#[Swag.Safety(.All, .All, true)]
 #test
 {
     var x: any = 1.0

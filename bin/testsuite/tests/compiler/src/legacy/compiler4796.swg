@@ -1,5 +1,5 @@
 #global testerror "Saf0026"
-#[Swag.Safety(.All, "", true), Swag.Optimize("", false)]
+#[Swag.Safety(.All, .All, true), Swag.Optimize("", false)]
 #test
 {
     let x = -255'f32

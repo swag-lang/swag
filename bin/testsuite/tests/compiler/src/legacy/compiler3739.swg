@@ -1,7 +1,7 @@
 //#global testerror
 
 //#[Swag.PrintBc, Swag.Optimize("", false)]
-#[Swag.Safety(.All, "", false)]
+#[Swag.Safety(.All, .All, false)]
 #test
 {
     let x = 1

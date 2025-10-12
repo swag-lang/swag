@@ -7,7 +7,7 @@
 #global namespace Hash
 using Swag
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func murmur3(h: u32)->u32
 {
     var key = h ^ (h >> 16)
@@ -18,7 +18,7 @@ public func murmur3(h: u32)->u32
     return key
 }
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func murmur3(h: u64)->u64
 {
     var key = h ^ (h >> 33)
@@ -29,7 +29,7 @@ public func murmur3(h: u64)->u64
     return key
 }
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func murmur3(a, b: u32)->u32
 {
     var na = a * 0xcc9e2d51
@@ -39,7 +39,7 @@ public func murmur3(a, b: u32)->u32
     return nb + 0xe6546b64
 }
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func murmur3(a, b: u64)->u64
 {
     const K = 0x9ddfea08eb382d69
@@ -50,7 +50,7 @@ public func murmur3(a, b: u64)->u64
     return nb * K
 }
 
-#[Safety(.All, "", false), Overload]
+#[Safety(.All, .All, false), Overload]
 public func murmur3(key: const [*] u8, len: u64, seed: u64)->u64
 {
     const m = 0xc6a4a7935bd1e995'u64

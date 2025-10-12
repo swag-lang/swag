@@ -1,6 +1,6 @@
 #global testerror "Saf0014"
 
-#[Swag.Safety(.All, "math", true)]
+#[Swag.Safety(.All, .Math, true)]
 func toto(y: f32)
 {
     let z = @sqrt(y)

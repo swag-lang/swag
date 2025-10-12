@@ -813,7 +813,6 @@ void initErrors()
     SWAG_ERROR(Err0695, "[[\"%s\"]] not valid [[#[Swag.ExportType]]]                                                            $ hint: use [[\"methods\"]] or [[\"nozero\"]]");
     SWAG_ERROR(Err0696, "[[\"%s\"]] is not a valid [[#[Swag.Match]]] value                                                      $ hint: use [[\"where\"]] or [[\"me\"]]");
     SWAG_ERROR(Err0697, "[[\"%s\"]] is not a valid [[#[Swag.Optim]]] value                                                      $ hint: use [[\"bytecode\"]] or [[\"backend\"]]");
-    SWAG_ERROR(Err0698, "[[\"%s\"]] is not a recognized safety option                                                           $ hint: use one of [[\"boundcheck|overflow|math|switch|unreachable|dyncast|bool|nan|null\"]]");
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0701, "tuple has [[%u]] fields, but [[%u]] variables were provided                                            $ ");
@@ -905,6 +904,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0698, nullptr);
     SWAG_ERROR(Err0167, nullptr);
     SWAG_ERROR(Err0421, nullptr);
     SWAG_ERROR(Err0309, nullptr);

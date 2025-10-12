@@ -5,6 +5,6 @@
 #test
 {
     var ptr: func()
-    #[Swag.Safety(.All, "", true)]
+    #[Swag.Safety(.All, .All, true)]
     ptr()
 }

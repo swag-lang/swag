@@ -1,6 +1,6 @@
 using Swag
 
-#[ConstExpr, Inline, Safety(.All, "overflow", false), Overload]
+#[ConstExpr, Inline, Safety(.All, .Overflow, false), Overload]
 func hasZeroByte(v: u32)->bool
 {
     return cast(bool) ((v - 0x01010101) & ~v & 0x80808080)

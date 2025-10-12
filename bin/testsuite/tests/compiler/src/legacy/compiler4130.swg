@@ -2,7 +2,7 @@
 #assert(#run @compiler.getBuildCfg().byteCodeOptimizeLevel >= 0
 )
 
-#[Swag.Safety(.All, "math", true)]
+#[Swag.Safety(.All, .Math, true)]
 #test
 {
     const y = -128's8
