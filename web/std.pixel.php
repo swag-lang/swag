@@ -166,6 +166,10 @@
 <ul>
 <li><a href="#Pixel_ImageStatistics_HaarFeatures">HaarFeatures</a></li>
 </ul>
+<h4>image/transform</h4>
+<ul>
+<li><a href="#Pixel_Image_SmartCropSearchOpts">SmartCropSearchOpts</a></li>
+</ul>
 <h4>painter</h4>
 <ul>
 <li><a href="#Pixel_ColorMask">ColorMask</a></li>
@@ -336,9 +340,11 @@
 <li><a href="#Pixel_Image_create">Image.create</a></li>
 <li><a href="#Pixel_Image_freeWorkingBuffer">Image.freeWorkingBuffer</a></li>
 <li><a href="#Pixel_Image_from">Image.from</a></li>
+<li><a href="#Pixel_Image_getAspectRatio">Image.getAspectRatio</a></li>
 <li><a href="#Pixel_Image_getPixelColor">Image.getPixelColor</a></li>
 <li><a href="#Pixel_Image_getPixelColorDirect">Image.getPixelColorDirect</a></li>
 <li><a href="#Pixel_Image_init">Image.init</a></li>
+<li><a href="#Pixel_Image_isSquare">Image.isSquare</a></li>
 <li><a href="#Pixel_Image_isValid">Image.isValid</a></li>
 <li><a href="#Pixel_Image_opDrop">Image.opDrop</a></li>
 <li><a href="#Pixel_Image_opPostCopy">Image.opPostCopy</a></li>
@@ -423,13 +429,16 @@
 <h4>image/transform</h4>
 <ul>
 <li><a href="#Pixel_Image_crop">Image.crop</a></li>
+<li><a href="#Pixel_Image_evaluateCropScore">Image.evaluateCropScore</a></li>
 <li><a href="#Pixel_Image_expand">Image.expand</a></li>
+<li><a href="#Pixel_Image_fitToRect">Image.fitToRect</a></li>
 <li><a href="#Pixel_Image_flip">Image.flip</a></li>
 <li><a href="#Pixel_Image_halfSize">Image.halfSize</a></li>
 <li><a href="#Pixel_Image_mirror">Image.mirror</a></li>
 <li><a href="#Pixel_Image_mix">Image.mix</a></li>
 <li><a href="#Pixel_Image_resize">Image.resize</a></li>
 <li><a href="#Pixel_Image_setPixelFormat">Image.setPixelFormat</a></li>
+<li><a href="#Pixel_Image_smartCrop">Image.smartCrop</a></li>
 <li><a href="#Pixel_Image_toCrop">Image.toCrop</a></li>
 <li><a href="#Pixel_Image_toExpand">Image.toExpand</a></li>
 <li><a href="#Pixel_Image_toFlip">Image.toFlip</a></li>
@@ -618,22 +627,27 @@
 <li><a href="#Pixel_Color_add">Color.add</a></li>
 <li><a href="#Pixel_Color_adjustBrightness">Color.adjustBrightness</a></li>
 <li><a href="#Pixel_Color_adjustSaturation">Color.adjustSaturation</a></li>
+<li><a href="#Pixel_Color_ensureContrast">Color.ensureContrast</a></li>
 <li><a href="#Pixel_Color_fromAbgr">Color.fromAbgr</a></li>
 <li><a href="#Pixel_Color_fromArgb">Color.fromArgb</a></li>
 <li><a href="#Pixel_Color_fromArgbf">Color.fromArgbf</a></li>
 <li><a href="#Pixel_Color_fromHsl">Color.fromHsl</a></li>
+<li><a href="#Pixel_Color_fromLinear">Color.fromLinear</a></li>
 <li><a href="#Pixel_Color_fromRgb">Color.fromRgb</a></li>
 <li><a href="#Pixel_Color_fromRgbf">Color.fromRgbf</a></li>
 <li><a href="#Pixel_Color_fromVector4">Color.fromVector4</a></li>
+<li><a href="#Pixel_Color_generateDistinctColors">Color.generateDistinctColors</a></li>
 <li><a href="#Pixel_Color_getBlend">Color.getBlend</a></li>
 <li><a href="#Pixel_Color_getBlendKeepAlpha">Color.getBlendKeepAlpha</a></li>
 <li><a href="#Pixel_Color_getComplementary">Color.getComplementary</a></li>
+<li><a href="#Pixel_Color_getContrastRatio">Color.getContrastRatio</a></li>
 <li><a href="#Pixel_Color_getContrasting">Color.getContrasting</a></li>
 <li><a href="#Pixel_Color_getDarker">Color.getDarker</a></li>
 <li><a href="#Pixel_Color_getDistanceRgb">Color.getDistanceRgb</a></li>
 <li><a href="#Pixel_Color_getGrayScalef">Color.getGrayScalef</a></li>
 <li><a href="#Pixel_Color_getGrayscale">Color.getGrayscale</a></li>
 <li><a href="#Pixel_Color_getLighter">Color.getLighter</a></li>
+<li><a href="#Pixel_Color_getRelativeLuminance">Color.getRelativeLuminance</a></li>
 <li><a href="#Pixel_Color_isDark">Color.isDark</a></li>
 <li><a href="#Pixel_Color_isLight">Color.isLight</a></li>
 <li><a href="#Pixel_Color_isOpaque">Color.isOpaque</a></li>
@@ -648,6 +662,7 @@
 <li><a href="#Pixel_Color_setRgbf">Color.setRgbf</a></li>
 <li><a href="#Pixel_Color_toArgbf">Color.toArgbf</a></li>
 <li><a href="#Pixel_Color_toHsl">Color.toHsl</a></li>
+<li><a href="#Pixel_Color_toLinear">Color.toLinear</a></li>
 <li><a href="#Pixel_Color_toRgbf">Color.toRgbf</a></li>
 <li><a href="#Pixel_Color_toVector4">Color.toVector4</a></li>
 <li><a href="#Pixel_Color_withAlpha">Color.withAlpha</a></li>
@@ -2051,6 +2066,10 @@
 <td>Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation). </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_ensureContrast">ensureContrast</a></span></td>
+<td>Returns a new color adjusted so that its contrast ratio against <span class="code-inline">target</span> meets or exceeds the given <span class="code-inline">requiredContrast</span> (WCAG-compatible). </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromAbgr">fromAbgr</a></span></td>
 <td>Create a new Color from u32 ABGR value (reversed byte order). </td>
 </tr>
@@ -2079,6 +2098,10 @@
 <td>Create a new Color from HSL values (hue, saturation, lightness). </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromLinear">fromLinear</a></span></td>
+<td>Create a new Color from a linear-light Math.Vector4. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_fromRgb">fromRgb</a></span></td>
 <td>Create a new Color with specified RGB values and opaque alpha. </td>
 </tr>
@@ -2091,6 +2114,10 @@
 <td>Create a new Color from Math.Vector4 (w=alpha, x=red, y=green, z=blue). </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_generateDistinctColors">generateDistinctColors</a></span></td>
+<td>Generates N visually distinct colors. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getBlend">getBlend</a></span></td>
 <td>Blend two colors using linear interpolation (including alpha). </td>
 </tr>
@@ -2101,6 +2128,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getComplementary">getComplementary</a></span></td>
 <td>Get complementary color (opposite on color wheel). </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getContrastRatio">getContrastRatio</a></span></td>
+<td>Calculates contrast ratio between this color and another. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getContrasting">getContrasting</a></span></td>
@@ -2125,6 +2156,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_getLighter">getLighter</a></span></td>
 <td>Returns a lighter version of the color by blending with white. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_getRelativeLuminance">getRelativeLuminance</a></span></td>
+<td>Calculate the relative luminance (Y) of the color in linear light. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_isDark">isDark</a></span></td>
@@ -2179,6 +2214,10 @@
 <td>Convert color to HSL values (hue, saturation, lightness in range [0, 1]). </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Color_toLinear">toLinear</a></span></td>
+<td>Convert the color to a linear-light Math.Vector4. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Color_toRgbf">toRgbf</a></span></td>
 <td>Retrieve RGB components as floating point values between 0 and 1. </td>
 </tr>
@@ -2229,7 +2268,7 @@
 <span id="Pixel_Color_IPokeValue_poke"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">IPokeValue.</span><span class="api-item-title-strong">poke</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L490" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L626" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2243,7 +2282,7 @@
 <span id="Pixel_Color_add"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">add</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L474" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L582" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2256,7 +2295,7 @@
 <span id="Pixel_Color_adjustBrightness"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">adjustBrightness</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L415" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L479" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2269,12 +2308,33 @@
 <span id="Pixel_Color_adjustSaturation"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">adjustSaturation</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L404" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L468" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Adjust saturation (-1.0 = grayscale, 0.0 = no change, 1.0 = full saturation). </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">adjustSaturation</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, factor: <span class="STpe">f32</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Color_ensureContrast"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">ensureContrast</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L501" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns a new color adjusted so that its contrast ratio against <span class="code-inline">target</span> meets or exceeds the given <span class="code-inline">requiredContrast</span> (WCAG-compatible). </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ensureContrast</span>(<span class="STpe">me</span>, target: <span class="SCst"><a href="#Pixel_Color">Color</a></span>, requiredContrast: <span class="STpe">f32</span> = <span class="SNum">4.5</span>, step: <span class="STpe">f32</span> = <span class="SNum">0.02</span>, maxSteps: <span class="STpe">s32</span> = <span class="SNum">64</span>)</span></div>
+<p>The function iteratively darkens or lightens the color depending on which direction increases contrast most effectively. </p>
+<ul>
+<li>Parameters:</li>
+<li>target: The color to contrast against (e.g., foreground or background).</li>
+<li>requiredContrast: The minimum contrast ratio (default = 4.5 for normal text).</li>
+<li>step: Brightness adjustment per iteration. Positive values move toward lighter,</li>
+</ul>
+<p>negative toward darker; the function automatically picks direction. - maxSteps: Maximum number of iterations (safety cap). - Returns: A new color meeting or exceeding the required contrast ratio. </p>
 <p>
 <table class="api-item">
 <tr>
@@ -2337,6 +2397,20 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Color_fromLinear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromLinear</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L343" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Create a new Color from a linear-light Math.Vector4. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fromLinear</span>(vec: <span class="SCst">Math</span>.<span class="SCst">Vector4</span>)-&gt;<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span></span></div>
+<p>Components are expected to be normalized in [0, 1]. Performs gamma correction (linear → sRGB) on the RGB channels. Useful for reconstructing an 8-bit Color after doing math in linear space. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Color_fromRgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">fromRgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2376,10 +2450,24 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Color_generateDistinctColors"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">generateDistinctColors</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L595" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Generates N visually distinct colors. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">generateDistinctColors</span>(n: <span class="STpe">u32</span>, startHue: <span class="STpe">f32</span> = <span class="SNum">0.113</span>, lum: <span class="STpe">f32</span> = <span class="SNum">0.44</span>, sat: <span class="STpe">f32</span> = <span class="SNum">0.68</span>)-&gt;<span class="SCst">Core</span>.<span class="SFct">Array</span>'(<span class="SCst"></span><span class="SCst"><a href="#Pixel_Color">Color</a></span>)</span></div>
+<p>Uses golden-angle hue spacing to ensure that each color is clearly separated from the others, with slight lightness variation for good contrast against white text. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Color_getBlend"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getBlend</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L331" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L386" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2392,7 +2480,7 @@
 <span id="Pixel_Color_getBlendKeepAlpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getBlendKeepAlpha</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L319" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L374" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2405,7 +2493,7 @@
 <span id="Pixel_Color_getComplementary"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getComplementary</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L455" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L563" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2415,10 +2503,24 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Color_getContrastRatio"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getContrastRatio</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L459" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Calculates contrast ratio between this color and another. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getContrastRatio</span>(<span class="SKwd">const</span> <span class="STpe">me</span>, against: <span class="SCst"><a href="#Pixel_Color">Color</a></span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Uses the standard WCAG contrast formula: (l1 + 0.05) / (l2 + 0.05) </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Color_getContrasting"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getContrasting</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L382" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L437" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2431,7 +2533,7 @@
 <span id="Pixel_Color_getDarker"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getDarker</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L343" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L398" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2444,7 +2546,7 @@
 <span id="Pixel_Color_getDistanceRgb"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getDistanceRgb</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L356" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L411" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2457,7 +2559,7 @@
 <span id="Pixel_Color_getGrayScalef"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getGrayScalef</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L389" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L444" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2470,7 +2572,7 @@
 <span id="Pixel_Color_getGrayscale"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getGrayscale</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L396" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L451" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2483,7 +2585,7 @@
 <span id="Pixel_Color_getLighter"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getLighter</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L350" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L405" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2493,10 +2595,24 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Color_getRelativeLuminance"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">getRelativeLuminance</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L366" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Calculate the relative luminance (Y) of the color in linear light. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getRelativeLuminance</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
+<p>Uses the linearized RGB values from toLinear() and BT.709 coefficients (WCAG 2.x). Returns a scalar in [0, 1] representing perceived brightness. Formula: Y = 0.2126 * R_lin + 0.7152 * G_lin + 0.0722 * B_lin where R_lin, G_lin, B_lin are the linearized channels. #[Inline, ConstExpr] </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Color_isDark"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isDark</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L368" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L423" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2509,7 +2625,7 @@
 <span id="Pixel_Color_isLight"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">isLight</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L430" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2535,7 +2651,7 @@
 <span id="Pixel_Color_multiply"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">multiply</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L462" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L570" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2582,7 +2698,7 @@
 <span id="Pixel_Color_rotateHue"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">rotateHue</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L426" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L534" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2688,6 +2804,20 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Color_toLinear"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toLinear</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L322" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Convert the color to a linear-light Math.Vector4. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">toLinear</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="SCst">Core</span>.<span class="SCst">Math</span>.<span class="SCst">Vector4</span></span></div>
+<p>Components are normalized to [0, 1], with gamma-correct sRGB → linear conversion applied. Useful for rendering, lighting, and blending operations where linear color space is required instead of gamma-encoded sRGB. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Color_toRgbf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">toRgbf</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -2717,7 +2847,7 @@
 <span id="Pixel_Color_withAlpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">withAlpha</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L441" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L549" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -2730,7 +2860,7 @@
 <span id="Pixel_Color_withAlphaf"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Color.</span><span class="api-item-title-strong">withAlphaf</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L448" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\types\color.swg#L556" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -4068,6 +4198,10 @@
 <td>Decode the given image buffer. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_evaluateCropScore">evaluateCropScore</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_expand">expand</a></span></td>
 <td>Crop image. </td>
 </tr>
@@ -4092,6 +4226,10 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_fitToRect">fitToRect</a></span></td>
+<td>Fits the image to fill the target rectangle while maintaining aspect ratio. </td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_flip">flip</a></span></td>
 <td>Flip image vertically. </td>
 </tr>
@@ -4110,6 +4248,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_gamma">gamma</a></span></td>
 <td>Change the gamma. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_getAspectRatio">getAspectRatio</a></span></td>
+<td>Returns the image aspect ratio. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_getPixelColor">getPixelColor</a></span></td>
@@ -4134,6 +4276,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_invert">invert</a></span></td>
 <td>Invert colors. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_isSquare">isSquare</a></span></td>
+<td>Returns true if the image is square. </td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_isValid">isValid</a></span></td>
@@ -4182,6 +4328,10 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_setPixelFormat">setPixelFormat</a></span></td>
 <td>Change image pixel format. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Image_smartCrop">smartCrop</a></span></td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Pixel_Image_toApplyKernel">toApplyKernel</a></span></td>
@@ -4566,6 +4716,70 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Image_SmartCropSearchOpts"><span class="api-item-title-kind">struct</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">SmartCropSearchOpts</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\smartcrop.swg#L774" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Smart crop search parameters. </p>
+<table class="table-enumeration">
+<tr>
+<td>minCoverage</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>blurRadius</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>strideFrac</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>thirdsWeight</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>centerWeight</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>shrinkPrior</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>edgePenalty</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>faceWeight</td>
+<td class="code-type"><span class="STpe">f32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>maxSearchSteps</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+<tr>
+<td>maxSize</td>
+<td class="code-type"><span class="STpe">s32</span></td>
+<td></td>
+</tr>
+</table>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Image_TurnAngle"><span class="api-item-title-kind">enum</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">TurnAngle</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -4803,6 +5017,18 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Image_evaluateCropScore"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">evaluateCropScore</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\smartcrop.swg#L820" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">evaluateCropScore</span>(<span class="STpe">me</span>, rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, opts: <span class="SCst"><a href="#Pixel_Image_SmartCropSearchOpts">SmartCropSearchOpts</a></span> = {})-&gt;<span class="STpe">f32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Image_expand"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">expand</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -4880,6 +5106,20 @@
 <table class="api-item">
 <tr>
 <td class="api-item">
+<span id="Pixel_Image_fitToRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">fitToRect</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\fittorect.swg#L8" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Fits the image to fill the target rectangle while maintaining aspect ratio. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fitToRect</span>(<span class="STpe">me</span>, targetRect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>)</span></div>
+<p>The image is scaled to cover the entire target area, then cropped to exact dimensions. Uses center cropping to preserve the most important part of the image. </p>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
 <span id="Pixel_Image_flip"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">flip</span></span>
 </td>
 <td class="api-item-title-src-ref">
@@ -4930,6 +5170,19 @@
 </p>
 <p>Change the gamma. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">gamma</span>(<span class="STpe">me</span>, level: <span class="STpe">f32</span> = <span class="SNum">2.2</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_getAspectRatio"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">getAspectRatio</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L304" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns the image aspect ratio. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">getAspectRatio</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">f32</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5008,6 +5261,19 @@
 </p>
 <p>Invert colors. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">invert</span>(<span class="STpe">me</span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_isSquare"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">isSquare</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\image.swg#L310" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Returns true if the image is square. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">isSquare</span>(<span class="SKwd">const</span> <span class="STpe">me</span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -5201,6 +5467,18 @@
 </p>
 <p>Change image pixel format. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">setPixelFormat</span>(<span class="STpe">me</span>, newPf: <span class="SCst"><a href="#Pixel_PixelFormat">PixelFormat</a></span>)</span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Pixel_Image_smartCrop"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Image.</span><span class="api-item-title-strong">smartCrop</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\image\transform\smartcrop.swg#L857" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">smartCrop</span>(<span class="STpe">me</span>, rect: <span class="SCst">Math</span>.<span class="SCst">Rectangle</span>, opts: <span class="SCst"><a href="#Pixel_Image_SmartCropSearchOpts">SmartCropSearchOpts</a></span> = {})</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -6981,7 +7259,11 @@
 <td>Set the paint rotation. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
+<td>Set the paint scale. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_Painter_scaleTransform">scaleTransform</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Set the paint scale. </td>
 </tr>
 <tr>
@@ -7101,7 +7383,7 @@
 <span id="Pixel_Painter_bindRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">bindRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L779" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L791" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7351,7 +7633,7 @@
 <span id="Pixel_Painter_endClippingRegion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">endClippingRegion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L734" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L746" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7460,7 +7742,7 @@
 <span id="Pixel_Painter_getClippingRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">getClippingRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L706" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L718" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7511,7 +7793,7 @@
 <span id="Pixel_Painter_getTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">getTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L622" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L634" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7524,7 +7806,7 @@
 <span id="Pixel_Painter_isEmptyClippingRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">isEmptyClippingRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L714" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L726" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7565,7 +7847,7 @@
 <span id="Pixel_Painter_popClippingRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">popClippingRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L692" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L704" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7591,7 +7873,7 @@
 <span id="Pixel_Painter_popTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">popTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L601" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L613" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7604,7 +7886,7 @@
 <span id="Pixel_Painter_pushClippingRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">pushClippingRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L671" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L683" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7617,7 +7899,7 @@
 <span id="Pixel_Painter_pushClippingSurfaceRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">pushClippingSurfaceRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L665" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L677" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7643,7 +7925,7 @@
 <span id="Pixel_Painter_pushTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">pushTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L595" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L607" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7656,7 +7938,7 @@
 <span id="Pixel_Painter_releaseRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">releaseRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L808" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L820" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7681,7 +7963,7 @@
 <span id="Pixel_Painter_resetClippingRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">resetClippingRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L654" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L666" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7694,7 +7976,7 @@
 <span id="Pixel_Painter_resetClippingRegion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">resetClippingRegion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L740" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L752" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7720,7 +8002,7 @@
 <span id="Pixel_Painter_resetTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">resetTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L607" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L619" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7761,12 +8043,13 @@
 <span id="Pixel_Painter_scaleTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">scaleTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L585" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L597" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Set the paint scale. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)
+<span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="STpe">me</span>, x: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -7787,7 +8070,7 @@
 <span id="Pixel_Painter_setBlendingMode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setBlendingMode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L746" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L758" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7800,7 +8083,7 @@
 <span id="Pixel_Painter_setClippingRect"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setClippingRect</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L643" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L655" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7814,7 +8097,7 @@
 <span id="Pixel_Painter_setClippingRegionMode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setClippingRegionMode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L727" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L739" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7827,7 +8110,7 @@
 <span id="Pixel_Painter_setColorMask"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setColorMask</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L764" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L776" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7841,7 +8124,7 @@
 <span id="Pixel_Painter_setColorMaskAlpha"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setColorMaskAlpha</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L776" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L788" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7853,7 +8136,7 @@
 <span id="Pixel_Painter_setColorMaskColor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setColorMaskColor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L774" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L786" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7865,7 +8148,7 @@
 <span id="Pixel_Painter_setColorMaskFull"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setColorMaskFull</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L775" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L787" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7877,7 +8160,7 @@
 <span id="Pixel_Painter_setInterpolationMode"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setInterpolationMode</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L629" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L641" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7916,7 +8199,7 @@
 <span id="Pixel_Painter_setShader"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setShader</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L817" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L829" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7929,7 +8212,7 @@
 <span id="Pixel_Painter_setShaderParam"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setShaderParam</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L835" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L847" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7956,7 +8239,7 @@
 <span id="Pixel_Painter_setTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">setTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L614" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L626" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7969,7 +8252,7 @@
 <span id="Pixel_Painter_startClippingRegion"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">startClippingRegion</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L720" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L732" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -7995,7 +8278,7 @@
 <span id="Pixel_Painter_unbindRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Painter.</span><span class="api-item-title-strong">unbindRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L793" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\painter\painter.swg#L805" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9085,7 +9368,11 @@
 <td>Rotate the world transform. </td>
 </tr>
 <tr>
-<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></span></td>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>)</span></td>
+<td>Scale the world transform. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Pixel_RenderOgl_scaleTransform">scaleTransform</a></span><span class="SCde">(<span class="STpe">me</span>, <span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
 <td>Scale the world transform. </td>
 </tr>
 <tr>
@@ -9131,7 +9418,7 @@
 <span id="Pixel_RenderOgl_addImage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">addImage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L482" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L486" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9159,7 +9446,7 @@
 <span id="Pixel_RenderOgl_bindRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">bindRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L375" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L379" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9185,7 +9472,7 @@
 <span id="Pixel_RenderOgl_computeMatrices"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">computeMatrices</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L608" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L621" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9197,7 +9484,7 @@
 <span id="Pixel_RenderOgl_createRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">createRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L420" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L424" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9210,7 +9497,7 @@
 <span id="Pixel_RenderOgl_createShader"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">createShader</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L932" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L947" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9223,7 +9510,7 @@
 <span id="Pixel_RenderOgl_deleteRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">deleteRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L454" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L458" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9236,7 +9523,7 @@
 <span id="Pixel_RenderOgl_draw"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">draw</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L852" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L865" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9262,7 +9549,7 @@
 <span id="Pixel_RenderOgl_getRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">getRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L897" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L912" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9288,7 +9575,7 @@
 <span id="Pixel_RenderOgl_getTexturePixels"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">getTexturePixels</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L549" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L553" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9326,7 +9613,7 @@
 <span id="Pixel_RenderOgl_pixelFormatToNative"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">pixelFormatToNative</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L519" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L523" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9338,7 +9625,7 @@
 <span id="Pixel_RenderOgl_releaseRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">releaseRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L926" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L941" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9351,7 +9638,7 @@
 <span id="Pixel_RenderOgl_removeTexture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">removeTexture</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L563" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L567" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9377,7 +9664,7 @@
 <span id="Pixel_RenderOgl_resetTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">resetTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L602" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L615" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9390,7 +9677,7 @@
 <span id="Pixel_RenderOgl_rotateTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">rotateTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L580" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L584" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9404,12 +9691,13 @@
 <span id="Pixel_RenderOgl_scaleTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">scaleTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L595" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L608" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <p>Scale the world transform. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)</span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="STpe">me</span>, x, y: <span class="STpe">f32</span>)
+<span class="SKwd">func</span> <span class="SFct">scaleTransform</span>(<span class="STpe">me</span>, x: <span class="STpe">f32</span>)</span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -9443,7 +9731,7 @@
 <span id="Pixel_RenderOgl_setShader"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">setShader</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L887" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L902" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9456,7 +9744,7 @@
 <span id="Pixel_RenderOgl_translateTransform"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">translateTransform</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L572" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L576" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9469,7 +9757,7 @@
 <span id="Pixel_RenderOgl_unbindRenderTarget"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">unbindRenderTarget</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L402" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L406" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9482,7 +9770,7 @@
 <span id="Pixel_RenderOgl_unbindRenderTargetToImage"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">unbindRenderTargetToImage</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L392" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L396" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -9495,7 +9783,7 @@
 <span id="Pixel_RenderOgl_updateTexture"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">RenderOgl.</span><span class="api-item-title-strong">updateTexture</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L539" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/pixel\src\render\ogl\renderogl.swg#L543" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -10820,7 +11108,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
+Generated on 12-10-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

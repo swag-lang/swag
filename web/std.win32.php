@@ -12001,7 +12001,7 @@
 <p>Throw a <a href="swag.runtime.php#Swag_SystemError">Swag.SystemError</a>. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">throwWinError</span>(errorMessageID: <span class="STpe">u32</span>) <span class="SKwd">throw</span></span></div>
 <div class="swag-watermark">
-Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
+Generated on 12-10-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

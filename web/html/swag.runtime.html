@@ -221,7 +221,7 @@
 <li><a href="#Swag_F32_MantBits">F32.MantBits</a></li>
 <li><a href="#Swag_F32_Max">F32.Max</a></li>
 <li><a href="#Swag_F32_Min">F32.Min</a></li>
-<li><a href="#Swag_F32_Nan">F32.Nan</a></li>
+<li><a href="#Swag_F32_NaN">F32.NaN</a></li>
 <li><a href="#Swag_F32_NegInf">F32.NegInf</a></li>
 <li><a href="#Swag_F64_Bias">F64.Bias</a></li>
 <li><a href="#Swag_F64_ExpBits">F64.ExpBits</a></li>
@@ -229,7 +229,7 @@
 <li><a href="#Swag_F64_MantBits">F64.MantBits</a></li>
 <li><a href="#Swag_F64_Max">F64.Max</a></li>
 <li><a href="#Swag_F64_Min">F64.Min</a></li>
-<li><a href="#Swag_F64_Nan">F64.Nan</a></li>
+<li><a href="#Swag_F64_NaN">F64.NaN</a></li>
 <li><a href="#Swag_F64_NegInf">F64.NegInf</a></li>
 <li><a href="#Swag_MaxErrors">MaxErrors</a></li>
 <li><a href="#Swag_MaxTraces">MaxTraces</a></li>
@@ -242,15 +242,15 @@
 <li><a href="#Swag_S8_Max">S8.Max</a></li>
 <li><a href="#Swag_S8_Min">S8.Min</a></li>
 <li><a href="#Swag_SafetyAll">SafetyAll</a></li>
-<li><a href="#Swag_SafetyAny">SafetyAny</a></li>
 <li><a href="#Swag_SafetyBool">SafetyBool</a></li>
 <li><a href="#Swag_SafetyBoundCheck">SafetyBoundCheck</a></li>
+<li><a href="#Swag_SafetyDynCast">SafetyDynCast</a></li>
 <li><a href="#Swag_SafetyMath">SafetyMath</a></li>
+<li><a href="#Swag_SafetyMemory">SafetyMemory</a></li>
 <li><a href="#Swag_SafetyNaN">SafetyNaN</a></li>
 <li><a href="#Swag_SafetyNone">SafetyNone</a></li>
 <li><a href="#Swag_SafetyNullCheck">SafetyNullCheck</a></li>
 <li><a href="#Swag_SafetyOverflow">SafetyOverflow</a></li>
-<li><a href="#Swag_SafetySanity">SafetySanity</a></li>
 <li><a href="#Swag_SafetySwitch">SafetySwitch</a></li>
 <li><a href="#Swag_SafetyUnreachable">SafetyUnreachable</a></li>
 <li><a href="#Swag_U16_Max">U16.Max</a></li>
@@ -454,7 +454,7 @@
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F32_Nan">Nan</td>
+<td id="Swag_F32_NaN">NaN</td>
 <td class="code-type"><span class="STpe">f32</span></td>
 <td></td>
 </tr>
@@ -494,7 +494,7 @@
 <td></td>
 </tr>
 <tr>
-<td id="Swag_F64_Nan">Nan</td>
+<td id="Swag_F64_NaN">NaN</td>
 <td class="code-type"><span class="STpe">f64</span></td>
 <td></td>
 </tr>
@@ -559,11 +559,6 @@
 <td></td>
 </tr>
 <tr>
-<td id="Swag_SafetyAny">SafetyAny</td>
-<td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
-</tr>
-<tr>
 <td id="Swag_SafetyBool">SafetyBool</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
@@ -574,7 +569,17 @@
 <td></td>
 </tr>
 <tr>
+<td id="Swag_SafetyDynCast">SafetyDynCast</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
 <td id="Swag_SafetyMath">SafetyMath</td>
+<td class="code-type"><span class="STpe">u32</span></td>
+<td></td>
+</tr>
+<tr>
+<td id="Swag_SafetyMemory">SafetyMemory</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -595,11 +600,6 @@
 </tr>
 <tr>
 <td id="Swag_SafetyOverflow">SafetyOverflow</td>
-<td class="code-type"><span class="STpe">u32</span></td>
-<td></td>
-</tr>
-<tr>
-<td id="Swag_SafetySanity">SafetySanity</td>
 <td class="code-type"><span class="STpe">u32</span></td>
 <td></td>
 </tr>
@@ -5693,7 +5693,7 @@
 </tr>
 </table>
 <div class="swag-watermark">
-Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
+Generated on 12-10-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

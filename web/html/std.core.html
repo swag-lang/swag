@@ -944,6 +944,8 @@
 <li><a href="#Core_Math_bigEndianToNative">Math.bigEndianToNative</a></li>
 <li><a href="#Core_Math_byteswap">Math.byteswap</a></li>
 <li><a href="#Core_Math_ceil">Math.ceil</a></li>
+<li><a href="#Core_Math_ceilS32">Math.ceilS32</a></li>
+<li><a href="#Core_Math_ceilS64">Math.ceilS64</a></li>
 <li><a href="#Core_Math_clamp">Math.clamp</a></li>
 <li><a href="#Core_Math_cos">Math.cos</a></li>
 <li><a href="#Core_Math_cosh">Math.cosh</a></li>
@@ -952,6 +954,9 @@
 <li><a href="#Core_Math_exp">Math.exp</a></li>
 <li><a href="#Core_Math_exp2">Math.exp2</a></li>
 <li><a href="#Core_Math_floor">Math.floor</a></li>
+<li><a href="#Core_Math_floorS32">Math.floorS32</a></li>
+<li><a href="#Core_Math_floorS64">Math.floorS64</a></li>
+<li><a href="#Core_Math_fract">Math.fract</a></li>
 <li><a href="#Core_Math_gcd">Math.gcd</a></li>
 <li><a href="#Core_Math_hasByte">Math.hasByte</a></li>
 <li><a href="#Core_Math_hasZeroByte">Math.hasZeroByte</a></li>
@@ -987,6 +992,8 @@
 <li><a href="#Core_Math_ror">Math.ror</a></li>
 <li><a href="#Core_Math_round">Math.round</a></li>
 <li><a href="#Core_Math_roundDownToPowerOf2">Math.roundDownToPowerOf2</a></li>
+<li><a href="#Core_Math_roundS32">Math.roundS32</a></li>
+<li><a href="#Core_Math_roundS64">Math.roundS64</a></li>
 <li><a href="#Core_Math_roundUpToPowerOf2">Math.roundUpToPowerOf2</a></li>
 <li><a href="#Core_Math_saturate">Math.saturate</a></li>
 <li><a href="#Core_Math_sign">Math.sign</a></li>
@@ -1001,6 +1008,8 @@
 <li><a href="#Core_Math_toRadians">Math.toRadians</a></li>
 <li><a href="#Core_Math_trailingZeros">Math.trailingZeros</a></li>
 <li><a href="#Core_Math_trunc">Math.trunc</a></li>
+<li><a href="#Core_Math_truncS32">Math.truncS32</a></li>
+<li><a href="#Core_Math_truncS64">Math.truncS64</a></li>
 <li><a href="#Core_Math_Matrix3x3_setIdentity">Matrix3x3.setIdentity</a></li>
 <li><a href="#Core_Math_Matrix4x4_setIdentity">Matrix4x4.setIdentity</a></li>
 <li><a href="#Core_Math_NumericArray_from">NumericArray.from</a></li>
@@ -13647,6 +13656,14 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ceilS32">ceilS32</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_ceilS64">ceilS64</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_clamp">clamp</a></span></td>
 <td>Clamp a value between a lower and upper bound. </td>
 </tr>
@@ -13712,6 +13729,22 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_floor">floor</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_floorS32">floorS32</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_floorS64">floorS64</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_fract">fract</a></span><span class="SCde">(<span class="STpe">f32</span>)</span></td>
+<td>Get the fractional part. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_fract">fract</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
 <td></td>
 </tr>
 <tr>
@@ -13899,6 +13932,14 @@
 <td>Return the largest of four values. </td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_max">max</a></span><span class="SCde">(<span class="STpe">s16</span>, <span class="STpe">s16</span>)</span></td>
 <td></td>
 </tr>
@@ -13941,6 +13982,14 @@
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>, <span class="SCst">T</span>)</span></td>
 <td>Return the smallest of four values. </td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f32</span>, <span class="STpe">f32</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">f64</span>, <span class="STpe">f64</span>)</span></td>
+<td></td>
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_min">min</a></span><span class="SCde">(<span class="STpe">s16</span>, <span class="STpe">s16</span>)</span></td>
@@ -14079,6 +14128,14 @@
 <td></td>
 </tr>
 <tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_roundS32">roundS32</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_roundS64">roundS64</a></span></td>
+<td></td>
+</tr>
+<tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_roundUpToPowerOf2">roundUpToPowerOf2</a></span><span class="SCde">(<span class="STpe">u32</span>)</span></td>
 <td></td>
 </tr>
@@ -14208,6 +14265,14 @@
 </tr>
 <tr>
 <td class="code-type"><span class="SFct"><a href="#Core_Math_trunc">trunc</a></span><span class="SCde">(<span class="STpe">f64</span>)</span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_truncS32">truncS32</a></span></td>
+<td></td>
+</tr>
+<tr>
+<td class="code-type"><span class="SFct"><a href="#Core_Math_truncS64">truncS64</a></span></td>
 <td></td>
 </tr>
 </table>
@@ -19249,7 +19314,7 @@
 <span id="Core_Math_abs"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">abs</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L240" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L253" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19266,7 +19331,7 @@
 <span id="Core_Math_acos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">acos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L219" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L223" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19279,7 +19344,7 @@
 <span id="Core_Math_asin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">asin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L217" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L221" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19292,7 +19357,7 @@
 <span id="Core_Math_atan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L221" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L225" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19305,7 +19370,7 @@
 <span id="Core_Math_atan2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">atan2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L197" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L201" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19348,12 +19413,36 @@
 <span id="Core_Math_ceil"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ceil</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L233" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L237" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceil</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SFct">ceil</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_ceilS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ceilS32</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L246" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceilS32</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_ceilS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">ceilS64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L247" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">ceilS64</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19375,7 +19464,7 @@
 <span id="Core_Math_cos"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cos</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L205" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L209" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19388,7 +19477,7 @@
 <span id="Core_Math_cosh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">cosh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L212" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L216" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19432,7 +19521,7 @@
 <span id="Core_Math_exp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L243" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L261" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19445,7 +19534,7 @@
 <span id="Core_Math_exp2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">exp2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L245" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L263" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19458,12 +19547,50 @@
 <span id="Core_Math_floor"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">floor</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L231" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L235" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floor</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SFct">floor</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_floorS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">floorS32</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L244" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floorS32</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_floorS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">floorS64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L245" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">floorS64</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_fract"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">fract</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L58" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<p>Get the fractional part. </p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">fract</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">fract</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19542,7 +19669,7 @@
 <span id="Core_Math_isEqualEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isEqualEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L126" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L130" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19556,7 +19683,7 @@
 <span id="Core_Math_isFinite"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isFinite</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L137" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L141" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19573,7 +19700,7 @@
 <span id="Core_Math_isNaN"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isNaN</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L131" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L135" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19602,7 +19729,7 @@
 <span id="Core_Math_isZeroEpsilon"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">isZeroEpsilon</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L122" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L126" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19674,7 +19801,7 @@
 <span id="Core_Math_log"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L224" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L228" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19687,7 +19814,7 @@
 <span id="Core_Math_log10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L228" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L232" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19700,7 +19827,7 @@
 <span id="Core_Math_log2"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">log2</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L226" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L230" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19765,7 +19892,7 @@
 <span id="Core_Math_map"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">map</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L167" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L171" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19799,7 +19926,9 @@
 <span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
 <span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">max</span>(x, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19827,7 +19956,9 @@
 <span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">u8</span>)-&gt;<span class="STpe">u8</span>
 <span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">u16</span>)-&gt;<span class="STpe">u16</span>
 <span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
-<span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span>
+<span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
+<span class="SKwd">func</span> <span class="SFct">min</span>(x, y: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -19835,7 +19966,7 @@
 <span id="Core_Math_moveTowards"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">moveTowards</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L58" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L62" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19849,7 +19980,7 @@
 <span id="Core_Math_mulAdd"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">mulAdd</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L250" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L268" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19888,7 +20019,7 @@
 <span id="Core_Math_pow"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">pow</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L247" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L265" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19901,7 +20032,7 @@
 <span id="Core_Math_powerOf10"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">powerOf10</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L180" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L184" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19972,7 +20103,7 @@
 <span id="Core_Math_round"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">round</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L237" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L241" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -19991,6 +20122,30 @@
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">roundDownToPowerOf2</span>(x: <span class="STpe">u32</span>)-&gt;<span class="STpe">u32</span>
 <span class="SKwd">func</span> <span class="SFct">roundDownToPowerOf2</span>(x: <span class="STpe">u64</span>)-&gt;<span class="STpe">u64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_roundS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">roundS32</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L250" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">roundS32</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_roundS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">roundS64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L251" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">roundS64</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -20043,7 +20198,7 @@
 <span id="Core_Math_sin"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sin</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L203" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L207" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20056,7 +20211,7 @@
 <span id="Core_Math_sinh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sinh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L210" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L214" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20069,7 +20224,7 @@
 <span id="Core_Math_smoothDamp"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothDamp</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L78" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L82" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20083,7 +20238,7 @@
 <span id="Core_Math_smoothstep"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">smoothstep</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L154" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L158" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20097,7 +20252,7 @@
 <span id="Core_Math_sqrt"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">sqrt</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L200" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L204" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20110,7 +20265,7 @@
 <span id="Core_Math_tan"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tan</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L207" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L211" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20123,7 +20278,7 @@
 <span id="Core_Math_tanh"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">tanh</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L214" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L218" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20136,7 +20291,7 @@
 <span id="Core_Math_toDegrees"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toDegrees</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L116" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L120" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20150,7 +20305,7 @@
 <span id="Core_Math_toRadians"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">toRadians</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L117" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L121" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
@@ -20180,12 +20335,36 @@
 <span id="Core_Math_trunc"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">trunc</span></span>
 </td>
 <td class="api-item-title-src-ref">
-<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L235" class="src">[src]</a></td>
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L239" class="src">[src]</a></td>
 </tr>
 </table>
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">trunc</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">f32</span>
 <span class="SKwd">func</span> <span class="SFct">trunc</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">f64</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_truncS32"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">truncS32</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L248" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">truncS32</span>(x: <span class="STpe">f32</span>)-&gt;<span class="STpe">s32</span></span></div>
+<p>
+<table class="api-item">
+<tr>
+<td class="api-item">
+<span id="Core_Math_truncS64"><span class="api-item-title-kind">func</span> <span class="api-item-title-light">Math.</span><span class="api-item-title-strong">truncS64</span></span>
+</td>
+<td class="api-item-title-src-ref">
+<a href="https://github.com/swag-lang/swag/blob/master/bin/std/modules/core\src\math\float.swg#L249" class="src">[src]</a></td>
+</tr>
+</table>
+</p>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">truncS64</span>(x: <span class="STpe">f64</span>)-&gt;<span class="STpe">s64</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -32451,7 +32630,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return true if the string ends with <span class="code-inline">str</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endsWith</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">endsWith</span>(src: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -32464,7 +32643,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the first rune of the slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">firstRune</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">rune</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">firstRune</span>(src: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">rune</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -32601,7 +32780,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Returns the last rune of the slice. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastRune</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">rune</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">lastRune</span>(src: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>)-&gt;<span class="STpe">rune</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -32614,7 +32793,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </table>
 </p>
 <p>Return true if the string starts with <span class="code-inline">str</span>. </p>
-<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startsWith</span>(src: <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
+<div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SFct">startsWith</span>(src: <span class="SItr">#null</span> <span class="SKwd">const</span> [..] <span class="STpe">u8</span>, str: <span class="STpe">string</span>, comparisonType = <span class="SCst"><a href="#Core_Utf8_ComparisonType">ComparisonType</a></span>.<span class="SCst"><a href="#Core_Latin1">Latin1</a></span>)-&gt;<span class="STpe">bool</span></span></div>
 <p>
 <table class="api-item">
 <tr>
@@ -32749,7 +32928,7 @@ encoder.<span class="SFct">writeAll</span>(&buf, myStruct)
 </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span>(<span class="SCst">T</span>) <span class="SFct">toggle</span>(flags: &<span class="SCst">T</span>, value: <span class="SCst">T</span>)</span></div>
 <div class="swag-watermark">
-Generated on 28-09-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
+Generated on 12-10-2025 with <a href="https://swag-lang.org/index.php">swag</a> 0.45.0</div>
 </div>
 </div>
 </div>

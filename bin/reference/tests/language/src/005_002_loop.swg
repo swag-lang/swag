@@ -10,9 +10,9 @@ The 'for' expression dictates the number of iterations and is evaluated only **o
 #test
 {
     var cpt = 0
-    for 10 do  // Executes the loop 10 times
-        cpt += 1 // Increment the counter on each iteration
-    @assert(cpt == 10) // Assert that the loop executed exactly 10 times
+    for 10 do
+        cpt += 1
+    @assert(cpt == 10)
 }
 
 /**
@@ -22,12 +22,12 @@ Within a 'for', the compiler automatically provides the '@index' keyword, which 
 #test
 {
     var cpt = 0'u64
-    for 5 // Loop 5 times
+    for 5
     {
-        cpt += @index // Add the current index value to 'cpt' in each iteration
+        cpt += @index
     }
 
-    @assert(cpt == 0 + 1 + 2 + 3 + 4) // Assert that 'cpt' equals the sum of the indices
+    @assert(cpt == 0 + 1 + 2 + 3 + 4)
 }
 
 /**
@@ -39,13 +39,13 @@ Assigning a name to the 'for' index can improve code readability and clarify the
     var cpt  = 0
     var cpt1 = 0
 
-    for i in 5 // The 'for' index is named 'i'
+    for i in 5
     {
-        cpt += i // Use the named index 'i'
+        cpt += i
         cpt1 += @index // '@index' is still accessible and returns the same value as 'i'
     }
 
-    @assert(cpt == 0 + 1 + 2 + 3 + 4) // Confirm that 'cpt' equals the sum of indices
+    @assert(cpt == 0 + 1 + 2 + 3 + 4)
     @assert(cpt1 == cpt)
 }
 
@@ -55,13 +55,13 @@ The 'for' construct is versatile and can iterate over any collection type that s
 */
 #test
 {
-    var arr = [10, 20, 30, 40] // Define an array with 4 elements
-    #assert(@countof(arr) == 4) // Verify the array has 4 elements
+    var arr = [10, 20, 30, 40]
+    #assert(@countof(arr) == 4)
 
     var cpt = 0
-    for arr do  // Loop over the array's elements
-        cpt += arr[@index] // Add the current element's value to 'cpt'
-    @assert(cpt == 10 + 20 + 30 + 40) // Verify that 'cpt' equals the sum of the array elements
+    for arr do
+        cpt += arr[@index]
+    @assert(cpt == 10 + 20 + 30 + 40)
 }
 
 /**
@@ -71,10 +71,10 @@ The 'for' construct is versatile and can iterate over any collection type that s
 #test
 {
     var cpt = 0
-    for "⻘" do  // Loop over each byte in the string "⻘"
-        cpt += 1 // Increment the counter for each byte
+    for "⻘" do
+        cpt += 1
 
-    @assert(cpt == 3) // Assert that the character '⻘' consists of 3 bytes
+    @assert(cpt == 3)
 }
 
 /**
@@ -85,15 +85,14 @@ To iterate in reverse order, append the '#reverse' modifier to the 'for' stateme
 {
     var cpt = 0
 
-    // Loop in reverse order, starting from index 2 down to 0
     for #reverse 3
     {
         if cpt == 0 do
-            @assert(@index == 2) // First iteration, index should be 2
+            @assert(@index == 2)
         elif cpt == 1 do
-            @assert(@index == 1) // Second iteration, index should be 1
+            @assert(@index == 1)
         elif cpt == 2 do
-            @assert(@index == 0) // Third iteration, index should be 0
+            @assert(@index == 0)
 
         cpt += 1
     }
@@ -111,14 +110,14 @@ The 'break' keyword allows you to exit the loop before completing all iterations
 #test
 {
     var cpt = 0
-    for x in 10 // Loop 10 times with index named 'x'
+    for x in 10
     {
         if x == 5 do
-            break // Exit the loop when 'x' equals 5
+            break
         cpt += 1
     }
 
-    @assert(cpt == 5) // Confirm that the loop executed 5 times
+    @assert(cpt == 5)
 }
 
 /**
@@ -128,14 +127,14 @@ The 'continue' keyword skips the rest of the current for iteration and jumps to 
 #test
 {
     var cpt = 0
-    for x in 10 // Loop 10 times with index named 'x'
+    for x in 10
     {
         if x == 5 do
-            continue // Skip the iteration when 'x' equals 5
+            continue
         cpt += 1
     }
 
-    @assert(cpt == 9) // Confirm that the loop executed 9 times, skipping the 5th iteration
+    @assert(cpt == 9)
 }
 
 /**
@@ -154,14 +153,14 @@ The 'to' keyword defines a loop that iterates from one value to another, inclusi
 {
     var count = 0
     var sum   = 0
-    for i in -1 to 1 // Loop from -1 to 1, inclusive
+    for i in -1 to 1
     {
-        count += 1 // Count the number of iterations
-        sum += i // Sum the current index value
+        count += 1
+        sum += i
     }
 
-    @assert(sum == 0) // Verify that the sum is 0 (-1 + 0 + 1)
-    @assert(count == 3) // Confirm that the loop executed 3 times
+    @assert(sum == 0)
+    @assert(count == 3)
 }
 
 /**
@@ -171,12 +170,12 @@ The 'until' keyword enables iteration up to, but not including, the end value.
 #test
 {
     var cpt = 0
-    for i in 1 until 3 // Loop from 1 up to, but excluding, 3
+    for i in 1 until 3
     {
-        cpt += i // Add the current index value to 'cpt'
+        cpt += i
     }
 
-    @assert(cpt == 1 + 2) // Verify that 'cpt' equals the sum of 1 and 2
+    @assert(cpt == 1 + 2)
 }
 
 /**
@@ -185,15 +184,15 @@ When using ranges, you can also iterate in reverse order by adding the '#reverse
 */
 #test
 {
-    for #reverse 0 to 5 // Loop from 5 down to 0, inclusive
+    for #reverse 0 to 5
     {
     }
 
-    for #reverse -1 to 1 // Loop from 1 down to -1, inclusive
+    for #reverse -1 to 1
     {
     }
 
-    for #reverse -2 until 2 // Loop from 1 down to -2, excluding 2
+    for #reverse -2 until 2
     {
     }
 }
@@ -206,7 +205,7 @@ A 'for' without an expression but with a block of code creates an infinite loop,
 {
     for
     {
-        if @index == 4 do  // Use '@index' to break the for after 4 iterations
+        if @index == 4 do
             break
     }
 }
@@ -224,13 +223,12 @@ The 'where' clause is appended directly after the 'for' statement, applying a co
 {
     var result = 0
 
-    // Loop over the range from 0 to 9, but only process even indices.
     for i in 10 where i % 2 == 0
     {
-        result += i // Sum only even indices
+        result += i
     }
 
-    @assert(result == 0 + 2 + 4 + 6 + 8) // Verify that 'result' equals the sum of even indices
+    @assert(result == 0 + 2 + 4 + 6 + 8)
 }
 
 /**
@@ -242,13 +240,12 @@ When looping over arrays, the 'where' clause can filter elements based on their 
     var arr        = [10, 21, 30, 41, 50]
     var sumOfEvens = 0
 
-    // Loop over the array, summing only the even numbers.
     for i in arr where arr[i] % 2 == 0
     {
-        sumOfEvens += arr[i] // Add the even element values to 'sumOfEvens'
+        sumOfEvens += arr[i]
     }
 
-    @assert(sumOfEvens == 10 + 30 + 50) // Verify that 'sumOfEvens' equals the sum of even numbers
+    @assert(sumOfEvens == 10 + 30 + 50)
 }
 
 /**
@@ -260,14 +257,13 @@ The 'where' supports combining multiple logical expressions, allowing for comple
     var arr         = [10, 15, 20, 25, 30, 35]
     var filteredSum = 0
 
-    // Loop over the array, summing only even numbers greater than 15.
     for i in arr
         where arr[i] % 2 == 0 and arr[i] > 15
         {
-            filteredSum += arr[i] // Add the element values that meet the condition
+            filteredSum += arr[i]
         }
 
-    @assert(filteredSum == 20 + 30) // Verify that 'filteredSum' equals the sum of 20 and 30
+    @assert(filteredSum == 20 + 30)
 }
 
 #test
@@ -275,13 +271,12 @@ The 'where' supports combining multiple logical expressions, allowing for comple
     var arr        = [10, 25, 30, 45, 50, 65]
     var complexSum = 0
 
-    // Loop over the array, summing elements that are either even or greater than 40.
     for i in arr where arr[i] % 2 == 0 or arr[i] > 40
     {
-        complexSum += arr[i] // Add the values that meet the complex condition to 'complexSum'
+        complexSum += arr[i]
     }
 
-    @assert(complexSum == 10 + 30 + 45 + 50 + 65) // Verify that 'complexSum' equals the sum of matching values
+    @assert(complexSum == 10 + 30 + 45 + 50 + 65)
 }
 
 /**
@@ -292,13 +287,12 @@ The 'where' clause can also be applied to loops over ranges, providing precise c
 {
     var sumOfPositiveEvens = 0
 
-    // Loop over the range from -5 to 5, but process only positive even numbers.
     for i in -5 to 5 where i > 0 and i % 2 == 0
     {
-        sumOfPositiveEvens += i // Add the positive even values to 'sumOfPositiveEvens'
+        sumOfPositiveEvens += i
     }
 
-    @assert(sumOfPositiveEvens == 2 + 4) // Verify that 'sumOfPositiveEvens' equals the sum of 2 and 4
+    @assert(sumOfPositiveEvens == 2 + 4)
 }
 
 /**
@@ -310,11 +304,10 @@ You can combine the '#reverse' modifier with the 'where' clause to filter values
     var arr         = [10, 20, 30, 40, 50]
     var reversedSum = 0
 
-    // Loop through the array in reverse order, summing only even values.
     for #reverse i in arr where arr[i] % 2 == 0
     {
-        reversedSum += arr[i] // Add the even values to 'reversedSum'
+        reversedSum += arr[i]
     }
 
-    @assert(reversedSum == 50 + 40 + 30 + 20 + 10) // Verify the sum of even values in reverse
+    @assert(reversedSum == 50 + 40 + 30 + 20 + 10)
 }
