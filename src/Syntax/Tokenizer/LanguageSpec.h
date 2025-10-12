@@ -161,6 +161,7 @@ struct LanguageSpec
     Utf8 name_TargetArch;
     Utf8 name_TargetOs;
     Utf8 name_Backend;
+    Utf8 name_SafetyWhat;
 
     Utf8 name_data;
     Utf8 name_count;

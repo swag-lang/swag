@@ -1,7 +1,7 @@
 //#global testerror
 //#global skip
 //#global #[Swag.PrintBc]
-
+/*
 using Core, Core.StrConv
 
 #[Swag.ConstExpr]
@@ -17,3 +17,4 @@ func get()->String
 
 #[Swag.Safety(.All, get(), false)]
 func toto(f: bool) {}
+*/

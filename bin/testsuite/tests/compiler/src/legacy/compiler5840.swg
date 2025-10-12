@@ -1,6 +1,6 @@
 //#global skip
 #[Swag.Mixin]
-func(safetyWhat: string) safety(expr: #code bool, message: string = null, loc = #callerlocation)
+func(safetyWhat: Swag.SafetyWhat) safety(expr: #code bool, message: string = null, loc = #callerlocation)
 {
     #if #safety(safetyWhat)
     {
@@ -14,7 +14,7 @@ func(safetyWhat: string) safety(expr: #code bool, message: string = null, loc = 
 #[Swag.Mixin]
 func safetyBoundCheck(expr: #code bool, message: string = null, loc = #callerlocation)
 {
-    safety'("boundcheck")(expr, message, loc)
+    safety'(Swag.SafetyWhat.BoundCheck)(expr, message, loc)
 }
 
 #[Swag.Inline]

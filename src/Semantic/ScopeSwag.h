@@ -27,5 +27,6 @@ struct ScopeSwag
     TypeInfoEnum*   regTypeInfoTargetArch = nullptr;
     TypeInfoEnum*   regTypeInfoTargetOs   = nullptr;
     TypeInfoEnum*   regTypeInfoBackend    = nullptr;
-    TypeInfoStruct* regTypeValue         = nullptr;
+    TypeInfoEnum*   regTypeInfoSafetyWhat = nullptr;
+    TypeInfoStruct* regTypeValue          = nullptr;
 };

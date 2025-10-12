@@ -132,6 +132,7 @@ void LanguageSpec::setupNames()
     name_TargetArch           = "TargetArch";
     name_TargetOs             = "TargetOs";
     name_Backend              = "Backend";
+    name_SafetyWhat           = "SafetyWhat";
     name_Swag_CompilerMsgMask = "Swag.CompilerMsgMask";
 
     name_data      = "data";

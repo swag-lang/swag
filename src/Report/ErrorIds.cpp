@@ -679,7 +679,7 @@ void initErrors()
     SWAG_ERROR(Err0562, "[[@countof]] received [[%s]] instead of integer                                                        $ ");
     SWAG_ERROR(Err0563, "[[%s]] count received [[%s]] instead of integer                                                        $ ");
     SWAG_ERROR(Err0564, "[[@mkinterface]] third argument received [[%s]] instead of interface name                              $ ");
-    SWAG_ERROR(Err0565, "[[%s]] received [[%s]] instead of [[string]]                                                           $ ");
+    SWAG_ERROR(Err0565, "invalid [[%s]] argument, expected [[%s]], got [[%s]]                                                   $ ");
     SWAG_ERROR(Err0566, "static array cannot use [[void]] as element type                                                       $ ");
     SWAG_ERROR(Err0567, "array dimension received [[%s]] instead of integer                                                     $ ");
     SWAG_ERROR(Err0568, "array index received [[%s]] instead of integer                                                         $ ");

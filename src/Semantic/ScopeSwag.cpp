@@ -128,6 +128,11 @@ void ScopeSwag::registerType(TypeInfo* typeInfo)
         SWAG_ASSERT(!regTypeInfoBackend);
         regTypeInfoBackend = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
     }
+    else if (typeInfo->name == g_LangSpec->name_SafetyWhat)
+    {
+        SWAG_ASSERT(!regTypeInfoSafetyWhat);
+        regTypeInfoSafetyWhat = castTypeInfo<TypeInfoEnum>(typeInfo, TypeInfoKind::Enum);
+    }    
     else if (typeInfo->name == g_LangSpec->name_BuildCfg)
     {
         SWAG_ASSERT(typeInfo->sizeOf == sizeof(BuildCfg));

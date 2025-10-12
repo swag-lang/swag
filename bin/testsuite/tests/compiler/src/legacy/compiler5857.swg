@@ -3,7 +3,7 @@
 struct X { a, b, c: s32 }
 
 #[Swag.Macro, Swag.Warning("Wrn0006", Swag.WarningLevel.Disable)]
-func(what: string) safety(expr51: #code bool, message: string = null, loc = #callerlocation)
+func(what: Swag.SafetyWhat) safety(expr51: #code bool, message: string = null, loc = #callerlocation)
 {
     #if #safety(what)
     {
@@ -18,7 +18,7 @@ impl String
     #[Swag.Inline]
     mtd opIndex(idx: u64)->u8
     {
-        safety'("boundcheck")(idx == 0)
+        safety'(Swag.SafetyWhat.BoundCheck)(idx == 0)
         return 'x''u8
     }
 
