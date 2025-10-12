@@ -11,7 +11,7 @@ public func doModalLoop(cb: func(*void) = null)
 
 #[Swag.Safety("", true)]
 #[Swag.Optimize("", false)]
-#test
+func test()
 {
     doModalLoop(null)
 }

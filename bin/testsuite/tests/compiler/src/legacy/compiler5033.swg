@@ -7,7 +7,7 @@ struct V
 
 #[Swag.Safety("null", true), Swag.Sanity(true), Swag.Optimize("", false)]
 //#[Swag.PrintBc]
-#test
+func test()
 {
     var v: V
     v.fn()

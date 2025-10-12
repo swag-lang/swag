@@ -10,7 +10,7 @@ func toto(b: s32)
     var y  = x[b to 1]
 }
 
-#test
+func test()
 {
     toto(2)
 }

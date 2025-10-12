@@ -1,7 +1,7 @@
 #global testerror "Saf0030"
 
 #[Swag.Sanity(true)]
-#test
+func test()
 {
     let a = @tableof(null, null)
 }

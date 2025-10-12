@@ -1,7 +1,7 @@
 #global testerror "Saf0018"
 
 #[Swag.Sanity(true)]
-#test
+func toto()
 {
     var fn: func()
     fn()

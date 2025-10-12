@@ -14,7 +14,7 @@ impl A
 }
 
 #[Swag.Sanity(true), Swag.Safety("null", true), Swag.Optimize("", false)]
-#test
+func test()
 {
     var p: *A
     let p1 = p

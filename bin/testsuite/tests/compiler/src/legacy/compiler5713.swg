@@ -10,7 +10,7 @@ impl IEvent for Mouse
 
 //#[Swag.PrintBc]
 #[Swag.Sanity(true)]
-#test
+func test()
 {
     var x:  IEvent
     let ptr = cast(*Mouse) x

@@ -10,7 +10,7 @@
     }
 }
 
-#test
+func test()
 {
     titi()
 }

@@ -2,7 +2,7 @@
 
 //#[Swag.PrintBc]
 #[Swag.Sanity(true)]
-#test
+func test()
 {
     var x: string
     #[Swag.Safety("", true)]

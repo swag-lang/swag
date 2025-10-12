@@ -2,7 +2,7 @@
 
 //#[Swag.PrintBc]
 #[Swag.Sanity(true)]
-#test
+func toto()
 {
     var x = 10
     x /= 0

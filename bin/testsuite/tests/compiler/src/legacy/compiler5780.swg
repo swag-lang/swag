@@ -23,7 +23,7 @@ func titi()->#null *A
 #[Swag.Safety("null", true)]
 #[Swag.Optimize("", false)]
 //#[Swag.PrintGenBc]
-#test
+func test()
 {
     let p1 = titi()
     A.toto(p1, 0)

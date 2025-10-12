@@ -9,7 +9,7 @@ func toto(x: any)
 }
 
 #[Swag.Sanity(true)]
-#test
+func test()
 {
     var a: any
     toto(a)

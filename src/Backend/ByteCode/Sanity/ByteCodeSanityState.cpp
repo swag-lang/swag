@@ -87,21 +87,21 @@ bool ByteCodeSanityState::checkStackOffset(uint64_t stackOffset, uint32_t sizeOf
         return true;
     if (!san->mustEmitSafety(SAFETY_MEMORY))
         return true;
-    
+
     const auto err = ByteCodeSanity::raiseError(ip, formErr(Saf0033, stackOffset + sizeOf, stack.size()), locValue);
     if (err)
         return san->context.report(*err);
     return true;
 }
 
-bool ByteCodeSanityState::checkStackInitialized(void* addr, uint32_t sizeOf, const SanityValue* locValue) const
+bool ByteCodeSanityState::checkStackInitialized(void* addr, uint32_t sizeOf, const SanityValue* locValue)
 {
     SanityValue memValue;
     SWAG_CHECK(getStackKind(&memValue, addr, sizeOf));
     if (memValue.kind != SanityValueKind::Invalid)
         return true;
     if (!san->mustEmitSafety(SAFETY_MEMORY))
-        return true;    
+        return true;
 
     const auto err = ByteCodeSanity::raiseError(ip, toErr(Saf0034), locValue);
     if (err)
@@ -116,10 +116,15 @@ bool ByteCodeSanityState::getStackAddress(uint8_t*& result, uint64_t stackOffset
     return true;
 }
 
-bool ByteCodeSanityState::getStackKind(SanityValue* result, void* stackAddr, uint32_t sizeOf) const
+bool ByteCodeSanityState::getStackKind(SanityValue* result, void* stackAddr, uint32_t sizeOf)
 {
     const auto offset = static_cast<uint8_t*>(stackAddr) - stack.data();
-    SWAG_ASSERT(offset + sizeOf <= stackKind.size());
+    if (offset + sizeOf > stackKind.size())
+    {
+        panicExit = true;
+        return true;
+    }
+
     auto addrValue = stackKind.data() + offset;
 
     *result = *addrValue;
@@ -142,7 +147,12 @@ bool ByteCodeSanityState::getStackKind(SanityValue* result, void* stackAddr, uin
 void ByteCodeSanityState::setStackKind(void* stackAddr, uint32_t sizeOf, SanityValueKind kind, SanityValueFlags flags)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(stackAddr) - stack.data());
-    SWAG_ASSERT(offset + sizeOf <= stackKind.size());
+    if (offset + sizeOf > stackKind.size())
+    {
+        panicExit = true;
+        return;
+    }
+
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
         auto& val = stackKind[i];
@@ -154,7 +164,12 @@ void ByteCodeSanityState::setStackKind(void* stackAddr, uint32_t sizeOf, SanityV
 void ByteCodeSanityState::setStackIps(void* addr, uint32_t sizeOf, bool clear)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - stack.data());
-    SWAG_ASSERT(offset + sizeOf <= stackKind.size());
+    if (offset + sizeOf > stackKind.size())
+    {
+        panicExit = true;
+        return;
+    }
+
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
         auto& val = stackKind[i];
@@ -167,7 +182,12 @@ void ByteCodeSanityState::setStackIps(void* addr, uint32_t sizeOf, bool clear)
 void ByteCodeSanityState::updateStackIps(void* addr, uint32_t sizeOf, const SanityValue* from)
 {
     const auto offset = static_cast<uint32_t>(static_cast<uint8_t*>(addr) - stack.data());
-    SWAG_ASSERT(offset + sizeOf <= stackKind.size());
+    if (offset + sizeOf > stackKind.size())
+    {
+        panicExit = true;
+        return;
+    }
+
     for (uint32_t i = offset; i < offset + sizeOf; i++)
     {
         auto& val = stackKind[i];

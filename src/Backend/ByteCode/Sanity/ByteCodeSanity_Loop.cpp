@@ -181,6 +181,9 @@ bool ByteCodeSanity::loop()
             continue;
         }
 
+        if (STATE()->panicExit)
+            return false;
+
         context.node = ip->node;
         STATE()->ip  = ip;
         STATE()->ips.push_back(ip);
