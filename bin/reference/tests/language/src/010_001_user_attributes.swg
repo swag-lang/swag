@@ -1,42 +1,50 @@
 /**
-# User Attributes in Swag
+# 'User Attributes in Swag'
 
-Attributes in Swag serve as a powerful mechanism for annotating various elements of the code, such as functions and structs, with metadata. These annotations, defined using the `attr` keyword, can be leveraged for a variety of purposes, including code generation, documentation enhancement, and runtime reflection. By attaching attributes, developers can enrich their code with additional information that can be accessed both at compile-time and runtime.
+Attributes in Swag let you annotate code elements (functions, structs, etc.)
+with metadata. These annotations, defined with the 'attr' keyword, can power
+code generation, documentation, and reflection. By attaching attributes, you
+enrich code with extra information usable at compile time and at runtime.
 */
 
 using Swag
+
 attr AttributeA()
-// A simple attribute without parameters
+// Simple attribute without parameters
 
 /**
-# Attributes with Parameters
+# 'Attributes with Parameters'
 
-Attributes in Swag can accept parameters in a manner similar to functions. These parameters enable the customization of the attribute's behavior or configuration when it is applied to a code element.
+Attributes can accept parameters, similar to functions. Parameters let you
+customize how the attribute configures the annotated element.
 */
 attr AttributeB(x, y: s32, z: string)
 // Attribute with multiple parameters
 
 /**
-# Attributes with Default Values
+# 'Attributes with Default Values'
 
-Swag attributes support parameters with default values, providing flexibility when applying attributes. This means that when such attributes are used, some or all of the parameters can be omitted, and the default values will be applied automatically.
+Attributes may define default parameter values. When applied, omitted arguments
+fall back to their defaults.
 */
 attr AttributeBA(x: s32, y: string = "string")
-// Attribute with a default parameter
+// Attribute with a defaulted parameter
 
 /**
-# Restricting Attribute Usage
+# 'Restricting Attribute Usage'
 
-Swag allows developers to control where an attribute can be applied through the `AttrUsage` specifier. By restricting an attribute's usage to specific elements (such as functions or structs), you ensure that the attribute is only used in appropriate contexts, thereby enhancing code safety and clarity.
+Use the 'AttrUsage' specifier to control where an attribute may be applied
+(e.g., function-only, struct-only). This improves safety and clarity.
 */
 #[AttrUsage(AttributeUsage.Function)]
 attr AttributeC()
-// Attribute restricted to function usage
+// Restricted to function usage
 
 /**
-# Applying Attributes
+# 'Applying Attributes'
 
-To apply attributes in Swag, use the syntax `#[attribute, attribute...]` immediately before the element you wish to annotate. This syntax supports the application of multiple attributes to a single element by listing them sequentially, separated by commas.
+Apply attributes with the syntax '#[attribute, attribute...]' placed immediately
+before the code element. Multiple attributes are comma-separated.
 */
 #[AttributeA, AttributeB(0, 0, "string")]
 func function1()
@@ -45,13 +53,14 @@ func function1()
 }
 
 /**
-# Multiple Usages
+# 'Multiple Usages'
 
-An attribute in Swag can be designed to be applicable to multiple types of code elements by specifying a combination of `AttrUsage` values using a bitwise OR operation. This capability allows a single attribute to be reused across different contexts, such as both functions and structs.
+An attribute can target several element kinds by combining 'AttrUsage' flags
+with a bitwise OR. This enables reuse across contexts (e.g., functions, structs).
 */
 #[AttrUsage(AttributeUsage.Function | AttributeUsage.Struct)]
 attr AttributeD(x: s32)
-// Attribute applicable to both functions and structs
+// Applicable to both functions and structs
 
 #[AttributeD(6)]
 func function2()
@@ -66,12 +75,13 @@ struct struct1
 }
 
 /**
-# Retrieving Attributes at Runtime
+# 'Retrieving Attributes at Runtime'
 
-Swag supports the retrieval and inspection of attributes at runtime through type reflection. This feature enables dynamic interaction with the metadata associated with various code elements, allowing developers to adapt behavior based on the presence or configuration of attributes.
+You can inspect attributes via type reflection at runtime. This enables behavior
+that adapts based on which attributes are present and how they are configured.
 */
 #test
 {
-    let type = #typeof(function2) // Retrieve the type of the function
-    @assert(@countof(type.attributes) == 1) // Assert that the function has exactly one attribute
+    let type = #typeof(function2) // Reflect the function type
+    @assert(@countof(type.attributes) == 1) // Exactly one attribute on 'function2'
 }

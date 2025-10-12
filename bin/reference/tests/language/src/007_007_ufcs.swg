@@ -1,28 +1,22 @@
 /**
 # Introduction to Uniform Function Call Syntax (UFCS)
-
-*UFCS* stands for *Uniform Function Call Syntax*. It allows any function to be called using the
-`param.func()` form when the first parameter of `func()` matches the type of `param`. This syntax
-provides a way to call static functions as if they were methods on an instance, enhancing
-readability and method-like behavior.
+*UFCS* (Uniform Function Call Syntax) allows a function to be called in the `param.func()` form
+when the first parameter type of `func()` matches `param`.
+This enables calling standalone functions as if they were instance methods, improving readability.
 */
-
 #test
 {
     func myFunc(param: bool) => param
 
     let b = false
-    @assert(myFunc(b) == b.myFunc()) // Using UFCS to call 'myFunc' as if it were a method on 'b'.
+    @assert(myFunc(b) == b.myFunc()) // UFCS allows method-like syntax
 }
 
 /**
 # Static Functions as Methods
-
-In Swag, all functions are *static*, meaning they are not inherently bound to instances of structs
-or classes. However, UFCS allows these functions to be called in a method-like style, making
-struct manipulation more intuitive and the code more readable.
+All functions in Swag are static, but UFCS enables them to be invoked with instance-style syntax.
+This improves clarity when working with structs or objects.
 */
-
 #test
 {
     struct Point { x, y: s32 }
@@ -34,23 +28,19 @@ struct manipulation more intuitive and the code more readable.
 
     var pt: Point
 
-    // Using UFCS to call 'set' as if it were a method of 'pt'.
+    // UFCS — called like a method
     pt.set(10)
     @assert(pt.x == 10 and pt.y == 10)
 
-    // Normal static function call.
+    // Normal static function call
     set(&pt, 20)
     @assert(pt.x == 20 and pt.y == 20)
 }
 
 /**
 # UFCS with Multiple Parameters
-
-UFCS works seamlessly with functions that take multiple parameters, as long as the first parameter
-matches the type of the instance. This allows for consistent and readable function calls, even with
-more complex function signatures.
+UFCS works with multi-parameter functions as long as the first parameter type matches the instance type.
 */
-
 #test
 {
     struct Vector { x, y: f32 }
@@ -63,23 +53,19 @@ more complex function signatures.
 
     var v: Vector
 
-    // Using UFCS to call 'add' as if it were a method of 'v'.
+    // UFCS style
     v.add(1.0, 2.0)
     @assert(v.x == 1.0 and v.y == 2.0)
 
-    // Normal static function call.
+    // Standard function call
     add(&v, 3.0, 4.0)
     @assert(v.x == 4.0 and v.y == 6.0)
 }
 
 /**
 # UFCS and Function Overloading
-
-UFCS supports function overloading, where the appropriate function is chosen based on the types
-of the parameters provided. This feature ensures that UFCS remains versatile and applicable across
-a wide range of function signatures, allowing for flexible and context-appropriate behavior.
+UFCS supports overloaded functions, selecting the correct overload based on argument types.
 */
-
 #test
 {
     struct Complex { real, imag: f32 }
@@ -94,18 +80,21 @@ a wide range of function signatures, allowing for flexible and context-appropria
     #[Swag.Overload]
     func multiply(c: *Complex, other: *Complex)
     {
-        c.real = (c.real * other.real) - (c.imag * other.imag)
-        c.imag = (c.real * other.imag) + (c.imag * other.real)
+        // Use temporary variables to prevent reuse of modified values
+        let r = (c.real * other.real) - (c.imag * other.imag)
+        let i = (c.real * other.imag) + (c.imag * other.real)
+        c.real = r
+        c.imag = i
     }
 
     var c1 = Complex{2.0, 3.0}
     var c2 = Complex{4.0, 5.0}
 
-    // Using UFCS to multiply by a scalar.
+    // UFCS: multiply by scalar
     c1.multiply(2.0)
     @assert(c1.real == 4.0 and c1.imag == 6.0)
 
-    // Using UFCS to multiply by another Complex number.
+    // UFCS: multiply by another complex number
     c1.multiply(&c2)
-    @assert(c1.real == -14.0 and c1.imag == -46.0)
+    @assert(c1.real == -14.0 and c1.imag == 44.0)
 }

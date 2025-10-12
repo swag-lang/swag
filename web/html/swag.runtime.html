@@ -1360,6 +1360,7 @@
 </tr>
 </table>
 </p>
+<p>Get information about the current process. </p>
 <div class="code-block"><span class="SCde"><span class="SKwd">func</span> <span class="SItr">@pinfos</span>()-&gt;*<span class="SCst"><a href="#Swag">Swag</a></span>.<span class="SCst"><a href="#Swag_ProcessInfos">ProcessInfos</a></span></span></div>
 <p>
 <table class="api-item">

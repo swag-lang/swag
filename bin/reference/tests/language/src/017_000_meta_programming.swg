@@ -1,10 +1,11 @@
 /**
-Swag provides the ability to construct and inject source code at compile time.
-This powerful feature allows you to dynamically generate code based on compile-time
-conditions or inputs, and have that code seamlessly integrated into the final program.
-The source code is supplied as a **string**, and it must be a valid Swag program.
+# 'Compile-Time Source Code Generation'
 
-This technique opens up possibilities for advanced metaprogramming, where code can
-be generated, modified, or extended during the compilation process, reducing redundancy
-and enabling more flexible, adaptive programs.
+Swag allows you to construct and inject source code dynamically at compile time.
+The code is provided as a **string** containing valid Swag syntax, which the
+compiler then parses and integrates into the final program.
+
+This feature enables powerful metaprogramming patterns — you can generate,
+modify, or extend code during compilation, reducing duplication and creating
+highly flexible, adaptive programs.
 */

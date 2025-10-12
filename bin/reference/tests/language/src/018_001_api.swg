@@ -1,40 +1,54 @@
 /**
-In 'Swag.DocKind.Api' mode, swag will collect all **public definitions** to generate the documentation. [Std.Core](std.core.php) is an example of documentation generated in that mode.
+# Documentation Generation in Swag
+
+When using `Swag.DocKind.Api` mode, Swag collects all **public definitions**
+to automatically generate API documentation.
+
+A good example of this is the documentation for [Std.Core](std.core.php).
 */
 
 /**
-The main module documentation should be placed at the top of the corresponding `module.swg` file.
+# Module-Level Documentation
+
+The main module documentation should be placed at the top of the `module.swg` file.
+
 ```swag
 // This is the main module documentation.
 #dependencies
 {
 }
-```
+````
+
 */
 
 /**
-Other comments need to be placed just before a function, struct or enum.
 
-The first paragraph is considered to be the **short description** which can appear on specific parts
-of the documentation. So make it... short.
+# Element-Level Documentation
 
-If the first line ends with a dot `.`, then this marks the end of the paragraph, i.e. the end of the short description.
+Comments placed immediately before a `func`, `struct`, or `enum`
+become their documentation entries.
+
+The **first paragraph** acts as the *short description* that appears in summaries.
+
+If the first line ends with a dot `.`, it marks the end of the short description.
 */
 
-// This first paragraph is the short description of function 'test1'
+// This first paragraph is the short description of function 'test1'.
 //
-// This second paragraph should be the long description.
+// This second paragraph serves as the long description.
 func test1() {}
 
 // This is the short description of 'test'.
-// As the previous first line ends with '.', this is another paragraph, so this should be
-// the long description. No need for an empty line before.
+// As the previous line ends with '.', the following text becomes
+// the long description, even without a blank line.
 func test() {}
 
 /**
-For constants or enum values, the document comment is the one declared at the end of the line.
-*/
 
+# Inline Comments for Constants and Enums
+
+Constants and enum values can include documentation comments on the same line.
+*/
 const A = 0 // This is the documentation comment of constant 'A'
 
 enum Color
@@ -44,21 +58,26 @@ enum Color
 }
 
 /**
+
 # References
-You can create a **reference** to something in the current module with `[[name]]` or `[[name1.name2 etc.]]`
+
+You can reference other documented elements using `[[name]]`
+or fully qualified forms like `[[name1.name2]]`.
 */
 
 // This is a function with a 'value' parameter.
 func one(value: s32) {}
 
-// This is a reference to [[one]]
+// This is a reference to [[one]].
 func two() {}
 
 /**
-# NoDoc
-You can use the `#[Swag.NoDoc]` attribute to prevent a certain element from showing up in the documentation.
+
+# Hiding from Documentation
+
+Use the `#[Swag.NoDoc]` attribute to exclude an element from the generated documentation.
 */
 
-// The function 'three' will be ignored when generating the documentation.
+// The function 'three' will be ignored by the documentation generator.
 #[Swag.NoDoc]
 func three() {}

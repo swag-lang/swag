@@ -1,74 +1,72 @@
 /**
 # Introduction to Function Declarations
-A function declaration typically starts with the `func` keyword, followed by the function name and
-a pair of parentheses. If no parameters are needed, the parentheses are empty.
+
+A function declaration starts with the 'func' keyword, followed by the function name
+and parentheses. If no parameters are needed, the parentheses remain empty.
 */
 #[Swag.Overload]
 func toto() {}
 
 /**
 # Returning Values from Functions
-If a function is intended to return a value, use `->` followed by the return type. The function body
-must include a `return` statement with the corresponding value.
+
+If a function returns a value, use '->' followed by the return type.
+The body must contain a 'return' statement.
 */
 func toto1()->s32
 {
-    return 0 // Returns an integer value of 0
+    return 0
 }
 
 /**
 # Inferring Return Types
-For simple expressions, the return type can be inferred automatically using the `=>` operator
-instead of explicitly declaring it with `->`. This reduces verbosity in cases where the type
-is obvious.
+
+Use '=>' for simple expressions when the return type can be inferred automatically.
 */
-func sum(x, y: s32) => x + y // Return type is inferred as s32
+func sum(x, y: s32) => x + y
 
 /**
 # Shorter Syntax for Functions Without Return Values
-When a function does not return a value, a concise syntax can be used also. Instead of a full function
-body, a single expression can be provided after `=>`.
+
+Functions that do not return a value can use the same concise '=>' syntax.
 */
-func print(val: string) => @print(val) // Prints the given string value
+func print(val: string) => @print(val)
 
 /**
 # Defining Parameters in Functions
-Function parameters are defined within parentheses following the function name. Each parameter is
-declared with a name and type, separated by a colon. In this example, two parameters `x` and `y`
-of type `s32`, and an additional `unused` parameter of type `f32` are defined.
+
+Parameters are declared within parentheses after the function name, each with a name and type.
 */
 func sum1(x, y: s32, unused: f32)->s32
 {
-    return x + y // Returns the sum of x and y
+    return x + y
 }
 
 /**
 # Using Default Parameter Values
-Parameters can be assigned default values. If the caller does not provide a value for such a
-parameter, the default value is used.
+
+Parameters may have default values, used when not provided by the caller.
 */
 func sum2(x, y: s32, unused: f32 = 666)->s32
 {
-    return x + y // Returns the sum of x and y
+    return x + y
 }
 
 /**
 # Inferred Parameter Types
-If a parameter has a default value, its type can be inferred from the value provided.
-In this example, `x` and `y` are inferred as `f32` due to the `0.0` literal.
+
+If a parameter has a default value, its type can be inferred from it.
 */
 func sum3(x, y = 0.0)
 {
     #assert(#typeof(x) == f32)
-    // Asserts that x is of type f32
     #assert(#typeof(y) == f32)
-    // Asserts that y is of type f32
 }
 
 /**
 # Overloading Functions
-Swag allows function overloading, where multiple functions can share the same name but differ
-in their parameter types or counts.
+
+Multiple functions can share the same name if they differ in parameter count or types.
 */
 enum Values { A, B }
 
@@ -76,49 +74,50 @@ enum Values { A, B }
 func toto(x: s32, y = Values.A)
 {
     #assert(#typeof(y) == Values)
-    // Asserts that y is of type Values
 }
 
 /**
 # Nested Functions
-Functions can be nested within other functions to provide encapsulation and organize code.
-These nested functions are not closures but are limited to the scope in which they are declared.
+
+Functions can be nested within other functions for local logic organization.
+Nested functions are scoped, not closures.
 */
 #test
 {
-    func sub(x, y: s32) => x - y // Defines a nested function
+    func sub(x, y: s32) => x - y
 
-    let x = sub(5, 2) // Calls the nested function
-    @assert(x == 3) // Asserts the result of the function call
+    let x = sub(5, 2)
+    @assert(x == 3)
 }
 
 /**
 # Named Parameters and Parameter Order
-Swag supports named parameters, allowing you to specify arguments in any order when calling
-a function. This can enhance code readability and flexibility.
+
+Named parameters allow calling functions with arguments in any order.
 */
 #test
 {
-    func sub(x, y: s32) => x - y // Defines a function for subtraction
+    func sub(x, y: s32) => x - y
     {
-        let x1 = sub(x: 5, y: 2) // Calls with named parameters
-        @assert(x1 == 3) // Asserts that the result is correct
-        let x2 = sub(y: 5, x: 2) // Calls with parameters in reversed order
-        @assert(x2 == -3) // Asserts that the result is correct
+        let x1 = sub(x: 5, y: 2)
+        @assert(x1 == 3)
+
+        let x2 = sub(y: 5, x: 2)
+        @assert(x2 == -3)
     }
 
     {
-        func returnMe(x, y: s32 = 0) => x + y * 2 // Defines a function with a default parameter
-        @assert(returnMe(x: 10) == 10) // Calls with one parameter
-        @assert(returnMe(y: 10) == 20) // Calls with the second parameter only
+        func returnMe(x, y: s32 = 0) => x + y * 2
+        @assert(returnMe(x: 10) == 10)
+        @assert(returnMe(y: 10) == 20)
     }
 }
 
 /**
 # Returning Multiple Values with Anonymous Structs
-Anonymous structs provide a convenient way to return multiple values from a function.
-This method facilitates accessing returned data either by destructuring or directly from
-the struct.
+
+Functions can return anonymous structs to conveniently hold multiple values.
+These can be accessed directly or destructured.
 */
 #test
 {
@@ -127,15 +126,15 @@ the struct.
         return {1.0, 2.0}
     }
 
-    let result = myFunction() // Stores the result in a variable
-    @assert(result.item0 == 1.0) // Asserts the first item
-    @assert(result.item1 == 2.0) // Asserts the second item
+    let result = myFunction()
+    @assert(result.item0 == 1.0)
+    @assert(result.item1 == 2.0)
 
-    let (x, y) = myFunction() // Destructures the result into variables
-    @assert(x == 1.0) // Asserts the value of x
-    @assert(y == 2.0) // Asserts the value of y
+    let (x, y) = myFunction()
+    @assert(x == 1.0)
+    @assert(y == 2.0)
 
-    let (z, w) = myFunction() // Another destructuring example
-    @assert(z == 1.0) // Asserts the value of z
-    @assert(w == 2.0) // Asserts the value of w
+    let (z, w) = myFunction()
+    @assert(z == 1.0)
+    @assert(w == 2.0)
 }

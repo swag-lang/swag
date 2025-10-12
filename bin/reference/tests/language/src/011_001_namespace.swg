@@ -1,7 +1,13 @@
 /**
-# Namespaces in Swag
+# 'Namespaces in Swag'
 
-Namespaces in Swag provide a mechanism to organize and encapsulate symbols such as functions, variables, and types within a specific scope. By grouping related symbols together under a namespace, you can avoid naming conflicts and make your codebase more modular and maintainable. Symbols within a namespace are accessible only through the namespace unless explicitly made available outside of it.
+Namespaces in Swag provide a structured way to organize symbols — functions,
+variables, and types — within a specific scope. Grouping related symbols under
+a namespace helps prevent naming conflicts and makes the code more modular
+and maintainable.
+
+Symbols in a namespace are accessible only through that namespace unless they
+are explicitly imported or exposed.
 */
 
 // Define a simple namespace 'A'
@@ -12,9 +18,12 @@ namespace A
 }
 
 /**
-# Nested Namespaces
+# 'Nested Namespaces'
 
-Swag allows you to create nested namespaces, enabling hierarchical organization of symbols. In the following example, namespace `C` is nested inside `B`, which is itself nested inside `A`. This structure facilitates even finer control and organization, particularly useful in large projects.
+Swag supports nested namespaces, allowing hierarchical organization of symbols.
+This enables fine-grained structuring of code, which is especially helpful in
+large projects. In the example below, 'C' is nested inside 'B', which is nested
+inside 'A'.
 */
 
 // Define a nested namespace 'A.B.C'
@@ -26,38 +35,47 @@ namespace A.B.C
 
 #test
 {
-    // Accessing functions using their fully qualified namespace paths.
-    @assert(A.a() == 1) // Calls the 'a' function from namespace 'A'
-    @assert(A.B.C.a() == 2) // Calls the 'a' function from nested namespace 'A.B.C'
+    // Access functions using their fully qualified namespace paths.
+    @assert(A.a() == 1) // Calls 'a' from namespace 'A'
+    @assert(A.B.C.a() == 2) // Calls 'a' from nested namespace 'A.B.C'
 }
 
 /**
-# Using `using` with Namespaces
+# 'Using' with Namespaces
 
-The `using` keyword allows you to import symbols from a namespace into the current scope, eliminating the need to fully qualify those symbols with the namespace name. This makes the code more concise and improves readability, particularly when working with deeply nested namespaces.
+The 'using' keyword imports symbols from a namespace into the current scope.
+This eliminates the need to fully qualify symbols, improving readability,
+especially when dealing with deeply nested namespaces.
 */
+
 using namespace Private
 {
-    const FileSymbol = 0 // A constant defined within the 'Private' namespace
+    const FileSymbol = 0 // Constant defined within namespace 'Private'
 }
 
-const B = Private.FileSymbol     // Accessing 'FileSymbol' with the full namespace path
-const C = FileSymbol             // Direct access to 'FileSymbol' thanks to the 'using' directive
+const B = Private.FileSymbol     // Access via fully qualified name
+const C = FileSymbol             // Direct access via 'using' directive
 
 /**
-# Private Scopes with `private`
+# 'Private' Scopes
 
-In addition to named namespaces, Swag allows you to define a private scope using the `private` keyword. A private scope creates a unique, unnamed namespace that restricts access to the enclosed symbols to the current file, effectively making them private. This is particularly useful for isolating symbols that should not be accessible outside the file.
+In addition to named namespaces, Swag provides 'private' scopes. A private
+scope creates a unique, unnamed namespace restricted to the current file.
+Symbols defined in such a scope are inaccessible outside it, making this
+useful for isolating internal details.
 */
+
 private
 {
-    const OtherSymbol = 0 // A constant defined within an unnamed private scope
+    const OtherSymbol = 0 // Constant defined in a file-local private scope
 }
 
-const D = OtherSymbol // Direct access to 'OtherSymbol' as it is private to the file
+const D = OtherSymbol // Accessible within this file only
 
 /**
-# Exporting Symbols
+# 'Exporting Symbols'
 
-By default, all symbols defined in a Swag source file are exported and can be accessed by other files within the same module. However, using `private` scopes or explicit namespaces provides a layer of protection against unintentional name conflicts, particularly in larger projects where different files may define symbols with similar or identical names.
+By default, all symbols in a Swag file are exported to other files within
+the same module. Using explicit namespaces or private scopes provides
+protection against accidental symbol conflicts across files.
 */

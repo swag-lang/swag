@@ -194,6 +194,7 @@ bool Parser::doCompilerInject(AstNode* parent, AstNode** result)
         SWAG_CHECK(eatFormat(node));
     }
 
+    FormatAst::inheritFormatAfter(this, node, &tokenParse);
     SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc));
 
     return true;

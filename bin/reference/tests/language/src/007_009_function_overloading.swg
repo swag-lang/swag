@@ -1,29 +1,23 @@
 /**
 # Function Overloading with `Swag.Overload`
-In Swag, it is possible to define multiple functions with the same name as long as their parameter signatures differ.
-This capability, known as function overloading, allows you to provide different implementations of a function
-depending on the number or types of arguments passed. To enable function overloading, the functions must be
-decorated with the `Swag.Overload` attribute. This ensures that the compiler can correctly distinguish between
-the different versions based on the arguments provided at the call site.
+Swag allows multiple functions to share the same name when their parameter signatures differ.
+This feature, called *function overloading*, enables writing concise and intuitive APIs.
+To activate it, each version of the function must be decorated with `#[Swag.Overload]`.
 */
 
 #[Swag.ConstExpr, Swag.Overload]
 {
-    // Overloaded function with two parameters
-    func sum(x, y: s32) => x + y // Sums two integers
+    // Overload: two parameters
+    func sum(x, y: s32) => x + y
 
-    // Overloaded function with three parameters
-    func sum(x, y, z: s32) => x + y + z // Sums three integers
+    // Overload: three parameters
+    func sum(x, y, z: s32) => x + y + z
 }
 
 /**
-In the example above, the `sum` function is overloaded to handle both two-parameter and three-parameter cases.
-When the function is called, the compiler automatically selects the appropriate version based on the number of arguments.
-This allows for more flexible and intuitive code, where the same function name can be used for different operations
-depending on the context.
+The compiler chooses the correct overload based on the number and types of arguments.
+This allows calling `sum` naturally for different scenarios.
 */
 
-#assert(sum(1, 2) == 3)
-// Calls the two-parameter version of `sum`, which returns 3
-#assert(sum(1, 2, 3) == 6)
-// Calls the three-parameter version of `sum`, which returns 6
+#assert(sum(1, 2) == 3) // Calls the two-parameter version
+#assert(sum(1, 2, 3) == 6) // Calls the three-parameter version

@@ -1,38 +1,49 @@
 /**
-The `compileString()` function within the `@compiler` interface is another method to compile
-generated code. This function should be invoked at compile time, typically within a `#message`
-call.
+# 'compileString()' in '@compiler'
 
-Below is an example from the `Std.Ogl` module (an OpenGL wrapper), which utilizes `#message` to
-identify functions annotated with a specific user attribute, `Ogl.Extension`, and subsequently
-generates code for each identified function.
+The 'compileString()' function, available through the '@compiler' interface,
+allows you to inject and compile dynamically generated Swag source code during
+compilation. It is typically used inside a '#message' block to generate code
+after specific compiler events.
 */
 
 /**
-First, we define a new attribute that can be associated with functions.
+# Example — OpenGL Function Registration
+
+In this example (from 'Std.Ogl'), 'compileString()' is used within a '#message'
+hook to find all functions tagged with a custom attribute 'Ogl.Extension'
+and automatically generate extension initialization code.
+*/
+
+/**
+First, define a user attribute for marking OpenGL extension functions.
 
 ```swag
 #[AttrUsage(AttributeUsage.Function)]
 attr Extension()
-```
+````
 
-Example of applying the custom attribute to OpenGL functions.
+*/
+
+/**
+Then, apply it to placeholder OpenGL functions.
 
 ```swag
 #[Extension, Swag.PlaceHolder]
 {
-    func glUniformMatrix2x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
-    func glUniformMatrix2x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
-    func glUniformMatrix3x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
-    func glUniformMatrix3x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
-    func glUniformMatrix4x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
-    func glUniformMatrix4x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat);
+    func glUniformMatrix2x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat)
+    func glUniformMatrix2x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat)
+    func glUniformMatrix3x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat)
+    func glUniformMatrix3x4fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat)
+    func glUniformMatrix4x2fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat)
+    func glUniformMatrix4x3fv(location: GLint, count: GLsizei, transpose: GLboolean, value: const *GLfloat)
 }
 ```
+
 */
 
 /**
-The following will be used to track the functions with that specific attribute.
+Track all functions with that attribute.
 
 ```swag
 struct OneFunc
@@ -44,10 +55,11 @@ struct OneFunc
 #[Compiler]
 var g_Functions: Array'OneFunc
 ```
+
 */
 
 /**
-This `#message` will be called for each function of the `Ogl` module.
+Register all tagged functions as they are typed.
 
 ```swag
 #message(CompilerMsgMask.SemFunctions)
@@ -55,19 +67,17 @@ This `#message` will be called for each function of the `Ogl` module.
     let itf = @compiler
     var msg = itf.getMessage()
 
-    // If the function does not have our attribute, ignore it
     if !Reflection.hasAttribute(msg.type, Extension)
         return
 
-    // Track all functions with the specified attribute
     g_Functions.add({msg.type, msg.name})
 }
 ```
+
 */
 
 /**
-This code is called once all functions of the module have been typed, and it handles the main
-code generation process.
+Once semantic analysis finishes, generate code for all registered functions.
 
 ```swag
 #message(CompilerMsgMask.PassAfterSemantic)
@@ -75,19 +85,15 @@ code generation process.
     var builderVars: StringBuilder
     var builderInit: StringBuilder
 
-    // Generate the `glInitExtensions` function
-    builderInit.appendString("public func glInitExtensions()\n{\n");
+    builderInit.appendString("public func glInitExtensions()\n{\n")
 
-    // Visit all functions we have registered, i.e., all functions with the `Ogl.Extension` attribute.
     foreach e in g_Functions
     {
         let typeFunc = cast(const *TypeInfoFunc) e.type
 
-        // Declare a lambda variable for that extension
         builderVars.appendFormat("var ext_%: %\n", e.name, typeFunc.name)
-
-        // Make a wrapper function
         builderVars.appendFormat("public func %(", e.name)
+
         foreach p, i in typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
@@ -98,7 +104,9 @@ code generation process.
             builderVars.appendFormat(")\n{\n")
         else
             builderVars.appendFormat(")->%\n{\n", typeFunc.returnType.name)
+
         builderVars.appendFormat("\treturn ext_%(", e.name)
+
         foreach p, i in typeFunc.parameters
         {
             if i != 0 builderVars.appendString(", ")
@@ -107,19 +115,19 @@ code generation process.
 
         builderVars.appendString(");\n}\n\n")
 
-        // Initialize the variable with the getExtensionAddress
-        builderInit.appendFormat("\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n",
-                                 e.name, typeFunc.name, e.name);
+        builderInit.appendFormat(
+            "\text_% = cast(%) getExtensionAddress(@dataof(\"%\"))\n",
+            e.name, typeFunc.name, e.name)
     }
 
-    // Compile !!
     let itf = @compiler
     var str = builderVars.toString()
     itf.compileString(str.toString())
 
-    builderInit.appendString("}\n");
+    builderInit.appendString("}\n")
     str = builderInit.toString()
     itf.compileString(str.toString())
 }
 ```
+
 */

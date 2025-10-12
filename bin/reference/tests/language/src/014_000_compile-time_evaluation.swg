@@ -1,7 +1,11 @@
 /**
-One of the most powerful features of Swag is its ability to execute **everything** at compile-time.
-This capability allows Swag to function not only as a compiled language but also as a scripting
-language, where the compiler effectively acts as an interpreter. This flexibility enables developers
-to leverage compile-time execution for tasks that traditionally require runtime evaluation,
-resulting in more efficient and versatile code.
+# 'Compile-Time Execution in Swag'
+
+One of Swag’s most powerful features is its ability to execute **everything**
+at compile time. This means Swag can function both as a compiled language
+and as a scripting language, with the compiler acting as an interpreter.
+
+This flexibility allows developers to perform tasks at compile time that
+would otherwise require runtime computation — resulting in more efficient,
+expressive, and versatile programs.
 */

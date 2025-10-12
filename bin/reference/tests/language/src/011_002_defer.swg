@@ -1,83 +1,75 @@
 /**
-# `defer` Statement
-The `defer` statement allows you to specify an expression that will be automatically executed when the
-current scope is exited. Since `defer` operates purely at compile time, the deferred expression is not
-evaluated until the block of code in which it is defined is left. This feature is useful for managing
-resources, ensuring cleanup operations, and maintaining code clarity.
+# 'defer' Statement
+The 'defer' statement registers an expression that executes automatically
+when the current scope is exited. It runs purely at compile time and ensures
+that cleanup or finalization logic is always performed. This helps maintain
+clarity and safety in resource management.
 */
 #test
 {
     var v = 0
-    defer @assert(v == 1) // Ensures that v equals 1 when leaving the scope.
-    v += 1 // Increment v by 1.
+    defer @assert(v == 1) // Ensures v equals 1 on scope exit.
+    v += 1 // Increment v.
 
-    // When the scope is exited, the deferred expression will be executed here, verifying that v is 1.
+    // When the scope ends, the deferred expression executes here.
 }
 
 /**
-# Defer in a Block
-The `defer` statement can also encapsulate multiple expressions within a block. This allows you to
-group together operations that should all be executed upon exiting the scope, maintaining the integrity
-of your logic and ensuring that all necessary actions are performed.
+# 'Defer in a Block'
+A 'defer' can also enclose multiple expressions within a block. This allows
+you to group operations that should all run when leaving the scope.
 */
 #test
 {
     var v = 0
     defer
     {
-        v += 10 // Increment v by 10.
-        @assert(v == 15) // Ensure v equals 15 after the block execution.
+        v += 10
+        @assert(v == 15)
     }
 
-    v += 5 // Increment v by 5.
-
-    // Upon scope exit, the defer block is executed, adding 10 to v and ensuring the final value is 15.
+    v += 5
+    // Upon scope exit, the defer block executes, ensuring v == 15.
 }
 
 /**
-# Defer with Control Flow
-The `defer` expression is executed whenever the scope is exited, including in the presence of control
-flow statements like `return`, `break`, or `continue`. This behavior makes `defer` particularly
-advantageous for scenarios that require guaranteed execution of specific operations, such as resource
-cleanup or ensuring that certain conditions are met, regardless of how the code block is terminated.
+# 'Defer with Control Flow'
+The deferred expression executes every time a scope exits, even when leaving
+via 'return', 'break', or 'continue'. This guarantees proper cleanup in all
+control flow paths.
 */
 #test
 {
     var G = 0
     for 10
     {
-        defer G += 1 // Ensure G is incremented each loop iteration, even if the loop is exited early.
+        defer G += 1 // Increment G at end of each iteration, even if broken.
 
         if G == 2 do
-            break // Exit the loop when G equals 2. Defer will execute before breaking out.
-
-        // The defer expression is executed at the end of each iteration.
+            break // Exiting early still triggers the defer expression.
     }
 
-    @assert(G == 3) // Check that G has been correctly incremented, even after the loop is broken.
+    @assert(G == 3)
 }
 
 /**
-# Defer Execution Order
-When multiple `defer` statements are declared, they are executed in the reverse order of their
-declaration. This ensures that the most recently deferred operation occurs first upon scope exit,
-providing a predictable and manageable flow of operations.
+# 'Defer Execution Order'
+When multiple 'defer' statements exist, they execute in reverse declaration
+order. The most recent defer runs first when the scope ends.
 */
 #test
 {
     var x = 1
-    defer @assert(x == 2) // Executed second, after x is multiplied by 2.
-    defer x *= 2 // Executed first, doubling the value of x.
+    defer @assert(x == 2) // Executes second
+    defer x *= 2 // Executes first
 
-    // The deferred statements execute in reverse, ensuring logical and predictable order.
+    // Execution order is reversed for predictable cleanup flow.
 }
 
 /**
-# Example: Defer for Resource Management
-A common use case for `defer` is in resource management, such as the creation and subsequent release
-of resources. By placing the release logic immediately after the creation logic, the code becomes
-more readable and ensures that resources are always properly managed, even in the event of an error or
-early exit.
+# Example: Resource Management
+'defer' is ideal for resource handling — ensuring that allocation and
+release logic stay close together and cleanup always happens.
 */
 #test
 {
@@ -91,23 +83,21 @@ early exit.
         resource = createResource()
         defer
         {
-            @assert(resource.isResourceCreated()) // Validate that the resource was created.
-            releaseResource(&resource) // Release the resource when exiting the loop.
+            @assert(resource.isResourceCreated())
+            releaseResource(&resource)
         }
 
         if @index == 2 do
-            break // Exit for early, defer block still ensures resource release.
+            break // Defer ensures cleanup even on early exit.
     }
 
-    @assert(!resource.isResourceCreated()) // Ensure the resource is no longer created post-loop.
+    @assert(!resource.isResourceCreated())
 }
 
 /**
-# Example: Defer in Error Handling
-In more complex functions, `defer` proves invaluable for ensuring that resources are cleaned up
-reliably, even in the presence of errors or early returns. This pattern is essential for writing
-robust, error-resilient code that gracefully handles failure scenarios while ensuring that all necessary
-cleanup is performed.
+# Example: Error Handling
+'defer' ensures reliable cleanup even in functions that may return early due
+to errors. This pattern creates robust, error-resilient code.
 */
 #test
 {
@@ -118,20 +108,18 @@ cleanup is performed.
     func performTask()->bool
     {
         var resource = createResource()
-        defer releaseResource(&resource) // Guarantee resource release on function exit.
+        defer releaseResource(&resource) // Always release resource.
 
         if !resource.isResourceCreated()
         {
-            // Handle error: resource wasn't created. Defer block still ensures cleanup.
+            // Early return still triggers defer.
             return false
         }
 
-        // Perform other tasks here...
-        // If an error occurs, the defer block will release the resource.
+        // Perform work...
         return true
     }
 
     let success = performTask()
-    @assert(success) // Ensure that the task was successful and resources were managed correctly.
-    // The resource is released correctly regardless of the function's outcome.
+    @assert(success)
 }

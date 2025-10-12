@@ -950,8 +950,8 @@ func @breakpoint();
 func @getcontext()->*Swag.Context;
 // Replace the current thread context.
 func @setcontext(context: const *Swag.Context);
-// Get information about the current process.
 
+// Get information about the current process.
 func @pinfos()->*Swag.ProcessInfos;
 // Returns the list of all loaded modules.
 func @modules()->const [..] Swag.Module;
