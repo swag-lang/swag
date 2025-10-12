@@ -25,7 +25,7 @@ By default, the 'break' statement exits only the innermost loop or control struc
     {
         for 10
         {
-             // Exits the inner loop only, allowing the outer loop to continue
+            // Exits the inner loop only, allowing the outer loop to continue
             break
         }
 

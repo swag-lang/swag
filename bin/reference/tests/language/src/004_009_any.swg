@@ -1,10 +1,10 @@
 /**
-# The `any` Type in Swag
+# The 'any' Type in Swag
 
-`any` is a versatile type in Swag that can reference values of any other type. This allows for dynamic type handling within your code.
+'any' is a versatile type in Swag that can reference values of any other type. This allows for dynamic type handling within your code.
 
 > WARNING:
-> `any` is **not a variant**. It's a dynamically typed **reference** to an existing value. This means that `any` does not store a copy of the value, but rather a reference to the actual value, along with its type information.
+> 'any' is **not a variant**. It's a dynamically typed **reference** to an existing value. This means that 'any' does not store a copy of the value, but rather a reference to the actual value, along with its type information.
 */
 
 #test
@@ -27,9 +27,9 @@
 }
 
 /**
-# Working with `any` and Pointers
+# Working with 'any' and Pointers
 
-`any` acts as a reference to the value it holds, alongside the `typeinfo` that describes the value's type. You can use `@dataof` to obtain the pointer to the actual value.
+'any' acts as a reference to the value it holds, alongside the 'typeinfo' that describes the value's type. You can use '@dataof' to obtain the pointer to the actual value.
 */
 
 #test
@@ -40,9 +40,9 @@
 }
 
 /**
-# Type Information and `any`
+# Type Information and 'any'
 
-When `#typeof` is used on an `any`, it returns `any` as the type because `any` is the type of the reference. To obtain the underlying type of the value stored in `any`, use `@kindof`, which is evaluated at runtime.
+When '#typeof' is used on an 'any', it returns 'any' as the type because 'any' is the type of the reference. To obtain the underlying type of the value stored in 'any', use '@kindof', which is evaluated at runtime.
 */
 
 #test
@@ -57,9 +57,9 @@ When `#typeof` is used on an `any`, it returns `any` as the type because `any` i
 }
 
 /**
-# Retrieving Values from `any`
+# Retrieving Values from 'any'
 
-You can retrieve the value stored in an `any` either directly or as a constant reference. This provides flexibility in how you interact with the stored value.
+You can retrieve the value stored in an 'any' either directly or as a constant reference. This provides flexibility in how you interact with the stored value.
 */
 
 #test
@@ -76,9 +76,9 @@ You can retrieve the value stored in an `any` either directly or as a constant r
 }
 
 /**
-# Arrays of `any`
+# Arrays of 'any'
 
-You can create arrays containing multiple types using `any`. This allows you to maintain a heterogeneous collection where each element can be of a different type, enabling you to manage and manipulate data of various types within a single structure.
+You can create arrays containing multiple types using 'any'. This allows you to maintain a heterogeneous collection where each element can be of a different type, enabling you to manage and manipulate data of various types within a single structure.
 */
 
 #test
@@ -96,9 +96,9 @@ You can create arrays containing multiple types using `any`. This allows you to 
 }
 
 /**
-# Nullability of `any`
+# Nullability of 'any'
 
-An `any` value can be set to null and tested against null, similar to pointers or other nullable types. This allows for flexible handling of cases where a value may or may not be set, providing a robust approach to managing optional values.
+An 'any' value can be set to null and tested against null, similar to pointers or other nullable types. This allows for flexible handling of cases where a value may or may not be set, providing a robust approach to managing optional values.
 */
 
 #test
@@ -119,9 +119,9 @@ An `any` value can be set to null and tested against null, similar to pointers o
 }
 
 /**
-# Type Checking with `any`
+# Type Checking with 'any'
 
-An `any` value can be tested against a type using `==` and `!=`. This effectively uses `@kindof` to retrieve the underlying type for comparison. This is particularly useful when you need to confirm the type of the value inside `any` before performing type-specific operations.
+An 'any' value can be tested against a type using '==' and '!='. This effectively uses '@kindof' to retrieve the underlying type for comparison. This is particularly useful when you need to confirm the type of the value inside 'any' before performing type-specific operations.
 */
 
 #test

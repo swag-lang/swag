@@ -140,10 +140,9 @@ This technique negates the need for the `#up` keyword when referencing the calle
 
         #macro
         {
-            #inject(#up what)
             // References the caller's 'a'
+            #inject(#up what)
         }
- // Ensures the following code operates in the caller's scope
     }
 
     var a = 1

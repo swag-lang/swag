@@ -1,7 +1,7 @@
 /**
 # Statement Termination in Swag
 
-Unlike languages such as C/C++, there is no strict requirement to end statements with a semicolon (`;`). The default method of terminating a statement in Swag is simply reaching the end of a line (`end of line`). This feature allows for cleaner and more concise syntax, reducing visual clutter and making the code easier to read.
+Unlike languages such as C/C++, there is no strict requirement to end statements with a semicolon (';'). The default method of terminating a statement in Swag is simply reaching the end of a line ('end of line'). This feature allows for cleaner and more concise syntax, reducing visual clutter and making the code easier to read.
 */
 
 #test
