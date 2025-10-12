@@ -265,7 +265,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     if (prevNodeLocal && prevNodeLocal->is(AstNodeKind::File))
         return nullptr;
 
-    const AstNode* prevNode = nullptr;
+    AstNode* prevNode = nullptr;
     if (!prevJob->originalNode)
         prevNode = prevNodeLocal;
     else if (prevJob->originalNode->is(AstNodeKind::VarDecl) ||
@@ -284,7 +284,8 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
 
     SWAG_ASSERT(prevNode);
 
-    Utf8 msg, nte;
+    Utf8        msg;
+    Diagnostic* nte = nullptr;
 
     if (depNode)
     {
@@ -293,7 +294,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     else if (prevNode && prevJob->waitingType)
     {
         msg = form("the symbol %s [[%s]] is waiting for the generation of the type [[%s]]", Naming::kindName(prevNode).cstr(), prevNode->token.cstr(), prevJob->waitingType->getDisplayNameC());
-        nte = Diagnostic::isType(prevNode->typeInfo);
+        nte = Diagnostic::isType(prevNode);
     }
     else if (prevJob->waitingType && dynamic_cast<TypeGenStructJob*>(prevJob))
     {
@@ -306,7 +307,7 @@ Diagnostic* Workspace::errorPendingJob(Job* prevJob, const Job* depJob)
     else
     {
         msg = form("cannot resolve %s [[%s]]", Naming::kindName(prevNode).cstr(), prevNode->token.cstr());
-        nte = Diagnostic::isType(prevNode->typeInfo);
+        nte = Diagnostic::isType(prevNode);
     }
 
     if (prevJob->waitingHintNode)
@@ -416,7 +417,7 @@ void Workspace::errorPendingJobs(const Vector<PendingJob>& pendingJobs)
                     auto       msg    = form("the %s [[%s]] is waiting for %s [[%s]] to be resolved", Naming::kindName(front).cstr(), front->token.cstr(), Naming::kindName(back).cstr(), back->token.cstr());
                     const auto note   = Diagnostic::note(back, back->token, msg);
                     note->canBeMerged = false;
-                    note->addNote(Diagnostic::isType(back->typeInfo));
+                    note->addNote(Diagnostic::isType(back));
                     notes.push_back(note);
                 }
 
@@ -958,8 +959,8 @@ bool Workspace::patch()
             if (!f->astRoot)
                 continue;
 
-            //if (f->name != "codec.swg")
-            //    continue;
+            // if (f->name != "codec.swg")
+            //     continue;
 
             FormatContext context;
             context.setDefaultBeautify();

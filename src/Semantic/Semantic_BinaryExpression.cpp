@@ -33,7 +33,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic err{node, node->token, toErr(Err0225)};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
@@ -41,7 +41,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
             Diagnostic err{node, node->token, toErr(Err0226)};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
 
@@ -56,7 +56,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         if (!rightTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic err{node, node->token, toErr(Err0225)};
-            err.addNote(right, Diagnostic::isType(rightTypeInfo));
+            err.addNote(Diagnostic::isType(right));
             err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
@@ -64,7 +64,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         if (rightTypeInfo->isPointerTo(NativeTypeKind::Void))
         {
             Diagnostic err{node, node->token, toErr(Err0226)};
-            err.addNote(right, Diagnostic::isType(rightTypeInfo));
+            err.addNote(Diagnostic::isType(right));
             return context->report(err);
         }
 
@@ -94,7 +94,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         case NativeTypeKind::String:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             if (left->hasFlagComputedValue() || right->hasFlagComputedValue())
                 err.addNote("hint: use [[++]] to concatenate literal strings at compile-time");
             return context->report(err);
@@ -102,7 +102,7 @@ bool Semantic::resolveBinaryOpPlus(SemanticContext* context, AstNode* left, AstN
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -228,7 +228,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         if (!leftTypeInfo->isPointerArithmetic() && !context->forDebugger)
         {
             Diagnostic err{node, node->token, toErr(Err0225)};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
             return context->report(err);
         }
@@ -258,7 +258,7 @@ bool Semantic::resolveBinaryOpMinus(SemanticContext* context, AstNode* left, Ast
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -372,7 +372,7 @@ bool Semantic::resolveBinaryOpMul(SemanticContext* context, AstNode* left, AstNo
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -499,7 +499,7 @@ bool Semantic::resolveBinaryOpDiv(SemanticContext* context, AstNode* left, AstNo
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -619,7 +619,7 @@ bool Semantic::resolveBinaryOpModulo(SemanticContext* context, AstNode* left, As
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -697,7 +697,7 @@ bool Semantic::resolveBitmaskOr(SemanticContext* context, AstNode* left, AstNode
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -807,7 +807,7 @@ bool Semantic::resolveBitmaskAnd(SemanticContext* context, AstNode* left, AstNod
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -935,7 +935,7 @@ bool Semantic::resolveXor(SemanticContext* context, AstNode* left, AstNode* righ
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
     }
@@ -1034,21 +1034,21 @@ bool Semantic::resolveFactorExpression(SemanticContext* context)
     if (leftTypeInfo->isTuple() || leftTypeInfo->isListTuple())
     {
         Diagnostic err{node, node->token, formErr(Err0599, node->token.cstr())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
 
     if (rightTypeInfo->isTuple() || rightTypeInfo->isListTuple())
     {
         Diagnostic err{node, node->token, formErr(Err0599, node->token.cstr())};
-        err.addNote(right, Diagnostic::isType(rightTypeInfo));
+        err.addNote(Diagnostic::isType(right));
         return context->report(err);
     }
 
     if (node->token.is(TokenId::SymPercent) && rightTypeInfo->isNativeFloat())
     {
         Diagnostic err{node, node->token, formErr(Err0598, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
-        err.addNote(right, Diagnostic::isType(rightTypeInfo));
+        err.addNote(Diagnostic::isType(right));
         return context->report(err);
     }
 
@@ -1180,7 +1180,7 @@ bool Semantic::resolveShiftLeft(SemanticContext* context, AstNode* left, AstNode
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
         Diagnostic err{node, node->token, formErr(Err0595, "<<", leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(left));
+        err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
 
@@ -1258,7 +1258,7 @@ bool Semantic::resolveShiftRight(SemanticContext* context, AstNode* left, AstNod
     if (!leftTypeInfo->isNativeIntegerOrRune())
     {
         Diagnostic err{node, node->token, formErr(Err0595, ">>", leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(left));
+        err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
 

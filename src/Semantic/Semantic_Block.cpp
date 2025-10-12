@@ -606,7 +606,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
     if (!node->extraNameToken.text.empty())
     {
         Diagnostic err{node, node->extraNameToken, formErr(Err0614, Naming::aKindName(typeInfo).cstr())};
-        err.addNote(node->expression, Diagnostic::isType(typeInfo));
+        err.addNote(Diagnostic::isType(node->expression));
         return context->report(err);
     }
 
@@ -791,7 +791,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             Diagnostic err{node, node->wantPointerToken, toErr(Err0131)};
-            err.addNote(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            err.addNote(Diagnostic::isType(node->expression));
             return context->report(err);
         }
 
@@ -812,7 +812,7 @@ bool Semantic::resolveVisit(SemanticContext* context)
         if (node->hasSpecFlag(AstVisit::SPEC_FLAG_WANT_POINTER))
         {
             Diagnostic err{node, node->wantPointerToken, toErr(Err0132)};
-            err.addNote(node->expression, Diagnostic::isType(node->expression->typeInfo));
+            err.addNote(Diagnostic::isType(node->expression));
             return context->report(err);
         }
 

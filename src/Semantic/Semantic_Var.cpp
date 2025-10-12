@@ -54,9 +54,9 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
     {
         Diagnostic err{varDecl, varDecl->token, formErr(Err0251, typeVar->getDisplayNameC())};
         if (varDecl->assignment)
-            err.addNote(varDecl->assignment, Diagnostic::isType(TypeManager::concreteType(varDecl->assignment->typeInfo)));
+            err.addNote(Diagnostic::isType(varDecl->assignment));
         else if (varDecl->type)
-            err.addNote(varDecl->type, Diagnostic::isType(TypeManager::concreteType(varDecl->type->typeInfo)));
+            err.addNote(Diagnostic::isType(varDecl->type));
         return context->report(err);
     }
 
@@ -1072,7 +1072,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             Diagnostic err{node->type, toErr(Err0703)};
             if (node->type->typeInfo->isAlias())
-                err.addNote(node->type, Diagnostic::isType(node->type->typeInfo));
+                err.addNote(Diagnostic::isType(node->type));
             return context->report(err);
         }
 

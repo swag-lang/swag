@@ -653,7 +653,7 @@ void initErrors()
     SWAG_ERROR(Err0536, "expected [[%s]], found [[%s]]                                                                          $ ");
     SWAG_ERROR(Err0537, "UFCS received [[%s]] instead of [[%s]]                                                                 $ ");
     SWAG_ERROR(Err0538, "[[#message]] received [[%s]] instead of [[Swag.CompilerMsgMask]]                                       $ ");
-    SWAG_ERROR(Err0539, "pointer type [[%s]] incompatible with second argument [[%s]]                                           $ note: first argument must be a pointer to [[%s]] or match second argument type [[%s]]");
+    SWAG_ERROR(Err0539, "pointer type [[%s]] incompatible with second argument [[%s]]                                           $ note: first argument must be a pointer to [[%s]] or second argument must be [[%s]]");
     SWAG_ERROR(Err0540, "[[struct]] not allowed as [[orelse]] argument                                                          $ ");
     SWAG_ERROR(Err0541, "type [[%s]] not allowed as [[orelse]] argument                                                         $ ");
     SWAG_ERROR(Err0542, "type [[%s]] cannot be used in [[switch]]                                                               $ ");

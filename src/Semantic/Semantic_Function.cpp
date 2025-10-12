@@ -517,7 +517,7 @@ bool Semantic::resolveFuncDeclType(SemanticContext* context)
         {
             Diagnostic err{typeNode->token.sourceFile, typeNode->token.startLocation, front->token.endLocation, toErr(Err0232)};
             if (typeNode->typeInfo->isAlias())
-                err.addNote(Diagnostic::note(typeNode, Diagnostic::isType(concrete)));
+                err.addNote(Diagnostic::isType(typeNode));
             return context->report(err);
         }
     }

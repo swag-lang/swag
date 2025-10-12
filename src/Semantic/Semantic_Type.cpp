@@ -12,7 +12,7 @@
 #include "Syntax/Naming.h"
 #include "Wmf/Module.h"
 
-bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, const AstNode* left, const AstNode* right)
+bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right)
 {
     if (leftTypeInfo->isNative() && rightTypeInfo->isNative())
         return true;
@@ -21,12 +21,12 @@ bool Semantic::checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInf
     if (!leftTypeInfo->isNative())
     {
         Diagnostic err{node->token.sourceFile, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
 
     Diagnostic err{node->token.sourceFile, node->token, formErr(Err0598, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
-    err.addNote(right, Diagnostic::isType(rightTypeInfo));
+    err.addNote(Diagnostic::isType(right));
     return context->report(err);
 }
 
@@ -553,7 +553,7 @@ bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode
         !typeC->isStruct())
     {
         Diagnostic err{typeNode->token.sourceFile, typeNode->locConst, formErr(Err0254, typeNode->typeInfo->getDisplayNameC())};
-        err.addNote(typeNode->firstChild(), Diagnostic::isType(typeNode));
+        err.addNote(Diagnostic::isType(typeNode));
         return context->report(err);
     }
 

@@ -73,7 +73,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
     }
 }
 
-bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, const AstNode* hintType)
+bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
     Utf8 text = formErr(Err0596, node->token.cstr(), typeInfo->getDisplayNameC());
     if (msg)
@@ -84,7 +84,7 @@ bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeIn
 
     Diagnostic err{node, node->token, text};
     if (hintType)
-        err.addNote(hintType, Diagnostic::isType(typeInfo));
+        err.addNote(Diagnostic::isType(hintType));
     return context->report(err);
 }
 

@@ -1171,12 +1171,12 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     if (!node->genericParameters)
                     {
                         Diagnostic err{node, node->getTokenName(), formErr(Err0451, node->token.cstr(), varDecl->token.cstr())};
-                        err.addNote(child, child->token, Diagnostic::isType(child->typeInfo));
+                        err.addNote(Diagnostic::isType(child));
                         return context->report(err);
                     }
 
                     Diagnostic err{node, node->getTokenName(), formErr(Err0452, node->token.cstr(), varDecl->token.cstr())};
-                    err.addNote(child, child->token, Diagnostic::isType(child->typeInfo));
+                    err.addNote(Diagnostic::isType(child));
                     return context->report(err);
                 }
             }

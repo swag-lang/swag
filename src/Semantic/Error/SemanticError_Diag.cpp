@@ -231,7 +231,7 @@ namespace
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).cstr());
         const auto err = new Diagnostic{bi.badNode, msg};
         errorParam.addError(err);
-        errorParam.addNote(Diagnostic::note(bi.badNode, Diagnostic::isType(bi.badNode)));
+        errorParam.addNote(Diagnostic::isType(bi.badNode));
     }
 
     void errorBadGenericSignature(SemanticContext*, const ErrorParam& errorParam)

@@ -537,8 +537,8 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
             YIELD();
 
             Diagnostic err{right, formErr(Err0531, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
-            err.addNote(Diagnostic::isType(rightTypeInfo));
-            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+            err.addNote(Diagnostic::isType(right));
+            err.addNote(Diagnostic::isType(left));
             err.addNote(context->node, context->node->token, form("there is an implicit call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode->resolvedSymbolOverload()));
             return context->report(err);
@@ -580,14 +580,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
         {
             Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0240, name.cstr(), leftType->getDisplayNameC())};
             err.addNote(form("there is an implicit call to [[%s]]", name.cstr()));
-            err.addNote(left, Diagnostic::isType(leftType));
+            err.addNote(Diagnostic::isType(left));
             err.addNote(note);
             return context->report(err);
         }
 
         Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0241, name.cstr(), leftType->getDisplayNameC(), opConst)};
         err.addNote(form("there is an implicit call to [[%s]]", name.cstr()));
-        err.addNote(left, Diagnostic::isType(leftType));
+        err.addNote(Diagnostic::isType(left));
         err.addNote(note);
         return context->report(err);
     }

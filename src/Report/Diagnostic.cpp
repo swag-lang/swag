@@ -979,8 +979,8 @@ void Diagnostic::printRanges(Log* log)
 
         ranges.pop_back();
 
-        //if (!ranges.empty())
-        //    printRangesVerticalBars(log, ranges.size());
+        // if (!ranges.empty())
+        //     printRangesVerticalBars(log, ranges.size());
     }
 
     log->writeEol();
@@ -1077,23 +1077,26 @@ void Diagnostic::report(Log* log)
 
 Utf8 Diagnostic::isType(TypeInfo* typeInfo)
 {
-    if (!typeInfo)
-        return "";
     return form("this type is [[%s]]", typeInfo->getDisplayNameC());
 }
 
-Utf8 Diagnostic::isType(const SymbolOverload* overload)
+Diagnostic* Diagnostic::isType(AstNode* node)
 {
-    if (!overload || !overload->typeInfo)
-        return "";
-    return form("this %s has type [[%s]]", Naming::kindName(overload).cstr(), overload->typeInfo->getDisplayNameC());
-}
+    if (!node)
+        return nullptr;
 
-Utf8 Diagnostic::isType(const AstNode* node)
-{
-    if (node->resolvedSymbolOverload())
-        return isType(node->resolvedSymbolOverload());
-    return isType(node->typeInfo);
+    Utf8       n;
+    const auto overload = node->resolvedSymbolOverload();
+    if (overload && overload->typeInfo)
+        n = form("this %s has type [[%s]]", Naming::kindName(overload).cstr(), overload->typeInfo->getDisplayNameC());
+    else if (node->typeInfo)
+        n = form("this type is [[%s]]", node->typeInfo->getDisplayNameC());
+    else
+        return nullptr;
+
+    if (node->is(AstNodeKind::IdentifierRef))
+        node = node->lastChild();
+    return new Diagnostic{node, node->getTokenName(), n, DiagnosticLevel::Note};
 }
 
 Diagnostic* Diagnostic::hereIs(const SymbolOverload* overload)

@@ -91,7 +91,7 @@ namespace Semantic
     bool checkIsConstExpr(JobContext* context, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkIsConstExpr(JobContext* context, bool test, AstNode* expression, const Utf8& errMsg = "", const Utf8& errParam = "");
     bool checkTypeIsNative(SemanticContext* context, AstNode* node, TypeInfo* typeInfo);
-    bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, const AstNode* left, const AstNode* right);
+    bool checkTypeIsNative(SemanticContext* context, TypeInfo* leftTypeInfo, TypeInfo* rightTypeInfo, AstNode* left, AstNode* right);
     bool checkForMissingInitialization(SemanticContext* context, AstVarDecl* node, OverloadFlags overFlags, TypeInfo* concreteNodeType, bool isCompilerConstant);
     bool checkMixAlias(SemanticContext* context, AstVarDecl* node);
     bool checkTypeSuffix(SemanticContext* context, const AstVarDecl* node);
@@ -411,7 +411,7 @@ namespace Semantic
     bool resolveTypeList(SemanticContext* context);
     bool resolveUnaryOp(SemanticContext* context);
     bool resolveUnaryOpExclam(SemanticContext* context, AstNode* child);
-    bool resolveUnaryOpInvert(SemanticContext* context, const AstNode* child);
+    bool resolveUnaryOpInvert(SemanticContext* context, AstNode* child);
     bool resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNode* child);
     bool resolveUnreachable(SemanticContext* context);
     bool resolveUserOp(SemanticContext* context, const Utf8& name, const char* opConst, TypeInfo* opType, AstNode* left, AstNode* right, uint32_t ropFlags = 0);

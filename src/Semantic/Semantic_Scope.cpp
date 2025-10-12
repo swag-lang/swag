@@ -152,7 +152,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         if (!closest.empty())
             err.addNote(closest);
         if (hasEnum[0].first)
-            err.addNote(hasEnum[0].first, hasEnum[0].first->token, Diagnostic::isType(hasEnum[0].first));
+            err.addNote(Diagnostic::isType(hasEnum[0].first));
         err.addNote(Diagnostic::hereIs(hasEnum[0].second->declNode));
         return context->report(err);
     }

@@ -285,16 +285,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
             context->node->is(AstNodeKind::FactorOp))
         {
             const auto left = context->node->firstChild();
-            if (left->is(AstNodeKind::IdentifierRef))
-            {
-                const auto* note = Diagnostic::note(left->lastChild(), Diagnostic::isType(left->lastChild()));
-                notes.push_back(note);
-            }
-            else
-            {
-                const auto* note = Diagnostic::note(left, Diagnostic::isType(left->typeInfo));
-                notes.push_back(note);
-            }
+            notes.push_back(Diagnostic::isType(left));
         }
 
         return context->report(err, notes);

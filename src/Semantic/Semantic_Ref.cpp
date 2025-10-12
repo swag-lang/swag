@@ -39,7 +39,7 @@ bool Semantic::boundCheck(SemanticContext* context, TypeInfo* forType, AstNode* 
     if (idx >= maxCount)
     {
         Diagnostic err{arrayAccess, formErr(Err0500, idx, maxCount - 1)};
-        err.addNote(Diagnostic::hereIs(arrayNode, Diagnostic::isType(forType)));
+        err.addNote(Diagnostic::isType(arrayNode));
         return context->report(err);
     }
     
@@ -174,7 +174,7 @@ bool Semantic::resolveMakePointer(SemanticContext* context)
     if (!symbol)
     {
         Diagnostic err{node, node->token, toErr(Err0154)};
-        err.addNote(child, Diagnostic::isType(typeInfo));
+        err.addNote(Diagnostic::isType(child));
         return context->report(err);
     }
 
@@ -376,7 +376,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (typeInfoArray->totalCount != typeInfoArray->count)
         {
             Diagnostic err{node, node->token, toErr(Err0235)};
-            err.addNote(node->array, Diagnostic::isType(typeInfoArray));
+            err.addNote(Diagnostic::isType(node->array));
             return context->report(err);
         }
 
@@ -404,7 +404,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (!typeVar->isPointerArithmetic())
         {
             Diagnostic err{node, node->token, toErr(Err0228)};
-            err.addNote(node->array, Diagnostic::isType(typeVar));
+            err.addNote(Diagnostic::isType(node->array));
             err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['*']]");
             return context->report(err);
         }
@@ -444,7 +444,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         {
             Diagnostic err{node->token.sourceFile, node->token, formErr(Err0234, node->array->token.cstr(), typeInfo->getDisplayNameC())};
             err.addNote(form("there is an implicit call to [[%s]]", g_LangSpec->name_opSlice.cstr()));
-            err.addNote(node->array, Diagnostic::isType(typeInfo));
+            err.addNote(Diagnostic::isType(node->array));
             return context->report(err);
         }
 
@@ -473,7 +473,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
         if (node->upperBound->computedValue()->reg.u64 > maxBound)
         {
             Diagnostic err{node->upperBound, formErr(Err0502, node->upperBound->computedValue()->reg.u64, maxBound)};
-            err.addNote(Diagnostic::hereIs(node->array, Diagnostic::isType(typeVar)));
+            err.addNote(Diagnostic::isType(node->array));
             return context->report(err);
         }
     }
@@ -499,14 +499,14 @@ bool Semantic::resolveMoveRef(SemanticContext* context)
     if (!typeInfo->isPointer() && !typeInfo->isPointerRef())
     {
         Diagnostic err(node, node->token, formErr(Err0336, front->typeInfo->getDisplayNameC()));
-        err.addNote(front, Diagnostic::isType(front->typeInfo));
+        err.addNote(Diagnostic::isType(front));
         return context->report(err);
     }
 
     if (typeInfo->isConst())
     {
         Diagnostic err(node, node->token, toErr(Err0335));
-        err.addNote(front, Diagnostic::isType(front->typeInfo));
+        err.addNote(Diagnostic::isType(front));
         return context->report(err);
     }
 
@@ -543,7 +543,7 @@ bool Semantic::resolveKeepRef(SemanticContext* context)
             return context->report(err);
         }
 
-        err.addNote(front, Diagnostic::isType(typeInfo));
+        err.addNote(Diagnostic::isType(front));
         err.addNote("the operation is not allowed on a non-pointer type");
         return context->report(err);
     }
@@ -654,7 +654,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
         if (baseType->isConst())
         {
             Diagnostic err{pr2, pr2->token, formErr(Err0093, baseType->getDisplayNameC())};
-            err.addNote(arrayNode->array->token, Diagnostic::isType(baseType));
+            err.addNote(Diagnostic::isType(arrayNode->array));
             return context->report(err);
         }
     }
@@ -691,7 +691,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
             if (typePtr->pointedType->isVoid())
             {
                 Diagnostic err{arrayNode->access, toErr(Err0278)};
-                err.addNote(arrayNode->array, Diagnostic::isType(typePtr));
+                err.addNote(Diagnostic::isType(arrayNode->array));
                 return context->report(err);
             }
 
@@ -710,7 +710,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 if (arrayNode->array->hasComputedValue() && arrayNode->getParent(2)->is(AstNodeKind::MakePointer))
                 {
                     Diagnostic err{arrayNode->getParent(2), arrayNode->getParent(2)->token, formErr(Err0146, arrayType->getDisplayNameC())};
-                    err.addNote(arrayNode->array, Diagnostic::isType(arrayNode->array));
+                    err.addNote(Diagnostic::isType(arrayNode));
                     return context->report(err);
                 }
 
@@ -775,7 +775,7 @@ bool Semantic::resolveArrayPointerRef(SemanticContext* context)
                 }
 
                 Diagnostic err{arrayNode->access, toErr(Err0249)};
-                err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+                err.addNote(Diagnostic::isType(arrayNode->array));
                 return context->report(err);
             }
 
@@ -896,7 +896,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
         }
 
         Diagnostic err{arrayNode->access, toErr(Err0249)};
-        err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+        err.addNote(Diagnostic::isType(arrayNode->array));
         return context->report(err);
     }
 
@@ -942,7 +942,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             if (!arrayType->isPointerArithmetic() && !arrayNode->hasSpecFlag(AstArrayPointerIndex::SPEC_FLAG_IS_DEREF) && !context->forDebugger)
             {
                 Diagnostic err{arrayNode->access, formErr(Err0224, arrayNode->resolvedSymbolName()->name.cstr(), arrayType->getDisplayNameC())};
-                err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+                err.addNote(Diagnostic::isType(arrayNode->array));
                 err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
                 return context->report(err);
             }
@@ -953,7 +953,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
             if (typePtr->pointedType->isVoid())
             {
                 Diagnostic err{arrayNode->access, toErr(Err0278)};
-                err.addNote(arrayNode->array, Diagnostic::isType(typePtr));
+                err.addNote(Diagnostic::isType(arrayNode->array));
                 return context->report(err);
             }
 
@@ -1107,7 +1107,7 @@ bool Semantic::resolveArrayPointerDeRef(SemanticContext* context)
                 YIELD();
                 Diagnostic err{arrayNode->access, formErr(Err0175, arrayNode->array->token.cstr(), arrayType->getDisplayNameC())};
                 err.addNote(form("there is an implicit call to [[%s]]", g_LangSpec->name_opIndex.cstr()));
-                err.addNote(arrayNode->array, Diagnostic::isType(arrayType));
+                err.addNote(Diagnostic::isType(arrayNode->array));
                 return context->report(err);
             }
 

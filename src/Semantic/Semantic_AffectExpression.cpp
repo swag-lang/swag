@@ -56,7 +56,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
         Diagnostic err{mpl, toErr(Err0527)};
-        err.addNote(node, Diagnostic::isType(node->typeInfo));
+        err.addNote(Diagnostic::isType(node));
         err.addNote("a lambda can be converted to a closure type, but not vice versa");
         return context->report(err);
     }
@@ -171,7 +171,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
             if (left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM) && left->typeInfo->isConst())
                 note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, "this is the reference to the immutable value");
             else if (!left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
-                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, "this is the reference to the immutable value"), Diagnostic::isType(left->typeInfo);
+                note = Diagnostic::note(leftId->identifierExtension->fromAlternateVar, "this is the reference to the immutable value");
         }
     }
 
@@ -180,7 +180,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         if (left == left->parent->lastChild())
         {
             Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
-            err.addNote(left, Diagnostic::isType(left->typeInfo));
+            err.addNote(Diagnostic::isType(left));
             err.addNote(note);
             err.addNote("function parameters are immutable and cannot be modified");
             return context->report(err);
@@ -189,13 +189,13 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         if (left->typeInfo->isConstPointerRef())
         {
             Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
-            err.addNote(left, Diagnostic::isType(left->typeInfo));
+            err.addNote(Diagnostic::isType(left));
             err.addNote(note);
             return context->report(err);
         }
 
         Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
-        err.addNote(left, Diagnostic::isType(left->typeInfo));
+        err.addNote(Diagnostic::isType(left));
         err.addNote(note);
         return context->report(err);
     }
@@ -222,9 +222,10 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         }
 
         if (nte.empty())
-            nte = Diagnostic::isType(left);
+            err.addNote(Diagnostic::isType(left));
+        else
+            err.addNote(left, nte);
 
-        err.addNote(left, nte);
         err.addNote(note);
         return context->report(err);
     }
@@ -240,8 +241,9 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     Diagnostic err{node, node->token, toErr(Err0737)};
     if (nte.empty())
-        nte = Diagnostic::isType(left);
-    err.addNote(left, nte);
+        err.addNote(Diagnostic::isType(left));
+    else
+        err.addNote(left, nte);
     return context->report(err);
 }
 
@@ -299,20 +301,20 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                    context->report({node, node->token, formErr(Err0535, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_nodrop.cstr(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0535, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_nodrop.cstr(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                    context->report({node, node->token, formErr(Err0535, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_moveraw.cstr(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0535, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_moveraw.cstr(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                    context->report({node, node->token, formErr(Err0535, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_move.cstr(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0535, leftConcrete->getDisplayNameC(), g_LangSpec->name_sharp_move.cstr(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
         Diagnostic err{node, node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
 
@@ -363,7 +365,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     else if (forTuple)
     {
         Diagnostic err{node, node->token, formErr(Err0599, node->token.cstr())};
-        err.addNote(left, Diagnostic::isType(leftTypeInfo));
+        err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
 
@@ -393,8 +395,8 @@ bool Semantic::resolveAffect(SemanticContext* context)
                             YIELD();
 
                             Diagnostic err{right, formErr(Err0239, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
-                            err.addNote(Diagnostic::isType(rightTypeInfo));
-                            err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                            err.addNote(Diagnostic::isType(right));
+                            err.addNote(Diagnostic::isType(left));
                             err.addNote(node, node->token, form("there is an implicit call to [[%s]] for the type [[%s]]", "opIndexAffect", rightTypeInfo->getDisplayNameC()));
                             return context->report(err);
                         }
@@ -419,8 +421,8 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         if (leftTypeInfo->isTuple())
                         {
                             Diagnostic err{node, node->token, toErr(Err0569)};
-                            err.addNote(left, Diagnostic::isType(leftTypeInfo));
-                            err.addNote(right, Diagnostic::isType(rightTypeInfo));
+                            err.addNote(Diagnostic::isType(left));
+                            err.addNote(Diagnostic::isType(right));
                             return context->report(err);
                         }
 
@@ -521,7 +523,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 if (!leftTypeInfo->isPointerArithmetic())
                 {
                     Diagnostic err{node, node->token, toErr(Err0225)};
-                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    err.addNote(Diagnostic::isType(left));
                     err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
                     return context->report(err);
                 }
@@ -529,7 +531,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                 if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
                 {
                     Diagnostic err{node, node->token, toErr(Err0226)};
-                    err.addNote(left, Diagnostic::isType(leftTypeInfo));
+                    err.addNote(Diagnostic::isType(left));
                     return context->report(err);
                 }
 

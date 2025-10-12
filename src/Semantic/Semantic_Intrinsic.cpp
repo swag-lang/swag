@@ -92,7 +92,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node)
         {
             const auto typePointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
             Diagnostic err{first, formErr(Err0539, first->typeInfo->getDisplayNameC(), realType->getDisplayNameC(), realType->getDisplayNameC(), typePointer->pointedType->getDisplayNameC())};
-            err.addNote(second->token, Diagnostic::isType(realType));
+            err.addNote(second, Diagnostic::isType(realType));
             return context->report(err);
         }
     }

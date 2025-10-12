@@ -29,7 +29,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         case NativeTypeKind::U64:
         {
             Diagnostic err{node, node->token, formErr(Err0217, typeInfo->getDisplayNameC())};
-            err.addNote(child, Diagnostic::isType(typeInfo));
+            err.addNote(Diagnostic::isType(child));
             return context->report(err);
         }
 
@@ -43,7 +43,7 @@ bool Semantic::resolveUnaryOpMinus(SemanticContext* context, AstNode* op, AstNod
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0216, typeInfo->getDisplayNameC())};
-            err.addNote(child, Diagnostic::isType(typeInfo));
+            err.addNote(Diagnostic::isType(child));
             return context->report(err);
         }
     }
@@ -150,7 +150,7 @@ bool Semantic::resolveUnaryOpExclam(SemanticContext* context, AstNode* child)
     return true;
 }
 
-bool Semantic::resolveUnaryOpInvert(SemanticContext* context, const AstNode* child)
+bool Semantic::resolveUnaryOpInvert(SemanticContext* context, AstNode* child)
 {
     const auto node     = context->node;
     const auto typeInfo = TypeManager::concreteType(child->typeInfo);
@@ -177,7 +177,7 @@ bool Semantic::resolveUnaryOpInvert(SemanticContext* context, const AstNode* chi
         default:
         {
             Diagnostic err{node, node->token, formErr(Err0594, typeInfo->getDisplayNameC())};
-            err.addNote(child, Diagnostic::isType(child));
+            err.addNote(Diagnostic::isType(child));
             return context->report(err);
         }
     }

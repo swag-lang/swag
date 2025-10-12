@@ -175,8 +175,7 @@ struct Diagnostic
     static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
     static Utf8        oneLiner(const Utf8& err);
     static Utf8        isType(TypeInfo* typeInfo);
-    static Utf8        isType(const SymbolOverload* overload);
-    static Utf8        isType(const AstNode* node);
+    static Diagnostic* isType(AstNode* node);
     static Diagnostic* hereIs(AstNode* node, const char* msg = nullptr);
     static Diagnostic* hereIs(const SymbolOverload* overload);
 
