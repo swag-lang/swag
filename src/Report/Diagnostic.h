@@ -1,4 +1,6 @@
 #pragma once
+#include "Semantic/Semantic.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/AstNode.h"
 #include "Syntax/Tokenizer/Token.h"
 
@@ -175,7 +177,7 @@ struct Diagnostic
     static void        tokenizeError(const Utf8& err, Vector<Utf8>& tokens);
     static Utf8        oneLiner(const Utf8& err);
     static Utf8        isType(TypeInfo* typeInfo);
-    static Diagnostic* isType(AstNode* node);
+    static Diagnostic* isType(AstNode* node, ToConcreteFlags flags = CONCRETE_NONE);
     static Diagnostic* hereIs(AstNode* node, const char* msg = nullptr);
     static Diagnostic* hereIs(const SymbolOverload* overload);
 

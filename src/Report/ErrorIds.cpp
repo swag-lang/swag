@@ -815,8 +815,7 @@ void initErrors()
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
     
-    SWAG_ERROR(Err0701, "tuple has only [[%u]] fields, but [[%u]] variables were provided                                       $ ");
-    SWAG_ERROR(Err0702, "tuple has [[%u]] fields, but only [[%u]] variables were provided                                       $ ");
+    SWAG_ERROR(Err0701, "cannot unpack%s[[%u]] variables because right tuple has%s[[%u]] fields                                 $ ");
     SWAG_ERROR(Err0703, "array length cannot be inferred, missing initialization                                                $ ");
     SWAG_ERROR(Err0704, "flag [[%s]] value cannot be derived                                                                    $ note: previous value ([[%llu]]) not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
     SWAG_ERROR(Err0705, "generic arguments for %s [[%s]] cannot be determined                                                   $ ");
@@ -903,6 +902,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0702, nullptr);
     SWAG_ERROR(Err0697, nullptr);
     SWAG_ERROR(Err0698, nullptr);
     SWAG_ERROR(Err0167, nullptr);

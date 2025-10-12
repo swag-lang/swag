@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "Report/Diagnostic.h"
 #include "Report/Log.h"
+#include "Semantic/Semantic.h"
 #include "Semantic/Symbol/Symbol.h"
 #include "Semantic/Type/TypeInfo.h"
+#include "Semantic/Type/TypeManager.h"
 #include "Syntax/Ast.h"
 #include "Syntax/AstFlags.h"
 #include "Syntax/Naming.h"
@@ -1080,17 +1082,29 @@ Utf8 Diagnostic::isType(TypeInfo* typeInfo)
     return form("this type is [[%s]]", typeInfo->getDisplayNameC());
 }
 
-Diagnostic* Diagnostic::isType(AstNode* node)
+Diagnostic* Diagnostic::isType(AstNode* node, ToConcreteFlags flags)
 {
     if (!node)
         return nullptr;
 
     Utf8       n;
     const auto overload = node->resolvedSymbolOverload();
-    if (overload && overload->typeInfo)
-        n = form("this %s has type [[%s]]", Naming::kindName(overload).cstr(), overload->typeInfo->getDisplayNameC());
+
+    if (overload && overload->typeInfo && overload->symbol->is(SymbolKind::Function) && flags.has(CONCRETE_FUNC))
+    {
+        const auto typeInfo = TypeManager::concreteType(overload->typeInfo, flags);
+        n                   = form("function return type is [[%s]]", typeInfo->getDisplayNameC());
+    }
+    else if (overload && overload->typeInfo)
+    {
+        const auto typeInfo = TypeManager::concreteType(overload->typeInfo, flags);
+        n                   = form("%s has type [[%s]]", Naming::kindName(overload).cstr(), typeInfo->getDisplayNameC());
+    }
     else if (node->typeInfo)
-        n = form("this type is [[%s]]", node->typeInfo->getDisplayNameC());
+    {
+        const auto typeInfo = TypeManager::concreteType(node->typeInfo, flags);
+        n                   = form("type is [[%s]]", typeInfo->getDisplayNameC());
+    }
     else
         return nullptr;
 

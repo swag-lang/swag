@@ -69,18 +69,18 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
         return context->report(err);
     }
 
-    if (numUnpack < typeStruct->fields.size())
+    if (numUnpack != typeStruct->fields.size())
     {
-        Diagnostic err{varDecl, varDecl->token, formErr(Err0701, numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, form("this tuple has [[%d]] fields", typeStruct->fields.size()));
-        err.addNote("hint: use [[?]] to unpack and discard a variable");
-        return context->report(err);
-    }
-
-    if (numUnpack > typeStruct->fields.size())
-    {
-        Diagnostic err{varDecl, varDecl->token, formErr(Err0702, numUnpack, typeStruct->fields.size())};
-        err.addNote(varDecl->assignment, form("this tuple has [[%d]] fields", typeStruct->fields.size()));
+        const Utf8 leftOnly = numUnpack < typeStruct->fields.size() ? " only " : " ";
+        const Utf8 rightOnly = numUnpack > typeStruct->fields.size() ? " only " : " ";
+        const Utf8 n = formErr(Err0701, leftOnly.cstr(), numUnpack, rightOnly.cstr(), typeStruct->fields.size());
+        
+        Diagnostic err{varDecl, varDecl->token, n};
+        
+        err.addNote(Diagnostic::isType(varDecl->assignment, CONCRETE_ALL));
+        if (numUnpack < typeStruct->fields.size())
+            err.addNote("hint: use [[?]] to unpack and discard a variable");
+        
         return context->report(err);
     }
 

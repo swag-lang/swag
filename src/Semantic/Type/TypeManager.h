@@ -63,6 +63,7 @@ constexpr CastFlagsResult CAST_RESULT_CONST_COERCE        = 0x00000400;
 constexpr CastFlagsResult CAST_RESULT_FORCE_POINTER       = 0x00000800;
 constexpr CastFlagsResult CAST_RESULT_FORCE_ITF           = 0x00001000;
 
+constexpr ToConcreteFlags CONCRETE_NONE        = 0x00000000;
 constexpr ToConcreteFlags CONCRETE_ALL         = 0xFFFFFFFF;
 constexpr ToConcreteFlags CONCRETE_ENUM        = 0x00000001;
 constexpr ToConcreteFlags CONCRETE_FUNC        = 0x00000002;
