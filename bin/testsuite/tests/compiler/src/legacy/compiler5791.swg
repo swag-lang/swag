@@ -25,7 +25,8 @@ func compareLeft(src, dst: const [..] u8)->s32
             return 1
 
         //ai, bi += 1
-        csrc, cdst -= 1
+        if csrc do csrc -= 1
+        if cdst do cdst -= 1
     }
 
     return 0
