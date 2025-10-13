@@ -523,6 +523,7 @@ void initErrors()
     SWAG_ERROR(Err0401, "match variable only valid in [[interface]] or [[any]] [[switch]], not [[%s]]                           $ ");
     SWAG_ERROR(Err0402, "move reference [[&&]] only valid in function parameters                                                $ ");
     SWAG_ERROR(Err0403, "range used in [[switch]] without expression                                                            $ ");
+    SWAG_ERROR(Err0404, "statement starting with [[.]] only allowed in [[with]] or [[mtd]]                                      $ hint: use [[me.field]] or wrap the expression in [[with]]");
     SWAG_ERROR(Err0405, "[[%s]] outside corresponding [[impl]] block                                                            $ ");
     SWAG_ERROR(Err0406, "[[%s]] outside corresponding [[impl]] block                                                            $ note: [[impl for]] is only allowed for interface implementations");
     SWAG_ERROR(Err0407, "top-level [[using]] appears after declarations                                                         $ ");
@@ -783,11 +784,12 @@ void initErrors()
     SWAG_ERROR(Err0666, "[[%s]] not recognized as valid [[#global]] instruction                                                 $ ");
     SWAG_ERROR(Err0667, "[[mtd]] lambda missing capture parameters                                                              $ hint: use [[func]] or declare captures between [[|...|]]");
     SWAG_ERROR(Err0668, "UFCS type [[%s]] incompatible                                                                          $ ");
+    
     SWAG_ERROR(Err0669, "type [[%s]] cannot be visited                                                                          $ note: missing [[opVisit]] implementation");
     SWAG_ERROR(Err0670, "visit specialization [[%s]] not found in [[%s]]                                                        $ ");
     SWAG_ERROR(Err0671, "attribute [[%s]] not found                                                                             $ ");
     SWAG_ERROR(Err0672, "attribute [[%s]] not found in [[%s]]                                                                   $ ");
-    SWAG_ERROR(Err0673, "[[%s]] not recognized as compiler instruction                                                          $ note: compiler instructions must begin with [['#']]");
+    SWAG_ERROR(Err0673, "[[%s]] not recognized as a compiler instruction                                                        $ ");
     SWAG_ERROR(Err0674, "enum [[%s]] not found                                                                                  $ ");
     SWAG_ERROR(Err0675, "enum value [[%s]] not found in [[%s]]                                                                  $ ");
     SWAG_ERROR(Err0676, "[['%c']] not recognized as valid escape code                                                           $ ");
@@ -795,22 +797,20 @@ void initErrors()
     SWAG_ERROR(Err0678, "file [[\"%s\"]] not found                                                                              $ ");
     SWAG_ERROR(Err0679, "function [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0680, "function [[%s]] not found in [[%s]]                                                                    $ ");
-    SWAG_ERROR(Err0404, "statement starting with [[.]] only allowed in [[with]] or [[mtd]]                                      $ hint: use [[me.field]] or wrap the expression in [[with]]");
-    SWAG_ERROR(Err0681, "shorthand [[%s]] unresolved: no [[enum]], [[with]], or [[mtd]] context                                 $ ");
+    SWAG_ERROR(Err0681, "shorthand [[%s]] unresolved, no [[enum]], [[with]], or [[mtd]] context                                 $ ");
     SWAG_ERROR(Err0682, "identifier [[%s]] not found                                                                            $ ");
     SWAG_ERROR(Err0683, "identifier [[%s]] not found in [[%s]] or %s [[%s]]                                                     $ ");
     SWAG_ERROR(Err0684, "identifier [[%s]] not found in tuple                                                                   $ ");
     SWAG_ERROR(Err0685, "function [[%s]] not found in [[%s]]                                                                    $ ");
-    SWAG_ERROR(Err0686, "[[%s]] not recognized as valid intrinsic                                                               $ ");
+    SWAG_ERROR(Err0686, "[[%s]] not recognized as a valid intrinsic                                                             $ ");
     SWAG_ERROR(Err0687, "scope label [[%s]] not found                                                                           $ ");
     SWAG_ERROR(Err0688, "method [[%s]] not found in [[%s]]                                                                      $ ");
     SWAG_ERROR(Err0689, "named argument [[%s]] not found                                                                        $ ");
-    SWAG_ERROR(Err0690, "[[%s]] not recognized as compiler pass                                                                 $ ");
+    SWAG_ERROR(Err0690, "[[%s]] not recognized as a valid compiler pass                                                         $ ");
     SWAG_ERROR(Err0691, "struct member [[%s]] not found                                                                         $ ");
     SWAG_ERROR(Err0692, "struct [[%s]] not found                                                                                $ ");
     SWAG_ERROR(Err0693, "struct [[%s]] not found in [[%s]]                                                                      $ ");
     SWAG_ERROR(Err0694, "type [[%s]] not found                                                                                  $ ");
-    
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0701, "cannot unpack%s[[%u]] variables because right tuple has%s[[%u]] fields                                 $ ");

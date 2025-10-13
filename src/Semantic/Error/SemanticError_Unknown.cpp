@@ -66,7 +66,8 @@ namespace
         }
         else if (typeWhere->isStruct() && identifier->token.is(g_LangSpec->name_opVisit))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0669, typeWhere->getDisplayNameC())};
+            const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::ForEach), AstNodeKind::ForEach);
+            err = new Diagnostic{visitNode->expression, formErr(Err0669, typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->token.text.startsWith(g_LangSpec->name_opVisit))
         {
