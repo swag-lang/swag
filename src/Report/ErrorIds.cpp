@@ -781,10 +781,9 @@ void initErrors()
     SWAG_ERROR(Err0663, "type declaration not allowed after [[me]]                                                              $ note: [[me]] is implicitly typed");
     SWAG_ERROR(Err0664, "type declaration not allowed after unnamed parameter                                                   $ ");
     SWAG_ERROR(Err0665, "invalid type suffix after %s                                                                           $ ");
-    SWAG_ERROR(Err0666, "[[%s]] not recognized as valid [[#global]] instruction                                                 $ ");
-    SWAG_ERROR(Err0667, "[[mtd]] lambda missing capture parameters                                                              $ hint: use [[func]] or declare captures between [[|...|]]");
-    SWAG_ERROR(Err0668, "UFCS type [[%s]] incompatible                                                                          $ ");
     
+    SWAG_ERROR(Err0666, "[[%s]] not recognized as valid [[#global]] instruction                                                 $ ");
+    SWAG_ERROR(Err0667, "[[mtd]] lambda missing capture parameters                                                              $ note: [[mtd]] lambdas require a capture list between [[||]] $ hint: use [[func]] instead of [[mtd]] or declare the capture list between [[||]]");
     SWAG_ERROR(Err0669, "type [[%s]] cannot be visited                                                                          $ note: missing [[opVisit]] implementation");
     SWAG_ERROR(Err0670, "visit specialization [[%s]] not found in [[%s]]                                                        $ ");
     SWAG_ERROR(Err0671, "attribute [[%s]] not found                                                                             $ ");
@@ -902,6 +901,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0695, nullptr);
     SWAG_ERROR(Err0696, nullptr);
     SWAG_ERROR(Err0702, nullptr);

@@ -298,12 +298,19 @@ bool AstNode::isFctWithMe() const
 {
     if (isNot(AstNodeKind::FuncDecl))
         return false;
-    const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
-    if (funcDecl->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+    if (isMethod())
         return true;
+    const auto funcDecl = castAst<AstFuncDecl>(this, AstNodeKind::FuncDecl);
     return funcDecl->parameters &&
            funcDecl->parameters->childCount() >= 1 &&
            funcDecl->parameters->firstChild()->token.is(g_LangSpec->name_me);
+}
+
+bool AstNode::isMethod() const
+{
+    if (isNot(AstNodeKind::FuncDecl))
+        return false;
+    return hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD);
 }
 
 bool AstNode::isEmptyFct() const

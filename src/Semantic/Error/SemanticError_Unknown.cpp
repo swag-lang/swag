@@ -67,7 +67,7 @@ namespace
         else if (typeWhere->isStruct() && identifier->token.is(g_LangSpec->name_opVisit))
         {
             const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::ForEach), AstNodeKind::ForEach);
-            err = new Diagnostic{visitNode->expression, formErr(Err0669, typeWhere->getDisplayNameC())};
+            err                  = new Diagnostic{visitNode->expression, formErr(Err0669, typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->token.text.startsWith(g_LangSpec->name_opVisit))
         {
@@ -160,7 +160,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         job->setPending(JobWaitKind::UnknownSymbol, nullptr, identifier, nullptr);
         return true;
     }
-    
+
     // What kind of thing to we search for?
     const auto pr1       = identifier->getParent(1);
     const auto pr2       = identifier->getParent(2);
@@ -262,7 +262,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
         case IdentifierSearchFor::Variable:
             if (identifier->token.text == g_LangSpec->name_me &&
                 identifier->ownerFct &&
-                !identifier->ownerFct->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD) &&
+                !identifier->ownerFct->isMethod() &&
                 !identifier->ownerFct->hasAttribute(ATTRIBUTE_SHARP_FUNC) &&
                 identifier->ownerStructScope)
             {

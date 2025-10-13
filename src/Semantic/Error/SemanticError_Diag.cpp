@@ -323,14 +323,15 @@ namespace
             err            = new Diagnostic{callParamNode, callParamNode->token, msg};
         }
         else if (bi.badSignatureParameterIdx == 0 &&
-                 errorParam.oneTry->overload->node->is(AstNodeKind::FuncDecl) &&
                  !bi.badSignatureGivenType->isPointerTo(TypeInfoKind::Struct) &&
-                 errorParam.oneTry->overload->node->hasSpecFlag(AstFuncDecl::SPEC_FLAG_METHOD))
+                 errorParam.oneTry->overload->node->isMethod())
         {
-            err             = new Diagnostic{callParamNode, formErr(Err0668, bi.badSignatureRequestedType->getDisplayNameC())};
-            const auto n    = form("function [[%s]] is a method and should be called with a pointer to [[%s]] as a first argument", errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
+            auto n          = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            err             = new Diagnostic{callParamNode, n};
+            n               = form("[[%s]] is a method, call it with a pointer to [[%s]] as a first argument", errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
             const auto note = Diagnostic::note(context->node, context->node->token, n);
             errorParam.addNote(note);
+            errorParam.addNote(Diagnostic::note("could [[me]] be missing?"));
             addCastErrorMsg = false;
         }
         else
