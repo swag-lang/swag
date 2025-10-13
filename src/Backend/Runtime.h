@@ -7,15 +7,25 @@ struct ExportedTypeInfo;
 // MUST BE IN SYNC IN BOOTSTRAP.SWG
 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-enum class OptimizeWhat : uint16_t
+enum class OptimizeWhat : uint32_t
 {
-    ByteCode = 0x0001,
-    Backend  = 0x0002,
-    None     = 0x0000,
-    All      = 0xFFFF,
+    ByteCode = 0x00000001,
+    Backend  = 0x00000002,
+    None     = 0x00000000,
+    All      = 0xFFFFFFFF,
 };
 
 using OptimizeWhatFlags = EnumFlags<OptimizeWhat>;
+
+enum class MatchWhat : uint32_t
+{
+    Where = 0x00000001,
+    Me    = 0x00000002,
+    None  = 0x00000000,
+    All   = 0xFFFFFFFF,
+};
+
+using MatchWhatFlags = EnumFlags<MatchWhat>;
 
 enum class SafetyContext
 {

@@ -184,12 +184,12 @@ namespace Swag
     attr Safety(context: SafetyContext, what: SafetyWhat, value: bool)
 
     #[Swag.EnumFlags]
-    enum OptimizeWhat: u16
+    enum OptimizeWhat: u32
     {
-        ByteCode = 0x0001
-        Backend  = 0x0002
-        None     = 0x0000
-        All      = 0xFFFF
+        ByteCode = 0x00000001
+        Backend  = 0x00000002
+        None     = 0x00000000
+        All      = 0xFFFFFFFF
     }
 
     // Enable/Disable a given function optimization.
@@ -218,8 +218,17 @@ namespace Swag
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File), AttrMulti]
     attr Warning(what: string, level: WarningLevel)
 
+    #[Swag.EnumFlags]
+    enum MatchWhat: u32
+    {
+        Where = 0x00000001
+        Me    = 0x00000002
+        None  = 0x00000000
+        All   = 0xFFFFFFFF
+    }
+
     #[AttrUsage(AttributeUsage.All)]
-    attr Match(what: string, value: bool)
+    attr Match(what: MatchWhat, value: bool)
 
     attr Strict()
     attr Global()

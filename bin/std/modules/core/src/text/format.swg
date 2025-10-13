@@ -8,7 +8,7 @@ func checkFormat(fct: string, fmt: string, values: ...)
     let cptPercent = countPercent(fmt)
     if cptPercent != @countof(values)
     {
-        #[Match("where", false)]
+        #[Match(.Where, false)]
         let str = toString("bad number of arguments to [[%]] ([[%]] requested, [[%]] provided)", fct, cptPercent, @countof(values))
         @compilererror(str, #location(values))
     }
@@ -50,7 +50,7 @@ func replaceString(dest: *String, fmt: string, values: ...)
     buf.allocator = dest.allocator
     buf.setFirstBucket(@mkslice(dest.buffer, dest.capacity))
 
-    #[Match("where", false)]
+    #[Match(.Where, false)]
     append(&buf, fmt, values)
 
     buf.makeLinear()
@@ -83,7 +83,7 @@ func toString(fmt: string, values: ...)->String
 {
     var buf: ConcatBuffer
 
-    #[Match("where", false)]
+    #[Match(.Where, false)]
     append(&buf, fmt, values)
 
     return buf.toString()
@@ -101,7 +101,7 @@ func toStringTemp(fmt: string, values: ...)->string
 {
     var buf: ConcatBuffer
 
-    #[Match("where", false)]
+    #[Match(.Where, false)]
     append(&buf, fmt, values)
 
     let str = buf.toString(@getcontext().tempAllocator)

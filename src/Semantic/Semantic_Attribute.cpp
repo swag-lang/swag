@@ -519,39 +519,22 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                     auto attrValue = attr->getValue(g_LangSpec->name_value);
                     SWAG_ASSERT(attrValue);
 
-                    auto attrWhat = &attrParam->value;
-                    auto text     = attrWhat->text;
-                    text.trim();
-                    Utf8::tokenize(text, '|', what);
-
-                    if (text.empty())
+                    const auto whatF  = static_cast<MatchWhat>(attrParam->value.reg.u32);
+                    const auto whatFl = static_cast<MatchWhatFlags>(whatF);
+                    if (whatFl.has(MatchWhat::Where))
                     {
-                        flags.remove(ATTRIBUTE_MATCH_MASK);
                         if (!attrValue->reg.b)
-                            flags.add(ATTRIBUTE_MATCH_WHERE_OFF | ATTRIBUTE_MATCH_ME_OFF);
+                            flags.add(ATTRIBUTE_MATCH_WHERE_OFF);
+                        else
+                            flags.remove(ATTRIBUTE_MATCH_WHERE_OFF);
                     }
 
-                    for (auto& w : what)
+                    if (whatFl.has(MatchWhat::Me))
                     {
-                        w.trim();
-                        if (w == g_LangSpec->name_where)
-                        {
-                            if (!attrValue->reg.b)
-                                flags.add(ATTRIBUTE_MATCH_WHERE_OFF);
-                            else
-                                flags.remove(ATTRIBUTE_MATCH_WHERE_OFF);
-                        }
-                        else if (w == g_LangSpec->name_me)
-                        {
-                            if (!attrValue->reg.b)
-                                flags.add(ATTRIBUTE_MATCH_ME_OFF);
-                            else
-                                flags.remove(ATTRIBUTE_MATCH_ME_OFF);
-                        }
+                        if (!attrValue->reg.b)
+                            flags.add(ATTRIBUTE_MATCH_ME_OFF);
                         else
-                        {
-                            return context->report({child, attrParam->token, formErr(Err0696, w.cstr())});
-                        }
+                            flags.remove(ATTRIBUTE_MATCH_ME_OFF);
                     }
                 }
             }

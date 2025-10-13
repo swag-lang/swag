@@ -811,7 +811,6 @@ void initErrors()
     SWAG_ERROR(Err0693, "struct [[%s]] not found in [[%s]]                                                                      $ ");
     SWAG_ERROR(Err0694, "type [[%s]] not found                                                                                  $ ");
     SWAG_ERROR(Err0695, "[[\"%s\"]] not valid [[#[Swag.ExportType]]]                                                            $ hint: use [[\"methods\"]] or [[\"nozero\"]]");
-    SWAG_ERROR(Err0696, "[[\"%s\"]] is not a valid [[#[Swag.Match]]] value                                                      $ hint: use [[\"where\"]] or [[\"me\"]]");
     
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
@@ -902,6 +901,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0696, nullptr);
     SWAG_ERROR(Err0702, nullptr);
     SWAG_ERROR(Err0697, nullptr);
     SWAG_ERROR(Err0698, nullptr);

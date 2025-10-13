@@ -8,7 +8,7 @@ func toto(x: string)
 {
     G += 1
 
-    #[Match("me|where", false)]
+    #[Match(.Me|.Where, false)]
     toto(x)
 }
 
