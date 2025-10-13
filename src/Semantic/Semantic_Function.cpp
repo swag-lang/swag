@@ -1516,7 +1516,7 @@ bool Semantic::resolveReturn(SemanticContext* context)
         if (Parser::isGeneratedName(funcNode->token.text))
             msg = formErr(Err0657, concreteType->getDisplayNameC());
         else
-            msg = formErr(Err0658, funcNode->token.cstr(), concreteType->getDisplayNameC());
+            msg = formErr(Err0658, concreteType->getDisplayNameC(), funcNode->token.cstr());
 
         Diagnostic err{child, msg};
 
@@ -1568,8 +1568,8 @@ bool Semantic::resolveReturn(SemanticContext* context)
             if (nodeErr->is(AstNodeKind::FuncDeclType) && !funcNode->returnType->children.empty())
                 nodeErr = funcNode->returnType->firstChild();
             PushErrCxtStep ec{context, nodeErr, ErrCxtStepKind::Note, [returnType] {
-                return form("the type [[%s]] is expected because of the function's return type", returnType->getDisplayNameC());
-            }};
+                                  return form("the type [[%s]] is expected because of the function's return type", returnType->getDisplayNameC());
+                              }};
             SWAG_CHECK(TypeManager::makeCompatibles(context, returnType, nullptr, child, castFlags));
             YIELD();
         }

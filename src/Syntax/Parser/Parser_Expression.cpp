@@ -36,13 +36,13 @@ bool Parser::doLiteral(AstNode* parent, AstNode** result)
             {
                 case TokenId::KwdTrue:
                 case TokenId::KwdFalse:
-                    return error(tokenParse, formErr(Err0665, "[[bool]] literals"));
+                    return error(tokenParse, formErr(Err0665, "on [[bool]] literal"));
                 case TokenId::LiteralString:
-                    return error(tokenParse, formErr(Err0665, "[[string]] literals"));
+                    return error(tokenParse, formErr(Err0665, "on [[string]] literal"));
                 case TokenId::KwdNull:
-                    return error(tokenParse, formErr(Err0665, "[[null]]"));
+                    return error(tokenParse, formErr(Err0665, "on [[null]]"));
                 default:
-                    return error(tokenParse, formErr(Err0665, "that kind of literal"));
+                    return error(tokenParse, formErr(Err0665, "for that kind of literal"));
             }
         }
     }

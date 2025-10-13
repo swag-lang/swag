@@ -324,8 +324,7 @@ bool Parser::doFuncDeclParameter(AstNode* parent, bool acceptMissingType, bool* 
         {
             if (unnamedTokens.size() == parent->childCount())
             {
-                Diagnostic err{sourceFile, tokenParse, toErr(Err0664)};
-                err.addNote(unnamedTokens.back(), "unnamed parameters ([['?']]) cannot have an explicit type");
+                const Diagnostic err{sourceFile, tokenParse, toErr(Err0664)};
                 return context->report(err);
             }
 

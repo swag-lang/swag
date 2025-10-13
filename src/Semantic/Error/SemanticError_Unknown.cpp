@@ -214,15 +214,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     {
         err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0646, identifier->token.cstr())};
         if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], "this scope is unexpected"));
-        return context->report(*err, notes);
-    }
-
-    if (identifierRef->previousScope && identifier->token.text[0] == '#')
-    {
-        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0628, identifier->token.cstr())};
-        if (identifier->childParentIdx())
-            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], "this scope is unexpected"));
+            notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], "this scope is not allowed here"));
         return context->report(*err, notes);
     }
 

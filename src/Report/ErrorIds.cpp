@@ -743,7 +743,6 @@ void initErrors()
     SWAG_ERROR(Err0625, "invalid binary digit $$TKN$$                                                                           $ note: binary literals may only contain [[0]] or [[1]]");
     SWAG_ERROR(Err0626, "invalid character [['%s']]                                                                             $ ");
     SWAG_ERROR(Err0627, "[['==']] not allowed here                                                                              $ hint: use [['=']] for assignment");
-    SWAG_ERROR(Err0628, "compiler instruction cannot have a scope                                                               $ note: compiler instructions must not be scoped");
     SWAG_ERROR(Err0629, "default values not allowed for variadic parameters                                                     $ ");
     SWAG_ERROR(Err0630, "missing embedded instruction or curly block, got $$TKN$$                                               $ ");
     SWAG_ERROR(Err0631, "missing embedded instruction, got $$TKN$$                                                              $ ");
@@ -758,30 +757,30 @@ void initErrors()
     SWAG_ERROR(Err0640, "generic parameters not allowed in [[%s]]                                                               $ ");
     SWAG_ERROR(Err0641, "generic parameters not allowed in [[%s]]: marked [[#[Swag.NotGeneric]]]                                $ ");
     SWAG_ERROR(Err0642, "generic parameters not allowed in interface function                                                   $ ");
+
     SWAG_ERROR(Err0643, "invalid hexadecimal digit $$TKN$$                                                                      $ note: hexadecimal digits must be [[0-9]], [[A-F]], or [[a-f]]");
     SWAG_ERROR(Err0644, "consecutive identifiers not allowed                                                                    $ ");
-    SWAG_ERROR(Err0645, "identifier [[%s]] invalid at file level                                                                $ note: only mixin function calls are allowed at the top level");
-    SWAG_ERROR(Err0646, "intrinsic cannot have a scope                                                                          $ note: intrinsics must not define a scope");
-    SWAG_ERROR(Err0647, "modifier [[%s]] invalid for [[%s]]                                                                     $ ");
-    SWAG_ERROR(Err0648, "parameter name not allowed in lambda type declaration                                                  $ hint: remove the parameter name");
-    SWAG_ERROR(Err0649, "[[foreach]] allows maximum [[2]] alias names, got [[%u]]                                               $ ");
-    SWAG_ERROR(Err0650, "invalid number prefix 0$$TKN$$                                                                         $ hint: use [[0x]] for hexadecimal or [[0b]] for binary literals");
-    SWAG_ERROR(Err0651, "invalid parameter name, got $$TKN$$                                                                    $ ");
-    SWAG_ERROR(Err0652, "compiler %s cannot have parameters                                                                     $ hint: replace with [[{]] to start a block");
-    SWAG_ERROR(Err0653, "[[#[Swag.CalleeReturn]]] function cannot declare return value                                          $ ");
-    SWAG_ERROR(Err0654, "%s cannot return a value                                                                               $ ");
-    SWAG_ERROR(Err0655, "missing [[->]] before $$TKN$$ in return type                                                           $ ");
-    SWAG_ERROR(Err0656, "[[->]] expected but got $$TKN$$ in return type                                                         $ ");
-    SWAG_ERROR(Err0657, "return type [[%s]] not allowed                                                                         $ ");
-    SWAG_ERROR(Err0658, "[[%s]] has invalid return type [[%s]]                                                                  $ ");
+    SWAG_ERROR(Err0645, "identifier [[%s]] not allowed at file level                                                            $ note: only mixin function calls are allowed at the top level");
+    SWAG_ERROR(Err0646, "intrinsic cannot have a scope qualifier                                                                $ ");
+    SWAG_ERROR(Err0647, "instruction modifier [[%s]] invalid for [[%s]]                                                         $ ");
+    SWAG_ERROR(Err0648, "parameter name not allowed in lambda type declaration                                                  $ note: lambda type declarations only specify parameter types, not names $ hint: remove the parameter name");
+    SWAG_ERROR(Err0649, "invalid number of [[foreach]] alias names                                                              $ [[foreach]] allows a maximum of [[2]] alias names, got [[%u]] $ note: valid forms are [[foreach value in expr]] or [[foreach value, index in expr]]");
+    SWAG_ERROR(Err0650, "invalid number prefix [[0]]$$TKN$$                                                                     $ note: valid numeric prefixes are [[0x]] for hexadecimal or [[0b]] for binary");    
+    SWAG_ERROR(Err0651, "invalid parameter name ($$TKN$$)                                                                       $ ");
+    SWAG_ERROR(Err0652, "unexpected parameters                                                                                  $ note: a %s cannot have parameters $ hint: replace [[(]] with [[{]] to start the block");
+    SWAG_ERROR(Err0653, "unexpected return type                                                                                 $ note: a function with the [[#[Swag.CalleeReturn]]] attribute cannot declare a return type");
+    SWAG_ERROR(Err0654, "unexpected return value                                                                                $ note: a %s cannot return a value");
+    SWAG_ERROR(Err0655, "invalid return type                                                                                    $ hint: missing [[->]] before $$TKN$$");
+    SWAG_ERROR(Err0656, "invalid return type, expected [[->]] but got $$TKN$$                                                   $ ");
+    SWAG_ERROR(Err0657, "return type [[%s]] not allowed                                                                         $ note: function has no declared return type");
+    SWAG_ERROR(Err0658, "return type [[%s]] not allowed for function [[%s]]                                                     $ note: function has no declared return type");
     SWAG_ERROR(Err0659, "invalid symbol [['%s']] after %s                                                                       $ ");
-    SWAG_ERROR(Err0660, "invalid variable name or [[?]], got $$TKN$$                                                            $ ");
-    SWAG_ERROR(Err0661, "declaration cannot begin with a type                                                                   $ ");
-    SWAG_ERROR(Err0662, "type alias not allowed as [[impl]] block name                                                          $ hint: use the direct type name instead");
+    SWAG_ERROR(Err0660, "invalid variable name ($$TKN$$)                                                                        $ note: tuple unpacking requires valid identifiers or [[?]] $ hint: replace with a variable name or [[?]] if the value should be ignored");
+    SWAG_ERROR(Err0661, "declaration cannot begin with a type                                                                   $ note: variable declarations must start with [[var]], [[let]], or [[const]]");
+    SWAG_ERROR(Err0662, "type alias not allowed as [[impl]] block name                                                          $ note: an [[impl]] block must reference a concrete type, not an alias $ hint: use the original type name instead of the alias");
     SWAG_ERROR(Err0663, "type declaration not allowed after [[me]]                                                              $ note: [[me]] is implicitly typed");
-    SWAG_ERROR(Err0664, "type declaration not allowed after unnamed parameter                                                   $ ");
-    SWAG_ERROR(Err0665, "invalid type suffix after %s                                                                           $ ");
-    
+    SWAG_ERROR(Err0664, "type declaration not allowed after unnamed parameter                                                   $ note: unnamed parameters ([['?']]) cannot have an explicit type $ hint: give the parameter a name or remove the type annotation");
+    SWAG_ERROR(Err0665, "invalid type suffix %s                                                                                 $ note: type suffixes are allowed only on [[integer]], [[float]], or [[character]] literals");
     SWAG_ERROR(Err0666, "[[%s]] not recognized as valid [[#global]] instruction                                                 $ ");
     SWAG_ERROR(Err0667, "[[mtd]] lambda missing capture parameters                                                              $ note: [[mtd]] lambdas require a capture list between [[||]] $ hint: use [[func]] instead of [[mtd]] or declare the capture list between [[||]]");
     SWAG_ERROR(Err0669, "type [[%s]] cannot be visited                                                                          $ note: missing [[opVisit]] implementation");
@@ -901,6 +900,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0628, nullptr);
     SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0695, nullptr);
     SWAG_ERROR(Err0696, nullptr);

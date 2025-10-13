@@ -203,6 +203,7 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
 
     addArticle(replace, "after", "the", "the");
     addArticle(replace, "before", "the", "the");
+    addArticle(replace, "replace", "the", "the");
 
     replace.replace("$$A$$ ", "");
     replace.replace("$$AN$$ ", "");
@@ -284,6 +285,8 @@ Utf8 Diagnostic::replaceHighLight(const Utf8& textMsg)
                     replace += " $$A$$ right square bracket [[']']]";
                 else if (inside == '_')
                     replace += " $$AN$$ underscore [['_']]";
+                else if (inside == '?')
+                    replace += " $$A$$ question mark [['?']]";                
                 else
                 {
                     replace += " $$A$$ symbol [['";
