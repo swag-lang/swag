@@ -814,7 +814,7 @@ void initErrors()
     SWAG_ERROR(Err0696, "[[\"%s\"]] is not a valid [[#[Swag.Match]]] value                                                      $ hint: use [[\"where\"]] or [[\"me\"]]");
     
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
-   SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                     $ ");
+    SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0701, "cannot unpack%s[[%u]] variables because right tuple has%s[[%u]] fields                                 $ ");
     SWAG_ERROR(Err0703, "array length cannot be inferred, missing initialization                                                $ ");
     SWAG_ERROR(Err0704, "flag [[%s]] value cannot be deduced from the previous value                                            $ note: previous value ([[%llu]]) is not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
