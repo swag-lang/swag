@@ -827,8 +827,8 @@ void initErrors()
     SWAG_ERROR(Err0711, "return value of function [[%s]] cannot be ignored                                                      $ hint: use [[discard]] to explicitly ignore the return value if intentional");
     SWAG_ERROR(Err0712, "return value of intrinsic [[%s]] value cannot be ignored                                               $ ");
     SWAG_ERROR(Err0713, "return value of lambda [[%s]] cannot be ignored                                                        $ hint: use [[discard]] to explicitly ignore the return value if intentional");
-    SWAG_ERROR(Err0786, "[[%s]] used incorrectly with arguments                                                                 $ hint: [[%s]] is a value, not a function call; remove [['(']]");
-
+    SWAG_ERROR(Err0786, "[[%s]] used incorrectly with arguments                                                                 $ hint: [[%s]] is a value, not a function call, remove the parentheses");
+    
     SWAG_ERROR(Err0714, "[[#import]] location already defined                                                                   $ ");
     SWAG_ERROR(Err0715, "module [[%s]] location already defined as [[%s]]                                                       $ ");
     SWAG_ERROR(Err0716, "[[#import]] version already defined                                                                    $ ");
