@@ -1,4 +1,4 @@
-#[Swag.ExportType("methods")]
+#[Swag.ExportType(.Methods)]
 struct X
 {
     x:   s32

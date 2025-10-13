@@ -810,7 +810,6 @@ void initErrors()
     SWAG_ERROR(Err0692, "struct [[%s]] not found                                                                                $ ");
     SWAG_ERROR(Err0693, "struct [[%s]] not found in [[%s]]                                                                      $ ");
     SWAG_ERROR(Err0694, "type [[%s]] not found                                                                                  $ ");
-    SWAG_ERROR(Err0695, "[[\"%s\"]] not valid [[#[Swag.ExportType]]]                                                            $ hint: use [[\"methods\"]] or [[\"nozero\"]]");
     
     SWAG_ERROR(Err0699, "variable [[%s]] not found                                                                              $ ");
     SWAG_ERROR(Err0700, "variable [[%s]] not found in [[%s]]                                                                    $ ");
@@ -827,6 +826,8 @@ void initErrors()
     SWAG_ERROR(Err0712, "return value of intrinsic [[%s]] value cannot be ignored                                               $ ");
     SWAG_ERROR(Err0713, "return value of lambda [[%s]] cannot be ignored                                                        $ hint: use [[discard]] to explicitly ignore the return value if intentional");
     SWAG_ERROR(Err0786, "[[%s]] used incorrectly with arguments                                                                 $ hint: [[%s]] is a value, not a function call, remove the parentheses");
+
+    // Following errors do not have a dedicated test
     
     SWAG_ERROR(Err0714, "[[#import]] location already defined                                                                   $ ");
     SWAG_ERROR(Err0715, "module [[%s]] location already defined as [[%s]]                                                       $ ");
@@ -901,6 +902,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, got $$TKN$$                                            $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0695, nullptr);
     SWAG_ERROR(Err0696, nullptr);
     SWAG_ERROR(Err0702, nullptr);
     SWAG_ERROR(Err0697, nullptr);

@@ -51,7 +51,7 @@ bool FormatAst::outputStructDecl(FormatContext& context, AstStruct* node)
         if (typeStruct->hasFlag(TYPEINFO_STRUCT_HAS_INIT_VALUES))
         {
             concat->addIndent(context.indent);
-            concat->addString("#[ExportType(\"nozero\")]");
+            concat->addString("#[ExportType(.NoZero)]");
             concat->addEol();
         }
     }

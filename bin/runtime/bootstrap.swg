@@ -141,8 +141,17 @@ namespace Swag
     #[AttrUsage(AttributeUsage.Enum)]
     attr Incomplete()
 
+    #[Swag.EnumFlags]
+    enum ExportWhat: u32
+    {
+        Methods = 0x00000001
+        NoZero  = 0x00000002
+        None    = 0x00000000
+        All     = 0xFFFFFFFF
+    }
+
     #[AttrUsage(AttributeUsage.Struct)]
-    attr ExportType(what: string)
+    attr ExportType(what: ExportWhat)
 
     // Do not generate documentation.
     #[AttrUsage(AttributeUsage.All | AttributeUsage.File)]

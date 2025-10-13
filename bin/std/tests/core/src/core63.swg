@@ -1,6 +1,6 @@
 using Core.Reflection
 
-#[Swag.ExportType("methods")]
+#[Swag.ExportType(.Methods)]
 struct X {}
 
 impl X

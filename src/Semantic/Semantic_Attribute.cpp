@@ -408,23 +408,17 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             {
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_ExportType, g_LangSpec->name_what);
                 SWAG_ASSERT(attrParam);
-                auto attrWhat = &attrParam->value;
-                auto text     = attrWhat->text;
-                text.trim();
-                Vector<Utf8> what;
-                Utf8::tokenize(text, '|', what);
 
-                for (auto& w : what)
+                const auto whatF  = static_cast<ExportWhat>(attrParam->value.reg.u32);
+                const auto whatFl = static_cast<ExportWhatFlags>(whatF);
+                if (whatFl.has(ExportWhat::Methods))
                 {
-                    w.trim();
-                    if (w == g_LangSpec->name_methods)
-                        flags.add(ATTRIBUTE_EXPORT_TYPE_METHODS);
-                    else if (w == g_LangSpec->name_nozero)
-                        flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
-                    else
-                    {
-                        return context->report({child, attrParam->token, formErr(Err0695, w.cstr())});
-                    }
+                    flags.add(ATTRIBUTE_EXPORT_TYPE_METHODS);
+                }
+
+                if (whatFl.has(ExportWhat::NoZero))
+                {
+                    flags.add(ATTRIBUTE_EXPORT_TYPE_NO_ZERO);
                 }
             }
 

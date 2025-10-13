@@ -1,4 +1,4 @@
-#[Swag.ExportType("methods")]
+#[Swag.ExportType(.Methods)]
 struct AA {}
 
 var G = 0

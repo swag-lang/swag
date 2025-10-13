@@ -27,6 +27,16 @@ enum class MatchWhat : uint32_t
 
 using MatchWhatFlags = EnumFlags<MatchWhat>;
 
+enum class ExportWhat : uint32_t
+{
+    Methods = 0x00000001,
+    NoZero  = 0x00000002,
+    None    = 0x00000000,
+    All     = 0xFFFFFFFF,
+};
+
+using ExportWhatFlags = EnumFlags<ExportWhat>;
+
 enum class SafetyContext
 {
     Compiler,

@@ -1,4 +1,4 @@
-#[Swag.ExportType("methods")]
+#[Swag.ExportType(.Methods)]
 struct AA {}
 
 impl AA

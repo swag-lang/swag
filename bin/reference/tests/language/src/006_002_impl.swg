@@ -5,7 +5,7 @@ In Swag, structs can encapsulate methods and constants within them using the 'im
 This keeps related functionality close to the data it operates on.
 */
 
-#[Swag.ExportType("methods")] // Enable method reflection for this struct type
+#[Swag.ExportType(.Methods)] // Enable method reflection for this struct type
 struct MyStruct
 {
     x:     s32 = 5      // Default 5
@@ -75,7 +75,7 @@ impl MyStruct
 # Method Reflection
 
 To enable reflection on methods in an 'impl' block, annotate the struct with
-'#[Swag.ExportType("methods")]'. The 'typeinfo' for the struct then exposes
+'#[Swag.ExportType(.Methods)]'. The 'typeinfo' for the struct then exposes
 a 'methods' array that you can traverse to retrieve function pointers.
 */
 #test
