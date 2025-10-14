@@ -207,6 +207,8 @@ Utf8 Diagnostic::preprocess(const Utf8& textMsg)
 
     replace.replace("$$A$$ ", "");
     replace.replace("$$AN$$ ", "");
+    replace.replace("[[an ", "an [[");
+    replace.replace("[[a ", "a [[");
 
     addThe(replace, "got");
     addThe(replace, "found");

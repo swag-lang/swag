@@ -57,8 +57,8 @@ bool Parser::doAttrDecl(AstNode* parent, AstNode** result)
         SWAG_CHECK(doFuncDeclParameters(attrNode, &attrNode->parameters));
     }
 
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0624), "an attribute is not a function; consider removing it"));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0346), "an attribute is not a function; consider removing it"));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymMinusGreat), error(tokenParse, toErr(Err0624)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, toErr(Err0346)));
     SWAG_CHECK(eatSemiCol("attribute definition"));
 
     //////

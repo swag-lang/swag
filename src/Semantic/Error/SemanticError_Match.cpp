@@ -174,7 +174,7 @@ namespace
         }
 
         // Only attempt to factor if ALL shown overloads are eligible
-        static constexpr auto GOT_TOK = ", got ";
+        static constexpr auto GOT_TOK = ", found ";
 
         for (auto& it : items)
         {

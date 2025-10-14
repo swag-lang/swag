@@ -487,8 +487,8 @@ bool Parser::doScopedStatement(AstNode* parent, const Token& forToken, AstNode**
         tokenParse.is(TokenId::SymRightParen) ||
         tokenParse.is(TokenId::SymRightSquare))
     {
-        Diagnostic err{sourceFile, tokenParse, toErr(Err0631)};
-        err.addNote(statement, statement->token, "this is the start of the block");
+        Diagnostic err{statement, statement->token, formErr(Err0631, statement->token.cstr())};
+        err.addNote(sourceFile, tokenParse.token, "found $$TKN$$ instead");
         return context->report(err);
     }
 
