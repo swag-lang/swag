@@ -746,18 +746,18 @@ void initErrors()
     SWAG_ERROR(Err0629, "default values not allowed for variadic parameters                                                     $ ");
     SWAG_ERROR(Err0630, "missing embedded instruction or curly block, got $$TKN$$                                               $ ");
     SWAG_ERROR(Err0631, "missing embedded instruction, got $$TKN$$                                                              $ ");
-    SWAG_ERROR(Err0632, "invalid enum value identifier, got $$TKN$$                                                             $ ");
-    SWAG_ERROR(Err0633, "invalid enum name, got $$TKN$$                                                                         $ ");
-    SWAG_ERROR(Err0634, "[[#[Swag.Foreign]]] function cannot have a body                                                        $ ");
-    SWAG_ERROR(Err0635, "duplicate function [[%s]]                                                                              $ hint: mark all overloads with [[#[Swag.Overload]]]");
+    
+    SWAG_ERROR(Err0632, "invalid enum value, expected identifier, got $$TKN$$                                                   $ ");
+    SWAG_ERROR(Err0633, "invalid enum name, expected identifier, got $$TKN$$                                                    $ ");
+    SWAG_ERROR(Err0634, "function marked with [[#[Swag.Foreign]]] cannot have a body                                            $ note: the [[#[Swag.Foreign]]] attribute indicates the function is externally defined");
+    SWAG_ERROR(Err0635, "duplicate definition of function [[%s]]                                                                $ hint: mark all overloads with [[#[Swag.Overload]]]");
     SWAG_ERROR(Err0636, "generic arguments not allowed after %s                                                                 $ ");
     SWAG_ERROR(Err0637, "generic arguments not allowed after name                                                               $ ");
-    SWAG_ERROR(Err0638, "generic arguments not allowed after variable [[%s]]                                                    $ ");
-    SWAG_ERROR(Err0639, "generic function [[%s]] marked [[#[Swag.NotGeneric]]]                                                  $ ");
+    SWAG_ERROR(Err0638, "generic arguments not allowed after variable [[%s]]                                                    $ ");    
+    SWAG_ERROR(Err0639, "generic function [[%s]] cannot have a [[#[Swag.NotGeneric]]] attribute                                 $ ");
     SWAG_ERROR(Err0640, "generic parameters not allowed in [[%s]]                                                               $ ");
-    SWAG_ERROR(Err0641, "generic parameters not allowed in [[%s]]: marked [[#[Swag.NotGeneric]]]                                $ ");
-    SWAG_ERROR(Err0642, "generic parameters not allowed in interface function                                                   $ ");
-
+    SWAG_ERROR(Err0641, "generic parameters not allowed in [[%s]]                                                               $ note: the function has the [[#[Swag.NotGeneric]]] attribute");
+    SWAG_ERROR(Err0642, "generic parameters not allowed in interface function declaration                                       $ note: interface functions must have fully specified, non-generic signatures");
     SWAG_ERROR(Err0643, "invalid hexadecimal digit $$TKN$$                                                                      $ note: hexadecimal digits must be [[0-9]], [[A-F]], or [[a-f]]");
     SWAG_ERROR(Err0644, "consecutive identifiers not allowed                                                                    $ ");
     SWAG_ERROR(Err0645, "identifier [[%s]] not allowed at file level                                                            $ note: only mixin function calls are allowed at the top level");
