@@ -1133,7 +1133,7 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
         return true;
 
     const auto countTypeInfo = TypeManager::concreteType(count->typeInfo);
-    SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, formErr(Err0563, node->token.cstr(), countTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(countTypeInfo->isNativeInteger(), context->report({count, formErr(Err0563, node->token.cstr(), countTypeInfo->getDisplayNameC(), node->token.cstr())}));
     SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, nullptr, count, CAST_FLAG_TRY_COERCE));
 
     if (!count->hasFlagComputedValue() || count->computedValue()->reg.u64 > 1)
