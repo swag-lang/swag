@@ -688,7 +688,6 @@ void initErrors()
     SWAG_ERROR(Err0571, "slice can only compare with [[null]], not [[%s]]                                                       $ ");
     SWAG_ERROR(Err0572, "interface can only compare with [[null]], another interface, or [[typeinfo]]                           $ ");
     SWAG_ERROR(Err0573, "[[any]] can only compare with [[null]] or [[typeinfo]], not [[%s]]                                     $ ");
-    SWAG_ERROR(Err0574, "tuples do not support comparison operations                                                            $ ");
     
     SWAG_ERROR(Err0594, "invalid bitwise inversion [['~']] for type [[%s]]                                                      $ ");
     SWAG_ERROR(Err0595, "invalid shift operator [['%s']] for type [[%s]]                                                        $ note: operator [[%s]] required an integer operand");
@@ -898,6 +897,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0574, nullptr);
     SWAG_ERROR(Err0575, nullptr);
     SWAG_ERROR(Err0576, nullptr);
     SWAG_ERROR(Err0577, nullptr);

@@ -489,7 +489,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
         {
-            Diagnostic err{node->token.sourceFile, node->token, toErr(Err0574)};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0599, node->token.cstr())};
             if (leftTypeInfo->isTuple())
                 err.addNote(Diagnostic::isType(left));
             else
