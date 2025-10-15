@@ -640,10 +640,10 @@ void initErrors()
     SWAG_ERROR(Err0523, "tuple initialized with [[%d]] values but only [[%d]] allowed                                           $ ");
     SWAG_ERROR(Err0524, "type [[%s]] initialized with incorrect number of values                                                $ ");
     SWAG_ERROR(Err0525, "[[%s]] declared [[%d]] parameters but received [[%d]]                                                  $ ");
-    SWAG_ERROR(Err0526, "tuple source type incompatible with target tuple                                                       $ ");
-    SWAG_ERROR(Err0527, "closure type cannot be cast to lambda type                                                             $ ");
-    SWAG_ERROR(Err0528, "type value ([[typeinfo]]) cannot cast to compile-time type ([[%s]])                                    $ ");
     
+    SWAG_ERROR(Err0526, "incompatible tuple types                                                                               $ ");
+    SWAG_ERROR(Err0527, "cannot convert a closure type to a lambda type                                                         $ ");    
+    SWAG_ERROR(Err0528, "cannot cast a type value to a compile-time type ([[%s]])                                               $ ");
     SWAG_ERROR(Err0529, "cannot cast interface to struct                                                                        $ note: interface can only be cast to a struct pointer");
     SWAG_ERROR(Err0530, "cannot cast [[%s]] to [[%s]]                                                                           $ ");
     SWAG_ERROR(Err0531, "cannot assign [[%s]] to [[%s]]                                                                         $ ");

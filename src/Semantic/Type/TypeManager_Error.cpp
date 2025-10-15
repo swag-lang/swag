@@ -180,7 +180,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, 
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
-        note = "a lambda can be converted to a closure type, but not vice versa";
+        note = "a lambda can be converted to a closure, but not the other way around";
         msg  = toErr(Err0527);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
