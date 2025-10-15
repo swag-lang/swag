@@ -648,9 +648,9 @@ void initErrors()
     SWAG_ERROR(Err0531, "[[%s]] cannot be initialized from [[%s]]                                                               $ ");
     SWAG_ERROR(Err0532, "range mixes signed and unsigned bounds                                                                 $ note: lower and upper bounds must have the same sign");
     SWAG_ERROR(Err0533, "[[%s]] declared return type [[%s]] but returned [[%s]]                                                 $ ");
-    SWAG_ERROR(Err0534, "slice bound must be integer, got [[%s]]                                                                $ ");
-    SWAG_ERROR(Err0535, "[[%s]] assignment expects [[%s]], found [[%s]]                                                         $ ");
     
+    SWAG_ERROR(Err0534, "invalid slice bound type [[%s]]                                                                        $ note: slice bounds must be of integer type");
+    SWAG_ERROR(Err0535, "invalid [[%s]] assignment                                                                              $ note: expects [[%s]], found [[%s]]");
     SWAG_ERROR(Err0540, "invalid [[@cvastart]] argument type [[%s]]                                                             $ note: [[@cvastart]] requires a [[%s]] argument");
     SWAG_ERROR(Err0539, "incompatible types for [[@mkany]]                                                                      $ note: first argument has type [[%s]], and should be a pointer to type [[%s]]");
     SWAG_ERROR(Err0541, "invalid [[orselse]] argument type [[%s]]                                                               $ note: [[orelse]] requires a nullable type");
