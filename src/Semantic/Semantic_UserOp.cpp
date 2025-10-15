@@ -112,7 +112,7 @@ bool Semantic::checkFuncPrototypeOpParam(SemanticContext* context, AstNode* para
 {
     const auto typeParam = parameters->children[index]->typeInfo->getConcreteAlias();
     if (!typeParam->isSame(wanted, CAST_FLAG_CAST))
-        return context->report({parameters->children[index], formErr(Err0536, wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
+        return context->report({parameters->children[index], formErr(Err0561, wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
     return true;
 }
 

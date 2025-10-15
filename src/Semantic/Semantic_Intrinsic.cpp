@@ -509,7 +509,7 @@ bool Semantic::resolveIntrinsicVarArgs(SemanticContext* context)
     auto       node     = castAst<AstIntrinsicProp>(context->node, AstNodeKind::IntrinsicProp);
     const auto typeInfo = node->firstChild()->typeInfo;
     typeInfo->computeScopedName();
-    SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node->firstChild(), formErr(Err0536, "*Swag.CVaList", typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(typeInfo->scopedName == "*Swag.CVaList", context->report({node->firstChild(), formErr(Err0540, typeInfo->getDisplayNameC(), "*Swag.CVaList")}));
     node->addAstFlag(AST_SIDE_EFFECTS);
 
     if (node->token.is(TokenId::IntrinsicCVaStart))

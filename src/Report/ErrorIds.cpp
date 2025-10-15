@@ -650,8 +650,8 @@ void initErrors()
     SWAG_ERROR(Err0533, "[[%s]] declared return type [[%s]] but returned [[%s]]                                                 $ ");
     SWAG_ERROR(Err0534, "slice bound must be integer, got [[%s]]                                                                $ ");
     SWAG_ERROR(Err0535, "[[%s]] assignment expects [[%s]], found [[%s]]                                                         $ ");
-    SWAG_ERROR(Err0536, "expected [[%s]], found [[%s]]                                                                          $ ");
     
+    SWAG_ERROR(Err0540, "invalid [[@cvastart]] argument type [[%s]]                                                             $ note: [[@cvastart]] requires a [[%s]] argument");
     SWAG_ERROR(Err0539, "incompatible types for [[@mkany]]                                                                      $ note: first argument has type [[%s]], and should be a pointer to type [[%s]]");
     SWAG_ERROR(Err0541, "invalid [[orselse]] argument type [[%s]]                                                               $ note: [[orelse]] requires a nullable type");
     SWAG_ERROR(Err0542, "invalid switch expression type [[%s]]                                                                  $ ");
@@ -894,7 +894,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
-    SWAG_ERROR(Err0540, nullptr);
+    SWAG_ERROR(Err0536, nullptr);
     SWAG_ERROR(Err0546, nullptr);
     SWAG_ERROR(Err0554, nullptr);
     SWAG_ERROR(Err0574, nullptr);
