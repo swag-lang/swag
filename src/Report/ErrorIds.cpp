@@ -651,8 +651,8 @@ void initErrors()
     SWAG_ERROR(Err0534, "slice bound must be integer, got [[%s]]                                                                $ ");
     SWAG_ERROR(Err0535, "[[%s]] assignment expects [[%s]], found [[%s]]                                                         $ ");
     SWAG_ERROR(Err0536, "expected [[%s]], found [[%s]]                                                                          $ ");
-    SWAG_ERROR(Err0539, "pointer type [[%s]] incompatible with second argument [[%s]]                                           $ note: first argument must be a pointer to [[%s]] or second argument must be [[%s]]");
     
+    SWAG_ERROR(Err0539, "incompatible types for [[@mkany]]                                                                      $ note: first argument has type [[%s]], and should be a pointer to type [[%s]]");
     SWAG_ERROR(Err0541, "invalid [[orselse]] argument type [[%s]]                                                               $ note: [[orelse]] requires a nullable type");
     SWAG_ERROR(Err0542, "invalid switch expression type [[%s]]                                                                  $ ");
     SWAG_ERROR(Err0544, "invalid use of [[with]] on type [[%s]]                                                                 $ note: [[with]] applies only to namespaces, enums, structs, or struct pointers");
