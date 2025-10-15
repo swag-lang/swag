@@ -643,12 +643,12 @@ void initErrors()
     SWAG_ERROR(Err0526, "tuple source type incompatible with target tuple                                                       $ ");
     SWAG_ERROR(Err0527, "closure type cannot be cast to lambda type                                                             $ ");
     SWAG_ERROR(Err0528, "type value ([[typeinfo]]) cannot cast to compile-time type ([[%s]])                                    $ ");
-    SWAG_ERROR(Err0529, "interface cannot cast to struct                                                                        $ note: interface can only be cast to a struct pointer");
-    SWAG_ERROR(Err0530, "[[%s]] cannot be cast to [[%s]]                                                                        $ ");
-    SWAG_ERROR(Err0531, "[[%s]] cannot be initialized from [[%s]]                                                               $ ");
-    SWAG_ERROR(Err0532, "range mixes signed and unsigned bounds                                                                 $ note: lower and upper bounds must have the same sign");
-    SWAG_ERROR(Err0533, "[[%s]] declared return type [[%s]] but returned [[%s]]                                                 $ ");
     
+    SWAG_ERROR(Err0529, "cannot cast interface to struct                                                                        $ note: interface can only be cast to a struct pointer");
+    SWAG_ERROR(Err0530, "cannot cast [[%s]] to [[%s]]                                                                           $ ");
+    SWAG_ERROR(Err0531, "cannot assign [[%s]] to [[%s]]                                                                         $ ");
+    SWAG_ERROR(Err0532, "range mixes signed and unsigned bounds                                                                 $ note: both range bounds must use the same signe");    
+    SWAG_ERROR(Err0533, "invalid [[%s]] return type [[%s]]                                                                      $ note: [[%s]] requires a [[%s]] return type");
     SWAG_ERROR(Err0534, "invalid slice bound type [[%s]]                                                                        $ note: slice bounds must be of integer type");
     SWAG_ERROR(Err0535, "invalid [[%s]] assignment                                                                              $ note: expects [[%s]], found [[%s]]");
     SWAG_ERROR(Err0540, "invalid [[@cvastart]] argument type [[%s]]                                                             $ note: [[@cvastart]] requires a [[%s]] argument");

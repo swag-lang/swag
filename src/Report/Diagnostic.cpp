@@ -1098,12 +1098,12 @@ Diagnostic* Diagnostic::isType(AstNode* node, ToConcreteFlags flags)
     if (overload && overload->typeInfo && overload->symbol->is(SymbolKind::Function) && flags.has(CONCRETE_FUNC))
     {
         const auto typeInfo = TypeManager::concreteType(overload->typeInfo, flags);
-        n                   = form("function return type is [[%s]]", typeInfo->getDisplayNameC());
+        n                   = form("function [[%s]] return type is [[%s]]", overload->symbol->name.cstr(), typeInfo->getDisplayNameC());
     }
     else if (overload && overload->typeInfo)
     {
         const auto typeInfo = TypeManager::concreteType(overload->typeInfo, flags);
-        n                   = form("%s has type [[%s]]", Naming::kindName(overload).cstr(), typeInfo->getDisplayNameC());
+        n                   = form("%s [[%s]] has type [[%s]]", Naming::kindName(overload).cstr(), overload->symbol->name.cstr(), typeInfo->getDisplayNameC());
     }
     else if (node->typeInfo)
     {
@@ -1115,7 +1115,11 @@ Diagnostic* Diagnostic::isType(AstNode* node, ToConcreteFlags flags)
 
     if (node->is(AstNodeKind::IdentifierRef))
         node = node->lastChild();
-    return new Diagnostic{node, node->getTokenName(), n, DiagnosticLevel::Note};
+    
+    if (node->is(AstNodeKind::FuncDecl))
+        return new Diagnostic{node, node->getTokenName(), n, DiagnosticLevel::Note};
+    
+    return new Diagnostic{node, n, DiagnosticLevel::Note};
 }
 
 Diagnostic* Diagnostic::hereIs(const SymbolOverload* overload)

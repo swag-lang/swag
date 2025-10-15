@@ -101,7 +101,7 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
     if (!returnType->isSame(wanted, CAST_FLAG_CAST))
     {
         auto childNode = node->returnType->children.empty() ? node->returnType : node->returnType->firstChild();
-        auto msg       = formErr(Err0533, wanted->getDisplayNameC(), node->token.cstr(), returnType->getDisplayNameC());
+        auto msg       = formErr(Err0533, node->token.cstr(), returnType->getDisplayNameC(), node->token.cstr(), wanted->getDisplayNameC());
         return context->report({childNode, msg});
     }
 
@@ -536,7 +536,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
         {
             YIELD();
 
-            Diagnostic err{right, formErr(Err0531, leftTypeInfo->getDisplayNameC(), rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{right, formErr(Err0531, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(right));
             err.addNote(Diagnostic::isType(left));
             err.addNote(context->node, context->node->token, form("there is an implicit call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
