@@ -350,14 +350,15 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
         Diagnostic err{node, node->getTokenName(), formErr(Err0511, name.cstr())};
+        const auto n = "function names starting with [[op]] followed by an uppercase letter are reserved for struct methods";
         if (appendMsg.empty())
         {
-            err.addNote("function names starting with [[op]] and an uppercase letter are reserved for struct functions");
+            err.addNote(n);
             return context->report(err);
         }
 
         err.addNote(node, node->getTokenName(), appendMsg);
-        err.addNote("function names starting with [[op]] and an uppercase letter are reserved for struct functions");
+        err.addNote(n);
         return context->report(err);
     }
 

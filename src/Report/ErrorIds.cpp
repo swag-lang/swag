@@ -603,7 +603,6 @@ void initErrors()
     SWAG_ERROR(Err0486, "attribute [[%s]] has insufficient arguments                                                            $ ");
     SWAG_ERROR(Err0487, "%s [[%s]] has insufficient call arguments                                                              $ ");
     SWAG_ERROR(Err0488, "%s [[%s]] has insufficient generic arguments                                                           $ ");
-    SWAG_ERROR(Err0489, "[[%s]] has insufficient generic parameters                                                             $ ");
     SWAG_ERROR(Err0491, "tuple requires [[%d]] values, got [[%d]]                                                               $ ");
     SWAG_ERROR(Err0492, "[[%s]] requires [[%d]] parameters, got [[%d]]                                                          $ ");
     SWAG_ERROR(Err0493, "[[%s]] requires at least [[%d]] parameters, got [[%d]]                                                 $ ");
@@ -623,18 +622,19 @@ void initErrors()
     SWAG_ERROR(Err0507, "struct [[%s]] directly or indirectly references itself                                                 $ ");
     SWAG_ERROR(Err0508, "duplicate visibility specifier [[%s]] conflicts with [[#global export]]                                $ hint: remove [[public]] since [[#global export]] already makes all declarations public");
     SWAG_ERROR(Err0509, "parameter already nullable due to [[null]] default                                                     $ hint: remove [[#null]] attribute");
-    SWAG_ERROR(Err0510, "field name [[%s]] is reserved                                                                          $ note: names beginning with [[item]] are reserved");
-    SWAG_ERROR(Err0511, "function name [[%s]] is reserved                                                                       $ ");
-    SWAG_ERROR(Err0512, "identifier [[_]] is reserved by compiler                                                               $ note: single [[_]] is reserved for internal use");
-    SWAG_ERROR(Err0513, "identifier [[%s]] uses reserved [[__]] prefix                                                          $ note: [[__]] prefix is reserved for compiler use");
-    SWAG_ERROR(Err0514, "namespace [[%s]] is reserved                                                                           $ ");
-    SWAG_ERROR(Err0515, "%s [[%s]] forms a semantic dependency cycle                                                            $ ");
-    SWAG_ERROR(Err0516, "expression result discarded                                                                            $ hint: remove the unused expression");
-    SWAG_ERROR(Err0517, "too many arguments: expected [[%d]], found [[%d]]                                                      $ ");
-    SWAG_ERROR(Err0518, "too many generic arguments for %s [[%s]]: expected [[%d]], found [[%d]]                                $ ");
-    SWAG_ERROR(Err0519, "[[%s]] defines one generic parameter but received [[%d]]                                               $ ");
-    SWAG_ERROR(Err0520, "[[%s]] has an invalid number of generic parameters                                                     $ ");
     
+    SWAG_ERROR(Err0510, "field name [[%s]] is reserved by the language                                                          $ note: names beginning with [[item]] are reserved");
+    SWAG_ERROR(Err0511, "function name [[%s]] is reserved by the compiler                                                       $ ");
+    SWAG_ERROR(Err0512, "identifier [[_]] is reserved by the compiler                                                           $ ");
+    SWAG_ERROR(Err0513, "identifier [[%s]] uses reserved [[__]] prefix                                                          $ note: the [[__]] prefix is reserved for compiler use");
+    SWAG_ERROR(Err0514, "namespace [[%s]] is reserved                                                                           $ ");
+    SWAG_ERROR(Err0515, "semantic dependency cycle during %s [[%s]] evaluation                                                  $ ");
+    SWAG_ERROR(Err0516, "unused expression                                                                                      $ ");
+    SWAG_ERROR(Err0517, "too many arguments                                                                                     $ note: expected [[%d]], found [[%d]]");    
+    SWAG_ERROR(Err0518, "too many generic arguments for %s [[%s]]                                                               $ note: expected [[%d]], found [[%d]]");
+    SWAG_ERROR(Err0519, "too many generic parameters for [[%s]]                                                                 $ note: expected [[1]], found [[%d]]");
+    SWAG_ERROR(Err0489, "not enough generic parameters for [[%s]]                                                               $ ");
+    SWAG_ERROR(Err0520, "too many generic parameters for [[%s]]                                                                 $ ");
     SWAG_ERROR(Err0521, "too many initializers for [[%s]]                                                                       $ note: expected [[%d]] values, found [[%d]]");
     SWAG_ERROR(Err0490, "not enough initializers for array                                                                      $ note: expected [[%d]] values, found [[%d]]");
     SWAG_ERROR(Err0522, "too many initializers for array                                                                        $ note: expected [[%d]] values, found [[%d]]");
