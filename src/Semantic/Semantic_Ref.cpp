@@ -1166,7 +1166,7 @@ bool Semantic::resolveInit(SemanticContext* context)
         expressionTypeInfo = getConcreteTypeUnRef(node->expression, CONCRETE_ALIAS);
         SWAG_VERIFY(node->expression->is(AstNodeKind::IdentifierRef), context->report({node->expression, formErr(Err0157, node->token.cstr())}));
         SWAG_VERIFY(node->expression->resolvedSymbolOverload(), context->report({node->expression, formErr(Err0157, node->token.cstr())}));
-        SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, formErr(Err0581, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!expressionTypeInfo->isConst(), context->report({node->expression, formErr(Err0581, node->token.cstr(), node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
         const auto back = node->expression->lastChild();
         back->addSemFlag(SEMFLAG_FORCE_TAKE_ADDRESS);
         back->resolvedSymbolOverload()->flags.add(OVERLOAD_HAS_MAKE_POINTER);
@@ -1174,7 +1174,7 @@ bool Semantic::resolveInit(SemanticContext* context)
     else
     {
         SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, formErr(Err0557, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, formErr(Err0580, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, formErr(Err0580, node->token.cstr(), node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
     }
 
@@ -1257,7 +1257,7 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
     const auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
     SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, formErr(Err0557, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
-    SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, formErr(Err0580, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, formErr(Err0580, node->token.cstr(), node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 
     // Be sure struct if not marked as nocopy

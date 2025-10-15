@@ -63,7 +63,7 @@ void initErrors()
     SWAG_ERROR(Fat0035, "[fatal] workspace folder [[%s]] not found");
     SWAG_ERROR(Fat0036, "[fatal] windows sdk folder not found");
     SWAG_ERROR(Fat0037, "[fatal] file or folder to format missing (use [[--file]])");
-    SWAG_ERROR(Fat0038, "[fatal] [[%s]] is not valid swag file");
+    SWAG_ERROR(Fat0038, "[fatal] [[%s]] is not a valid swag file");
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////
@@ -318,7 +318,7 @@ void initErrors()
     SWAG_ERROR(Err0194, "%s ([[%s]]) not valid as generic argument                                                              $ hint: generic arguments must be literals or types");
     SWAG_ERROR(Err0195, "[[%s]] expects literal but received type [[%s]]                                                        $ ");
     SWAG_ERROR(Err0196, "missing generic name identifier, found $$TKN$$                                                         $ ");
-    SWAG_ERROR(Err0197, "type starting with [[:]] not allowed for generic                                                     $ ");
+    SWAG_ERROR(Err0197, "type starting with [[:]] not allowed for generic                                                       $ ");
     SWAG_ERROR(Err0198, "missing identifier %s, found $$TKN$$                                                                   $ ");
     SWAG_ERROR(Err0199, "missing identifier after [[%s]], found $$TKN$$                                                         $ ");
     SWAG_ERROR(Err0200, "missing identifier, found $$TKN$$                                                                      $ ");
@@ -391,10 +391,10 @@ void initErrors()
     SWAG_ERROR(Err0267, "[[#alias]] allowed only in [[#[Swag.Macro]]] or [[#[Swag.Mixin]]]                                      $ ");
     SWAG_ERROR(Err0268, "[[#uniq]] allowed only in [[#[Swag.Mixin]]]                                                            $ ");
     SWAG_ERROR(Err0269, "[[me]] cannot be used as a variable name                                                               $ ");
-    SWAG_ERROR(Err0270, "no variable name found, found $$TKN$$                                                                    $ ");
-    SWAG_ERROR(Err0271, "missing variable name after [[,]], found $$TKN$$                                                         $ ");
-    SWAG_ERROR(Err0272, "missing match variable name, found $$TKN$$                                                               $ ");
-    SWAG_ERROR(Err0273, "no variable name found after [[%s]], found $$TKN$$                                                       $ ");
+    SWAG_ERROR(Err0270, "no variable name found, found $$TKN$$                                                                  $ ");
+    SWAG_ERROR(Err0271, "missing variable name after [[,]], found $$TKN$$                                                       $ ");
+    SWAG_ERROR(Err0272, "missing match variable name, found $$TKN$$                                                             $ ");
+    SWAG_ERROR(Err0273, "no variable name found after [[%s]], found $$TKN$$                                                     $ ");
     SWAG_ERROR(Err0274, "[[void]] used as variable type                                                                         $ ");
     SWAG_ERROR(Err0275, "[[if]] cannot declare multiple variables                                                               $ note: [[if]] allows only a single variable declaration");
     SWAG_ERROR(Err0276, "[[using]] cannot declare multiple variables                                                            $ note: [[using]] allows only a single variable declaration");
@@ -689,32 +689,29 @@ void initErrors()
     SWAG_ERROR(Err0572, "interface can only compare with [[null]], another interface, or [[typeinfo]]                           $ ");
     SWAG_ERROR(Err0573, "[[any]] can only compare with [[null]] or [[typeinfo]], not [[%s]]                                     $ ");
     SWAG_ERROR(Err0574, "tuples do not support comparison operations                                                            $ ");
-    SWAG_ERROR(Err0575, "operator [['%s']] not supported for type [[%s]]                                                        $ ");
-    SWAG_ERROR(Err0576, "operator [['%s']] not supported for left operand type [[%s]]                                           $ ");
-    SWAG_ERROR(Err0577, "operator [['%s']] not supported for right operand type [[%s]]                                          $ ");
-    SWAG_ERROR(Err0578, "immutable [[%s]] cannot cast to mutable [[%s]]                                                         $ ");
-    SWAG_ERROR(Err0579, "[[%s]] first argument requires mutable type, found [[%s]]                                              $ ");
-    SWAG_ERROR(Err0580, "[[%s]] first argument requires mutable pointer, found [[%s]]                                           $ ");
-    SWAG_ERROR(Err0581, "[[%s]] first argument requires mutable variable, found [[%s]]                                          $ ");
-    SWAG_ERROR(Err0582, "expected enum type but received [[%s]]                                                                 $ ");
-    SWAG_ERROR(Err0583, "type [[%s]] not valid for enum                                                                         $ ");
-    SWAG_ERROR(Err0584, "type [[%s]] not valid for [[#[Swag.EnumFlags]]] enum                                                   $ note: requires an unsigned integer type");
-    SWAG_ERROR(Err0585, "type [[%s]] not valid for [[#[Swag.EnumIndex]]] enum                                                   $ note: requires an integer type");
-    SWAG_ERROR(Err0586, "type [[%s]] not valid for [[#[Swag.NoDuplicate]]] enum                                                 $ ");
-    SWAG_ERROR(Err0587, "[[cstring]] not valid as enum base type                                                                $ hint: use [[string]] instead");
-    SWAG_ERROR(Err0588, "expected enum type [[%s]], found [[%s]]                                                                $ ");
-    SWAG_ERROR(Err0589, "enum array type [[%s]] must be [[const]]                                                               $ hint: declare as [[const %s]]");
-    SWAG_ERROR(Err0590, "enum slice type [[%s]] must be [[const]]                                                               $ hint: declare as [[const %s]]");
-    SWAG_ERROR(Err0591, "field [[%s]] requires [[%s]], found [[%s]]                                                             $ ");
     
-    SWAG_ERROR(Err0592, "expected [[%s]], found [[%s]]                                                                          $ ");
-    SWAG_ERROR(Err0593, "tuple types not allowed as generic parameters                                                          $ ");
     SWAG_ERROR(Err0594, "invalid bitwise inversion [['~']] for type [[%s]]                                                      $ ");
     SWAG_ERROR(Err0595, "invalid shift operator [['%s']] for type [[%s]]                                                        $ note: operator [[%s]] required an integer operand");
     SWAG_ERROR(Err0596, "invalid operator [['%s']] for type [[%s]]                                                              $ ");
     SWAG_ERROR(Err0597, "invalid operator [['%s']] for left operand type [[%s]]                                                 $ ");
     SWAG_ERROR(Err0598, "invalid operator [['%s']] for right operand type [[%s]]                                                $ ");
     SWAG_ERROR(Err0599, "invalid operator [['%s']] for tuple types                                                              $ ");
+    SWAG_ERROR(Err0578, "cannot cast immutable [[%s]] to mutable [[%s]]                                                         $ ");
+    SWAG_ERROR(Err0579, "invalid [[%s]] first argument                                                                          $ note: [[%s]] requires a mutable type, found [[%s]]");
+    SWAG_ERROR(Err0580, "invalid [[%s]] first argument                                                                          $ note: [[%s]] requires a mutable pointer, found [[%s]]");
+    SWAG_ERROR(Err0581, "invalid [[%s]] first argument                                                                          $ note: [[%s]] requires a mutable variable, found [[%s]]");
+    SWAG_ERROR(Err0582, "incompatible type                                                                                      $ note: expected an enum type, found [[%s]]");
+    SWAG_ERROR(Err0583, "type [[%s]] not allowed as enum base type                                                              $ ");
+    SWAG_ERROR(Err0584, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.EnumFlags]]] attribute, so only [[unsigned integer]] types are allowed");
+    SWAG_ERROR(Err0585, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.EnumIndex]]] attribute, so only [[integer]] types are allowed");
+    SWAG_ERROR(Err0586, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.NoDuplicate]]] attribute, so only basic types are allowed");
+    SWAG_ERROR(Err0587, "type [[cstring]] not allowed as enum base type                                                         $ hint: use [[string]] instead");
+    SWAG_ERROR(Err0588, "incompatible enum type [[%s]]                                                                          $ note: expected [[%s]], found [[%s]]");
+    SWAG_ERROR(Err0589, "array type [[%s]] not allowed for enum                                                                 $ note: enum array type must be constant $ hint: declare it as [[const %s]]");
+    SWAG_ERROR(Err0590, "slice type [[%s]] not allowed for enum                                                                 $ note: enum slice type must be constant $ hint: declare it as [[const %s]]");
+    SWAG_ERROR(Err0591, "type mismatch [[%s]] for field [[%s]]                                                                  $ note: field [[%s]] requires [[%s]]");
+    SWAG_ERROR(Err0592, "expected [[%s]], found [[%s]]                                                                          $ ");
+    SWAG_ERROR(Err0593, "tuple types not allowed as generic parameters                                                          $ ");
     SWAG_ERROR(Err0628, "cannot cast a value to a type                                                                          $ ");
     SWAG_ERROR(Err0600, "cannot cast value pointer [[%s]] to block pointer [[%s]]                                               $ ");
     SWAG_ERROR(Err0601, "cannot cast [[%s]] to pointer type                                                                     $ ");
@@ -901,6 +898,9 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0575, nullptr);
+    SWAG_ERROR(Err0576, nullptr);
+    SWAG_ERROR(Err0577, nullptr);
     SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0695, nullptr);
     SWAG_ERROR(Err0696, nullptr);

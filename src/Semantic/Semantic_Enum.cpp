@@ -52,9 +52,9 @@ bool Semantic::resolveEnum(SemanticContext* context)
     if (node->hasAttribute(ATTRIBUTE_NO_DUPLICATE))
     {
         const auto rawType = TypeManager::concreteType(typeInfo->rawType);
-        if (!rawType->isNative() && !rawType->isString())
+        if (!rawType->isNative())
         {
-            const Diagnostic err{node->firstChild(), formErr(Err0586, rawType->getDisplayNameC())};
+            const Diagnostic err{node->type, formErr(Err0586, rawType->getDisplayNameC())};
             return context->report(err);
         }
 
@@ -233,7 +233,7 @@ bool Semantic::resolveSubEnumValue(SemanticContext* context)
     const auto concreteTypeEnum    = TypeManager::concreteType(typeEnum->rawType, CONCRETE_ALIAS);
     if (!concreteTypeSubEnum->isSame(concreteTypeEnum, CAST_FLAG_EXACT))
     {
-        Diagnostic err{node, formErr(Err0588, concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
+        Diagnostic err{node, formErr(Err0588, concreteTypeSubEnum->getDisplayNameC(), concreteTypeEnum->getDisplayNameC(), concreteTypeSubEnum->getDisplayNameC())};
         err.addNote(Diagnostic::hereIs(node->resolvedSymbolOverload()));
         err.addNote(Diagnostic::hereIs(enumNode->type));
         return context->report(err);

@@ -308,14 +308,15 @@ namespace
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             typeStruct->flattenUsingFields();
             const auto fieldName = typeStruct->flattenFields[errorParam.badParamIdx - 1]->name;
-            const auto msg       = formErr(Err0591, bi.badSignatureRequestedType->getDisplayNameC(), fieldName.cstr(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg       = formErr(Err0591, bi.badSignatureGivenType->getDisplayNameC(), fieldName.cstr(), fieldName.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
             err                  = new Diagnostic{callParamNode, msg};
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {
-            const auto msg  = formErr(Err0579, errorParam.destFuncDecl->getTokenName().cstr(), bi.badSignatureGivenType->getDisplayNameC());
-            err             = new Diagnostic{callParamNode, callParamNode->token, msg};
-            addCastErrorMsg = false;
+            const auto tname = errorParam.destFuncDecl->getTokenName().cstr();
+            const auto msg   = formErr(Err0579, tname, tname, bi.badSignatureGivenType->getDisplayNameC());
+            err              = new Diagnostic{callParamNode, callParamNode->token, msg};
+            addCastErrorMsg  = false;
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
         {
