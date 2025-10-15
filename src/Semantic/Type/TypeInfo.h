@@ -84,6 +84,7 @@ constexpr TypeInfoFlagsV TYPEINFO_GENERATED_OP_EQUALS      = 0x00100000'00000000
 constexpr TypeInfoFlagsV TYPEINFO_WAS_UNTYPED              = 0x00200000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_NULLABLE                 = 0x00400000'00000000;
 constexpr TypeInfoFlagsV TYPEINFO_STRUCT_TYPE_VALUE        = 0x00800000'00000000;
+constexpr TypeInfoFlagsV TYPEINFO_VALUE                    = 0x01000000'00000000;
 
 constexpr TypeParamFlags TYPEINFOPARAM_DEFINED_VALUE    = 0x00000001;
 constexpr TypeParamFlags TYPEINFOPARAM_HAS_USING        = 0x00000002;
@@ -178,6 +179,7 @@ struct TypeInfo
     bool isFromGeneric() const { return flags.has(TYPEINFO_FROM_GENERIC); }
     bool isTuple() const { return flags.has(TYPEINFO_STRUCT_IS_TUPLE); }
     bool isPointerRef() const { return flags.has(TYPEINFO_POINTER_REF); }
+    bool isTypeValue() const { return flags.has(TYPEINFO_VALUE); }
     bool isPointerMoveRef() const { return flags.has(TYPEINFO_POINTER_REF) && flags.has(TYPEINFO_POINTER_MOVE_REF); }
     bool isConstPointerRef() const { return flags.has(TYPEINFO_POINTER_REF) && flags.has(TYPEINFO_CONST); }
     bool isAutoConstPointerRef() const { return flags.has(TYPEINFO_POINTER_REF) && flags.has(TYPEINFO_CONST) && flags.has(TYPEINFO_POINTER_AUTO_REF); }

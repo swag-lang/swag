@@ -140,12 +140,16 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, 
         const auto from = castTypeInfo<TypeInfoArray>(fromType, TypeInfoKind::Array);
         note            = form("the array has [[%d]] elements of type [[%s]], which does not match a slice of type [[%s]]", from->totalCount, from->finalType->getDisplayNameC(), to->pointedType->getDisplayNameC());
     }
+    else if (toType->isTypeValue() && !fromType->isTypeValue())
+    {
+        msg = toErr(Err0628);
+    }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
         msg = formErr(Err0601, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
             note = "only [[u64]] may be cast to a pointer";
-    }    
+    }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic() && fromType->isPointer())
     {
         msg = formErr(Err0600, fromType->getDisplayNameC(), toType->getDisplayNameC());
@@ -271,8 +275,11 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         // Is there an explicit cast possible?
         if (!castFlags.has(CAST_FLAG_EXPLICIT) || castFlags.has(CAST_FLAG_COERCE))
         {
-            if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
-                notes.push_back(Diagnostic::note(fromNode, form("hint: add an explicit [[cast(%s)]] if necessary", toType->getDisplayNameC())));
+            if (!toType->isTypeValue() && !fromType->isTypeValue())
+            {
+                if (makeCompatibles(context, toType, fromType, nullptr, nullptr, CAST_FLAG_EXPLICIT | CAST_FLAG_JUST_CHECK))
+                    notes.push_back(Diagnostic::note(fromNode, form("hint: add an explicit [[cast(%s)]] if necessary", toType->getDisplayNameC())));
+            }
         }
 
         Diagnostic err{fromNode, msg};

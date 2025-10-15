@@ -715,6 +715,7 @@ void initErrors()
     SWAG_ERROR(Err0598, "operator [['%s']] invalid for right operand type [[%s]]                                                $ ");
     SWAG_ERROR(Err0599, "operator [['%s']] invalid for tuple types                                                              $ ");
     
+    SWAG_ERROR(Err0628, "cannot cast a value to a type                                                                          $ ");
     SWAG_ERROR(Err0600, "cannot cast value pointer [[%s]] to block pointer [[%s]]                                               $ ");
     SWAG_ERROR(Err0601, "cannot cast [[%s]] to pointer type                                                                     $ ");
     SWAG_ERROR(Err0602, "inconsistent return type [[%s]]                                                                        $ note: the previous [[return]] has type [[%s]]");
@@ -900,7 +901,6 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
-    SWAG_ERROR(Err0628, nullptr);
     SWAG_ERROR(Err0668, nullptr);
     SWAG_ERROR(Err0695, nullptr);
     SWAG_ERROR(Err0696, nullptr);
