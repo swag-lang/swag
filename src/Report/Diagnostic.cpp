@@ -644,6 +644,7 @@ void Diagnostic::collectRanges()
         }
 
         r.width = std::max(static_cast<uint32_t>(1), r.width);
+        r.width = std::min(static_cast<uint32_t>(80), r.width);
 
         // Special case for a range == 1.
         if (r.width == 1 && r.startLocation.column < lineCode.count)

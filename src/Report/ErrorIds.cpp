@@ -617,8 +617,8 @@ void initErrors()
     SWAG_ERROR(Err0502, "slice bound [[%I64u]] exceeds maximum value of [[%I64u]]                                               $ ");
     SWAG_ERROR(Err0503, "lower bound [[%I64u]] exceeds upper bound [[%I64u]]                                                    $ ");
     SWAG_ERROR(Err0504, "[[until]] value cannot be zero                                                                         $ ");
-    SWAG_ERROR(Err0505, "variadic arguments exceed [[%d]], got [[%d]]                                                           $ ");
     
+    SWAG_ERROR(Err0505, "too much variadic arguments                                                                            $ note: the maximum number of arguments is [[%d]], found [[%d]]");
     SWAG_ERROR(Err0506, "no matching overload found                                                                             $ ");
     SWAG_ERROR(Err0507, "struct [[%s]] directly or indirectly references itself                                                 $ ");
     SWAG_ERROR(Err0508, "visibility specifier [[%s]] conflicts with [[#global export]]                                          $ hint: remove [[public]] since [[#global export]] already makes all declarations public");
