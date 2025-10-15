@@ -652,14 +652,12 @@ void initErrors()
     SWAG_ERROR(Err0535, "[[%s]] assignment expects [[%s]], found [[%s]]                                                         $ ");
     SWAG_ERROR(Err0536, "expected [[%s]], found [[%s]]                                                                          $ ");
     SWAG_ERROR(Err0539, "pointer type [[%s]] incompatible with second argument [[%s]]                                           $ note: first argument must be a pointer to [[%s]] or second argument must be [[%s]]");
-    SWAG_ERROR(Err0540, "[[struct]] not allowed as [[orelse]] argument                                                          $ ");
-    SWAG_ERROR(Err0541, "type [[%s]] not allowed as [[orelse]] argument                                                         $ ");
-    SWAG_ERROR(Err0542, "type [[%s]] cannot be used in [[switch]]                                                               $ ");
-    SWAG_ERROR(Err0544, "[[with]] applied to type [[%s]] not allowed                                                            $ note: requires a namespace, enum, struct, or struct pointer type");
-    SWAG_ERROR(Err0545, "tuple type not valid as [[@countof]] argument                                                          $ ");
-    SWAG_ERROR(Err0546, "tuple type not valid as [[@dataof]] argument                                                           $ ");
-    SWAG_ERROR(Err0547, "type [[%s]] not valid as [[@dataof]] argument                                                          $ ");
     
+    SWAG_ERROR(Err0541, "invalid [[orselse]] argument type [[%s]]                                                               $ note: [[orelse]] requires a nullable type");
+    SWAG_ERROR(Err0542, "invalid switch expression type [[%s]]                                                                  $ ");
+    SWAG_ERROR(Err0544, "invalid use of [[with]] on type [[%s]]                                                                 $ note: [[with]] applies only to namespaces, enums, structs, or struct pointers");
+    SWAG_ERROR(Err0545, "invalid [[@countof]] argument type [[%s]]                                                              $ ");
+    SWAG_ERROR(Err0547, "invalid [[@dataof]] argument type [[%s]]                                                               $ ");
     SWAG_ERROR(Err0555, "invalid [[%s]] first argument type [[%s]]                                                              $ note: [[%s]] requires a block pointer when the element count exceeds one");
     SWAG_ERROR(Err0556, "invalid [[%s]] first argument type [[%s]]                                                              $ note: [[%s]] requires a block pointer as its first argument");
     SWAG_ERROR(Err0557, "invalid [[%s]] first argument type [[%s]]                                                              $ note: [[%s]] requires a pointer as its first argument");
@@ -896,6 +894,8 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0540, nullptr);
+    SWAG_ERROR(Err0546, nullptr);
     SWAG_ERROR(Err0554, nullptr);
     SWAG_ERROR(Err0574, nullptr);
     SWAG_ERROR(Err0575, nullptr);

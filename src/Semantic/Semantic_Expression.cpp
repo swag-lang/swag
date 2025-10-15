@@ -301,13 +301,6 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
     ifZero->typeInfo    = getConcreteTypeUnRef(ifZero, CONCRETE_ALL);
     const auto typeInfo = getConcreteTypeUnRef(expression, CONCRETE_ALL);
 
-    if (typeInfo->isStruct())
-    {
-        Diagnostic err{node->token.sourceFile, node->token, toErr(Err0540)};
-        err.addNote(Diagnostic::isType(expression));
-        return context->report(err);
-    }
-
     if (!typeInfo->isString() &&
         !typeInfo->isPointer() &&
         !typeInfo->isInterface() &&

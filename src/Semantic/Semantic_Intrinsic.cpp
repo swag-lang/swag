@@ -233,7 +233,7 @@ bool Semantic::resolveIntrinsicCountOf(SemanticContext* context, AstNode* node, 
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!typeInfo->isTuple(), context->report({expression, toErr(Err0545)}));
+        SWAG_VERIFY(!typeInfo->isTuple(), context->report({expression, formErr(Err0545, typeInfo->getDisplayNameC())}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opCount, nullptr, nullptr, node, nullptr));
         YIELD();
@@ -432,7 +432,7 @@ bool Semantic::resolveIntrinsicDataOf(SemanticContext* context, AstNode* node, A
     }
     else if (typeInfo->isStruct())
     {
-        SWAG_VERIFY(!typeInfo->isTuple(), context->report({expression, toErr(Err0546)}));
+        SWAG_VERIFY(!typeInfo->isTuple(), context->report({expression, formErr(Err0547, typeInfo->getDisplayNameC())}));
         node->typeInfo = typeInfo;
         SWAG_CHECK(resolveUserOp(context, g_LangSpec->name_opData, nullptr, nullptr, node, nullptr));
         YIELD();
