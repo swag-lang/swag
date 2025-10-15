@@ -604,7 +604,6 @@ void initErrors()
     SWAG_ERROR(Err0487, "%s [[%s]] has insufficient call arguments                                                              $ ");
     SWAG_ERROR(Err0488, "%s [[%s]] has insufficient generic arguments                                                           $ ");
     SWAG_ERROR(Err0489, "[[%s]] has insufficient generic parameters                                                             $ ");
-    SWAG_ERROR(Err0490, "array requires [[%d]] values, got [[%d]]                                                               $ ");
     SWAG_ERROR(Err0491, "tuple requires [[%d]] values, got [[%d]]                                                               $ ");
     SWAG_ERROR(Err0492, "[[%s]] requires [[%d]] parameters, got [[%d]]                                                          $ ");
     SWAG_ERROR(Err0493, "[[%s]] requires at least [[%d]] parameters, got [[%d]]                                                 $ ");
@@ -636,15 +635,16 @@ void initErrors()
     SWAG_ERROR(Err0519, "[[%s]] defines one generic parameter but received [[%d]]                                               $ ");
     SWAG_ERROR(Err0520, "[[%s]] has an invalid number of generic parameters                                                     $ ");
     SWAG_ERROR(Err0521, "excessive initializers: expected [[%d]] for [[%s]], found [[%d]]                                       $ hint: remove extra initializer values");
-    SWAG_ERROR(Err0522, "array initialized with [[%d]] values but only [[%d]] allowed                                           $ ");
-    SWAG_ERROR(Err0523, "tuple initialized with [[%d]] values but only [[%d]] allowed                                           $ ");
-    SWAG_ERROR(Err0524, "type [[%s]] initialized with incorrect number of values                                                $ ");
-    SWAG_ERROR(Err0525, "[[%s]] declared [[%d]] parameters but received [[%d]]                                                  $ ");
     
+    SWAG_ERROR(Err0490, "invalid array initialization with too few values                                                       $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0522, "invalid array initialization with too many values                                                      $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0523, "invalid tuple initialization with too many values                                                      $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0524, "type [[%s]] initialized with an incorrect number of values                                             $ note: expected [[1]] value, found [[%d]]");
+    SWAG_ERROR(Err0525, "too many parameters in [[%s]] declaration                                                              $ note: [[%s]] should have [[%d]] parameters, found [[%d]]");
     SWAG_ERROR(Err0526, "incompatible tuple types                                                                               $ ");
     SWAG_ERROR(Err0527, "cannot convert a closure type to a lambda type                                                         $ ");    
     SWAG_ERROR(Err0528, "cannot cast a type value to a compile-time type ([[%s]])                                               $ ");
-    SWAG_ERROR(Err0529, "cannot cast interface to struct                                                                        $ note: interface can only be cast to a struct pointer");
+    SWAG_ERROR(Err0529, "cannot cast an interface to a struct                                                                   $ note: interfaces can only be cast to struct pointers");
     SWAG_ERROR(Err0530, "cannot cast [[%s]] to [[%s]]                                                                           $ ");
     SWAG_ERROR(Err0531, "cannot assign [[%s]] to [[%s]]                                                                         $ ");
     SWAG_ERROR(Err0532, "range mixes signed and unsigned bounds                                                                 $ note: both range bounds must use the same signe");    
