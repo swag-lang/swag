@@ -612,12 +612,11 @@ void initErrors()
     SWAG_ERROR(Err0497, "array dimensions exceed [[254]]                                                                        $ ");
     SWAG_ERROR(Err0498, "callback limited to [[%d]] parameters, got [[%d]]                                                      $ ");
     SWAG_ERROR(Err0499, "enum value [[%s]] exceeds range of [[%s]]                                                              $ ");
-    SWAG_ERROR(Err0500, "index [[%I64u]] exceeds maximum index of [[%I64u]]                                                     $ ");
-    SWAG_ERROR(Err0501, "[[%s]] expansion exceeds [[--limit-inline:%d]]                                                         $ ");
-    SWAG_ERROR(Err0502, "slice bound [[%I64u]] exceeds maximum value of [[%I64u]]                                               $ ");
-    SWAG_ERROR(Err0503, "lower bound [[%I64u]] exceeds upper bound [[%I64u]]                                                    $ ");
-    SWAG_ERROR(Err0504, "[[until]] value cannot be zero                                                                         $ ");
     
+    SWAG_ERROR(Err0500, "index out of range                                                                                     $ note: index [[%I64u]] exceeds the maximum value of [[%I64u]]");
+    SWAG_ERROR(Err0501, "inline expansion of [[%s]] exceeds the configuration limit                                             $ note: [[--limit-inline:%d]]");
+    SWAG_ERROR(Err0503, "invalid range expression                                                                               $ note: the lower bound [[%I64u]] exceeds the upper bound [[%I64u]]");
+    SWAG_ERROR(Err0504, "invalid range expression                                                                               $ note: the upper bound of an [[until]] range must be greater than zero");
     SWAG_ERROR(Err0505, "too much variadic arguments                                                                            $ note: the maximum number of arguments is [[%d]], found [[%d]]");
     SWAG_ERROR(Err0506, "no matching overload found                                                                             $ ");
     SWAG_ERROR(Err0507, "struct [[%s]] directly or indirectly references itself                                                 $ ");
@@ -894,6 +893,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0502, nullptr);
     SWAG_ERROR(Err0536, nullptr);
     SWAG_ERROR(Err0546, nullptr);
     SWAG_ERROR(Err0554, nullptr);

@@ -472,7 +472,7 @@ bool Semantic::resolveArrayPointerSlicing(SemanticContext* context)
     {
         if (node->upperBound->computedValue()->reg.u64 > maxBound)
         {
-            Diagnostic err{node->upperBound, formErr(Err0502, node->upperBound->computedValue()->reg.u64, maxBound)};
+            Diagnostic err{node->upperBound, formErr(Err0503, node->upperBound->computedValue()->reg.u64, maxBound)};
             err.addNote(Diagnostic::isType(node->array));
             return context->report(err);
         }
