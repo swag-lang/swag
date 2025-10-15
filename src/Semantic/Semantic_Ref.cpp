@@ -1142,13 +1142,13 @@ bool Semantic::checkInitDropCount(SemanticContext* context, const AstNode* node,
         {
             if (count->hasFlagComputedValue())
             {
-                Diagnostic err{expression, formErr(Err0554, node->token.cstr(), expression->typeInfo->getDisplayNameC())};
+                Diagnostic err{expression, formErr(Err0555, node->token.cstr(), expression->typeInfo->getDisplayNameC(), node->token.cstr())};
                 err.addNote(count, form("the number of values ([[%d]]) is greater than one", count->computedValue()->reg.u64));
                 return context->report(err);
             }
 
-            Diagnostic err{expression, formErr(Err0555, node->token.cstr(), expression->typeInfo->getDisplayNameC())};
-            err.addNote(count, "the number of values is variable and could be greater than one");
+            Diagnostic err{expression, formErr(Err0555, node->token.cstr(), expression->typeInfo->getDisplayNameC(), node->token.cstr())};
+            err.addNote(count, "the number of values is variable and could exceed one");
             return context->report(err);
         }
     }
@@ -1173,7 +1173,7 @@ bool Semantic::resolveInit(SemanticContext* context)
     }
     else
     {
-        SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, formErr(Err0557, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, formErr(Err0557, node->token.cstr(), expressionTypeInfo->getDisplayNameC(), node->token.cstr())}));
         SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, formErr(Err0580, node->token.cstr(), node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
         SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
     }
@@ -1256,7 +1256,7 @@ bool Semantic::resolveDropCopyMove(SemanticContext* context)
     const auto node               = castAst<AstDropCopyMove>(context->node, AstNodeKind::Drop, AstNodeKind::PostCopy, AstNodeKind::PostMove);
     const auto expressionTypeInfo = TypeManager::concreteType(node->expression->typeInfo);
 
-    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, formErr(Err0557, node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(expressionTypeInfo->isPointer(), context->report({node->expression, formErr(Err0557, node->token.cstr(), expressionTypeInfo->getDisplayNameC(), node->token.cstr())}));
     SWAG_VERIFY(!node->expression->typeInfo->isConst(), context->report({node->expression, formErr(Err0580, node->token.cstr(), node->token.cstr(), expressionTypeInfo->getDisplayNameC())}));
     SWAG_CHECK(checkInitDropCount(context, node, node->expression, node->count));
 

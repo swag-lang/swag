@@ -659,13 +659,12 @@ void initErrors()
     SWAG_ERROR(Err0545, "tuple type not valid as [[@countof]] argument                                                          $ ");
     SWAG_ERROR(Err0546, "tuple type not valid as [[@dataof]] argument                                                           $ ");
     SWAG_ERROR(Err0547, "type [[%s]] not valid as [[@dataof]] argument                                                          $ ");
-    SWAG_ERROR(Err0554, "[[%s]] first argument must be block pointer for multiple values, found [[%s]]                          $ ");
-    SWAG_ERROR(Err0555, "[[%s]] first argument must be block pointer for variable count, found [[%s]]                           $ ");
-    SWAG_ERROR(Err0556, "[[%s]] first argument requires block pointer, found [[%s]]                                             $ ");
-    SWAG_ERROR(Err0557, "[[%s]] first argument requires pointer, found [[%s]]                                                   $ ");
-    SWAG_ERROR(Err0558, "[[@mkinterface]] first argument requires pointer or struct, found [[%s]]                               $ ");
-    SWAG_ERROR(Err0559, "[[@mkstring]] first argument requires [[*u8]], found [[%s]]                                            $ ");
     
+    SWAG_ERROR(Err0555, "invalid [[%s]] first argument type [[%s]]                                                              $ note: [[%s]] requires a block pointer when the element count exceeds one");
+    SWAG_ERROR(Err0556, "invalid [[%s]] first argument type [[%s]]                                                              $ note: [[%s]] requires a block pointer as its first argument");
+    SWAG_ERROR(Err0557, "invalid [[%s]] first argument type [[%s]]                                                              $ note: [[%s]] requires a pointer as its first argument");
+    SWAG_ERROR(Err0558, "invalid [[@mkinterface]] first argument type [[%s]]                                                    $ note: [[@mkinterface]] requires a pointer or a struct as its first argument");
+    SWAG_ERROR(Err0559, "invalid [[@mkstring]] first argument type [[%s]]                                                       $ note: [[@mkstring]] requires type [[*u8]] as its first argument");
     SWAG_ERROR(Err0561, "type mismatch                                                                                          $ note: expected type [[%s]], found [[%s]]");
     SWAG_ERROR(Err0565, "invalid [[%s]] argument type [[%s]]                                                                    $ note: [[%s]] requires a [[%s]] argument");
     SWAG_ERROR(Err0566, "invalid element type [[void]] for static array                                                         $ ");
@@ -897,6 +896,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0554, nullptr);
     SWAG_ERROR(Err0574, nullptr);
     SWAG_ERROR(Err0575, nullptr);
     SWAG_ERROR(Err0576, nullptr);

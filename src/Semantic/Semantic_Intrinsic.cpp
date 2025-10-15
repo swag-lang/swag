@@ -46,9 +46,9 @@ bool Semantic::resolveIntrinsicMakeSlice(SemanticContext* context, AstNode* node
 
     // Must start with a pointer of the same type as the slice
     if (!first->typeInfo->isPointer())
-        return context->report({first, formErr(Err0557, name, first->typeInfo->getDisplayNameC())});
+        return context->report({first, formErr(Err0557, name, first->typeInfo->getDisplayNameC(), name)});
     if (!first->typeInfo->isPointerArithmetic() && !first->typeInfo->isCString())
-        return context->report({first, formErr(Err0556, name, first->typeInfo->getDisplayNameC())});
+        return context->report({first, formErr(Err0556, name, first->typeInfo->getDisplayNameC(), name)});
 
     const auto ptrPointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     SWAG_ASSERT(ptrPointer->pointedType);
@@ -75,7 +75,7 @@ bool Semantic::resolveIntrinsicMakeAny(SemanticContext* context, AstNode* node)
 
     // Check first parameter
     if (!first->typeInfo->isPointer())
-        return context->report({first, formErr(Err0557, node->token.cstr(), first->typeInfo->getDisplayNameC())});
+        return context->report({first, formErr(Err0557, node->token.cstr(), first->typeInfo->getDisplayNameC(), node->token.cstr())});
 
     const auto ptrPointer = castTypeInfo<TypeInfoPointer>(first->typeInfo, TypeInfoKind::Pointer);
     if (!ptrPointer->pointedType)
