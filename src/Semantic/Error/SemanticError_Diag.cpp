@@ -180,7 +180,7 @@ namespace
         if (errorParam.destStructDecl && errorParam.destStructDecl->typeInfo->isTuple())
             msg = formErr(Err0523, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
         else if (errorParam.destStructDecl)
-            msg = formErr(Err0521, match.badSignatureInfos.badSignatureNum2, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0521, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
         else
             msg = formErr(Err0517, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
 

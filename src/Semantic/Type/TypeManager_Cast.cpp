@@ -2262,7 +2262,7 @@ bool TypeManager::castSubExpressionList(SemanticContext* context, AstNode* child
     // Too many fields
     else if (toTypeStruct->fields.size() < child->childCount())
     {
-        const auto       msg = formErr(Err0521, toTypeStruct->fields.size(), toTypeStruct->getDisplayNameC(), child->childCount());
+        const auto       msg = formErr(Err0521, toTypeStruct->getDisplayNameC(), toTypeStruct->fields.size(), child->childCount());
         const Diagnostic err{child->children[toTypeStruct->fields.count], msg};
         return context->report(err);
     }

@@ -634,11 +634,11 @@ void initErrors()
     SWAG_ERROR(Err0518, "too many generic arguments for %s [[%s]]: expected [[%d]], found [[%d]]                                $ ");
     SWAG_ERROR(Err0519, "[[%s]] defines one generic parameter but received [[%d]]                                               $ ");
     SWAG_ERROR(Err0520, "[[%s]] has an invalid number of generic parameters                                                     $ ");
-    SWAG_ERROR(Err0521, "excessive initializers: expected [[%d]] for [[%s]], found [[%d]]                                       $ hint: remove extra initializer values");
     
-    SWAG_ERROR(Err0490, "invalid array initialization with too few values                                                       $ note: expected [[%d]] values, found [[%d]]");
-    SWAG_ERROR(Err0522, "invalid array initialization with too many values                                                      $ note: expected [[%d]] values, found [[%d]]");
-    SWAG_ERROR(Err0523, "invalid tuple initialization with too many values                                                      $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0521, "too many initializers for [[%s]]                                                                       $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0490, "not enough initializers for array                                                                      $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0522, "too many initializers for array                                                                        $ note: expected [[%d]] values, found [[%d]]");
+    SWAG_ERROR(Err0523, "too many initializers for tuple                                                                        $ note: expected [[%d]] values, found [[%d]]");
     SWAG_ERROR(Err0524, "type [[%s]] initialized with an incorrect number of values                                             $ note: expected [[1]] value, found [[%d]]");
     SWAG_ERROR(Err0525, "too many parameters in [[%s]] declaration                                                              $ note: [[%s]] should have [[%d]] parameters, found [[%d]]");
     SWAG_ERROR(Err0526, "incompatible tuple types                                                                               $ ");
