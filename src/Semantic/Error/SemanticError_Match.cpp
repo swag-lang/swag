@@ -259,20 +259,7 @@ namespace
             }
         }
 
-        // If ALL per-overload reasons are identical, set the main error text to the TITLE (token[0]) of the first error
-        if (allEqualIds && !firstErrs.empty())
-        {
-            Vector<Utf8> tokens;
-            Diagnostic::tokenizeError(firstErrs[0]->textMsg, tokens);
-            err.textMsg = tokens[0];
-
-            // Anchor main error to first candidate error for accuracy
-            err.sourceFile    = firstErrs[0]->sourceFile;
-            err.startLocation = firstErrs[0]->startLocation;
-            err.endLocation   = firstErrs[0]->endLocation;
-        }
-
-        // If a common ", got X" was detected, add it once as a remark on the main error
+        // If a common ", found X" was detected, add it once as a remark on the main error
         if (shouldFactorGot)
         {
             shouldFactorGot = false;
