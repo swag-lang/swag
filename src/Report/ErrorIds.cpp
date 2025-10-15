@@ -665,11 +665,11 @@ void initErrors()
     SWAG_ERROR(Err0557, "[[%s]] first argument requires pointer, found [[%s]]                                                   $ ");
     SWAG_ERROR(Err0558, "[[@mkinterface]] first argument requires pointer or struct, found [[%s]]                               $ ");
     SWAG_ERROR(Err0559, "[[@mkstring]] first argument requires [[*u8]], found [[%s]]                                            $ ");
-    SWAG_ERROR(Err0561, "expected [[%s]], found [[%s]]                                                                          $ ");
-    SWAG_ERROR(Err0565, "invalid [[%s]] argument, expected [[%s]], got [[%s]]                                                   $ ");
-    SWAG_ERROR(Err0566, "static array cannot use [[void]] as element type                                                       $ ");
-    SWAG_ERROR(Err0543, "[[with]] applied to enum variable [[%s]] instead of enum type                                          $ note: [[with]] applies to enum types, not variables");
     
+    SWAG_ERROR(Err0561, "type mismatch                                                                                          $ note: expected type [[%s]], found [[%s]]");
+    SWAG_ERROR(Err0565, "invalid [[%s]] argument type [[%s]]                                                                    $ note: [[%s]] requires a [[%s]] argument");
+    SWAG_ERROR(Err0566, "invalid element type [[void]] for static array                                                         $ ");
+    SWAG_ERROR(Err0543, "invalid use of [[with]] on enum variable [[%s]]                                                        $ note: [[with]] applies to enum types, not enum variables");
     SWAG_ERROR(Err0537, "invalid call to [[%s]] with type [[%s]]                                                                $ note: [[%s]] requires type [[%s]] as its first argument");
     SWAG_ERROR(Err0538, "invalid [[#message]] argument type [[%s]]                                                              $ note: [[#message]] requires a [[Swag.CompilerMsgMask]] argument");
     SWAG_ERROR(Err0564, "invalid [[@mkinterface]] third argument type [[%s]]                                                    $ note: [[@mkinterface]] requires an interface name as as its third argument");
