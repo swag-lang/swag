@@ -706,15 +706,15 @@ void initErrors()
     SWAG_ERROR(Err0589, "enum array type [[%s]] must be [[const]]                                                               $ hint: declare as [[const %s]]");
     SWAG_ERROR(Err0590, "enum slice type [[%s]] must be [[const]]                                                               $ hint: declare as [[const %s]]");
     SWAG_ERROR(Err0591, "field [[%s]] requires [[%s]], found [[%s]]                                                             $ ");
+    
     SWAG_ERROR(Err0592, "expected [[%s]], found [[%s]]                                                                          $ ");
     SWAG_ERROR(Err0593, "tuple types not allowed as generic parameters                                                          $ ");
-    SWAG_ERROR(Err0594, "bit inversion [['~']] invalid for type [[%s]]                                                          $ ");
-    SWAG_ERROR(Err0595, "operator [['%s']] requires integer, found [[%s]]                                                       $ ");
-    SWAG_ERROR(Err0596, "operator [['%s']] invalid for type [[%s]]                                                              $ ");
-    SWAG_ERROR(Err0597, "operator [['%s']] invalid for left operand type [[%s]]                                                 $ ");
-    SWAG_ERROR(Err0598, "operator [['%s']] invalid for right operand type [[%s]]                                                $ ");
-    SWAG_ERROR(Err0599, "operator [['%s']] invalid for tuple types                                                              $ ");
-    
+    SWAG_ERROR(Err0594, "invalid bitwise inversion [['~']] for type [[%s]]                                                      $ ");
+    SWAG_ERROR(Err0595, "invalid shift operator [['%s']] for type [[%s]]                                                        $ note: operator [[%s]] required an integer operand");
+    SWAG_ERROR(Err0596, "invalid operator [['%s']] for type [[%s]]                                                              $ ");
+    SWAG_ERROR(Err0597, "invalid operator [['%s']] for left operand type [[%s]]                                                 $ ");
+    SWAG_ERROR(Err0598, "invalid operator [['%s']] for right operand type [[%s]]                                                $ ");
+    SWAG_ERROR(Err0599, "invalid operator [['%s']] for tuple types                                                              $ ");
     SWAG_ERROR(Err0628, "cannot cast a value to a type                                                                          $ ");
     SWAG_ERROR(Err0600, "cannot cast value pointer [[%s]] to block pointer [[%s]]                                               $ ");
     SWAG_ERROR(Err0601, "cannot cast [[%s]] to pointer type                                                                     $ ");

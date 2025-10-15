@@ -276,7 +276,7 @@ namespace
         if (shouldFactorGot)
         {
             shouldFactorGot = false;
-            note->remarks[firstOverloadIndex] += form(", got %s", commonGotValue.cstr());
+            note->remarks[firstOverloadIndex] += form(", found %s", commonGotValue.cstr());
         }
 
         Vector<const Diagnostic*> oneNote{note};
