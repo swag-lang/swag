@@ -320,16 +320,18 @@ namespace
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
         {
-            const auto msg = formErr(Err0537, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
-            err            = new Diagnostic{callParamNode, callParamNode->token, msg};
+            const auto name = errorParam.oneTry->overload->node->token.cstr();
+            const auto msg  = formErr(Err0537, name, bi.badSignatureGivenType->getDisplayNameC(), name, bi.badSignatureRequestedType->getDisplayNameC());
+            err             = new Diagnostic{callParamNode, callParamNode->token, msg};
         }
         else if (bi.badSignatureParameterIdx == 0 &&
                  !bi.badSignatureGivenType->isPointerTo(TypeInfoKind::Struct) &&
                  errorParam.oneTry->overload->node->isMethod())
         {
-            auto n          = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto name = errorParam.oneTry->overload->node->token.cstr();
+            auto       n    = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err             = new Diagnostic{callParamNode, n};
-            n               = form("[[%s]] is a method, call it with a pointer to [[%s]] as a first argument", errorParam.oneTry->overload->node->token.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
+            n               = form("[[%s]] is a method, call it with a pointer to [[%s]] as a first argument", name, bi.badSignatureRequestedType->getDisplayNameC());
             const auto note = Diagnostic::note(context->node, context->node->token, n);
             errorParam.addNote(note);
             errorParam.addNote(Diagnostic::note("could [[me]] be missing?"));

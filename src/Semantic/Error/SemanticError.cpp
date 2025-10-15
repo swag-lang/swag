@@ -53,7 +53,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
         {
             if (identifierRef->typeInfo)
             {
-                const auto msg = form("the %s [[%s]] wasn't found in [[%s]]. The alternative from [[%s]] was selected",
+                const auto msg = form("the %s [[%s]] wasn't found in [[%s]], so the alternative from [[%s]] was selected",
                                       Naming::kindName(overload).cstr(),
                                       node->token.cstr(),
                                       identifierRef->typeInfo->getDisplayNameC(),

@@ -669,8 +669,8 @@ void initErrors()
     SWAG_ERROR(Err0565, "invalid [[%s]] argument, expected [[%s]], got [[%s]]                                                   $ ");
     SWAG_ERROR(Err0566, "static array cannot use [[void]] as element type                                                       $ ");
     SWAG_ERROR(Err0543, "[[with]] applied to enum variable [[%s]] instead of enum type                                          $ note: [[with]] applies to enum types, not variables");
-    SWAG_ERROR(Err0537, "UFCS received [[%s]] instead of [[%s]]                                                                 $ ");
     
+    SWAG_ERROR(Err0537, "invalid call to [[%s]] with type [[%s]]                                                                $ note: [[%s]] requires type [[%s]] as its first argument");
     SWAG_ERROR(Err0538, "invalid [[#message]] argument type [[%s]]                                                              $ note: [[#message]] requires a [[Swag.CompilerMsgMask]] argument");
     SWAG_ERROR(Err0564, "invalid [[@mkinterface]] third argument type [[%s]]                                                    $ note: [[@mkinterface]] requires an interface name as as its third argument");
     SWAG_ERROR(Err0552, "invalid [[@mkany]] second argument type [[%s]]                                                         $ note: [[@mkany]] requires a [[typeinfo]] as its second argument");
