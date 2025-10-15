@@ -618,11 +618,11 @@ void initErrors()
     SWAG_ERROR(Err0503, "lower bound [[%I64u]] exceeds upper bound [[%I64u]]                                                    $ ");
     SWAG_ERROR(Err0504, "[[until]] value cannot be zero                                                                         $ ");
     SWAG_ERROR(Err0505, "variadic arguments exceed [[%d]], got [[%d]]                                                           $ ");
+    
     SWAG_ERROR(Err0506, "no matching overload found                                                                             $ ");
     SWAG_ERROR(Err0507, "struct [[%s]] directly or indirectly references itself                                                 $ ");
-    SWAG_ERROR(Err0508, "duplicate visibility specifier [[%s]] conflicts with [[#global export]]                                $ hint: remove [[public]] since [[#global export]] already makes all declarations public");
-    SWAG_ERROR(Err0509, "parameter already nullable due to [[null]] default                                                     $ hint: remove [[#null]] attribute");
-    
+    SWAG_ERROR(Err0508, "visibility specifier [[%s]] conflicts with [[#global export]]                                          $ hint: remove [[public]] since [[#global export]] already makes all declarations public");
+    SWAG_ERROR(Err0509, "parameter already nullable due to [[null]] default value                                               $ hint: remove the [[#null]] modifier");
     SWAG_ERROR(Err0510, "field name [[%s]] is reserved by the language                                                          $ note: names beginning with [[item]] are reserved");
     SWAG_ERROR(Err0511, "function name [[%s]] is reserved by the compiler                                                       $ ");
     SWAG_ERROR(Err0512, "identifier [[_]] is reserved by the compiler                                                           $ ");
