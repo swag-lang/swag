@@ -668,20 +668,19 @@ void initErrors()
     SWAG_ERROR(Err0561, "expected [[%s]], found [[%s]]                                                                          $ ");
     SWAG_ERROR(Err0565, "invalid [[%s]] argument, expected [[%s]], got [[%s]]                                                   $ ");
     SWAG_ERROR(Err0566, "static array cannot use [[void]] as element type                                                       $ ");
-    
-    SWAG_ERROR(Err0537, "UFCS received [[%s]] instead of [[%s]]                                                                 $ ");
-    SWAG_ERROR(Err0538, "[[#message]] received [[%s]] instead of [[Swag.CompilerMsgMask]]                                       $ ");
-    SWAG_ERROR(Err0564, "[[@mkinterface]] third argument received [[%s]] instead of interface name                              $ ");
     SWAG_ERROR(Err0543, "[[with]] applied to enum variable [[%s]] instead of enum type                                          $ note: [[with]] applies to enum types, not variables");
-    SWAG_ERROR(Err0552, "[[@mkany]] second argument received [[%s]] instead of [[typeinfo]]                                     $ ");
-    SWAG_ERROR(Err0553, "[[@mkinterface]] second argument received [[%s]] instead of [[typeinfo]]                               $ ");
-    SWAG_ERROR(Err0560, "[[@mkcallback]] received [[%s]] instead of function pointer                                            $ ");
-    SWAG_ERROR(Err0548, "[[#include]] received [[%s]] instead of [[string]]                                                     $ ");
-    SWAG_ERROR(Err0549, "[[#inject]] received [[%s]] instead of [[code]]                                                        $ ");
-    SWAG_ERROR(Err0550, "[[where]] received [[%s]] instead of [[bool]]                                                          $ ");
-    SWAG_ERROR(Err0551, "[[#runes]] received [[%s]] instead of [[string]]                                                       $ ");
-    SWAG_ERROR(Err0562, "[[@countof]] received [[%s]] instead of integer                                                        $ ");
+    SWAG_ERROR(Err0537, "UFCS received [[%s]] instead of [[%s]]                                                                 $ ");
     
+    SWAG_ERROR(Err0538, "invalid [[#message]] argument type [[%s]]                                                              $ note: [[#message]] requires a [[Swag.CompilerMsgMask]] argument");
+    SWAG_ERROR(Err0564, "invalid [[@mkinterface]] third argument type [[%s]]                                                    $ note: [[@mkinterface]] requires an interface name as as its third argument");
+    SWAG_ERROR(Err0552, "invalid [[@mkany]] second argument type [[%s]]                                                         $ note: [[@mkany]] requires a [[typeinfo]] as its second argument");
+    SWAG_ERROR(Err0553, "invalid [[@mkinterface]] second argument type [[%s]]                                                   $ note: [[@mkinterface]] requires a [[typeinfo]] as its second argument");
+    SWAG_ERROR(Err0560, "invalid [[@mkcallback]] argument type [[%s]]                                                           $ note: [[mkcallback]] requires a function pointer argument");
+    SWAG_ERROR(Err0548, "invalid [[#include]] argument type [[%s]]                                                              $ note: [[#include]] requires a [[string]] argument");
+    SWAG_ERROR(Err0549, "invalid [[#inject]] argument type [[%s]]                                                               $ note: [[#inject]] requires a [[code]] argument");
+    SWAG_ERROR(Err0550, "invalid [[where]] condition type [[%s]]                                                                $ note: [[where]] requires a boolean expression");
+    SWAG_ERROR(Err0551, "invalid [[#runes]] argument type [[%s]]                                                                $ note: [[#runes]] requires a [[string]] argument");
+    SWAG_ERROR(Err0562, "invalid [[@countof]] argument type [[%s]]                                                              $ note: [[countof]] requires an integer argument");
     SWAG_ERROR(Err0563, "invalid [[%s]] count type [[%s]]                                                                       $ note: [[%s]] count must be an integer");
     SWAG_ERROR(Err0567, "invalid array dimension type [[%s]]                                                                    $ note: array dimension must be an integer");
     SWAG_ERROR(Err0568, "invalid array index type [[%s]]                                                                        $ note: array index must be an integer");
@@ -702,8 +701,8 @@ void initErrors()
     SWAG_ERROR(Err0581, "invalid [[%s]] first argument                                                                          $ note: [[%s]] requires a mutable variable, found [[%s]]");
     SWAG_ERROR(Err0582, "incompatible type                                                                                      $ note: expected an enum type, found [[%s]]");
     SWAG_ERROR(Err0583, "type [[%s]] not allowed as enum base type                                                              $ ");
-    SWAG_ERROR(Err0584, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.EnumFlags]]] attribute, so only [[unsigned integer]] types are allowed");
-    SWAG_ERROR(Err0585, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.EnumIndex]]] attribute, so only [[integer]] types are allowed");
+    SWAG_ERROR(Err0584, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.EnumFlags]]] attribute, so only unsigned integer types are allowed");
+    SWAG_ERROR(Err0585, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.EnumIndex]]] attribute, so only integer types are allowed");
     SWAG_ERROR(Err0586, "type [[%s]] not allowed as enum base type                                                              $ note: enum has the [[#[Swag.NoDuplicate]]] attribute, so only basic types are allowed");
     SWAG_ERROR(Err0587, "type [[cstring]] not allowed as enum base type                                                         $ hint: use [[string]] instead");
     SWAG_ERROR(Err0588, "incompatible enum type [[%s]]                                                                          $ note: expected [[%s]], found [[%s]]");
