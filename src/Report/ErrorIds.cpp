@@ -277,7 +277,7 @@ void initErrors()
     SWAG_ERROR(Err0152, "[[let]] variable has no address                                                                        $ hint: use [[var]] for a mutable variable");
     SWAG_ERROR(Err0153, "inline function has no address                                                                         $ ");
     SWAG_ERROR(Err0154, "right-hand expression has no address                                                                   $ ");
-    SWAG_ERROR(Err0155, "[[#[Swag.Align]]] value not power of two; got [[%d]]                                                   $ ");
+    SWAG_ERROR(Err0155, "[[#[Swag.Align]]] value not power of two; found [[%d]]                                                   $ ");
     SWAG_ERROR(Err0156, "first argument to [[@mkany]] cannot be [[null]]                                                        $ ");
     SWAG_ERROR(Err0157, "[[%s]] requires [[variable]] as first argument                                                         $ note: a variable is required when the second [[@init]] argument is omitted");
     SWAG_ERROR(Err0158, "[[#gettag]] last argument must be constant, got [[%s]]                                                 $ ");
@@ -344,7 +344,7 @@ void initErrors()
     SWAG_ERROR(Err0220, "[[#[Swag.Opaque]]] incompatible with [[#global export]]                                                $ ");
     SWAG_ERROR(Err0221, "[[#[Swag.Opaque]]] requires [[public]] access                                                          $ ");
     SWAG_ERROR(Err0222, "operation [['%s']] on [[null]] value                                                                   $ ");
-    SWAG_ERROR(Err0223, "[[#[Swag.Pack]]] value invalid; got [[%d]] (not 0 or power of two)                                     $ ");
+    SWAG_ERROR(Err0223, "[[#[Swag.Pack]]] value invalid; found [[%d]] (not 0 or power of two)                                     $ ");
     SWAG_ERROR(Err0224, "index operation on [[%s]] invalid; pointer arithmetic disallowed on [[%s]]                             $ ");
     SWAG_ERROR(Err0225, "pointer arithmetic disallowed                                                                          $ ");
     SWAG_ERROR(Err0226, "pointer arithmetic on [[void*]] disallowed                                                             $ note: [[void]] has no size");
@@ -555,7 +555,6 @@ void initErrors()
     SWAG_ERROR(Err0436, "[[%s.%s]] missing in [[switch]]                                                                        $ ");
     SWAG_ERROR(Err0437, "boolean expression missing before [[%s]]                                                               $ ");
     SWAG_ERROR(Err0438, "assignment or arguments missing after %s, found $$TKN$$                                                  $ ");
-    SWAG_ERROR(Err0439, "%s [[%s]] missing arguments between [[()]]                                                             $ ");
     SWAG_ERROR(Err0440, "[[opVisit]] missing [[#[Swag.Macro]]] attribute                                                        $ ");
     SWAG_ERROR(Err0441, "attribute name missing before [[(]]                                                                    $ ");
     SWAG_ERROR(Err0442, "[[%s]] lacks error handling                                                                            $ hint: add [[try]], [[catch]], or [[assume]] to handle it");
@@ -593,26 +592,29 @@ void initErrors()
     SWAG_ERROR(Err0475, "control path missing return value in %s                                                                $ ");
     SWAG_ERROR(Err0476, "upper bound missing after [[until]]                                                                    $ hint: use [[to]] to slice until the end");
     SWAG_ERROR(Err0477, "struct name missing before [['{']]                                                                     $ ");
-    SWAG_ERROR(Err0478, "type missing after [[#type]], found $$TKN$$                                                              $ ");
-    SWAG_ERROR(Err0479, "assignment or [[:]] missing for type, found $$TKN$$                                                      $ ");
+    SWAG_ERROR(Err0478, "type missing after [[#type]], found $$TKN$$                                                            $ ");
+    SWAG_ERROR(Err0479, "assignment or [[:]] missing for type, found $$TKN$$                                                    $ ");
     SWAG_ERROR(Err0480, "%s [[%s]] not used as first argument of [[%s]]                                                         $ ");
     SWAG_ERROR(Err0482, "non-contiguous [[#alias]] in [[%s]]                                                                    $ note: [[#alias%u]] is missing in the sequence");
     SWAG_ERROR(Err0483, "[[cvarargs]] parameter cannot be passed to another function                                            $ ");
     SWAG_ERROR(Err0484, "[[%s]] is static member of [[%s]], used as instance field                                              $ ");
     SWAG_ERROR(Err0485, "[[%s]] is %s, not a value                                                                              $ ");
-    SWAG_ERROR(Err0486, "attribute [[%s]] has insufficient arguments                                                            $ ");
-    SWAG_ERROR(Err0487, "%s [[%s]] has insufficient call arguments                                                              $ ");
-    SWAG_ERROR(Err0488, "%s [[%s]] has insufficient generic arguments                                                           $ ");
-    SWAG_ERROR(Err0491, "tuple requires [[%d]] values, got [[%d]]                                                               $ ");
-    SWAG_ERROR(Err0492, "[[%s]] requires [[%d]] parameters, got [[%d]]                                                          $ ");
-    SWAG_ERROR(Err0493, "[[%s]] requires at least [[%d]] parameters, got [[%d]]                                                 $ ");
-    SWAG_ERROR(Err0494, "[[#alias]] number [[%u]] exceeds valid range                                                           $ note: valid range is [0, 31]");
-    SWAG_ERROR(Err0495, "[[#uniq]] number [[%u]] exceeds valid range                                                            $ note: valid range is [0, 31]");
-    SWAG_ERROR(Err0496, "[[#up]] count [[%u]] exceeds valid range                                                               $ note: valid range is [1, 255]");
-    SWAG_ERROR(Err0497, "array dimensions exceed [[254]]                                                                        $ ");
-    SWAG_ERROR(Err0498, "callback limited to [[%d]] parameters, got [[%d]]                                                      $ ");
-    SWAG_ERROR(Err0499, "enum value [[%s]] exceeds range of [[%s]]                                                              $ ");
     
+    SWAG_ERROR(Err0439, "missing call arguments between [[()]] for %s [[%s]]                                                    $ ");
+    SWAG_ERROR(Err0486, "not anough arguments for attribute [[%s]]                                                              $ ");
+    SWAG_ERROR(Err0487, "not anough call arguments for %s [[%s]]                                                                $ ");
+    SWAG_ERROR(Err0488, "not anough generic arguments for %s [[%s]]                                                             $ ");
+    
+    SWAG_ERROR(Err0491, "not enough tuple initializers                                                                          $ note: the tuple requires [[%d]] values, found [[%d]] ");
+    SWAG_ERROR(Err0492, "not enough parameters in [[%s]] declaration                                                            $ note: [[%s]] requires [[%d]] parameters, found [[%d]]");
+    SWAG_ERROR(Err0493, "not enough parameters in [[%s]] declaration                                                            $ note: [[%s]] requires at least [[%d]] parameters, found [[%d]]");
+    SWAG_ERROR(Err0525, "too many parameters in [[%s]] declaration                                                              $ note: [[%s]] requires [[%d]] parameters, found [[%d]]");
+    SWAG_ERROR(Err0494, "too many [[#alias]] numbers                                                                            $ note: the valid range is [0, 31], found [[%u]]");
+    SWAG_ERROR(Err0495, "too many [[#uniq]] numbers                                                                             $ note: the valid range is [0, 31], found [[%u]]");
+    SWAG_ERROR(Err0496, "too many [[#up]] count                                                                                 $ note: the valid range is [1, 255], found [[%u]]");
+    SWAG_ERROR(Err0497, "too many array dimensions                                                                              $ note: maximum is [[254]]");
+    SWAG_ERROR(Err0498, "cannot make a callback of function [[%s]]                                                              $ note: function [[%s]] has too many parameters, maximum is [[%d]], found [[%d]]");
+    SWAG_ERROR(Err0499, "enum value [[%s]] exceeds range of type [[%s]]                                                         $ ");
     SWAG_ERROR(Err0500, "index out of range                                                                                     $ note: index [[%I64u]] exceeds the maximum value of [[%I64u]]");
     SWAG_ERROR(Err0501, "inline expansion of [[%s]] exceeds the configuration limit                                             $ note: [[--limit-inline:%d]]");
     SWAG_ERROR(Err0503, "invalid range expression                                                                               $ note: the lower bound [[%I64u]] exceeds the upper bound [[%I64u]]");
@@ -639,7 +641,6 @@ void initErrors()
     SWAG_ERROR(Err0522, "too many initializers for array                                                                        $ note: expected [[%d]] values, found [[%d]]");
     SWAG_ERROR(Err0523, "too many initializers for tuple                                                                        $ note: expected [[%d]] values, found [[%d]]");
     SWAG_ERROR(Err0524, "type [[%s]] initialized with an incorrect number of values                                             $ note: expected [[1]] value, found [[%d]]");
-    SWAG_ERROR(Err0525, "too many parameters in [[%s]] declaration                                                              $ note: [[%s]] should have [[%d]] parameters, found [[%d]]");
     SWAG_ERROR(Err0526, "incompatible tuple types                                                                               $ ");
     SWAG_ERROR(Err0527, "cannot convert a closure type to a lambda type                                                         $ ");    
     SWAG_ERROR(Err0528, "cannot cast a type value to a compile-time type ([[%s]])                                               $ ");

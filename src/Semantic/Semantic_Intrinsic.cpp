@@ -22,7 +22,7 @@ bool Semantic::resolveIntrinsicMakeCallback(SemanticContext* context, AstNode* n
     const auto typeFunc = castTypeInfo<TypeInfoFuncAttr>(typeFirst, TypeInfoKind::LambdaClosure);
     if (typeFunc->parameters.size() > SWAG_LIMIT_CB_MAX_PARAMS)
     {
-        Diagnostic err{first, formErr(Err0498, SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
+        Diagnostic err{first, formErr(Err0498, typeFunc->declNode->token.cstr(), typeFunc->declNode->token.cstr(), SWAG_LIMIT_CB_MAX_PARAMS, typeFunc->parameters.size())};
         err.addNote(Diagnostic::hereIs(typeFunc->declNode));
         return context->report(err);
     }

@@ -87,7 +87,6 @@ namespace
         const auto  overload       = errorParam.oneTry->overload;
         const auto  callParameters = errorParam.oneTry->callParameters;
         const auto& match          = errorParam.oneTry->symMatchContext;
-        const Utf8  niceName       = "the " + Naming::kindName(overload);
 
         Diagnostic* err;
         if (!callParameters)
@@ -95,7 +94,7 @@ namespace
         else if (errorParam.destAttrDecl)
             err = new Diagnostic{node, node->token, formErr(Err0486, node->token.cstr())};
         else
-            err = new Diagnostic{node, node->token, formErr(Err0487, niceName.cstr(), node->token.cstr())};
+            err = new Diagnostic{node, node->token, formErr(Err0487, Naming::kindName(overload).cstr(), node->token.cstr())};
 
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
