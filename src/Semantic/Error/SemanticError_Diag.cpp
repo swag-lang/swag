@@ -127,8 +127,12 @@ namespace
 
         if (!callParameters && errorParam.destFuncDecl)
         {
-            if (node->findParent(AstNodeKind::Return) || node->findParent(AstNodeKind::AffectOp))
+            if (node->findParent(AstNodeKind::Return) ||
+                node->findParent(AstNodeKind::AffectOp) ||
+                node->findParent(AstNodeKind::VarDecl))
+            {
                 err->addNote(form("hint: use [[&%s]] if you want a function pointer for a lambda or a closure", errorParam.destFuncDecl->token.cstr()));
+            }
         }
     }
 

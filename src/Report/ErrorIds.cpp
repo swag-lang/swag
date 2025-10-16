@@ -600,11 +600,10 @@ void initErrors()
     SWAG_ERROR(Err0484, "[[%s]] is static member of [[%s]], used as instance field                                              $ ");
     SWAG_ERROR(Err0485, "[[%s]] is %s, not a value                                                                              $ ");
     
-    SWAG_ERROR(Err0439, "missing call arguments between [[()]] for %s [[%s]]                                                    $ ");
+    SWAG_ERROR(Err0439, "missing arguments between [[()]] for %s [[%s]]                                                         $ ");
     SWAG_ERROR(Err0486, "not anough arguments for attribute [[%s]]                                                              $ ");
     SWAG_ERROR(Err0487, "not anough call arguments for %s [[%s]]                                                                $ ");
     SWAG_ERROR(Err0488, "not anough generic arguments for %s [[%s]]                                                             $ ");
-    
     SWAG_ERROR(Err0491, "not enough tuple initializers                                                                          $ note: the tuple requires [[%d]] values, found [[%d]] ");
     SWAG_ERROR(Err0492, "not enough parameters in [[%s]] declaration                                                            $ note: [[%s]] requires [[%d]] parameters, found [[%d]]");
     SWAG_ERROR(Err0493, "not enough parameters in [[%s]] declaration                                                            $ note: [[%s]] requires at least [[%d]] parameters, found [[%d]]");
