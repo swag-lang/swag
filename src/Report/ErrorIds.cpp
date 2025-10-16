@@ -596,14 +596,14 @@ void initErrors()
     SWAG_ERROR(Err0479, "assignment or [[:]] missing for type, found $$TKN$$                                                    $ ");
     SWAG_ERROR(Err0480, "%s [[%s]] not used as first argument of [[%s]]                                                         $ ");
     SWAG_ERROR(Err0482, "non-contiguous [[#alias]] in [[%s]]                                                                    $ note: [[#alias%u]] is missing in the sequence");
-    SWAG_ERROR(Err0483, "[[cvarargs]] parameter cannot be passed to another function                                            $ ");
-    SWAG_ERROR(Err0484, "[[%s]] is static member of [[%s]], used as instance field                                              $ ");
-    SWAG_ERROR(Err0485, "[[%s]] is %s, not a value                                                                              $ ");
     
+    SWAG_ERROR(Err0483, "cannot pass a parameter of type [[cvarargs]] to another function                                       $ ");
+    SWAG_ERROR(Err0484, "cannot access static member [[%s]] of [[%s]] as an instance field                                      $ ");
+    SWAG_ERROR(Err0485, "cannot use %s [[%s]] as a value                                                                        $ ");
     SWAG_ERROR(Err0439, "missing arguments between [[()]] for %s [[%s]]                                                         $ ");
-    SWAG_ERROR(Err0486, "not anough arguments for attribute [[%s]]                                                              $ ");
-    SWAG_ERROR(Err0487, "not anough call arguments for %s [[%s]]                                                                $ ");
-    SWAG_ERROR(Err0488, "not anough generic arguments for %s [[%s]]                                                             $ ");
+    SWAG_ERROR(Err0486, "not enough arguments for attribute [[%s]]                                                              $ ");
+    SWAG_ERROR(Err0487, "not enough call arguments for %s [[%s]]                                                                $ ");
+    SWAG_ERROR(Err0488, "not enough generic arguments for %s [[%s]]                                                             $ ");
     SWAG_ERROR(Err0491, "not enough tuple initializers                                                                          $ note: the tuple requires [[%d]] values, found [[%d]] ");
     SWAG_ERROR(Err0492, "not enough parameters in [[%s]] declaration                                                            $ note: [[%s]] requires [[%d]] parameters, found [[%d]]");
     SWAG_ERROR(Err0493, "not enough parameters in [[%s]] declaration                                                            $ note: [[%s]] requires at least [[%d]] parameters, found [[%d]]");

@@ -337,7 +337,7 @@ namespace
             n               = form("[[%s]] is a method, call it with a pointer to [[%s]] as a first argument", name, bi.badSignatureRequestedType->getDisplayNameC());
             const auto note = Diagnostic::note(context->node, context->node->token, n);
             errorParam.addNote(note);
-            errorParam.addNote(Diagnostic::note("could [[me]] be missing?"));
+            errorParam.addNote(Diagnostic::note("hint: could [[me]] be missing?"));
             addCastErrorMsg = false;
         }
         else

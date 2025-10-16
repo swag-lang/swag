@@ -118,13 +118,13 @@ bool Semantic::checkIsConcrete(SemanticContext* context, AstNode* node)
             if (typeFct->parameters.empty() || !typeFct->parameters[0]->typeInfo->isMe())
                 err.addNote(node->ownerFct, node->ownerFct->token, "hint: use [[mtd]] instead of [[func]] to declare an implicit [[me]] parameter");
             else
-                err.addNote("could [[me]] be missing?");
+                err.addNote(form("hint: did you mean to use [[me.%s]] instead?", node->resolvedSymbolName()->name.cstr()));
         }
 
         return context->report(err);
     }
 
-    Diagnostic err{node, node->token, formErr(Err0485, node->resolvedSymbolName()->name.cstr(), Naming::aKindName(node->resolvedSymbolName()->kind).cstr())};
+    Diagnostic err{node, node->token, formErr(Err0485, Naming::kindName(node->resolvedSymbolName()->kind).cstr(), node->resolvedSymbolName()->name.cstr())};
 
     // struct.field
     if (node->childParentIdx())
