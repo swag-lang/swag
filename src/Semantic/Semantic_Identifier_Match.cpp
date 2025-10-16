@@ -880,7 +880,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
             }
             else if (oneMatch.oneOverload->scope == identifierRef->previousScope)
             {
-                err.addNote(form("[[%s]] was only used as a scope qualifier to find the function [[%s]]", prev->token.cstr(), identifier->token.cstr()));
+                err.addNote(form("[[%s]] is only used as a scope qualifier to locate the function [[%s]]", prev->token.cstr(), identifier->token.cstr()));
                 err.addNote(form("hint: remove [[%s]] or replace it with the scope [[%s]]", prev->token.cstr(), identifierRef->previousScope->name.cstr()));
             }
 

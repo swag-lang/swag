@@ -332,7 +332,7 @@ bool Semantic::resolveFuncDecl(SemanticContext* context)
             {
                 if (funcNode->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
                     return context->report({funcNode->returnType, formErr(Err0475, funcNode->getDisplayNameC())});
-                return context->report({funcNode->returnType, formErr(Err0472, funcNode->getDisplayNameC(), funcNode->returnType->typeInfo->getDisplayNameC())});
+                return context->report({funcNode->returnType, formErr(Err0472, funcNode->returnType->typeInfo->getDisplayNameC(), funcNode->getDisplayNameC())});
             }
         }
     }
@@ -932,7 +932,7 @@ bool Semantic::registerFuncSymbol(SemanticContext* context, AstFuncDecl* funcNod
         // The function returns nothing but has the 'Swag.Discardable' attribute
         if (funcNode->returnType->typeInfo->isVoid() && funcNode->hasAttribute(ATTRIBUTE_DISCARDABLE))
         {
-            Diagnostic err{funcNode, funcNode->tokenName, formErr(Err0471, funcNode->token.cstr())};
+            Diagnostic err{funcNode, funcNode->tokenName, toErr(Err0471)};
             const auto attr = funcNode->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
             err.addNote(attr, form("this is the %s", "attribute"));
             return context->report(err);

@@ -190,7 +190,7 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
             {
                 if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
                     return context->report({fct->returnType, formErr(Err0475, fct->getDisplayNameC())});
-                return context->report({fct->returnType, formErr(Err0472, fct->getDisplayNameC(), fct->returnType->typeInfo->getDisplayNameC())});
+                return context->report({fct->returnType, formErr(Err0472, fct->returnType->typeInfo->getDisplayNameC(), fct->getDisplayNameC())});
             }
         }
     }

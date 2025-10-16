@@ -96,7 +96,7 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
     }
 
     if (!wanted->isVoid() && returnType->isVoid())
-        return context->report({node, node->getTokenName(), formErr(Err0470, node->token.cstr(), wanted->getDisplayNameC())});
+        return context->report({node, node->getTokenName(), formErr(Err0470, wanted->getDisplayNameC(), node->token.cstr())});
 
     if (!returnType->isSame(wanted, CAST_FLAG_CAST))
     {

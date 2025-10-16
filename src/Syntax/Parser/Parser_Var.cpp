@@ -365,13 +365,7 @@ bool Parser::doVarDecl(AstNode* parent, AstNode** result, AstNodeKind kind, VarD
 
         if (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::SymEqual))
         {
-            Utf8 msg;
-            if (kind == AstNodeKind::ConstDecl)
-                msg = toErr(Err0443);
-            else
-                msg = toErr(Err0479);
-
-            Diagnostic err{sourceFile, tokenParse, msg};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0479)};
             if (tokenParse.is(TokenId::SymEqualEqual))
                 err.addNote("hint: did you mean to assign a value with the symbol [['=']] instead?");
 

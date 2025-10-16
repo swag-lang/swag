@@ -1,4 +1,6 @@
 #include "pch.h"
+
+#include "Naming.h"
 #include "Report/Diagnostic.h"
 #include "Report/ErrorIds.h"
 #include "Semantic/SemanticJob.h"
@@ -131,7 +133,7 @@ bool Ast::generateMissingInterfaceFct(SemanticContext*            context,
             if (!defaultExportNode)
             {
                 Diagnostic err{node, node->getTokenName(), formErr(Err0459, typeBaseInterface->name.cstr(), typeStruct->getDisplayNameC())};
-                err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing [[%s]]", missingNode->name.cstr()));
+                err.addNote(missingNode->declNode, missingNode->declNode->getTokenName(), form("missing function [[%s]]", missingNode->name.cstr()));
                 return context->report(err);
             }
         }

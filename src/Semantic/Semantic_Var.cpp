@@ -628,7 +628,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
 
         if (!ok)
         {
-            Diagnostic err{node, formErr(Err0458, node->token.cstr(), concreteTypeEnum->getDisplayNameC())};
+            Diagnostic err{node, formErr(Err0458, Naming::kindName(node).cstr(), node->token.cstr(), concreteTypeEnum->getDisplayNameC())};
             err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
             return context->report(err);
         }

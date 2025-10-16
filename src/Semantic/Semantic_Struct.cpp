@@ -1168,13 +1168,6 @@ bool Semantic::resolveStruct(SemanticContext* context)
                     if (varDecl->type)
                         child = varDecl->type;
 
-                    if (!node->genericParameters)
-                    {
-                        Diagnostic err{node, node->getTokenName(), formErr(Err0451, node->token.cstr(), varDecl->token.cstr())};
-                        err.addNote(Diagnostic::isType(child));
-                        return context->report(err);
-                    }
-
                     Diagnostic err{node, node->getTokenName(), formErr(Err0452, node->token.cstr(), varDecl->token.cstr())};
                     err.addNote(Diagnostic::isType(child));
                     return context->report(err);
