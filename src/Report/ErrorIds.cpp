@@ -505,9 +505,9 @@ void initErrors()
     SWAG_ERROR(Err0384, "[[#callerfunction]] used outside parameter list                                                        $ ");
     SWAG_ERROR(Err0385, "[[#callerlocation]] used outside parameter list                                                        $ ");
     SWAG_ERROR(Err0386, "lambda or closure default parameters redefined                                                         $ ");
-    SWAG_ERROR(Err0387, "[[me]] cannot have a default value                                                                     $ ");
-    SWAG_ERROR(Err0388, "lambda parameters cannot define default values                                                         $ ");
     
+    SWAG_ERROR(Err0387, "invalid [[me]] default value                                                                           $ ");
+    SWAG_ERROR(Err0388, "invalid lambda parameters default values                                                               $ note: the parameters of a lambda type cannot have default values");
     SWAG_ERROR(Err0389, "invalid numeric literal syntax                                                                         $ note: a [['_']] cannot end the number");
     SWAG_ERROR(Err0390, "invalid numeric literal syntax                                                                         $ note: the exponent part cannot start with [['_']]");
     SWAG_ERROR(Err0391, "invalid numeric literal syntax                                                                         $ note: the fractional part cannot start with [['_']]");
