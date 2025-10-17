@@ -520,9 +520,10 @@ void initErrors()
     SWAG_ERROR(Err0399, "value required but type provided                                                                       $ ");
     SWAG_ERROR(Err0400, "%s [[%s]] defines no generic arguments                                                                 $ ");
     SWAG_ERROR(Err0401, "match variable only valid in [[interface]] or [[any]] [[switch]], not [[%s]]                           $ ");
-    SWAG_ERROR(Err0402, "move reference [[&&]] only valid in function parameters                                                $ ");
-    SWAG_ERROR(Err0403, "range used in [[switch]] without expression                                                            $ ");
     
+    SWAG_ERROR(Err0402, "invalid move reference                                                                                 $ note: a move reference [[&&]] is only valid for function parameters");
+    
+    SWAG_ERROR(Err0403, "invalid [[case]] range without a [[switch]] expression                                                 $ note: a [[case]] range requires a [[switch]] expression to compare against");
     SWAG_ERROR(Err0406, "invalid [[%s]] declaration                                                                             $ note: [[%s]] cannot be declared outside a corresponding [[impl]] block");
     SWAG_ERROR(Err0407, "invalid top-level [[using]]                                                                            $ note: a top-level [[using]] must not appear after other declarations");
     SWAG_ERROR(Err0408, "invalid tuple unpacking in %s scope                                                                    $ ");
