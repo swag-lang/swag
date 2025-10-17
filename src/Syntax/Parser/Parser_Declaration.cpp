@@ -175,7 +175,7 @@ bool Parser::doUsing(AstNode* parent, AstNode** result, bool isGlobal)
                     [[fallthrough]];
                 default:
                 {
-                    Diagnostic err{sourceFile, tokenParse, toErr(Err0407)};
+                    Diagnostic err{sourceFile, savedToken, toErr(Err0407)};
                     err.addNote(child, child->token, "this is the prior declaration");
                     return context->report(err);
                 }

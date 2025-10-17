@@ -143,15 +143,9 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     }
 
     // Special function outside an impl block
-    if (!parent)
+    if (!parent || node->ownerScope->is(ScopeKind::Impl))
     {
-        const Diagnostic err{node, node->getTokenName(), formErr(Err0405, node->token.cstr())};
-        return context->report(err);
-    }
-
-    if (node->ownerScope->is(ScopeKind::Impl))
-    {
-        const Diagnostic err{node, node->getTokenName(), formErr(Err0406, node->token.cstr())};
+        const Diagnostic err{node, node->getTokenName(), formErr(Err0406, node->token.cstr(), node->token.cstr())};
         return context->report(err);
     }
 

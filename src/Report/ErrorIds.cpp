@@ -523,10 +523,10 @@ void initErrors()
     SWAG_ERROR(Err0402, "move reference [[&&]] only valid in function parameters                                                $ ");
     SWAG_ERROR(Err0403, "range used in [[switch]] without expression                                                            $ ");
     SWAG_ERROR(Err0404, "statement starting with [[.]] only allowed in [[with]] or [[mtd]]                                      $ hint: use [[me.field]] or wrap the expression in [[with]]");
-    SWAG_ERROR(Err0405, "[[%s]] outside corresponding [[impl]] block                                                            $ ");
-    SWAG_ERROR(Err0406, "[[%s]] outside corresponding [[impl]] block                                                            $ note: [[impl for]] is only allowed for interface implementations");
-    SWAG_ERROR(Err0407, "top-level [[using]] appears after declarations                                                         $ ");
-    SWAG_ERROR(Err0408, "tuple unpacking not allowed in %s                                                                      $ ");
+    
+    SWAG_ERROR(Err0406, "invalid [[%s]] declaration                                                                             $ note: [[%s]] cannot be declared outside a corresponding [[impl]] block");
+    SWAG_ERROR(Err0407, "invalid top-level [[using]]                                                                            $ note: a top-level [[using]] must not appear after other declarations");
+    SWAG_ERROR(Err0408, "invalid tuple unpacking in %s scope                                                                    $ ");
     
     SWAG_ERROR(Err0410, "invalid [[#code]] type usage                                                                           $ note: [[#code]] is only valid in a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
     SWAG_ERROR(Err0411, "invalid variadic argument position                                                                     $ note: a variadic argument must be the last one");
@@ -890,6 +890,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0405, nullptr);
     SWAG_ERROR(Err0409, nullptr);
     SWAG_ERROR(Err0451, nullptr);
     SWAG_ERROR(Err0443, nullptr);
