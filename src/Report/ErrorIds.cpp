@@ -514,13 +514,13 @@ void initErrors()
     SWAG_ERROR(Err0393, "[[%s]] is %s, cannot be caught                                                                         $ ");
     SWAG_ERROR(Err0394, "[[%s]] nested inside [[%s]]                                                                            $ hint: use only one [[try]], [[catch]], or [[assume]] block");
     SWAG_ERROR(Err0395, "[[%s]] used outside function, macro, or mixin                                                          $ ");
-    SWAG_ERROR(Err0396, "[[%s]] requires [[throw]] on [[%s]]                                                                    $ note: the function is missing the [[throw]] attribute");
-    SWAG_ERROR(Err0397, "function declared directly in struct                                                                   $ hint: place it inside an [[impl]] block instead");
-    SWAG_ERROR(Err0398, "type required but value provided                                                                       $ ");
-    SWAG_ERROR(Err0399, "value required but type provided                                                                       $ ");
-    SWAG_ERROR(Err0400, "%s [[%s]] defines no generic arguments                                                                 $ ");
-    SWAG_ERROR(Err0401, "match variable only valid in [[interface]] or [[any]] [[switch]], not [[%s]]                           $ ");
     
+    SWAG_ERROR(Err0396, "call used [[%s]] on non-throwing function [[%s]]                                                       $ note: function [[%s]] is not marked with [[throw]] and cannot raise errors");
+    SWAG_ERROR(Err0397, "misplaced function declaration                                                                         $ note: a function cannot be declared directly inside a [[struct]] $ hint: move the declaration inside an [[impl]] block instead");
+    SWAG_ERROR(Err0398, "specialization type required but value provided                                                        $ ");
+    SWAG_ERROR(Err0399, "specialization value required but type provided                                                        $ ");
+    SWAG_ERROR(Err0400, "invalid generic arguments                                                                              $ note: %s [[%s]] is not generic and cannot be specialized");
+    SWAG_ERROR(Err0401, "invalid [[case]] match variable                                                                        $ note: a match variable is only valid for an [[interface]] or an [[any]] $ note: switch expression has type [[%s]]");
     SWAG_ERROR(Err0402, "invalid move reference                                                                                 $ note: a move reference [[&&]] is only valid for function parameters");
     
     SWAG_ERROR(Err0403, "invalid [[case]] range without a [[switch]] expression                                                 $ note: a [[case]] range requires a [[switch]] expression to compare against");
