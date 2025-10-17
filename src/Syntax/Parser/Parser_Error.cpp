@@ -184,7 +184,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
         }
     }
 
-    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return "this should be followed by an affectation or by arguments"; });
+    PushErrCxtStep ec(context, leftNode, ErrCxtStepKind::Note, [] { return "this should be followed by an affectation"; });
 
     Utf8 afterMsg = "left expression";
     if (leftNode->is(AstNodeKind::IdentifierRef) && leftNode->lastChild()->is(AstNodeKind::Identifier))

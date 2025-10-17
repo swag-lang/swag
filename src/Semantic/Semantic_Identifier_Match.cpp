@@ -1288,10 +1288,10 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         return context->report(err);
     }
 
-    // A.X and A is an array: missing index
+    // A.X and A is an array or a slice
     if (symbol &&
         symbol->is(SymbolKind::Variable) &&
-        identifier->typeInfo->isArray() &&
+        (identifier->typeInfo->isArray() || identifier->typeInfo->isSlice()) &&
         identifier->parent->isNot(AstNodeKind::ArrayPointerIndex) &&
         identifier->parent == identifierRef &&
         identifierRef->lastChild() != identifier)
@@ -1299,19 +1299,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         const Diagnostic err{identifier, formErr(Err0445, symbol->name.cstr(), identifier->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
-
-    // A.X and A is a slice: missing index
-    if (symbol &&
-        symbol->is(SymbolKind::Variable) &&
-        identifier->typeInfo->isSlice() &&
-        identifier->parent->isNot(AstNodeKind::ArrayPointerIndex) &&
-        identifier->parent == identifierRef &&
-        identifierRef->lastChild() != identifier)
-    {
-        const Diagnostic err{identifier, formErr(Err0445, symbol->name.cstr(), identifier->typeInfo->getDisplayNameC())};
-        return context->report(err);
-    }
-
+    
     return true;
 }
 

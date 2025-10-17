@@ -335,15 +335,6 @@ bool Semantic::resolveType(SemanticContext* context, AstTypeExpression* typeNode
         return true;
     }
 
-    // cvarargs
-    if (typeNode->typeFromLiteral && typeNode->typeFromLiteral->hasFlag(TYPEINFO_C_VARIADIC))
-    {
-        const auto typeP = typeNode->findParent(AstNodeKind::FuncDeclParam);
-        SWAG_VERIFY(typeP && typeNode->ownerFct, context->report({typeNode, formErr(Err0409, "cvarargs")}));
-        typeNode->typeInfo = g_TypeMgr->typeInfoCVariadic;
-        return true;
-    }
-
     if (typeNode->identifier)
     {
         typeNode->typeInfo = typeNode->identifier->typeInfo;

@@ -1093,9 +1093,9 @@ Diagnostic* Diagnostic::isType(AstNode* node, ToConcreteFlags flags)
     if (!node)
         return nullptr;
 
-    Utf8       n;
     const auto overload = node->resolvedSymbolOverload();
 
+    Utf8       n;
     if (overload && overload->typeInfo && overload->symbol->is(SymbolKind::Function) && flags.has(CONCRETE_FUNC))
     {
         const auto typeInfo = TypeManager::concreteType(overload->typeInfo, flags);

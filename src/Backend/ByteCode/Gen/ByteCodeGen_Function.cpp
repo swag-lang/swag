@@ -1423,8 +1423,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0442, funcNode->token.cstr())};
-        err.addNote(form("the %s [[%s]] is marked with [[throw]] and may raise errors you should handle", Naming::kindName(srcNode).cstr(), srcNode->token.cstr()));
+        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0442, funcNode->token.cstr(), Naming::kindName(srcNode).cstr(), srcNode->token.cstr())};
         return context->report(err);
     }
 
