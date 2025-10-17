@@ -7,7 +7,7 @@
 
 using Core, Gui, Pixel
 
-const CARD_SCALE    = 0.5
+const CARD_SCALE    = 1.0
 const CARD_WIDTH    = cast(s32) (744 * CARD_SCALE)
 const CARD_HEIGHT   = cast(s32) (1038 * CARD_SCALE)
 const CARD_ROUND    = cast(f32) (CARD_WIDTH / 27.0)
@@ -462,13 +462,16 @@ func getColorCard(rank: u32)->Color
 
 func paintBack(_app: *Application, dc: *Painter, _fi: ImageInfo)
 {
-    let rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
+    var rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
+    rect.inflate(-BORDER_SIZE)
+
     dc.fillRoundRect(rect, CARD_ROUND, CARD_ROUND, Argb.Black)
 
     {
         var br = Brush.createTexture(g_BackCard)
         br.color = g_ColorDeck
         let rectBorder = rect
+        dc.fillRoundRect(rectBorder, CARD_ROUND, CARD_ROUND, Color.fromArgb(0x22, 0xFF, 0xFF, 0xFF))
         dc.fillRoundRect(rectBorder, CARD_ROUND, CARD_ROUND, br)
     }
 }
@@ -485,7 +488,8 @@ func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
         g_InitDone = true
     }
 
-    let rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
+    var rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
+    rect.inflate(-BORDER_SIZE)
 
     // Border
     /////////////////////////////////
@@ -496,7 +500,7 @@ func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
         br.color = g_ColorDeck
         dc.fillRoundRect(rect1, CARD_ROUND, CARD_ROUND, br)
         rect1.inflate(-BORDER_SIZE * 0.12, -BORDER_SIZE * 0.12)
-        dc.drawRoundRect(rect1, CARD_ROUND, CARD_ROUND, Argb.Black, BORDER_SIZE * 0.25)
+        //dc.drawRoundRect(rect1, CARD_ROUND, CARD_ROUND, Argb.Black, BORDER_SIZE * 0.25)
     }
 
     // Image
@@ -729,8 +733,8 @@ func paintObjects(what: string, colorDeck: Color)
         files.add(fi)
     }
 
-    var page = Image.create(CARD_WIDTH * 4, CARD_HEIGHT * 4, .BGRA8)
-    page.fill(Argb.White)
+    var page = Image.create(CARD_WIDTH * 2, CARD_HEIGHT * 3, .BGRA8)
+    page.fill(Argb.Black)
     var x       = 0
     var y       = page.height - CARD_HEIGHT
     var pageNum = 1
@@ -780,7 +784,7 @@ func paintObjects(what: string, colorDeck: Color)
         let img0 = pt.draw(func|f|(app, dc)
         {
             dc.setColorMaskFull()
-            dc.clear(Argb.White)
+            dc.clear(Argb.Black)
             paintFront(app, dc, f)
         })
         page.mix(img0, x, y)
@@ -788,7 +792,7 @@ func paintObjects(what: string, colorDeck: Color)
         let img1 = pt.draw(func|f|(app, dc)
         {
             dc.setColorMaskFull()
-            dc.clear(Argb.White)
+            dc.clear(Argb.Black)
             paintBack(app, dc, f)
         })
         page.mix(img1, x + CARD_WIDTH, y)

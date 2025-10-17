@@ -74,7 +74,8 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
                     mapRegVal.contains(mapValReg[stackOffset].first) &&
                     ScbeCpu::isInt(inst->regA) == ScbeCpu::isInt(mapValReg[stackOffset].first) &&
                     ScbeCpu::getNumBits(inst->opBitsA, inst->emitFlags) <= BackendEncoder::getNumBits(mapValReg[stackOffset].second) &&
-                    mapRegVal[mapValReg[stackOffset].first] == stackOffset)
+                    mapRegVal[mapValReg[stackOffset].first] == stackOffset &&
+                    !aliasStack.contains(stackOffset, ScbeCpu::getNumBytes(inst->opBitsA)))
                 {
                     if (mapValReg[stackOffset].first == inst->regA)
                     {

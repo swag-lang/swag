@@ -517,6 +517,7 @@ void ScbeOptimizer::optimizeStep1(const ScbeMicro& out)
 {
     passHasDoneSomething = false;
     computeContextRegs(out);
+    computeContextStack(out);
     solveLabels(out);
 
     optimizePassImmediate(out);
@@ -566,7 +567,7 @@ void ScbeOptimizer::optimize(const ScbeMicro& out)
         return;
     if (!out.cpuFct->bc->sourceFile->module->mustOptimizeBackend(out.cpuFct->bc->node))
         return;
-    //if (!out.cpuFct->bc->getPrintName().containsNoCase("getRuneOutline"))
+    //if (!out.cpuFct->bc->getPrintName().containsNoCase("adjustBrightness"))
     //    return;
 
     bool globalChanged = true;
