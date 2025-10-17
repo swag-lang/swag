@@ -44,8 +44,8 @@ bool Semantic::checkCanCatch(SemanticContext* context)
     }
 
     const auto lastChild = identifierRef->lastChild();
-    Diagnostic err{node, node->token, formErr(Err0393, lastChild->token.cstr(), Naming::aKindName(lastChild->resolvedSymbolName()->kind).cstr())};
-    err.addNote(lastChild, "this cannot raise errors");
+    Diagnostic err{node, node->token, formErr(Err0393, node->token.cstr(), Naming::kindName(lastChild->resolvedSymbolName()->kind).cstr(), lastChild->token.cstr())};
+    err.addNote(lastChild, form("a %s cannot raise errors", Naming::kindName(lastChild->resolvedSymbolName()->kind).cstr()));
     return context->report(err);
 }
 
