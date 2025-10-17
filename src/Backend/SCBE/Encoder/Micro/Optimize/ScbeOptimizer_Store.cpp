@@ -9,19 +9,6 @@ void ScbeOptimizer::optimizePassStore(const ScbeMicro& out)
     mapValReg.clear();
     mapRegVal.clear();
 
-    bool noStack = false;
-    for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
-    {
-        if (inst->op == ScbeMicroOp::LoadMR || inst->op == ScbeMicroOp::LoadMI)
-        {
-            if (inst->regA != CpuReg::Rsp)
-            {
-                noStack = true;
-                break;
-            }
-        }
-    }
-
     for (auto inst = out.getFirstInstruction(); !inst->isEnd(); inst = ScbeMicro::getNextInstruction(inst))
     {
         if (inst->isJump() || inst->isJumpDest() || inst->isRet())

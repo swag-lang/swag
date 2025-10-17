@@ -462,9 +462,7 @@ func getColorCard(rank: u32)->Color
 
 func paintBack(_app: *Application, dc: *Painter, _fi: ImageInfo)
 {
-    var rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
-    rect.inflate(-BORDER_SIZE)
-
+    let rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
     dc.fillRoundRect(rect, CARD_ROUND, CARD_ROUND, Argb.Black)
 
     {
@@ -488,8 +486,7 @@ func paintFront(app: *Application, dc: *Painter, fi: ImageInfo)
         g_InitDone = true
     }
 
-    var rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
-    rect.inflate(-BORDER_SIZE)
+    let rect = Math.Rectangle{0, 0, CARD_WIDTH, CARD_HEIGHT}
 
     // Border
     /////////////////////////////////
@@ -845,7 +842,7 @@ var g_DataPath: String
     foreach f, i in files
     {
         let fn = assume Path.getFileNameWithoutExtension(f.fullname)
-        if Path.getFileName(f.fullname) == "objets.txt" do
+        //if Path.getFileName(f.fullname) == "objets.txt" do
             paintObjects(fn, deckColors[i])
     }
 }
