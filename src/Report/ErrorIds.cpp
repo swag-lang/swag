@@ -499,8 +499,8 @@ void initErrors()
     SWAG_ERROR(Err0378, "[[%s]] not valid on %s                                                                                 $ ");
     SWAG_ERROR(Err0379, "attribute not allowed in this location                                                                 $ ");
     SWAG_ERROR(Err0380, "[[AttributeUsage.Gen]] requires [[AttributeUsage.Struct]] or [[AttributeUsage.Enum]]                   $ ");
-    SWAG_ERROR(Err0381, "[[{]] not valid after [[try]], [[assume]], or [[catch]]                                                $ ");
     
+    SWAG_ERROR(Err0381, "invalid [[{]] after [[try]], [[assume]], or [[catch]]                                                  $ ");
     SWAG_ERROR(Err0382, "invalid [[opVisit]] specialization name [[%s]]                                                         $ note: [[opVisit]] specializations must start with an uppercase letter");
     SWAG_ERROR(Err0383, "invalid closure outside a function scope                                                               $ note: closure definitions are allowed only within functions");
     SWAG_ERROR(Err0384, "invalid use of [[#callerfunction]] outside a parameter list                                            $ note: this can only be used as a default function parameter value");
