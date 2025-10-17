@@ -500,14 +500,13 @@ void initErrors()
     SWAG_ERROR(Err0379, "attribute not allowed in this location                                                                 $ ");
     SWAG_ERROR(Err0380, "[[AttributeUsage.Gen]] requires [[AttributeUsage.Struct]] or [[AttributeUsage.Enum]]                   $ ");
     SWAG_ERROR(Err0381, "[[{]] not valid after [[try]], [[assume]], or [[catch]]                                                $ ");
-    SWAG_ERROR(Err0382, "[[%s]] name violates naming rule for [[opVisit]] (must start uppercase)                                $ ");
-    SWAG_ERROR(Err0383, "closure used outside function scope                                                                    $ note: closures allowed only within functions");
-    SWAG_ERROR(Err0384, "[[#callerfunction]] used outside parameter list                                                        $ ");
-    SWAG_ERROR(Err0385, "[[#callerlocation]] used outside parameter list                                                        $ ");
-    SWAG_ERROR(Err0386, "lambda or closure default parameters redefined                                                         $ ");
     
+    SWAG_ERROR(Err0382, "invalid [[opVisit]] specialization name [[%s]]                                                         $ note: [[opVisit]] specializations must start with an uppercase letter");
+    SWAG_ERROR(Err0383, "invalid closure outside a function scope                                                               $ note: closure definitions are allowed only within functions");
+    SWAG_ERROR(Err0384, "invalid use of [[#callerfunction]] outside a parameter list                                            $ note: this can only be used as a default function parameter value");
+    SWAG_ERROR(Err0385, "invalid use of [[#callerlocation]] outside a parameter list                                            $ note: this can only be used as a default function parameter value");
     SWAG_ERROR(Err0387, "invalid [[me]] default value                                                                           $ ");
-    SWAG_ERROR(Err0388, "invalid lambda parameters default values                                                               $ note: the parameters of a lambda type cannot have default values");
+    SWAG_ERROR(Err0388, "invalid lambda parameters default values                                                               $ note: the parameters of a lambda cannot have default values");
     SWAG_ERROR(Err0389, "invalid numeric literal syntax                                                                         $ note: a [['_']] cannot end the number");
     SWAG_ERROR(Err0390, "invalid numeric literal syntax                                                                         $ note: the exponent part cannot start with [['_']]");
     SWAG_ERROR(Err0391, "invalid numeric literal syntax                                                                         $ note: the fractional part cannot start with [['_']]");
@@ -888,6 +887,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0386, nullptr);
     SWAG_ERROR(Err0404, nullptr);
     SWAG_ERROR(Err0405, nullptr);
     SWAG_ERROR(Err0409, nullptr);

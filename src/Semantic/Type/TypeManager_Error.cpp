@@ -188,7 +188,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, 
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
-            msg = toErr(Err0386);
+            msg = toErr(Err0388);
         }
         else
         {
