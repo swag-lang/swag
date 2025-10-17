@@ -522,12 +522,10 @@ void initErrors()
     SWAG_ERROR(Err0401, "match variable only valid in [[interface]] or [[any]] [[switch]], not [[%s]]                           $ ");
     SWAG_ERROR(Err0402, "move reference [[&&]] only valid in function parameters                                                $ ");
     SWAG_ERROR(Err0403, "range used in [[switch]] without expression                                                            $ ");
-    SWAG_ERROR(Err0404, "statement starting with [[.]] only allowed in [[with]] or [[mtd]]                                      $ hint: use [[me.field]] or wrap the expression in [[with]]");
     
     SWAG_ERROR(Err0406, "invalid [[%s]] declaration                                                                             $ note: [[%s]] cannot be declared outside a corresponding [[impl]] block");
     SWAG_ERROR(Err0407, "invalid top-level [[using]]                                                                            $ note: a top-level [[using]] must not appear after other declarations");
     SWAG_ERROR(Err0408, "invalid tuple unpacking in %s scope                                                                    $ ");
-    
     SWAG_ERROR(Err0410, "invalid [[#code]] type usage                                                                           $ note: [[#code]] is only valid in a [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] function");
     SWAG_ERROR(Err0411, "invalid variadic argument position                                                                     $ note: a variadic argument must be the last one");
     SWAG_ERROR(Err0412, "invalid variadic parameter position                                                                    $ note: a variadic parameter must be the last one");
@@ -890,6 +888,7 @@ void initErrors()
     SWAG_ERROR(Err0784, "[[#stringof]] argument evaluation failed                                                               $ ");
     SWAG_ERROR(Err0785, "second [[#import]] argument missing or invalid, found $$TKN$$                                          $ hint: use [[location:\"location\"]]");
 
+    SWAG_ERROR(Err0404, nullptr);
     SWAG_ERROR(Err0405, nullptr);
     SWAG_ERROR(Err0409, nullptr);
     SWAG_ERROR(Err0451, nullptr);
