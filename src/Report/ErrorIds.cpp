@@ -111,10 +111,10 @@ void initErrors()
 
     SWAG_ERROR(Wrn0001, "%s                                                                                                    $ ");
     SWAG_ERROR(Wrn0002, "%s [[%s]] is deprecated ([[#[Swag.Deprecated]]])                                                      $ ");
-    SWAG_ERROR(Wrn0003, "unused variable [[%s]]: never modified after declaration                                              $ hint: declare it with [[let]] instead of [[var]] to mark it immutable");
-    SWAG_ERROR(Wrn0004, "unused variable [[%s]]: initialized to a default value and never used                                 $ note: consider removing this variable if it serves no purpose");
+    SWAG_ERROR(Wrn0003, "unused variable [[%s]]                                                                                $ note: never modified after declaration $ hint: declare it with [[let]] instead of [[var]] to mark it immutable");
+    SWAG_ERROR(Wrn0004, "unused variable [[%s]]                                                                                $ note: initialized to a default value and never used $ note: consider removing this variable if it serves no purpose");
     SWAG_ERROR(Wrn0005, "unreachable code detected                                                                             $ ");
-    SWAG_ERROR(Wrn0006, "unused %s [[%s]]: declared but never used                                                             $ ");
+    SWAG_ERROR(Wrn0006, "unused %s [[%s]]                                                                                      $ note: declared but never used");
     SWAG_ERROR(Wrn0007, "ineffective [[break]] statement                                                                       $ note: [[break]] is only needed in empty [[case]] blocks");
     SWAG_ERROR(Wrn0008, "redundant [[if]] after [[else]]                                                                       $ hint: replace [[else: if]] with [[elif]]");
     SWAG_ERROR(Wrn0009, "redundant [[#if]] after [[#else]]                                                                     $ hint: replace [[#else: #if]] with [[#elif]]");
