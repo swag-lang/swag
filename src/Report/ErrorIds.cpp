@@ -71,12 +71,12 @@ void initErrors()
 
     SWAG_ERROR(Saf0001, "[safety] invalid cast from [[any]] to [[%s]] $ note: this safety check was triggered because [[#[Swag.Safety(\"dyncast\")]]] is enabled");
     SWAG_ERROR(Saf0002, "[safety] cannot cast a null value to [[%s]] $ note: this safety check was triggered because [[#[Swag.Safety(\"dyncast\")]]] is enabled");
-    SWAG_ERROR(Saf0003, "[safety] invalid boolean value detected $ note: this safety check was triggered because [[#[Swag.Safety(\"bool\")]]] is enabled");
+    SWAG_ERROR(Saf0003, "[safety] invalid boolean value $ note: this safety check was triggered because [[#[Swag.Safety(\"bool\")]]] is enabled");
     SWAG_ERROR(Saf0004, "[safety] index out of range $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
     SWAG_ERROR(Saf0005, "[safety] lower bound greater than upper bound $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
     SWAG_ERROR(Saf0006, "[safety] lower bound greater than upper bound $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
     SWAG_ERROR(Saf0007, "[safety] upper bound exceeds array length $ note: this safety check was triggered because [[#[Swag.Safety(\"boundcheck\")]]] is enabled");
-    SWAG_ERROR(Saf0008, "[safety] overflow detected in [[@abs]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
+    SWAG_ERROR(Saf0008, "[safety] overflow in [[@abs]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
     SWAG_ERROR(Saf0009, "[safety] invalid argument passed to [[@acos]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
     SWAG_ERROR(Saf0010, "[safety] invalid argument passed to [[@asin]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
     SWAG_ERROR(Saf0011, "[safety] invalid argument passed to [[@log]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
@@ -85,7 +85,7 @@ void initErrors()
     SWAG_ERROR(Saf0014, "[safety] invalid argument passed to [[@sqrt]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
     SWAG_ERROR(Saf0015, "[safety] invalid argument passed to [[@pow]] (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
     SWAG_ERROR(Saf0016, "[safety] division by zero $ note: this safety check was triggered because [[#[Swag.Safety(\"math\")]]] is enabled");
-    SWAG_ERROR(Saf0017, "[safety] NaN (Not a Number) value detected $ note: this safety check was triggered because [[#[Swag.Safety(\"nan\")]]] is enabled");
+    SWAG_ERROR(Saf0017, "[safety] NaN (Not a Number) value $ note: this safety check was triggered because [[#[Swag.Safety(\"nan\")]]] is enabled");
     SWAG_ERROR(Saf0018, "[safety] attempted to dereference a null pointer $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
     SWAG_ERROR(Saf0019, "[safety] attempted to throw a null error value $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
     SWAG_ERROR(Saf0030, "[safety] null argument passed to [[%s]] $ note: this safety check was triggered because [[#[Swag.Safety(\"null\")]]] is enabled");
@@ -97,7 +97,7 @@ void initErrors()
     SWAG_ERROR(Saf0024, "[safety] value [[%llu]] too large for type [[%s]] (overflow) $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0025, "[safety] value [[%lld]] too large for type [[%s]] (overflow) $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0026, "[safety] value [[%g]] too large for type [[%s]] (overflow) $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
-    SWAG_ERROR(Saf0027, "[safety] overflow detected during [['%s']] operation (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
+    SWAG_ERROR(Saf0027, "[safety] overflow during [['%s']] operation (type [[%s]]) $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0028, "[safety] truncation from [[%s]] to [[%s]] not allowed (possible data loss) $ note: this safety check was triggered because [[#[Swag.Safety(\"overflow\")]]] is enabled");
     SWAG_ERROR(Saf0029, "[safety] unexpected switch value (no matching case found) $ note: this safety check was triggered because [[#[Swag.Safety(\"switch\")]]] is enabled");
     SWAG_ERROR(Saf0032, "[safety] return of stack memory $ note: this safety check was triggered because [[#[Swag.Safety(\"memory\")]]] is enabled");
@@ -113,7 +113,7 @@ void initErrors()
     SWAG_ERROR(Wrn0002, "%s [[%s]] is deprecated ([[#[Swag.Deprecated]]])");
     SWAG_ERROR(Wrn0003, "unused variable [[%s]] $ note: never modified after declaration $ hint: declare it with [[let]] instead of [[var]] to mark it immutable");
     SWAG_ERROR(Wrn0004, "unused variable [[%s]] $ note: initialized to a default value and never used $ note: consider removing this variable if it serves no purpose");
-    SWAG_ERROR(Wrn0005, "unreachable code detected");
+    SWAG_ERROR(Wrn0005, "unreachable code");
     SWAG_ERROR(Wrn0006, "unused %s [[%s]] $ note: declared but never used");
     SWAG_ERROR(Wrn0007, "ineffective [[break]] statement $ note: [[break]] is only needed in empty [[case]] blocks");
     SWAG_ERROR(Wrn0008, "redundant [[if]] after [[else]] $ hint: replace [[else: if]] with [[elif]]");
@@ -361,8 +361,8 @@ void initErrors()
     SWAG_ERROR(Err0236, "duplicate [[#import]] version definition");
     SWAG_ERROR(Err0237, "duplicate [[#main]] function in module");
     SWAG_ERROR(Err0238, "duplicate [[%s]] application $ note: [[Swag.AttrMulti]] not specified");
-    SWAG_ERROR(Err0239, "duplicate [[%s]] arguments detected");
-    SWAG_ERROR(Err0240, "duplicate [[%s]] modifiers detected");
+    SWAG_ERROR(Err0239, "duplicate [[%s]] arguments");
+    SWAG_ERROR(Err0240, "duplicate [[%s]] modifiers");
     SWAG_ERROR(Err0241, "duplicate [[case]] value [[%d]]");
     SWAG_ERROR(Err0242, "duplicate [[case]] value [[%f]]");
     SWAG_ERROR(Err0243, "duplicate [[case]] value [[%s]]");
@@ -580,14 +580,14 @@ void initErrors()
     SWAG_ERROR(Err0465, "missing preceding [[#if]] for [[#elif]]");
     SWAG_ERROR(Err0466, "missing preceding [[#if]] or [[#elif]] for [[#else]]");
     SWAG_ERROR(Err0467, "missing preceding [[if]] for [[elif]]");
-    SWAG_ERROR(Err0468, "missing preceding [[if]] or [[#elif]] for [[else]]");
+    SWAG_ERROR(Err0468, "missing preceding [[if]] or [[elif]] for [[else]]");
     SWAG_ERROR(Err0469, "missing reference initialization");
     SWAG_ERROR(Err0470, "missing required [[switch]] expression for [[#[Swag.Complete]]]");
     SWAG_ERROR(Err0471, "missing required context for [[#[Swag.CalleeReturn]]] on [[%s]] $ note: requires [[#[Swag.Macro]]] or [[#[Swag.Mixin]]] attribute");
     SWAG_ERROR(Err0472, "missing required context for [[AttributeUsage.Gen]] $ note: [[AttributeUsage.Gen]] requires [[AttributeUsage.Struct]] or [[AttributeUsage.Enum]]");
-    SWAG_ERROR(Err0473, "missing required error $ note: none detected");
+    SWAG_ERROR(Err0473, "missing required error");
     SWAG_ERROR(Err0474, "missing required operand for [[throw]] $ note: requires struct or [[@err]] expression");
-    SWAG_ERROR(Err0475, "missing required warning $ note: none detected");
+    SWAG_ERROR(Err0475, "missing required warning");
     SWAG_ERROR(Err0476, "missing requirement for first argument to [[%s]] $ note: requires [[variable]] when the second [[@init]] argument is omitted");
     SWAG_ERROR(Err0477, "missing return statement of type [[%s]] in %s");
     SWAG_ERROR(Err0478, "missing return type $ note: a function with the [[#[Swag.Discardable]]] attribute must return a value");
@@ -772,7 +772,7 @@ void initErrors()
     SWAG_ERROR(Err0658, "unexpected return type $ note: a function with the [[#[Swag.CalleeReturn]]] attribute cannot declare a return type");
     SWAG_ERROR(Err0659, "unexpected return value $ note: a %s cannot return a value");
     SWAG_ERROR(Err0660, "unexpected symbol [['%s']] after %s");
-    SWAG_ERROR(Err0661, "unexpected symbol [['%s']] detected");
+    SWAG_ERROR(Err0661, "unexpected symbol [['%s']]");
     SWAG_ERROR(Err0662, "unexpected token $$TKN$$ after array dimensions");
     SWAG_ERROR(Err0663, "unexpected token in [[#scope]] name $ note: expected an identifier, found $$TKN$$");
     SWAG_ERROR(Err0664, "unexpected token in [[visit]] specialization name $ note: $$TKN$$");
@@ -786,9 +786,9 @@ void initErrors()
     SWAG_ERROR(Err0672, "unexpected token in scope name $ note: expected an identifier, found $$TKN$$");
     SWAG_ERROR(Err0673, "unexpected token in type expression after [[#type]] $ note: expected a type, found $$TKN$$");
     SWAG_ERROR(Err0674, "unexpected token in variable alias name $ note: expected an identifier, found $$TKN$$");
-    SWAG_ERROR(Err0675, "unmatched [[')']]: missing corresponding [['(']]");
-    SWAG_ERROR(Err0676, "unmatched [['}']]: missing corresponding [['{']]");
-    SWAG_ERROR(Err0677, "unmatched [[']']]: missing corresponding [['[']]");
+    SWAG_ERROR(Err0675, "unmatched [[')']] $ note: missing corresponding [['(']]");
+    SWAG_ERROR(Err0676, "unmatched [['}']] $ note: missing corresponding [['{']]");
+    SWAG_ERROR(Err0677, "unmatched [[']']] $ note: missing corresponding [['[']]");
     SWAG_ERROR(Err0678, "unmatched comment terminator [['*/']] after %s $ note: missing corresponding [['/*']]");
     SWAG_ERROR(Err0679, "unresolved generic struct [[%s]] $ note: field [[%s]] is generic but cannot be specialized");
     SWAG_ERROR(Err0680, "unresolved shorthand to [[%s]] $ note: cannot find a corresponding [[enum]], [[with]], or [[mtd]] context");
