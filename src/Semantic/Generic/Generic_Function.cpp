@@ -303,5 +303,5 @@ bool Generic::instantiateDefaultGenericFunc(SemanticContext* context)
         }
     }
 
-    return context->report({node->token.sourceFile, node->token, formErr(Err0434, node->token.cstr())});
+    return context->report({node->token.sourceFile, node->token, formErr(Err0433, node->token.cstr())});
 }

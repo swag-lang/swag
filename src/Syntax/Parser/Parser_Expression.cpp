@@ -138,7 +138,7 @@ bool Parser::doArrayPointerIndex(AstNode** exprNode)
         *exprNode = arrayNode;
         if (tokenParse.is(TokenId::SymRightSquare))
             break;
-        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0352)));
+        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0445)));
     }
 
@@ -1392,7 +1392,7 @@ bool Parser::doExpressionListArray(AstNode* parent, AstNode** result)
             break;
         FormatAst::inheritFormatBefore(this, subExpr, &lastToken);
         FormatAst::inheritFormatAfter(this, subExpr, &tokenParse);
-        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0358)));
+        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0356)));
         lastToken = tokenParse;
     }
 
@@ -1459,7 +1459,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
 
                 if (tokenParse.is(TokenId::SymRightParen))
                     break;
-                SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0354)));
+                SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
                 SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0491)));
             }
 

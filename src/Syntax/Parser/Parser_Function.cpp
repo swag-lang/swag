@@ -90,7 +90,7 @@ bool Parser::doGenericFuncCallArguments(AstNode* parent, AstFuncCallParams** res
             break;
         if (tokenParse.is(TokenId::SymRightParen))
             break;
-        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0355)));
+        SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
         SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0391)));
     }
 
@@ -168,20 +168,15 @@ bool Parser::doFuncCallArguments(AstNode* parent, AstFuncCallParams** result, To
             {
                 if (callParams->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT) || closeToken == TokenId::SymRightCurly)
                     SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0360)));
-                else if (forAttrUse)
-                    SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
                 else
-                    SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0350)));
+                    SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
             }
 
             // Accept ending comma in struct initialization
             if (closeToken == TokenId::SymRightCurly && tokenParse.is(closeToken))
                 break;
 
-            if (forAttrUse)
-                SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0393)));
-            else
-                SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0392)));
+            SWAG_VERIFY(tokenParse.isNot(closeToken), error(tokenParse, toErr(Err0393)));
         }
     }
 
@@ -504,7 +499,7 @@ bool Parser::doFuncDeclParameters(AstNode* parent, AstNode** result, bool accept
                 break;
 
             oneParamDone = true;
-            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0353)));
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0460)));
         }
     }

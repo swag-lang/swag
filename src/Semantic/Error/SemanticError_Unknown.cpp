@@ -89,7 +89,7 @@ namespace
         }
         else if (identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0089, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0090, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (identifier->callParameters)
         {

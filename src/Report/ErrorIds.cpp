@@ -213,7 +213,6 @@ void initErrors()
     SWAG_ERROR(Err0086, "cannot find file [[%s]] in module [[%s]]");
     SWAG_ERROR(Err0087, "cannot find file [[\"%s\"]]");
     SWAG_ERROR(Err0088, "cannot find foreign function [[%s]]");
-    SWAG_ERROR(Err0089, "cannot find function [[%s]] in [[%s]]");
     SWAG_ERROR(Err0090, "cannot find function [[%s]] in [[%s]]");
     SWAG_ERROR(Err0091, "cannot find function [[%s]]");
     SWAG_ERROR(Err0092, "cannot find identifier [[%s]] in [[%s]] or %s [[%s]]");
@@ -257,7 +256,6 @@ void initErrors()
     SWAG_ERROR(Err0130, "cannot negate unsigned type [[%s]]");
     SWAG_ERROR(Err0131, "cannot open [[#include]] file [[%s]]");
     SWAG_ERROR(Err0132, "cannot open file [[%s]] for writing");
-    SWAG_ERROR(Err0133, "cannot open file [[%s]]");
     SWAG_ERROR(Err0134, "cannot open file [[%s]]");
     SWAG_ERROR(Err0135, "cannot pass [[null]] as first argument to [[@mkany]]");
     SWAG_ERROR(Err0136, "cannot pass parameter of type [[cvarargs]] to another function");
@@ -474,15 +472,8 @@ void initErrors()
     SWAG_ERROR(Err0347, "missing [[%s]] arguments between [[()]]");
     SWAG_ERROR(Err0348, "missing [[(]] to start [[%s]] arguments $ note: found $$TKN$$");
     SWAG_ERROR(Err0349, "missing [[(]] to start parameters $ note: found $$TKN$$");
-    SWAG_ERROR(Err0350, "missing [[,]] or [[')']] before $$TKN$$");
     SWAG_ERROR(Err0351, "missing [[,]] or [[')']] before $$TKN$$");
-    SWAG_ERROR(Err0352, "missing [[,]] or [[')']] before $$TKN$$");
-    SWAG_ERROR(Err0353, "missing [[,]] or [[')']] before $$TKN$$");
-    SWAG_ERROR(Err0354, "missing [[,]] or [[')']] before $$TKN$$");
-    SWAG_ERROR(Err0355, "missing [[,]] or [[')']] before $$TKN$$");
-    SWAG_ERROR(Err0356, "missing [[,]] or [[']']] before $$TKN$$ $ hint: add a dimension or close the list with [[']']]");
-    SWAG_ERROR(Err0357, "missing [[,]] or [[']']] before $$TKN$$");
-    SWAG_ERROR(Err0358, "missing [[,]] or [[']']] before $$TKN$$");
+    SWAG_ERROR(Err0356, "missing [[,]] or [[']']] before $$TKN$$");
     SWAG_ERROR(Err0359, "missing [[,]] or [['|']] before $$TKN$$");
     SWAG_ERROR(Err0360, "missing [[,]] or [['}']] before $$TKN$$");
     SWAG_ERROR(Err0361, "missing [[,]] or [[:]] before $$TKN$$");
@@ -515,8 +506,7 @@ void initErrors()
     SWAG_ERROR(Err0388, "missing [[{]] to start function body, found $$TKN$$");
     SWAG_ERROR(Err0389, "missing access index $ note: [[%s]] has type [[%s]]");
     SWAG_ERROR(Err0390, "missing alias name after [[,]] before $$TKN$$ $ hint: add an alias name or remove the trailing [[,]]");
-    SWAG_ERROR(Err0391, "missing argument after [[,]] before $$TKN$$ $ hint: add a generic argument or remove the trailing [[,]]");
-    SWAG_ERROR(Err0392, "missing argument after [[,]] before $$TKN$$ $ hint: add an argument or remove the trailing [[,]]");
+    SWAG_ERROR(Err0391, "missing generic argument after [[,]] before $$TKN$$ $ hint: add a generic argument or remove the trailing [[,]]");
     SWAG_ERROR(Err0393, "missing argument after [[,]] before $$TKN$$ $ hint: add an argument or remove the trailing [[,]]");
     SWAG_ERROR(Err0394, "missing arguments between [[()]] for %s [[%s]]");
     SWAG_ERROR(Err0395, "missing assignment after %s $ note: found $$TKN$$");
@@ -558,8 +548,6 @@ void initErrors()
     SWAG_ERROR(Err0431, "missing function parameter name");
     SWAG_ERROR(Err0432, "missing generic arguments for %s");
     SWAG_ERROR(Err0433, "missing generic arguments for function [[%s]]");
-    SWAG_ERROR(Err0434, "missing generic arguments for function [[%s]]");
-    SWAG_ERROR(Err0435, "missing generic arguments for struct [[%s]]");
     SWAG_ERROR(Err0436, "missing generic arguments for struct [[%s]]");
     SWAG_ERROR(Err0437, "missing generic name identifier, found $$TKN$$");
     SWAG_ERROR(Err0438, "missing generic parameters between [[()]] $ hint: remove [[()]] if this is not generic");
@@ -799,10 +787,10 @@ void initErrors()
     SWAG_ERROR(Err0672, "unexpected token in scope name $ note: expected an identifier, found $$TKN$$");
     SWAG_ERROR(Err0673, "unexpected token in type expression after [[#type]] $ note: expected a type, found $$TKN$$");
     SWAG_ERROR(Err0674, "unexpected token in variable alias name $ note: expected an identifier, found $$TKN$$");
-    SWAG_ERROR(Err0675, "unmatched [[)]]: missing matching [[(]]");
-    SWAG_ERROR(Err0676, "unmatched [[}]]: missing matching [[{]]");
-    SWAG_ERROR(Err0677, "unmatched bracket closure $ note: [[[]]] without matching [[[]");
-    SWAG_ERROR(Err0678, "unmatched comment terminator [['*/']] after %s $ note: missing matching [['/*']]");
+    SWAG_ERROR(Err0675, "unmatched [[')']]: missing corresponding [['(']]");
+    SWAG_ERROR(Err0676, "unmatched [['}']]: missing corresponding [['{']]");
+    SWAG_ERROR(Err0677, "unmatched [[']']]: missing corresponding [['[']]");
+    SWAG_ERROR(Err0678, "unmatched comment terminator [['*/']] after %s $ note: missing corresponding [['/*']]");
     SWAG_ERROR(Err0679, "unresolved generic struct [[%s]] $ note: field [[%s]] is generic but cannot be specialized");
     SWAG_ERROR(Err0680, "unresolved shorthand to [[%s]] $ note: cannot find a corresponding [[enum]], [[with]], or [[mtd]] context");
     SWAG_ERROR(Err0681, "unsatisfiable range $ note: lower bound [[%lld]] exceeds upper bound [[%lld]] $ hint: use [[#reverse]] for descending ranges");
@@ -882,6 +870,13 @@ void initErrors()
     SWAG_ERROR(Err0755, "unsupported variadic argument type [[%s]] $ note: argument is promoted to [[%s]] at the call site");
     SWAG_ERROR(Err0756, "wrong initialization count for type [[%s]] $ note: expected [[1]] value, found [[%d]]");
 
+    SWAG_ERROR(Err0357, nullptr);
+    SWAG_ERROR(Err0358, nullptr);
+    SWAG_ERROR(Err0350, nullptr);
+    SWAG_ERROR(Err0352, nullptr);
+    SWAG_ERROR(Err0353, nullptr);
+    SWAG_ERROR(Err0354, nullptr);
+    SWAG_ERROR(Err0355, nullptr);
     SWAG_ERROR(Err0757, nullptr);
     SWAG_ERROR(Err0758, nullptr);
     SWAG_ERROR(Err0759, nullptr);
@@ -911,6 +906,11 @@ void initErrors()
     SWAG_ERROR(Err0783, nullptr);
     SWAG_ERROR(Err0784, nullptr);
     SWAG_ERROR(Err0785, nullptr);
+    SWAG_ERROR(Err0089, nullptr);
+    SWAG_ERROR(Err0133, nullptr);
+    SWAG_ERROR(Err0434, nullptr);
+    SWAG_ERROR(Err0435, nullptr);
+    SWAG_ERROR(Err0392, nullptr);
 
     /////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////

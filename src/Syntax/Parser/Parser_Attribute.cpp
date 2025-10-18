@@ -91,7 +91,7 @@ bool Parser::doAttrUse(AstNode* parent, AstNode** result, bool single)
 
             if (tokenParse.is(TokenId::SymRightSquare))
                 break;
-            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0357)));
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0356)));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0396)));
             SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftParen), error(tokenParse, toErr(Err0397)));
             SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0668)));

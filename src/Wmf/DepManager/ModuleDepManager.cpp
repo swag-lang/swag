@@ -157,7 +157,7 @@ bool ModuleDepManager::fetchModuleCfgLocal(ModuleDependency* dep, Path& cfgFileP
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, remotePath, "rbN"))
     {
-        return Report::report({dep->node, dep->tokenLocation, formErr(Err0133, remotePath.cstr())});
+        return Report::report({dep->node, dep->tokenLocation, formErr(Err0134, remotePath.cstr())});
     }
 
     // Remove source configuration file
