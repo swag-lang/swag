@@ -1,2 +1,2 @@
-#global testerror "Err0368"
+#global testerror "Err0635"
 var a: [6.0] s32

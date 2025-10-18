@@ -1,4 +1,4 @@
-#global testerror "Err0278"
+#global testerror "Err0686"
 #test
 {
     foreach #0 x: toto

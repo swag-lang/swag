@@ -1,4 +1,4 @@
-#global testerror "Err0387"
+#global testerror "Err0534"
 
 func titi() {}
 

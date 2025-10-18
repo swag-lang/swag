@@ -527,7 +527,7 @@ bool ByteCodeGen::emitLoopAfterExpr(ByteCodeGenContext* context)
     {
         if (rangeNode->expressionLow->computedValue()->reg.s64 > rangeNode->expressionUp->computedValue()->reg.s64)
         {
-            Diagnostic err{rangeNode->expressionLow, formErr(Err0488, rangeNode->expressionLow->computedValue()->reg.s64, rangeNode->expressionUp->computedValue()->reg.s64)};
+            Diagnostic err{rangeNode->expressionLow, formErr(Err0681, rangeNode->expressionLow->computedValue()->reg.s64, rangeNode->expressionUp->computedValue()->reg.s64)};
             err.addNote(rangeNode->expressionUp, form("this should be greater than [[%lld]]", rangeNode->expressionLow->computedValue()->reg.s64));
             return context->report(err);
         }

@@ -32,7 +32,7 @@ JobResult CopyFileJob::execute()
     if (fopen_s(&fsrc, sourcePath, "rbN"))
     {
         ++module->numErrors;
-        Report::errorOS(formErr(Err0133, sourcePath.cstr()));
+        Report::errorOS(formErr(Err0134, sourcePath.cstr()));
         return JobResult::ReleaseJob;
     }
 
@@ -40,7 +40,7 @@ JobResult CopyFileJob::execute()
     {
         ++module->numErrors;
         (void) fclose(fsrc);
-        Report::errorOS(formErr(Err0133, destPath.cstr()));
+        Report::errorOS(formErr(Err0134, destPath.cstr()));
         return JobResult::ReleaseJob;
     }
 
@@ -71,7 +71,7 @@ JobResult LoadFileJob::execute()
     FILE* fsrc = nullptr;
     if (fopen_s(&fsrc, sourcePath, "rbN"))
     {
-        Report::errorOS(formErr(Err0133, sourcePath.cstr()));
+        Report::errorOS(formErr(Err0134, sourcePath.cstr()));
         return JobResult::ReleaseJob;
     }
 

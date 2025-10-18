@@ -723,7 +723,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         // Check access
         if (overload->node->hasAttribute(ATTRIBUTE_FIELD_PRIVATE) && overload->node->ownerStructScope != context->node->ownerStructScope)
         {
-            const Diagnostic err{identifier, formErr(Err0012, overload->node->token.cstr())};
+            const Diagnostic err{identifier, formErr(Err0013, overload->node->token.cstr())};
             return context->report(err);
         }
     }
@@ -736,7 +736,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     {
         if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && overload->node->hasAttribute(ATTRIBUTE_COMPILER) && !ownerFct->hasAstFlag(AST_IN_RUN_BLOCK))
         {
-            Diagnostic err{identifier, formErr(Err0360, Naming::kindName(overload->node).cstr(), overload->node->token.cstr(), ownerFct->getDisplayNameC())};
+            Diagnostic err{identifier, formErr(Err0582, Naming::kindName(overload->node).cstr(), overload->node->token.cstr(), ownerFct->getDisplayNameC())};
             err.addNote(overload->node, overload->node->token, form("this %s has the [[#[Swag.Compiler]]] attribute, which makes it compile-time only", Naming::kindName(overload->node).cstr()));
             return context->report(err);
         }
@@ -806,7 +806,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
             {
                 if (!overload->node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
                 {
-                    Diagnostic err(identifier, identifier->token, formErr(Err0111, overload->node->token.cstr()));
+                    Diagnostic err(identifier, identifier->token, formErr(Err0110, overload->node->token.cstr()));
                     err.addNote(Diagnostic::hereIs(overload));
                     return context->report(err);
                 }
@@ -816,7 +816,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
         }
         else if (typeInfoRet->isVoid() && identifier->hasAstFlag(AST_DISCARD))
         {
-            Diagnostic err{identifier, identifier->token, toErr(Err0315)};
+            Diagnostic err{identifier, identifier->token, toErr(Err0531)};
             err.addNote(Diagnostic::hereIs(overload));
             return context->report(err);
         }
@@ -844,7 +844,7 @@ bool Semantic::setSymbolMatchVar(SemanticContext* context, const OneMatch& oneMa
     {
         if (isStatementIdentifier(identifier))
         {
-            const Diagnostic err{idRef, toErr(Err0532)};
+            const Diagnostic err{idRef, toErr(Err0226)};
             return context->report(err);
         }
     }
@@ -866,7 +866,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         if (symbolName && symbolName->is(SymbolKind::Variable) && !prev->hasAstFlag(AST_FROM_UFCS))
         {
             const auto kindPrev = Naming::kindName(prev->resolvedSymbolOverload()->node);
-            Diagnostic err{prev, formErr(Err0425, kindPrev.cstr(), prev->token.cstr(), identifier->token.cstr())};
+            Diagnostic err{prev, formErr(Err0641, kindPrev.cstr(), prev->token.cstr(), identifier->token.cstr())};
             if (!funcDecl->parameters || funcDecl->parameters->children.empty())
                 err.addNote(identifier->token, form("the function [[%s]] does not have parameters", identifier->token.cstr()));
             else
@@ -893,7 +893,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
 
     // Be sure it's () and not {}
     if (identifier->callParameters && identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
-        return context->report({identifier->callParameters, formErr(Err0387, identifier->token.cstr())});
+        return context->report({identifier->callParameters, formErr(Err0534, identifier->token.cstr())});
 
     // Capture syntax
     if (identifier->callParameters && !identifier->callParameters->aliasNames.empty())
@@ -901,7 +901,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         if (!overload->node->hasAttribute(ATTRIBUTE_MACRO | ATTRIBUTE_MIXIN))
         {
             const auto cp = identifier->callParameters;
-            Diagnostic err{cp->token.sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, formErr(Err0571, identifier->token.cstr())};
+            Diagnostic err{cp->token.sourceFile, cp->aliasNames.front().startLocation, cp->aliasNames.back().endLocation, formErr(Err0230, identifier->token.cstr())};
             err.addNote(identifier->token, "this function does not support aliased names");
             return context->report(err);
         }
@@ -913,16 +913,16 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     YIELD();
 
     if (identifier->token.is(g_LangSpec->name_opDrop))
-        return context->report({identifier, identifier->token, toErr(Err0406)});
+        return context->report({identifier, identifier->token, toErr(Err0210)});
     if (identifier->token.is(g_LangSpec->name_opPostCopy))
-        return context->report({identifier, identifier->token, toErr(Err0407)});
+        return context->report({identifier, identifier->token, toErr(Err0211)});
     if (identifier->token.is(g_LangSpec->name_opPostMove))
-        return context->report({identifier, identifier->token, toErr(Err0408)});
+        return context->report({identifier, identifier->token, toErr(Err0212)});
 
     // Be sure this is not a 'forward' decl
     if (funcDecl->isEmptyFct() && !funcDecl->isForeign() && !identifier->hasIntrinsicName())
     {
-        Diagnostic err{identifier, identifier->token, formErr(Err0646, identifier->token.cstr())};
+        Diagnostic err{identifier, identifier->token, formErr(Err0411, identifier->token.cstr())};
         err.addNote(Diagnostic::hereIs(overload));
         return context->report(err);
     }
@@ -950,7 +950,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             if (!ownerFct->hasAttribute(ATTRIBUTE_COMPILER) && funcDecl->hasAttribute(ATTRIBUTE_COMPILER) && !identifier->hasAstFlag(AST_IN_RUN_BLOCK))
             {
-                Diagnostic err{identifier, identifier->getTokenName(), formErr(Err0361, funcDecl->getDisplayNameC(), ownerFct->getDisplayNameC())};
+                Diagnostic err{identifier, identifier->getTokenName(), formErr(Err0583, funcDecl->getDisplayNameC(), ownerFct->getDisplayNameC())};
                 err.addNote(overload->node, overload->node->getTokenName(), "this function is marked with [[#[Swag.Compiler]]], making it compile-time only");
                 return context->report(err);
             }
@@ -1009,7 +1009,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
         {
             if (!funcDecl->hasAttribute(ATTRIBUTE_DISCARDABLE) && !identifier->hasAstFlag(AST_DISCARD))
             {
-                Diagnostic err(identifier, identifier->token, formErr(Err0109, overload->node->token.cstr()));
+                Diagnostic err(identifier, identifier->token, formErr(Err0108, overload->node->token.cstr()));
                 err.addNote(Diagnostic::hereIs(overload));
                 return context->report(err);
             }
@@ -1021,7 +1021,7 @@ bool Semantic::setSymbolMatchFunc(SemanticContext* context, const OneMatch& oneM
     {
         if (identifier->hasAstFlag(AST_DISCARD))
         {
-            Diagnostic err{identifier, identifier->token, toErr(Err0315)};
+            Diagnostic err{identifier, identifier->token, toErr(Err0531)};
             err.addNote(Diagnostic::hereIs(overload));
             return context->report(err);
         }
@@ -1094,7 +1094,7 @@ bool Semantic::setSymbolMatchStruct(SemanticContext* context, OneMatch& oneMatch
         !identifier->hasAstFlag(AST_GENERATED) &&
         !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
     {
-        const Diagnostic err{identifier, identifier->token, toErr(Err0511)};
+        const Diagnostic err{identifier, identifier->token, toErr(Err0537)};
         return context->report(err);
     }
 
@@ -1284,7 +1284,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         !prevNode->typeInfo->isPointerTo(TypeInfoKind::Struct) &&
         !prevNode->typeInfo->isStruct())
     {
-        const Diagnostic err{prevNode, formErr(Err0066, prevNode->token.cstr(), prevNode->typeInfo->getDisplayNameC())};
+        const Diagnostic err{prevNode, formErr(Err0065, prevNode->token.cstr(), prevNode->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -1296,7 +1296,7 @@ bool Semantic::checkMatchResult(SemanticContext*        context,
         identifier->parent == identifierRef &&
         identifierRef->lastChild() != identifier)
     {
-        const Diagnostic err{identifier, formErr(Err0624, symbol->name.cstr(), identifier->typeInfo->getDisplayNameC())};
+        const Diagnostic err{identifier, formErr(Err0389, symbol->name.cstr(), identifier->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
     
@@ -1339,7 +1339,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
             {
                 if (!prevNode->computedValue()->storageSegment)
                 {
-                    const Diagnostic err{prevNode, toErr(Err0070)};
+                    const Diagnostic err{prevNode, toErr(Err0068)};
                     return context->report(err);
                 }
 
@@ -1438,7 +1438,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
     {
         if (isStatementIdentifier(identifier))
         {
-            const Diagnostic err{identifier, toErr(Err0532)};
+            const Diagnostic err{identifier, toErr(Err0226)};
             return context->report(err);
         }
     }
@@ -1465,7 +1465,7 @@ bool Semantic::setMatchResult(SemanticContext* context, AstIdentifierRef* identi
         case SymbolKind::EnumValue:
             if (idRef && idRef->previousNode && idRef->previousNode->resolvedSymbolName()->is(SymbolKind::Variable))
             {
-                const Diagnostic err{idRef->previousNode, formErr(Err0071, idRef->previousNode->typeInfo->getDisplayNameC())};
+                const Diagnostic err{idRef->previousNode, formErr(Err0070, idRef->previousNode->typeInfo->getDisplayNameC())};
                 return context->report(err);
             }
 
@@ -2083,7 +2083,7 @@ bool Semantic::computeMatch(SemanticContext* context, AstIdentifier* identifier,
         {
             if (identifierRef->hasAstFlag(AST_SILENT_CHECK))
                 return true;
-            return context->report({identifier, formErr(Err0213, identifier->token.cstr())});
+            return context->report({identifier, formErr(Err0263, identifier->token.cstr())});
         }
 
         context->clearTryMatch();

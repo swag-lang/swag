@@ -1,4 +1,4 @@
-#global testerror "Err0070"
+#global testerror "Err0068"
 
 func setErr1(err: any)
 {

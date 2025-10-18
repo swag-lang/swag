@@ -1,4 +1,4 @@
-#global testerror "Err0013"
+#global testerror "Err0174"
 using Swag
 
 struct Array

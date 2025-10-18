@@ -1,4 +1,4 @@
-#global testerror "Err0103"
+#global testerror "Err0100"
 //#global skip
 /* salut la foule
     /* */

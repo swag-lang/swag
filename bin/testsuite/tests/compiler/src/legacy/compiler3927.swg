@@ -1,4 +1,4 @@
-#global testerror "Err0280"
+#global testerror "Err0320"
 struct A {}
 
 namespace B

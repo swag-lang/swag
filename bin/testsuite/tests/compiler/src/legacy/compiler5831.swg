@@ -1,4 +1,4 @@
-#global testerror "Err0745"
+#global testerror "Err0604"
 using Swag
 
 struct String

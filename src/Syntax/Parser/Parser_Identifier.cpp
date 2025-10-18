@@ -62,9 +62,9 @@ bool Parser::checkIsValidUserName(AstNode* node, const Token* loc) const
 {
     // An identifier that starts with '__' is reserved for internal usage!
     if (node->token.text == "_")
-        return error(loc ? *loc : node->token, toErr(Err0439));
+        return error(loc ? *loc : node->token, toErr(Err0576));
     if (!testIsValidUserName(node))
-        return error(loc ? *loc : node->token, formErr(Err0438, node->token.cstr()));
+        return error(loc ? *loc : node->token, formErr(Err0575, node->token.cstr()));
 
     // Pour toi frangouille, ajouté le jour de ton départ
     if (node->token.text.compareNoCase("jyb37"))
@@ -83,9 +83,9 @@ bool Parser::checkIsSingleIdentifier(AstNode* node, const char* msg) const
         return true;
 
     if (node->is(AstNodeKind::IdentifierRef))
-        return error(node, formErr(Err0739, msg));
+        return error(node, formErr(Err0597, msg));
 
-    return error(node, formErr(Err0675, msg));
+    return error(node, formErr(Err0440, msg));
 }
 
 bool Parser::checkIsIdentifier(const TokenParse& myToken, const char* msg) const
@@ -121,11 +121,11 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             SWAG_CHECK(eatToken());
 
             if (tokenParse.isNot(TokenId::LiteralNumber))
-                return error(tokenParse, toErr(Err0274));
+                return error(tokenParse, toErr(Err0295));
             if (tokenParse.literalType != LiteralType::TypeUntypedInt && tokenParse.literalType != LiteralType::TypeUnsigned8)
-                return error(tokenParse, formErr(Err0275, tokenParse.cstr()));
+                return error(tokenParse, formErr(Err0612, tokenParse.cstr()));
             if (tokenParse.literalValue.u64 > 255)
-                return error(tokenParse, formErr(Err0733, tokenParse.literalValue.u64));
+                return error(tokenParse, formErr(Err0590, tokenParse.literalValue.u64));
             if (tokenParse.literalValue.u8 == 0)
                 return error(tokenParse, formErr(Err0161, tokenParse.cstr()));
 
@@ -137,7 +137,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
     if (tokenParse.is(TokenId::LiteralNumber))
     {
-        Diagnostic err{sourceFile, tokenParse, toErr(Err0679)};
+        Diagnostic err{sourceFile, tokenParse, toErr(Err0444)};
         if (tokenParse.literalType == LiteralType::TypeUntypedInt)
         {
             if (parent && parent->is(AstNodeKind::IdentifierRef) && parent->lastChild() && parent->lastChild()->is(AstNodeKind::Identifier))
@@ -185,7 +185,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
         {
             if (tokenParse.is(TokenId::SymLeftParen))
             {
-                const Diagnostic err{identifier, tokenParse.token, formErr(Err0551, identifier->token.cstr(), identifier->token.cstr())};
+                const Diagnostic err{identifier, tokenParse.token, formErr(Err0528, identifier->token.cstr(), identifier->token.cstr())};
                 return context->report(err);
             }
 
@@ -197,7 +197,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
 
         if (tokenParse.isNot(TokenId::SymLeftParen))
         {
-            const Diagnostic err{identifier, formErr(Err0629, "intrinsic", identifier->token.cstr())};
+            const Diagnostic err{identifier, formErr(Err0394, "intrinsic", identifier->token.cstr())};
             return context->report(err);
         }
     }
@@ -225,7 +225,7 @@ bool Parser::doIdentifier(AstNode* parent, IdentifierFlags identifierFlags)
             {
                 if (identifierFlags.has(IDENTIFIER_TYPE_DECL))
                 {
-                    Diagnostic err{identifier, tokenParse.token, toErr(Err0511)};
+                    Diagnostic err{identifier, tokenParse.token, toErr(Err0537)};
                     return context->report(err);
                 }
 
@@ -297,7 +297,7 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
     const auto lastChild = identifierRef->lastChild();
     if (lastChild->isNot(AstNodeKind::Identifier))
     {
-        const Diagnostic err{lastChild, lastChild->token, formErr(Err0437, lastChild->token.cstr())};
+        const Diagnostic err{lastChild, lastChild->token, formErr(Err0332, lastChild->token.cstr())};
         return context->report(err);
     }
 
@@ -306,7 +306,7 @@ bool Parser::doTopLevelIdentifierRef(AstNode* parent)
 
     if (!identifier->callParameters)
     {
-        const Diagnostic err{lastChild, lastChild->token, formErr(Err0437, lastChild->token.cstr())};
+        const Diagnostic err{lastChild, lastChild->token, formErr(Err0332, lastChild->token.cstr())};
         return context->report(err);
     }
 
@@ -322,7 +322,7 @@ bool Parser::doDottedIdentifierRef(AstNode* parent, AstNode** result, Identifier
     {
         SWAG_CHECK(eatToken());
         if (tokenParse.isNot(TokenId::Identifier))
-            return error(tokenParse, formErr(Err0676, ".").cstr());
+            return error(tokenParse, formErr(Err0441, ".").cstr());
         AstNode* idref;
         SWAG_CHECK(doIdentifierRef(parent, &idref, identifierFlags));
         *result = idref;
@@ -421,13 +421,13 @@ bool Parser::doDiscard(AstNode* parent, AstNode** result)
         default:
             if (Tokenizer::isIntrinsicReturn(tokenParse.token.id))
             {
-                Diagnostic err{sourceFile, tokenParse, formErr(Err0110, tokenParse.cstr())};
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0109, tokenParse.cstr())};
                 err.addNote(sourceFile, discardToken.token, "this [[discard]] should be removed");
                 err.addNote("[[discard]] cannot be used with an intrinsic, as an intrinsic result should always be utilized");
                 return context->report(err);
             }
 
-            return error(tokenParse, toErr(Err0314));
+            return error(tokenParse, toErr(Err0296));
     }
 
     *result = idRef;
@@ -465,7 +465,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     }
 
     *result = node;
-    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0566, node->token.cstr())));
+    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0325, node->token.cstr())));
     SWAG_CHECK(eatToken());
 
     ParserPushTryCatchAssume sc(this, castAst<AstTryCatchAssume>(node));
@@ -473,7 +473,7 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     if (tokenParse.is(TokenId::SymLeftCurly))
     {
         node->addSpecFlag(AstTryCatchAssume::SPEC_FLAG_BLOCK);
-        SWAG_VERIFY(!afterDiscard, error(tokenParse, toErr(Err0359)));
+        SWAG_VERIFY(!afterDiscard, error(tokenParse, toErr(Err0652)));
         SWAG_CHECK(doCurlyStatement(node, &dummyResult));
 
         if (node->semanticFct == Semantic::resolveTry)
@@ -490,10 +490,10 @@ bool Parser::doTryCatchAssume(AstNode* parent, AstNode** result, bool afterDisca
     }
     else
     {
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
         SWAG_CHECK(doDottedIdentifierRef(node, &dummyResult));
     }
 
@@ -507,11 +507,11 @@ bool Parser::doThrow(AstNode* parent, AstNode** result)
     node->semanticFct = Semantic::resolveThrow;
     SWAG_CHECK(eatToken());
 
-    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0566, node->token.cstr())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0289, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(node->ownerFct, error(node, formErr(Err0325, node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdTry), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdCatch), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdAssume), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdThrow), error(tokenParse, formErr(Err0266, tokenParse.cstr(), node->token.cstr())));
 
     if (tokenParse.is(TokenId::IntrinsicGetErr))
     {
@@ -531,7 +531,7 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
     *result = node;
     SWAG_CHECK(eatToken());
 
-    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0362)));
+    SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0665)));
     node->inheritTokenName(tokenParse.token);
     node->inheritTokenLocation(tokenParse.token);
     SWAG_CHECK(checkIsValidUserName(node));
@@ -550,7 +550,7 @@ bool Parser::doAlias(AstNode* parent, AstNode** result)
         expr->isNot(AstNodeKind::TypeClosure) &&
         expr->isNot(AstNodeKind::TypeExpression))
     {
-        const Diagnostic err{expr, toErr(Err0364)};
+        const Diagnostic err{expr, toErr(Err0666)};
         return context->report(err);
     }
 

@@ -1,2 +1,2 @@
-#global testerror "Err0273"
+#global testerror "Err0685"
 var #uniq45AA = 0

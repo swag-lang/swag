@@ -1,4 +1,4 @@
-#global testerror "Err0490"
+#global testerror "Err0292"
 using Swag
 
 var G = 0

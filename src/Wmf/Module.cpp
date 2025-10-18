@@ -737,14 +737,14 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         {
             if (dep->location != tokenLocation.text && !tokenLocation.text.empty() && !dep->location.empty())
             {
-                Diagnostic err{importNode, tokenLocation, formErr(Err0202, dep->name.cstr(), dep->location.cstr())};
+                Diagnostic err{importNode, tokenLocation, formErr(Err0252, dep->name.cstr(), dep->location.cstr())};
                 err.addNote(dep->node, "this is the previous definition");
                 return Report::report(err);
             }
 
             if (dep->version != tokenVersion.text && !tokenVersion.text.empty() && !dep->version.empty())
             {
-                Diagnostic err{importNode, tokenVersion, formErr(Err0203, dep->name.cstr(), dep->version.cstr())};
+                Diagnostic err{importNode, tokenVersion, formErr(Err0253, dep->name.cstr(), dep->version.cstr())};
                 err.addNote(dep->node, "this is the previous definition");
                 return Report::report(err);
             }
@@ -768,7 +768,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
     if (splits.size() != 3 || splits[0].empty() || splits[1].empty() || splits[2].empty())
     {
-        Diagnostic err{importNode, tokenVersion, toErr(Err0264)};
+        Diagnostic err{importNode, tokenVersion, toErr(Err0294)};
         err.addNote("the version format should be [[version.revision.buildnum]], where each number is either >= 0 or the [[?]] character");
         return Report::report(err);
     }
@@ -799,7 +799,7 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
 
         if (!Utf8::isNumber(splits[i]))
         {
-            Diagnostic err{importNode, tokenVersion, toErr(Err0264)};
+            Diagnostic err{importNode, tokenVersion, toErr(Err0294)};
             err.addNote("the version format should be [[version.revision.buildnum]], where each number is either >= 0 or the [[?]] character");
             return Report::report(err);
         }
@@ -809,10 +809,10 @@ bool Module::addDependency(AstNode* importNode, const Token& tokenLocation, cons
         switch (i)
         {
             case 1:
-                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0684, dep->revNum)}));
+                SWAG_VERIFY(dep->verNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0449, dep->revNum)}));
                 break;
             case 2:
-                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0708, dep->buildNum)}));
+                SWAG_VERIFY(dep->revNum != UINT32_MAX, Report::report({importNode, tokenVersion, formErr(Err0482, dep->buildNum)}));
                 break;
             default:
                 break;
@@ -1129,7 +1129,7 @@ bool Module::compileString(const Utf8& text)
     // Is it still possible to generate some code?
     if (!acceptsCompileString)
     {
-        Report::report({ip->node, ip->node->token, toErr(Err0404)});
+        Report::report({ip->node, ip->node->token, toErr(Err0189)});
         return false;
     }
 

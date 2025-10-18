@@ -14,7 +14,7 @@ impl I5806 for A
 }
 */
 
-#global testerror "Err0646"
+#global testerror "Err0411"
 func titi555();
 
 //func titi555(){}

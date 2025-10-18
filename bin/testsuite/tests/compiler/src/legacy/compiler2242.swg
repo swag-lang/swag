@@ -1,5 +1,5 @@
 
-#global testerror "Err0528"
+#global testerror "Err0308"
 
 func mix(v, val: alias)
 {

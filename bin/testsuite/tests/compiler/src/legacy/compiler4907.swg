@@ -1,2 +1,2 @@
-#global testerror "Err0538"
+#global testerror "Err0502"
 #global using A

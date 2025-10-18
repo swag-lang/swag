@@ -1,4 +1,4 @@
-#global testerror "Err0113"
+#global testerror "Err0111"
 
 alias A = [?] s32
 var x: A

@@ -1,4 +1,4 @@
-#global testerror "Err0121"
+#global testerror "Err0120"
 struct Driver {}
 var g_Driver: [2] *Driver
 

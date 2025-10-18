@@ -1,4 +1,4 @@
-//#global testerror "Err0039"
+//#global testerror "Err0038"
 //#global skip
 
 var G = 0

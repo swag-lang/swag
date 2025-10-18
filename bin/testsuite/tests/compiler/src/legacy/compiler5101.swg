@@ -1,4 +1,4 @@
-//#global testerror "Err0448"
+//#global testerror "Err0725"
 
 alias B = f32
 const A = 1'B

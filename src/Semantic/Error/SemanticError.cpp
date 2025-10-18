@@ -15,7 +15,7 @@ void SemanticError::errorConstraintFailed(SemanticContext*, const ErrorParam& er
     else
         node = errorParam.destStructDecl;
 
-    const auto msg = formErr(Err0403, constraintExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), constraintExpr->token.cstr());
+    const auto msg = formErr(Err0188, constraintExpr->token.cstr(), Naming::kindName(node).cstr(), node->token.cstr(), constraintExpr->token.cstr());
     const auto err = new Diagnostic{errorParam.errorNode, errorParam.errorNode->getTokenName(), msg};
     errorParam.addError(err);
     errorParam.addNote(Diagnostic::hereIs(constraintExpr, form("this is the failed [[%s]] constraint", constraintExpr->token.cstr())));
@@ -75,7 +75,7 @@ void SemanticError::commonErrorNotes(SemanticContext*, const VectorNative<OneTry
 
 bool SemanticError::notAllowedError(ErrorContext* context, AstNode* node, TypeInfo* typeInfo, const char* msg, AstNode* hintType)
 {
-    Utf8 text = formErr(Err0476, node->token.cstr(), typeInfo->getDisplayNameC());
+    Utf8 text = formErr(Err0737, node->token.cstr(), typeInfo->getDisplayNameC());
     if (msg)
     {
         text += " ";
@@ -94,7 +94,7 @@ bool SemanticError::duplicatedSymbolError(ErrorContext* context, SourceFile* sou
     if (thisKind != otherKind)
         as = form("as [[%s]]", Naming::aKindName(otherKind).cstr());
 
-    Diagnostic err{sourceFile, token, formErr(Err0184, Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
+    Diagnostic err{sourceFile, token, formErr(Err0232, Naming::kindName(thisKind).cstr(), thisName.cstr(), as.cstr())};
 
     if (otherSymbolDecl->isGeneratedMe())
         err.addNote(otherSymbolDecl->ownerFct, otherSymbolDecl->ownerFct->token, "there is already an implied first parameter named [[me]] because of [[mtd]]");

@@ -1,4 +1,4 @@
-#global testerror "Err0385"
+#global testerror "Err0649"
 namespace x
 {
 }

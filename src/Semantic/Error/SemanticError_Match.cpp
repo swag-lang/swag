@@ -32,7 +32,7 @@ namespace
         // No candidates at all: fall back to a generic overload error
         if (tryMatches.empty())
         {
-            Diagnostic err{node, node->token, toErr(Err0096)};
+            Diagnostic err{node, node->token, toErr(Err0095)};
             return context->report(err, {});
         }
 
@@ -41,7 +41,7 @@ namespace
         static constexpr uint32_t MAX_OVERLOADS = 5;
 
         // Primary error (kept unless all per-overload reasons are identical)
-        Diagnostic                err{node, node->token, toErr(Err0096)};
+        Diagnostic                err{node, node->token, toErr(Err0095)};
         Vector<const Diagnostic*> notes;
         SemanticError::commonErrorNotes(context, tryMatches, node, &err, notes);
 

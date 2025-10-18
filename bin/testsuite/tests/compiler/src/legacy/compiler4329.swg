@@ -1,4 +1,4 @@
-#global testerror "Err0529"
+#global testerror "Err0673"
 
 alias A = s32
 #test

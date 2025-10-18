@@ -1,4 +1,4 @@
-#global testerror "Err0745"
+#global testerror "Err0604"
 func(N: s32, T) toto(v: [N] T) {}
 
 #test

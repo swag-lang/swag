@@ -1,4 +1,4 @@
-#global testerror "Err0521"
+#global testerror "Err0746"
 
 //#[Swag.PrintBc]
 f32 toto(z: f32)

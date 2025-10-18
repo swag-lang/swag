@@ -1,4 +1,4 @@
-#global testerror "Err0251"
+#global testerror "Err0752"
 
 #[Swag.Pack(10)]
 struct A {}

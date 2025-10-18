@@ -1,3 +1,3 @@
-#global testerror "Err0029"
+#global testerror "Err0025"
 
 const A: [..] s32 = [1]

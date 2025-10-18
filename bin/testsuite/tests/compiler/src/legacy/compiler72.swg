@@ -1,4 +1,4 @@
-#global testerror "Err0184"
+#global testerror "Err0232"
 
 alias myType  = u32
 alias myType1 = bool

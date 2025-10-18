@@ -1423,7 +1423,7 @@ bool ByteCodeGen::checkCatchError(ByteCodeGenContext* context, AstNode* srcNode,
     {
         if (!srcNode)
             srcNode = typeInfoFunc->declNode;
-        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0657, funcNode->token.cstr(), Naming::kindName(srcNode).cstr(), srcNode->token.cstr())};
+        const Diagnostic err{callNode->token.sourceFile, callNode->token, formErr(Err0422, funcNode->token.cstr(), Naming::kindName(srcNode).cstr(), srcNode->token.cstr())};
         return context->report(err);
     }
 
@@ -1901,7 +1901,7 @@ bool ByteCodeGen::emitCall(ByteCodeGenContext* context,
     if (typeInfoFunc->hasFlag(TYPEINFO_VARIADIC))
     {
         if (numVariadic > SWAG_LIMIT_MAX_VARIADIC_PARAMS)
-            return context->report({allParams, formErr(Err0744, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)});
+            return context->report({allParams, formErr(Err0602, SWAG_LIMIT_MAX_VARIADIC_PARAMS, numVariadic)});
     }
 
     auto lastParam = allParams && !allParams->children.empty() ? allParams->lastChild() : nullptr;

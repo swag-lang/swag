@@ -31,7 +31,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     if (tokenParse.token.text == '#' || tokenParse.token.text == '@')
     {
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0391, tokenParse.cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0708, tokenParse.cstr())};
         if (tokenParse.token.text == '#' && SWAG_IS_BLANK(*curBuffer))
             err.addNote("hint: use [[//]] to start a line comment");
         return errorContext->report(err);
@@ -59,7 +59,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
         }
 
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0278, tokenParse.cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0686, tokenParse.cstr())};
 
         Vector<Utf8> searchList{};
         for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)
@@ -80,7 +80,7 @@ bool Tokenizer::doIdentifier(TokenParse& tokenParse)
     if (tokenParse.token.text[0] == '@')
     {
         tokenParse.token.endLocation = location;
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0446, tokenParse.cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0722, tokenParse.cstr())};
 
         Vector<Utf8> searchList{};
         for (uint32_t i = 0; i < g_LangSpec->keywords.allocated; i++)

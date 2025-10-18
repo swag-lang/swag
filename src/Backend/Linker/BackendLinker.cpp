@@ -228,7 +228,7 @@ bool BackendLinker::patchExecutable(const Path& fileName, const BuildCfg* buildC
     Utf8 error;
     if (!OS::patchExecutable(fileName, buildCfg, error))
     {
-        Report::errorOS(formErr(Err0212, fileName.cstr(), error.cstr()));
+        Report::errorOS(formErr(Err0262, fileName.cstr(), error.cstr()));
         return false;
     }
 

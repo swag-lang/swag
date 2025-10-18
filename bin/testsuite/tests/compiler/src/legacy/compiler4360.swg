@@ -1,4 +1,4 @@
-#global testerror "Err0403"
+#global testerror "Err0188"
 
 struct(T) Point
         where T == bool

@@ -71,13 +71,13 @@ bool Semantic::checkFuncPrototypeOpNumParams(SemanticContext* context, const Ast
     if (exact && numCur != numWanted)
     {
         if (numCur > numWanted)
-            return context->report({parameters->children[numWanted], formErr(Err0743, node->token.cstr(), node->token.cstr(), numWanted, numCur)});
-        return context->report({parameters, formErr(Err0728, node->token.cstr(), node->token.cstr(), numWanted, numCur)});
+            return context->report({parameters->children[numWanted], formErr(Err0601, node->token.cstr(), node->token.cstr(), numWanted, numCur)});
+        return context->report({parameters, formErr(Err0560, node->token.cstr(), node->token.cstr(), numWanted, numCur)});
     }
 
     if (!exact && numCur < numWanted)
     {
-        return context->report({parameters, formErr(Err0729, node->token.cstr(), node->token.cstr(), numWanted, numCur)});
+        return context->report({parameters, formErr(Err0561, node->token.cstr(), node->token.cstr(), numWanted, numCur)});
     }
 
     return true;
@@ -91,17 +91,17 @@ bool Semantic::checkFuncPrototypeOpReturnType(SemanticContext* context, AstFuncD
     if (wanted == nullptr)
     {
         if (returnType->isVoid())
-            return context->report({node, node->getTokenName(), formErr(Err0706, node->token.cstr())});
+            return context->report({node, node->getTokenName(), formErr(Err0480, node->token.cstr())});
         return true;
     }
 
     if (!wanted->isVoid() && returnType->isVoid())
-        return context->report({node, node->getTokenName(), formErr(Err0705, wanted->getDisplayNameC(), node->token.cstr())});
+        return context->report({node, node->getTokenName(), formErr(Err0479, wanted->getDisplayNameC(), node->token.cstr())});
 
     if (!returnType->isSame(wanted, CAST_FLAG_CAST))
     {
         auto childNode = node->returnType->children.empty() ? node->returnType : node->returnType->firstChild();
-        auto msg       = formErr(Err0291, node->token.cstr(), returnType->getDisplayNameC(), node->token.cstr(), wanted->getDisplayNameC());
+        auto msg       = formErr(Err0619, node->token.cstr(), returnType->getDisplayNameC(), node->token.cstr(), wanted->getDisplayNameC());
         return context->report({childNode, msg});
     }
 
@@ -112,7 +112,7 @@ bool Semantic::checkFuncPrototypeOpParam(SemanticContext* context, AstNode* para
 {
     const auto typeParam = parameters->children[index]->typeInfo->getConcreteAlias();
     if (!typeParam->isSame(wanted, CAST_FLAG_CAST))
-        return context->report({parameters->children[index], formErr(Err0745, wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
+        return context->report({parameters->children[index], formErr(Err0604, wanted->getDisplayNameC(), typeParam->getDisplayNameC())});
     return true;
 }
 
@@ -130,7 +130,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         auto start = node->tokenName.startLocation;
         start.column += 7;
-        const Diagnostic err{node->token.sourceFile, start, node->getTokenName().endLocation, formErr(Err0337, node->token.cstr() + 7)};
+        const Diagnostic err{node->token.sourceFile, start, node->getTokenName().endLocation, formErr(Err0698, node->token.cstr() + 7)};
         return context->report(err);
     }
 
@@ -138,20 +138,20 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     {
         auto start = node->tokenName.startLocation;
         start.column += 7;
-        const Diagnostic err{node->token.sourceFile, start, node->getTokenName().endLocation, formErr(Err0336, node->token.cstr() + 7)};
+        const Diagnostic err{node->token.sourceFile, start, node->getTokenName().endLocation, formErr(Err0697, node->token.cstr() + 7)};
         return context->report(err);
     }
 
     // Special function outside an impl block
     if (!parent || node->ownerScope->is(ScopeKind::Impl))
     {
-        const Diagnostic err{node, node->getTokenName(), formErr(Err0280, node->token.cstr(), node->token.cstr())};
+        const Diagnostic err{node, node->getTokenName(), formErr(Err0320, node->token.cstr(), node->token.cstr())};
         return context->report(err);
     }
 
     if (node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && !node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        Diagnostic err{node, node->getTokenName(), formErr(Err0122, node->token.cstr())};
+        Diagnostic err{node, node->getTokenName(), formErr(Err0121, node->token.cstr())};
         err.addNote("a [[public]] struct should export all of its special functions");
         err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdInternal)));
         return context->report(err);
@@ -159,7 +159,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
 
     if (!node->ownerScope->owner->hasAttribute(ATTRIBUTE_PUBLIC) && node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        Diagnostic err{node, node->getTokenName(), formErr(Err0123, node->token.cstr())};
+        Diagnostic err{node, node->getTokenName(), formErr(Err0122, node->token.cstr())};
         err.addNote("an [[internal]] struct cannot export its special functions");
         err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
         return context->report(err);
@@ -179,12 +179,12 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
             return true;
 
         // First parameter must be struct
-        SWAG_VERIFY(node->parameters, context->report({node, node->getTokenName(), formErr(Err0699, name.cstr())}));
+        SWAG_VERIFY(node->parameters, context->report({node, node->getTokenName(), formErr(Err0464, name.cstr())}));
         auto       firstGen  = node->parameters->firstChild();
         const auto firstType = firstGen->typeInfo;
-        SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, formErr(Err0428, typeStruct->getDisplayNameC(), name.cstr(), firstType->getDisplayNameC())}));
+        SWAG_VERIFY(firstType->isPointer(), context->report({firstGen, formErr(Err0642, typeStruct->getDisplayNameC(), name.cstr(), firstType->getDisplayNameC())}));
         const auto firstTypePtr = castTypeInfo<TypeInfoPointer>(firstType, firstType->kind);
-        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0428, typeStruct->getDisplayNameC(), name.cstr(), firstType->getDisplayNameC())}));
+        SWAG_VERIFY(firstTypePtr->pointedType->isSame(typeStruct, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0642, typeStruct->getDisplayNameC(), name.cstr(), firstType->getDisplayNameC())}));
     }
 
     // Generic operator must have one generic parameter of type string
@@ -194,24 +194,24 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         name == g_LangSpec->name_opIndexAssign ||
         name == g_LangSpec->name_opAffectLiteral)
     {
-        SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), formErr(Err0674, name.cstr())}));
-        SWAG_VERIFY(node->genericParameters->childCount() <= 2, context->report({node->genericParameters, formErr(Err0737, name.cstr())}));
+        SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), formErr(Err0439, name.cstr())}));
+        SWAG_VERIFY(node->genericParameters->childCount() <= 2, context->report({node->genericParameters, formErr(Err0596, name.cstr())}));
         auto firstGen = node->genericParameters->firstChild();
-        SWAG_VERIFY(firstGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({firstGen, formErr(Err0366, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0479, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({firstGen, formErr(Err0634, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoString, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0644, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
     }
     else if (isOpVisit)
     {
-        SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), formErr(Err0674, name.cstr())}));
-        SWAG_VERIFY(node->genericParameters->childCount() >= 2, context->report({node->genericParameters, formErr(Err0726, name.cstr())}));
-        SWAG_VERIFY(node->genericParameters->childCount() <= 3, context->report({node->genericParameters, formErr(Err0737, name.cstr())}));
+        SWAG_VERIFY(node->genericParameters, context->report({node, node->getTokenName(), formErr(Err0439, name.cstr())}));
+        SWAG_VERIFY(node->genericParameters->childCount() >= 2, context->report({node->genericParameters, formErr(Err0558, name.cstr())}));
+        SWAG_VERIFY(node->genericParameters->childCount() <= 3, context->report({node->genericParameters, formErr(Err0596, name.cstr())}));
         auto firstGen = node->genericParameters->firstChild();
-        SWAG_VERIFY(firstGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({firstGen, formErr(Err0366, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0478, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({firstGen, formErr(Err0634, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(firstGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CAST_FLAG_CAST), context->report({firstGen, formErr(Err0643, name.cstr(), firstGen->typeInfo->getDisplayNameC())}));
         auto secondGen = node->genericParameters->secondChild();
-        SWAG_VERIFY(secondGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({secondGen, formErr(Err0366, name.cstr(), secondGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CAST_FLAG_CAST), context->report({secondGen, formErr(Err0478, name.cstr(), secondGen->typeInfo->getDisplayNameC())}));
-        SWAG_VERIFY(node->hasAttribute(ATTRIBUTE_MACRO) && !node->hasAttribute(ATTRIBUTE_MIXIN), context->report({node, node->token, toErr(Err0581)}));
+        SWAG_VERIFY(secondGen->hasSpecFlag(AstVarDecl::SPEC_FLAG_GENERIC_CONSTANT), context->report({secondGen, formErr(Err0634, name.cstr(), secondGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(secondGen->typeInfo->isSame(g_TypeMgr->typeInfoBool, CAST_FLAG_CAST), context->report({secondGen, formErr(Err0643, name.cstr(), secondGen->typeInfo->getDisplayNameC())}));
+        SWAG_VERIFY(node->hasAttribute(ATTRIBUTE_MACRO) && !node->hasAttribute(ATTRIBUTE_MIXIN), context->report({node, node->token, toErr(Err0343)}));
     }
     else if (name == g_LangSpec->name_opCast)
     {
@@ -219,7 +219,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
     }
     else
     {
-        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childCount() == 1, context->report({node->genericParameters, formErr(Err0738, name.cstr(), node->genericParameters->childCount())}));
+        SWAG_VERIFY(!node->genericParameters || node->genericParameters->childCount() == 1, context->report({node->genericParameters, formErr(Err0595, name.cstr(), node->genericParameters->childCount())}));
     }
 
     // Check each function
@@ -279,14 +279,14 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
         const auto second = TypeManager::concretePtrRef(parameters->secondChild()->typeInfo);
-        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->secondChild(), formErr(Err0225, typeStruct->name.cstr(), name.cstr())}));
+        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->secondChild(), formErr(Err0277, typeStruct->name.cstr(), name.cstr())}));
     }
     else if (name == g_LangSpec->name_opAffectLiteral)
     {
         SWAG_CHECK(checkFuncPrototypeOpNumParams(context, node, parameters, 2));
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, g_TypeMgr->typeInfoVoid));
         const auto second = TypeManager::concretePtrRef(parameters->secondChild()->typeInfo);
-        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->secondChild(), formErr(Err0225, typeStruct->name.cstr(), name.cstr())}));
+        SWAG_VERIFY(!second->isSame(typeStruct, CAST_FLAG_EXACT), context->report({parameters->secondChild(), formErr(Err0277, typeStruct->name.cstr(), name.cstr())}));
     }
     else if (name == g_LangSpec->name_opSlice)
     {
@@ -294,7 +294,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SWAG_CHECK(checkFuncPrototypeOpReturnType(context, node, nullptr));
         const auto returnType = node->returnType->typeInfo->getConcreteAlias();
         if (!returnType->isString() && !returnType->isSlice())
-            return context->report({node->returnType, formErr(Err0335, node->returnType->typeInfo->getDisplayNameC())});
+            return context->report({node->returnType, formErr(Err0630, node->returnType->typeInfo->getDisplayNameC())});
         SWAG_CHECK(checkFuncPrototypeOpParam(context, parameters, 1, g_TypeMgr->typeInfoU64));
         SWAG_CHECK(checkFuncPrototypeOpParam(context, parameters, 2, g_TypeMgr->typeInfoU64));
     }
@@ -343,7 +343,7 @@ bool Semantic::checkFuncPrototypeOp(SemanticContext* context, AstFuncDecl* node)
         SemanticError::findClosestMatchesInList(node->tokenName.text, searchList, best);
         const Utf8 appendMsg = SemanticError::findClosestMatchesMsg(node->tokenName.text, best);
 
-        Diagnostic err{node, node->getTokenName(), formErr(Err0430, name.cstr())};
+        Diagnostic err{node, node->getTokenName(), formErr(Err0574, name.cstr())};
         const auto n = "function names starting with [[op]] followed by an uppercase letter are reserved for struct methods";
         if (appendMsg.empty())
         {
@@ -509,7 +509,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
         {
             YIELD();
 
-            Diagnostic err{context->node, context->node->token, formErr(Err0115, leftTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{context->node, context->node->token, formErr(Err0114, leftTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             err.addNote(right->firstChild(), form("this is the literal suffix [[%s]]", suffix.cstr()));
             err.addNote(Diagnostic::hereIs(leftTypeInfo->declNode));
             return context->report(err);
@@ -531,7 +531,7 @@ bool Semantic::resolveUserOpAffect(SemanticContext* context, TypeInfo* leftTypeI
         {
             YIELD();
 
-            Diagnostic err{right, formErr(Err0017, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{right, formErr(Err0018, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(right));
             err.addNote(Diagnostic::isType(left));
             err.addNote(context->node, context->node->token, form("there is an implicit call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
@@ -573,14 +573,14 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
 
         if (!opConst)
         {
-            Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0077, name.cstr(), leftType->getDisplayNameC())};
+            Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0076, name.cstr(), leftType->getDisplayNameC())};
             err.addNote(form("there is an implicit call to [[%s]]", name.cstr()));
             err.addNote(Diagnostic::isType(left));
             err.addNote(note);
             return context->report(err);
         }
 
-        Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0472, name.cstr(), leftType->getDisplayNameC(), opConst)};
+        Diagnostic err{left->parent->token.sourceFile, left->parent->token, formErr(Err0733, name.cstr(), leftType->getDisplayNameC(), opConst)};
         err.addNote(form("there is an implicit call to [[%s]]", name.cstr()));
         err.addNote(Diagnostic::isType(left));
         err.addNote(note);
@@ -624,7 +624,7 @@ bool Semantic::resolveUserOp(SemanticContext* context, const Utf8& name, const c
     if (leftType->isGeneric())
     {
         PushErrCxtStep   ec(context, left->parent, ErrCxtStepKind::Note, [&] { return form("there is an implicit call to [[%s]] for the type [[%s]]", name.cstr(), leftType->getDisplayNameC()); }, true);
-        const Diagnostic err(left, formErr(Err0668, name.cstr()));
+        const Diagnostic err(left, formErr(Err0433, name.cstr()));
         return context->report(err);
     }
 

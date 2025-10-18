@@ -20,7 +20,7 @@ namespace
         // Error inside a tuple
         if (typeRef && typeRef->isTuple())
         {
-            const auto err        = new Diagnostic{identifier, formErr(Err0095, identifier->token.cstr())};
+            const auto err        = new Diagnostic{identifier, formErr(Err0093, identifier->token.cstr())};
             const auto structNode = castAst<AstStruct>(identifierRef->previousScope->owner, AstNodeKind::StructDecl);
             const auto errNode    = structNode->originalParent ? structNode->originalParent : identifierRef->previousScope->owner;
             const auto note       = Diagnostic::note(errNode, "this is the tuple definition");
@@ -50,7 +50,7 @@ namespace
         if (prevIdentifier && prevIdentifier->identifierExtension && prevIdentifier->identifierExtension->alternateEnum)
         {
             const auto altEnum = prevIdentifier->identifierExtension->alternateEnum;
-            const auto msg     = formErr(Err0094, identifier->token.cstr(), altEnum->getDisplayNameC(), whereScopeName.cstr(), displayName.cstr());
+            const auto msg     = formErr(Err0092, identifier->token.cstr(), altEnum->getDisplayNameC(), whereScopeName.cstr(), displayName.cstr());
             err                = new Diagnostic{identifier, identifier->token, msg};
             const auto note    = Diagnostic::hereIs(altEnum->declNode);
             if (note)
@@ -58,50 +58,50 @@ namespace
         }
         else if (!typeWhere)
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0093, identifier->token.cstr())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0094, identifier->token.cstr())};
         }
         else if (typeWhere->isEnum())
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0085, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0084, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->token.is(g_LangSpec->name_opVisit))
         {
             const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::ForEach), AstNodeKind::ForEach);
-            err                  = new Diagnostic{visitNode->expression, formErr(Err0181, typeWhere->getDisplayNameC())};
+            err                  = new Diagnostic{visitNode->expression, formErr(Err0180, typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->token.text.startsWith(g_LangSpec->name_opVisit))
         {
             const auto visitNode = castAst<AstVisit>(identifier->findParent(AstNodeKind::ForEach), AstNodeKind::ForEach);
             const Utf8 variant{identifier->token.text.buffer + g_LangSpec->name_opVisit.length()};
-            err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0108, variant.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{visitNode, visitNode->extraNameToken, formErr(Err0107, variant.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct() && identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0098, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0096, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isInterface() && identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0092, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0090, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (identifierRef->parent && identifierRef->parent->is(AstNodeKind::AttrUse))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0079, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0077, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (identifier->callParameters && !identifier->callParameters->hasSpecFlag(AstFuncCallParams::SPEC_FLAG_CALL_FOR_STRUCT))
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0091, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0089, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (identifier->callParameters)
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0103, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0100, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else if (typeWhere->isStruct())
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0107, identifier->token.cstr(), typeWhere->getDisplayNameC())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0104, identifier->token.cstr(), typeWhere->getDisplayNameC())};
         }
         else
         {
-            err = new Diagnostic{identifier, identifier->token, formErr(Err0093, identifier->token.cstr())};
+            err = new Diagnostic{identifier, identifier->token, formErr(Err0094, identifier->token.cstr())};
         }
 
         return err;
@@ -185,25 +185,25 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     switch (searchFor)
     {
         case IdentifierSearchFor::Function:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0090, identifier->token.cstr())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0091, identifier->token.cstr())};
             break;
         case IdentifierSearchFor::Attribute:
             err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0078, identifier->token.cstr())};
             break;
         case IdentifierSearchFor::Type:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0105, identifier->token.cstr())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0103, identifier->token.cstr())};
             break;
         case IdentifierSearchFor::Struct:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0102, identifier->token.cstr())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0101, identifier->token.cstr())};
             break;
         case IdentifierSearchFor::Enum:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0084, identifier->token.cstr())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0083, identifier->token.cstr())};
             break;
         case IdentifierSearchFor::Variable:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0106, identifier->token.cstr())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0105, identifier->token.cstr())};
             break;
         default:
-            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0093, identifier->token.cstr())};
+            err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0094, identifier->token.cstr())};
             break;
     }
 
@@ -212,7 +212,7 @@ bool SemanticError::unknownIdentifierError(SemanticContext* context, const AstId
     // Special case with an intrinsic or a compiler function inside a scope
     if (identifierRef->previousScope && identifier->hasIntrinsicName())
     {
-        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0498, identifier->token.cstr())};
+        err = new Diagnostic{identifier->token.sourceFile, identifier->token, formErr(Err0333, identifier->token.cstr())};
         if (identifier->childParentIdx())
             notes.push_back(Diagnostic::note(identifier->parent->children[identifier->childParentIdx() - 1], "this scope is not allowed here"));
         return context->report(*err, notes);

@@ -1,4 +1,4 @@
-#global testerror "Err0577"
+#global testerror "Err0340"
 func T(a: ..., c: s32) {}
 
 //#[Swag.PrintBc]

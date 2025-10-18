@@ -1,2 +1,2 @@
-#global testerror "Err0393"
+#global testerror "Err0564"
 const X = '\U0010FFFF''u16

@@ -1,4 +1,4 @@
-#global testerror "Err0391"
+#global testerror "Err0708"
 #global testpass lexer
 È
 ./s

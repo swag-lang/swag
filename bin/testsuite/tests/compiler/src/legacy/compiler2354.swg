@@ -1,4 +1,4 @@
-#global testerror "Err0520"
+#global testerror "Err0224"
 
 //#[Swag.Mixin]
 func mkVar(name: string, value: s32)

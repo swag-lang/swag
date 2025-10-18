@@ -1,4 +1,4 @@
-#global testerror "Err0121"
+#global testerror "Err0120"
 struct BB {}
 
 public struct AA3119

@@ -52,7 +52,7 @@ bool Semantic::resolveTupleUnpackBefore(SemanticContext* context)
 
     if (!typeVar->isStruct())
     {
-        Diagnostic err{varDecl, varDecl->token, formErr(Err0531, typeVar->getDisplayNameC())};
+        Diagnostic err{varDecl, varDecl->token, formErr(Err0751, typeVar->getDisplayNameC())};
         if (varDecl->assignment)
             err.addNote(Diagnostic::isType(varDecl->assignment));
         else if (varDecl->type)
@@ -125,7 +125,7 @@ bool Semantic::resolveVarDeclAfterType(SemanticContext* context)
             varDecl->type->typeInfo->isVariadic() ||
             varDecl->type->typeInfo->isCVariadic())
         {
-            const Diagnostic err{varDecl, varDecl->assignToken, toErr(Err0576)};
+            const Diagnostic err{varDecl, varDecl->assignToken, toErr(Err0231)};
             return context->report(err);
         }
     }
@@ -176,7 +176,7 @@ bool Semantic::resolveVarDeclAfter(SemanticContext* context)
 
         {
             PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return form("a %s requires compile-time evaluation", Naming::kindName(node).cstr()); }, true);
-            SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0442)));
+            SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0550)));
         }
 
         node->removeAstFlag(AST_NO_BYTECODE);
@@ -322,7 +322,7 @@ bool Semantic::resolveVarDeclAfterAssign(SemanticContext* context)
     const auto identifier = castAst<AstIdentifier>(typeExpression->identifier->lastChild(), AstNodeKind::Identifier);
     if (identifier->callParameters)
     {
-        Diagnostic err{assign, toErr(Err0510)};
+        Diagnostic err{assign, toErr(Err0186)};
         err.addNote(identifier->callParameters, "this is the first initialization");
         return context->report(err);
     }
@@ -526,7 +526,7 @@ bool Semantic::deduceLambdaParamTypeFrom(SemanticContext* context, AstVarDecl* n
 
     if (paramIdx >= typeLambda->parameters.count)
     {
-        Diagnostic err{nodeParam, formErr(Err0734, typeLambda->parameters.count, nodeParam->parent->children.count)};
+        Diagnostic err{nodeParam, formErr(Err0592, typeLambda->parameters.count, nodeParam->parent->children.count)};
         err.addNote(form("the lambda type is [[%s]]", typeLambda->getDisplayNameC()));
         return context->report(err);
     }
@@ -543,14 +543,14 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
 {
     // A constant must be initialized
     if (isCompilerConstant && !node->hasFlagComputedValue())
-        return context->report({node, toErr(Err0641)});
+        return context->report({node, toErr(Err0406)});
 
     // A constant variable must be initialized
     if (overFlags.has(OVERLOAD_CONST_ASSIGN) && node->isNot(AstNodeKind::FuncDeclParam))
     {
         if (overFlags.has(OVERLOAD_VAR_IS_LET))
-            return context->report({node, toErr(Err0611)});
-        return context->report({node, toErr(Err0681)});
+            return context->report({node, toErr(Err0373)});
+        return context->report({node, toErr(Err0446)});
     }
 
     // A reference must be initialized
@@ -559,7 +559,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
         node->isNot(AstNodeKind::FuncDeclParam) &&
         !node->hasAstFlag(AST_EXPLICITLY_NOT_INITIALIZED))
     {
-        return context->report({node, toErr(Err0700)});
+        return context->report({node, toErr(Err0469)});
     }
 
     // Check an enum variable without initialization
@@ -628,7 +628,7 @@ bool Semantic::checkForMissingInitialization(SemanticContext* context, AstVarDec
 
         if (!ok)
         {
-            Diagnostic err{node, formErr(Err0579, Naming::kindName(node).cstr(), node->token.cstr(), concreteTypeEnum->getDisplayNameC())};
+            Diagnostic err{node, formErr(Err0341, Naming::kindName(node).cstr(), node->token.cstr(), concreteTypeEnum->getDisplayNameC())};
             err.addNote(Diagnostic::hereIs(concreteNodeType->declNode));
             return context->report(err);
         }
@@ -652,7 +652,7 @@ bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 
         if (!ownerFct)
         {
-            const Diagnostic err{node, node->token, toErr(Err0272)};
+            const Diagnostic err{node, node->token, toErr(Err0319)};
             return context->report(err);
         }
     }
@@ -670,7 +670,7 @@ bool Semantic::checkMixAlias(SemanticContext* context, AstVarDecl* node)
 
         if (!ownerFct)
         {
-            const Diagnostic err{node, node->token, toErr(Err0252)};
+            const Diagnostic err{node, node->token, toErr(Err0316)};
             return context->report(err);
         }
     }
@@ -684,7 +684,7 @@ bool Semantic::checkTypeSuffix(SemanticContext* context, const AstVarDecl* node)
     {
         if (!node->type || !node->type->typeInfo->isStruct())
         {
-            const Diagnostic err{node->assignment->firstChild(), formErr(Err0450, node->assignment->firstChild()->token.cstr())};
+            const Diagnostic err{node->assignment->firstChild(), formErr(Err0724, node->assignment->firstChild()->token.cstr())};
             return context->report(err);
         }
     }
@@ -844,7 +844,7 @@ bool Semantic::resolveGlobalVar(SemanticContext* context, AstVarDecl* node, Over
 
     if (node->hasAttribute(ATTRIBUTE_PUBLIC))
     {
-        Diagnostic err{node, node->getTokenName(), toErr(Err0054)};
+        Diagnostic err{node, node->getTokenName(), toErr(Err0053)};
         err.addNote(Diagnostic::hereIs(node->findParent(TokenId::KwdPublic)));
         return context->report(err);
     }
@@ -990,7 +990,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
     if (node->hasAttribute(ATTRIBUTE_DISCARDABLE) && !concreteNodeType->isLambdaClosure())
     {
-        Diagnostic err{node, node->token, formErr(Err0242, concreteNodeType->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0311, concreteNodeType->getDisplayNameC())};
         const auto attr = node->findParentAttrUse(g_LangSpec->name_Swag_Discardable);
         err.addNote(attr, form("this is the %s", "attribute"));
         return context->report(err);
@@ -1070,7 +1070,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         const auto typeArray = castTypeInfo<TypeInfoArray>(concreteNodeType, TypeInfoKind::Array);
         if (typeArray->count == UINT32_MAX && !node->assignment)
         {
-            Diagnostic err{node->type, toErr(Err0113)};
+            Diagnostic err{node->type, toErr(Err0111)};
             if (node->type->typeInfo->isAlias())
                 err.addNote(Diagnostic::isType(node->type));
             return context->report(err);
@@ -1092,14 +1092,14 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
 
         if (overFlags.has(OVERLOAD_CONSTANT))
         {
-            Diagnostic err{node->assignment, toErr(Err0641)};
+            Diagnostic err{node->assignment, toErr(Err0406)};
             err.addNote("hint: replace [[undefined]] with an explicit initialization value");
             return context->report(err);
         }
 
         if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET))
         {
-            Diagnostic err{node->assignment, toErr(Err0611)};
+            Diagnostic err{node->assignment, toErr(Err0373)};
             err.addNote("hint: replace [[undefined]] with an explicit initialization value");
             return context->report(err);
         }
@@ -1150,7 +1150,7 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                     const auto userOp = node->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
                     if (!userOp->node->hasAttribute(ATTRIBUTE_CONSTEXPR))
                     {
-                        Diagnostic err{node->assignment, toErr(Err0443)};
+                        Diagnostic err{node->assignment, toErr(Err0549)};
                         err.addNote(form("this value can only be converted to the type [[%s]] with a dynamic call to [[opAffect]]", leftConcreteType->getDisplayNameC()));
                         err.addNote(node->assignToken, form("there is an implicit call to [[%s]]", g_LangSpec->name_opAffect.cstr()));
                         return context->report(err);
@@ -1191,12 +1191,12 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
                 const auto over      = nodeWhere->resolvedSymbolOverload();
                 if (nodeWhere->is(AstNodeKind::IdentifierRef))
                     nodeWhere = nodeWhere->lastChild();
-                Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0019)};
+                Diagnostic err{nodeWhere, nodeWhere->token, toErr(Err0016)};
                 err.addNote(Diagnostic::hereIs(over));
                 return context->report(err);
             }
 
-            const Diagnostic err{node->assignment, toErr(Err0116)};
+            const Diagnostic err{node->assignment, toErr(Err0117)};
             return context->report(err);
         }
 
@@ -1279,15 +1279,15 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
         {
             if (node->assignment->typeInfo->isLambdaClosure())
             {
-                SWAG_VERIFY(!overFlags.has(OVERLOAD_CONSTANT), context->report({node->assignment, toErr(Err0371)}));
-                SWAG_VERIFY(!overFlags.has(OVERLOAD_VAR_STRUCT), context->report({node->assignment, toErr(Err0118)}));
+                SWAG_VERIFY(!overFlags.has(OVERLOAD_CONSTANT), context->report({node->assignment, toErr(Err0207)}));
+                SWAG_VERIFY(!overFlags.has(OVERLOAD_VAR_STRUCT), context->report({node->assignment, toErr(Err0116)}));
                 const auto funcNode = castAst<AstFuncDecl>(node->assignment->typeInfo->declNode, AstNodeKind::FuncDecl, AstNodeKind::TypeLambda);
                 SWAG_CHECK(checkCanMakeFuncPointer(context, funcNode, node->assignment));
             }
             else if (overFlags.has(OVERLOAD_CONSTANT | OVERLOAD_VAR_GLOBAL))
             {
                 PushErrCxtStep ec(context, node, ErrCxtStepKind::Note, [node] { return form("a %s requires compile-time evaluation", Naming::kindName(node).cstr()); }, true);
-                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0442)));
+                SWAG_CHECK(checkIsConstExpr(context, node->assignment->hasAstFlag(AST_CONST_EXPR), node->assignment, toErr(Err0550)));
             }
         }
     }
@@ -1312,11 +1312,11 @@ bool Semantic::resolveVarDecl(SemanticContext* context)
     }
 
     // We should have a type here!
-    SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0072, Naming::kindName(node).cstr(), node->token.cstr())}));
+    SWAG_VERIFY(node->typeInfo, context->report({node, formErr(Err0071, Naming::kindName(node).cstr(), node->token.cstr())}));
 
     // Type should be a correct one
-    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, toErr(Err0112)}));
-    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, toErr(Err0574)}));
+    SWAG_VERIFY(!node->typeInfo->isPointerNull(), context->report({node->assignment ? node->assignment : node, toErr(Err0113)}));
+    SWAG_VERIFY(!node->typeInfo->isVoid(), context->report({node->type ? node->type : node, toErr(Err0754)}));
 
     // A 'let' for a struct make the type const
     if (node->hasSpecFlag(AstVarDecl::SPEC_FLAG_LET) && node->typeInfo->isStruct())

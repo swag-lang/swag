@@ -1,4 +1,4 @@
-#global testerror "Err0634"
+#global testerror "Err0399"
 //#[Swag.Mixin]
 const toto = 1
 {

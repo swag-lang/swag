@@ -69,9 +69,9 @@ bool Parser::doWhereVerifyConstraint(AstNode* parent)
         switch (what)
         {
             case AstNodeKind::WhereConstraint:
-                return error(node, formErr(Err0355, parent->token.cstr()));
+                return error(node, formErr(Err0703, parent->token.cstr()));
             case AstNodeKind::VerifyConstraint:
-                return error(node, formErr(Err0351, parent->token.cstr()));
+                return error(node, formErr(Err0702, parent->token.cstr()));
             default:
                 SWAG_ASSERT(false);
                 break;
@@ -117,7 +117,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
     *result           = node;
 
     SWAG_CHECK(eatToken());
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0608)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0370)));
 
     // If with an assignment
     if (tokenParse.is(TokenId::KwdVar) || tokenParse.is(TokenId::KwdConst) || tokenParse.is(TokenId::KwdLet))
@@ -130,7 +130,7 @@ bool Parser::doIf(AstNode* parent, AstNode** result)
         AstNode* varDecl;
         SWAG_CHECK(doVarDecl(node, &varDecl));
 
-        SWAG_VERIFY(varDecl->childCount() == 1, error(varDecl->lastChild()->token, toErr(Err0058)));
+        SWAG_VERIFY(varDecl->childCount() == 1, error(varDecl->lastChild()->token, toErr(Err0057)));
 
         node->boolExpression = Ast::newIdentifierRef(varDecl->token.text, this, node);
         node->boolExpression->addAstFlag(AST_GENERATED);
@@ -181,7 +181,7 @@ bool Parser::doWhile(AstNode* parent, AstNode** result)
 
     {
         ParserPushBreakable scoped(this, node);
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0620)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0385)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &node->boolExpression));
         SWAG_CHECK(doScopedStatement(node, node->token, &node->block));
     }
@@ -212,7 +212,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
     while (tokenParse.isNot(TokenId::SymRightCurly) && tokenParse.isNot(TokenId::EndOfFile))
     {
-        SWAG_VERIFY(tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault), error(tokenParse, toErr(Err0509)));
+        SWAG_VERIFY(tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault), error(tokenParse, toErr(Err0334)));
         const bool isDefault = tokenParse.is(TokenId::KwdDefault);
 
         // One case
@@ -233,7 +233,7 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
             switchNode->cases.push_back(caseNode);
             caseNode->caseIndex = switchNode->cases.size() - 1;
 
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0602)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0364)));
             while (tokenParse.isNot(TokenId::SymColon) && tokenParse.isNot(TokenId::KwdAs) && tokenParse.isNot(TokenId::KwdWhere))
             {
                 AstNode* expression;
@@ -251,8 +251,8 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
                 if (tokenParse.is(TokenId::SymColon) || tokenParse.is(TokenId::KwdAs) || tokenParse.is(TokenId::KwdWhere))
                     break;
-                SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0599)));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0660)));
+                SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0361)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymColon), error(tokenParse, toErr(Err0425)));
             }
         }
 
@@ -262,13 +262,13 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         // Match name
         if (tokenParse.is(TokenId::KwdAs))
         {
-            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0454)));
-            SWAG_VERIFY(caseNode->expressions.size() == 1, error(tokenParse, toErr(Err0453)));
+            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0384)));
+            SWAG_VERIFY(caseNode->expressions.size() == 1, error(tokenParse, toErr(Err0536)));
 
             caseNode->allocateExtension(ExtensionKind::Semantic);
             caseNode->extSemantic()->semanticBeforeFct = Semantic::resolveCaseBefore;
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0685)));
+            SWAG_VERIFY(tokenParse.is(TokenId::Identifier), error(tokenParse, toErr(Err0450)));
             caseNode->matchVarName = tokenParse.token;
             SWAG_CHECK(eatToken());
 
@@ -286,13 +286,13 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
         // where clause
         if (tokenParse.is(TokenId::KwdWhere))
         {
-            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0356)));
+            SWAG_VERIFY(switchNode->expression, error(tokenParse, toErr(Err0383)));
             SWAG_CHECK(eatToken());
             SWAG_CHECK(doBoolExpression(caseNode, EXPR_FLAG_NONE, &caseNode->whereClause));
         }
         else if (isDefault)
         {
-            SWAG_VERIFY(cptDefaultNoWhere == 0, error(caseNode->token, toErr(Err0195)));
+            SWAG_VERIFY(cptDefaultNoWhere == 0, error(caseNode->token, toErr(Err0245)));
             cptDefaultNoWhere++;
         }
 
@@ -315,9 +315,9 @@ bool Parser::doSwitch(AstNode* parent, AstNode** result)
 
         // Not empty
         if (tokenParse.is(TokenId::KwdCase) || tokenParse.is(TokenId::KwdDefault))
-            return error(prevToken, isDefault ? toErr(Err0644) : toErr(Err0643), "hint: add a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
+            return error(prevToken, isDefault ? toErr(Err0409) : toErr(Err0408), "hint: add a [[break]] to exit, or use [[fallthrough]] to continue to the next [[case]]");
         if (tokenParse.is(TokenId::SymRightCurly))
-            return error(prevToken, isDefault ? toErr(Err0644) : toErr(Err0643), "hint: add a [[break]] if you want to exit without any action");
+            return error(prevToken, isDefault ? toErr(Err0409) : toErr(Err0408), "hint: add a [[break]] if you want to exit without any action");
 
         while (tokenParse.isNot(TokenId::KwdCase) && tokenParse.isNot(TokenId::KwdDefault) && tokenParse.isNot(TokenId::SymRightCurly))
             SWAG_CHECK(doEmbeddedInstruction(parentStmt, &dummyResult));
@@ -387,7 +387,7 @@ bool Parser::doForEach(AstNode* parent, AstNode** result)
     {
         tokenParse.token.text.remove(0, 1);
         tokenParse.token.id = TokenId::Identifier;
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0353)));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0664)));
         node->extraNameToken = tokenParse.token;
         SWAG_CHECK(eatToken());
     }
@@ -406,7 +406,7 @@ bool Parser::doForEach(AstNode* parent, AstNode** result)
     }
 
     // Variable to visit
-    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0605)));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, toErr(Err0367)));
     SWAG_CHECK(doExpression(nullptr, EXPR_FLAG_SIMPLE, &node->expression));
 
     if (tokenParse.is(TokenId::KwdIn) || tokenParse.is(TokenId::SymComma))
@@ -418,7 +418,7 @@ bool Parser::doForEach(AstNode* parent, AstNode** result)
         while (tokenParse.isNot(TokenId::KwdIn))
         {
             SWAG_CHECK(eatToken(TokenId::SymComma, "to define another alias name or [[in]] to specify the variable to visit"));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdIn), error(prevTokenParse.token, toErr(Err0606)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdIn), error(prevTokenParse.token, toErr(Err0368)));
             SWAG_CHECK(doIdentifierRef(nullptr, &node->expression));
             SWAG_CHECK(checkIsSingleIdentifier(node->expression, "as a [[foreach]] variable name"));
             SWAG_CHECK(checkIsValidVarName(node->expression->lastChild()));
@@ -427,7 +427,7 @@ bool Parser::doForEach(AstNode* parent, AstNode** result)
         }
 
         SWAG_CHECK(eatToken(TokenId::KwdIn, "to specify the variable to visit"));
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0605)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly), error(tokenParse, toErr(Err0367)));
         SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
     }
     else
@@ -499,7 +499,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
             name = node->expression->lastChild()->token.text;
             node->expression->release();
             SWAG_CHECK(eatToken());
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, formErr(Err0604, tokenParse.cstr())));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymLeftCurly) && tokenParse.isNot(TokenId::SymSemiColon), error(tokenParse, formErr(Err0366, tokenParse.cstr())));
             SWAG_CHECK(doExpression(node, EXPR_FLAG_SIMPLE, &node->expression));
         }
         else
@@ -512,7 +512,7 @@ bool Parser::doLoop(AstNode* parent, AstNode** result)
                 node->expression->lastChild()->is(AstNodeKind::Identifier) &&
                 tokenParse.is(TokenId::LiteralNumber))
             {
-                return error(tokenParse, formErr(Err0610, node->expression->lastChild()->token.cstr()));
+                return error(tokenParse, formErr(Err0372, node->expression->lastChild()->token.cstr()));
             }
         }
     }
@@ -566,7 +566,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
 
         if (id->isNot(AstNodeKind::VarDecl))
         {
-            const Diagnostic err{id->token.sourceFile, id->firstChild()->token.startLocation, id->lastChild()->token.endLocation, toErr(Err0060)};
+            const Diagnostic err{id->token.sourceFile, id->firstChild()->token.startLocation, id->lastChild()->token.endLocation, toErr(Err0059)};
             return context->report(err);
         }
 
@@ -582,7 +582,7 @@ bool Parser::doWith(AstNode* parent, AstNode** result)
             id->isNot(AstNodeKind::VarDecl) &&
             id->isNot(AstNodeKind::AffectOp))
         {
-            const Diagnostic err{id, formErr(Err0358, Naming::aKindName(id).cstr())};
+            const Diagnostic err{id, formErr(Err0297, Naming::aKindName(id).cstr())};
             return context->report(err);
         }
 
@@ -677,7 +677,7 @@ bool Parser::doBreak(AstNode* parent, AstNode** result)
     if (tokenParse.is(TokenId::KwdTo))
     {
         SWAG_CHECK(eatToken());
-        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0499)));
+        SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0672)));
         node->label = tokenParse.token;
         FormatAst::inheritFormatAfter(this, node, &tokenParse);
         SWAG_CHECK(eatToken());

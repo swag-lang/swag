@@ -1,2 +1,2 @@
-#global testerror "Err0466"
+#global testerror "Err0303"
 1._45

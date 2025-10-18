@@ -319,7 +319,7 @@ bool ByteCodeGen::emitLiteral(ByteCodeGenContext* context)
 {
     const auto node = context->node;
     if (node->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
-        return context->report({node->firstChild(), formErr(Err0450, node->firstChild()->token.cstr())});
+        return context->report({node->firstChild(), formErr(Err0724, node->firstChild()->token.cstr())});
     SWAG_CHECK(emitLiteral(context, node, nullptr, node->resultRegisterRc));
     return true;
 }

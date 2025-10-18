@@ -1,4 +1,4 @@
-#global testerror "Err0184"
+#global testerror "Err0232"
 
 alias point = string
 func toto(x: point)

@@ -1,4 +1,4 @@
-#global testerror "Err0745"
+#global testerror "Err0604"
 const A = 256
 
 func toto(x: s8) {}

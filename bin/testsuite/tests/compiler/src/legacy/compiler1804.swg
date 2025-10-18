@@ -1,4 +1,4 @@
-#global testerror "Err0347"
+#global testerror "Err0699"
 #test
 {
     // using can be used with a variable or a function parameter

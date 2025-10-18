@@ -189,8 +189,8 @@ bool Semantic::resolveInlineAfter(SemanticContext* context)
             if (!node->hasSemFlag(SEMFLAG_SCOPE_HAS_RETURN))
             {
                 if (node->hasSemFlag(SEMFLAG_FCT_HAS_RETURN))
-                    return context->report({fct->returnType, formErr(Err0231, fct->getDisplayNameC())});
-                return context->report({fct->returnType, formErr(Err0703, fct->returnType->typeInfo->getDisplayNameC(), fct->getDisplayNameC())});
+                    return context->report({fct->returnType, formErr(Err0285, fct->getDisplayNameC())});
+                return context->report({fct->returnType, formErr(Err0477, fct->returnType->typeInfo->getDisplayNameC(), fct->getDisplayNameC())});
             }
         }
     }
@@ -206,7 +206,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
 
     if (funcDecl == node->ownerFct) // Recursive
     {
-        const Diagnostic err{node, node->token, formErr(Err0119, node->token.cstr(), g_CommandLine.limitInlineLevel)};
+        const Diagnostic err{node, node->token, formErr(Err0118, node->token.cstr(), g_CommandLine.limitInlineLevel)};
         return context->report(err);
     }
 
@@ -230,7 +230,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
             cpt++;
             if (g_CommandLine.limitInlineLevel && cpt > g_CommandLine.limitInlineLevel)
             {
-                const Diagnostic err{node, node->token, formErr(Err0119, node->token.cstr(), g_CommandLine.limitInlineLevel)};
+                const Diagnostic err{node, node->token, formErr(Err0118, node->token.cstr(), g_CommandLine.limitInlineLevel)};
                 return context->report(err);
             }
         }
@@ -466,7 +466,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
                         {
                             if (alias.text == val)
                             {
-                                const Diagnostic err{id, alias, formErr(Err0097, alias.cstr())};
+                                const Diagnostic err{id, alias, formErr(Err0106, alias.cstr())};
                                 return context->report(err);
                             }
                         }
@@ -476,7 +476,7 @@ bool Semantic::makeInline(JobContext* context, AstFuncDecl* funcDecl, AstNode* n
                     {
                         if (alias.text == val)
                         {
-                            const Diagnostic err{id, alias, formErr(Err0097, alias.cstr())};
+                            const Diagnostic err{id, alias, formErr(Err0106, alias.cstr())};
                             return context->report(err);
                         }
                     }

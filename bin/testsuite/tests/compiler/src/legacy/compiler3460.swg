@@ -1,4 +1,4 @@
-#global testerror "Err0389"
+#global testerror "Err0209"
 func toto()
 {
     var x: func||()

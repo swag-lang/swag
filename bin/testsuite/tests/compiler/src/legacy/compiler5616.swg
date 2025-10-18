@@ -1,4 +1,4 @@
-#global testerror "Err0409"
+#global testerror "Err0570"
 
 #[Swag.Safety(.All, .All, true)]
 func toto(a: s32)

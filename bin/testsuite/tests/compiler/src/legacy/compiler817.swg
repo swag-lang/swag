@@ -1,4 +1,4 @@
-#global testerror "Err0020"
+#global testerror "Err0017"
 #test
 {
     const a = [0, 1, 2, 3]

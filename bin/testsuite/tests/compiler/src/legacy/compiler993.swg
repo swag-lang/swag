@@ -1,7 +1,7 @@
 
 
 
-#global testerror "Err0495"
+#global testerror "Err0223"
 struct Point
 {
 	x: s32

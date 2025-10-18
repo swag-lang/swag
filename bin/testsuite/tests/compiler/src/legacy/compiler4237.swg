@@ -1,4 +1,4 @@
-#global testerror "Err0290"
+#global testerror "Err0321"
 using Swag
 
 func toto(#[ConstExpr] str: string) {}

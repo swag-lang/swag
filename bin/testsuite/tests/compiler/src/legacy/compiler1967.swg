@@ -1,3 +1,3 @@
-#global testerror "Err0438"
+#global testerror "Err0575"
 
 struct __x {}

@@ -1,4 +1,4 @@
-#global testerror "Err0238"
+#global testerror "Err0309"
 
 #[Swag.CalleeReturn]
 #test

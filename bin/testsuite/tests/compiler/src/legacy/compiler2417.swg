@@ -1,4 +1,4 @@
-#global testerror "Err0636"
+#global testerror "Err0401"
 
 func(T, N: u32) toto()
 where

@@ -1,4 +1,4 @@
-#global testerror "Err0502"
+#global testerror "Err0680"
 
 enum Col { AA, BB }
 enum Col1 { CC, DD }

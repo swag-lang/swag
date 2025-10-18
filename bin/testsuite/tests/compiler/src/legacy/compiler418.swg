@@ -1,5 +1,5 @@
 //#[Swag.PrintBc]
-#global testerror "Err0020"
+#global testerror "Err0017"
 #test
 {
     const d = 6

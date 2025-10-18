@@ -1,4 +1,4 @@
-#global testerror "Err0012"
+#global testerror "Err0013"
 struct A
 {
     private a5862: s32
