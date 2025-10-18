@@ -568,7 +568,6 @@ void initErrors()
     SWAG_ERROR(Err0454, "missing [[let]] variable initialization                                                                $ ");
     SWAG_ERROR(Err0455, "missing constant initialization                                                                        $ ");
     SWAG_ERROR(Err0456, "missing reference initialization                                                                       $ ");
-    SWAG_ERROR(Err0457, "missing enum value [[%s]] initialization                                                               $ note: an anum value of type [[%s]] must be explicitly initialized");
     SWAG_ERROR(Err0458, "missing %s [[%s]] initialization                                                                       $ note: [[%s]] has no zero value, so a value must be explicitly specified");
     SWAG_ERROR(Err0459, "interface [[%s]] not fully implemented for [[%s]]                                                      $ ");
     SWAG_ERROR(Err0460, "missing [[%s]] arguments between [[()]]                                                                $ ");
@@ -613,7 +612,6 @@ void initErrors()
     SWAG_ERROR(Err0501, "inline expansion of [[%s]] exceeds the configuration limit                                             $ note: [[--limit-inline:%d]]");
     SWAG_ERROR(Err0503, "invalid range expression                                                                               $ note: the lower bound [[%I64u]] exceeds the upper bound [[%I64u]]");
     SWAG_ERROR(Err0504, "invalid range expression                                                                               $ note: the upper bound of an [[until]] range must be greater than zero");
-    SWAG_ERROR(Err0505, "too much variadic arguments                                                                            $ note: the maximum number of arguments is [[%d]], found [[%d]]");
     SWAG_ERROR(Err0506, "no matching overload found                                                                             $ ");
     SWAG_ERROR(Err0507, "struct [[%s]] directly or indirectly references itself                                                 $ ");
     SWAG_ERROR(Err0508, "visibility specifier [[%s]] conflicts with [[#global export]]                                          $ hint: remove [[public]] since [[#global export]] already makes all declarations public");
@@ -641,13 +639,11 @@ void initErrors()
     SWAG_ERROR(Err0529, "cannot cast an interface to a struct                                                                   $ note: interfaces can only be cast to struct pointers");
     SWAG_ERROR(Err0530, "cannot cast [[%s]] to [[%s]]                                                                           $ ");
     SWAG_ERROR(Err0531, "cannot assign [[%s]] to [[%s]]                                                                         $ ");
-    SWAG_ERROR(Err0532, "range mixes signed and unsigned bounds                                                                 $ note: both range bounds must use the same signe");    
     SWAG_ERROR(Err0533, "invalid [[%s]] return type [[%s]]                                                                      $ note: [[%s]] requires a [[%s]] return type");
     SWAG_ERROR(Err0534, "invalid slice bound type [[%s]]                                                                        $ note: slice bounds must be of integer type");
     SWAG_ERROR(Err0535, "invalid [[%s]] assignment                                                                              $ note: expects [[%s]], found [[%s]]");
     SWAG_ERROR(Err0540, "invalid [[@cvastart]] argument type [[%s]]                                                             $ note: [[@cvastart]] requires a [[%s]] argument");
     SWAG_ERROR(Err0539, "incompatible types for [[@mkany]]                                                                      $ note: first argument has type [[%s]], and should be a pointer to type [[%s]]");
-    SWAG_ERROR(Err0541, "invalid [[orselse]] argument type [[%s]]                                                               $ note: [[orelse]] requires a nullable type");
     SWAG_ERROR(Err0542, "invalid switch expression type [[%s]]                                                                  $ ");
     SWAG_ERROR(Err0544, "invalid use of [[with]] on type [[%s]]                                                                 $ note: [[with]] applies only to namespaces, enums, structs, or struct pointers");
     SWAG_ERROR(Err0545, "invalid [[@countof]] argument type [[%s]]                                                              $ ");
@@ -664,15 +660,12 @@ void initErrors()
     SWAG_ERROR(Err0543, "invalid use of [[with]] on enum variable [[%s]]                                                        $ note: [[with]] applies to enum types, not enum variables");
     SWAG_ERROR(Err0537, "invalid call to [[%s]] with type [[%s]]                                                                $ note: [[%s]] requires type [[%s]] as its first argument");
     SWAG_ERROR(Err0538, "invalid [[#message]] argument type [[%s]]                                                              $ note: [[#message]] requires a [[Swag.CompilerMsgMask]] argument");
-    SWAG_ERROR(Err0564, "invalid [[@mkinterface]] third argument type [[%s]]                                                    $ note: [[@mkinterface]] requires an interface name as as its third argument");
     SWAG_ERROR(Err0552, "invalid [[@mkany]] second argument type [[%s]]                                                         $ note: [[@mkany]] requires a [[typeinfo]] as its second argument");
     SWAG_ERROR(Err0553, "invalid [[@mkinterface]] second argument type [[%s]]                                                   $ note: [[@mkinterface]] requires a [[typeinfo]] as its second argument");
-    SWAG_ERROR(Err0560, "invalid [[@mkcallback]] argument type [[%s]]                                                           $ note: [[mkcallback]] requires a function pointer argument");
     SWAG_ERROR(Err0548, "invalid [[#include]] argument type [[%s]]                                                              $ note: [[#include]] requires a [[string]] argument");
     SWAG_ERROR(Err0549, "invalid [[#inject]] argument type [[%s]]                                                               $ note: [[#inject]] requires a [[code]] argument");
     SWAG_ERROR(Err0550, "invalid [[where]] condition type [[%s]]                                                                $ note: [[where]] requires a boolean expression");
     SWAG_ERROR(Err0551, "invalid [[#runes]] argument type [[%s]]                                                                $ note: [[#runes]] requires a [[string]] argument");
-    SWAG_ERROR(Err0562, "invalid [[@countof]] argument type [[%s]]                                                              $ note: [[countof]] requires an integer argument");
     SWAG_ERROR(Err0563, "invalid [[%s]] count type [[%s]]                                                                       $ note: [[%s]] count must be an integer");
     SWAG_ERROR(Err0567, "invalid array dimension type [[%s]]                                                                    $ note: array dimension must be an integer");
     SWAG_ERROR(Err0568, "invalid array index type [[%s]]                                                                        $ note: array index must be an integer");
@@ -682,7 +675,6 @@ void initErrors()
     SWAG_ERROR(Err0572, "invalid comparison for interface type                                                                  $ note: interfaces can only be compared with [[null]], another interface, or [[typeinfo]], found [[%s]]");
     SWAG_ERROR(Err0573, "invalid comparison for type [[any]]                                                                    $ note: [[any]] can only be compared with [[null]] or [[typeinfo]], found [[%s]]");
     SWAG_ERROR(Err0594, "invalid bitwise inversion [['~']] for type [[%s]]                                                      $ ");
-    SWAG_ERROR(Err0595, "invalid shift operator [['%s']] for type [[%s]]                                                        $ note: operator [[%s]] required an integer operand");
     SWAG_ERROR(Err0596, "invalid operator [['%s']] for type [[%s]]                                                              $ ");
     SWAG_ERROR(Err0597, "invalid operator [['%s']] for left operand type [[%s]]                                                 $ ");
     SWAG_ERROR(Err0598, "invalid operator [['%s']] for right operand type [[%s]]                                                $ ");
@@ -718,7 +710,6 @@ void initErrors()
     SWAG_ERROR(Err0612, "invalid scope name                                                                                     $ note: expected an identifier, found $$TKN$$");
     SWAG_ERROR(Err0613, "invalid [[discard]] argument                                                                           $ note: found $$TKN$$");
     SWAG_ERROR(Err0614, "invalid [[foreach]] specialization                                                                     $ note: [[foreach]] specialization is only valid for [[struct]] visit, found [[%s]]");
-    SWAG_ERROR(Err0615, "invalid statement inside [[switch]]                                                                    $ note: a [[switch]] body may only contain a [[case]] or a [[default]] sections, found $$TKN$$");
     SWAG_ERROR(Err0616, "invalid [[with]] expression                                                                            $ ");
     SWAG_ERROR(Err0617, "invalid [['=']] in expression                                                                          $ hint: use [['==']] for comparison");
     SWAG_ERROR(Err0618, "invalid alias target                                                                                   $ note: expected an identifier or a type, found $$TKN$$");
@@ -730,8 +721,6 @@ void initErrors()
     SWAG_ERROR(Err0633, "invalid enum name                                                                                      $ note: expected an identifier, found $$TKN$$");
     SWAG_ERROR(Err0651, "invalid parameter name                                                                                 $ note: expected an identifier, found $$TKN$$");
     SWAG_ERROR(Err0621, "invalid variable aliasing for [[%s]]                                                                   $ note: variable aliasing is only allowed for macros or mixins");
-    SWAG_ERROR(Err0624, "invalid return type [[->]] in attribute definition                                                     $ attribute are not functions, remove the return type");
-    SWAG_ERROR(Err0346, "invalid [[throw]] in attribute definition                                                              $ attribute are not functions, remove it");
     SWAG_ERROR(Err0625, "invalid binary digit $$TKN$$                                                                           $ note: binary literals may only contain [[0]] or [[1]]");
     SWAG_ERROR(Err0626, "invalid character [['%s']]                                                                             $ ");
     SWAG_ERROR(Err0627, "invalid [['==']]                                                                                       $ hint: use [['=']] for assignment");
@@ -750,10 +739,8 @@ void initErrors()
     SWAG_ERROR(Err0643, "invalid hexadecimal digit $$TKN$$                                                                      $ note: hexadecimal digits must be [[0-9]], [[A-F]], or [[a-f]]");
     SWAG_ERROR(Err0644, "invalid consecutive identifiers                                                                        $ ");
     SWAG_ERROR(Err0645, "invalid identifier [[%s]] at file level                                                                $ note: only mixin function calls are allowed at the top level");
-    SWAG_ERROR(Err0646, "invalid scope before intrinsic                                                                         $ note: intrinsics are defined int the top-level scope");
     SWAG_ERROR(Err0647, "instruction modifier [[%s]] invalid for [[%s]]                                                         $ ");
     SWAG_ERROR(Err0648, "parameter name not allowed in lambda type declaration                                                  $ note: lambda type declarations only specify parameter types, not names $ hint: remove the parameter name");
-    SWAG_ERROR(Err0649, "invalid number of [[foreach]] alias names                                                              $ [[foreach]] allows a maximum of [[2]] alias names, got [[%u]] $ note: valid forms are [[foreach value in expr]] or [[foreach value, index in expr]]");
     SWAG_ERROR(Err0650, "invalid number prefix [[0]]$$TKN$$                                                                     $ note: valid numeric prefixes are [[0x]] for hexadecimal or [[0b]] for binary");    
     SWAG_ERROR(Err0652, "unexpected parameters                                                                                  $ note: a %s cannot have parameters $ hint: replace [[(]] with [[{]] to start the block");
     SWAG_ERROR(Err0653, "unexpected return type                                                                                 $ note: a function with the [[#[Swag.CalleeReturn]]] attribute cannot declare a return type");
@@ -802,17 +789,31 @@ void initErrors()
     SWAG_ERROR(Err0701, "cannot unpack%s[[%u]] variables because right tuple has%s[[%u]] fields                                 $ ");
     SWAG_ERROR(Err0703, "cannot infer array length                                                                              $ note: missing initialization");
     SWAG_ERROR(Err0704, "cannot deduce flag [[%s]] from the previous value                                                      $ note: the previous value ([[%llu]]) is not a power of two $ note: flag enumerations under [[#[Swag.EnumFlags]]] must use power-of-two values (1, 2, 4, 8, ...)");
-    SWAG_ERROR(Err0705, "cannot determined generic arguments for %s [[%s]]                                                      $ ");
     SWAG_ERROR(Err0706, "failed to resolve identifier [[%s]]                                                                    $ ");
     SWAG_ERROR(Err0707, "failed to resolve semantic reference                                                                   $ ");
     SWAG_ERROR(Err0708, "cannot infer a variable type from a [[null]] expression                                                $ ");
     SWAG_ERROR(Err0709, "[[%s]] contains [[%s]] and cannot be part of a union                                                   $ ");
     SWAG_ERROR(Err0710, "no matching variable found for alias [[%s]]                                                            $ hint: remove the alias");
     SWAG_ERROR(Err0711, "cannot ignore return value of function [[%s]]                                                          $ hint: use [[discard]] to explicitly ignore the return value if intentional");
-    SWAG_ERROR(Err0712, "cannot ignore return value of intrinsic [[%s]] value                                                   $ ");
     SWAG_ERROR(Err0713, "cannot ignore return value of lambda [[%s]]                                                            $ hint: use [[discard]] to explicitly ignore the return value if intentional");
     SWAG_ERROR(Err0786, "[[%s]] used incorrectly with arguments                                                                 $ hint: [[%s]] is a value, not a function call, remove the parentheses");
 
+    SWAG_ERROR(Err0346, "invalid [[throw]] in attribute definition                                                              $ attribute are not functions, remove it");
+    SWAG_ERROR(Err0457, "missing enum value [[%s]] initialization                                                               $ note: an anum value of type [[%s]] must be explicitly initialized");
+    SWAG_ERROR(Err0505, "too much variadic arguments                                                                            $ note: the maximum number of arguments is [[%d]], found [[%d]]");
+    SWAG_ERROR(Err0532, "range mixes signed and unsigned bounds                                                                 $ note: both range bounds must use the same signe");    
+    SWAG_ERROR(Err0541, "invalid [[orselse]] argument type [[%s]]                                                               $ note: [[orelse]] requires a nullable type");
+    SWAG_ERROR(Err0560, "invalid [[@mkcallback]] argument type [[%s]]                                                           $ note: [[mkcallback]] requires a function pointer argument");
+    SWAG_ERROR(Err0562, "invalid [[@countof]] argument type [[%s]]                                                              $ note: [[countof]] requires an integer argument");
+    SWAG_ERROR(Err0564, "invalid [[@mkinterface]] third argument type [[%s]]                                                    $ note: [[@mkinterface]] requires an interface name as as its third argument");
+    SWAG_ERROR(Err0595, "invalid shift operator [['%s']] for type [[%s]]                                                        $ note: operator [[%s]] required an integer operand");
+    SWAG_ERROR(Err0615, "invalid statement inside [[switch]]                                                                    $ note: a [[switch]] body may only contain a [[case]] or a [[default]] sections, found $$TKN$$");
+    SWAG_ERROR(Err0624, "invalid return type [[->]] in attribute definition                                                     $ attribute are not functions, remove the return type");
+    SWAG_ERROR(Err0646, "invalid scope before intrinsic                                                                         $ note: intrinsics are defined int the top-level scope");
+    SWAG_ERROR(Err0649, "invalid number of [[foreach]] alias names                                                              $ [[foreach]] allows a maximum of [[2]] alias names, got [[%u]] $ note: valid forms are [[foreach value in expr]] or [[foreach value, index in expr]]");
+    SWAG_ERROR(Err0705, "cannot determined generic arguments for %s [[%s]]                                                      $ ");
+    SWAG_ERROR(Err0712, "cannot ignore return value of intrinsic [[%s]] value                                                   $ ");
+    
     // The following errors do not have a dedicated test
     
     SWAG_ERROR(Err0714, "[[#import]] location already defined                                                                   $ ");
