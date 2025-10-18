@@ -500,7 +500,7 @@ bool Semantic::resolveIntrinsicKindOf(SemanticContext* context)
         return true;
     }
 
-    const Diagnostic err{node, node->token, formErr(Err0318, expr->typeInfo->getDisplayNameC())};
+    const Diagnostic err{expr, formErr(Err0318, expr->typeInfo->getDisplayNameC())};
     return context->report(err);
 }
 

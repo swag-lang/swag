@@ -22,10 +22,10 @@ bool Semantic::checkCanThrow(SemanticContext* context)
     const auto parentFct = node->hasSemFlag(SEMFLAG_EMBEDDED_RETURN) ? node->ownerInline()->func : node->ownerFct;
 
     if (parentFct->isSpecialFunctionName())
-        return context->report({node, node->token, formErr(Err0314, node->token.cstr(), node->token.cstr(), parentFct->token.cstr())});
+        return context->report({node, node->token, formErr(Err0314, node->token.cstr(), parentFct->token.cstr())});
 
     if (!parentFct->typeInfo->hasFlag(TYPEINFO_CAN_THROW) && !parentFct->hasAttribute(ATTRIBUTE_SHARP_FUNC))
-        return context->report({node, node->token, formErr(Err0315, node->token.cstr(), node->token.cstr(), parentFct->token.cstr())});
+        return context->report({node, node->token, formErr(Err0315, node->token.cstr(), parentFct->token.cstr())});
 
     return true;
 }
