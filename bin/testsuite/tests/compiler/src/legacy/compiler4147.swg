@@ -1,5 +1,5 @@
-//#global testerror "Err0024"
-//#global testerror "Err0019"
+//#global testerror "Err0004"
+//#global testerror "Err0349"
 
 struct A {}
 

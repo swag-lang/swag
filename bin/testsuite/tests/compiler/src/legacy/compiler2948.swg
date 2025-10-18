@@ -1,4 +1,4 @@
-#global testerror "Err0043"
+#global testerror "Err0443"
 
 enum Rgb: u32
 {

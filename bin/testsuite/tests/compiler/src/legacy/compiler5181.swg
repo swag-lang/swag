@@ -1,4 +1,4 @@
-#global testerror "Err0436"
+#global testerror "Err0715"
 
 enum E: f32
 {

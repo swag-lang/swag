@@ -366,7 +366,7 @@ bool FormatAst::writeResult(const Path& fileName, const Utf8& content)
     FILE* f = nullptr;
     if (fopen_s(&f, fileName, "wb"))
     {
-        Report::errorOS(formErr(Err0732, fileName.cstr()));
+        Report::errorOS(formErr(Err0134, fileName.cstr()));
         return false;
     }
 

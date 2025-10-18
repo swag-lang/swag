@@ -1,4 +1,4 @@
-#global testerror "Err0510"
+#global testerror "Err0423"
 alias A = {item1, y: s32}
 
 #test

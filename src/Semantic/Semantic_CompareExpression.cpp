@@ -123,7 +123,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
             default:
             {
-                Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+                Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                 err.addNote(Diagnostic::isType(left));
                 return context->report(err);
             }
@@ -144,7 +144,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
     {
         if (leftTypeInfo->isTuple())
         {
-            Diagnostic err{node, node->token, formErr(Err0248, rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0220, rightTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(left));
             err.addNote(Diagnostic::isType(right));
             return context->report(err);
@@ -152,7 +152,7 @@ bool Semantic::resolveCompOpEqual(SemanticContext* context, AstNode* left, AstNo
 
         if (rightTypeInfo->isTuple())
         {
-            Diagnostic err{node, node->token, formErr(Err0248, leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node, node->token, formErr(Err0220, leftTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(left));
             err.addNote(Diagnostic::isType(right));
             return context->report(err);
@@ -251,7 +251,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
 
                 default:
                 {
-                    Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+                    Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                     err.addNote(Diagnostic::isType(left));
                     return context->report(err);
                 }
@@ -265,7 +265,7 @@ bool Semantic::resolveCompOp3Way(SemanticContext* context, AstNode* left, AstNod
     }
     else if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat() && !leftTypeInfo->isPointer())
     {
-        Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
@@ -328,7 +328,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
 
                 default:
                 {
-                    Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+                    Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                     err.addNote(Diagnostic::isType(left));
                     return context->report(err);
                 }
@@ -342,7 +342,7 @@ bool Semantic::resolveCompOpLower(SemanticContext* context, AstNode* left, AstNo
     }
     else if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat() && !leftTypeInfo->isPointer())
     {
-        Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
@@ -404,7 +404,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
 
                 default:
                 {
-                    Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+                    Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
                     err.addNote(Diagnostic::isType(left));
                     return context->report(err);
                 }
@@ -418,7 +418,7 @@ bool Semantic::resolveCompOpGreater(SemanticContext* context, AstNode* left, Ast
     }
     else if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat() && !leftTypeInfo->isPointer())
     {
-        Diagnostic err{context->node, context->node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{context->node, context->node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
@@ -470,7 +470,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !leftTypeInfo->isSlice() &&
              !leftTypeInfo->isInterface())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0597, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0473, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
@@ -479,7 +479,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
              !rightTypeInfo->isStruct() &&
              !rightTypeInfo->isInterface())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0598, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0474, node->token.cstr(), rightTypeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(right));
         return context->report(err);
     }
@@ -489,7 +489,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isTuple() || rightTypeInfo->isTuple())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0599, node->token.cstr())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0475, node->token.cstr())};
             if (leftTypeInfo->isTuple())
                 err.addNote(Diagnostic::isType(left));
             else
@@ -504,7 +504,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         // Slice can only be compared to null
         if (leftTypeInfo->isSlice())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0571, rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0398, rightTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(left));
             err.addNote(Diagnostic::isType(right));
             return context->report(err);
@@ -513,7 +513,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         // Interface can only be compared to null ar to another interface
         if (leftTypeInfo->isInterface() && !rightTypeInfo->isInterface() && !rightTypeInfo->isPointerToTypeInfo())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0572, rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0397, rightTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(left));
             err.addNote(Diagnostic::isType(right));
             return context->report(err);
@@ -522,7 +522,7 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
         // Any can only be compared to null or to a type
         if (leftTypeInfo->isAny() && !rightTypeInfo->isPointerToTypeInfo())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0573, rightTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0399, rightTypeInfo->getDisplayNameC())};
             if (leftTypeInfo->isAny())
                 err.addNote(left, "hint: cast to the underlying [[any]] type");
             else
@@ -540,14 +540,14 @@ bool Semantic::resolveCompareExpression(SemanticContext* context)
     {
         if (leftTypeInfo->isSlice() || leftTypeInfo->isInterface())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(Diagnostic::isType(left));
             return context->report(err);
         }
 
         if (leftTypeInfo->isAny())
         {
-            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+            Diagnostic err{node->token.sourceFile, node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
             err.addNote(left, "hint: cast to the underlying [[any]] type");
             return context->report(err);
         }

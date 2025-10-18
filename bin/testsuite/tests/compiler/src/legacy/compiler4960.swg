@@ -1,4 +1,4 @@
-#global testerror "Err0476"
+#global testerror "Err0714"
 #test
 {
     a[0 until ]

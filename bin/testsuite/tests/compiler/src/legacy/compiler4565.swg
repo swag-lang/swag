@@ -1,2 +1,2 @@
-#global testerror "Err0274"
+#global testerror "Err0574"
 var G: void

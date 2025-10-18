@@ -52,7 +52,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             // Identifier at global scope
             if (startToken.is(TokenId::Identifier))
             {
-                Diagnostic err{sourceFile, startToken, formErr(Err0645, startToken.cstr())};
+                Diagnostic err{sourceFile, startToken, formErr(Err0437, startToken.cstr())};
                 if (nextToken.is(TokenId::Identifier) && (startToken.is("function") || startToken.is("fn") || startToken.is("def")))
                     err.addNote("hint: use [[func]] to declare a function");
                 else if (nextToken.is(TokenId::Identifier) && nextToken.is("fn") && startToken.is("pub"))
@@ -69,18 +69,18 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
             }
 
             if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0280);
+                msg = toErr(Err0259);
             else if (startToken.is(TokenId::CompilerElseIf))
-                msg = toErr(Err0279);
+                msg = toErr(Err0258);
             else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0281);
+                msg = toErr(Err0751);
             else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0285);
+                msg = toErr(Err0752);
             else if (startToken.is(TokenId::SymRightSquare))
-                msg = toErr(Err0282);
+                msg = toErr(Err0384);
             else
             {
-                msg = toErr(Err0247);
+                msg = toErr(Err0521);
                 if (startToken.is(TokenId::KwdLet))
                     note = "hint: use [[var]] or [[const]] instead of [[let]] to declare a global variable or constant";
                 else if (startToken.is(TokenId::CompilerInclude))
@@ -98,26 +98,26 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
         ///////////////////////////////////////////
         case InvalidTokenError::EmbeddedInstruction:
             if (startToken.is(TokenId::SymAmpersandAmpersand))
-                msg = formErr(Err0210, "and", "&&");
+                msg = formErr(Err0452, "and", "&&");
             else if (startToken.is(TokenId::SymVerticalVertical))
-                msg = formErr(Err0210, "or", "||");
+                msg = formErr(Err0452, "or", "||");
             else if (startToken.is(TokenId::KwdElse))
-                msg = toErr(Err0284);
+                msg = toErr(Err0318);
             else if (startToken.is(TokenId::KwdElif))
-                msg = toErr(Err0283);
+                msg = toErr(Err0317);
             else if (startToken.is(TokenId::CompilerElse))
-                msg = toErr(Err0280);
+                msg = toErr(Err0259);
             else if (startToken.is(TokenId::CompilerElseIf))
-                msg = toErr(Err0279);
+                msg = toErr(Err0258);
             else if (startToken.is(TokenId::SymRightParen))
-                msg = toErr(Err0281);
+                msg = toErr(Err0751);
             else if (startToken.is(TokenId::SymRightCurly))
-                msg = toErr(Err0285);
+                msg = toErr(Err0752);
             else if (startToken.is(TokenId::SymRightSquare))
-                msg = toErr(Err0282);
+                msg = toErr(Err0384);
             else
             {
-                Diagnostic err{sourceFile, startToken, toErr(Err0630)};
+                Diagnostic err{sourceFile, startToken, toErr(Err0508)};
                 return context->report(err);
             }
 
@@ -125,7 +125,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
         ///////////////////////////////////////////
         case InvalidTokenError::LeftExpression:
-            msg = toErr(Err0620);
+            msg = toErr(Err0570);
             break;
 
         ///////////////////////////////////////////
@@ -133,11 +133,11 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
             if (Tokenizer::isKeyword(prevTokenParse.token.id) || Tokenizer::isSymbol(prevTokenParse.token.id))
             {
-                Diagnostic err{sourceFile, tokenParse, formErr(Err0184, prevTokenParse.cstr())};
+                Diagnostic err{sourceFile, tokenParse, formErr(Err0659, prevTokenParse.cstr())};
                 return context->report(err);
             }
 
-            msg = toErr(Err0738);
+            msg = toErr(Err0692);
             break;
     }
 
@@ -146,7 +146,7 @@ bool Parser::invalidTokenError(InvalidTokenError kind)
 
 bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) const
 {
-    const Utf8 message = msg ? Utf8{msg} : toErr(Err0200);
+    const Utf8 message = msg ? Utf8{msg} : toErr(Err0679);
     Diagnostic err{sourceFile, myToken, message};
     if (Tokenizer::isKeyword(myToken.token.id))
         err.addNote(form("the keyword [[%s]] cannot be used as an identifier", myToken.token.cstr()));
@@ -156,13 +156,13 @@ bool Parser::invalidIdentifierError(const TokenParse& myToken, const char* msg) 
 bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
 {
     if (tokenParse.is(TokenId::SymAsterisk) && getNextToken().is(TokenId::SymSlash))
-        return error(tokenParse, formErr(Err0286, "left expression"));
+        return error(tokenParse, formErr(Err0753, "left expression"));
 
     if (!leftAlone)
-        return error(tokenParse, formErr(Err0446, "left affectation"));
+        return error(tokenParse, formErr(Err0682, "left affectation"));
 
     if (tokenParse.is(TokenId::SymEqualEqual))
-        return error(tokenParse, toErr(Err0627));
+        return error(tokenParse, toErr(Err0293));
 
     if (leftNode->is(AstNodeKind::IdentifierRef) &&
         leftNode->lastChild()->is(AstNodeKind::Identifier) &&
@@ -172,7 +172,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
         const auto id = castAst<AstIdentifier>(leftNode->lastChild(), AstNodeKind::Identifier);
         if (!id->callParameters)
         {
-            Diagnostic err{sourceFile, tokenParse, toErr(Err0644)};
+            Diagnostic err{sourceFile, tokenParse, toErr(Err0401)};
             const auto nextToken = getNextToken();
             if (Tokenizer::isSymbol(nextToken.token.id) && nextToken.isNot(TokenId::SymSemiColon))
                 err.addNote(form("hint: did you forget a [['.']] between [[%s]] and [[%s]]?", id->token.cstr(), tokenParse.cstr()));
@@ -195,7 +195,7 @@ bool Parser::endOfLineError(AstNode* leftNode, bool leftAlone)
         afterMsg = "variable list";
 
     if (Tokenizer::isSymbol(tokenParse.token.id))
-        return error(tokenParse, formErr(Err0659, tokenParse.cstr(), afterMsg.cstr()));
+        return error(tokenParse, formErr(Err0513, tokenParse.cstr(), afterMsg.cstr()));
 
-    return error(tokenParse, formErr(Err0438, afterMsg.cstr()));
+    return error(tokenParse, formErr(Err0630, afterMsg.cstr()));
 }

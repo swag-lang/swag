@@ -1,5 +1,5 @@
 
-#global testerror "Err0264"
+#global testerror "Err0528"
 
 struct Point2
 {

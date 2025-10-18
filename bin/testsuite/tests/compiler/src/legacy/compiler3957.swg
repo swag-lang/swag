@@ -1,4 +1,4 @@
-/*#global testerror "Err0698"
+/*#global testerror "Err0776"
 #test
 {
     #if #safety("toto")

@@ -1,4 +1,4 @@
-#global testerror "Err0146"
+#global testerror "Err0157"
 
 const x = "64"
 

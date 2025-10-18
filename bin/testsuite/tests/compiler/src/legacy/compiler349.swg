@@ -1,4 +1,4 @@
-#global testerror "Err0042"
+#global testerror "Err0442"
 //#[Swag.PrintBc]
 #test
 {

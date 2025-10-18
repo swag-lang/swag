@@ -1,3 +1,3 @@
-#global testerror "Err0671"
+#global testerror "Err0078"
 #[Min(0)]
 func toto() {}

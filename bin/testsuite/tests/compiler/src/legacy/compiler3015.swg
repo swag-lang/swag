@@ -1,4 +1,4 @@
-#global testerror "Err0694"
+#global testerror "Err0105"
 struct T
 {
     e:     Edge

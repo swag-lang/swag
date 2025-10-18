@@ -1,4 +1,4 @@
-#global testerror "Err0448"
+#global testerror "Err0654"
 
 enum : s32
 {

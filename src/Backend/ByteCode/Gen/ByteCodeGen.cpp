@@ -178,7 +178,7 @@ bool ByteCodeGen::skipNodes(ByteCodeGenContext* context, AstNode* node)
             return Ast::VisitResult::Continue;
         if (n->hasSemFlag(SEMFLAG_LITERAL_SUFFIX))
         {
-            cxt->report({n->firstChild(), formErr(Err0242, n->firstChild()->token.cstr())});
+            cxt->report({n->firstChild(), formErr(Err0450, n->firstChild()->token.cstr())});
             return Ast::VisitResult::Stop;
         }
 

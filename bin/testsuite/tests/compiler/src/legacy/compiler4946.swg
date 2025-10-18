@@ -1,4 +1,4 @@
-#global testerror "Err0633"
+#global testerror "Err0414"
 
 enum 0
 {

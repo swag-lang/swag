@@ -1,4 +1,4 @@
-#global testerror "Err0711"
+#global testerror "Err0109"
 
 #[Swag.Macro]
 func assert(expr: #code bool)

@@ -1,3 +1,3 @@
-#global testerror "Err0215"
+#global testerror "Err0691"
 
 namespace 0 {}

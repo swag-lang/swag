@@ -1,4 +1,4 @@
-#global testerror "Err0034"
+#global testerror "Err0266"
 
 func toto() => "coucou"
 const A = #include(toto())

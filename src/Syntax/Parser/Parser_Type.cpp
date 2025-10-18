@@ -53,7 +53,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             thisIsAType = true;
             curIsAlone  = false;
             SWAG_CHECK(eatToken());
-            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0478)));
+            SWAG_CHECK(checkIsIdentifier(tokenParse, toErr(Err0529)));
         }
 
         // Accept a parameter name
@@ -69,12 +69,12 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             }
             else if (tokenName.token.is(g_LangSpec->name_me))
             {
-                const Diagnostic err(sourceFile, tokenParse.token, toErr(Err0663));
+                const Diagnostic err(sourceFile, tokenParse.token, toErr(Err0526));
                 return context->report(err);
             }
             else
             {
-                SWAG_VERIFY(inTypeVarDecl, error(tokenName.token, toErr(Err0648)));
+                SWAG_VERIFY(inTypeVarDecl, error(tokenName.token, toErr(Err0172)));
 
                 namedParam        = Ast::newNode<AstIdentifier>(AstNodeKind::Identifier, this, nullptr);
                 namedParam->token = tokenName.token;
@@ -97,14 +97,14 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
         if (tokenParse.token.is(g_LangSpec->name_me))
         {
             curIsAlone = false;
-            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0345)));
+            SWAG_VERIFY(currentStructScope, error(tokenParse, toErr(Err0560)));
             typeExpr = Ast::newTypeExpression(nullptr, params);
             typeExpr->typeFlags.add(TYPE_FLAG_IS_ME | TYPE_FLAG_IS_PTR | TYPE_FLAG_IS_SUB_TYPE);
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             typeExpr->identifier = Ast::newIdentifierRef(currentStructScope->name, this, typeExpr);
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse, toErr(Err0387));
+                return error(tokenParse, toErr(Err0328));
         }
         // ...
         else if (tokenParse.is(TokenId::SymDotDotDot))
@@ -115,7 +115,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse, toErr(Err0629));
+                return error(tokenParse, toErr(Err0576));
         }
         // cvarargs
         else if (tokenParse.is(TokenId::KwdCVarArgs))
@@ -126,7 +126,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             typeExpr->token.endLocation = tokenParse.token.endLocation;
             SWAG_CHECK(eatToken());
             if (tokenParse.is(TokenId::SymEqual))
-                return error(tokenParse, toErr(Err0629));
+                return error(tokenParse, toErr(Err0576));
         }
         else
         {
@@ -143,7 +143,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 SWAG_CHECK(eatToken());
                 Ast::addChildBack(newTypeExpression, typeExpr);
                 if (tokenParse.is(TokenId::SymEqual))
-                    return error(tokenParse, toErr(Err0629));
+                    return error(tokenParse, toErr(Err0576));
                 typeExpr = newTypeExpression;
             }
             else if (typeExpr->identifier && !testIsSingleIdentifier(typeExpr->identifier))
@@ -153,7 +153,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             }
         }
 
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0388)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymEqual) || inTypeVarDecl, error(tokenParse, toErr(Err0447)));
 
         // If we are in a type declaration, generate a variable and not just a type
         if (inTypeVarDecl)
@@ -205,7 +205,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
                 tokenAmb.startLocation = lastParameter->token.startLocation;
                 tokenAmb.endLocation   = tokenParse.token.startLocation;
 
-                Diagnostic err{sourceFile, tokenAmb, toErr(Err0026)};
+                Diagnostic err{sourceFile, tokenAmb, toErr(Err0009)};
                 const auto note = Diagnostic::note(lastParameter, form("[[%s]] could refer to either a type or a parameter name", lastParameter->type->token.cstr()));
                 err.addNote(note);
                 err.addNote(form("hint: use [[#type]] before [[%s]] if it is a type, or specify a [[:type]] after [[%s]] if it is a parameter name", lastParameter->type->token.cstr(), lastParameter->type->token.cstr()));
@@ -227,7 +227,7 @@ bool Parser::doLambdaClosureParameters(AstTypeExpression* node, bool inTypeVarDe
             break;
 
         SWAG_CHECK(eatToken());
-        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0113)));
+        SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0695)));
     }
 
     FormatAst::inheritFormatAfter(this, params, &tokenParse);
@@ -440,16 +440,16 @@ bool Parser::doSingleTypeExpression(AstTypeExpression* node, ExprFlags exprFlags
 
         case TokenId::KwdFunc:
         case TokenId::KwdMethod:
-            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0339)}));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0057)}));
             SWAG_CHECK(doLambdaClosureType(node, &node->identifier, inTypeVarDecl));
             return true;
     }
 
     Diagnostic* err = nullptr;
     if (node->parent->typeInfo && node->parent->typeInfo->isCode())
-        err = new Diagnostic{sourceFile, tokenParse, toErr(Err0319)};
+        err = new Diagnostic{sourceFile, tokenParse, toErr(Err0713)};
     else
-        err = new Diagnostic{sourceFile, tokenParse, toErr(Err0264)};
+        err = new Diagnostic{sourceFile, tokenParse, toErr(Err0528)};
 
     if (tokenParse.is(TokenId::SymLeftParen))
         err->addNote("hint: use [[func(]] to declare a lambda type");
@@ -478,7 +478,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymAmpersandAmpersand))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0173)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0216)};
             return context->report(err);
         }
     }
@@ -541,14 +541,14 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
             node->typeFlags.add(TYPE_FLAG_IS_ARRAY);
             if (node->arrayDim == 254)
-                return error(tokenParse, toErr(Err0497));
+                return error(tokenParse, toErr(Err0735));
             node->arrayDim++;
             AstNode* subType;
             SWAG_CHECK(doExpression(node, EXPR_FLAG_NONE, &subType));
             if (tokenParse.is(TokenId::SymRightSquare))
                 break;
-            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0100)));
-            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0101)));
+            SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0596)));
+            SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightSquare), error(tokenParse, toErr(Err0649)));
         }
 
         auto rightSquareToken = tokenParse;
@@ -556,7 +556,7 @@ bool Parser::doSubTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode**
 
         if (tokenParse.is(TokenId::SymComma))
         {
-            const Diagnostic err{sourceFile, tokenParse, toErr(Err0265)};
+            const Diagnostic err{sourceFile, tokenParse, toErr(Err0518)};
             return context->report(err);
         }
 
@@ -605,7 +605,7 @@ bool Parser::doNullableTypeExpression(AstNode* parent, ExprFlags exprFlags, AstN
 
 bool Parser::doTypeExpression(AstNode* parent, ExprFlags exprFlags, AstNode** result)
 {
-    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0339)}));
+    SWAG_VERIFY(tokenParse.isNot(TokenId::KwdMethod), context->report({sourceFile, tokenParse.token, toErr(Err0057)}));
 
     // retval
     if (tokenParse.is(TokenId::KwdRetVal))

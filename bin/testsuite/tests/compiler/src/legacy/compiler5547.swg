@@ -1,2 +1,2 @@
-#global testerror "Err0247"
+#global testerror "Err0521"
 s32 G = 0

@@ -1,4 +1,4 @@
-//#global testerror "Err0024"
+//#global testerror "Err0004"
 
 func(T) add(x, y: T)->T
 {

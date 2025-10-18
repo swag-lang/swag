@@ -17,7 +17,7 @@ namespace
     {
         SWAG_ASSERT(errorParam.failedParam);
         SWAG_ASSERT(errorParam.badParamIdx >= 2);
-        const auto msg = formErr(Err0462, Naming::niceArgumentRank(errorParam.badParamIdx).cstr());
+        const auto msg = formErr(Err0687, Naming::niceArgumentRank(errorParam.badParamIdx).cstr());
         const auto err = new Diagnostic{errorParam.failedParam, msg};
         errorParam.addError(err);
 
@@ -35,7 +35,7 @@ namespace
 
         if (errorParam.destStructDecl)
         {
-            errorParam.addError(new Diagnostic{isNamed, formErr(Err0677, isNamed->token.cstr(), typeInfo->getDisplayNameC())});
+            errorParam.addError(new Diagnostic{isNamed, formErr(Err0086, isNamed->token.cstr(), typeInfo->getDisplayNameC())});
 
             CollectedScope altScope;
             altScope.scope = errorParam.destStructDecl->scope;
@@ -49,7 +49,7 @@ namespace
         }
         else
         {
-            errorParam.addError(new Diagnostic{isNamed, formErr(Err0689, isNamed->token.cstr())});
+            errorParam.addError(new Diagnostic{isNamed, formErr(Err0100, isNamed->token.cstr())});
 
             CollectedScope altScope;
             altScope.scope = errorParam.destFuncDecl->scope;
@@ -67,9 +67,9 @@ namespace
 
         Utf8 msg;
         if (errorParam.destStructDecl)
-            msg = formErr(Err0011, isNamed->token.cstr());
+            msg = formErr(Err0200, isNamed->token.cstr());
         else
-            msg = formErr(Err0058, isNamed->token.cstr());
+            msg = formErr(Err0189, isNamed->token.cstr());
         const auto err = new Diagnostic{isNamed, msg};
         errorParam.addError(err);
 
@@ -90,11 +90,11 @@ namespace
 
         Diagnostic* err;
         if (!callParameters)
-            err = new Diagnostic{node, node->token, formErr(Err0439, Naming::kindName(overload).cstr(), node->token.cstr())};
+            err = new Diagnostic{node, node->token, formErr(Err0629, Naming::kindName(overload).cstr(), node->token.cstr())};
         else if (errorParam.destAttrDecl)
-            err = new Diagnostic{node, node->token, formErr(Err0486, node->token.cstr())};
+            err = new Diagnostic{node, node->token, formErr(Err0723, node->token.cstr())};
         else
-            err = new Diagnostic{node, node->token, formErr(Err0487, Naming::kindName(overload).cstr(), node->token.cstr())};
+            err = new Diagnostic{node, node->token, formErr(Err0724, Naming::kindName(overload).cstr(), node->token.cstr())};
 
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
@@ -150,11 +150,11 @@ namespace
 
         Diagnostic* err;
         if (errorParam.destFuncDecl && errorParam.destFuncDecl->isSpecialFunctionName())
-            err = new Diagnostic{errNode, errNode->token, formErr(Err0705, niceName.cstr(), errorParam.destFuncDecl->token.cstr())};
+            err = new Diagnostic{errNode, errNode->token, formErr(Err0073, niceName.cstr(), errorParam.destFuncDecl->token.cstr())};
         else if (genericParameters)
-            err = new Diagnostic{genericParameters, formErr(Err0488, niceName.cstr(), overload->symbol->name.cstr())};
+            err = new Diagnostic{genericParameters, formErr(Err0725, niceName.cstr(), overload->symbol->name.cstr())};
         else
-            err = new Diagnostic{errNode, errNode->token, formErr(Err0721, niceName.cstr())};
+            err = new Diagnostic{errNode, errNode->token, formErr(Err0667, niceName.cstr())};
         errorParam.addError(err);
         const auto note = Diagnostic::hereIs(overload);
         errorParam.addNote(note);
@@ -181,11 +181,11 @@ namespace
 
         Utf8 msg;
         if (errorParam.destStructDecl && errorParam.destStructDecl->typeInfo->isTuple())
-            msg = formErr(Err0523, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0742, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
         else if (errorParam.destStructDecl)
-            msg = formErr(Err0521, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0740, errorParam.destStructDecl->typeInfo->getDisplayNameC(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
         else
-            msg = formErr(Err0517, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+            msg = formErr(Err0734, match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
 
         const auto err = new Diagnostic{site, msg};
         errorParam.addError(err);
@@ -209,14 +209,14 @@ namespace
         Diagnostic* err;
         if (!match.badSignatureInfos.badSignatureNum2)
         {
-            const auto msg = formErr(Err0400, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr());
+            const auto msg = formErr(Err0433, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr());
             err            = new Diagnostic{errNode, msg};
         }
         else
         {
             if (genericParameters)
                 errNode = genericParameters->children[match.badSignatureInfos.badSignatureNum2];
-            const auto msg = formErr(Err0518, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
+            const auto msg = formErr(Err0736, Naming::kindName(symbol->kind).cstr(), symbol->name.cstr(), match.badSignatureInfos.badSignatureNum2, match.badSignatureInfos.badSignatureNum1);
             err            = new Diagnostic{errNode, msg};
         }
 
@@ -228,7 +228,7 @@ namespace
     {
         const BadSignatureInfos& bi = errorParam.oneTry->symMatchContext.badSignatureInfos;
 
-        const auto msg = formErr(Err0193,
+        const auto msg = formErr(Err0224,
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue2).cstr(),
                                  bi.badGenMatch.cstr(),
                                  Ast::literalToString(bi.badSignatureGivenType, *bi.badGenValue1).cstr());
@@ -248,15 +248,15 @@ namespace
         Diagnostic* err;
         if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_VALUE_TYPE))
         {
-            err = new Diagnostic{errorNode, toErr(Err0398)};
+            err = new Diagnostic{errorNode, toErr(Err0506)};
         }
         else if (match.matchFlags.has(SymbolMatchContext::MATCH_ERROR_TYPE_VALUE))
         {
-            err = new Diagnostic{errorNode, toErr(Err0399)};
+            err = new Diagnostic{errorNode, toErr(Err0507)};
         }
         else
         {
-            const auto msg = formErr(Err0592, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg = formErr(Err0444, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err            = new Diagnostic{errorNode, msg};
             err->addNote(errorParam.explicitCastMsg);
         }
@@ -311,20 +311,20 @@ namespace
             const auto typeStruct = castTypeInfo<TypeInfoStruct>(overload->typeInfo, TypeInfoKind::Struct);
             typeStruct->flattenUsingFields();
             const auto fieldName = typeStruct->flattenFields[errorParam.badParamIdx - 1]->name;
-            const auto msg       = formErr(Err0591, bi.badSignatureGivenType->getDisplayNameC(), fieldName.cstr(), fieldName.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
+            const auto msg       = formErr(Err0746, bi.badSignatureGivenType->getDisplayNameC(), fieldName.cstr(), fieldName.cstr(), bi.badSignatureRequestedType->getDisplayNameC());
             err                  = new Diagnostic{callParamNode, msg};
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0 && bi.castErrorType == CastErrorType::Const)
         {
             const auto tname = errorParam.destFuncDecl->getTokenName().cstr();
-            const auto msg   = formErr(Err0579, tname, tname, bi.badSignatureGivenType->getDisplayNameC());
+            const auto msg   = formErr(Err0282, tname, tname, bi.badSignatureGivenType->getDisplayNameC());
             err              = new Diagnostic{callParamNode, callParamNode->token, msg};
             addCastErrorMsg  = false;
         }
         else if (errorParam.oneTry->ufcs && bi.badSignatureParameterIdx == 0)
         {
             const auto name = errorParam.oneTry->overload->node->token.cstr();
-            const auto msg  = formErr(Err0537, name, bi.badSignatureGivenType->getDisplayNameC(), name, bi.badSignatureRequestedType->getDisplayNameC());
+            const auto msg  = formErr(Err0386, name, bi.badSignatureGivenType->getDisplayNameC(), name, bi.badSignatureRequestedType->getDisplayNameC());
             err             = new Diagnostic{callParamNode, callParamNode->token, msg};
         }
         else if (bi.badSignatureParameterIdx == 0 &&
@@ -332,7 +332,7 @@ namespace
                  errorParam.oneTry->overload->node->isMethod())
         {
             const auto name = errorParam.oneTry->overload->node->token.cstr();
-            auto       n    = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            auto       n    = formErr(Err0745, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err             = new Diagnostic{callParamNode, n};
             n               = form("[[%s]] is a method, call it with a pointer to [[%s]] as a first argument", name, bi.badSignatureRequestedType->getDisplayNameC());
             const auto note = Diagnostic::note(context->node, context->node->token, n);
@@ -342,7 +342,7 @@ namespace
         }
         else
         {
-            const auto n = formErr(Err0561, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
+            const auto n = formErr(Err0745, bi.badSignatureRequestedType->getDisplayNameC(), bi.badSignatureGivenType->getDisplayNameC());
             err          = new Diagnostic{callParamNode, n};
         }
 

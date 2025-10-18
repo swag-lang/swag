@@ -1,4 +1,4 @@
-#global testerror "Err0521"
+#global testerror "Err0740"
 
 struct Range16 { lo, hi, stride: u16 }
 

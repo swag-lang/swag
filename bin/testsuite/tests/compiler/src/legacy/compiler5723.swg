@@ -1,3 +1,3 @@
-#global testerror "Err0618"
+#global testerror "Err0364"
 
 alias A = 1

@@ -1,4 +1,4 @@
-#global testerror "Err0423"
+#global testerror "Err0636"
 #global public
 
 alias WndId = string

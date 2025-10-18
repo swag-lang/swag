@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "Err0401"
+//#global testerror "Err0310"
 //#global testerror "Saf0001"
 
 #[Swag.Safety(.All, .All, true)]

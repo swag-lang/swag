@@ -1,2 +1,2 @@
-#global testerror "Err0472"
+#global testerror "Err0703"
 func main()->bool {}

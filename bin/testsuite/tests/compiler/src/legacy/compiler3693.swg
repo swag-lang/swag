@@ -1,4 +1,4 @@
-#global testerror "Err0071"
+#global testerror "Err0418"
 func ReleaseDC() throw {}
 func GetFontData() throw {}
 

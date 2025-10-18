@@ -1,4 +1,4 @@
-#global testerror "Err0707"
+#global testerror "Err0215"
 interface I5806
 {
     mtd a() { b(); }

@@ -1,4 +1,4 @@
-#global testerror "Err0254"
+#global testerror "Err0402"
 #test
 {
     let a  = 0

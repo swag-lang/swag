@@ -1,4 +1,4 @@
-#global testerror "Err0040"
+#global testerror "Err0421"
 func hello(name: string)
 {
     return "hello" ++ name

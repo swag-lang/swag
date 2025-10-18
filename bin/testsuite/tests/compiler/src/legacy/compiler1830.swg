@@ -1,4 +1,4 @@
-#global testerror "Err0628"
+#global testerror "Err0027"
 
 alias X = func()->s32
 

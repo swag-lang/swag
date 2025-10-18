@@ -44,7 +44,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
 
     if (typeEnum.size() > 1)
     {
-        Diagnostic err{identifierRef, formErr(Err0021, identifier->token.cstr())};
+        Diagnostic err{identifierRef, formErr(Err0007, identifier->token.cstr())};
         bool       first = true;
         for (const auto t : hasEnum)
         {
@@ -147,7 +147,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
     // No 'with', not in a method: fall back to existing diagnostics
     if (!hasEnum.empty())
     {
-        Diagnostic err{identifier, formErr(Err0675, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
+        Diagnostic err{identifier, formErr(Err0085, identifier->token.cstr(), hasEnum[0].second->getDisplayNameC())};
         const auto closest = SemanticError::findClosestMatchesMsg(identifier->token.text, {{.scope = hasEnum[0].second->scope, .flags = 0}}, IdentifierSearchFor::Whatever);
         if (!closest.empty())
             err.addNote(closest);
@@ -157,7 +157,7 @@ bool Semantic::collectAutoScope(SemanticContext* context, VectorNative<Collected
         return context->report(err);
     }
 
-    Diagnostic err{identifier, identifier->token, formErr(Err0681, identifier->token.cstr())};
+    Diagnostic err{identifier, identifier->token, formErr(Err0502, identifier->token.cstr())};
     if (testedOver.size() == 1)
         err.addNote(Diagnostic::hereIs(testedOver[0]));
     return context->report(err);
@@ -674,13 +674,13 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
 
                 if (!startScope && i == 0)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0311)};
+                    const Diagnostic err{context->node, scopeUpValue->token, toErr(Err0546)};
                     return context->report(err);
                 }
 
                 if (!startScope && i)
                 {
-                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0125, scopeUpValue->literalValue.u8)};
+                    const Diagnostic err{context->node, scopeUpValue->token, formErr(Err0128, scopeUpValue->literalValue.u8)};
                     return context->report(err);
                 }
 
@@ -751,6 +751,6 @@ bool Semantic::collectScopeHierarchy(SemanticContext*                 context,
         }
     }
 
-    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0311)}));
+    SWAG_VERIFY(scopeUpMode == IdentifierScopeUpMode::None, context->report({startNode, toErr(Err0546)}));
     return true;
 }

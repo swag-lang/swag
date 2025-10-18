@@ -132,7 +132,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, 
     }
     else if (castError == CastErrorType::Const)
     {
-        msg = formErr(Err0578, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0029, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (castError == CastErrorType::SliceArray)
     {
@@ -142,57 +142,57 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, 
     }
     else if (toType->isTypeValue() && !fromType->isTypeValue())
     {
-        msg = toErr(Err0628);
+        msg = toErr(Err0027);
     }
     else if (!toType->isPointerRef() && toType->isPointer() && fromType->isNativeInteger())
     {
-        msg = formErr(Err0601, fromType->getDisplayNameC());
+        msg = formErr(Err0025, fromType->getDisplayNameC());
         if (!fromType->isNative(NativeTypeKind::U64))
             note = "only [[u64]] may be cast to a pointer";
     }
     else if (toType->isPointerArithmetic() && !fromType->isPointerArithmetic() && fromType->isPointer())
     {
-        msg = formErr(Err0600, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0032, fromType->getDisplayNameC(), toType->getDisplayNameC());
     }
     else if (toType->isInterface() && (fromType->isStruct() || fromType->isPointerTo(TypeInfoKind::Struct)))
     {
         if (fromType->isPointerTo(TypeInfoKind::Struct))
             fromType = castTypeInfo<TypeInfoPointer>(fromType, TypeInfoKind::Pointer)->pointedType;
 
-        msg = formErr(Err0202, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg = formErr(Err0024, fromType->getDisplayNameC(), toType->getDisplayNameC());
         notes.push_back(Diagnostic::note(form("the [[%s]] does not implement the [[%s]]", fromType->getDisplayNameC(), toType->getDisplayNameC())));
     }
     else if (toType->isPointerTo(TypeInfoKind::Struct) && fromType->isInterface())
     {
-        msg    = formErr(Err0202, fromType->getDisplayNameC(), toType->getDisplayNameC());
+        msg    = formErr(Err0024, fromType->getDisplayNameC(), toType->getDisplayNameC());
         toType = castTypeInfo<TypeInfoPointer>(toType, TypeInfoKind::Pointer)->pointedType;
         notes.push_back(Diagnostic::note(form("the [[%s]] does not implement the [[%s]]", toType->getDisplayNameC(), fromType->getDisplayNameC())));
     }
     else if (toType->isStruct() && fromType->isInterface())
     {
         note = Diagnostic::isType(fromType);
-        msg  = toErr(Err0529);
+        msg  = toErr(Err0028);
     }
     else if (fromType->isPointerToTypeInfo() && !toType->isPointerToTypeInfo())
     {
         note = form("this is a type value, also known as [[typeinfo]], or [[%s]]", fromType->getDisplayNameC());
-        msg  = formErr(Err0528, toType->getDisplayNameC());
+        msg  = formErr(Err0026, toType->getDisplayNameC());
     }
     else if (fromType->isClosure() && toType->isLambda())
     {
         note = "a lambda can be converted to a closure, but not the other way around";
-        msg  = toErr(Err0527);
+        msg  = toErr(Err0044);
     }
     else if (toType->isLambdaClosure() && fromType->isLambdaClosure())
     {
         const auto fromTypeFunc = castTypeInfo<TypeInfoFuncAttr>(fromType, TypeInfoKind::LambdaClosure);
         if (fromTypeFunc->firstDefaultValueIdx != UINT32_MAX)
         {
-            msg = toErr(Err0388);
+            msg = toErr(Err0447);
         }
         else
         {
-            msg                   = formErr(Err0530, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg                   = formErr(Err0023, fromType->getDisplayNameC(), toType->getDisplayNameC());
             const auto toTypeFunc = castTypeInfo<TypeInfoFuncAttr>(toType, TypeInfoKind::LambdaClosure);
 
             BadSignatureInfos bi;
@@ -237,7 +237,7 @@ void TypeManager::getCastErrorMsg(Utf8& msg, Utf8& note, Vector<Utf8>& remarks, 
         remarks.push_back(form("the source type is [[%s]]", fromName.cstr()));
         remarks.push_back(form("the requested type is [[%s]]", toName.cstr()));
 
-        msg = toErr(Err0526);
+        msg = toErr(Err0226);
     }
 }
 
@@ -268,7 +268,7 @@ bool TypeManager::castError(SemanticContext* context, TypeInfo* toType, TypeInfo
         SWAG_ASSERT(fromNode);
 
         if (msg.empty())
-            msg = formErr(Err0530, fromType->getDisplayNameC(), toType->getDisplayNameC());
+            msg = formErr(Err0023, fromType->getDisplayNameC(), toType->getDisplayNameC());
         if (!hint.empty())
             notes.push_back(Diagnostic::note(fromNode, hint));
 

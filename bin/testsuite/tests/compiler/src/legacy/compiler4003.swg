@@ -1,4 +1,4 @@
-#global testerror "Err0052"
+#global testerror "Err0040"
 #test
 {
     var x = #move #nodrop #moveraw 0

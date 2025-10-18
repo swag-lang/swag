@@ -1,4 +1,4 @@
-#global testerror "Err0475"
+#global testerror "Err0231"
 using Swag
 
 func main()->s32

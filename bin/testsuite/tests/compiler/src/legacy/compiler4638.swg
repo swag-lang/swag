@@ -1,4 +1,4 @@
-#global testerror "Err0218"
+#global testerror "Err0070"
 #test
 {
     const a: [..] s32 = null

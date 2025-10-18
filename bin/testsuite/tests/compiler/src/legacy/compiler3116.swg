@@ -1,4 +1,4 @@
-#global testerror "Err0296"
+#global testerror "Err0121"
 struct AA3116 {}
 
 public func toto3116()->**AA3116

@@ -1,4 +1,4 @@
 
-#global testerror "Err0626";
+#global testerror "Err0391";
 #global testpass lexer;
 /* Γ */ Γ

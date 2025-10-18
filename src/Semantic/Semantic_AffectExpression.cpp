@@ -25,7 +25,7 @@ bool Semantic::resolveMove(SemanticContext* context)
     {
         if ((right->typeInfo->isStruct() && right->typeInfo->isConst()) || right->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{right, formErr(Err0213, right->typeInfo->getDisplayNameC())};
+            Diagnostic err{right, formErr(Err0016, right->typeInfo->getDisplayNameC())};
             if (right->resolvedSymbolOverload() && right->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_FUNC_PARAM))
                 err.addNote("function parameters are immutable and cannot be modified");
             return context->report(err);
@@ -55,7 +55,7 @@ bool Semantic::resolveAfterKnownType(SemanticContext* context)
     // Cannot cast from closure to lambda
     if (node->typeInfo->getConcreteAlias()->isLambda() && mpl->lambda->typeInfo->getConcreteAlias()->isClosure())
     {
-        Diagnostic err{mpl, toErr(Err0527)};
+        Diagnostic err{mpl, toErr(Err0044)};
         err.addNote(Diagnostic::isType(node));
         err.addNote("a lambda can be converted to a closure type, but not vice versa");
         return context->report(err);
@@ -179,7 +179,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
     {
         if (left == left->parent->lastChild())
         {
-            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
+            Diagnostic err{node, node->token, formErr(Err0126, left->resolvedSymbolName()->name.cstr())};
             err.addNote(Diagnostic::isType(left));
             err.addNote(note);
             err.addNote("function parameters are immutable and cannot be modified");
@@ -188,13 +188,13 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
         if (left->typeInfo->isConstPointerRef())
         {
-            Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
+            Diagnostic err{node, node->token, formErr(Err0126, left->resolvedSymbolName()->name.cstr())};
             err.addNote(Diagnostic::isType(left));
             err.addNote(note);
             return context->report(err);
         }
 
-        Diagnostic err{node, node->token, formErr(Err0091, left->resolvedSymbolName()->name.cstr())};
+        Diagnostic err{node, node->token, formErr(Err0126, left->resolvedSymbolName()->name.cstr())};
         err.addNote(Diagnostic::isType(left));
         err.addNote(note);
         return context->report(err);
@@ -205,7 +205,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
         left->resolvedSymbolOverload()->hasFlag(OVERLOAD_VAR_IS_LET) &&
         (!left->resolvedSymbolOverload()->typeInfo->isPointerRef() || right->is(AstNodeKind::KeepRef)))
     {
-        Diagnostic err{node, node->token, toErr(Err0093)};
+        Diagnostic err{node, node->token, toErr(Err0020)};
         err.addNote(left, "a [[let]] variable is immutable and cannot be modified");
         err.addNote(Diagnostic::hereIs(left->resolvedSymbolOverload()->node));
         return context->report(err);
@@ -213,7 +213,7 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (left->hasAstFlag(AST_L_VALUE))
     {
-        Diagnostic err{node, node->token, toErr(Err0093)};
+        Diagnostic err{node, node->token, toErr(Err0020)};
 
         if (left->is(AstNodeKind::IdentifierRef) && left->childCount() > 1)
         {
@@ -232,14 +232,14 @@ bool Semantic::checkIsConstAffect(SemanticContext* context, AstNode* left, const
 
     if (left->resolvedSymbolOverload() && left->resolvedSymbolOverload()->hasFlag(OVERLOAD_CONST_VALUE))
     {
-        Diagnostic err{node, node->token, toErr(Err0093)};
+        Diagnostic err{node, node->token, toErr(Err0020)};
         if (nte.empty())
             nte = "this is a constant";
         err.addNote(left, nte);
         return context->report(err);
     }
 
-    Diagnostic err{node, node->token, toErr(Err0737)};
+    Diagnostic err{node, node->token, toErr(Err0372)};
     if (nte.empty())
         err.addNote(Diagnostic::isType(left));
     else
@@ -301,19 +301,19 @@ bool Semantic::resolveAffect(SemanticContext* context)
         const auto leftConcrete = TypeManager::concreteType(leftTypeInfo);
         if (right->hasAstFlag(AST_NO_LEFT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0535, g_LangSpec->name_sharp_nodrop.cstr(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0277, g_LangSpec->name_sharp_nodrop.cstr(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_NO_RIGHT_DROP))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0535, g_LangSpec->name_sharp_moveraw.cstr(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0277, g_LangSpec->name_sharp_moveraw.cstr(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
         if (right->hasAstFlag(AST_FORCE_MOVE))
             SWAG_VERIFY(leftConcrete->isSame(rightTypeInfo, CAST_FLAG_CAST),
-                        context->report({node, node->token, formErr(Err0535, g_LangSpec->name_sharp_move.cstr(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
+                        context->report({node, node->token, formErr(Err0277, g_LangSpec->name_sharp_move.cstr(), leftConcrete->getDisplayNameC(), rightTypeInfo->getDisplayNameC())}));
     }
 
     // No direct operations on any, except affect any to any
     if (leftTypeInfo->isAny() && node->token.isNot(TokenId::SymEqual))
     {
-        Diagnostic err{node, node->token, formErr(Err0596, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
+        Diagnostic err{node, node->token, formErr(Err0476, node->token.cstr(), leftTypeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
@@ -364,7 +364,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
     // For tuples, we can only affect
     else if (forTuple)
     {
-        Diagnostic err{node, node->token, formErr(Err0599, node->token.cstr())};
+        Diagnostic err{node, node->token, formErr(Err0475, node->token.cstr())};
         err.addNote(Diagnostic::isType(left));
         return context->report(err);
     }
@@ -384,7 +384,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     }
                     else if (forTuple)
                     {
-                        return context->report({node, node->token, formErr(Err0599, node->token.cstr())});
+                        return context->report({node, node->token, formErr(Err0475, node->token.cstr())});
                     }
                     else
                     {
@@ -394,7 +394,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                         {
                             YIELD();
 
-                            Diagnostic err{right, formErr(Err0239, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
+                            Diagnostic err{right, formErr(Err0042, rightTypeInfo->getDisplayNameC(), leftTypeInfo->getDisplayNameC())};
                             err.addNote(Diagnostic::isType(right));
                             err.addNote(Diagnostic::isType(left));
                             err.addNote(node, node->token, form("there is an implicit call to [[%s]] for the type [[%s]]", "opIndexAffect", rightTypeInfo->getDisplayNameC()));
@@ -420,7 +420,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
                     {
                         if (leftTypeInfo->isTuple())
                         {
-                            Diagnostic err{node, node->token, toErr(Err0569)};
+                            Diagnostic err{node, node->token, toErr(Err0747)};
                             err.addNote(Diagnostic::isType(left));
                             err.addNote(Diagnostic::isType(right));
                             return context->report(err);
@@ -522,7 +522,7 @@ bool Semantic::resolveAffect(SemanticContext* context)
             {
                 if (!leftTypeInfo->isPointerArithmetic())
                 {
-                    Diagnostic err{node, node->token, toErr(Err0225)};
+                    Diagnostic err{node, node->token, toErr(Err0481)};
                     err.addNote(Diagnostic::isType(left));
                     err.addNote("pointer arithmetic is only valid for pointers declared with [['^']], not for those declared with [['^']]");
                     return context->report(err);
@@ -530,13 +530,13 @@ bool Semantic::resolveAffect(SemanticContext* context)
 
                 if (leftTypeInfo->isPointerTo(NativeTypeKind::Void))
                 {
-                    Diagnostic err{node, node->token, toErr(Err0226)};
+                    Diagnostic err{node, node->token, toErr(Err0482)};
                     err.addNote(Diagnostic::isType(left));
                     return context->report(err);
                 }
 
                 rightTypeInfo = TypeManager::concreteType(right->typeInfo);
-                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0227, rightTypeInfo->getDisplayNameC())}));
+                SWAG_VERIFY(rightTypeInfo->isNativeInteger(), context->report({right, formErr(Err0483, rightTypeInfo->getDisplayNameC())}));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, g_TypeMgr->typeInfoU64, left, right, CAST_FLAG_TRY_COERCE));
                 break;
             }

@@ -36,7 +36,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
                 const auto symbolName = c->resolvedSymbolName();
                 if (symbolName && symbolName->is(SymbolKind::Variable))
                 {
-                    SWAG_VERIFY(cptVar == 0, context->report({back, toErr(Err0321)}));
+                    SWAG_VERIFY(cptVar == 0, context->report({back, toErr(Err0554)}));
                     cptVar++;
                 }
             }
@@ -48,7 +48,7 @@ bool Semantic::resolveNameAlias(SemanticContext* context)
         symbolName->isNot(SymbolKind::Function) &&
         symbolName->isNot(SymbolKind::Variable))
     {
-        Diagnostic err{back, formErr(Err0361, Naming::aKindName(symbolName->kind).cstr())};
+        Diagnostic err{back, formErr(Err0363, Naming::aKindName(symbolName->kind).cstr())};
 
         err.addNote("this makes the conversion from [[%s]] to [[%s]] ambiguous");
 
@@ -78,14 +78,14 @@ bool Semantic::resolveTopLevelIdentifier(SemanticContext* context)
 
     if (!node->resolvedSymbolName()->is(SymbolKind::Function))
     {
-        const Diagnostic err{node, node->token, formErr(Err0310, node->token.cstr())};
+        const Diagnostic err{node, node->token, formErr(Err0520, node->token.cstr())};
         return context->report(err);
     }
 
     const auto funcDecl = castAst<AstFuncDecl>(node->resolvedSymbolOverload()->node, AstNodeKind::FuncDecl);
     if (!funcDecl->hasAttribute(ATTRIBUTE_MIXIN))
     {
-        const Diagnostic err{node, node->token, formErr(Err0310, node->token.cstr())};
+        const Diagnostic err{node, node->token, formErr(Err0520, node->token.cstr())};
         return context->report(err);
     }
 
@@ -441,13 +441,13 @@ bool Semantic::getUsingVar(SemanticContext* context, AstIdentifierRef* identifie
         {
             if (dep.node->isGeneratedMe())
             {
-                Diagnostic err{dependentVar, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
+                Diagnostic err{dependentVar, formErr(Err0349, dependentVar->typeInfo->getDisplayNameC())};
                 err.addNote(dep.node->ownerFct, dep.node->ownerFct->token, "the other one is an implicit parameter [[using me]]");
                 err.addNote("hint: remove one [[using]]");
                 return context->report(err);
             }
 
-            Diagnostic err{dep.node, formErr(Err0019, dependentVar->typeInfo->getDisplayNameC())};
+            Diagnostic err{dep.node, formErr(Err0349, dependentVar->typeInfo->getDisplayNameC())};
             err.addNote(dependentVar, "this is another one");
             err.addNote("hint: remove one [[using]]");
             return context->report(err);
@@ -512,7 +512,7 @@ bool Semantic::appendLastCodeStatement(SemanticContext* context, AstIdentifier* 
                             case AstNodeKind::CompilerIf:
                             case AstNodeKind::While:
                             {
-                                const auto       msg = formErr(Err0127, Naming::kindName(overload).cstr(), overload->node->token.cstr(), brotherParent->token.cstr());
+                                const auto       msg = formErr(Err0171, Naming::kindName(overload).cstr(), overload->node->token.cstr(), brotherParent->token.cstr());
                                 Diagnostic err{node, node->token, msg};
                                 err.addNote(Diagnostic::hereIs(overload->node));
                                 return context->report(err);
@@ -592,12 +592,12 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         {
             if (symbolKind == SymbolKind::Variable)
             {
-                Diagnostic err{callParameters, formErr(Err0188, identifier->token.cstr(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
+                Diagnostic err{callParameters, formErr(Err0634, identifier->token.cstr(), symbol->overloads[0]->typeInfo->getDisplayNameC())};
                 err.addNote(Diagnostic::hereIs(symbol->overloads[0]));
                 return context->report(err);
             }
 
-            Diagnostic err{callParameters, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
+            Diagnostic err{callParameters, formErr(Err0385, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
             err.addNote(Diagnostic::hereIs(symbol->overloads[0]));
             return context->report(err);
         }
@@ -605,7 +605,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
         if (symbolKind == SymbolKind::TypeAlias &&
             !TypeManager::concretePtrRefType(symbol->overloads[0]->typeInfo, CONCRETE_FORCE_ALIAS)->isStruct())
         {
-            Diagnostic err{callParameters, formErr(Err0189, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
+            Diagnostic err{callParameters, formErr(Err0385, identifier->token.cstr(), Naming::aKindName(symbol->kind).cstr())};
             err.addNote(Diagnostic::hereIs(symbol->overloads[0]));
             return context->report(err);
         }
@@ -644,7 +644,7 @@ bool Semantic::fillMatchContextCallParameters(SemanticContext*      context,
                     oneParam->typeInfo->isTypedVariadic() ||
                     oneParam->typeInfo->isCVariadic())
                 {
-                    Diagnostic err{oneParam, toErr(Err0411)};
+                    Diagnostic err{oneParam, toErr(Err0575)};
                     err.addNote(Diagnostic::isType(oneParam));
                     return context->report(err);
                 }
@@ -672,7 +672,7 @@ bool Semantic::fillMatchContextGenericParameters(SemanticContext* context, Symbo
             symbolKind != SymbolKind::TypeAlias)
         {
             const auto firstNode = symbol->nodes.front();
-            Diagnostic err{genericParameters, formErr(Err0636, Naming::aKindName(symbol->kind).cstr())};
+            Diagnostic err{genericParameters, formErr(Err0144, Naming::aKindName(symbol->kind).cstr())};
             err.addNote(node, node->token, form("the identifier [[%s]] is %s, not a function or a struct", node->token.cstr(), Naming::aKindName(symbol->kind).cstr()));
             err.addNote(Diagnostic::hereIs(firstNode));
             return context->report(err);
@@ -866,7 +866,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     const auto identifierRef = identifier->identifierRef();
     if (context->sourceFile && context->sourceFile->scopeFile && identifier->token.is(context->sourceFile->scopeFile->name))
     {
-        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0744)}));
+        SWAG_VERIFY(identifier == identifierRef->firstChild(), context->report({identifier, toErr(Err0142)}));
         identifierRef->previousScope = context->sourceFile->scopeFile;
         return true;
     }
@@ -953,7 +953,7 @@ bool Semantic::resolveIdentifier(SemanticContext* context, AstIdentifier* identi
     // Filter symbols
     SWAG_CHECK(filterSymbols(context, identifier));
     if (symbolsMatch.empty())
-        return context->report({identifier, formErr(Err0706, identifier->token.cstr())});
+        return context->report({identifier, formErr(Err0213, identifier->token.cstr())});
 
     // If we have multiple symbols, we need to check that no one can be solved as incomplete, otherwise it
     // can lead to ambiguities, or even worse, take the wrong one.

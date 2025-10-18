@@ -36,7 +36,7 @@ bool Parser::eatToken(TokenId id, const char* msg)
     SWAG_ASSERT(msg);
     if (tokenParse.token.isNot(id))
     {
-        Diagnostic err{sourceFile, tokenParse, formErr(Err0073, Naming::tokenToName(id).cstr())};
+        Diagnostic err{sourceFile, tokenParse, formErr(Err0517, Naming::tokenToName(id).cstr())};
         err.addNote(Diagnostic::note(form("expected [[%s]] %s", Naming::tokenToName(id).cstr(), msg)));
         return context->report(err);
     }
@@ -65,7 +65,7 @@ bool Parser::eatCloseToken(TokenId id, const SourceLocation& start, const char* 
         return true;
     }
 
-    const Utf8 errMsg = formErr(Err0423, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
+    const Utf8 errMsg = formErr(Err0636, Naming::tokenToName(id).cstr(), Naming::tokenToName(id).cstr(), msg);
     Diagnostic err{sourceFile, start, start, errMsg};
 
     if (!tokenParse.is(TokenId::EndOfFile))
@@ -119,7 +119,7 @@ bool Parser::eatSemiCol(const char* msg)
     SWAG_ASSERT(msg);
 
     if (!Tokenizer::isStartOfNewStatement(tokenParse))
-        return error(tokenParse, formErr(Err0446, msg));
+        return error(tokenParse, formErr(Err0682, msg));
     if (tokenParse.is(TokenId::SymSemiColon))
         SWAG_CHECK(eatToken());
 

@@ -55,7 +55,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
 
     SWAG_ASSERT(oneAttribute->typeInfo);
     if (!oneAttribute->typeInfo->isFuncAttr())
-        return context->report({oneAttribute, formErr(Err0163, oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).cstr())});
+        return context->report({oneAttribute, formErr(Err0373, oneAttribute->typeInfo->getDisplayNameC(), Naming::aKindName(oneAttribute->typeInfo).cstr())});
 
     const auto kind     = checkNode->kind;
     const auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(oneAttribute->typeInfo, TypeInfoKind::FuncAttr);
@@ -174,7 +174,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
     {
         if (nakedName == "node")
             nakedName.clear();
-        Diagnostic err{oneAttribute, formErr(Err0376, oneAttribute->token.cstr())};
+        Diagnostic err{oneAttribute, formErr(Err0287, oneAttribute->token.cstr())};
         err.addNote(form("it can only be applied to %s", specificMsg));
         err.addNote(checkNode, checkNode->getTokenName(), form("but it is applied to this %s", nakedName.cstr()));
         if (!isBootstrap)
@@ -186,7 +186,7 @@ bool Semantic::checkAttribute(SemanticContext* context, AstNode* oneAttribute, A
         nakedName = "this";
     else
         nakedName = Naming::aKindName(checkNode);
-    Diagnostic err{oneAttribute, formErr(Err0378, oneAttribute->token.cstr(), nakedName.cstr())};
+    Diagnostic err{oneAttribute, formErr(Err0290, oneAttribute->token.cstr(), nakedName.cstr())};
     if (!isBootstrap)
         err.addNote(Diagnostic::hereIs(oneAttribute->resolvedSymbolOverload()));
     return context->report(err);
@@ -289,7 +289,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
             {
                 if (isHereTmp.contains(typeInfo))
                 {
-                    Diagnostic err{child, formErr(Err0055, child->token.cstr())};
+                    Diagnostic err{child, formErr(Err0197, child->token.cstr())};
                     return context->report(err);
                 }
 
@@ -314,13 +314,13 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 {
                     auto what = typeAttr->attributeUsage;
                     if (!what.has(ATTR_USAGE_STRUCT | ATTR_USAGE_ENUM))
-                        return context->report({child, toErr(Err0380)});
+                        return context->report({child, toErr(Err0308)});
 
                     what.remove(ATTR_USAGE_STRUCT);
                     what.remove(ATTR_USAGE_ENUM);
                     what.remove(ATTR_USAGE_GEN);
                     if (typeAttr->attributeUsage.has(what))
-                        return context->report({child, toErr(Err0380)});
+                        return context->report({child, toErr(Err0308)});
                 }
             }
 
@@ -337,29 +337,29 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 if (*it == ATTRIBUTE_FOREIGN)
                 {
                     auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Foreign, g_LangSpec->name_module);
-                    SWAG_VERIFY(!attrParam->value.text.empty(), context->report({child, attrParam->token, toErr(Err0211)}));
-                    SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, toErr(Err0212)}));
+                    SWAG_VERIFY(!attrParam->value.text.empty(), context->report({child, attrParam->token, toErr(Err0580)}));
+                    SWAG_VERIFY(attrParam->value.text.find(".", 0) == -1, context->report({child, attrParam->token, toErr(Err0243)}));
                 }
 
 #define EXCLUSIVE(__a, __b) ((*it == (__a) && (flags.has(__b))) || (*it == (__b) && (flags.has(__a))))
 
                 if (EXCLUSIVE(ATTRIBUTE_TLS, ATTRIBUTE_COMPILER))
-                    return context->report({child, toErr(Err0045)});
+                    return context->report({child, toErr(Err0033)});
 
                 if (EXCLUSIVE(ATTRIBUTE_INLINE, ATTRIBUTE_NO_INLINE))
-                    return context->report({child, toErr(Err0046)});
+                    return context->report({child, toErr(Err0034)});
 
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_INLINE))
-                    return context->report({child, toErr(Err0047)});
+                    return context->report({child, toErr(Err0035)});
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_MIXIN))
-                    return context->report({child, toErr(Err0048)});
+                    return context->report({child, toErr(Err0036)});
                 if (EXCLUSIVE(ATTRIBUTE_MACRO, ATTRIBUTE_NO_INLINE))
-                    return context->report({child, toErr(Err0049)});
+                    return context->report({child, toErr(Err0037)});
 
                 if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_INLINE))
-                    return context->report({child, toErr(Err0050)});
+                    return context->report({child, toErr(Err0038)});
                 if (EXCLUSIVE(ATTRIBUTE_MIXIN, ATTRIBUTE_NO_INLINE))
-                    return context->report({child, toErr(Err0051)});
+                    return context->report({child, toErr(Err0039)});
             }
 
             //////
@@ -368,7 +368,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto id = castAst<AstIdentifier>(child->lastChild(), AstNodeKind::Identifier);
                 id->addAstFlag(AST_NO_SEMANTIC);
 
-                SWAG_VERIFY(id->callParameters && !id->callParameters->children.empty(), context->report({id, formErr(Err0486, "Swag.Using")}));
+                SWAG_VERIFY(id->callParameters && !id->callParameters->children.empty(), context->report({id, formErr(Err0723, "Swag.Using")}));
                 for (auto c : id->callParameters->children)
                 {
                     auto ptr       = c->getConstantGenTypeInfo();
@@ -396,7 +396,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                             break;
                         }
                         default:
-                            return context->report({c, formErr(Err0350, typeChild->getDisplayNameC())});
+                            return context->report({c, formErr(Err0347, typeChild->getDisplayNameC())});
                     }
 
                     forNode->addAlternativeScope(scope);
@@ -539,7 +539,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Pack, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, formErr(Err0223, attrValue->reg.u8)}));
+                SWAG_VERIFY(!attrValue->reg.u8 || Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, formErr(Err0251, attrValue->reg.u8)}));
             }
 
             //////
@@ -548,7 +548,7 @@ bool Semantic::collectAttributes(SemanticContext* context, AstNode* forNode, Att
                 auto attrParam = curAttr->attributes.getParam(g_LangSpec->name_Swag_Align, g_LangSpec->name_value);
                 SWAG_ASSERT(attrParam);
                 auto attrValue = &attrParam->value;
-                SWAG_VERIFY(Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, formErr(Err0155, attrValue->reg.u8)}));
+                SWAG_VERIFY(Math::isPowerOfTwo(attrValue->reg.u8), context->report({child, attrParam->token, formErr(Err0237, attrValue->reg.u8)}));
             }
 
             //////
@@ -612,7 +612,7 @@ bool Semantic::resolveAttrDecl(SemanticContext* context)
 bool Semantic::resolveAttrUse(SemanticContext* context)
 {
     auto node = castAst<AstAttrUse>(context->node->parent, AstNodeKind::AttrUse);
-    SWAG_VERIFY(node->content || node->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL), context->report({node, toErr(Err0379)}));
+    SWAG_VERIFY(node->content || node->hasSpecFlag(AstAttrUse::SPEC_FLAG_GLOBAL), context->report({node, toErr(Err0374)}));
     SWAG_CHECK(resolveAttrUse(context, node));
     return true;
 }
@@ -638,7 +638,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
         auto resolved     = identifier->resolvedSymbolOverload();
         if (resolvedName->isNot(SymbolKind::Attribute))
         {
-            Diagnostic err{identifier, identifier->token, formErr(Err0163, resolvedName->name.cstr(), Naming::aKindName(resolvedName->kind).cstr())};
+            Diagnostic err{identifier, identifier->token, formErr(Err0373, resolvedName->name.cstr(), Naming::aKindName(resolvedName->kind).cstr())};
             err.addNote(Diagnostic::hereIs(resolved));
             context->report(err);
             return false;
@@ -650,7 +650,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             auto typeInfo = castTypeInfo<TypeInfoFuncAttr>(child->typeInfo, TypeInfoKind::FuncAttr);
             if (!(typeInfo->attributeUsage.has(ATTR_USAGE_FILE)))
             {
-                Diagnostic err{identifier, identifier->token, formErr(Err0377, resolvedName->name.cstr())};
+                Diagnostic err{identifier, identifier->token, formErr(Err0288, resolvedName->name.cstr())};
                 err.addNote(Diagnostic::hereIs(resolved));
                 context->report(err);
                 return false;
@@ -671,7 +671,7 @@ bool Semantic::resolveAttrUse(SemanticContext* context, AstAttrUse* node)
             for (auto one : identifier->callParameters->children)
             {
                 auto param = castAst<AstFuncCallParam>(one, AstNodeKind::FuncCallParam);
-                SWAG_CHECK(checkIsConstExpr(context, param->hasFlagComputedValue(), param, toErr(Err0039)));
+                SWAG_CHECK(checkIsConstExpr(context, param->hasFlagComputedValue(), param, toErr(Err0377)));
                 SWAG_CHECK(TypeManager::makeCompatibles(context, param->resolvedParameter->typeInfo, param->typeInfo, nullptr, param, CAST_FLAG_EXPLICIT));
 
                 AttributeParameter attrParam;

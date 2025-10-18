@@ -1,4 +1,4 @@
-#global testerror "Err0704"
+#global testerror "Err0062"
 
 #[Swag.EnumFlags]
 enum TOTO: u8

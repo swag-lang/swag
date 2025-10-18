@@ -1,4 +1,4 @@
-#global testerror "Err0246"
+#global testerror "Err0343"
 func toto() {}
 func titi() throw
 {

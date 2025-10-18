@@ -1,3 +1,3 @@
-#global testerror "Err0042"
+#global testerror "Err0442"
 
 var G = @alloc(10)

@@ -17,7 +17,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
 
     if (expression->hasSpecialFuncCall())
     {
-        Diagnostic err{expression, expression->token, formErr(Err0044, expression->typeInfo->getDisplayNameC())};
+        Diagnostic err{expression, expression->token, formErr(Err0471, expression->typeInfo->getDisplayNameC())};
         const auto userOp = expression->extraPointer<SymbolOverload>(ExtraPointerKind::UserOp);
         err.addNote(form("there is an implicit call to [[%s]]", userOp->symbol->name.cstr()));
         err.addNote(note);
@@ -30,7 +30,7 @@ bool Semantic::checkIsConstExpr(JobContext* context, bool test, AstNode* express
     else if (!errMsg.empty())
         message = errMsg;
     else
-        message = toErr(Err0040);
+        message = toErr(Err0421);
 
     Diagnostic err{expression, message};
     err.addNote(note);
@@ -309,7 +309,7 @@ bool Semantic::resolveNullConditionalOp(SemanticContext* context)
         !typeInfo->isNativeFloat() &&
         !typeInfo->isLambdaClosure())
     {
-        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0541, typeInfo->getDisplayNameC())};
+        Diagnostic err{node->token.sourceFile, node->token, formErr(Err0338, typeInfo->getDisplayNameC())};
         err.addNote(Diagnostic::isType(expression));
         return context->report(err);
     }
@@ -397,7 +397,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const auto leftTypeInfo = TypeManager::concreteType(node->expressionLow->typeInfo);
     if (!leftTypeInfo->isNativeIntegerOrRune() && !leftTypeInfo->isNativeFloat())
     {
-        const Diagnostic err{node->expressionLow, formErr(Err0230, node->expressionLow->typeInfo->getDisplayNameC())};
+        const Diagnostic err{node->expressionLow, formErr(Err0487, node->expressionLow->typeInfo->getDisplayNameC())};
         return context->report(err);
     }
 
@@ -407,7 +407,7 @@ bool Semantic::resolveRange(SemanticContext* context)
     const bool upUnSigned   = node->expressionUp->typeInfo->isNativeIntegerUnsigned();
     if ((downSigned && upUnSigned) || (downUnSigned && upSigned))
     {
-        Diagnostic err{node, node->token, toErr(Err0532)};
+        Diagnostic err{node, node->token, toErr(Err0489)};
         err.addNote(Diagnostic::isType(node->expressionLow));
         err.addNote(Diagnostic::isType(node->expressionUp));
         return context->report(err);

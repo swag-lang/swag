@@ -1,4 +1,4 @@
-#global testerror "Err0653"
+#global testerror "Err0749"
 
 #[Swag.Mixin, Swag.CalleeReturn]
 func mac()->s32 {}

@@ -482,7 +482,7 @@ bool Semantic::collectAssignment(SemanticContext* context, DataSegment* storageS
             {
                 if (node->type && node->type->hasSpecFlag(AstType::SPEC_FLAG_HAS_STRUCT_PARAMETERS))
                 {
-                    Diagnostic err{assign, toErr(Err0056)};
+                    Diagnostic err{assign, toErr(Err0510)};
                     err.addNote(node->type, "this is the first initialization");
                     return context->report(err);
                 }
@@ -537,7 +537,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
     DataSegment* storageSegment = nullptr;
     uint32_t     storageOffset  = UINT32_MAX;
 
-    SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, formErr(Err0720, node->typeInfo->getDisplayNameC())}));
+    SWAG_VERIFY(!node->typeInfo->isGeneric(), context->report({node, formErr(Err0051, node->typeInfo->getDisplayNameC())}));
 
     // A constant array cannot be initialized with just one value (this is for variables)
     if (node->assignment && typeInfo->isArray())
@@ -545,7 +545,7 @@ bool Semantic::collectConstantAssignment(SemanticContext* context, DataSegment**
         const auto typeAssign = TypeManager::concreteType(node->assignment->typeInfo);
         if (!typeAssign->isArray() && !typeAssign->isListArray())
         {
-            const Diagnostic err{node->assignment, formErr(Err0201, typeInfo->getDisplayNameC())};
+            const Diagnostic err{node->assignment, formErr(Err0117, typeInfo->getDisplayNameC())};
             return context->report(err);
         }
     }

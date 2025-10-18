@@ -1,5 +1,5 @@
 //#global skip
-//#global testerror "Err0401"
+//#global testerror "Err0310"
 
 //#[Swag.PrintBc]
 #test

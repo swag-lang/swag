@@ -57,7 +57,7 @@ void ByteCodeRun::enterByteCode(ByteCodeRunContext* context, ByteCode* bc, uint3
 {
     if (++context->curRC > context->maxRecurse)
     {
-        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0761, context->maxRecurse));
+        OS::raiseException(SWAG_EXCEPTION_TO_COMPILER_HANDLER, formErr(Err0141, context->maxRecurse));
         return;
     }
 
@@ -351,7 +351,7 @@ namespace
 #endif
 
             level   = DiagnosticLevel::Exception;
-            userMsg = toErr(Err0718);
+            userMsg = toErr(Err0205);
             notes.push_back(Diagnostic::note("potential issue detected in your program's compile-time component"));
             notes.push_back(Diagnostic::note("run [[swag]] with [[--dbg-catch]] to launch the bytecode debugger when an exception is raised"));
         }
@@ -1809,7 +1809,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         auto over                    = reinterpret_cast<SymbolOverload*>(ip->c.pointer);
                         context->internalPanicSymbol = over;
                         context->internalPanicHint   = "hint: initialize the global variable with [[undefined]] instead of zero";
-                        callInternalPanic(context, ip, formErr(Err0092, over->node->token.cstr()));
+                        callInternalPanic(context, ip, formErr(Err0127, over->node->token.cstr()));
                     }
                 }
                 registersRC[ip->a.u32].pointer = ptr;
@@ -1831,7 +1831,7 @@ SWAG_FORCE_INLINE bool ByteCodeRun::executeInstruction(ByteCodeRunContext* conte
                         {
                             context->internalPanicSymbol = over;
                             context->internalPanicHint   = "hint: initialize the global variable with [[undefined]] instead of zero";
-                            callInternalPanic(context, ip, formErr(Err0092, over->node->token.cstr()));
+                            callInternalPanic(context, ip, formErr(Err0127, over->node->token.cstr()));
                         }
                     }
                 }

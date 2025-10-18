@@ -1,4 +1,4 @@
-#global testerror "Err0015"
+#global testerror "Err0193"
 
 enum RGB { R, G, B }
 #test
