@@ -479,7 +479,7 @@ void initErrors()
     SWAG_ERROR(Err0352, "missing [[,]] or [[')']] before $$TKN$$");
     SWAG_ERROR(Err0353, "missing [[,]] or [[')']] before $$TKN$$");
     SWAG_ERROR(Err0354, "missing [[,]] or [[')']] before $$TKN$$");
-    SWAG_ERROR(Err0355, "missing [[,]] or [[')']] before $$TNK$$");
+    SWAG_ERROR(Err0355, "missing [[,]] or [[')']] before $$TKN$$");
     SWAG_ERROR(Err0356, "missing [[,]] or [[']']] before $$TKN$$ $ hint: add a dimension or close the list with [[']']]");
     SWAG_ERROR(Err0357, "missing [[,]] or [[']']] before $$TKN$$");
     SWAG_ERROR(Err0358, "missing [[,]] or [[']']] before $$TKN$$");
