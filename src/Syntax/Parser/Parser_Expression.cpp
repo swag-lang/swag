@@ -1460,7 +1460,7 @@ bool Parser::doLeftExpressionVar(AstNode* parent, AstNode** result, IdentifierFl
                 if (tokenParse.is(TokenId::SymRightParen))
                     break;
                 SWAG_CHECK(eatTokenError(TokenId::SymComma, toErr(Err0351)));
-                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0491)));
+                SWAG_VERIFY(tokenParse.isNot(TokenId::SymRightParen), error(tokenParse, toErr(Err0492)));
             }
 
             SWAG_CHECK(eatCloseToken(TokenId::SymRightParen, startLoc, "to end the tuple unpacking", parent));
