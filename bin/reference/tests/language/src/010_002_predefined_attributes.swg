@@ -67,7 +67,7 @@ attr Overload()             // Function can be overloaded
 */
 
 #[AttrUsage(AttributeUsage.Function)]
-attr Foreign(module: string, function: string = '') // Imported function
+attr Foreign(module: string, function: string = "") // Imported function
 
 /**
 # Result Usage & Deprecation & Generic Control
