@@ -100,7 +100,7 @@ when 'where' conditions fail. This guides users with clear diagnostics.
             if T == s32 or T == s64 do
                 return true
 
-            @compilererror('Invalid type ' ++ #stringof(T), #location(T))
+            @compilererror("Invalid type " ++ #stringof(T), #location(T))
             return false
         }
     {
