@@ -6,6 +6,7 @@ attr NC1(x: string)
 #[NC1("toto")]
 enum A
 {
+    B
 }
 
 #test

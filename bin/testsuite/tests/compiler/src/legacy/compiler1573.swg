@@ -12,4 +12,5 @@ struct Point {}
 #[NC]
 enum Color
 {
+    Z
 }

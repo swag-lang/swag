@@ -5,4 +5,5 @@ enum Toto
 
 enum R
 {
+    Z
 }

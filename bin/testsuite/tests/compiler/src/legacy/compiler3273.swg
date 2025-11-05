@@ -2,6 +2,7 @@ struct S_AA3273 {}
 
 enum E_AA3273
 {
+    Z
 }
 
 var G: s32

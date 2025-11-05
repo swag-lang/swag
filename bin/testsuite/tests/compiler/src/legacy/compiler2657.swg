@@ -4,6 +4,7 @@ impl Image
 {
     enum AA
     {
+        Z
     }
 
     func fill(me, x: AA)

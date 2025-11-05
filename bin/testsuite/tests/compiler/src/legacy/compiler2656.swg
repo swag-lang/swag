@@ -4,6 +4,7 @@ impl AA
 {
     enum ENUM
     {
+        Z
     }
 
     #[Swag.Macro]

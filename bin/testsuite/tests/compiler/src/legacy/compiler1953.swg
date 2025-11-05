@@ -1,5 +1,5 @@
 #global skip
-struct ST
+/*struct ST
 {
     x: s32
 }
@@ -61,4 +61,4 @@ func ref1()->const &ST => GG1
 
     var res1 = -ref0()
     @assert(res1.x == -1)
-}
+}*/

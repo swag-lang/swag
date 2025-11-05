@@ -1,5 +1,5 @@
 #global skip // remove typeset from language the 21 july 2021
-alias UserType = string
+/*alias UserType = string
 alias MediaType = s32
 
 var G: s32
@@ -36,4 +36,4 @@ impl typeset EventLogger
     v.log()
 
     @assert(G == 3)
-}
+}*/

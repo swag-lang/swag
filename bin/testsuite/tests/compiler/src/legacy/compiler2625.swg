@@ -2,12 +2,14 @@
 {
     enum AA
     {
+        A
     }
 }
 #else
 {
     enum AA
     {
+        A
     }
 }
 
