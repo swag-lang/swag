@@ -1,5 +1,5 @@
 #global skip // no more relative pointers (18 july 2021)
-using Core
+/*using Core
 
 struct AA
 {
@@ -21,4 +21,4 @@ var G = 666
     arr.add(x)
     @assert(arr[0].ptr[0] == 666)
     @assert(arr[1].ptr[0] == 666)
-}
+}*/
