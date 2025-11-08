@@ -1,5 +1,5 @@
 #global skip // no more relative pointers (18 july 2021)
-struct A
+/*struct A
 {
     x: s32 = 666
     v: *~32 A
@@ -13,4 +13,4 @@ struct A
     var x: A
     x.v = &x
     @assert(x.v.x == 666)
-}
+}*/
