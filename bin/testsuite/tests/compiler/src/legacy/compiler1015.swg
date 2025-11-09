@@ -12,7 +12,7 @@ using Swag
     let ptr2 = cast(const *TypeInfoArray) #typeof([2, 3] string)
     @assert(ptr2.count == 2)
     @assert(ptr2.totalCount == 6)
-    @assert(ptr2.pointedType == #typeof([3] string))
+    @assert(ptr2.pointedType == #typeof(#type [3] string))
     @assert(ptr2.finalType == #typeof(string))
 
     let ptr3 = cast(const *TypeInfoSlice) #typeof(#type [..] string)

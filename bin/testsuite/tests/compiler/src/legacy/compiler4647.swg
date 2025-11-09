@@ -1,5 +1,5 @@
 #global skip
-attr Toto(x: string...);
+/*attr Toto(x: string...);
 
 #[Toto("a", "b", "c")]
 func titi()
@@ -11,4 +11,4 @@ func titi()
     const to = #typeof(titi)
     @assert(@countof(to.attributes) == 1)
     @assert(@countof(to.attributes.params) == 3)
-}
+}*/

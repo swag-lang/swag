@@ -452,7 +452,7 @@ namespace Swag
         padding:            u32
     }
 
-    // Thread context as returned by [@context].
+    // Thread context as returned by [@getcontext].
     struct Context
     {
         // Must stay first, in that order, for backend generation

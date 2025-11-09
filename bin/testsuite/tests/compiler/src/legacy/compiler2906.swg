@@ -1,5 +1,5 @@
 #global skip // no more relative pointers (18 july 2021)
-func(N: s32) toto()
+/*func(N: s32) toto()
 {
     var x: *~N u8
 }
@@ -7,4 +7,4 @@ func(N: s32) toto()
 #test
 {
     toto'32()
-}
+}*/
