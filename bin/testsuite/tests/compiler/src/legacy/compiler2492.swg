@@ -1,6 +1,6 @@
 #global skip // no more relative pointers (18 july 2021)
 //#[Swag.PrintBc]
-#test
+/*#test
 {
     {
         var x: *~8 s32 = null
@@ -21,4 +21,4 @@
         var x: *~64 s32 = null
         @assert(x == null)
     }
-}
+}*/
