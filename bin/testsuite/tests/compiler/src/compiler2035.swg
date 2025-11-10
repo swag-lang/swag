@@ -1,4 +1,4 @@
-func set(a: u8) => @assert(a == 100)
+func set(a: u8) { @assert(a == 100) }
 
 #test
 {

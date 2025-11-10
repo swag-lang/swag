@@ -26,13 +26,6 @@ Use '=>' for simple expressions when the return type can be inferred automatical
 func sum(x, y: s32) => x + y
 
 /**
-# Shorter Syntax for Functions Without Return Values
-
-Functions that do not return a value can use the same concise '=>' syntax.
-*/
-func print(val: string) => @print(val)
-
-/**
 # Defining Parameters in Functions
 
 Parameters are declared within parentheses after the function name, each with a name and type.
