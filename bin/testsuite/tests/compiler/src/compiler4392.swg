@@ -1,5 +1,5 @@
 #global skip
-struct Point
+/*struct Point
 {
     x, y: s32
 }
@@ -14,4 +14,4 @@ func toto()
 {
     var v = Point
     var (a, b) = origin()
-}
+}*/

@@ -4,5 +4,5 @@ struct(T) B {}
 #test
 {
     var x: A'([2, 2])
-    var b: B'([2] s32)
+    var b: B'(#type [2] s32)
 }
