@@ -67,7 +67,7 @@ In this example, `N` is a constant of type `s32`.
 */
 #test
 {
-    func(const N: s32) myFunc() => @assert(N == 10)
+    func(const N: s32) myFunc() { @assert(N == 10) }
     myFunc'10() // Calls the function with constant value 10.
 }
 
@@ -77,7 +77,7 @@ is treated as a constant.
 */
 #test
 {
-    func(N: s32) myFunc() => @assert(N == 10)
+    func(N: s32) myFunc() { @assert(N == 10) }
     myFunc'10() // Equivalent to using 'const'.
 }
 
@@ -86,7 +86,7 @@ You can also assign a default value to a constant parameter.
 */
 #test
 {
-    func(N: s32 = 10) myFunc() => @assert(N == 10)
+    func(N: s32 = 10) myFunc() { @assert(N == 10) }
     myFunc() // Uses the default constant value 10.
 }
 
@@ -96,7 +96,7 @@ and it will be deduced from the assigned value.
 */
 #test
 {
-    func(const N = 10) myFunc() => @assert(N == 10)
+    func(const N = 10) myFunc() { @assert(N == 10) }
     myFunc() // Type of N deduced from literal 10.
 }
 

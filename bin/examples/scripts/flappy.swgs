@@ -90,8 +90,7 @@ The '#main' special function is usually the entry point of an executable. It's e
 
     // From the command line, if the script is run with '--arg:swag.test', then we force the application
     // to exit after 100 frames. This is usefull for batch testing.
-    func test(app: *Application) => if Env.hasArg("swag.test") do
-        app.maxRunFrame = 100
+    func test(app: *Application) { if Env.hasArg("swag.test") do app.maxRunFrame = 100 }
 
     // Creates and run one surface (i.e. window) at the given position and with the given size and title.
     // 'hook' defines a lambda that will receive and treat all gui events

@@ -129,7 +129,6 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test") do
-        app.maxRunFrame = 100
+    func test(app: *Application) { if Env.hasArg("swag.test") do app.maxRunFrame = 100 }
     Application.runSurface(100, 100, 800, 600, title: "Verlet", hook: &onEvent, init: &test)
 }

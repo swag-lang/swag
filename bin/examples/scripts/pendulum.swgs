@@ -143,7 +143,6 @@ func onEvent(wnd: *Wnd, evt: IEvent)->bool
 
 #main
 {
-    func test(app: *Application) => if Env.hasArg("swag.test") do
-        app.maxRunFrame = 100
+    func test(app: *Application) { if Env.hasArg("swag.test") do app.maxRunFrame = 100 }
     Application.runSurface(100, 100, 1024, 600, title: "Pendulum", borders: false, hook: &onEvent, init: &test)
 }
