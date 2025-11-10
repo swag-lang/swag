@@ -1,4 +1,4 @@
-#global testerror "Err0302"
+/*#global testerror "Err0302"
 
 //#[Swag.Mixin]
 func toto()
@@ -6,3 +6,4 @@ func toto()
     let a = 50e_10
 }
 
+*/

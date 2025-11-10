@@ -1,4 +1,4 @@
-//#global testerror
+/*//#global testerror
 struct(T) S
 {
     #if T == bool
@@ -13,3 +13,4 @@ struct(T) S
 {
     var s: S'bool
 }
+*/

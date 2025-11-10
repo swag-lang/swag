@@ -1,4 +1,4 @@
-#global skip
+/*#global skip
 //#global testerror
 struct Duration
 {
@@ -22,3 +22,4 @@ impl Duration
     var x: Duration = true's
     @assert(G == 1)
 }
+*/

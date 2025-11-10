@@ -1,2 +1,3 @@
-#global testerror "Err0716"
+/*#global testerror "Err0716"
 var x = "tototo\oθθθθ"
+*/

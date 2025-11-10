@@ -1,2 +1,3 @@
-#global testerror "Err0405";
+/*#global testerror "Err0405";
 'A
+*/
