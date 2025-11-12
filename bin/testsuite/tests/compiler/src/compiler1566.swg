@@ -5,5 +5,5 @@
 {
     var x = 0
     var y = 0
-    x = #raw #raw y
+    x = #raw #raw y // swc-expected-error {{parser_err_invalid_compiler}}
 }

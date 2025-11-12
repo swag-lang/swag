@@ -3,5 +3,5 @@
 #[Swag.Mixin]
 func toto(stmt: #code void)
 {
-    var #uniq33 = 0
+    var #uniq33 = 0 // swc-expected-error {{parser_err_invalid_compiler}}
 }

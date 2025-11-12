@@ -1,2 +1,2 @@
 #global testerror "Err0686";
-#unittest tgoito
+#unittest tgoito // swc-expected-error {{parser_err_invalid_compiler}}

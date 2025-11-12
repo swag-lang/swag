@@ -2,7 +2,7 @@
 
 #test
 {
-    if(#tag(6))
+    if(#tag(6)) // swc-expected-error {{parser_err_invalid_compiler}}
     {
 
     }

@@ -1,4 +1,4 @@
 #global testerror "Err0722"
-func @toto()
+func @toto() // swc-expected-error {{parser_err_invalid_intrinsic}}
 {
 }
