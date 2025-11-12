@@ -9,5 +9,5 @@ func(T) toto(cb: func||(T, T))
     {
         @assert(x == 10)
         @assert(y == 20)
-    })
+    } )
 }
