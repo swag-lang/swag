@@ -1285,7 +1285,7 @@ func translateMapCoords(x, y: f32) => g_Painter.translateTransform(x * 8 * Scale
 func isImpassible(t: Tile)         => t == .W or t == .G
 
 func getTile(x, y: s32)          => g_Map[x, y]
-func setTile(x, y: s32, t: Tile) => g_Map[x, y] = t
+func setTile(x, y: s32, t: Tile) { g_Map[x, y] = t }
 
 func drawMap()
 {

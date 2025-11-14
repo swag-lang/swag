@@ -6,5 +6,5 @@ func(T) toto()
 
 #test
 {
-    toto'([3] s32)()
+    toto'(#type [3] s32)()
 }
