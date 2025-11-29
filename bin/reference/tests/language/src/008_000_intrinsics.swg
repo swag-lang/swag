@@ -22,7 +22,6 @@ func @assert(value: bool);                       // Assert that a condition is t
 func @breakpoint();                              // Trigger a debugger breakpoint.
 func @getcontext() -> *Swag.Context;             // Retrieve the current execution context.
 func @setcontext(context: const *Swag.Context);  // Set the current execution context.
-func @compiler() -> Swag.ICompiler;              // Retrieve the current compiler interface.
 
 @panic();                                        // Trigger a panic, stopping program execution.
 @compilererror();                                // Generate a compile-time error.
@@ -34,10 +33,15 @@ func @compiler() -> Swag.ICompiler;              // Retrieve the current compile
 
 */
 
-@err:        any                 // The current raised error (null if none).
-@args:       const [..] string   // Command-line arguments passed to the program.
-@bytecode:   bool                // True if the code is being executed as bytecode.
-@pinfos:    *Swag.ProcessInfos   // Retrieve program information.
+@err:        any                  // The current raised error (null if none).
+@args:       const [..] string    // Command-line arguments passed to the program.
+@bytecode:   bool                 // True if the code is being executed as bytecode.
+@pinfos:     *Swag.ProcessInfos   // Retrieve program information.
+@compiler:   Swag.ICompiler       // Retrieve the current compiler interface.
+@rtflags:
+@index:
+@modules:
+@gvtd:
 
 /**
 
